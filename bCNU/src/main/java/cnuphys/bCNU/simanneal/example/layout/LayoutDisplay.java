@@ -35,20 +35,34 @@ public class LayoutDisplay extends SimulationDisplay {
 
 	}
 	
+	//draw the solution
 	private void solutionDraw(Graphics g, LayoutSolution solution) {
 		
-		for (Connection cnx : solution.connections) {
-			cnx.draw(g);
+		if (solution.connections != null) {
+			for (Connection cnx : solution.connections) {
+				cnx.draw(g);
+			}
+		}
+
+		if (solution.boxes != null) {
+			for (Box box : solution.boxes) {
+				box.draw(g);
+			}
+		}
+
+		if (solution.singletons != null) {
+			for (Singleton singleton : solution.singletons) {
+				singleton.draw(g);
+			}
 		}
 		
-		
-		for (Box box : solution.boxes) {
-			box.draw(g);
+		for (Crossing cross : solution.crossings) {
+			cross.draw(g);
 		}
 		
-		for (Singleton singleton : solution.singletons) {
-			singleton.draw(g);
-		}
+		for (Under under : solution.unders) {
+			under.draw(g);
+		}	
 
 	}
 

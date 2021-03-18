@@ -19,7 +19,11 @@ public class Singleton extends PositionedRectangle {
 	 * @param srcSing the source
 	 */
 	private Singleton(Singleton srcSing) {
-		setFrame(srcSing);
+		x = srcSing.x;
+		y = srcSing.y;
+		width = srcSing.width;
+		height = srcSing.height;
+		id = srcSing.id;
 	}
 	
 	@Override
@@ -37,6 +41,9 @@ public class Singleton extends PositionedRectangle {
 		g.fillOval(_bounds.x + x, _bounds.y + y, width, height);
 		g.setColor(Color.blue);
 		g.drawOval(_bounds.x + x, _bounds.y + y, width, height);
+		
+		g.setColor(Color.black);
+		g.drawString("" + id, (int)getCenterX(), (int)getCenterY());
 
 	}
 	

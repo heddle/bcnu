@@ -7,6 +7,9 @@ import java.util.Comparator;
 
 public class MathUtilities {
 
+	//small number test
+	private static final double TINY = 1.0e-16;
+	
 	/**
 	 * Get an int as an unsigned long
 	 * 
@@ -136,6 +139,7 @@ public class MathUtilities {
 		double t = numerator / denominator;
 		return t;
 	}
+	
 
 	/**
 	 * Given an array of pixel points, this rearranges the array into a convex hull.
@@ -356,103 +360,140 @@ public class MathUtilities {
 		}
 		return iarray;
 	}
+	
+	/**
+	 * 
+	 * @param p1 First endpoint of first segment
+	 * @param p2 Second endpoint of first segment
+	 * @param q1 First endpoint of second segment
+	 * @param q2 Second endpoint of second segment
+	 * @param u Will hold intersection, or NaN s if no intersection
+	 * @return <code>true</code> if intersection is found
+	 */
+	public static boolean segmentCrossing(Point2D.Double p1, Point2D.Double p2, 
+			Point2D.Double q1, Point2D.Double q2, Point2D.Double u) {
+		u.x = Double.NaN;
+		u.y = Double.NaN;
+		
+		double x1o = p1.x;
+        double dx1 = p2.x - p1.x;
+
+        double y1o = p1.y;
+        double dy1 = p2.y - p1.y;
+
+        double x2o = q1.x;
+        double dx2 = q2.x - q1.x;
+
+        double y2o = q1.y;
+        double dy2 = q2.y - q1.y;
+
+        double denom = dx2 * dy1 - dx1 * dy2;
+
+        if (Math.abs(denom) > TINY) {
+            //t is the "t parameter" for the segment 1 parameterization
+
+            double t = (dy2*x1o - dy2*x2o - dx2*y1o + dx2*y2o) / denom;
+            double s = (dy1*x1o - dy1*x2o - dx1*y1o + dx1*y2o) / denom;
+
+            if ((t > 0) && (t < 1) && (s > 0) && (s < 1)) {
+                u.x = x1o + dx1 * t;
+                u.y = y1o + dy1 * t;
+                return true;
+            }
+         }
+        
+        return false;
+		
+	}
+	
+	/**
+	 * Does a segment intersect a rectangle
+	 * @param p1
+	 * @param p2
+	 * @param x
+	 * @param y
+	 * @param w
+	 * @param h
+	 * @return <code>true</code> if it intersects
+	 */
+	public static boolean segmentCutsRectangle(Point2D.Double p1, Point2D.Double p2,
+			double x, double y, double w, double h, Point2D.Double u1, Point2D.Double u2) {
+		
+		Point2D.Double q1 = new Point2D.Double();
+		Point2D.Double q2 = new Point2D.Double();
+		
+		Point2D.Double u = new Point2D.Double();
+		
+		int count = 0;
+		
+		q1.setLocation(x, y);
+		q2.setLocation(x, y+h);
+		if (segmentCrossing(p1, p2, q1, q2, u)) {
+			u1.setLocation(u);
+			count = 1;
+		}
+		
+		q2.setLocation(x+w, y);
+		if (segmentCrossing(p1, p2, q1, q2, u)) {
+			if (count == 0) {
+				u1.setLocation(u);
+				count = 1;
+			}
+			else {
+				u2.setLocation(u);
+				return true;
+			}
+		}
+
+		q1.setLocation(x+w, y+h);
+		q2.setLocation(x, y+h);
+		if (segmentCrossing(p1, p2, q1, q2, u)) {
+			if (count == 0) {
+				u1.setLocation(u);
+				count = 1;
+			}
+			else {
+				u2.setLocation(u);
+				return true;
+			}
+		}
+		
+		if (count == 0) {
+			return false;
+		}
+		
+		q2.setLocation(x+w, y);
+		if (segmentCrossing(p1, p2, q1, q2, u)) {
+			u2.setLocation(u);
+			return true;
+		}
+
+		return false;
+	}
+
 
 	// main program for testing
 	public static void main(String arg[]) {
-		Point2D.Double wp0 = new Point2D.Double(0.0, 0.0);
-		Point2D.Double wp1 = new Point2D.Double(0.0, 1.0);
-		Point2D.Double wp2 = new Point2D.Double(1.0, 0.0);
-		Point2D.Double wp3 = new Point2D.Double(1.0, 1.0);
-
-		int np = 100;
-		Point2D.Double wp[] = new Point2D.Double[np];
-		wp[0] = wp0;
-		wp[1] = wp1;
-		wp[2] = wp2;
-		wp[3] = wp3;
-		for (int i = 4; i < np; i++) {
-			wp[i] = new Point2D.Double(Math.random(), Math.random());
-		}
-
-		for (int i = 0; i < 1000; i++) {
-			int j1 = (int) (np * Math.random());
-			int j2 = (int) (np * Math.random());
-
-			Point2D.Double twp = wp[j1];
-			wp[j1] = wp[j2];
-			wp[j2] = twp;
-		}
-
-		int m = getConvexHull(wp);
-		System.out.println("m = " + m);
-
-		for (int i = 0; i < m; i++) {
-			System.out.println(wp[i].toString());
-		}
-
-		int index = 0;
-		wp = new Point2D.Double[36];
-		for (int i = 0; i < 6; i++) {
-			for (int j = 0; j < 6; j++) {
-				wp[(index++)] = new Point2D.Double(i, j);
-			}
-		}
-
-		m = getConvexHull(wp);
-		System.out.println("m = " + m);
-
-		for (int i = 0; i < m; i++) {
-			System.out.println(wp[i].toString());
-		}
-
-		wp = new Point2D.Double[11];
-
-		wp[0] = new Point2D.Double(130.415, 33.5681);
-		wp[1] = new Point2D.Double(132.4828, 34.3936);
-		wp[2] = new Point2D.Double(135.2542, 34.7356);
-		wp[3] = new Point2D.Double(135.6694, 34.9519);
-		wp[4] = new Point2D.Double(136.9044, 35.1428);
-		wp[5] = new Point2D.Double(135.4703, 34.6594);
-		wp[6] = new Point2D.Double(141.3347, 43.0639);
-		wp[7] = new Point2D.Double(140.8922, 38.2611);
-		wp[8] = new Point2D.Double(139.7847, 35.6828);
-		wp[9] = new Point2D.Double(139.6697, 35.5231);
-		wp[10] = new Point2D.Double(130.8653, 33.8711);
-
-		m = getConvexHull(wp);
-		System.out.println("m = " + m);
-
-		for (int i = 0; i < m; i++) {
-			System.out.println(wp[i].toString());
-		}
-
-		Integer array[] = { 23, 64, 10, 0, 6, 9, 6, 23, -27 };
-		Comparator<Integer> c = new Comparator<Integer>() {
-
-			@Override
-			public int compare(Integer i1, Integer i2) {
-				if (i1 < i2) {
-					return -1;
-				}
-				if (i1 > i2) {
-					return 1;
-				}
-				return 0;
-			}
-		};
-
-		int indexArray[] = indexSort(array, c);
-
-		for (int i = 0; i < indexArray.length; i++) {
-			System.err.println(array[i] + ", " + indexArray[i] + ",  " + array[indexArray[i]]);
-		}
-
-		System.err.println("\ndouble array test");
-		double darray[] = { 23, 64, 10, 0, 6, 9, 6, 23, -27 };
-		indexArray = indexSort(darray);
-		for (int i = 0; i < indexArray.length; i++) {
-			System.err.println(darray[i] + ", " + indexArray[i] + ",  " + darray[indexArray[i]]);
-		}
+//		public static boolean segmentCrossing(Point2D.Double p1, Point2D.Double p2, 
+//				Point2D.Double q1, Point2D.Double q2, Point2D.Double u) {
+		
+		Point2D.Double p1 = new Point2D.Double();
+		Point2D.Double p2 = new Point2D.Double();
+		Point2D.Double q1 = new Point2D.Double();
+		Point2D.Double q2 = new Point2D.Double();
+		Point2D.Double u1 = new Point2D.Double();
+		Point2D.Double u2 = new Point2D.Double();
+		
+		p1.setLocation(2, 2);
+		p2.setLocation(6, 6);
+		
+        double x = 3;
+        double y = 2;
+        double w = 2;
+        double h = 2;
+	
+		boolean result = segmentCutsRectangle(p1, p2, x, y, w, h, u1, u2);
+		System.out.println("done");
 
 	}
 

@@ -1,25 +1,31 @@
 package cnuphys.bCNU.simanneal.example.layout;
 
 import java.awt.Rectangle;
+import java.awt.geom.Point2D;
 import java.util.Random;
 
 
 public abstract class PositionedRectangle extends Rectangle {
+	
+	private static int _nextId = 0;
 	
 	//shared random number generator
 	protected static Random _rand = LayoutSimulation.random;
 
 	//layout bounds
 	protected static Rectangle _bounds = LayoutSimulation.bounds;
-	
-	// used for center location
-	protected Position _position = new Position();
-	
+		
 	// icon size
 	protected static int _size = LayoutSimulation.size;
 	
 	// a pixel gap 
 	protected static int _gap = LayoutSimulation.gap;
+	
+	//unique id
+	public int id = (++_nextId);
+	
+	//for computing energy
+	public int mass = 1;
 	
 	/**
 	 * Create a positioned rectangle at a random location
@@ -30,17 +36,15 @@ public abstract class PositionedRectangle extends Rectangle {
 		y = _bounds.y + _rand.nextInt(_bounds.height/2);
 		width =1;
 		height = 1;
+		
 	}
 	
 	/**
 	 * Get the position (the center)
 	 * @return the position
 	 */
-	public Position getPosition() {
-		_position.x = getCenterX();
-		_position.y = getCenterY();
-		
-		return _position;
+	public Point2D.Double getPosition() {
+		return new Point2D.Double(getCenterX(), getCenterY());
 	}
 	
 	/**
@@ -53,17 +57,6 @@ public abstract class PositionedRectangle extends Rectangle {
 		y += (int)dy;
 	}
 	
-
-	/**
-	 * Set the position (center) of the pr
-	 * @param x the horizontal location
-	 * @param y the vertical location
-	 */
-	public void setPosition(double x, double y) {
-		double w2 = width/2.0;
-		double h2 = height/2.0;
-		setFrame(x-w2, y-h2, width, height);
-	}
 	
 	/**
 	 * Is this a box (as opposed to a singleton)
@@ -174,6 +167,11 @@ public abstract class PositionedRectangle extends Rectangle {
 		del.set(dx, dy);
 	}
 	
+	/**
+	 * Get the distance to another positioned rectangle
+	 * @param opr the other rectangle
+	 * @return the distance
+	 */
 	public double distance(PositionedRectangle opr) {
 		
 		double dx = opr.getCenterX() - getCenterX();
@@ -188,5 +186,23 @@ public abstract class PositionedRectangle extends Rectangle {
 		del.set(dx, dy);
 	}
 	
+	public static void swapPosition(PositionedRectangle p, PositionedRectangle q) {
+		
+		int tx = q.x;
+		int ty = q.y;
+		int tw = q.width;
+		int th = q.height;
+		
+		q.x = p.x;
+		q.y = p.y;
+		q.width = p.width;
+		q.height = p.height;
+
+		p.x = tx;
+		p.y = ty;
+		p.width = tw;
+		p.height = th;
+
+	}
 
 }

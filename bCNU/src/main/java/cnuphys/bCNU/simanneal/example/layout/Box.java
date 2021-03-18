@@ -29,8 +29,13 @@ public class Box extends PositionedRectangle  {
 	 * @param srcBox the siource
 	 */
 	private Box(Box srcBox) {
-		setFrame(srcBox);
+		x = srcBox.x;
+		y = srcBox.y;
+		width = srcBox.width;
+		height = srcBox.height;
+
 		count = srcBox.count;
+		id = srcBox.id;
 		init();
 	}
 	
@@ -49,6 +54,9 @@ public class Box extends PositionedRectangle  {
 		
 		width = numCol * (_size + _gap);
 		height = numRow * (_size + _gap);
+		
+		//the mass
+		mass = (int) Math.max(1,  count);
 	}
 	
 	/**
@@ -100,6 +108,9 @@ public class Box extends PositionedRectangle  {
 			}
 		
 		}
+		
+		g.setColor(Color.black);
+		g.drawString("" + id, (int)getCenterX(), (int)getCenterY());
 	}
 
 

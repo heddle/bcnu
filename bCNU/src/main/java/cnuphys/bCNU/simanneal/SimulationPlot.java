@@ -128,7 +128,7 @@ public class SimulationPlot extends PlotPanel implements IUpdateListener {
 
 		double t = _simulation.getTemperature();
 		double e = newSolution.getPlotY();
-//		System.out.println("T = " + t + "  logT = " + Math.log10(t) + "  E = " + e);
+	//	System.out.println("T = " + t + "  logT = " + Math.log10(t) + "  E = " + e);
 
 		try {
 			if (_useLogT) {
