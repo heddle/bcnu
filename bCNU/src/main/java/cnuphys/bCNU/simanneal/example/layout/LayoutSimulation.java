@@ -39,7 +39,7 @@ public class LayoutSimulation extends Simulation {
 
 	@Override
 	protected Solution setInitialSolution() {
-		return null;
+		return LayoutSolution.randomSolution();
 	}
 
 	

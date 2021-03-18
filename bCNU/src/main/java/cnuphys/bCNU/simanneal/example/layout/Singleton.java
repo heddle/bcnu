@@ -14,6 +14,24 @@ public class Singleton extends PositionedRectangle {
 		height = _size;
 	}
 	
+	/**
+	 * copy constructor
+	 * @param srcSing the source
+	 */
+	private Singleton(Singleton srcSing) {
+		setFrame(srcSing);
+	}
+	
+	@Override
+	public PositionedRectangle copy() {
+		return new Singleton(this);
+	}
+
+
+	/**
+	 * Draw the singleton
+	 * @param g the graphics context
+	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.cyan);
 		g.fillOval(_bounds.x + x, _bounds.y + y, width, height);

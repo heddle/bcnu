@@ -4,9 +4,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import cnuphys.bCNU.util.Layout.Position;
-import cnuphys.bCNU.util.Layout.PositionedRectangle;
-
 public class Connection {
 	
 	//layout bounds

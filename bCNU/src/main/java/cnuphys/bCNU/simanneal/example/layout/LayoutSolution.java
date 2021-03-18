@@ -26,7 +26,15 @@ public class LayoutSolution extends Solution {
 
 	@Override
 	public Solution copy() {
-		return null;
+		LayoutSolution copy = new LayoutSolution();
+		copyBoxes(this, copy);
+		
+		return copy;
+	}
+	
+	//copy boxes from source to destination
+	private void copyBoxes(LayoutSolution src, LayoutSolution dest) {
+		int len = 
 	}
 
 	@Override
@@ -34,6 +42,10 @@ public class LayoutSolution extends Solution {
 		return 0;
 	}
 	
+	/**
+	 * Generate a random solution
+	 * @return a random starting solution
+	 */
 	public static Solution randomSolution() {
 		
 		LayoutSolution solution = new LayoutSolution();

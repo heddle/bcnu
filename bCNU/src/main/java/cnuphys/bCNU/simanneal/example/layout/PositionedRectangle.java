@@ -2,10 +2,9 @@ package cnuphys.bCNU.simanneal.example.layout;
 
 import java.awt.Rectangle;
 import java.util.Random;
-import java.util.UUID;
 
 
-public class PositionedRectangle extends Rectangle {
+public abstract class PositionedRectangle extends Rectangle {
 	
 	//shared random number generator
 	protected static Random _rand = LayoutSimulation.random;
@@ -22,12 +21,21 @@ public class PositionedRectangle extends Rectangle {
 	// a pixel gap 
 	protected static int _gap = LayoutSimulation.gap;
 	
+	/**
+	 * Create a positioned rectangle at a random location
+	 */
 	public PositionedRectangle() {
 		//default to a random location
 		x = _bounds.x + _rand.nextInt(_bounds.width/2);
 		y = _bounds.y + _rand.nextInt(_bounds.height/2);
+		width =1;
+		height = 1;
 	}
-
+	
+	/**
+	 * Get the position (the center)
+	 * @return the position
+	 */
 	public Position getPosition() {
 		_position.x = getCenterX();
 		_position.y = getCenterY();
@@ -90,7 +98,13 @@ public class PositionedRectangle extends Rectangle {
 		boolean inside =  _bounds.contains(this);
 		return !inside;
 	}
-			
+		
+	/**
+	 * Make a deep copy (a clone)
+	 * @return a copy
+	 */
+	public abstract PositionedRectangle copy();
+	
 	/**
 	 * Get the gap distance which is the "air" between the boxes
 	 * @param opr the other pr

@@ -21,7 +21,26 @@ public class Box extends PositionedRectangle  {
 	 */
 	public Box(int count) {
 		this.count = count;
-		
+		init();
+	}
+	
+	/**
+	 * copy constructor
+	 * @param srcBox the siource
+	 */
+	private Box(Box srcBox) {
+		setFrame(srcBox);
+		count = srcBox.count;
+		init();
+	}
+	
+	@Override
+	public PositionedRectangle copy() {
+		return new Box(this);
+	}
+	
+	//initialize the rows and columns
+	private void init() {
 		int rowCol[] = new int[2];
 		getRowCol(count, rowCol);
 		
@@ -30,7 +49,6 @@ public class Box extends PositionedRectangle  {
 		
 		width = numCol * (_size + _gap);
 		height = numRow * (_size + _gap);
-		
 	}
 	
 	/**
@@ -83,5 +101,7 @@ public class Box extends PositionedRectangle  {
 		
 		}
 	}
+
+
 
 }
