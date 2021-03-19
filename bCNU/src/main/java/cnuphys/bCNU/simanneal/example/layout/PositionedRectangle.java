@@ -7,7 +7,7 @@ import java.util.Random;
 
 public abstract class PositionedRectangle extends Rectangle {
 	
-	private static int _nextId = 0;
+	public static int _nextId = 0;
 	
 	//shared random number generator
 	protected static Random _rand = LayoutSimulation.random;
@@ -161,12 +161,6 @@ public abstract class PositionedRectangle extends Rectangle {
 		return d;
 	}
 	
-	public void getDel(PositionedRectangle opr, Del del) {			
-		double dx = opr.getCenterX() - getCenterX();
-		double dy = opr.getCenterY() - getCenterY();
-		del.set(dx, dy);
-	}
-	
 	/**
 	 * Get the distance to another positioned rectangle
 	 * @param opr the other rectangle
@@ -178,14 +172,12 @@ public abstract class PositionedRectangle extends Rectangle {
 		double dy = opr.getCenterY() - getCenterY();
 		return Math.sqrt(dx*dx + dy*dy);
 	}
-	
-	public void toCenter(Del del) {
-		double dx = _bounds.getCenterX() - getCenterX();
-		double dy = _bounds.getCenterY() - getCenterY();
-
-		del.set(dx, dy);
-	}
-	
+		
+	/**
+	 * Swap the ppositions of two rectangles
+	 * @param p one pr
+	 * @param q the other pr
+	 */
 	public static void swapPosition(PositionedRectangle p, PositionedRectangle q) {
 		
 		int tx = q.x;

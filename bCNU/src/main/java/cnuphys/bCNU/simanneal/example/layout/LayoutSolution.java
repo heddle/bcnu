@@ -31,8 +31,6 @@ public class LayoutSolution extends Solution {
 	private static final double UNDER = 1;
 	
 	
-
-	
 	/** The boxes being laid out */
 	public Box[] boxes;
 	
@@ -56,7 +54,7 @@ public class LayoutSolution extends Solution {
 	public ArrayList<Under> unders = new ArrayList<>();
 
 
-	//combine for convenience
+	//combine boxes and singletons for convenience
 	private void getEverything() {
 		int len1 = (boxes == null) ? 0 : boxes.length;
 		int len2 = (singletons == null) ? 0 : singletons.length;
@@ -82,7 +80,8 @@ public class LayoutSolution extends Solution {
 		}
 	}
 	
-	//get all the unders
+	//get all the unders. These are cases where a connection
+	//cuts through an icon or box. Cond=sidered bad!
 	public void getUnders() {
 		unders.clear();
 		int lenC = (connections == null) ? 0 : connections.length;
@@ -109,7 +108,8 @@ public class LayoutSolution extends Solution {
 	}
 	
 	
-	//get all the crossings
+	//get all the crossings. These are where connection lines cross.
+	//considered very bad.
 	public void getCrossings() {
 		crossings.clear();
 		
@@ -166,8 +166,11 @@ public class LayoutSolution extends Solution {
 			PositionedRectangle pr1 = _everything[i];
 			for (int j = i+1; j < len; j++) {
 				PositionedRectangle pr2 = _everything[j];
-				grav += gravitationalEnergy(pr1, pr2);
-				spring += springEnergy(pr1, pr2);
+				
+				double distance = pr1.distance(pr2);
+				
+				grav += gravitationalEnergy(pr1, pr2, distance);
+				spring += springEnergy(pr1, pr2, distance);
 				
 				if (pr1.overlaps(pr2)) {
 					ovlap += OVLAP;
@@ -214,16 +217,12 @@ public class LayoutSolution extends Solution {
 	}
 	
 	//gravitational energy
-	private double gravitationalEnergy(PositionedRectangle pr1, PositionedRectangle pr2) {
-		double distance = pr1.distance(pr2);
-		
+	private double gravitationalEnergy(PositionedRectangle pr1, PositionedRectangle pr2, double distance) {
 		return G*pr1.mass*pr2.mass/distance;
 	}
 	
 	//spring energy
-	private double springEnergy(PositionedRectangle pr1, PositionedRectangle pr2) {
-		double distance = pr1.distance(pr2);
-		
+	private double springEnergy(PositionedRectangle pr1, PositionedRectangle pr2, double distance) {
 		return 0.5*K*distance*distance;
 	}
 

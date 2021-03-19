@@ -42,8 +42,14 @@ public class LayoutSimulation extends Simulation {
 		return LayoutSolution.randomSolution();
 	}
 
-	
-	
+	/**
+	 * Reset the simulation
+	 */
+	@Override
+	protected void reset() {
+		PositionedRectangle._nextId = 0;
+		super.reset();
+	}
 	
 	// main program for testing
 	public static void main(String arg[]) {

@@ -151,7 +151,6 @@ public abstract class Simulation implements Runnable {
 		_initialSolution = setInitialSolution();
 		_currentSolution = _initialSolution.copy();
 		notifyListeners();
-//		notifyListeners(_initialSolution, _initialSolution);
 	}
 
 	/**
