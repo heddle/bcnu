@@ -3,7 +3,6 @@ package cnuphys.bCNU.simanneal.example.layout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
-import java.awt.geom.Point2D;
 
 /**
  * Wire goes under a rectangle
@@ -24,10 +23,16 @@ public class Under {
 	//the "covering" rect
 	public PositionedRectangle cover; 
 	
-	/** intersection point */
+	/** intersection point 1 x coord */
 	public double x1;
+	
+	/** intersection point 1 y coord */
 	public double y1;
+	
+	/** intersection point 2 x coord */
 	public double x2;
+	
+	/** intersection point 3 y coord */
 	public double y2;
 
 
@@ -51,7 +56,10 @@ public class Under {
 
 	}
 	
-	
+	/**
+	 * Draw the two intersection points
+	 * @param g the graphics context
+	 */
 	public void draw(Graphics g) {
 		g.setColor(Color.magenta);
 		g.fillOval((int)(_bounds.x + x1 - 4), (int)(_bounds.y + y1-4), 8, 8);

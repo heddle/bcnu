@@ -98,68 +98,6 @@ public abstract class PositionedRectangle extends Rectangle {
 	 */
 	public abstract PositionedRectangle copy();
 	
-	/**
-	 * Get the gap distance which is the "air" between the boxes
-	 * @param opr the other pr
-	 * @return the gap distance (reasonably accurately)
-	 */
-	public double gapDistance(PositionedRectangle opr, double[] p0, double[] p1) {
-		if (overlaps(opr)) {
-			return 0;
-		}
-		
-		final double x0 = getCenterX();
-		final double y0 = getCenterY();
-		final double x1 = opr.getCenterX();
-		final double y1 = opr.getCenterY();
-		
-		double dx = x1 - x0;
-		double dy = y1 - y0;
-		
-		double dt = 0.05;
-		double t0 = dt;
-		
-		while (t0 < 0.999) {
-			double x = x0 + dx*t0;
-			double y = y0 + dy*t0;
-			
-			if (!contains(x, y)) {
-				break;
-			}
-			t0 += dt;
-		}
-		
-		double t1 = 1-dt;
-		
-		double tmax = t0 + dt;
-		while (t1 > tmax) {
-			double x = x0 + dx*t1;
-			double y = y0 + dy*t1;
-			
-			if (!opr.contains(x, y)) {
-				break;
-			}
-			t1 -= dt;
-		}
-		
-		
-		p0[0] = x0 + dx*t0;
-		p0[1] = y0 + dy*t0;
-		p1[0] = x0 + dx*t1;
-		p1[1] = y0 + dy*t1;
-
-
-		dx = p1[0] - p0[0];
-		dy = p1[1] - p0[1];
-		
-		double d = Math.sqrt(dx*dx + dy*dy);
-		
-		if (d < 1) {
-			System.out.println("");
-		}
-		
-		return d;
-	}
 	
 	/**
 	 * Get the distance to another positioned rectangle

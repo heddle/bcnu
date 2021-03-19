@@ -15,13 +15,16 @@ public class Crossing {
 	//layout bounds
 	protected static Rectangle _bounds = LayoutSimulation.bounds;
 
-	
+	/** one endpoint of first segment */
 	public PositionedRectangle p1;
 	
+	/** other endpoint of first segment */
 	public PositionedRectangle p2;
 	
+	/** one endpoint of second segment */
 	public PositionedRectangle q1;
 	
+	/** other endpoint of second segment */
 	public PositionedRectangle q2;
 	
 	/** intersection point */

@@ -30,6 +30,9 @@ public class LayoutSolution extends Solution {
 	//wire under a pr penalty
 	private static final double UNDER = 1;
 	
+	//the probability to switch if there is a crossing
+	private static final double SWITCHPROB = 0.1;
+	
 	
 	/** The boxes being laid out */
 	public Box[] boxes;
@@ -190,16 +193,17 @@ public class LayoutSolution extends Solution {
 		
 		int len = (soln._everything == null) ? 0 : soln._everything.length;
 		
-		
+		//offset everybody by a small random amount
 		for (int i = 0; i < len; i++) {
 			double dx = (_rand.nextDouble() - 0.5) * 20;
 			double dy = (_rand.nextDouble() - 0.5) * 20;
 			soln._everything[i].offset(dx, dy);
 		}
 		
+		//find all the crossings and potentially switch locations to uncross
 		getCrossings();
 		for (Crossing crossing : crossings) {
-			if (_rand.nextDouble() < 0.1) {
+			if (_rand.nextDouble() < SWITCHPROB) {
 				Singleton s1 = crossing.getSingleton1();
 				Singleton s2 = crossing.getSingleton2();
 				
