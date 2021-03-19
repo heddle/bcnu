@@ -120,7 +120,7 @@ public abstract class Simulation implements Runnable {
 		attributes.add(Simulation.COOLRATE, 0.03);
 		attributes.add(Simulation.RANDSEED, -1L);
 		attributes.add(Simulation.THERMALCOUNT, 200);
-		attributes.add(Simulation.MAXSTEPS, 1000);
+		attributes.add(Simulation.MAXSTEPS, 2000);
 
 		attributes.add(Simulation.USELOGTEMP, false, false, false);
 		attributes.add(Simulation.PLOTTITLE, "Simulated Annealing", false, false);

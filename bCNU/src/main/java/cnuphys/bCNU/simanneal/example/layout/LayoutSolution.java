@@ -16,7 +16,7 @@ public class LayoutSolution extends Solution {
 	private static final double G = 1;
 	
 	//spring constant
-	private static final double K = 1.0e-7;
+	private static final double K = 2.0e-7;
 	
 	//out of bounds energy penalty;
 	private static final double OOB = 100;
