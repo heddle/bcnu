@@ -3,15 +3,11 @@ package cnuphys.ced.magfield;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.adaptiveSwim.AdaptiveSwimException;
 import cnuphys.adaptiveSwim.AdaptiveSwimResult;
 import cnuphys.adaptiveSwim.AdaptiveSwimmer;
 import cnuphys.adaptiveSwim.test.InitialValues;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoMonteCarloView;
 import cnuphys.lund.GeneratedParticleRecord;

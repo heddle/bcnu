@@ -40,17 +40,7 @@ public class KeyAdapter3D implements KeyListener {
 	 */
 	public static void handleVK(Panel3D panel3D, int keyCode, boolean shifted) {
 
-		if (keyCode == KeyEvent.VK_UP) {
-			int factor = (shifted ? 3 : 1);
-			float dz = panel3D.getZStep();
-			panel3D.deltaZ(factor * dz);
-			panel3D.refresh();
-		} else if (keyCode == KeyEvent.VK_DOWN) {
-			int factor = (shifted ? 3 : 1);
-			float dz = -panel3D.getZStep();
-			panel3D.deltaZ(factor * dz);
-			panel3D.refresh();
-		} else if (keyCode == KeyEvent.VK_L) {
+        if (keyCode == KeyEvent.VK_L) {
 			int factor = (shifted ? 3 : 1);
 			float dz = -panel3D.getZStep();
 			panel3D.deltaX(factor * dz);
@@ -70,13 +60,15 @@ public class KeyAdapter3D implements KeyListener {
 			float dz = -panel3D.getZStep();
 			panel3D.deltaY(factor * dz);
 			panel3D.refresh();
-		} else if (keyCode == KeyEvent.VK_LEFT) {
+		} else if (keyCode == KeyEvent.VK_J) {
 			int factor = (shifted ? 3 : 1);
-			panel3D.setRotationZ(panel3D.getRotationZ() - factor * DTHETA);
+			float dz = panel3D.getZStep();
+			panel3D.deltaZ(factor * dz);
 			panel3D.refresh();
-		} else if (keyCode == KeyEvent.VK_RIGHT) {
+		} else if (keyCode == KeyEvent.VK_K) {
 			int factor = (shifted ? 3 : 1);
-			panel3D.setRotationZ(panel3D.getRotationZ() + factor * DTHETA);
+			float dz = -panel3D.getZStep();
+			panel3D.deltaZ(factor * dz);
 			panel3D.refresh();
 		} else if (keyCode == KeyEvent.VK_X) {
 			int factor = (shifted ? -1 : 1);

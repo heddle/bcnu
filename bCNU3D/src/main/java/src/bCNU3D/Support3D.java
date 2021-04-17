@@ -237,6 +237,116 @@ public class Support3D {
 		gl.glPopMatrix();
 
 	}
+	
+	
+	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw, float zw, Color color, float lineWidth, boolean frame) {
+		GL2 gl = drawable.getGL().getGL2();
+
+		float xm = xc - xw/2;
+		float xp = xc + xw/2;
+		float ym = yc - yw/2;
+		float yp = yc + yw/2;
+		float zm = zc - zw/2;
+		float zp = zc + zw/2;
+
+		Support3D.setColor(gl, color);
+		gl.glBegin(GL2ES3.GL_QUADS);
+		gl.glVertex3f(xm, ym, zp);
+		gl.glVertex3f(xm, yp, zp);
+		gl.glVertex3f(xp, yp, zp);
+		gl.glVertex3f(xp, ym, zp);
+		gl.glEnd();
+
+		gl.glBegin(GL2ES3.GL_QUADS);
+		gl.glVertex3f(xm, ym, zm);
+		gl.glVertex3f(xm, yp, zm);
+		gl.glVertex3f(xp, yp, zm);
+		gl.glVertex3f(xp, ym, zm);
+		gl.glEnd();
+
+		gl.glBegin(GL2ES3.GL_QUADS);
+		gl.glVertex3f(xm, yp, zm);
+		gl.glVertex3f(xm, yp, zp);
+		gl.glVertex3f(xp, yp, zp);
+		gl.glVertex3f(xp, yp, zm);
+		gl.glEnd();
+
+		gl.glBegin(GL2ES3.GL_QUADS);
+		gl.glVertex3f(xm, ym, zm);
+		gl.glVertex3f(xm, ym, zp);
+		gl.glVertex3f(xp, ym, zp);
+		gl.glVertex3f(xp, ym, zm);
+		gl.glEnd();
+
+		gl.glBegin(GL2ES3.GL_QUADS);
+		gl.glVertex3f(xp, yp, zm);
+		gl.glVertex3f(xp, yp, zp);
+		gl.glVertex3f(xp, ym, zp);
+		gl.glVertex3f(xp, ym, zm);
+		gl.glEnd();
+
+		gl.glBegin(GL2ES3.GL_QUADS);
+		gl.glVertex3f(xm, yp, zm);
+		gl.glVertex3f(xm, yp, zp);
+		gl.glVertex3f(xm, ym, zp);
+		gl.glVertex3f(xm, ym, zm);
+		gl.glEnd();
+		
+		if (frame) {
+			Support3D.setColor(gl, color.darker());
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glVertex3f(xm, yp, zp);
+			gl.glVertex3f(xm, ym, zp);
+			gl.glVertex3f(xm, ym, zm);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glEnd();
+
+			
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xm, ym, zm);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glVertex3f(xp, yp, zm);
+			gl.glVertex3f(xp, ym, zm);
+			gl.glVertex3f(xm, ym, zm);
+			gl.glEnd();
+		
+			
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glVertex3f(xm, yp, zp);
+			gl.glVertex3f(xp, yp, zp);
+			gl.glVertex3f(xp, yp, zm);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glEnd();
+		
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xm, ym, zm);
+			gl.glVertex3f(xm, ym, zp);
+			gl.glVertex3f(xp, ym, zp);
+			gl.glVertex3f(xp, ym, zm);
+			gl.glVertex3f(xm, ym, zm);
+			gl.glEnd();
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xp, yp, zm);
+			gl.glVertex3f(xp, yp, zp);
+			gl.glVertex3f(xp, ym, zp);
+			gl.glVertex3f(xp, ym, zm);
+			gl.glVertex3f(xp, yp, zm);
+			gl.glEnd();
+
+			gl.glBegin(GL.GL_LINE_STRIP);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glVertex3f(xm, yp, zp);
+			gl.glVertex3f(xm, ym, zp);
+			gl.glVertex3f(xm, ym, zm);
+			gl.glVertex3f(xm, yp, zm);
+			gl.glEnd();
+		}
+
+	}
 
 
 	/**

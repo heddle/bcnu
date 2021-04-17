@@ -20,7 +20,6 @@ import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.lund.LundId;
-import cnuphys.lund.LundSupport;
 
 /**
  * Rec drawer for the AllECView

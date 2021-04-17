@@ -39,6 +39,7 @@ public class AFilterDialog extends SimpleDialog {
 	 * 
 	 * @return the component that is placed in the center
 	 */
+	@Override
 	protected Component createCenterComponent() {
 		JPanel cp = new JPanel();
 		cp.setLayout(new BorderLayout(4, 6));
@@ -57,6 +58,7 @@ public class AFilterDialog extends SimpleDialog {
 	 * 
 	 * @return the component that is placed in the center
 	 */
+	@Override
 	protected Component createNorthComponent() {
 		JPanel cp = new JPanel();
 		cp.setLayout(new BorderLayout(4, 6));

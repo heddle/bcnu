@@ -31,6 +31,7 @@ import cnuphys.ced.alldata.graphics.DefinitionManager;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
+import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
 import cnuphys.ced.cedview.TimedRefreshManager;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
@@ -40,7 +41,6 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
-import cnuphys.ced.cedview.magfieldview.MagfieldView;
 import cnuphys.ced.cedview.rtpc.RTPCView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
 import cnuphys.ced.cedview.sectorview.SectorView;
@@ -120,17 +120,17 @@ import cnuphys.bCNU.view.VirtualView;
 
 @SuppressWarnings("serial")
 public class Ced extends BaseMDIApplication implements PropertyChangeListener, MagneticFieldChangeListener {
-	
+
 	// a shared ping
 	private Ping _ping;
 
 	// the singleton
 	private static Ced _instance;
-	
-	//geometry variation
+
+	// geometry variation
 	private static String _geoVariation = "default";
-	
-	//ced release 
+
+	// ced release
 	private static final String _release = "build 1.4.71";
 
 	// used for one time inits
@@ -141,6 +141,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	// using 3D?
 	private static boolean _use3D = true;
+
+	// experimental version?
+	private static boolean _experimental;
 
 	// the coat java clasdir
 	private static File _clasDir;
@@ -185,14 +188,16 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private PCALView _pcalView;
 	private LogView _logView;
 	private ForwardView3D _forward3DView;
+	
+	private SwimmimgPlayground3D _swimming3DView;
 	private CentralView3D _central3DView;
 	private FTCalView3D _ftCal3DView;
 	private TOFView _tofView;
-	
-	//magfield testing views
-	private MagfieldView _magfieldView14;
-	private MagfieldView _magfieldView25;
-	private MagfieldView _magfieldView36;
+
+	// magfield testing views
+//	private MagfieldView _magfieldView14;
+//	private MagfieldView _magfieldView25;
+//	private MagfieldView _magfieldView36;
 
 	// sector views
 	private SectorView _sectorView14;
@@ -236,8 +241,8 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 */
 	private Ced(Object... keyVals) {
 		super(keyVals);
-		
-		//one second maintenance timer
+
+		// one second maintenance timer
 		_ping = new Ping(1000);
 
 		// histogram filler
@@ -268,9 +273,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		addComponentListener(cl);
 	}
-	
+
 	/**
 	 * Get the common Ping object
+	 * 
 	 * @return the ping object
 	 */
 	public Ping getPing() {
@@ -308,11 +314,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_virtualView.moveTo(bstHistoGrid, 15);
 		_virtualView.moveTo(pcalHistoGrid, 16);
 		_virtualView.moveTo(ecHistoGrid, 17);
-		
-		_virtualView.moveToStart(_magfieldView14, 18, VirtualView.UPPERLEFT);
-		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
-		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
 
+//		_virtualView.moveToStart(_magfieldView14, 18, VirtualView.UPPERLEFT);
+//		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
+//		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
 
 		_virtualView.moveTo(_allDCView, 3);
 		_virtualView.moveTo(_eventView, 6, VirtualView.CENTER);
@@ -321,9 +326,8 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// note no constraint means "center"
 		_virtualView.moveTo(_dcXyView, 7);
-		
-		_virtualView.moveTo(_rtpcView, 8);
 
+		_virtualView.moveTo(_rtpcView, 8);
 
 		_virtualView.moveTo(_pcalView, 4);
 		_virtualView.moveTo(_ecView, 5);
@@ -339,6 +343,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			_virtualView.moveTo(_forward3DView, 9, VirtualView.CENTER);
 			_virtualView.moveTo(_central3DView, 10, VirtualView.BOTTOMLEFT);
 			_virtualView.moveTo(_ftCal3DView, 10, VirtualView.BOTTOMRIGHT);
+			
+			if (isExperimental()) {
+				_virtualView.moveTo(_swimming3DView, 18, VirtualView.CENTER);
+			}
 		}
 
 		Log.getInstance().config("reset views on virtual dekstop");
@@ -352,10 +360,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// make sure noise listener is instantiated
 		NoiseManager.getInstance();
-		
+
 		// make sure Timed refresh manager is instantiated
 		TimedRefreshManager.getInstance();
-
 
 		// add an object that can respond to a "swim all MC" request.
 
@@ -400,7 +407,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
-		
+
 		// add an RTPC vie
 		_rtpcView = RTPCView.createRTPCView();
 
@@ -420,16 +427,20 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			_forward3DView = new ForwardView3D();
 			_central3DView = new CentralView3D();
 			_ftCal3DView = new FTCalView3D();
+			
+			if (isExperimental()) {
+				_swimming3DView = new SwimmimgPlayground3D();
+			}
 		}
 
 		// add logview
 		ViewManager.getInstance().getViewMenu().addSeparator();
 		// plot view
-		
-		_magfieldView14 = MagfieldView.createMagfieldView(DisplaySectors.SECTORS14);
-		_magfieldView25 = MagfieldView.createMagfieldView(DisplaySectors.SECTORS25);
-		_magfieldView36 = MagfieldView.createMagfieldView(DisplaySectors.SECTORS36);
-		
+
+//		_magfieldView14 = MagfieldView.createMagfieldView(DisplaySectors.SECTORS14);
+//		_magfieldView25 = MagfieldView.createMagfieldView(DisplaySectors.SECTORS25);
+//		_magfieldView36 = MagfieldView.createMagfieldView(DisplaySectors.SECTORS36);
+
 		_plotView = new PlotView();
 
 		_logView = new LogView();
@@ -1015,7 +1026,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 * @return the version string
 	 */
 	public static String versionString() {
-		return _release;
+		return _release + (_experimental ? " (Experimental)" : "");
 	}
 
 	@Override
@@ -1138,6 +1149,13 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		return _use3D;
 	}
 
+	/**
+	 * Is this an experimental version?
+	 * @return <code>true</code> if this version has experimental features
+	 */
+	public static boolean isExperimental() {
+		return _experimental;
+	}
 
 	/**
 	 * Get the parent frame
@@ -1147,9 +1165,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	public static JFrame getFrame() {
 		return _instance;
 	}
-	
+
 	/**
 	 * Get the COAT Java clasdir
+	 * 
 	 * @return the COAT Java clasdir
 	 */
 	public static File getCLASDir() {
@@ -1190,19 +1209,32 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 		}
 
+		clas12dir = cwd + "/../../../../../bCNU/coatjava";
+		_clasDir = new File(clas12dir);
+
+		if (_clasDir.exists() && _clasDir.isDirectory()) {
+			System.err.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.setProperty("CLAS12DIR", clas12dir);
+			Log.getInstance().config("CLAS12DIR: " + clas12dir);
+			return;
+		} else {
+			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+		}
+
 		throw (new IOException("Could not locate the coatjava directory."));
 	}
-	
+
 	/**
 	 * Get the geometry variation
+	 * 
 	 * @return the geometry variation
 	 */
 	public static String getGeometryVariation() {
 		return _geoVariation;
 	}
 
-	//data collectors need to be initialized before 
-	//any events come through
+	// data collectors need to be initialized before
+	// any events come through
 	private static void initDataCollectors() {
 		DC.getInstance();
 		AIDC.getInstance();
@@ -1241,7 +1273,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 */
 	public static void main(String[] arg) {
 		FastMath.setMathLib(FastMath.MathLib.SUPERFAST);
-		
+
 		String variation = System.getProperty("GEOVARIATION");
 		if (variation != null) {
 			_geoVariation = new String(variation);
@@ -1252,11 +1284,11 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// initialize the trigger manager
 		TriggerManager.getInstance();
-		
-		//initialize the filter manager
+
+		// initialize the filter manager
 		FilterManager.getInstance();
-		
-		//initialize CNF (Nuc Femtog) Manager
+
+		// initialize CNF (Nuc Femtog) Manager
 		CNFManager.getInstance();
 
 		// init the clas 12 dir wherev the json files are
@@ -1267,7 +1299,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		}
 
 		FileUtilities.setDefaultDir("data");
-		
+
 		// create a console log listener
 		// Log.getInstance().addLogListener(new ConsoleLogListener());
 
@@ -1302,11 +1334,13 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 						i++;
 						FileUtilities.setDefaultDir(arg[i]);
 					}
-				}
-				else if (arg[i].contains("NO3D")) {
+				} else if (arg[i].contains("NO3D")) {
 					_use3D = false;
 					System.err.println("Not using 3D");
-				} 
+				} else if (arg[i].contains("EXP")) {
+					_experimental = true;
+					System.err.println("Note: This is an experimental version");
+				}
 
 				i++;
 				done = (i >= len);
@@ -1337,7 +1371,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 				FilterManager.getInstance().setUpFilterMenu();
 				// initialize data columns
 //				DataManager.getInstance();
-				System.out.println("ced  " + _release + " is ready. Using geometry variation: [" + _geoVariation + "]");
+				System.out.println("ced  " + versionString() + " is ready. Using geometry variation: [" + _geoVariation + "]");
 			}
 
 		});

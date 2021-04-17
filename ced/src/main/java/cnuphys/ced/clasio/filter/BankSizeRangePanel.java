@@ -118,6 +118,7 @@ public class BankSizeRangePanel extends JPanel implements ActionListener {
 	/**
 	 * Set the bank name
 	 */
+	@Override
 	public void setName(String bname) {
 		_nameLabel.setText(bname == null ? NONE : bname);
 

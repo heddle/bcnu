@@ -10,7 +10,6 @@ import java.awt.geom.Area;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCCluster;
@@ -18,7 +17,6 @@ import cnuphys.ced.event.data.DCClusterList;
 import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DCReconHitList;
 import cnuphys.ced.frame.CedColors;
-import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.noise.NoiseManager;
 import cnuphys.snr.NoiseReductionParameters;
 import cnuphys.snr.SNRCluster;

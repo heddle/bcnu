@@ -23,7 +23,7 @@ public class FTOF3D extends DetectorItem3D {
 	 * @param panel3d the 3D panel owner
 	 * @param sector  the 1-based sector [1..6]
 	 */
-	public FTOF3D(CedPanel3D panel3d, int sector) {
+	public FTOF3D(PlainPanel3D panel3d, int sector) {
 		super(panel3d);
 		_sector = sector;
 

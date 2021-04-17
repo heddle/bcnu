@@ -22,7 +22,7 @@ public class PCALViewPlane3D extends DetectorItem3D {
 	// the triangle coordinates
 	private float _coords[];
 
-	public PCALViewPlane3D(CedPanel3D panel3D, int sector, int view) {
+	public PCALViewPlane3D(PlainPanel3D panel3D, int sector, int view) {
 		super(panel3D);
 		_sector = sector;
 		_view = view;

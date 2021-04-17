@@ -22,9 +22,9 @@ public abstract class DetectorItem3D extends Item3D {
 	// the event manager
 	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-	protected CedPanel3D _cedPanel3D;
+	protected PlainPanel3D _cedPanel3D;
 
-	public DetectorItem3D(CedPanel3D panel3D) {
+	public DetectorItem3D(PlainPanel3D panel3D) {
 		super(panel3D);
 		_cedPanel3D = panel3D;
 	}
@@ -69,7 +69,7 @@ public abstract class DetectorItem3D extends Item3D {
 	 * @return the alpha used for drawing detector outlines
 	 */
 	protected int getVolumeAlpha() {
-		return ((CedPanel3D) _panel3D).getVolumeAlpha();
+		return ((PlainPanel3D) _panel3D).getVolumeAlpha();
 	}
 
 	/**

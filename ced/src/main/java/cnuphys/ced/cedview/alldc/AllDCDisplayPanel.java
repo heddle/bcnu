@@ -76,6 +76,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 		case 0:
 			
 			component =  new JComponent() {
+				@Override
 				public void paintComponent(Graphics g) {
 					g.setColor(Color.red);
 					g.fillRect(0, 0, w, h);
@@ -89,6 +90,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			
 		case 1:
 			component =  new JComponent() {
+				@Override
 				public void paintComponent(Graphics g) {
 					Rectangle b = getBounds();
 					g.setColor(CedColors.NN_COLOR);
@@ -102,6 +104,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 		case 2:
 			component =  new JComponent() {
+				@Override
 				public void paintComponent(Graphics g) {
 					g.setColor(CedColors.HB_COLOR);
 					g.fillRect(0, 0, w, h);
@@ -114,6 +117,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 		case 3:
 			component =  new JComponent() {
+				@Override
 				public void paintComponent(Graphics g) {
 					Rectangle b = getBounds();
 					g.setColor(CedColors.TB_COLOR);
@@ -127,6 +131,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 		case 4:
 			component =  new JComponent() {
+				@Override
 				public void paintComponent(Graphics g) {
 					g.setColor(CedColors.AIHB_COLOR);
 					Graphics2D g2 = (Graphics2D)g;
@@ -145,6 +150,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 		case 5:
 			component =  new JComponent() {
+				@Override
 				public void paintComponent(Graphics g) {
 					Rectangle b = getBounds();
 					g.setColor(CedColors.AITB_COLOR);

@@ -2,6 +2,8 @@ package cnuphys.bCNU.component;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -12,6 +14,21 @@ public class LabeledTextField extends JPanel {
 	private JTextField _textField;
 	private JLabel _jLabel;
 
+	
+	/**
+	 * Create a labeled text field.
+	 * 
+	 * @param label  the label to serve as a prompt.
+	 * @param numcol the default number of columns in the text field.
+	 * @param font the font for prompt and text field
+	 */
+	public LabeledTextField(String label, int numcol, Font font) {
+		this(label, numcol);
+		_textField.setFont(font);
+		_jLabel.setFont(font);
+	}
+
+		
 	/**
 	 * Create a labeled text field.
 	 * 

@@ -7,7 +7,6 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundStyle;
-import cnuphys.lund.LundSupport;
 import cnuphys.swim.SwimMenu;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.Swimming;
@@ -18,9 +17,9 @@ import item3D.Item3D;
 
 public class TrajectoryDrawer3D extends Item3D {
 
-	private CedPanel3D _cedPanel3D;
+	private PlainPanel3D _cedPanel3D;
 
-	public TrajectoryDrawer3D(CedPanel3D panel3D) {
+	public TrajectoryDrawer3D(PlainPanel3D panel3D) {
 		super(panel3D);
 		_cedPanel3D = panel3D;
 	}

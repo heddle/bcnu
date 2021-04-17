@@ -35,7 +35,7 @@ public class CentralPanel3D extends CedPanel3D {
 	 */
 	public CentralPanel3D(CedView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist,
 			float zDist) {
-		super(view, angleX, angleY, angleZ, xDist, yDist, zDist, BGFEFAULT, BGFEFAULT, BGFEFAULT, _cbaLabels);
+		super(view, angleX, angleY, angleZ, xDist, yDist, zDist, _cbaLabels);
 	}
 
 	@Override

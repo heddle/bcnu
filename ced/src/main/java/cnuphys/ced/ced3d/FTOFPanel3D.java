@@ -25,7 +25,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 	 * @param sector  the sector 1..6
 	 * @param panelId the super layer [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
 	 */
-	public FTOFPanel3D(CedPanel3D panel3D, int sector, int panelId) {
+	public FTOFPanel3D(PlainPanel3D panel3D, int sector, int panelId) {
 		super(panel3D);
 		_sector = sector;
 		_panelId = panelId;

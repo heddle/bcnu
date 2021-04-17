@@ -3,14 +3,12 @@ package cnuphys.ced.cedview.allpcal;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.jlab.geom.prim.Point3D;
-import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.SymbolDraw;

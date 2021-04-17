@@ -5,7 +5,6 @@ import java.util.Vector;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.log.Log;
-import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;

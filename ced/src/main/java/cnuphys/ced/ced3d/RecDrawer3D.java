@@ -4,7 +4,6 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
-import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import com.jogamp.opengl.GLAutoDrawable;

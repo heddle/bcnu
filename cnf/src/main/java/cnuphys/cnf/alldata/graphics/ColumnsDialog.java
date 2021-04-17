@@ -34,7 +34,10 @@ public class ColumnsDialog extends JDialog implements ListSelectionListener {
 		
 		setLayout(new BorderLayout(4, 4));
 		setup();
-		setIconImage(ImageManager.cnuIcon.getImage());
+
+		if (ImageManager.cnuIcon != null) {
+			setIconImage(ImageManager.cnuIcon.getImage());
+		}
 
 		// close is like a cancel
 		WindowAdapter wa = new WindowAdapter() {

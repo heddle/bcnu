@@ -15,7 +15,7 @@ import cnuphys.bCNU.util.Fonts;
 public class AlphaSlider extends JPanel implements ChangeListener {
 
 	// owner panel
-	private final CedPanel3D _panel3D;
+	private final PlainPanel3D _panel3D;
 
 	// the slider
 	private JSlider _slider;
@@ -23,7 +23,7 @@ public class AlphaSlider extends JPanel implements ChangeListener {
 
 	private static final int _initVal = 24;
 
-	public AlphaSlider(CedPanel3D panel3D, String prompt) {
+	public AlphaSlider(PlainPanel3D panel3D, String prompt) {
 		_panel3D = panel3D;
 
 		setLayout(new FlowLayout(FlowLayout.LEFT, 4, 0));

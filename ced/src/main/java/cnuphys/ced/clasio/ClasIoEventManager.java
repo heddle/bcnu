@@ -3,7 +3,6 @@ package cnuphys.ced.clasio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -40,7 +39,6 @@ import cnuphys.ced.alldata.graphics.DefinitionManager;
 import cnuphys.ced.alldata.graphics.PlotDialog;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.filter.FilterManager;
-import cnuphys.ced.clasio.filter.IEventFilter;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.ECAL;
 import cnuphys.ced.event.data.PCAL;

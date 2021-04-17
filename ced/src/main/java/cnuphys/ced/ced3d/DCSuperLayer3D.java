@@ -32,7 +32,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 	 * @param sector     one based sector [1..6]
 	 * @param superLayer one based superlayer [1..6]
 	 */
-	public DCSuperLayer3D(CedPanel3D panel3D, int sector, int superLayer) {
+	public DCSuperLayer3D(PlainPanel3D panel3D, int sector, int superLayer) {
 		super(panel3D);
 		_sector = sector;
 		_superLayer = superLayer;

@@ -21,9 +21,6 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.frame.Ced;
-
 public class RunThroughDialog extends JDialog {
 
 	// why the dialog closed.

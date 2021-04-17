@@ -42,111 +42,114 @@ public class Cube extends Item3D {
 
 	@Override
 	public void draw(GLAutoDrawable drawable) {
-		GL2 gl = drawable.getGL().getGL2();
-
-		float xm = _xc - _halfLength;
-		float xp = _xc + _halfLength;
-		float ym = _yc - _halfLength;
-		float yp = _yc + _halfLength;
-		float zm = _zc - _halfLength;
-		float zp = _zc + _halfLength;
-
-		Support3D.setColor(gl, getFillColor());
-		gl.glBegin(GL2ES3.GL_QUADS);
-		gl.glVertex3f(xm, ym, zp);
-		gl.glVertex3f(xm, yp, zp);
-		gl.glVertex3f(xp, yp, zp);
-		gl.glVertex3f(xp, ym, zp);
-		gl.glEnd();
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		gl.glVertex3f(xm, ym, zm);
-		gl.glVertex3f(xm, yp, zm);
-		gl.glVertex3f(xp, yp, zm);
-		gl.glVertex3f(xp, ym, zm);
-		gl.glEnd();
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		gl.glVertex3f(xm, yp, zm);
-		gl.glVertex3f(xm, yp, zp);
-		gl.glVertex3f(xp, yp, zp);
-		gl.glVertex3f(xp, yp, zm);
-		gl.glEnd();
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		gl.glVertex3f(xm, ym, zm);
-		gl.glVertex3f(xm, ym, zp);
-		gl.glVertex3f(xp, ym, zp);
-		gl.glVertex3f(xp, ym, zm);
-		gl.glEnd();
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		gl.glVertex3f(xp, yp, zm);
-		gl.glVertex3f(xp, yp, zp);
-		gl.glVertex3f(xp, ym, zp);
-		gl.glVertex3f(xp, ym, zm);
-		gl.glEnd();
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		gl.glVertex3f(xm, yp, zm);
-		gl.glVertex3f(xm, yp, zp);
-		gl.glVertex3f(xm, ym, zp);
-		gl.glVertex3f(xm, ym, zm);
-		gl.glEnd();
+		float w = 2*_halfLength;
+		Support3D.drawRectangularSolid(drawable, _xc, _yc, _zc, w, w, w, getFillColor(), 1, _frame);
 		
-		if (_frame) {
-			Support3D.setColor(gl, Color.gray);
-
-			gl.glBegin(GL.GL_LINE_STRIP);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glVertex3f(xm, yp, zp);
-			gl.glVertex3f(xm, ym, zp);
-			gl.glVertex3f(xm, ym, zm);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glEnd();
-
-			
-			gl.glBegin(GL.GL_LINE_STRIP);
-			gl.glVertex3f(xm, ym, zm);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glVertex3f(xp, yp, zm);
-			gl.glVertex3f(xp, ym, zm);
-			gl.glVertex3f(xm, ym, zm);
-			gl.glEnd();
-		
-			
-			gl.glBegin(GL.GL_LINE_STRIP);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glVertex3f(xm, yp, zp);
-			gl.glVertex3f(xp, yp, zp);
-			gl.glVertex3f(xp, yp, zm);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glEnd();
-		
-			gl.glBegin(GL.GL_LINE_STRIP);
-			gl.glVertex3f(xm, ym, zm);
-			gl.glVertex3f(xm, ym, zp);
-			gl.glVertex3f(xp, ym, zp);
-			gl.glVertex3f(xp, ym, zm);
-			gl.glVertex3f(xm, ym, zm);
-			gl.glEnd();
-
-			gl.glBegin(GL.GL_LINE_STRIP);
-			gl.glVertex3f(xp, yp, zm);
-			gl.glVertex3f(xp, yp, zp);
-			gl.glVertex3f(xp, ym, zp);
-			gl.glVertex3f(xp, ym, zm);
-			gl.glVertex3f(xp, yp, zm);
-			gl.glEnd();
-
-			gl.glBegin(GL.GL_LINE_STRIP);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glVertex3f(xm, yp, zp);
-			gl.glVertex3f(xm, ym, zp);
-			gl.glVertex3f(xm, ym, zm);
-			gl.glVertex3f(xm, yp, zm);
-			gl.glEnd();
-		}
+//		GL2 gl = drawable.getGL().getGL2();
+//
+//		float xm = _xc - _halfLength;
+//		float xp = _xc + _halfLength;
+//		float ym = _yc - _halfLength;
+//		float yp = _yc + _halfLength;
+//		float zm = _zc - _halfLength;
+//		float zp = _zc + _halfLength;
+//
+//		Support3D.setColor(gl, getFillColor());
+//		gl.glBegin(GL2ES3.GL_QUADS);
+//		gl.glVertex3f(xm, ym, zp);
+//		gl.glVertex3f(xm, yp, zp);
+//		gl.glVertex3f(xp, yp, zp);
+//		gl.glVertex3f(xp, ym, zp);
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2ES3.GL_QUADS);
+//		gl.glVertex3f(xm, ym, zm);
+//		gl.glVertex3f(xm, yp, zm);
+//		gl.glVertex3f(xp, yp, zm);
+//		gl.glVertex3f(xp, ym, zm);
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2ES3.GL_QUADS);
+//		gl.glVertex3f(xm, yp, zm);
+//		gl.glVertex3f(xm, yp, zp);
+//		gl.glVertex3f(xp, yp, zp);
+//		gl.glVertex3f(xp, yp, zm);
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2ES3.GL_QUADS);
+//		gl.glVertex3f(xm, ym, zm);
+//		gl.glVertex3f(xm, ym, zp);
+//		gl.glVertex3f(xp, ym, zp);
+//		gl.glVertex3f(xp, ym, zm);
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2ES3.GL_QUADS);
+//		gl.glVertex3f(xp, yp, zm);
+//		gl.glVertex3f(xp, yp, zp);
+//		gl.glVertex3f(xp, ym, zp);
+//		gl.glVertex3f(xp, ym, zm);
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2ES3.GL_QUADS);
+//		gl.glVertex3f(xm, yp, zm);
+//		gl.glVertex3f(xm, yp, zp);
+//		gl.glVertex3f(xm, ym, zp);
+//		gl.glVertex3f(xm, ym, zm);
+//		gl.glEnd();
+//		
+//		if (_frame) {
+//			Support3D.setColor(gl, Color.gray);
+//
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glVertex3f(xm, yp, zp);
+//			gl.glVertex3f(xm, ym, zp);
+//			gl.glVertex3f(xm, ym, zm);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glEnd();
+//
+//			
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glVertex3f(xm, ym, zm);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glVertex3f(xp, yp, zm);
+//			gl.glVertex3f(xp, ym, zm);
+//			gl.glVertex3f(xm, ym, zm);
+//			gl.glEnd();
+//		
+//			
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glVertex3f(xm, yp, zp);
+//			gl.glVertex3f(xp, yp, zp);
+//			gl.glVertex3f(xp, yp, zm);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glEnd();
+//		
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glVertex3f(xm, ym, zm);
+//			gl.glVertex3f(xm, ym, zp);
+//			gl.glVertex3f(xp, ym, zp);
+//			gl.glVertex3f(xp, ym, zm);
+//			gl.glVertex3f(xm, ym, zm);
+//			gl.glEnd();
+//
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glVertex3f(xp, yp, zm);
+//			gl.glVertex3f(xp, yp, zp);
+//			gl.glVertex3f(xp, ym, zp);
+//			gl.glVertex3f(xp, ym, zm);
+//			gl.glVertex3f(xp, yp, zm);
+//			gl.glEnd();
+//
+//			gl.glBegin(GL.GL_LINE_STRIP);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glVertex3f(xm, yp, zp);
+//			gl.glVertex3f(xm, ym, zp);
+//			gl.glVertex3f(xm, ym, zm);
+//			gl.glVertex3f(xm, yp, zm);
+//			gl.glEnd();
+//		}
 
 	}
 

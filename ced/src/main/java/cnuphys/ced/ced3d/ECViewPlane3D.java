@@ -26,7 +26,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 	// the triangle coordinates
 	private float _coords[];
 
-	public ECViewPlane3D(CedPanel3D panel3D, int sector, int stack, int view) {
+	public ECViewPlane3D(PlainPanel3D panel3D, int sector, int stack, int view) {
 		super(panel3D);
 		_sector = sector;
 		_stack = stack;

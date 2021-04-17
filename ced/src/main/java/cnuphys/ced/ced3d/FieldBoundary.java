@@ -17,14 +17,14 @@ import item3D.Cylinder;
 
 public class FieldBoundary extends Cylinder implements MagneticFieldChangeListener {
 
-	private CedPanel3D _cedPanel;
+	private PlainPanel3D _panel3D;
 	private MagneticField _field;
 	private ColorScaleModel _model;
 
 	public FieldBoundary(Panel3D panel3D, MagneticField field, Color color) {
 		super(panel3D, getBoundaryData(field), color);
 		_field = field;
-		_cedPanel = (CedPanel3D) panel3D;
+		_panel3D = (PlainPanel3D) panel3D;
 		MagneticFields.getInstance().addMagneticFieldChangeListener(this);
 
 		if (_field instanceof Torus) {
@@ -80,6 +80,7 @@ public class FieldBoundary extends Cylinder implements MagneticFieldChangeListen
 		float radsq = radius * radius;
 
 		float step = 10; // cm
+		float step2 = step/2;
 		float x1 = -radius;
 		float y1 = -radius;
 		float z1 = zmin;
@@ -93,36 +94,38 @@ public class FieldBoundary extends Cylinder implements MagneticFieldChangeListen
 
 		float x = x1;
 
-		double bmax = -1;
-
 		while (x < (x2 + 0.001)) {
 			float y = y1;
-			while (y < (y2 + 0.001)) {
+			 while (y < (y2 + 0.001)) {
 
-				if ((x * x + y * y) < radsq) {
+			if ((x * x + y * y) < radsq) {
 
-					float z = z1;
-					while (z < (z2 + 0.001)) {
+				float z = z1;
+				while (z < (z2 + 0.001)) {
 
-						double bmag = probe.fieldMagnitude(x + dx, y + dy, z + dz) / 10;
+					double bmag = probe.fieldMagnitude(x + dx, y + dy, z + dz) / 10;
 
-						bmax = Math.max(bmax, bmag);
+					if (bmag > 0.1) {
 
 						Color color = _model.getColor(bmag);
 
-						int alpha = 24 + 5 * ((int) bmag);
+						int alpha = (int) (150*bmag);
+						if (alpha > 255) {
+							alpha = 255;
+						}
 
 						Color acolor = new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 
 						if (!_model.isTooSmall(color)) {
-//							System.out.println("draw at [" + x + ", " + y + ", " + z + "] color: " + color);
-							Support3D.drawPoint(drawable, x + dx, y + dy, z + dz, acolor, 20, true);
+						//	Support3D.drawRectangularSolid(drawable, x-step2, y-step2, z-step2, step, step, step, acolor, 1, false);
+							Support3D.drawPoint(drawable, x + dx, y + dy, z + dz, acolor, step, false);
 						}
-						z += step;
 					}
+					z += step;
 				}
-				y += step;
 			}
+				y += step;
+			 }
 			x += step;
 		}
 
@@ -131,7 +134,7 @@ public class FieldBoundary extends Cylinder implements MagneticFieldChangeListen
 	@Override
 	public void draw(GLAutoDrawable drawable) {
 
-		if (_cedPanel.showMapExtents()) {
+		if (_panel3D.showMapExtents()) {
 
 			drawMapPoints(drawable);
 //			super.draw(drawable);
@@ -142,7 +145,7 @@ public class FieldBoundary extends Cylinder implements MagneticFieldChangeListen
 	public void magneticFieldChanged() {
 		float data[] = getBoundaryData(_field);
 		reset(data[0], data[1], data[2], data[3], data[4], data[5]);
-		_cedPanel.refreshQueued();
+		_panel3D.refreshQueued();
 	}
 
 }

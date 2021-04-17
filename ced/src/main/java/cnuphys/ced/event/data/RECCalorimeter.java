@@ -3,7 +3,6 @@ package cnuphys.ced.event.data;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
 

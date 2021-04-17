@@ -1,19 +1,7 @@
 package cnuphys.ced.ced3d.view;
 
-import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import javax.swing.Box;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.bCNU.graphics.GraphicsUtilities;
-import cnuphys.bCNU.util.PrintUtilities;
-import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.ced3d.CedPanel3D;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IClasIoEventListener;
@@ -22,26 +10,14 @@ import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.lund.SwimTrajectoryListener;
 import cnuphys.swim.Swimming;
 
-public abstract class CedView3D extends BaseView
-		implements IClasIoEventListener, SwimTrajectoryListener, IAccumulationListener, ActionListener {
-
-	// the menu bar
-	private final JMenuBar _menuBar;
+public abstract class CedView3D extends PlainView3D
+		implements IClasIoEventListener, SwimTrajectoryListener, IAccumulationListener {
 
 	// the event manager
 	private final ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-	// the 3D panel
-	protected final CedPanel3D _panel3D;
-	
 	//for appending event number to the titile
 	private static final String evnumAppend = "  (Seq Event# ";
-
-
-	// menu
-	private JMenuItem _printMenuItem;
-	private JMenuItem _pngMenuItem;
-	private JMenuItem _refreshItem;
 
 	/**
 	 * Create a 3D view
@@ -55,48 +31,21 @@ public abstract class CedView3D extends BaseView
 	 * @param zDist
 	 */
 	public CedView3D(String title, float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist) {
-		super(PropertySupport.TITLE, title, PropertySupport.ICONIFIABLE, true, PropertySupport.MAXIMIZABLE, true,
-				PropertySupport.CLOSABLE, true, PropertySupport.RESIZABLE, true, PropertySupport.VISIBLE, true);
+		super(title, angleX, angleY, angleZ, xDist, yDist, zDist);
 
 		_eventManager.addClasIoEventListener(this, 2);
 
 		// listen for trajectory changes
 		Swimming.addSwimTrajectoryListener(this);
 
-		_menuBar = new JMenuBar();
-		setJMenuBar(_menuBar);
-		addMenus();
-
-		setLayout(new BorderLayout(1, 1));
-		_panel3D = make3DPanel(angleX, angleY, angleZ, xDist, yDist, zDist);
-
-		add(_panel3D, BorderLayout.CENTER);
-		add(Box.createHorizontalStrut(1), BorderLayout.WEST);
-		pack();
 		AccumulationManager.getInstance().addAccumulationListener(this);
 	}
 
 	// make the 3d panel
+	@Override
 	protected abstract CedPanel3D make3DPanel(float angleX, float angleY, float angleZ, float xDist, float yDist,
 			float zDist);
 
-	// add the menus
-	private void addMenus() {
-		JMenu actionMenu = new JMenu("ced3D");
-		_printMenuItem = new JMenuItem("Print...");
-		_printMenuItem.addActionListener(this);
-		actionMenu.add(_printMenuItem);
-
-		_pngMenuItem = new JMenuItem("Save as PNG...");
-		_pngMenuItem.addActionListener(this);
-		actionMenu.add(_pngMenuItem);
-
-		_refreshItem = new JMenuItem("Refresh");
-		_refreshItem.addActionListener(this);
-		actionMenu.add(_refreshItem);
-
-		_menuBar.add(actionMenu);
-	}
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
@@ -145,33 +94,7 @@ public abstract class CedView3D extends BaseView
 		}
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
 
-		Object source = e.getSource();
-		if (source == _printMenuItem) {
-			PrintUtilities.printComponent(_panel3D);
-		} else if (source == _pngMenuItem) {
-			GraphicsUtilities.saveAsPng(_panel3D);
-		} else if (source == _refreshItem) {
-			_panel3D.refresh();
-		}
-	}
-
-	@Override
-	public void focusGained(FocusEvent e) {
-		if (_panel3D != null) {
-			_panel3D.requestFocus();
-		}
-	}
-
-	@Override
-	public void refresh() {
-		if (_panel3D != null) {
-			_panel3D.refresh();
-		}
-	}
-	
 	/**
 	 * Fix the title of the view after an event arrives. The default is to append
 	 * the event number.
