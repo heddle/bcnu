@@ -238,7 +238,19 @@ public class Support3D {
 
 	}
 	
-	
+	/**
+	 * Draw a rectangular solid
+	 * @param drawable
+	 * @param xc
+	 * @param yc
+	 * @param zc
+	 * @param xw
+	 * @param yw
+	 * @param zw
+	 * @param color
+	 * @param lineWidth
+	 * @param frame
+	 */
 	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw, float zw, Color color, float lineWidth, boolean frame) {
 		GL2 gl = drawable.getGL().getGL2();
 

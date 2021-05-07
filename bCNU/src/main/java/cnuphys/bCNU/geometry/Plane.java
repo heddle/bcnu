@@ -10,11 +10,20 @@ package cnuphys.bCNU.geometry;
  */
 public class Plane {
 
-	// unit vector normal to plane
-	private Vector _norm;
 
-	// point on the pane
-	private Point _ro;
+	// unit vector normal to plane
+	public final Vector norm;
+
+	// point on the plane
+	public final Point p0;
+
+	// for the form ax + by + cz = d;
+	public final double a;
+	public final double b;
+	public final double c;
+	public final double d;
+
+	private double _denom = Double.NaN;
 
 	/**
 	 * Create a plane from a normal vector and a point on the plane
@@ -23,22 +32,75 @@ public class Plane {
 	 * @param p    a point in the plane
 	 * @return the plane that contains p and its normal is norm
 	 */
-	public Plane(Vector norm, Point p) {
+	public Plane(Vector anorm, Point p) {
 		// lets make it a unit vector
-		_norm = norm.unitVector();
-		_ro = new Point(p);
+		norm = anorm.unitVector();
+		p0 = new Point(p);
+		a = norm.x; // A
+		b = norm.y; // B
+		c = norm.z; // C
+		d = a * p0.x + b * p0.y + c * p0.z; // D
+	}
+	
+	/**
+	 * Create a plane from the normal vector in an array of doubles and
+	 * a point in the plane in an array, both (x, y, z)
+	 * @param norm the normal
+	 * @param point the point in the plane
+	 */
+	public Plane(double norm[], double point[]) {
+		
+		this(new Vector(norm[0], norm[1], norm[2]), 
+				new Point(point[0], point[1], point[2]));
 	}
 
 	/**
-	 * Get the constants A, B, C and D for the plane equation Ax + By + cZ = D
+	 * Distance from a point to the plane
 	 * 
-	 * @param abcd upon return, [A, B, C, D]
+	 * @param p the point in question
+	 * @return the distance to the plane
 	 */
-	public void getABCD(double abcd[]) {
-		abcd[0] = _norm.x; // A
-		abcd[1] = _norm.y; // B
-		abcd[2] = _norm.z; // C
-		abcd[3] = abcd[0] * _ro.x + abcd[1] * _ro.y + abcd[2] * _ro.z; // D
+	public double distance(Point p) {
+		return distance(p.x, p.y, p.z);
+	}
+
+	/**
+	 * Distance from a point to the plane
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param z the z coordinate
+	 * @return the distance to the plane
+	 */
+	public double distance(double x, double y, double z) {
+		return Math.abs(signedDistance(x, y, z));
+	}
+
+	/**
+	 * Signed distance from a point to the plane
+	 * 
+	 * @param p the point in question
+	 * @return the signed distance (indicates which side you are on where norm
+	 *         defines positive side)
+	 */
+	public double signedDistance(Point p) {
+		return signedDistance(p.x, p.y, p.z);
+	}
+
+	/**
+	 * Signed distance from a point to the plane
+	 * 
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @param z the z coordinate
+	 * @return the signed distance (indicates which side you are on where norm
+	 *         defines positive side)
+	 */
+	public double signedDistance(double x, double y, double z) {
+		if (Double.isNaN(_denom)) {
+			_denom = Math.sqrt(a * a + b * b + c * c);
+		}
+		return (a * x + b * y + c * z - d) / _denom;
 	}
 
 	/**
@@ -59,7 +121,7 @@ public class Plane {
 		// ro given point on plane
 		// n normal to plane
 
-		double ldotn = line.getDelP().dot(_norm);
+		double ldotn = line.getDelP().dot(norm);
 
 		// if ldotn is zero, the line is parallel to the plane
 
@@ -68,8 +130,8 @@ public class Plane {
 			return Double.NaN;
 		}
 
-		Point pmr = Point.difference(_ro, line.getP0());
-		double numer = pmr.dot(_norm);
+		Point pmr = Point.difference(p0, line.getP0());
+		double numer = pmr.dot(norm);
 
 		double t = numer / ldotn;
 		line.getP(t, intersection);
@@ -123,37 +185,37 @@ public class Plane {
 
 	@Override
 	public String toString() {
-		double abcd[] = new double[4];
-		getABCD(abcd);
-		String pstr = String.format("abcd = [%10.6G, %10.6G, %10.6G, %10.6G]", abcd[0], abcd[1], abcd[2], abcd[3]);
-		return pstr + "  p = " + _ro + " norm = " + _norm;
+		String pstr = String.format("abcd = [%10.6G, %10.6G, %10.6G, %10.6G]", a, b, c, d);
+		return pstr + "  p = " + p0 + " norm = " + norm;
 	}
 
+	/**
+	 * Obtain the line resulting from the intersection of this plane and another
+	 * plane
+	 * 
+	 * @param plane the other plane
+	 * @return line formed by the intersection
+	 */
 	public Line planeIntersection(Plane plane) {
-		Vector s = Vector.cross(_norm, plane._norm);
+		Vector s = Vector.cross(norm, plane.norm);
 
 		if (s.length() < Constants.TINY) {
 			return null;
 		}
 
-		// ned to find one point
+		// need to find one point
 		Point p0 = new Point();
-		double abcd0[] = new double[4];
-		double abcd1[] = new double[4];
-
-		this.getABCD(abcd0);
-		plane.getABCD(abcd1);
 
 		// try setting z to 0
-		double ans[] = solve(abcd0[0], abcd0[1], abcd0[3], abcd1[0], abcd1[1], abcd1[3]);
+		double ans[] = solve(a, b, d, plane.a, plane.b, plane.d);
 		if (ans != null) {
 			p0.set(ans[0], ans[1], 0);
 		} else {// try setting y to 0
-			ans = solve(abcd0[0], abcd0[2], abcd0[3], abcd1[0], abcd1[2], abcd1[3]);
+			ans = solve(a, c, d, plane.a, plane.c, plane.d);
 			if (ans != null) {
 				p0.set(ans[0], 0, ans[1]);
 			} else {// try setting x to 0
-				ans = solve(abcd0[1], abcd0[2], abcd0[3], abcd1[1], abcd1[2], abcd1[3]);
+				ans = solve(b, c, d, plane.b, plane.c, plane.d);
 				if (ans != null) {
 					p0.set(0, ans[0], ans[1]);
 				} else {// toast
@@ -174,7 +236,7 @@ public class Plane {
 	// by Cramer's rule
 	private double[] solve(double a1, double b1, double d1, double a2, double b2, double d2) {
 		double deter = a1 * b2 - a2 * b1;
-		if (Math.abs(deter) < Constants.TINY) {
+		if (tiny(deter)) {
 			return null;
 		}
 
@@ -187,8 +249,155 @@ public class Plane {
 		return ans;
 	}
 
+	// is the value essentially 0?
+	private boolean tiny(double v) {
+		return Math.abs(v) < Constants.TINY;
+	}
+
+	/**
+	 * Find some coordinates suitable for drawing the plane as a Quad in 3D
+	 * 
+	 * @param scale an arbitrary big number, a couple times bigger than the drawing
+	 *              extent
+	 * @return the jogl coordinates for drawing a Quad
+	 */
+	public float[] planeQuadCoordinates(float scale) {
+
+		int[] i1 = { -1, -1, 1, 1 };
+		int[] i2 = { -1, 1, 1, -1 };
+
+		if (tiny(a) && tiny(b) && tiny(c)) {
+			return null;
+		}
+
+		float[] coords = new float[12];
+
+		// another point in the plane
+		Point p1 = new Point();
+
+		if (tiny(b) && tiny(c)) { // constant x plane
+			float fx = (float) (d / a);
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float y = scale * i1[k];
+				float z = scale * i2[k];
+
+				coords[j] = fx;
+				coords[j + 1] = y;
+				coords[j + 2] = z;
+			}
+
+		} else if (tiny(a) && tiny(c)) { // constant y plane
+			float fy = (float) (d / b);
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float x = scale * i1[k];
+				float z = scale * i2[k];
+
+				coords[j] = x;
+				coords[j + 1] = fy;
+				coords[j + 2] = z;
+			}
+		} else if (tiny(a) && tiny(b)) { // constant z plane
+			float fz = (float) (d / c);
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float x = scale * i1[k];
+				float y = scale * i2[k];
+
+				coords[j] = x;
+				coords[j + 1] = y;
+				coords[j + 2] = fz;
+			}
+		}
+
+		else if (tiny(a)) {
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float x = scale * i1[k];
+				float y = scale * i2[k];
+				float z = (float) ((d - b * y) / c);
+
+				coords[j] = x;
+				coords[j + 1] = y;
+				coords[j + 2] = z;
+			}
+		}
+
+		else if (tiny(b)) {
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float x = scale * i1[k];
+				float y = scale * i2[k];
+				float z = (float) ((d - a * x) / c);
+
+				coords[j] = x;
+				coords[j + 1] = y;
+				coords[j + 2] = z;
+			}
+
+		}
+
+		else if (tiny(c)) {
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float x = scale * i1[k];
+				float z = scale * i2[k];
+				float y = (float) ((d - a * x) / b);
+
+				coords[j] = x;
+				coords[j + 1] = y;
+				coords[j + 2] = z;
+			}
+
+		}
+		
+		else { //general case, no small constants
+			for (int k = 0; k < 4; k++) {
+				int j = 3 * k;
+
+				float x = scale * i1[k];
+				float y = scale * i2[k];
+				float z = (float) ((d - a * x - b * y) / c);
+
+				coords[j] = x;
+				coords[j + 1] = y;
+				coords[j + 2] = z;
+			}
+		}
+
+		return coords;
+	}
+	
+	private static void valCheck(Plane p, float[] coords, int index) {
+		int j = 3*index;
+		double x = coords[j];
+		double y = coords[j+1];
+		double z = coords[j+2];
+		double val = p.a*x + p.b*y + p.c*z - p.d;
+		System.out.println(String.format("  coord check [%d] (%-9.5f, %-9.5f, %-9.5f) val = %-9.5f (should be 0)", 
+				index, x, y, z, val));
+	}
+
 	public static void main(String arg[]) {
 //		Plane p = constantPhiPlane(30);
+
+		Point zero = new Point(0, 0, 0);
+		Vector nn = new Vector(0, 0, 1);
+		Plane zp = new Plane(nn, zero);
+		
+		float coords[] = zp.planeQuadCoordinates(1000);
+		for (int i = 0; i < 4; i++) {
+			Plane.valCheck(zp, coords, i);
+		}
+		
+		System.out.println();
 
 		Point p = new Point(1, 1, 1);
 		Vector norm = new Vector(1, 1, 1);
@@ -197,9 +406,17 @@ public class Plane {
 
 		System.out.println("Init plane: " + plane);
 
+		System.out.println("should be 0: " + plane.distance(p));
+		
+		coords = plane.planeQuadCoordinates(1000);
+		for (int i = 0; i < 4; i++) {
+			Plane.valCheck(plane, coords, i);
+		}
+
 		Point po = new Point(2, 4, -7);
 		Point p1 = new Point(0, 2, 5);
 		Point intersection = new Point();
+		System.out.println("distance to ((2, 4, -7)): " + plane.distance(po));
 
 		Line line = new Line(po, p1);
 		double t = plane.lineIntersection(line, intersection);
@@ -211,10 +428,16 @@ public class Plane {
 		t = plane.lineIntersection(line, intersection);
 		System.out.println(" t = " + t + "   intersect: " + intersection + "  phicheck = "
 				+ Math.toDegrees(Math.atan2(intersection.y, intersection.x)));
+		
+		coords = plane.planeQuadCoordinates(1000);
+		for (int i = 0; i < 4; i++) {
+			Plane.valCheck(plane, coords, i);
+		}
+
 
 		// intersection of two phi planes should be z axis
 		Plane pp1 = constantPhiPlane(57);
-		Plane pp2 = constantPhiPlane(57);
+		Plane pp2 = constantPhiPlane(99);
 		System.out.println("Intersection of two phi planes: " + pp1.planeIntersection(pp2));
 	}
 

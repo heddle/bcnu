@@ -39,6 +39,7 @@ public class KeyAdapter3D implements KeyListener {
 	 * @param shifted whether it was shifted (e.g., capitalized)
 	 */
 	public static void handleVK(Panel3D panel3D, int keyCode, boolean shifted) {
+		
 
         if (keyCode == KeyEvent.VK_L) {
 			int factor = (shifted ? 3 : 1);

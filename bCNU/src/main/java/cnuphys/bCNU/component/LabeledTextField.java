@@ -23,9 +23,26 @@ public class LabeledTextField extends JPanel {
 	 * @param font the font for prompt and text field
 	 */
 	public LabeledTextField(String label, int numcol, Font font) {
+		this(label, null, numcol, font);
+	}
+	
+	/**
+	 * Create a labeled text field.
+	 * 
+	 * @param label  the label to serve as a prompt.
+	 * @param numcol the default number of columns in the text field.
+	 * @param font the font for prompt and text field
+	 */
+	public LabeledTextField(String label, String units, int numcol, Font font) {
 		this(label, numcol);
 		_textField.setFont(font);
 		_jLabel.setFont(font);
+		
+		if (units != null) {
+			JLabel unitLabel = new JLabel(units);
+			unitLabel.setFont(font);
+			add(unitLabel);
+		}
 	}
 
 		
@@ -44,6 +61,12 @@ public class LabeledTextField extends JPanel {
 		add(_textField);
 	}
 	
+	/**
+	 * A Labeleled text field with the label given a fixed width to make things line up
+	 * @param label the label
+	 * @param labelWidth the preferred width
+	 * @param numcol the number of columns
+	 */
 	public LabeledTextField(String label, int labelWidth, int numcol) {
 		this(label, numcol);
 		
@@ -77,5 +100,19 @@ public class LabeledTextField extends JPanel {
 	 */
 	public JTextField getTextField() {
 		return _textField;
+	}
+	
+
+	/**
+	 * Get the prompt label
+	 * @return the prompt label
+	 */
+	public JLabel getPrompt() {
+		return _jLabel;
+	}
+	
+	@Override
+	public void setEnabled(boolean enabled) {
+		_textField.setEnabled(enabled);
 	}
 }

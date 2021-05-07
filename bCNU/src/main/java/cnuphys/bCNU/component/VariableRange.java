@@ -38,10 +38,14 @@ public class VariableRange extends JPanel {
 		FontMetrics fm = this.getFontMetrics(font);
 		_measureWidth = Math.max(20, fm.stringWidth(measureString));
 		
-		add(createPrompt(prompt));
+		add(createPrompt(prompt, font));
 		
 		_minValue = new JTextField(valStr(minVal), 7);
 		_maxValue = new JTextField(valStr(maxVal), 7);
+		
+		_minValue.setFont(font);
+		_maxValue.setFont(font);
+
 		
 		add (_minValue);
 		add (makeLabel(" to ", font));
@@ -51,7 +55,7 @@ public class VariableRange extends JPanel {
 	}
 	
 	//create the prompt as wide as the measure width
-	private JLabel createPrompt(String prompt) {
+	private JLabel createPrompt(String prompt, Font font) {
 		JLabel label;
 		
 		label = new JLabel(prompt, JLabel.RIGHT) {
@@ -64,6 +68,7 @@ public class VariableRange extends JPanel {
 			}
 		};
 		
+		label.setFont(font);
 		
 		return label;
 	}

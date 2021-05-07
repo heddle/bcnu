@@ -1,37 +1,141 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Random;
 
-import javax.swing.BoxLayout;
+import javax.swing.Box;
+import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.SwingConstants;
 
+import cnuphys.adaptiveSwim.AdaptiveSwimException;
+import cnuphys.adaptiveSwim.AdaptiveSwimResult;
+import cnuphys.adaptiveSwim.AdaptiveSwimmer;
+import cnuphys.adaptiveSwim.geometry.Cylinder;
+import cnuphys.adaptiveSwim.geometry.Plane;
 import cnuphys.bCNU.component.LabeledTextField;
 import cnuphys.bCNU.component.VariableRange;
+import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
+import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
+import cnuphys.magfield.MagneticFieldChangeListener;
+import cnuphys.magfield.MagneticFields;
 
-public class SwimmerControlPanel extends JPanel implements ActionListener {
+public class SwimmerControlPanel extends JPanel implements ActionListener, MagneticFieldChangeListener {
 	
-	private Font _font = Fonts.defaultFont;
+	public enum SWIM_ALGORITHM {STANDARD, FIXEDZ, FIXEDRHO, TOPLANE, TOCYLINDER}
 	
-	//the ranges
-	private VariableRange _pRange;
-	private VariableRange _xoRange;
-	private VariableRange _yoRange;
-	private VariableRange _zoRange;
-	private VariableRange _thetaRange;
-	private VariableRange _phiRange;
+	public enum SWIMMER {OLD, NEW}
 	
+	public enum CHARGE {POSITIVE, NEGATIVE, RANDOM}
+	
+	public enum SHOW {SUCCESSES, FAILURES, ALL}
+	
+	//which swim algorithm (stopper)
+	private SWIM_ALGORITHM _algorithm = SWIM_ALGORITHM.FIXEDRHO;
+	
+	//which swimmer
+	private SWIMMER _whichSwimmer = SWIMMER.NEW;
+	
+	//how charge is determined
+	private CHARGE _charge = CHARGE.RANDOM;
+	
+	//which tracks do we show
+	private static SHOW _show = SHOW.ALL;
+	
+	//common font
+	public static Font swimFont = Fonts.mediumFont;
+	
+	//swim results
+	public static ArrayList<AdaptiveSwimResult> _swimResults = new ArrayList<>();
+	
+	//algorithm selection
+	private JRadioButton _standardRB;
+	private JRadioButton _fixedZRB;
+	private JRadioButton _fixedRhoRB;
+	private JRadioButton _toPlaneRB;
+	private JRadioButton _toCylinderRB;
+	
+	//swimmer selection
+	private JRadioButton _oldSwimmerRB;
+	private JRadioButton _newSwimmerRB;
+	
+	//charge choices
+	private JRadioButton _positiveChargeRB;
+	private JRadioButton _negativeChargeRB;
+	private JRadioButton _randomChargeRB;
+	
+	//what to show
+	private JRadioButton _sucessesRB;
+	private JRadioButton _failuresRB;
+	private JRadioButton _allRB;
+	
+	//panel widgets for selecting a plane and cylinder
+	private PlanePanel _planePanel;
+	private CylinderPanel _cylinderPanel;
+	
+	//the ranges. Order = p, xo, yo, zo, theta, phi
+	private VariableRange[] _ranges = new VariableRange[6];
+	
+	//labels for ranges
+	private String[] _rangePrompts = {"p from",
+			"x" + UnicodeSupport.SUBZERO + " from", 
+			"y" + UnicodeSupport.SUBZERO + " from", 
+			"z" + UnicodeSupport.SUBZERO + " from", 
+			UnicodeSupport.SMALL_THETA + " from", 
+			UnicodeSupport.SMALL_PHI + " from"};
+	private String[] _rangeUnits = {"GeV/c", "cm", "cm", "cm", "deg", "deg"};
+	
+	//the min and max for the ranges
+	private double[] _rangeMin = {1, 0, 0, 0, 20, -180};
+	private double[] _rangeMax = {10, 0, 0, 0, 50, 180};
+		
 	//number to swim
 	private LabeledTextField _swimCount;
 	private int _lastGoodSwimCount = 100;
+	
+	//random seed
+	private LabeledTextField _randomSeed;
+	private long _lastRandomSeed = 0;
+	
+	//swim to accuracy in microns
+	private LabeledTextField _accuracy;
+	private double _lastAccuracy = 10;
+	
+	//max path length cm
+	private LabeledTextField _sMax;
+	private double _lastSmax = 800; //cm
+	
+	//z cutoff cm
+	private LabeledTextField _fixedZ;
+	private double _lastFixedZ = 500; //cm
+	
+	// rho cutoff cm
+	private LabeledTextField _fixedRho;
+	private double _lastFixedRho = 30; //cm
+
+		
+	//shared random number generator
+	private Random _rand = new Random();
+
+	//parent view
+	private SwimmimgPlayground3D _view;
+	
+	//parent panel
+	private SwimmerPanel3D _panel3D;
 	
 	//the swim button
 	private JButton _swimButton;
@@ -39,40 +143,101 @@ public class SwimmerControlPanel extends JPanel implements ActionListener {
 	//clear trajectories button
 	private JButton _clearButton;
 	
+	//mag field description label
+	private JLabel _magFieldLabel;
+
+
+	
 	//for the measured string to get them to align
 	private String _measureString = "XYZ from";
 	
 	private static final int MINWIDTH = 300;
 
-	public SwimmerControlPanel() {
-		setLayout(new BorderLayout(6, 8));
-		setBorder(new CommonBorder("Swimmer Test Controls"));
+	/**
+	 * The control panel for the swim tester 3D view
+	 */
+	public SwimmerControlPanel(SwimmimgPlayground3D view, SwimmerPanel3D panel3D) {
+		_view = view;
+		_panel3D = panel3D;
+		setLayout(new BorderLayout(6, 4));
 		addNorth();
 		addCenter();
 		addSouth();
-		
+		fixState();
+		MagneticFields.getInstance().addMagneticFieldChangeListener(this);
 	}
 	
 	//add the north component
 	private void addNorth() {
 		JPanel np = new JPanel();
-		np.setLayout(new BoxLayout(np, BoxLayout.PAGE_AXIS));
+		np.setLayout(new VerticalFlowLayout());
+		
+		_magFieldLabel = new JLabel("Magnetic Field Configuration");
+		_magFieldLabel.setFont(Fonts.mediumBoldFont);
+		_magFieldLabel.setForeground(Color.red);
+
+		np.add(_magFieldLabel);
+		np.add(Box.createVerticalStrut(4));
+		setMagLabel();
+
+		
+		FontMetrics fm = getFontMetrics(swimFont);
+		int width = fm.stringWidth(" Random number seed:");
 		
 		//how many to swim
-		_swimCount = new LabeledTextField("Number of swims:", 6, _font);
-		_swimCount.setText("" + _lastGoodSwimCount);
-		np.add(_swimCount);
-
+		_swimCount = createTextField("Number of swims:", null, "" + _lastGoodSwimCount, width, np);
+		
+		//random seed
+		_randomSeed = createTextField("Random number seed:", null, "" + _lastRandomSeed, width, np);
+		
 		add(np, BorderLayout.NORTH);
 	}
+	
+	//convenience method to create a labeled text field
+	private LabeledTextField createTextField(String prompt, String units, String defaultStr, int width, JPanel panel) {
+		LabeledTextField ltf = new LabeledTextField(prompt, units, 7, swimFont);
+		ltf.setText(defaultStr);
+		panel.add(ltf);
+		
+		JLabel plab = ltf.getPrompt();
+		plab.setHorizontalAlignment(SwingConstants.RIGHT);
+		
+		Dimension d = plab.getPreferredSize();
+		d.width = width;
+		plab.setPreferredSize(d);
+		
+		return ltf;
+	}
+	
 
 	//add the center component
 	private void addCenter() {
 		JPanel cp = new JPanel();
-		cp.setLayout(new BoxLayout(cp, BoxLayout.PAGE_AXIS));
+		cp.setLayout(new BorderLayout(6, 4));
 		
-		//add the ranges
-		addRanges(cp);
+		
+		//add the algorithm radio button panel
+		cp.add(getAlgRBPanel(), BorderLayout.CENTER);
+		
+		//add the range panel
+		cp.add(getRangePanel(), BorderLayout.NORTH);
+
+		
+		//add the algorithm parameter panel
+		//and the plane and cylinder panels
+		JPanel sp = new JPanel();
+		sp.setLayout(new VerticalFlowLayout());
+		
+		_planePanel = new PlanePanel();
+		_cylinderPanel = new CylinderPanel();
+
+		
+		sp.add(_planePanel);
+		sp.add(_cylinderPanel);
+		sp.add(getAlgParamPanel());
+		
+		cp.add(sp, BorderLayout.SOUTH);
+
 		
 		add(cp, BorderLayout.CENTER);
 	}
@@ -101,45 +266,305 @@ public class SwimmerControlPanel extends JPanel implements ActionListener {
 	}
 	
 	/**
+	 * Get the cutoff accuracy
+	 * @return the cutoff accuracy in microns
+	 */
+	public double getAccuracy() {
+		_lastAccuracy = getGoodValue(_accuracy, _lastAccuracy);
+		return _lastAccuracy;
+	}
+	
+	/**
+	 * Get fixed z cutoff
+	 * @return the fixed z cutoff in cm
+	 */
+	public double getFixedZ() {
+		_lastFixedZ = getGoodValue(_fixedZ, _lastFixedZ);
+		return _lastFixedZ;
+	}
+	
+	/**
+	 * Get fixed rho cutoff
+	 * @return the fized rho in cm
+	 */
+	public double getFixedRho() {
+		_lastFixedRho = getGoodValue(_fixedRho, _lastFixedRho);
+		return _lastFixedRho;
+	}
+	
+	/**
+	 * Get the max path length
+	 * @return max path length in cm
+	 */
+	public double getSmax() {
+		_lastSmax = getGoodValue(_sMax, _lastSmax);
+		return _lastSmax;
+	}
+
+	//convenience method to get a good value or use the last good value
+	private double getGoodValue(LabeledTextField ltf, double lastVal) {
+		double val;
+		
+		try {
+			val = Double.parseDouble(ltf.getText());
+		} catch (Exception e) {
+			val = lastVal;
+			ltf.setText(valStr(val));
+		}
+
+		return val;
+
+	}
+	
+	
+	//convenience method for a string rep of a double
+	private String valStr(double val) {
+		String s =  String.format("%-8.3f", val);
+		return s.trim();
+	}
+	
+	/**
 	 * Get how many swims we will do
+	 * 
 	 * @return how many swims
 	 */
 	public int getSwimCount() {
-		
+
 		int count;
-		
+
 		try {
 			count = Integer.parseInt(_swimCount.getText());
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			count = _lastGoodSwimCount;
 			_swimCount.setText("" + count);
 		}
-		
+
+		_lastGoodSwimCount = count;
 		return count;
 	}
-	
-	//add the ranges
-	private void addRanges(JPanel panel) {
-		JPanel p = new JPanel();
-		p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
-		
-		// add the ranges
-		_pRange = createRange("p from", "GeV/c", p, 1, 10);
-		_xoRange = createRange("x" + UnicodeSupport.SUBZERO + " from", "cm", p, 0, 0);
-		_yoRange = createRange("y" + UnicodeSupport.SUBZERO + " from", "cm", p, 0, 0);
-		_zoRange = createRange("z" + UnicodeSupport.SUBZERO + " from", "cm", p, 0, 0);
-		_thetaRange = createRange(UnicodeSupport.SMALL_THETA + " from", "deg", p, 20, 50);
-		_phiRange = createRange(UnicodeSupport.SMALL_PHI + " from", "deg", p, -180, 180);
 
-		panel.add(p);
+	/**
+	 * Get the random number generator
+	 * 
+	 * @return the random number generator
+	 */
+	public Random getRand() {
+
+		long seed;
 		
+		try {
+			seed = Long.parseLong(_randomSeed.getText());
+			if (seed < 1) {
+				seed = 0;
+			}
+		} catch (Exception e) {
+			seed = _lastRandomSeed;
+			_randomSeed.setText("" + seed);
+		}
+		
+		if (seed != _lastRandomSeed) {
+			if (seed  == 0) {
+				_rand = new Random();
+			}
+			else {
+				_rand = new Random(seed);
+			}
+		}
+
+		_lastRandomSeed = seed;
+		return _rand;
 	}
 	
-	//create a variable range component
-	private VariableRange createRange(String prompt, String units, JPanel p, double minVal, double maxVal) {
+	
+	//get the variable range panel
+	private JPanel getRangePanel() {
 		
-		VariableRange vr = new VariableRange(prompt, units, _measureString, _font, minVal, maxVal);
+		JPanel p = new JPanel();
+		p.setLayout(new VerticalFlowLayout());
+		
+		for (int i = 0; i < 6; i++) {
+			_ranges[i] = createRange(_rangePrompts[i], _rangeUnits[i], _rangeMin[i], _rangeMax[i], p);
+		}
+		
+		p.setBorder(new CommonBorder("Ranges for randomized variables"));
+
+		return p;
+	}
+	
+	//get the algorithm radio button panel
+	private JPanel getAlgRBPanel() {
+		JPanel p = new JPanel();
+		p.setLayout(new VerticalFlowLayout());
+
+
+		ButtonGroup bg = new ButtonGroup();
+		_standardRB   = createRadioButton("Standard swim to sMax", _algorithm == SWIM_ALGORITHM.STANDARD, bg, p);
+		_fixedZRB     = createRadioButton("Swim to a fixed z", _algorithm == SWIM_ALGORITHM.FIXEDZ, bg, p);
+		_fixedRhoRB   = createRadioButton("Swim to a fixed " + UnicodeSupport.SMALL_RHO, _algorithm == SWIM_ALGORITHM.FIXEDRHO, bg, p);
+		_toPlaneRB    = createRadioButton("Swim to a plane", _algorithm == SWIM_ALGORITHM.TOPLANE, bg, p);
+		_toCylinderRB = createRadioButton("Swim to a cylinder", _algorithm == SWIM_ALGORITHM.TOCYLINDER, bg, p);
+		
+		p.setBorder(new CommonBorder("Swimming stopping algorithm"));
+		return p;
+	}
+	
+	//get the algorithm radio button panel
+	private JPanel getAlgParamPanel() {
+		JPanel p = new JPanel();
+        p.setLayout(new BorderLayout(2, 4));
+		
+        p.add(cutoffPanel(), BorderLayout.CENTER);
+        p.add(getWhichSwimmerPanel(), BorderLayout.NORTH);
+        
+        JPanel sp = new JPanel();
+        sp.setLayout(new VerticalFlowLayout());
+        
+        sp.add(getChargePanel());
+        sp.add(getShowPanel());
+        
+       
+        p.add(sp, BorderLayout.SOUTH);
+		
+		p.setBorder(new CommonBorder("Stopping algorithm parameters"));
+		return p;
+	}
+	
+	
+	//chose the swimmer old or new
+	private JPanel getWhichSwimmerPanel() {
+		JPanel p = new JPanel();
+		p.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 0));
+		
+		JLabel lab = new JLabel("Swimmer: ");
+		lab.setFont(swimFont);
+		p.add(lab);
+		
+		ButtonGroup bg = new ButtonGroup();
+		_oldSwimmerRB   = createRadioButton("old", _whichSwimmer == SWIMMER.OLD, bg, p);
+		
+		//for now, disable old swimmer
+		_oldSwimmerRB.setEnabled(false);
+		
+		_newSwimmerRB   = createRadioButton("new", _whichSwimmer == SWIMMER.NEW, bg, p);
+		return p;
+	}
+	
+	/**
+	 * Test of whether a trajectory should be shown
+	 * @param result the swimmer result
+	 * @return
+	 */
+	public static boolean showTrajectory(AdaptiveSwimResult result) {
+		if (result == null) {
+			return false;
+		}
+		
+		
+		if (_show == SHOW.ALL) {
+			return true;
+		}
+		
+		int status = result.getStatus();
+		
+		if ((status == 0) && (_show == SHOW.SUCCESSES)) {
+			return true;
+		}
+		if ((status != 0) && (_show == SHOW.FAILURES)) {
+			return true;
+		}
+
+		
+		
+		return false;
+	}
+	
+
+	//what tracks are shown
+	private JPanel getShowPanel() {
+		JPanel p = new JPanel();
+		p.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 0));
+		
+		JLabel lab = new JLabel("Show: ");
+		lab.setFont(swimFont);
+		p.add(lab);
+		
+		ButtonGroup bg = new ButtonGroup();
+		_sucessesRB   = createRadioButton("Successes", _show == SHOW.SUCCESSES, bg, p);
+		_failuresRB   = createRadioButton("Failures", _show == SHOW.FAILURES, bg, p);
+		_allRB   = createRadioButton("All", _show == SHOW.ALL, bg, p);
+		
+		return p;
+	}
+
+
+	//how charge is selected
+	private JPanel getChargePanel() {
+		JPanel p = new JPanel();
+		p.setLayout(new FlowLayout(FlowLayout.LEFT, 6, 0));
+		
+		JLabel lab = new JLabel("Charge: ");
+		lab.setFont(swimFont);
+		p.add(lab);
+		
+		ButtonGroup bg = new ButtonGroup();
+		_positiveChargeRB   = createRadioButton("+ only", _charge == CHARGE.POSITIVE, bg, p);
+		_negativeChargeRB   = createRadioButton("- only", _charge == CHARGE.NEGATIVE, bg, p);
+		_randomChargeRB   = createRadioButton("Random", _charge == CHARGE.RANDOM, bg, p);
+
+		
+		return p;
+	}
+	
+	//algorithm cutoffs
+	private JPanel cutoffPanel() {
+		JPanel p = new JPanel();
+		p.setLayout(new VerticalFlowLayout());
+
+		FontMetrics fm = getFontMetrics(swimFont);
+		int width = fm.stringWidth("\"Swim to\" accuracy:");
+
+		//accuracy
+		_accuracy = createTextField("\"swim to\" accuracy:", UnicodeSupport.SMALL_MU + "m", valStr(_lastAccuracy), width, p);
+
+		//max path length
+		_sMax = createTextField("Max path length:", "cm", valStr(_lastSmax), width, p);
+		
+		//fixed z
+		_fixedZ = createTextField("Fixed z cutoff:", "cm", valStr(_lastFixedZ), width, p);
+
+		//fixed rho
+		_fixedRho = createTextField("Fixed " + UnicodeSupport.SMALL_RHO + " cutoff:", "cm", valStr(_lastFixedRho), width, p);
+
+		return p;
+	}
+	
+	//create a radio button
+	private JRadioButton createRadioButton(String prompt, boolean selected, ButtonGroup bg, JPanel p) {
+		JRadioButton rb;
+		rb = new JRadioButton(prompt, selected);
+		rb.setFont(swimFont);
+		bg.add(rb);
+		rb.addActionListener(this);
+		
+		p.add(rb);
+		return rb;
+	}
+	
+	//fix the state of the GUI
+	private void fixState() {
+		_accuracy.setEnabled(_algorithm != SWIM_ALGORITHM.STANDARD);
+		_fixedZ.setEnabled(_algorithm == SWIM_ALGORITHM.FIXEDZ);
+		_fixedRho.setEnabled(_algorithm == SWIM_ALGORITHM.FIXEDRHO);
+		
+		_planePanel.setEnabled(_algorithm == SWIM_ALGORITHM.TOPLANE);
+		_cylinderPanel.setEnabled(_algorithm == SWIM_ALGORITHM.TOCYLINDER);
+	}
+
+	
+	//create a variable range component
+	private VariableRange createRange(String prompt, String units, double minVal, double maxVal, JPanel p) {
+		
+		VariableRange vr = new VariableRange(prompt, units, _measureString, swimFont, minVal, maxVal);
 		p.add(vr);
 		return vr;
 		
@@ -148,11 +573,13 @@ public class SwimmerControlPanel extends JPanel implements ActionListener {
 	//convenience method to create a button with "this" as the action listener
 	private JButton createButton(String label, JPanel p) {
 		JButton button = new JButton(label);
-		button.setFont(_font);
+		button.setFont(swimFont);
 		button.addActionListener(this);
 		p.add(button);
 		return button;
 	}
+	
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -164,17 +591,252 @@ public class SwimmerControlPanel extends JPanel implements ActionListener {
 		else if (source == _swimButton) {
 			handleSwim();
 		}
-		
+		else if (source == _standardRB) {
+			_algorithm = SWIM_ALGORITHM.STANDARD;
+		}
+		else if (source == _fixedZRB) {
+			_algorithm = SWIM_ALGORITHM.FIXEDZ;
+		}
+		else if (source == _fixedRhoRB) {
+			_algorithm = SWIM_ALGORITHM.FIXEDRHO;
+		}
+		else if (source == _toPlaneRB) {
+			_algorithm = SWIM_ALGORITHM.TOPLANE;
+		}
+		else if (source == _toCylinderRB) {
+			_algorithm = SWIM_ALGORITHM.TOCYLINDER;
+		}
+		else if (source == _oldSwimmerRB) {
+			_whichSwimmer = SWIMMER.OLD;
+		}
+		else if (source == _newSwimmerRB) {
+			_whichSwimmer = SWIMMER.NEW;
+		}
+		else if (source == _positiveChargeRB) {
+			_charge = CHARGE.POSITIVE;
+		}
+		else if (source == _negativeChargeRB) {
+			_charge = CHARGE.NEGATIVE;
+		}
+		else if (source == _randomChargeRB) {
+			_charge = CHARGE.RANDOM;
+		}
+		else if (source == _sucessesRB) {
+			_show = SHOW.SUCCESSES;
+			_view.refresh();
+		}
+		else if (source == _failuresRB) {
+			_show = SHOW.FAILURES;
+			_view.refresh();
+		}
+		else if (source == _allRB) {
+			_show = SHOW.ALL;
+			_view.refresh();
+		}
+
+
+
+//		private JRadioButton _sucessesRB;
+//		private JRadioButton _failuresRB;
+//		private JRadioButton _allRB;
+
+		fixState();
+	}
+	
+	//convenience method to get the charge for the next swim
+	private int getCharge() {
+		if (_charge == CHARGE.NEGATIVE) {
+			return -1;
+		}
+		else if (_charge == CHARGE.NEGATIVE) {
+			return 1;
+		}
+		else {
+			return (_rand.nextDouble() < 0.5) ? -1 : 1;
+		}
+
 	}
 	
 	//handle clear trajectories
 	private void handleClear() {
-		System.err.println("hit clear");
+		_swimResults.clear();
+		_view.refresh();
+	}
+	
+	/**
+	 * Get the current collection of swim results
+	 * @return the current collection of swim results
+	 */
+	public static ArrayList<AdaptiveSwimResult> getSwimResults() {
+		return _swimResults;
+	}
+	
+	//handle generation of swim trajectories
+	private void handleSwim() {
+		
+		//set the visual aid display item
+		setDisplayItem();
+				
+		if (_whichSwimmer == SWIMMER.OLD) {
+			oldSwim();
+		}
+		else { //new swimmer
+			newSwim();
+		}
+		
+		_view.refresh();
+	}
+	
+	//swim using the old swimmer
+	private void oldSwim() {
+		
+	}
+	
+	//swim using the new swimmer
+	private void newSwim() {
+		
+		//convert lengths to meters
+		double sMax = getSmax()/10;
+		double accuracy = getAccuracy()*1e-6;
+	    double stepSize = 5e-4; // 500 microns
+		double eps = 1.0e-6;
+		
+		AdaptiveSwimmer adaptiveSwimmer = new AdaptiveSwimmer();
+
+
+		for (int i = 0; i < getSwimCount(); i++) {
+			
+			AdaptiveSwimResult result = new AdaptiveSwimResult(true);
+
+			int q = getCharge();
+			double p = _ranges[0].nextRandom();
+			double xo = _ranges[1].nextRandom()/100; //m
+			double yo = _ranges[2].nextRandom()/100; //m
+			double zo = _ranges[3].nextRandom()/100; //m
+			double theta = _ranges[4].nextRandom();
+			double phi = _ranges[5].nextRandom();
+			
+			switch(_algorithm) {
+			case STANDARD:
+				break;
+				
+			case FIXEDZ:
+				double z = getFixedZ();  //rho in cm
+				z /= 100; //convert to m
+				try {
+					adaptiveSwimmer.swimZ(q, xo, yo, zo, p, theta, phi, z, accuracy, sMax, stepSize, eps, result);
+				} catch (AdaptiveSwimException e) {
+					e.printStackTrace();
+				}
+
+				break;
+				
+			case FIXEDRHO:
+				
+				double rho = getFixedRho();  //rho in cm
+				rho /= 100; //convert to m
+				try {
+					adaptiveSwimmer.swimRho(q, xo, yo, zo, p, theta, phi, rho, accuracy, sMax, stepSize, eps, result);
+				} catch (AdaptiveSwimException e) {
+					e.printStackTrace();
+				}
+				
+				
+//				String rs = String.format("Final rho: %-9.5f cm   status: %d", result.getFinalRho()*10, result.getStatus());
+//				System.err.println(rs);	
+				break;
+
+			case TOPLANE:
+				double norm[] = _planePanel.getNormal();
+				double point[] = _planePanel.getPoint();
+				
+				double pntMeter[] = new double[3];
+				
+				//point has to be converted cm to m
+				//norm in arbitrary units
+				
+				for (int k = 0; k < 3; k++) {
+					pntMeter[k] = point[k]/100;
+				}
+				
+				Plane targetPlane = new Plane(norm, pntMeter);
+				try {
+					adaptiveSwimmer.swimPlane(q, xo, yo, zo, p, theta, phi, targetPlane, accuracy, sMax, stepSize, eps, result);
+				} catch (AdaptiveSwimException e) {
+					e.printStackTrace();
+				}
+				break;
+				
+			case TOCYLINDER:
+				double p1[] = _cylinderPanel.getCenterLineP1();
+				double p2[] = _cylinderPanel.getCenterLineP2();
+				
+				for (int k = 0; k < 3; k++) {
+					p1[k] = p1[k]/100; //meters
+					p2[k] = p2[k]/100; //meters
+				}
+
+				
+				double radius = _cylinderPanel.getRadius()/100; //meters
+				Cylinder targetCylinder = new Cylinder(p1, p2, radius);
+
+				try {
+					adaptiveSwimmer.swimCylinder(q, xo, yo, zo, p, theta, phi, targetCylinder, accuracy, sMax, stepSize, eps, result);
+				} catch (AdaptiveSwimException e) {
+					e.printStackTrace();
+				}
+
+				break;
+
+			}
+
+			_swimResults.add(result);
+
+		}
+		
+	}
+	
+	//set the display item based on the type of swim
+	private void setDisplayItem() {
+		//set the display item
+		_panel3D.removeDisplayItem();
+		switch(_algorithm) {
+		
+		case STANDARD:
+			break;
+			
+		case FIXEDZ:
+			double z = getFixedZ();  //z in cm
+			_panel3D.setDisplayItemConstantZ((float)z);
+			break;
+			
+		case FIXEDRHO:		
+			double rho = getFixedRho();  //rho in cm
+			_panel3D.setDisplayItemConstantRho((float)rho);
+			break;
+
+		case TOPLANE:
+			_panel3D.setDisplayItemPlane(_planePanel.getNormal(), _planePanel.getPoint());
+			break;
+			
+		case TOCYLINDER:
+			_panel3D.setDisplayItemCylinder(_cylinderPanel.getCenterLineP1(), _cylinderPanel.getCenterLineP2(), _cylinderPanel.getRadius());
+			break;
+
+		}
+		
+	}
+	
+	//set the mag field label
+	private void setMagLabel() {
+		String s = MagneticFields.getInstance().getActiveFieldDescription();
+		_magFieldLabel.setText(" Magfield: " + s);
 	}
 
-	//handle swim trajectories
-	private void handleSwim() {
-		System.err.println("hit swim");
+	@Override
+	public void magneticFieldChanged() {
+		setMagLabel();
 	}
+
 
 }
