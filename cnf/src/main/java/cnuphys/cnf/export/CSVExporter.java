@@ -4,6 +4,9 @@ import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +26,10 @@ import cnuphys.cnf.alldata.graphics.ColumnsDialog;
 public class CSVExporter extends AExporter {
 	
 	//the data output stream
-	private DataOutputStream _dos;
+	//private DataOutputStream _dos;
 	
-
+	private OutputStreamWriter _osw;
+	
 	//the columns being exported
 	private List<ColumnData> _columnData;
 	
@@ -98,8 +102,14 @@ public class CSVExporter extends AExporter {
 			}
 
 			try {
-				_dos = new DataOutputStream(new FileOutputStream(_exportFile));
+				OutputStream os = new FileOutputStream(_exportFile);
+				_osw = new OutputStreamWriter(os, "UTF-8");
+				
+				//_dos = new DataOutputStream(new FileOutputStream(_exportFile));
 			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -159,46 +169,52 @@ public class CSVExporter extends AExporter {
 					
 					//sb.append(data[index]);
 				}
-				stringLn(_dos, sb.toString());
+				stringLn(_osw, sb.toString());
 			}
 		}
 	}
 	
+	//write the column names
 	private void writeColumnNames() {
 		int count = _columnData.size();
 		StringBuffer sb = new StringBuffer(512);
+		String cname;
+		
 		for (int i = 0; i < count; i++) {
 			ColumnData cdata = _columnData.get(i);
 			if (i > 0) {
 				sb.append(",");
 			}
-			sb.append(cdata.getFullName());
+			cname = cdata.getColumnName();
+			System.err.print(String.format("[%s]", cname));
+			sb.append(cname);
 		}
-		stringLn(_dos, sb.toString());
+		System.err.println();
+		stringLn(_osw, sb.toString());
 	}
 
 	@Override
 	public void done() {
 		System.out.println("CSV: I am done");
 		
-		if (_dos != null) {
+		if (_osw != null) {
 			try {
-				_dos.close();
+				_osw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 		
-		_dos = null;
+		_osw = null;
 		
 	}
 	
-	private static void stringLn(DataOutputStream dos, String str) {
+	private static void stringLn(OutputStreamWriter osw, String str) {
 		
 		try {
-			dos.writeChars(str);
+			osw.write(str);
 			
-			dos.writeChars("\n");
+			osw.write("\n");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
