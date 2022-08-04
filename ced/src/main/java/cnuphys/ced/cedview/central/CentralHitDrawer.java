@@ -100,6 +100,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 		drawBMTHitsSingleMode(g, container);
 		drawCTOFSingleHitsMode(g, container);
 		drawCNDSingleHitsMode(g, container);
+		drawCVTP1Traj(g, container);
 		drawCVTRecTraj(g, container);
 	}
 
@@ -116,7 +117,9 @@ public abstract class CentralHitDrawer implements IDrawable {
 	}
 	
 	private static int TRAJSIZE = 12;
-	 
+	
+	
+	//CVT Rec
 	protected void drawCVTRecTraj(Graphics g, IContainer container) {
 		
 		if (!(_view.showCVTRecTraj())) {
@@ -126,7 +129,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 		CVT cvt = CVT.getInstance();
 		cvt.fillData();
 		
-		float[] x = cvt.x;
+		float[] x = cvt.rec_x;
 		
 		int count = (x == null) ? 0 : x.length;
 		if (count == 0) {
@@ -134,19 +137,19 @@ public abstract class CentralHitDrawer implements IDrawable {
 		}
 		
 		Point pp = new Point();
-		float[] y = cvt.y;
-		float[] z = cvt.z;
+		float[] y = cvt.rec_y;
+		float[] z = cvt.rec_z;
 		
-		short[] id = cvt.id;
-		byte[] detector = cvt.detector;
-		byte[] sector = cvt.sector;
-		byte[] layer = cvt.layer;
+		short[] id = cvt.rec_id;
+		byte[] detector = cvt.rec_detector;
+		byte[] sector = cvt.rec_sector;
+		byte[] layer = cvt.rec_layer;
 		
-		float[] phi = cvt.phi;
-		float[] theta = cvt.theta;
-		float[] langle = cvt.langle;
-		float[] centroid = cvt.centroid;
-		float[] path = cvt.path;
+		float[] phi = cvt.rec_phi;
+		float[] theta = cvt.rec_theta;
+		float[] langle = cvt.rec_langle;
+		float[] centroid = cvt.rec_centroid;
+		float[] path = cvt.rec_path;
 		
 		g.setColor(Color.black);
 		int s2 = TRAJSIZE/2;
@@ -156,12 +159,12 @@ public abstract class CentralHitDrawer implements IDrawable {
 			labCoord.labToLocal(container, 10*x[i], 10*y[i], 10*z[i], pp);
 			
 
-			String fb1 = String.format("Recon Traj index: %d", i+1);
+			String fb1 = String.format("CVTRec Traj index: %d", i+1);
 			String fb2 = String.format("  id: %d  detector: %d  sector: %d  layer: %d", id[i], detector[i], sector[i], layer[i]);
 			String fb3 = String.format("  (x,y,z): (%6.3f, %6.3f, %6.3f) cm  path: %6.3f", x[i], y[i], z[i], path[i]);
 			String fb4 = String.format("  phi: %6.3f  theta: %6.3f  langle: %5.2f  cent: %5.2f", phi[i], theta[i], langle[i], centroid[i]);
 
-			FeedbackRect fbr = new FeedbackRect(FeedbackRect.Dtype.CVT, pp.x-s2, pp.y-s2,
+			FeedbackRect fbr = new FeedbackRect(FeedbackRect.Dtype.CVTREC, pp.x-s2, pp.y-s2,
 					TRAJSIZE, TRAJSIZE, i, 0, fb1, fb2, fb3, fb4);
 			
 			_fbRects.add(fbr);
@@ -169,6 +172,61 @@ public abstract class CentralHitDrawer implements IDrawable {
 			SymbolDraw.drawStar(g, pp.x, pp.y, s2, Color.black);					
 		}
 	}
+	
+	
+	//Pass 1 Rec
+	protected void drawCVTP1Traj(Graphics g, IContainer container) {
+		
+	if (!(_view.showCVTP1Traj())) {
+		return;
+	}
+	
+	CVT cvt = CVT.getInstance();
+	cvt.fillData();
+	
+	float[] x = cvt.p1_x;
+	
+	int count = (x == null) ? 0 : x.length;
+	if (count == 0) {
+		return;
+	}
+	
+	Point pp = new Point();
+	float[] y = cvt.p1_y;
+	float[] z = cvt.p1_z;
+	
+	short[] id = cvt.p1_id;
+	byte[] detector = cvt.p1_detector;
+	byte[] sector = cvt.p1_sector;
+	byte[] layer = cvt.p1_layer;
+	
+	float[] phi = cvt.p1_phi;
+	float[] theta = cvt.p1_theta;
+	float[] langle = cvt.p1_langle;
+	float[] centroid = cvt.p1_centroid;
+	float[] path = cvt.p1_path;
+	
+	g.setColor(Color.green);
+	int s2 = TRAJSIZE/2;
+
+	for (int i = 0; i < count; i++) {
+		//cm to mm
+		labCoord.labToLocal(container, 10*x[i], 10*y[i], 10*z[i], pp);
+		
+
+		String fb1 = String.format("CVTP1 Traj index: %d", i+1);
+		String fb2 = String.format("  id: %d  detector: %d  sector: %d  layer: %d", id[i], detector[i], sector[i], layer[i]);
+		String fb3 = String.format("  (x,y,z): (%6.3f, %6.3f, %6.3f) cm  path: %6.3f", x[i], y[i], z[i], path[i]);
+		String fb4 = String.format("  phi: %6.3f  theta: %6.3f  langle: %5.2f  cent: %5.2f", phi[i], theta[i], langle[i], centroid[i]);
+
+		FeedbackRect fbr = new FeedbackRect(FeedbackRect.Dtype.CVTP1, pp.x-s2, pp.y-s2,
+				TRAJSIZE, TRAJSIZE, i, 0, fb1, fb2, fb3, fb4);
+		
+		_fbRects.add(fbr);
+		
+		SymbolDraw.drawStar(g, pp.x, pp.y, s2, Color.green);					
+	}
+}
 	
 	protected void drawAccumulatedHits(Graphics g, IContainer container) {
 		drawBSTAccumulatedHits(g, container);

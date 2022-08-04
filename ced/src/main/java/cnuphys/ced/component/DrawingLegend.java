@@ -98,12 +98,20 @@ public class DrawingLegend extends JComponent {
 	}
 	
 
-	private int paintTrajPoint(Graphics g, int x, int y) {
+	private int paintRecTrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.black);
 
 		x += (TRAJSIZE + 4);
-		return quickString(g, x, y, "Recon Traj Pnt");
+		return quickString(g, x, y, "Rec Traj Pnt");
+	}
+	
+	private int paintP1TrajPoint(Graphics g, int x, int y) {
+		int s2 = TRAJSIZE/2;
+		SymbolDraw.drawStar(g, x, y, s2, Color.green);
+
+		x += (TRAJSIZE + 4);
+		return quickString(g, x, y, "P1 Traj Pnt");
 	}
 
 	// paint the legend for the central 2D views
@@ -112,13 +120,15 @@ public class DrawingLegend extends JComponent {
 		Graphics2D g2 = (Graphics2D) g;
 		x = drawCross(g, x, yc, DataDrawSupport.BST_CROSS);
 		x = drawCross(g, x, yc, DataDrawSupport.BMT_CROSS);
-		x = paintTrajPoint(g, x, yc);
+		x = paintRecTrajPoint(g, x, yc);
 
 		yc += 17;
-		SymbolDraw.drawUpTriangle(g, xo, yc, 3, X11Colors.getX11Color("Dark Green"),
+		x = xo;
+		x = paintP1TrajPoint(g, x, yc) + 12;
+		SymbolDraw.drawUpTriangle(g, x, yc, 3, X11Colors.getX11Color("Dark Green"),
 				X11Colors.getX11Color("Aquamarine"));
 
-		quickString(g, xo + 16, yc, "Hit Strip Midpoint");
+		quickString(g, x + 12, yc, "Hit Strip Midpoint");
 
 		// tracks
 		yc += 17;
