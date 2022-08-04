@@ -221,7 +221,9 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 		} else if (source.contains("tbtracks")) {
 			return _view.showTB();
 		} else if (source.contains("cvtrec")) {
-			return _view.showCVTTracks();
+			return _view.showCVTRecTracks();
+		}else if (source.contains("cvt")) {
+			return _view.showCVTP1Tracks();
 		}
 
 		return true;

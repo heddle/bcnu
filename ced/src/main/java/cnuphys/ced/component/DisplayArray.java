@@ -129,11 +129,17 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** Global show ADC hits */
 	private static final String GLOBAL_ADC_HIT_LABEL = "ADC Hits";
 
-	/** Label for reconstructed CVT Tracks */
-	private static final String CVT_TRACK_LABEL = "CVT Tracks";
+	/** Label for reconstructed CVT Rec Tracks */
+	private static final String CVTREC_TRACK_LABEL = "CVTRec Tracks";
 
-	/** Label for reconstructed CVT Trajectory */
-	private static final String CVT_TRAJ_LABEL = "CVT Traj";
+	/** Label for reconstructed CVT Rec Trajectory */
+	private static final String CVTREC_TRAJ_LABEL = "CVTRec Traj";
+	
+	/** Label for reconstructed CVT Pass 1Tracks */
+	private static final String CVTP1_TRACK_LABEL = "CVTP1 Tracks";
+
+	/** Label for reconstructed CVT Pass 1Trajectory */
+	private static final String CVTP1_TRAJ_LABEL = "CVTP1 Traj";
 
 	// controls whether any HB data displayed
 	private AbstractButton _showHBButton;
@@ -172,10 +178,17 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	private AbstractButton _adcHitButton;
 
 	// controls display of cvt reconstructed tracks
-	private AbstractButton _cvtTrackButton;
+	private AbstractButton _cvtRecTrackButton;
 	
 	// controls display od cvt reconstructed trajectory bank data
-	private AbstractButton _cvtTrajButton;
+	private AbstractButton _cvtRecTrajButton;
+	
+	// controls display of cvt pass 1 tracks
+	private AbstractButton _cvtP1TrackButton;
+	
+	// controls display od cvt pass 1 trajectory bank data
+	private AbstractButton _cvtP1TrajButton;
+
 
 	// controls whether reconstructed clusters are displayed
 	private AbstractButton _clusterButton;
@@ -356,12 +369,20 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 			_reconHitButton = add(RECON_HIT_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
-		if (Bits.checkBit(bits, DisplayBits.CVTTRACKS)) {
-			_cvtTrackButton = add(CVT_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
+		if (Bits.checkBit(bits, DisplayBits.CVTRECTRACKS)) {
+			_cvtRecTrackButton = add(CVTREC_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 		
-		if (Bits.checkBit(bits, DisplayBits.CVTTRAJ)) {
-			_cvtTrajButton = add(CVT_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
+		if (Bits.checkBit(bits, DisplayBits.CVTRECTRAJ)) {
+			_cvtRecTrajButton = add(CVTREC_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
+		}
+		
+		if (Bits.checkBit(bits, DisplayBits.CVTP1TRACKS)) {
+			_cvtP1TrackButton = add(CVTP1_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
+		}
+		
+		if (Bits.checkBit(bits, DisplayBits.CVTP1TRAJ)) {
+			_cvtP1TrajButton = add(CVTP1_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
 		// ADC hits
@@ -535,9 +556,19 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	 * 
 	 * @return <code>true</code> if we are to show CVT reconstructed tracks.
 	 */
-	public boolean showCVTTracks() {
-		return (_cvtTrackButton != null) && _cvtTrackButton.isSelected();
+	public boolean showCVTRecTracks() {
+		return (_cvtRecTrackButton != null) && _cvtRecTrackButton.isSelected();
 	}
+	
+	/**
+	 * Convenience method to see if we show CVT Pass 1 tracks. 
+	 * 
+	 * @return <code>true</code> if we are to show CVT Pass 1 tracks.
+	 */
+	public boolean showCVTP1Tracks() {
+		return (_cvtP1TrackButton != null) && _cvtP1TrackButton.isSelected();
+	}
+	
 	
 	/**
 	 * Convenience method to see if we show CVT reconstructed trajectory data. 
@@ -545,10 +576,19 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	 * 
 	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
 	 */
-	public boolean showCVTTraj() {
-		return (_cvtTrajButton != null) && _cvtTrajButton.isSelected();
+	public boolean showCVTRecTraj() {
+		return (_cvtRecTrajButton != null) && _cvtRecTrajButton.isSelected();
 	}
 
+	/**
+	 * Convenience method to see if we show CVT pass 1 trajectory data. 
+	 * hits except
+	 * 
+	 * @return <code>true</code> if we are to show CVT pass 1 trajectory data.
+	 */
+	public boolean showCVTP1Traj() {
+		return (_cvtP1TrajButton != null) && _cvtP1TrajButton.isSelected();
+	}
 
 	/**
 	 * Convenience method global hit based display

@@ -45,7 +45,7 @@ public class DisplayBits {
 	public static final int ADC_HITS = 020000;
 
 	/** cvt recon tracks */
-	public static final int CVTTRACKS = 040000;
+	public static final int CVTRECTRACKS = 040000;
 
 	/** reconstructed clusters */
 	public static final int FMTCROSSES = 0100000;
@@ -54,7 +54,7 @@ public class DisplayBits {
 	public static final int DOCA = 0200000;
 	
 	/** cvt recon traj */
-	public static final int CVTTRAJ = 0400000;
+	public static final int CVTRECTRAJ = 0400000;
 	
 	/** sector change diamonds */
     public static final int SECTORCHANGE = 01000000;
@@ -76,6 +76,12 @@ public class DisplayBits {
     
     /** REC::Particles */
     public static final int RECPART = 0100000000;
+    
+	/** cvt pass 1 tracks */
+	public static final int CVTP1TRACKS = 0200000000;
+	
+	/** cvt pass 1 traj */
+	public static final int CVTP1TRAJ = 0400000000;
 
 
 	/** Distance scale */

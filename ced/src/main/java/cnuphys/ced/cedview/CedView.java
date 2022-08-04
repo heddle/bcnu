@@ -617,25 +617,48 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * 
 	 * @return <code>true</code> if we are to show CVT reconstructed tracks.
 	 */
-	public boolean showCVTTracks() {
+	public boolean showCVTRecTracks() {
 		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
 			return false;
 		}
-		return _controlPanel.getDisplayArray().showCVTTracks();
+		return _controlPanel.getDisplayArray().showCVTRecTracks();
 	}
 	
 	/**
-	 * Convenience method to see if we show CVT reconstructed tracks. CVT reconstructed trajectory data.
+	 * Convenience method to see if we show CVT pass 1 tracks. 
 	 * 
-	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
+	 * @return <code>true</code> if we are to show CVT pass 1 tracks.
 	 */
-	public boolean showCVTTraj() {
+	public boolean showCVTP1Tracks() {
 		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
 			return false;
 		}
-		return _controlPanel.getDisplayArray().showCVTTraj();
+		return _controlPanel.getDisplayArray().showCVTP1Tracks();
+	}
+	
+	/**
+	 * Convenience method to see if we show CVT reconstructed trajectory data.
+	 * 
+	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
+	 */
+	public boolean showCVTRecTraj() {
+		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
+			return false;
+		}
+		return _controlPanel.getDisplayArray().showCVTRecTraj();
 	}
 
+	/**
+	 * Convenience method to see if we show CVT pass 1 trajectory data.
+	 * 
+	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
+	 */
+	public boolean showCVTP1Traj() {
+		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
+			return false;
+		}
+		return _controlPanel.getDisplayArray().showCVTP1Traj();
+	}
 
 	/**
 	 * Convenience method to see if we show the trkDoca column.

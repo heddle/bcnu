@@ -100,7 +100,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 		drawBMTHitsSingleMode(g, container);
 		drawCTOFSingleHitsMode(g, container);
 		drawCNDSingleHitsMode(g, container);
-		drawCVTReconTraj(g, container);
+		drawCVTRecTraj(g, container);
 	}
 
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {		
@@ -117,9 +117,9 @@ public abstract class CentralHitDrawer implements IDrawable {
 	
 	private static int TRAJSIZE = 12;
 	 
-	protected void drawCVTReconTraj(Graphics g, IContainer container) {
+	protected void drawCVTRecTraj(Graphics g, IContainer container) {
 		
-		if (!(_view.showCVTTraj())) {
+		if (!(_view.showCVTRecTraj())) {
 			return;
 		}
 		

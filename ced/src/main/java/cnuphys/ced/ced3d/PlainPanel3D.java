@@ -97,7 +97,8 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String SHOW_AITB_TRACK = "AI TB Track";
 	public static final String SHOW_AIHB_TRACK = "AI HB Track";
 
-	public static final String SHOW_CVT_TRACK = "CVT Track";
+	public static final String SHOW_CVTREC_TRACK = "CVT Rec Track";
+	public static final String SHOW_CVTP1_TRACK = "CVT P1 Track";
 	
 	public static final String SHOW_REC_TRACK = "REC Track";
 
@@ -535,12 +536,21 @@ public abstract class PlainPanel3D extends Panel3D {
 	}
 
 	/**
-	 * Show cvt based track?
+	 * Show cvt rec based track?
 	 * 
 	 * @return <code>true</code> if we are to show cvt based track
 	 */
-	public boolean showCVTTrack() {
-		return show(PlainPanel3D.SHOW_CVT_TRACK);
+	public boolean showCVTRecTrack() {
+		return show(PlainPanel3D.SHOW_CVTREC_TRACK);
+	}
+	
+	/**
+	 * Show cvt pass 1based track?
+	 * 
+	 * @return <code>true</code> if we are to show cvt based track
+	 */
+	public boolean showCVTP1Track() {
+		return show(PlainPanel3D.SHOW_CVTP1_TRACK);
 	}
 
 	/**

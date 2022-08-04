@@ -144,7 +144,8 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
 						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
-						| DisplayBits.COSMICS | DisplayBits.CVTTRACKS | DisplayBits.CVTTRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
+						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS | 
+						DisplayBits.CVTRECTRAJ | DisplayBits.CVTP1TRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
 				3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);

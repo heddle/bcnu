@@ -114,9 +114,11 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	@Override
 	public boolean acceptSimpleTrack(SwimTrajectory2D trajectory) {
 
-		
+
 		boolean show = true;
 		String source = trajectory.getSource();
+		
+	//	System.err.println("AST SOURCE: [" +  source + "]");
 
 		if (source != null) {
 			if (source.contains("HitBasedTrkg::HBTracks")) {
@@ -127,6 +129,10 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 				show = _view.showAIHB();
 			} else if (source.contains("TimeBasedTrkg::AITracks")) {
 				show = _view.showAITB();
+			} else if (source.contains("CVTRec::Tracks")) {
+				return _view.showCVTRecTracks();
+			} else if (source.contains("CVT::Tracks")) {
+				return _view.showCVTP1Tracks();
 			}
 		}
 

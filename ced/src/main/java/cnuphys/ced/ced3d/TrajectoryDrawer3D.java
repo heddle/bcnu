@@ -73,8 +73,11 @@ public class TrajectoryDrawer3D extends Item3D {
 							show = _cedPanel3D.showRecTrack();
 							color = Color.darkGray;
 						} else if (source.contains("CVTRec::Tracks")) {
-							show = _cedPanel3D.showCVTTrack();
-							color = CedColors.CVT_COLOR;
+							show = _cedPanel3D.showCVTRecTrack();
+							color = CedColors.CVTREC_COLOR;
+						} else if (source.contains("CVT::Tracks")) {
+							show = _cedPanel3D.showCVTP1Track();
+							color = CedColors.CVTP1_COLOR;
 						}
 					}
 

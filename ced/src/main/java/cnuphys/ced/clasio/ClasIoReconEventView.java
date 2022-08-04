@@ -59,7 +59,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 			
 			// look for cvt tyracks
 			addTracks(event, _trajData, "CVTRec::Tracks");
-			addTracks(event, _trajData, "CVTRec::TracksCA");
+			addTracks(event, _trajData, "CVT::Tracks"); //pass 1
 
 			model.setData(_trajData);
 			model.fireTableDataChanged();
@@ -78,7 +78,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 				return;
 			}
 
-			if (bankName.contains("CVTRec::TracksCA")) {
+			if (bankName.contains("CVT::Tracks")) { //pass 1
 				addCVTTracks(event, data, bankName);
 				return;
 			}

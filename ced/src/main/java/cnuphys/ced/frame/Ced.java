@@ -140,7 +140,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private JMenuItem _eventCountLabel;
 
 	// using 3D?
-	private static boolean _use3D = false;
+	private static boolean _use3D = true;
 
 	// experimental version?
 	private static boolean _experimental;

@@ -77,7 +77,8 @@ public class CedColors {
 	public static final Color SNR_CLUSTER_COLOR = new Color(46, 169, 87, 220);
 	
 	//cvt
-	public static final Color CVT_COLOR = X11Colors.getX11Color("dark green");
+	public static final Color CVTREC_COLOR = X11Colors.getX11Color("green");
+	public static final Color CVTP1_COLOR = X11Colors.getX11Color("coral");
 	
 	//REC::Calorimeter
 	public static final Color RECEcalFill = new Color(255, 0, 0, 48);

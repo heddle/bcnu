@@ -183,11 +183,11 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		} else if (source.contains("timebasedtrkg::tbtracks")) {
 			plainDrawSwimTrajectory(g, container, trajectory, X11Colors.getX11Color("dark orange"));
 			return;
-		} else if (source.contains("cvtrec::tracksca")) {
-			plainDrawSwimTrajectory(g, container, trajectory, X11Colors.getX11Color("red"));
-			return;
 		} else if (source.contains("cvtrec::tracks")) {
-			plainDrawSwimTrajectory(g, container, trajectory, X11Colors.getX11Color("dark green"));
+			plainDrawSwimTrajectory(g, container, trajectory, X11Colors.getX11Color("green"));
+			return;
+		} else if (source.contains("cvt::tracks")) {
+			plainDrawSwimTrajectory(g, container, trajectory, X11Colors.getX11Color("coral"));
 			return;
 		} else if (source.contains("hitbasedtrkg::aitracks")) {
 			plainDrawSwimTrajectory(g, container, trajectory, X11Colors.getX11Color("spring green"));
