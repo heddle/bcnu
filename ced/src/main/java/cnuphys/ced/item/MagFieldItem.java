@@ -241,7 +241,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 		GridCoordinate rCoordinate = null;
 		if (hasTorus) {
 			rCoordinate = MagneticFields.getInstance().getTorus().getRCoordinate();
-		} else {
+		} else if (hasSolenoid) {
 			rCoordinate = MagneticFields.getInstance().getSolenoid().getRCoordinate();
 		}
 

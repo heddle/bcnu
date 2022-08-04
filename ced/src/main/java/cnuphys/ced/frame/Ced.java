@@ -140,7 +140,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private JMenuItem _eventCountLabel;
 
 	// using 3D?
-	private static boolean _use3D = true;
+	private static boolean _use3D = false;
 
 	// experimental version?
 	private static boolean _experimental;
@@ -1272,7 +1272,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-		FastMath.setMathLib(FastMath.MathLib.SUPERFAST);
 
 		String variation = System.getProperty("GEOVARIATION");
 		if (variation != null) {
