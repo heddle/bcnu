@@ -1,5 +1,6 @@
 package cnuphys.bCNU.util;
 
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -9,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
 import cnuphys.bCNU.format.DoubleFormat;
+
 
 public class CSVWriter {
 	
@@ -55,39 +57,7 @@ public class CSVWriter {
 		}
 	}
 	
-	/**
-	 * Write a row of ints to the csv file
-	 * @param vals the row of ints
-	 */
-	public void writeRow(int...vals) {
-		if ((vals == null) || (vals.length == 0)) {
-			return;
-		}
-		
-		int len = vals.length;
-		int guessSize = 20*len;
-		
-		StringBuffer sb = new StringBuffer(guessSize);
-		
-		for (int i = 0; i < len; i++) {
-			boolean last = (i == (len-1));
-			sb.append(vals[i]);
-			if (!last) {
-				sb.append(", ");
-			}
-			else {
-				sb.append("\n");
-			}
-		}
-		
-		try {
-			_writer.write(sb.toString());
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 
-	}
-	
 	/**
 	 * Write a row of doubles to the csv file
 	 * @param vals the row of doubles
@@ -111,6 +81,33 @@ public class CSVWriter {
 			else {
 				sb.append("\n");
 			}
+		}
+		
+		try {
+			_writer.write(sb.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	/**
+	 * Write a row of doubles to the csv file
+	 * @param vals the row of doubles
+	 */
+	public void writeStartOfRow(double...vals) {
+		if ((vals == null) || (vals.length == 0)) {
+			return;
+		}
+		
+		int len = vals.length;
+		int guessSize = 20*len;
+		
+		StringBuffer sb = new StringBuffer(guessSize);
+		
+		for (int i = 0; i < len; i++) {
+			sb.append(DoubleFormat.doubleFormat(vals[i], 6, 3));
+			sb.append(", ");
 		}
 		
 		try {
@@ -156,13 +153,53 @@ public class CSVWriter {
 	}
 	
 	/**
+	 * Write a row of strings to the csv file
+	 * @param strings the row of strings
+	 */
+	public void writeStartOfRow(String...strings) {
+		
+		if ((strings == null) || (strings.length == 0)) {
+			return;
+		}
+		
+		int len = strings.length;
+		
+		int guessSize = 20*len;
+		
+		StringBuffer sb = new StringBuffer(guessSize);
+		
+		for (int i = 0; i < len; i++) {
+			sb.append(strings[i]);
+			sb.append(", ");
+		}
+		
+		try {
+			_writer.write(sb.toString());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	/**
+	 * Write a blank row
+	 */
+	public void newLine() {
+		try {
+			_writer.write("\n");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Main program for testing
 	 * @param arg command line arguments (ignored)
 	 */
 	public static void main(String[] arg) {
 		System.out.println("Testing CSV Writer");
 		
-		String homeDir = Environment.getInstance().getHomeDirectory();
+		String homeDir = System.getProperty("user.home");
 		File file = new File(homeDir, "testfile.csv");
 		System.out.println("test file: [" + file.getAbsolutePath() + "]");
 		
