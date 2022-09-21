@@ -91,7 +91,6 @@ import cnuphys.ced.trigger.TriggerDialog;
 import cnuphys.ced.trigger.TriggerManager;
 import cnuphys.ced.trigger.TriggerMenuPanel;
 import cnuphys.lund.X11Colors;
-import cnuphys.magfield.FastMath;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
 import cnuphys.splot.example.MemoryUsageDialog;
@@ -131,7 +130,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "build 1.4.74";
+	private static final String _release = "build 1.4.75";
 
 	// used for one time inits
 	private int _firstTime = 0;

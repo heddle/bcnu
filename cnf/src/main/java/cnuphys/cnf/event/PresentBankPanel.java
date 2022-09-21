@@ -51,9 +51,12 @@ public class PresentBankPanel extends JPanel
 
 		// get all the known banks
 		String[] allBanks = _eventManager.getKnownBanks();
-		for (String s : allBanks) {
-			if (!skip(s)) {
-				makeLabel(s);
+
+		if (allBanks != null) {
+			for (String s : allBanks) {
+				if (!skip(s)) {
+					makeLabel(s);
+				}
 			}
 		}
 

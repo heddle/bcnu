@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -13,8 +14,9 @@ import javax.swing.event.EventListenerList;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataSource;
 import org.jlab.io.hipo.HipoDataSource;
+import org.jlab.jnp.hipo4.data.Schema;
 
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.frame.Def;
 import cnuphys.cnf.frame.IDefCommon;
 
@@ -56,7 +58,7 @@ public class EventManager {
 	private File _currentHipoFile;
 
 	// the clas_io source of events
-	private DataSource _dataSource;
+	private HipoDataSource _dataSource;
 
 	// singleton
 	private static EventManager instance;
@@ -66,7 +68,7 @@ public class EventManager {
 
 	// private constructor for singleton
 	private EventManager() {
-		_dataSource = new HipoDataSource();
+//		_dataSource = new HipoDataSource();
 	}
 
 	/**
@@ -135,6 +137,28 @@ public class EventManager {
 
 		_dataSource = new HipoDataSource();
 		_dataSource.open(file.getPath());
+		
+		Dictionary.getInstance().updateDictionary(_dataSource);
+		
+		
+		
+//		//get the dictionary from the file
+//		List<String> schemaNames = _dataSource.getReader().getSchemaFactory().getSchemaKeys();
+//
+//		for (String name : schemaNames) {
+//			Schema sch = _dataSource.getReader().getSchemaFactory().getSchema(name);
+//
+//			List<String> entries = sch.getEntryList();
+//
+//			for (String column : entries) {
+//				String fullName = sch.getName() + "." + column;
+//				int type = sch.getType(column);
+//				System.out.println("Found [" + fullName + "]  type: " + ColumnData.typeNames[type]);
+//			}
+//			
+//			
+//		}
+
 		notifyEventListeners(_currentHipoFile, 0);
 		
 		_currentEvent = null;
@@ -474,7 +498,7 @@ public class EventManager {
 	 * @return a sorted list of known banks
 	 */
 	public String[] getKnownBanks() {
-		return DataManager.getInstance().getKnownBanks();
+		return Dictionary.getInstance().getKnownBanks();
 	}
 
 	/**

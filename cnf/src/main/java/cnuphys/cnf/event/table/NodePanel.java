@@ -29,11 +29,11 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.cnf.alldata.ColumnData;
-import cnuphys.cnf.alldata.DataManager;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.IEventListener;
 import cnuphys.cnf.event.PresentBankPanel;
+import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.dictionary.Dictionary;
 
 public class NodePanel extends JPanel
 		implements ActionListener, ListSelectionListener, IEventListener {
@@ -63,7 +63,7 @@ public class NodePanel extends JPanel
 	private boolean _isReady;
 
 	// current selected node
-	private ColumnData _currentColumnData;
+	private Column _currentColumnData;
 
 	// present banks
 	private PresentBankPanel _presentPanel;
@@ -319,7 +319,7 @@ public class NodePanel extends JPanel
 	 *
 	 * @param treeSelectionEvent the causal event.
 	 */
-	protected void updateDataArea(ColumnData cd) {
+	protected void updateDataArea(Column cd) {
 
 		_dataTextArea.setText("");
 		int blankLineEveryNth = 5; // put in a blank line after every Nth
@@ -333,7 +333,7 @@ public class NodePanel extends JPanel
 			return;
 		}
 
-		DataManager dm = DataManager.getInstance();
+		Dictionary dm = Dictionary.getInstance();
 		String fullName = cd.getFullName();
 
 		int lineCounter = 1;
@@ -341,7 +341,7 @@ public class NodePanel extends JPanel
 
 		switch (cd.getType()) {
 
-		case ColumnData.INT8: // byte
+		case Dictionary.INT8: // byte
 			byte bytes[] = dm.getByteArray(event, fullName);
 			if (bytes != null) {
 				for (byte i : bytes) {
@@ -366,7 +366,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.INT16:
+		case Dictionary.INT16:
 			short shorts[] = dm.getShortArray(event, fullName);
 			if (shorts != null) {
 				for (short i : shorts) {
@@ -391,7 +391,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.INT32:
+		case Dictionary.INT32:
 			int ints[] = dm.getIntArray(event, fullName);
 			if (ints != null) {
 				for (int i : ints) {
@@ -416,7 +416,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.FLOAT32:
+		case Dictionary.FLOAT32:
 			float floats[] = dm.getFloatArray(event, fullName);
 			if (floats != null) {
 				for (float f : floats) {
@@ -437,7 +437,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.FLOAT64:
+		case Dictionary.FLOAT64:
 			double doubles[] = dm.getDoubleArray(event, fullName);
 			if (doubles != null) {
 				for (double d : doubles) {

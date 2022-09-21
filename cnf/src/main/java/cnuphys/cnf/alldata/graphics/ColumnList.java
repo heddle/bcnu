@@ -9,10 +9,10 @@ import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-import org.jlab.io.base.DataDescriptor;
+
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Dictionary;
 
 public class ColumnList extends DragDropList implements KeyListener {
 
@@ -47,9 +47,8 @@ public class ColumnList extends DragDropList implements KeyListener {
 	 */
 	public void setList(String bankName) {
 		if (bankName != null) {
-			DataDescriptor dd = DataManager.getInstance().getDictionary().getDescriptor(bankName);
-			if (dd != null) {
-				String columns[] = dd.getEntryList();
+			String columns[] = Dictionary.getInstance().getColumnNames(bankName);
+			if (columns != null) {
 				Arrays.sort(columns);
 				
 				DefaultListModel model = (DefaultListModel)(this.getModel());
@@ -57,9 +56,6 @@ public class ColumnList extends DragDropList implements KeyListener {
 				for (String cn : columns) {
 					model.addElement(cn);
 				}
-				
-				
-	//			setListData(columns);
 			} else {
 				clear();
 			}

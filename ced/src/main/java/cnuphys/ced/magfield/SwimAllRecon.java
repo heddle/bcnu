@@ -5,7 +5,7 @@ import java.util.Vector;
 import cnuphys.adaptiveSwim.AdaptiveSwimException;
 import cnuphys.adaptiveSwim.AdaptiveSwimResult;
 import cnuphys.adaptiveSwim.AdaptiveSwimmer;
-import cnuphys.adaptiveSwim.test.InitialValues;
+import cnuphys.adaptiveSwim.InitialValues;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoReconEventView;

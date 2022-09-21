@@ -14,9 +14,9 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.log.Log;
-import cnuphys.cnf.alldata.ColumnData;
-import cnuphys.cnf.alldata.DataManager;
 import cnuphys.cnf.alldata.graphics.ColumnsDialog;
+import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.dictionary.Dictionary;
 
 /**
  * A exporter to CSV. The use must choose what bank, and then what columns to export.
@@ -31,7 +31,7 @@ public class CSVExporter extends AExporter {
 	private OutputStreamWriter _osw;
 	
 	//the columns being exported
-	private List<ColumnData> _columnData;
+	private List<Column> _columnData;
 	
 	//used to write column data names
 	private boolean _first = true;
@@ -89,10 +89,10 @@ public class CSVExporter extends AExporter {
 		if (_exportFile != null) {
 			Log.getInstance().info("CSV: export to [" + _exportFile.getAbsolutePath() + "]");
 			
-			_columnData = new ArrayList<ColumnData>();
+			_columnData = new ArrayList<Column>();
 			
 			for (String c : colNames) {
-				ColumnData cdata = DataManager.getInstance().getColumnData(bankName, c);
+				Column cdata = Dictionary.getInstance().getColumn(bankName, c);
 				if (cdata == null) {
 					Log.getInstance().error("null ColumnData in CSV prepareToExport. Bank [" + bankName + "] column [" + c + "]");
 					return false;
@@ -143,9 +143,9 @@ public class CSVExporter extends AExporter {
 			
 			//get the minimum common number of rows
 			for (int i = 0; i < count; i++) {
-				ColumnData cdata = _columnData.get(i);
+				Column cdata = _columnData.get(i);
 				doubleArrays.add(cdata.getAsDoubleArray(event));
-				int num = cdata.getLength(event);
+				int num = cdata.length(event);
 				minNum = Math.min(minNum, num);
 			}
 			
@@ -181,11 +181,11 @@ public class CSVExporter extends AExporter {
 		String cname;
 		
 		for (int i = 0; i < count; i++) {
-			ColumnData cdata = _columnData.get(i);
+			Column cdata = _columnData.get(i);
 			if (i > 0) {
 				sb.append(",");
 			}
-			cname = cdata.getColumnName();
+			cname = cdata.getName();
 			System.err.print(String.format("[%s]", cname));
 			sb.append(cname);
 		}

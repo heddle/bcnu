@@ -20,8 +20,8 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.cnf.alldata.DataManager;
 import cnuphys.cnf.event.datatable.BankDataTable;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.frame.Def;
 import cnuphys.cnf.properties.PropertiesManager;
 
@@ -78,12 +78,7 @@ public class BankDialog extends JDialog implements ItemListener {
 	 */
 	public String[] colNames(String bankName) {
 		if (bankName != null) {
-			DataDescriptor dd = DataManager.getInstance().getDictionary().getDescriptor(bankName);
-			if (dd != null) {
-				String columns[] = dd.getEntryList();
-				// Arrays.sort(columns);
-				return columns;
-			}
+			return Dictionary.getInstance().getColumnNames(bankName);
 		}
 		return null;
 	}

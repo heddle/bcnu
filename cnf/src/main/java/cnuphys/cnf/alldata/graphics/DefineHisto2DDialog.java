@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.splot.pdata.Histo2DData;
 
 public class DefineHisto2DDialog extends JDialog implements ActionListener, PropertyChangeListener {
@@ -107,7 +107,7 @@ public class DefineHisto2DDialog extends JDialog implements ActionListener, Prop
 			boolean yvalid = false;
 
 			String xname = spx.getFullColumnName();
-			if (DataManager.getInstance().validColumnName(xname)) {
+			if (Dictionary.getInstance().validColumnName(xname)) {
 				xvalid = true;
 			} else {
 				xname = spx.getExpressionName();
@@ -115,7 +115,7 @@ public class DefineHisto2DDialog extends JDialog implements ActionListener, Prop
 			}
 
 			String yname = spy.getFullColumnName();
-			if (DataManager.getInstance().validColumnName(yname)) {
+			if (Dictionary.getInstance().validColumnName(yname)) {
 				yvalid = true;
 			} else {
 				yname = spy.getExpressionName();

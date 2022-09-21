@@ -16,7 +16,7 @@ import javax.swing.table.TableColumn;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.cnf.alldata.ColumnData;
+import cnuphys.cnf.event.dictionary.Column;
 import cnuphys.splot.plot.X11Colors;
 
 public class NodeTable extends JTable {
@@ -90,7 +90,7 @@ public class NodeTable extends JTable {
 	 * @param row the row in question
 	 * @return the corresponding node, or <code>null</code>
 	 */
-	public ColumnData getColumnData(int row) {
+	public Column getColumnData(int row) {
 		return getNodeModel().getColumnData(row);
 	}
 
@@ -123,7 +123,7 @@ public class NodeTable extends JTable {
 
 			cellComponent.setFont(pfont);
 
-			ColumnData cd = _table.getColumnData(row);
+			Column cd = _table.getColumnData(row);
 			if (cd == null) {
 				cellComponent.setBackground(Color.red);
 				cellComponent.setForeground(Color.white);

@@ -14,9 +14,9 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.log.Log;
-import cnuphys.cnf.alldata.ColumnData;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.IEventListener;
+import cnuphys.cnf.event.dictionary.Column;
 import cnuphys.splot.plot.PlotCanvas;
 import cnuphys.splot.plot.PlotPanel;
 import cnuphys.splot.plot.PlotParameters;
@@ -238,7 +238,7 @@ public abstract class PlotDialog extends JDialog
 	 * @param ne    the named expression
 	 * @return the effective length of the data
 	 */
-	public int getMinLength(DataEvent event, ColumnData cd, NamedExpression ne) {
+	public int getMinLength(DataEvent event, Column cd, NamedExpression ne) {
 		int len = 0;
 		if (cd != null) {
 			double vals[] = cd.getAsDoubleArray(event);
@@ -259,7 +259,7 @@ public abstract class PlotDialog extends JDialog
 	 * @param ne    the named expression
 	 * @return the value at the index or Double.NaN on error
 	 */
-	public double getValue(DataEvent event, int index, ColumnData cd, NamedExpression ne) {
+	public double getValue(DataEvent event, int index, Column cd, NamedExpression ne) {
 		if (index < 0) {
 			return Double.NaN;
 		}

@@ -6,8 +6,8 @@ import javax.swing.text.JTextComponent;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.FileUtilities;
-import cnuphys.cnf.alldata.ColumnData;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import net.oh.exp4j.Expression;
 import net.oh.exp4j.ExpressionBuilder;
 import net.oh.exp4j.ValidationResult;
@@ -27,7 +27,7 @@ public class NamedExpression implements Comparable<NamedExpression> {
 	protected String[] _variables;
 
 	/** A matching array of ColumnData objects */
-	protected ColumnData[] _columnData;
+	protected Column[] _columnData;
 
 	public NamedExpression(String eName, String eString) {
 		_expName = eName;
@@ -59,13 +59,13 @@ public class NamedExpression implements Comparable<NamedExpression> {
 		if (_expression == null) {
 			_variables = getVariables(_expString);
 			if ((_variables != null) && (_variables.length > 0)) {
-				_columnData = new ColumnData[_variables.length];
+				_columnData = new Column[_variables.length];
 				for (int i = 0; i < _variables.length; i++) {
 					_columnData[i] = null;
 					NameBinding nb = DefinitionManager.getInstance().getNameBinding(_variables[i]);
 					
 					if (nb != null) {
-						_columnData[i] = DataManager.getInstance().getColumnData(nb.bankColumnName);
+						_columnData[i] = Dictionary.getInstance().getColumnFromFullName(nb.bankColumnName);
 					}
 
 					System.err.println("var name: [" + _variables[i] + "]  columnData: " + _columnData[i]);

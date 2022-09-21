@@ -23,11 +23,11 @@ import cnuphys.bCNU.log.SimpleLogDialog;
 import cnuphys.bCNU.menu.FileMenu;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
-import cnuphys.cnf.alldata.DataManager;
 import cnuphys.cnf.alldata.graphics.DefinitionManager;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.EventMenu;
 import cnuphys.cnf.event.IEventListener;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.event.table.NodePanel;
 import cnuphys.cnf.export.ExportManager;
 import cnuphys.cnf.properties.PropertiesManager;
@@ -338,7 +338,7 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 				
 				// initialize managers
-				DataManager.getInstance(); //data columns
+				Dictionary.getInstance(); //data columns
 				DefinitionManager.getInstance(); 
 				ExportManager.getInstance(); //exporters
 				Log.getInstance();

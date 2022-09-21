@@ -7,8 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.cnf.alldata.ColumnData;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.dictionary.Dictionary;
 
 public class BankTableModel extends DefaultTableModel {
 
@@ -62,13 +62,13 @@ public class BankTableModel extends DefaultTableModel {
 			return 0;
 		}
 
-		ArrayList<ColumnData> cds = DataManager.getInstance().hasData(_event, _bankName);
+		ArrayList<Column> cds = Dictionary.getInstance().hasData(_event, _bankName);
 		int rowCount = 0;
 
-		for (ColumnData cd : cds) {
+		for (Column cd : cds) {
 
 			if (cd != null) {
-				rowCount = Math.max(rowCount, cd.getLength(_event));
+				rowCount = Math.max(rowCount, cd.length(_event));
 			}
 		}
 
@@ -92,11 +92,11 @@ public class BankTableModel extends DefaultTableModel {
 			return " " + (row + 1);
 		}
 
-		ColumnData cd = DataManager.getInstance().getColumnData(_bankName, _columnNames[col]);
+		Column cd = Dictionary.getInstance().getColumn(_bankName, _columnNames[col]);
 		if (cd == null) {
 			return "???";
 		}
-		int len = cd.getLength(_event);
+		int len = cd.length(_event);
 		if ((len == 0) || (row >= len)) {
 			return "";
 		}
@@ -104,21 +104,19 @@ public class BankTableModel extends DefaultTableModel {
 		String fullName = cd.getFullName();
 
 		switch (cd.getType()) {
-		case ColumnData.INT8:
-			return "" + DataManager.getInstance().getByteArray(_event, fullName)[row];
-		case ColumnData.INT16:
-			return "" + DataManager.getInstance().getShortArray(_event, fullName)[row];
-		case ColumnData.INT32:
-			return "" + DataManager.getInstance().getIntArray(_event, fullName)[row];
-		case ColumnData.INT64:
-			return "" + DataManager.getInstance().getLongArray(_event, fullName)[row];
-		case ColumnData.FLOAT32:
-			float f = DataManager.getInstance().getFloatArray(_event, fullName)[row];
-			;
+		case Dictionary.INT8:
+			return "" + Dictionary.getInstance().getByteArray(_event, fullName)[row];
+		case Dictionary.INT16:
+			return "" + Dictionary.getInstance().getShortArray(_event, fullName)[row];
+		case Dictionary.INT32:
+			return "" + Dictionary.getInstance().getIntArray(_event, fullName)[row];
+		case Dictionary.INT64:
+			return "" + Dictionary.getInstance().getLongArray(_event, fullName)[row];
+		case Dictionary.FLOAT32:
+			float f = Dictionary.getInstance().getFloatArray(_event, fullName)[row];
 			return DoubleFormat.doubleFormat(f, 5, 4);
-		case ColumnData.FLOAT64:
-			double d = DataManager.getInstance().getDoubleArray(_event, fullName)[row];
-			;
+		case Dictionary.FLOAT64:
+			double d = Dictionary.getInstance().getDoubleArray(_event, fullName)[row];
 			return DoubleFormat.doubleFormat(d, 5, 4);
 		default:
 			return "???";
@@ -151,7 +149,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	// add an extra column name for index
 	private static String[] getColumnNames(String bankName) {
-		String cnames[] = DataManager.getInstance().getColumnNames(bankName);
+		String cnames[] = Dictionary.getInstance().getColumnNames(bankName);
 		;
 		String expNames[] = new String[cnames.length + 1];
 		expNames[0] = "";

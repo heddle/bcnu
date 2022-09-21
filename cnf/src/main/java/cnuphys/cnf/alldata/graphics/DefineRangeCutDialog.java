@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Dictionary;
 
 public class DefineRangeCutDialog extends JDialog implements ActionListener, PropertyChangeListener {
 
@@ -96,7 +96,7 @@ public class DefineRangeCutDialog extends JDialog implements ActionListener, Pro
 		if (o == _rangeCutPanel.getSelectPanel()) {
 			if (prop.equals("newname")) {
 				String fn = (String) (evt.getNewValue());
-				_okButton.setEnabled(DataManager.getInstance().validColumnName(fn));
+				_okButton.setEnabled(Dictionary.getInstance().validColumnName(fn));
 			} // newname (column)
 			else if (prop.equals("expression")) {
 				_okButton.setEnabled(true);

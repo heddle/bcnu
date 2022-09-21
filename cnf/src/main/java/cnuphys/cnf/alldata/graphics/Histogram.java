@@ -7,8 +7,8 @@ import javax.swing.BorderFactory;
 import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.cnf.alldata.ColumnData;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.splot.fit.FitType;
 import cnuphys.splot.pdata.DataSet;
 import cnuphys.splot.pdata.DataSetException;
@@ -19,7 +19,7 @@ import cnuphys.splot.plot.PlotPanel;
 public class Histogram extends PlotDialog {
 
 	// the column being binned (unless it is binning an expression)
-	private ColumnData _columnData;
+	private Column _column;
 
 	// the expression being binned (unless it is binning a column)
 	private String _namedExpressionName;
@@ -39,10 +39,10 @@ public class Histogram extends PlotDialog {
 
 		// are we dealing with an expression or a column?
 		String name = _histoData.getName();
-		boolean isColumn = DataManager.getInstance().validColumnName(name);
+		boolean isColumn = Dictionary.getInstance().validColumnName(name);
 
 		if (isColumn) {
-			_columnData = DataManager.getInstance().getColumnData(histoData.getName());
+			_column = Dictionary.getInstance().getColumnFromFullName(histoData.getName());
 		} else {
 			_namedExpressionName = name;
 		}
@@ -114,9 +114,9 @@ public class Histogram extends PlotDialog {
 
 			NamedExpression namedExpression = getNamedExpression();
 
-			int len = getMinLength(event, _columnData, namedExpression);
+			int len = getMinLength(event, _column, namedExpression);
 			for (int index = 0; index < len; index++) {
-				double val = getValue(event, index, _columnData, namedExpression);
+				double val = getValue(event, index, _column, namedExpression);
 				if (!Double.isNaN(val)) {
 					_histoData.add(val);
 				}

@@ -5,8 +5,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.cnf.alldata.ColumnData;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.dictionary.Dictionary;
 
 public class NodeTableModel extends DefaultTableModel {
 
@@ -25,7 +25,7 @@ public class NodeTableModel extends DefaultTableModel {
 	};
 
 	// the model data
-	private ArrayList<ColumnData> _data = new ArrayList<ColumnData>();
+	private ArrayList<Column> _data = new ArrayList<Column>();
 
 	// the current event
 	private DataEvent _event;
@@ -47,7 +47,7 @@ public class NodeTableModel extends DefaultTableModel {
 
 		if ((name != null) && (_data != null) && !_data.isEmpty()) {
 			int index = 0;
-			for (ColumnData cd : _data) {
+			for (Column cd : _data) {
 				if (name.equals(cd.getFullName())) {
 					return index;
 				}
@@ -98,7 +98,7 @@ public class NodeTableModel extends DefaultTableModel {
 	public Object getValueAt(int row, int col) {
 
 		if (row < getRowCount()) {
-			ColumnData cd = _data.get(row);
+			Column cd = _data.get(row);
 
 			if (cd != null) {
 				switch (col) {
@@ -125,7 +125,7 @@ public class NodeTableModel extends DefaultTableModel {
 	 * Clear all the data
 	 */
 	public void clear() {
-		_data = new ArrayList<ColumnData>();
+		_data = new ArrayList<Column>();
 	}
 
 	/**
@@ -140,7 +140,7 @@ public class NodeTableModel extends DefaultTableModel {
 			if (banks != null) {
 				for (String bank : banks) {
 
-					_data = DataManager.getInstance().hasData(event);
+					_data = Dictionary.getInstance().hasData(event);
 
 				}
 			}
@@ -155,12 +155,12 @@ public class NodeTableModel extends DefaultTableModel {
 	 * @param row the row in question
 	 * @return the corresponding data bank column name, or <code>null</code>
 	 */
-	public ColumnData getColumnData(int row) {
+	public Column getColumnData(int row) {
 		if (row < 0) {
 			return null;
 		}
 		
-		ColumnData cd = (_data == null) ? null : _data.get(row);
+		Column cd = (_data == null) ? null : _data.get(row);
 		return cd;
 	}
 

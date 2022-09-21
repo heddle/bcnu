@@ -32,12 +32,12 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
-import cnuphys.cnf.alldata.DataManager;
 import cnuphys.cnf.alldata.graphics.DefinitionManager;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.EventMenu;
 import cnuphys.cnf.event.EventView;
 import cnuphys.cnf.event.IEventListener;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.export.ExportManager;
 import cnuphys.cnf.properties.PropertiesManager;
 import cnuphys.splot.example.MemoryUsageDialog;
@@ -512,7 +512,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		} // end command arg processing
 		
 		// initialize managers
-		DataManager.getInstance(); //data columns
+		Dictionary.getInstance(); //data columns
 		DefinitionManager.getInstance(); 
 		ExportManager.getInstance(); //exporters
 		

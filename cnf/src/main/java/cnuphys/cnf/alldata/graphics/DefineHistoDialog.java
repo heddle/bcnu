@@ -12,7 +12,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.cnf.alldata.DataManager;
+import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.splot.pdata.HistoData;
 
 /**
@@ -101,7 +101,7 @@ public class DefineHistoDialog extends JDialog implements ActionListener, Proper
 		if (o == _histoPanel.getSelectPanel()) {
 			if (prop.equals("newname")) {
 				String fn = (String) (evt.getNewValue());
-				_okButton.setEnabled(DataManager.getInstance().validColumnName(fn));
+				_okButton.setEnabled(Dictionary.getInstance().validColumnName(fn));
 			} // newname (column)
 			else if (prop.equals("expression")) {
 				_okButton.setEnabled(true);
