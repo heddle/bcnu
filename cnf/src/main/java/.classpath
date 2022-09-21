@@ -9,7 +9,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/Users/heddle/bCNU/cnf/coatjava/lib/clas/coat-libs-6.5.8-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="/Users/heddle/bCNU/bCNU/src/main/java/lib/bcnuimages.jar"/>
+	<classpathentry kind="lib" path="/coatjava/lib/clas/coat-libs-8.3.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
