@@ -1,6 +1,7 @@
 package cnuphys.cnf.event.datatable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +26,8 @@ public class BankTableModel extends DefaultTableModel {
 		super(getColumnNames(bankName), 2);
 		_bankName = bankName;
 		_columnNames = getColumnNames(bankName);
+		Arrays.sort(_columnNames);
+		System.out.print("");
 	}
 
 	/**
@@ -151,6 +154,7 @@ public class BankTableModel extends DefaultTableModel {
 	private static String[] getColumnNames(String bankName) {
 		String cnames[] = Dictionary.getInstance().getColumnNames(bankName);
 
+		Arrays.sort(cnames);
 		String expNames[] = new String[cnames.length + 1];
 		expNames[0] = "";
 		for (int i = 0; i < cnames.length; i++) {

@@ -99,9 +99,9 @@ public class Dictionary extends ArrayList<Bank> {
 		clear();
 		_allColumns.clear();
 
-		List<String> schemaNames = source.getReader().getSchemaFactory().getSchemaKeys();
+		List<String> bankNames = source.getReader().getSchemaFactory().getSchemaKeys();
 
-		for (String bankName : schemaNames) {
+		for (String bankName : bankNames) {
 
 			if (exclude(bankName)) {
 				continue;
