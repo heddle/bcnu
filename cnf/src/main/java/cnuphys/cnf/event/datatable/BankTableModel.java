@@ -29,7 +29,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Provide a link to the owner table
-	 * 
+	 *
 	 * @param table the owner table
 	 */
 	public void setTable(BankDataTable table) {
@@ -38,7 +38,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -62,7 +62,7 @@ public class BankTableModel extends DefaultTableModel {
 			return 0;
 		}
 
-		ArrayList<Column> cds = Dictionary.getInstance().hasData(_event, _bankName);
+		ArrayList<Column> cds = Dictionary.getInstance().columnsWithData(_event, _bankName);
 		int rowCount = 0;
 
 		for (Column cd : cds) {
@@ -77,7 +77,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @param row the 0-based row
 	 * @param col the 0-based column
 	 * @return the value at a given row and column
@@ -92,18 +92,18 @@ public class BankTableModel extends DefaultTableModel {
 			return " " + (row + 1);
 		}
 
-		Column cd = Dictionary.getInstance().getColumn(_bankName, _columnNames[col]);
-		if (cd == null) {
+		Column column = Dictionary.getInstance().getColumn(_bankName, _columnNames[col]);
+		if (column == null) {
 			return "???";
 		}
-		int len = cd.length(_event);
+		int len = column.length(_event);
 		if ((len == 0) || (row >= len)) {
 			return "";
 		}
 
-		String fullName = cd.getFullName();
+		String fullName = column.getFullName();
 
-		switch (cd.getType()) {
+		switch (column.getType()) {
 		case Dictionary.INT8:
 			return "" + Dictionary.getInstance().getByteArray(_event, fullName)[row];
 		case Dictionary.INT16:
@@ -130,7 +130,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the bank name
-	 * 
+	 *
 	 * @return the bank name
 	 */
 	public String getBankName() {
@@ -140,7 +140,7 @@ public class BankTableModel extends DefaultTableModel {
 	/**
 	 * Get the table column names, which are the names of all the known banks for
 	 * this bank
-	 * 
+	 *
 	 * @return the tames of all known data columns for this bank
 	 */
 	public String[] columnNames() {
@@ -150,7 +150,7 @@ public class BankTableModel extends DefaultTableModel {
 	// add an extra column name for index
 	private static String[] getColumnNames(String bankName) {
 		String cnames[] = Dictionary.getInstance().getColumnNames(bankName);
-		;
+
 		String expNames[] = new String[cnames.length + 1];
 		expNames[0] = "";
 		for (int i = 0; i < cnames.length; i++) {

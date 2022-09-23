@@ -34,7 +34,7 @@ public class DragDropList extends JList {
 
 		new MyDragListener(this);
 	}
-	
+
 
   public DragDropList() {
     super(new DefaultListModel());
@@ -45,33 +45,29 @@ public class DragDropList extends JList {
     setTransferHandler(new MyListDropHandler(this));
 
     new MyDragListener(this);
-    
+
     model.addElement("a");
     model.addElement("b");
     model.addElement("c");
   }
-  
+
   protected void swap(int index, int dropIndex) {
-	  
+
 
 		int count = model.size();
-		
-		if ((index < 0) || (dropIndex < 0)) {
-			return;
-		}
-		
-		if ((index >= count) || (dropIndex >= count)) {
+
+		if ((index < 0) || (dropIndex < 0) || (index >= count) || (dropIndex >= count)) {
 			return;
 		}
 
-		
-		
+
+
 		Object o1 = model.elementAt(index);
 //		System.err.println("object type: " + o1.getClass().getName());
 //		String s1 = (String) model.elementAt(index);
 		model.removeElementAt(index);
 		model.insertElementAt(o1, dropIndex);
-	  
+
 }
 
   public static void main(String[] a){
@@ -143,16 +139,12 @@ public boolean canImport(TransferHandler.TransferSupport support) {
 
   @Override
 public boolean importData(TransferHandler.TransferSupport support) {
-    if (!canImport(support)) {
-      return false;
-    }
-    
-    if (!(support.getComponent() instanceof DragDropList)) {
+    if (!canImport(support) || !(support.getComponent() instanceof DragDropList)) {
     	return false;
     }
     DragDropList list = (DragDropList)(support.getComponent());
     DefaultListModel model = list.model;
-   
+
 
     Transferable transferable = support.getTransferable();
     String indexString;
@@ -167,12 +159,12 @@ public boolean importData(TransferHandler.TransferSupport support) {
     int dropIndex = dl.getIndex() - 1;
 
     dropIndex = Math.max(1,  Math.min(model.size(), dropIndex));
-    
-    
+
+
 //    System.out.println("source Index: " + index);
 //    System.out.println("  drop Index: " + dropIndex);
 //    System.out.println("inserted");
-    
+
 		if (index != dropIndex) {
 			int count = model.size();
 			Object o1 = model.elementAt(index);
@@ -181,9 +173,9 @@ public boolean importData(TransferHandler.TransferSupport support) {
 			model.removeElementAt(index);
 			model.insertElementAt(o1, dropIndex);
 		}
-    
+
     return true;
   }
-  
+
 
 }

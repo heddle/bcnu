@@ -10,6 +10,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.cnf.event.dictionary.Dictionary;
@@ -17,7 +18,7 @@ import cnuphys.splot.pdata.HistoData;
 
 /**
  * Define a 1-D histogram
- * 
+ *
  * @author heddle
  *
  */
@@ -63,7 +64,7 @@ public class DefineHistoDialog extends JDialog implements ActionListener, Proper
 
 	/**
 	 * Get the reason the dialog closed
-	 * 
+	 *
 	 * @return the reason the dialog closed
 	 */
 	public int getReason() {
@@ -72,7 +73,7 @@ public class DefineHistoDialog extends JDialog implements ActionListener, Proper
 
 	/**
 	 * Return a HistoData ready for filling if the user hit ok
-	 * 
+	 *
 	 * @return a HistoData or <code>null</code>.
 	 */
 	public HistoData getHistoData() {

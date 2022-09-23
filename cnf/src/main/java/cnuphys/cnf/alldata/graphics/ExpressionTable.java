@@ -27,7 +27,7 @@ public class ExpressionTable extends JTable {
 
 	/**
 	 * Get the Expression table model
-	 * 
+	 *
 	 * @return the model
 	 */
 	public ExpressionTableModel getExpressionModel() {
@@ -36,7 +36,7 @@ public class ExpressionTable extends JTable {
 
 	/**
 	 * Get the selected (or first selected) named expression
-	 * 
+	 *
 	 * @return the selected (or first selected) named expression
 	 */
 	public NamedExpression getSelectedExpression() {

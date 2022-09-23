@@ -40,7 +40,7 @@ public class NameVariablePanel extends JPanel implements PropertyChangeListener 
 
 	// expression entry
 	private EntryPanel _entryPanel;
-	
+
 	//the bind button
 	private JButton _bindButton;
 
@@ -71,10 +71,10 @@ public class NameVariablePanel extends JPanel implements PropertyChangeListener 
 
 		sp.add(label);
 		sp.add(_variableNameTextField);
-		
+
 		_bindButton = new JButton("Bind");
 		_bindButton.setEnabled(false);
-		
+
 		//use lambda for action
 		_bindButton.addActionListener(e -> bindVariable());
 		GraphicsUtilities.setSizeMini(_bindButton);
@@ -193,7 +193,7 @@ public class NameVariablePanel extends JPanel implements PropertyChangeListener 
 
 	/**
 	 * Main program for testing
-	 * 
+	 *
 	 * @param arg command arguments (ignored)
 	 */
 	public static void main(String arg[]) {

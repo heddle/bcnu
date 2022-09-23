@@ -2,10 +2,10 @@
 
  /**
   * This this the frame (GUI window) for the Data Exporter Framework (def).
-  * def is an application developed for the Center for Nuclear Femtogrophy funded 
-  * short-term project: Visualizing Femto-Scale Dynamics (proposal CNF19-09). 
+  * def is an application developed for the Center for Nuclear Femtogrophy funded
+  * short-term project: Visualizing Femto-Scale Dynamics (proposal CNF19-09).
   */
- 
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +13,7 @@ import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
+
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -44,7 +45,7 @@ import cnuphys.splot.example.MemoryUsageDialog;
 
 @SuppressWarnings("serial")
 public class Def extends BaseMDIApplication implements IEventListener, IDefCommon {
-	
+
 	private static JFrame _frame;
 
 	// singleton
@@ -59,7 +60,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	// for the event count
 	private JMenuItem _eventCountLabel;
 
-	// event remaining label 
+	// event remaining label
 	private JMenuItem _eventRemainingLabel;
 
 	// the virtual view
@@ -70,19 +71,19 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 
 	// event menu
 	private EventMenu _eventMenu;
-	
+
 	// event menu
 	private FileMenu _fileMenu;
-	
+
 	//export menu
 	private JMenu _exportMenu;
 
 	//definition menu
 	private JMenu _definitionMenu;
-	
-	// event number label 
+
+	// event number label
 	private static JLabel _eventNumberLabel;
-	
+
 	// memory usage dialog
 	private MemoryUsageDialog _memoryUsage;
 
@@ -91,7 +92,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 
 	/** Last selected data file */
 	private static String dataFilePath;
-	
+
 	//views
 	private EventView _eventView;
 
@@ -103,7 +104,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 
 	/**
 	 * Constructor (private--used to create singleton)
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of attributes in type-value
 	 *                pairs. For example, PropertySupport.NAME, "my application",
 	 *                PropertySupport.CENTER, true, etc.
@@ -112,7 +113,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		super(keyVals);
 
 		_frame = this;
-		
+
 		ComponentListener cl = new ComponentListener() {
 
 			@Override
@@ -176,15 +177,15 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		// add a virtual view
 		_virtualView = VirtualView.createVirtualView(4);
 		ViewManager.getInstance().getViewMenu().addSeparator();
-		
+
 		// add event view
 		_eventView = EventView.createEventView();
 
 		// add the log view
 		_logView = new LogView(800, 750, true);
-		
+
 		//test plot remove later
-		
+
 //		ColumnData xdata =  DataManager.getInstance().getColumnData("CNF::DVCSevent.BSA");
 //		ColumnData ydata =  DataManager.getInstance().getColumnData("CNF::DVCSevent.phi");
 //		PlotWrapper.create2DScatterPlot(xdata, ydata);
@@ -205,7 +206,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		_eventCountLabel = DefCommon.addEventCountToEventMenu(_eventMenu);
 		_eventRemainingLabel = DefCommon.addEventRemainingToEventMenu(_eventMenu);
 	}
-	
+
 	//create the menu item to stream to the end of the file
 	private void createStreamMenuItem() {
 
@@ -216,7 +217,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 				Object source = e.getSource();
 				if (source == _streamItem) {
 					setBusy(true);
-					
+
 					Runnable runner = new Runnable() {
 
 						@Override
@@ -224,8 +225,8 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 							EventManager.getInstance().streamToEndOfFile();
 						}
 
-					};				
-					
+					};
+
 					(new Thread(runner)).start();
 					setBusy(false);
 				}
@@ -235,9 +236,9 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 			}
 
 		};
-		
+
 		_eventMenu.insertSeparator(1);
-		
+
 		_rewindItem = new JMenuItem("Rewind to Start of File");
 		_rewindItem.setEnabled(false);
 		_rewindItem.addActionListener(al);
@@ -257,10 +258,10 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		_definitionMenu.setEnabled(!busy);
 	}
 
-	
+
 	/**
 	 * a new event has arrived.
-	 * 
+	 *
 	 * @param event the new event
 	 * @param isStreaming <code>true</code> if this is during file streaming
 	 */
@@ -275,14 +276,14 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 
 	/**
 	 * Opened a new event file
-	 * 
+	 *
 	 * @param file the new file
 	 */
 	@Override
 	public void openedNewEventFile(File file) {
 		fixState();
 	}
-	
+
 	/**
 	 * Rewound the current file
 	 * @param file the file
@@ -291,7 +292,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	public void rewoundFile(File file) {
 		fixState();
 	}
-	
+
 	/**
 	 * Streaming start message
 	 * @param file file being streamed
@@ -300,7 +301,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	@Override
 	public void streamingStarted(File file, int numToStream) {
 	}
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed
@@ -310,24 +311,24 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	public void streamingEnded(File file, int reason) {
 		fixState();
 	}
-	
-	private void fixState() {		
-		
+
+	private void fixState() {
+
 		//any events remaining
 		int numRemaining = EventManager.getInstance().getNumRemainingEvents();
-		
+
 		//number of events
 		int eventCount = EventManager.getInstance().getEventCount();
-		
+
 		//set selectability
 		_streamItem.setEnabled(numRemaining > 0);
-		
+
 		_rewindItem.setEnabled(eventCount > 0);
-		
+
 		//fix labels
 		DefCommon.fixEventMenuLabels(_eventCountLabel, _eventRemainingLabel);
 	}
-	
+
 	/**
 	 * Get the frame, which could be this or the DefApp frame
 	 * @return
@@ -335,14 +336,14 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	public static JFrame getFrame() {
 		return _frame;
 	}
-	
+
 	protected static void setFrame(JFrame frame) {
 		_frame = frame;
 	}
 
 	/**
 	 * private access to the Def singleton.
-	 * 
+	 *
 	 * @return the singleton Def (the main application frame.)
 	 */
 	private static Def getInstance() {
@@ -359,14 +360,14 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		}
 		return _instance;
 	}
-	
+
 
 	// create the event number label
 	private void createEventNumberLabel() {
 		_eventNumberLabel = DefCommon.createEventNumberLabel(this);
 	}
 
-	
+
 	/**
 	 * Fix the title of the main frame
 	 */
@@ -391,22 +392,22 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 
 		_eventMenu = new EventMenu(false);
 		mmgr.addMenu(_eventMenu);
-		
+
 		//no option menu
 		mmgr.removeMenu(mmgr.getOptionMenu());
-		
+
 		// add to the file menu
 		addToFileMenu();
 
 		//add to the event menu
 		addToEventMenu();
-		
+
 		//the definition menu
 		_definitionMenu = DefinitionManager.getInstance().getMenu();
 		getJMenuBar().add(_definitionMenu);
-		
+
 	//	System.out.println("Menu font " + _definitionMenu.getFont());
-		
+
 		//the export menu with weird font hack
 		_exportMenu = ExportManager.getExportMenu();
 		_exportMenu.setFont(_definitionMenu.getFont());
@@ -414,7 +415,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 
 
 	}
-	
+
 	// add to the file menu
 	private void addToFileMenu() {
 		MenuManager mmgr = MenuManager.getInstance();
@@ -448,13 +449,13 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		_fileMenu.add(EventMenu.getRecentEventFileMenu(), 0);
 		_fileMenu.add(EventMenu.getOpenHipoEventFileItem(), 0);
 	}
-	
+
 
 
 
 	/**
 	 * Set the default directory in which to look for event files.
-	 * 
+	 *
 	 * @param defaultDataDir default directory in which to look for event files
 	 */
 	public static void setDefaultDataDir(String defaultDataDir) {
@@ -476,7 +477,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	 * <p>
 	 * Command line arguments:</br>
 	 * -p [dir] dir is the default directory
-	 * 
+	 *
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
@@ -510,12 +511,12 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 				done = (i >= len);
 			} // !done
 		} // end command arg processing
-		
+
 		// initialize managers
 		Dictionary.getInstance(); //data columns
-		DefinitionManager.getInstance(); 
+		DefinitionManager.getInstance();
 		ExportManager.getInstance(); //exporters
-		
+
 
 		// now make the frame visible, in the AWT thread
 		EventQueue.invokeLater(new Runnable() {
@@ -524,7 +525,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 			public void run() {
 				getInstance();
 				getInstance().setVisible(true);
-				
+
 				System.out.println("def  " + _release + " is ready.");
 			}
 

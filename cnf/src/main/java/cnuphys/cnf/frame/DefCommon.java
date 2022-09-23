@@ -26,14 +26,14 @@ public class DefCommon {
 	//return true on success
 	private static boolean clas12DirFromEnvVar() {
 		String c12dir = System.getenv(VNAME);
-		
+
 		if (c12dir == null) {
 			System.err.println("No environment variable named [" + VNAME + "] was found.");
 			return false;
 		}
-		
+
 		System.err.println("Found environment variable named [" + VNAME + "] value [" + c12dir + "]");
-		
+
 		//see if it is a directory
 		File file = new File(c12dir);
 		if (!file.exists()) {
@@ -44,13 +44,13 @@ public class DefCommon {
 			System.err.println("[" + c12dir + "] is not a directory. Please check your " + VNAME + " environment variable.");
 			System.exit(1);
 		}
-		
+
 		return true;
 	}
-	
+
 	// this is so we can find json files
 	protected static void initClas12Dir(boolean checkEnv) throws IOException {
-		
+
 		// first try, environment variable
 		if (checkEnv) {
 			if (clas12DirFromEnvVar()) {
@@ -91,8 +91,8 @@ public class DefCommon {
 
 		throw (new IOException("Could not locate the coatjava directory."));
 	}
-	
-	
+
+
 	/**
 	 * Fix the event count label
 	 */
@@ -103,12 +103,12 @@ public class DefCommon {
 		} else {
 			eventCountLabel.setText("Event Count: N/A");
 		}
-		
+
 		int numRemain = EventManager.getInstance().getNumRemainingEvents();
 		eventRemainingLabel.setText("Events Remaining: " + numRemain);
 	}
 
-	
+
 	protected static void fixTitle(JFrame frame) {
 		String title = frame.getTitle();
 
@@ -133,13 +133,13 @@ public class DefCommon {
 		eventCountLabel.setBackground(Color.white);
 		eventCountLabel.setForeground(X11Colors.getX11Color("Dark Blue"));
 		eventMenu.add(eventCountLabel);
-		return eventCountLabel;	
+		return eventCountLabel;
 	}
 
 
 	// add to the event menu
 	protected static JMenuItem addEventRemainingToEventMenu(JMenu eventMenu) {
-		
+
 		JMenuItem  eventRemainingLabel = new JMenuItem("Events Remaining: N/A");
 		eventRemainingLabel.setOpaque(true);
 		eventRemainingLabel.setBackground(Color.white);
@@ -148,7 +148,7 @@ public class DefCommon {
 
 		return eventRemainingLabel;
 	}
-	
+
 	// create the event number label
 	protected static JLabel createEventNumberLabel(JFrame frame) {
 		JLabel _eventNumberLabel = new JLabel("  Event Num: ");

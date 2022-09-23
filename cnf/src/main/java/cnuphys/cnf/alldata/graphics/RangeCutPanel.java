@@ -34,7 +34,7 @@ public class RangeCutPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the select panel
-	 * 
+	 *
 	 * @return the select panel
 	 */
 	public SelectPanel getSelectPanel() {
@@ -83,7 +83,7 @@ public class RangeCutPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Return a RangeCut if the user hit ok
-	 * 
+	 *
 	 * @return a Range or <code>null</code>.
 	 */
 	public RangeCut getRangeCut() {

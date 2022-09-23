@@ -24,10 +24,10 @@ public class PropertiesManager implements IEventListener {
 	// private constructor for simgleton
 	private PropertiesManager() {
 	}
-	
+
 	/**
 	 * Get the singleton for the Properties Manager
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static PropertiesManager getInstance() {
@@ -41,7 +41,7 @@ public class PropertiesManager implements IEventListener {
 
 	/**
 	 * Put a value into the user prefs an write them out.
-	 * 
+	 *
 	 * @param key   the key
 	 * @param value the associated value
 	 */
@@ -55,7 +55,7 @@ public class PropertiesManager implements IEventListener {
 
 	/**
 	 * Get a property
-	 * 
+	 *
 	 * @param key the key value
 	 * @return the associated property, or <code>null</code>
 	 */
@@ -101,16 +101,16 @@ public class PropertiesManager implements IEventListener {
 	@Override
 	public void openedNewEventFile(File file) {
 	}
-	
+
 	/**
 	 * Rewound the current file
 	 * @param file the file
 	 */
 	@Override
 	public void rewoundFile(File file) {
-		
+
 	}
-	
+
 
 	/**
 	 * Streaming start message
@@ -120,7 +120,7 @@ public class PropertiesManager implements IEventListener {
 	@Override
 	public void streamingStarted(File file, int numToStream) {
 	}
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed

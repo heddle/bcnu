@@ -34,7 +34,7 @@ public class RangeCut implements ICut {
 	/**
 	 * A RangeCut is a simple cut based on whether a column or expression value
 	 * falls in range
-	 * 
+	 *
 	 * @param name   the name, either a column or an expression
 	 * @param minVal the min value
 	 * @param maxVal the max value
@@ -58,7 +58,7 @@ public class RangeCut implements ICut {
 
 	/**
 	 * Get the NamedExpression which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpression() {
@@ -103,11 +103,7 @@ public class RangeCut implements ICut {
 	public boolean pass(int index) {
 
 		DataEvent event = EventManager.getInstance().getCurrentEvent();
-		if (event == null) {
-			return true;
-		}
-
-		if (!_active) {
+		if ((event == null) || !_active) {
 			return true;
 		}
 
@@ -121,11 +117,7 @@ public class RangeCut implements ICut {
 		if (_columnData != null) {
 			double vals[] = _columnData.getAsDoubleArray(event);
 
-			if ((vals == null) || (index < 0)) {
-				return false;
-			}
-
-			if (index >= vals.length) {
+			if ((vals == null) || (index < 0) || (index >= vals.length)) {
 				return false;
 			}
 

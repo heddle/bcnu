@@ -39,7 +39,7 @@ public class ExpressionPanel extends JPanel implements ActionListener, ListSelec
 
 	/**
 	 * Accessor for the underlying table.
-	 * 
+	 *
 	 * @return the underlying expression table.
 	 */
 	public ExpressionTable getTable() {
@@ -48,7 +48,7 @@ public class ExpressionPanel extends JPanel implements ActionListener, ListSelec
 
 	/**
 	 * Simple accessor for underlying model.
-	 * 
+	 *
 	 * @return The underlying table model.
 	 */
 	public ExpressionTableModel getExpressionModel() {
@@ -62,7 +62,7 @@ public class ExpressionPanel extends JPanel implements ActionListener, ListSelec
 			int rows[] = getTable().getSelectedRows();
 			if ((rows != null) && (rows.length > 0)) {
 				int len = rows.length;
-				Vector<NamedExpression> nbv = new Vector<NamedExpression>();
+				Vector<NamedExpression> nbv = new Vector<>();
 				for (int i = 0; i < len; i++) {
 					nbv.add(getExpressionModel().getNamedExpression(rows[i]));
 				}
@@ -77,7 +77,7 @@ public class ExpressionPanel extends JPanel implements ActionListener, ListSelec
 
 	/**
 	 * Remove a row from the table
-	 * 
+	 *
 	 * @param row the zero based row
 	 * @return the removed NamedExpression, or null
 	 */

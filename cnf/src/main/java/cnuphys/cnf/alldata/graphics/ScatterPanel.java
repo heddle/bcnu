@@ -36,7 +36,7 @@ public class ScatterPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the title from the data set
-	 * 
+	 *
 	 * @param ds the data set
 	 * @return
 	 */
@@ -49,7 +49,7 @@ public class ScatterPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the two select panels x,y
-	 * 
+	 *
 	 * @return the select panels
 	 */
 	public SelectPanel[] getScatterPanels() {
@@ -63,7 +63,7 @@ public class ScatterPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Create the scatter plot data set
-	 * 
+	 *
 	 * @return the scatter plot data set
 	 */
 	public DataSet createDataSet() {

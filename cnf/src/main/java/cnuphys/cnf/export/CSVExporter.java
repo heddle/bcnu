@@ -1,6 +1,5 @@
 package cnuphys.cnf.export;
 
-import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,6 +12,7 @@ import java.util.List;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
+import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
 import cnuphys.cnf.alldata.graphics.ColumnsDialog;
 import cnuphys.cnf.event.dictionary.Column;
@@ -24,43 +24,44 @@ import cnuphys.cnf.event.dictionary.Dictionary;
  *
  */
 public class CSVExporter extends AExporter {
-	
+
 	//the data output stream
 	//private DataOutputStream _dos;
-	
+
 	private OutputStreamWriter _osw;
-	
+
 	//the columns being exported
-	private List<Column> _columnData;
-	
+	private List<Column> _columns;
+
 	//used to write column data names
 	private boolean _first = true;
+	
+	//simple counter
+	private int count;
 
 	@Override
 	public String getMenuName() {
 		return "CSV";
 	}
-	
-	private int count;
 
 	@Override
 	public boolean prepareToExport() {
 		count = 0;
 		Log.getInstance().info("CSV export requested");
-		
+
 		//reset
-		_columnData = null;
-		
+		_columns = null;
+
 		//what columns to export?
 		ColumnsDialog cd = new ColumnsDialog("Select Bank and Columns to Export");
 		cd.setVisible(true);
-		
+
 		int reason = cd.getReason();
 		if (reason == DialogUtilities.CANCEL_RESPONSE) {
 			Log.getInstance().info("CSV Export was cancelled.");
 			return false;
 		}
-		
+
 		//see what I have selected
 		String bankName = cd.getSelectedBank();
 		if (bankName == null) {
@@ -68,29 +69,29 @@ public class CSVExporter extends AExporter {
 			return false;
 		}
 		List<String> colNames = cd.getSelectedColumns();
-		
+
 		if ((colNames == null) || colNames.isEmpty()) {
 			Log.getInstance().error("null or empty column names in CSV prepareToExport. That should not have happened.");
 			return false;
 		}
 		Log.getInstance().info("CSV exporting bank [" + bankName + "]");
-		
+
 		StringBuffer sb = new StringBuffer(256);
 		sb.append("CSV exporting column[s] ");
 		for (String c : colNames) {
 			sb.append(" [" + c + "]");
 		}
-		
+
 		Log.getInstance().info(sb.toString());
-		
-		
+
+
 		//open a file for writing
 		_exportFile = getFile("CSV Files", "csv", "csv", "CSV");
 		if (_exportFile != null) {
 			Log.getInstance().info("CSV: export to [" + _exportFile.getAbsolutePath() + "]");
-			
-			_columnData = new ArrayList<Column>();
-			
+
+			_columns = new ArrayList<>();
+
 			for (String c : colNames) {
 				Column cdata = Dictionary.getInstance().getColumn(bankName, c);
 				if (cdata == null) {
@@ -98,13 +99,13 @@ public class CSVExporter extends AExporter {
 					return false;
 				}
 				Log.getInstance().info("CSV adding ColumnData [" + cdata.getFullName() + "]");
-				_columnData.add(cdata);
+				_columns.add(cdata);
 			}
 
 			try {
 				OutputStream os = new FileOutputStream(_exportFile);
 				_osw = new OutputStreamWriter(os, "UTF-8");
-				
+
 				//_dos = new DataOutputStream(new FileOutputStream(_exportFile));
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -117,7 +118,7 @@ public class CSVExporter extends AExporter {
 		else {
 			return false;
 		}
-		
+
 		_first = true;
 		return true;
 	}
@@ -128,27 +129,27 @@ public class CSVExporter extends AExporter {
 		if ((count % 1000) == 0) {
 			System.err.println("Export count: " + count);
 		}
-		
-		if ((_columnData != null) && !_columnData.isEmpty()) {
-			
+
+		if ((_columns != null) && !_columns.isEmpty()) {
+
 			if (_first) {
 				writeColumnNames();
 				_first  = false;
 			}
-			
+
 			int minNum = Integer.MAX_VALUE;
-			int count = _columnData.size();
-			
-			ArrayList<double[]> doubleArrays = new ArrayList<>();
-			
+			int count = _columns.size();
+
+	//		ArrayList<double[]> doubleArrays = new ArrayList<>();
+
 			//get the minimum common number of rows
 			for (int i = 0; i < count; i++) {
-				Column cdata = _columnData.get(i);
-				doubleArrays.add(cdata.getAsDoubleArray(event));
-				int num = cdata.length(event);
+				Column column = _columns.get(i);
+	//			doubleArrays.add(column.getAsDoubleArray(event));
+				int num = column.length(event);
 				minNum = Math.min(minNum, num);
 			}
-			
+
 			if (minNum < 1) {
 				return;
 			}
@@ -158,30 +159,59 @@ public class CSVExporter extends AExporter {
 			for (int index = 0; index < minNum; index++) {
 				StringBuffer sb = new StringBuffer(512);
 				for (int i = 0; i < count; i++) {
-					double data[] = doubleArrays.get(i);
+					Column column = _columns.get(i);
+					
+					
+					
+	//				double data[] = doubleArrays.get(i);
 
 					if (i > 0) {
 						sb.append(",");
 					}
 					
-					String s = String.format("%5.4g", data[index]);
+					String s;
+					switch (column.getType()) {
+					case Dictionary.INT8:
+						s = "" + column.getByteArray(event)[i];
+						break;
+					case Dictionary.INT16:
+						s = "" + column.getShortArray(event)[i];
+						break;
+					case Dictionary.INT32:
+						s = "" + column.getIntArray(event)[i];
+						break;
+					case Dictionary.INT64:
+						s = "" + column.getLongArray(event)[i];
+						break;
+					case Dictionary.FLOAT32:
+						float f = column.getFloatArray(event)[i];
+						s = String.format("%5.4g", f);
+						break;
+					case Dictionary.FLOAT64:
+						double d = column.getDoubleArray(event)[i];
+						s = String.format("%5.4g", d);
+						break;
+					default:
+						s = "???";
+					}					
+
 					sb.append(s);
-					
+
 					//sb.append(data[index]);
 				}
 				stringLn(_osw, sb.toString());
 			}
 		}
 	}
-	
+
 	//write the column names
 	private void writeColumnNames() {
-		int count = _columnData.size();
+		int count = _columns.size();
 		StringBuffer sb = new StringBuffer(512);
 		String cname;
-		
+
 		for (int i = 0; i < count; i++) {
-			Column cdata = _columnData.get(i);
+			Column cdata = _columns.get(i);
 			if (i > 0) {
 				sb.append(",");
 			}
@@ -196,7 +226,7 @@ public class CSVExporter extends AExporter {
 	@Override
 	public void done() {
 		System.out.println("CSV: I am done");
-		
+
 		if (_osw != null) {
 			try {
 				_osw.close();
@@ -204,22 +234,10 @@ public class CSVExporter extends AExporter {
 				e.printStackTrace();
 			}
 		}
-		
+
 		_osw = null;
-		
-	}
-	
-	private static void stringLn(OutputStreamWriter osw, String str) {
-		
-		try {
-			osw.write(str);
-			
-			osw.write("\n");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+
 	}
 
-	
 
 }

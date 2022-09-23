@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -14,25 +13,24 @@ import javax.swing.event.EventListenerList;
 import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataSource;
 import org.jlab.io.hipo.HipoDataSource;
-import org.jlab.jnp.hipo4.data.Schema;
 
 import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.frame.Def;
 import cnuphys.cnf.frame.IDefCommon;
 
 public class EventManager {
-	
+
 	//streaming related constants
 	private static final int START_STREAMING      = 0;
 	private static final int STOP_STREAMING       = 1;
-	
+
 	/** Constant indicated streaming successfully completed */
 	public static final int STREAMING_COMPLETED   = 0;
 
 	/** Constant indicated streaming was cancelled before completion */
 	public static final int STREAMING_CANCELLED   = 1;
 
-	
+
 	//are we streaming?
 	private static boolean _streaming = false;
 
@@ -73,7 +71,7 @@ public class EventManager {
 
 	/**
 	 * Set the next event (after a getNextEvent)
-	 * 
+	 *
 	 * @param event the new event
 	 */
 	protected void setNextEvent(DataEvent event) {
@@ -86,7 +84,7 @@ public class EventManager {
 
 	/**
 	 * Access for the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static EventManager getInstance() {
@@ -98,7 +96,7 @@ public class EventManager {
 
 	/**
 	 * Get the underlying clas-io data source
-	 * 
+	 *
 	 * @return the DataSource object
 	 */
 	public DataSource getDataSource() {
@@ -107,7 +105,7 @@ public class EventManager {
 
 	/**
 	 * Get the current event
-	 * 
+	 *
 	 * @return the current event
 	 */
 	public DataEvent getCurrentEvent() {
@@ -117,7 +115,7 @@ public class EventManager {
 
 	/**
 	 * Open an event file
-	 * 
+	 *
 	 * @param file the event file
 	 * @throws FileNotFoundException
 	 * @throws IOException
@@ -137,11 +135,11 @@ public class EventManager {
 
 		_dataSource = new HipoDataSource();
 		_dataSource.open(file.getPath());
-		
+
 		Dictionary.getInstance().updateDictionary(_dataSource);
-		
-		
-		
+
+
+
 //		//get the dictionary from the file
 //		List<String> schemaNames = _dataSource.getReader().getSchemaFactory().getSchemaKeys();
 //
@@ -155,12 +153,12 @@ public class EventManager {
 //				int type = sch.getType(column);
 //				System.out.println("Found [" + fullName + "]  type: " + ColumnData.typeNames[type]);
 //			}
-//			
-//			
+//
+//
 //		}
 
 		notifyEventListeners(_currentHipoFile, 0);
-		
+
 		_currentEvent = null;
 		_eventIndex = 0;
 
@@ -170,7 +168,7 @@ public class EventManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Do we have a hipo file?
 	 * @return <code>true</code> if we have a file
@@ -178,7 +176,7 @@ public class EventManager {
 	public boolean haveOpenFile() {
 		return _currentHipoFile != null;
 	}
-	
+
 	/**
 	 * Get the current hipo file
 	 * @return the current hipo file
@@ -189,7 +187,7 @@ public class EventManager {
 
 	/**
 	 * Get the number of events available.
-	 * 
+	 *
 	 * @return the number of events available
 	 */
 	public int getEventCount() {
@@ -201,7 +199,7 @@ public class EventManager {
 
 	/**
 	 * Get the number of the current event, 0 if there is none
-	 * 
+	 *
 	 * @return the number of the current event.
 	 */
 	public int getEventNumber() {
@@ -210,7 +208,7 @@ public class EventManager {
 
 	/**
 	 * Determines whether any next event control should be enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if any next event control should be enabled.
 	 */
 	public boolean isNextOK() {
@@ -222,7 +220,7 @@ public class EventManager {
 	/**
 	 * Obtain the number of remaining events. For a file source it is what you
 	 * expect. For an et source, it is arbitrarily set to a large number
-	 * 
+	 *
 	 * @return the number of remaining events
 	 */
 	public int getNumRemainingEvents() {
@@ -232,7 +230,7 @@ public class EventManager {
 
 	/**
 	 * Determines whether any goto event control should be enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if any prev event control should be enabled.
 	 */
 	public boolean isGotoOK() {
@@ -241,7 +239,7 @@ public class EventManager {
 
 	/**
 	 * Get the next event from the current compact reader
-	 * 
+	 *
 	 * @return the next event, if possible
 	 */
 	public DataEvent getNextEvent() {
@@ -251,7 +249,7 @@ public class EventManager {
 			_eventIndex++;
 			ifPassSetEvent(_currentEvent);
 		}
-		
+
 		return _currentEvent;
 	}
 
@@ -269,7 +267,7 @@ public class EventManager {
 
 	/**
 	 * See if another event is available
-	 * 
+	 *
 	 * @return <code>true</code> if another event is available
 	 */
 	public boolean hasEvent() {
@@ -294,7 +292,7 @@ public class EventManager {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param eventNumber a 1-based number 1..num events in file
 	 * @return the event at the given number (if possible).
 	 */
@@ -323,7 +321,7 @@ public class EventManager {
 
 	/**
 	 * Reload the current event
-	 * 
+	 *
 	 * @return the same current event
 	 */
 	public DataEvent reloadCurrentEvent() {
@@ -333,10 +331,10 @@ public class EventManager {
 		}
 		return _currentEvent;
 	}
-	
+
 	//streaming notifications
-	
-	
+
+
 
 	// new event file notification
 	private void notifyEventListeners(File file, int opt) {
@@ -365,7 +363,7 @@ public class EventManager {
 
 	/**
 	 * Check if there are any active filters
-	 * 
+	 *
 	 * @return <code>true</code> if there are any active filters
 	 */
 	public boolean isFilteringOn() {
@@ -379,9 +377,9 @@ public class EventManager {
 		return false;
 	}
 
-	
-	
-	
+
+
+
 	/**
 	 * Notify listeners we have a new event ready for display. All they may want is
 	 * the notification that a new event has arrived. But the event itself is passed
@@ -427,7 +425,7 @@ public class EventManager {
 	/**
 	 * Remove a IEventListener. IEventListener listeners listen for new
 	 * events.
-	 * 
+	 *
 	 * @param listener the IEventListener listener to remove.
 	 */
 	public void removeEventListener(IEventListener listener) {
@@ -446,7 +444,7 @@ public class EventManager {
 	/**
 	 * Add a IEventListener. IEventListener listeners listen for new
 	 * events.
-	 * 
+	 *
 	 * @param listener the IEventListener listener to add.
 	 * @param index    Determines gross notification order. Those in index 0 are
 	 *                 notified first. Then those in index 1. Finally those in index
@@ -469,7 +467,7 @@ public class EventManager {
 
 	/**
 	 * Get the names of the banks in the current event
-	 * 
+	 *
 	 * @return the names of the banks in the current event
 	 */
 	public String[] getCurrentBanks() {
@@ -479,7 +477,7 @@ public class EventManager {
 	/**
 	 * Checks if a bank, identified by a string such as "FTOF1B::dgtz", is in the
 	 * current event.
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return <code>true</code> if the bank is in the curent event.
 	 */
@@ -494,7 +492,7 @@ public class EventManager {
 
 	/**
 	 * Get a sorted list of known banks from the dictinary
-	 * 
+	 *
 	 * @return a sorted list of known banks
 	 */
 	public String[] getKnownBanks() {
@@ -503,7 +501,7 @@ public class EventManager {
 
 	/**
 	 * Check whether a given bank is a known bank
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return <code>true</code> if the name is recognized.
 	 */
@@ -535,7 +533,7 @@ public class EventManager {
 
 	/**
 	 * Add an event filter
-	 * 
+	 *
 	 * @param filter the filter to add
 	 */
 	public void addEventFilter(IEventFilter filter) {
@@ -545,7 +543,7 @@ public class EventManager {
 			}
 		}
 	}
-	
+
 	/**
 	 * Rewind the current file
 	 */
@@ -553,15 +551,15 @@ public class EventManager {
 		gotoEvent(1);
 		notifyEventListeners(_currentHipoFile, 1);
 	}
-	
-	
+
+
 	/**
 	 * Send a streaming related notification to the listeners
 	 * @param option either START_STREAMING or STOP_STREAMING
 	 * @param reason (only used for stop streaming) either STREAMING_COMPLETED or STREAMING_CANCELLED
 	 */
 	protected void notifyEventListenersStreaming(int option, int reason) {
-		
+
 		for (int index = 0; index < 3; index++) {
 			if (_viewListenerList[index] != null) {
 				// Guaranteed to return a non-null array
@@ -572,7 +570,7 @@ public class EventManager {
 				for (int i = listeners.length - 2; i >= 0; i -= 2) {
 					IEventListener listener = (IEventListener) listeners[i + 1];
 					if (listeners[i] == IEventListener.class) {
-						
+
 						if (option == START_STREAMING) {
 							listener.streamingStarted(_currentHipoFile, getNumRemainingEvents());
 						}
@@ -584,37 +582,37 @@ public class EventManager {
 			}
 
 		} // index loop
-		
+
 	}
 
-	
+
 	/**
 	 * Stream to the end of the file
 	 */
 	public void streamToEndOfFile() {
-		
+
 		boolean isAWTThread = SwingUtilities.isEventDispatchThread();
 		System.out.println("Is AWT Thread: " + isAWTThread);
-		
+
 		_streaming = true;
-		
+
 		notifyEventListenersStreaming(START_STREAMING, -1);
-		
+
 		int numRemain = getNumRemainingEvents();
 
 		for (int i = 0; i < numRemain; i++) {
 			getNextEvent();
-			
+
 //			if (!isAWTThread && ((i % 1000) == 0)) {
 //				Thread.currentThread().yield();
 //			}
 		}
-		
+
 		_streaming = false;
 		notifyEventListenersStreaming(STOP_STREAMING, STREAMING_COMPLETED);
 		reloadCurrentEvent();
 	}
-	
+
 	/**
 	 * Set whether we are streaming
 	 * @return <code>true</coder> id we are streaming

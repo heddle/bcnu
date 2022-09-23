@@ -1,6 +1,7 @@
 package cnuphys.cnf.event.table;
 
 import java.util.ArrayList;
+
 import javax.swing.table.DefaultTableModel;
 
 import org.jlab.io.base.DataEvent;
@@ -25,7 +26,7 @@ public class NodeTableModel extends DefaultTableModel {
 	};
 
 	// the model data
-	private ArrayList<Column> _data = new ArrayList<Column>();
+	private ArrayList<Column> _data = new ArrayList<>();
 
 	// the current event
 	private DataEvent _event;
@@ -39,7 +40,7 @@ public class NodeTableModel extends DefaultTableModel {
 
 	/**
 	 * Find the row by the value in the name column
-	 * 
+	 *
 	 * @param name the column name to search for
 	 * @return the row, or -1
 	 */
@@ -60,7 +61,7 @@ public class NodeTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the event being displayed
-	 * 
+	 *
 	 * @return the event being displayed
 	 */
 	public DataEvent getCurrentEvent() {
@@ -69,7 +70,7 @@ public class NodeTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -79,7 +80,7 @@ public class NodeTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -89,7 +90,7 @@ public class NodeTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @param row the 0-based row
 	 * @param col the 0-based column
 	 * @return the value at a given row and column
@@ -109,7 +110,7 @@ public class NodeTableModel extends DefaultTableModel {
 					return cd.getTypeName();
 
 				case COUNT_INDEX:
-					String rs = "" + cd.length(_event); 
+					String rs = "" + cd.length(_event);
 					return rs;
 
 				default:
@@ -125,7 +126,7 @@ public class NodeTableModel extends DefaultTableModel {
 	 * Clear all the data
 	 */
 	public void clear() {
-		_data = new ArrayList<Column>();
+		_data = new ArrayList<>();
 	}
 
 	/**
@@ -140,18 +141,18 @@ public class NodeTableModel extends DefaultTableModel {
 			if (banks != null) {
 				for (String bank : banks) {
 
-					_data = Dictionary.getInstance().hasData(event);
+					_data = Dictionary.getInstance().columnsWithData(event);
 
 				}
 			}
 		}
-		
+
 		fireTableDataChanged();
 	}
 
 	/**
 	 * Get the column name of the bank column at the given row
-	 * 
+	 *
 	 * @param row the row in question
 	 * @return the corresponding data bank column name, or <code>null</code>
 	 */
@@ -159,7 +160,7 @@ public class NodeTableModel extends DefaultTableModel {
 		if (row < 0) {
 			return null;
 		}
-		
+
 		Column cd = (_data == null) ? null : _data.get(row);
 		return cd;
 	}

@@ -28,7 +28,7 @@ public class BoundVariableTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -38,7 +38,7 @@ public class BoundVariableTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -57,7 +57,7 @@ public class BoundVariableTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class BoundVariableTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the collection of bindings
-	 * 
+	 *
 	 * @return the bindings
 	 */
 	public Vector<NameBinding> getData() {
@@ -92,7 +92,7 @@ public class BoundVariableTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the name binding at a given row
-	 * 
+	 *
 	 * @param row the zero based row
 	 * @return the NameBinding or null.
 	 */

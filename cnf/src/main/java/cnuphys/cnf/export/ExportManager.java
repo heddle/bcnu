@@ -17,26 +17,29 @@ public class ExportManager implements IEventListener {
 
 	//singleton
 	private static ExportManager _instance;
-	
+
 	//the export menu
 	private static JMenu _exportMenu;
-	
+
 	//which exporter is active;
 	private AExporter _activeExporter;
-	
+
 	//the exporters
 	private Hashtable<JMenuItem, AExporter> _exporters;
-	
+
 	//singleton constructor
 	private ExportManager() {
 		EventManager.getInstance().addEventListener(this, 2);
 		_exporters = new Hashtable<>();
 		_exportMenu = new JMenu("Export");
 		
+		//create a MC Particle exporter
+		addExporter(new MCParticleExporter());
+
 		//create a CSV exporter
 		addExporter(new CSVExporter());
 	}
-	
+
 	/**
 	 * Access to the PlotManager singleton
 	 * @return the PlotManager singleton
@@ -47,11 +50,11 @@ public class ExportManager implements IEventListener {
 		}
 		return _instance;
 	}
-	
+
 	//export using a given exporter
 	private final void export(JMenuItem mitem) {
 		System.out.println("Telling to export: [" + mitem.getActionCommand() + "]");
-		
+
 		AExporter exporter = _exporters.get(mitem);
 
 		if (exporter != null) {
@@ -61,36 +64,36 @@ public class ExportManager implements IEventListener {
 
 			if (okToExport) {
 				EventManager.getInstance().rewindFile();
-				
+
 				//hack to get first
 				EventManager.getInstance().reloadCurrentEvent();
-				
+
 				EventManager.getInstance().streamToEndOfFile();
 			}
 			else {
 				System.out.println("export cancelled");
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Add an exporter to the collection
 	 * @param exporter the exporter to add
 	 */
 	public void addExporter(AExporter exporter) {
 		JMenuItem mitem = new JMenuItem(exporter.getMenuName());
-		
+
 		mitem.setEnabled(EventManager.getInstance().haveOpenFile());
-		
+
 		//use lambda for action
 		mitem.addActionListener(e -> export(mitem));
 		_exportMenu.add(mitem);
-		
+
 		_exporters.put(mitem, exporter);
-				
+
 	}
-	
+
 	/**
 	 * Get the plot menu
 	 * @return
@@ -99,13 +102,13 @@ public class ExportManager implements IEventListener {
 		if (_exportMenu == null) {
 			_exportMenu = new JMenu("Export");
 		}
-		
+
 		return _exportMenu;
 	}
 
 	@Override
 	public void newEvent(DataEvent event, boolean isStreaming) {
-		
+
 		if (_activeExporter != null) {
 			_activeExporter.nextEvent(event);
 		}
@@ -131,12 +134,12 @@ public class ExportManager implements IEventListener {
 			_activeExporter = null;
 		}
 	}
-	
+
 	private void enableExporters(boolean enabled) {
-		
-		
+
+
 		boolean b = enabled && EventManager.getInstance().haveOpenFile();
-		
+
 		Enumeration<JMenuItem> e = _exporters.keys();
 		while (e.hasMoreElements()) {
 			JMenuItem mitem = e.nextElement();

@@ -5,22 +5,22 @@ import org.jlab.io.base.DataEvent;
 
 
 public class Column implements Comparable<Column> {
-	
+
 	//the name of the column
 	private String _name;
-	
+
 	//the data type
 	private int _type;
-	
+
 	//the owner of the column
 	private Bank _bank;
-	
+
 	//the bank name
 	private String _bankName;
 
 	//for table backgrounds
 	public int bankIndex;
-	
+
 	/**
 	 * Create a Column
 	 * @param bank the parent bank
@@ -41,7 +41,7 @@ public class Column implements Comparable<Column> {
 	public String getName() {
 		return _name;
 	}
-	
+
 	/**
 	 * Set the column name
 	 * @param name the column name
@@ -49,7 +49,7 @@ public class Column implements Comparable<Column> {
 	protected void setName(String name) {
 		_name = name;
 	}
-	
+
 	/**
 	 * Get the owner (parent) bank
 	 * @return the parent bank
@@ -57,7 +57,7 @@ public class Column implements Comparable<Column> {
 	public Bank getBank() {
 		return _bank;
 	}
-	
+
 	/**
 	 * Get the int representing the data type
 	 * @return the int representing the data type
@@ -65,10 +65,10 @@ public class Column implements Comparable<Column> {
 	public int getType() {
 		return _type;
 	}
-	
+
 	/**
 	 * Get the name of the data type
-	 * 
+	 *
 	 * @return the name of the data type
 	 */
 	public String getTypeName() {
@@ -86,8 +86,8 @@ public class Column implements Comparable<Column> {
 	public String getFullName() {
 		return _bankName + "." + _name;
 	}
-	
-	
+
+
 	/**
 	 * Get a byte array for the bank and column names in the given event
 	 * @param event the given event
@@ -98,7 +98,7 @@ public class Column implements Comparable<Column> {
 		byte[] array = bank.getByte(_name);
 		return array;
 	}
-	
+
 	/**
 	 * Get a short array for the bank and column names in the given event
 	 * @param event the given event
@@ -120,7 +120,7 @@ public class Column implements Comparable<Column> {
 		int[] array = bank.getInt(_name);
 		return array;
 	}
-	
+
 	/**
 	 * Get a long array for the bank and column names in the given event
 	 * @param event the given event
@@ -141,7 +141,7 @@ public class Column implements Comparable<Column> {
 		float[] array = bank.getFloat(_name);
 		return array;
 	}
-	
+
 	/**
 	 * Get a double array for the bank and column names in the given event
 	 * @param event the given event
@@ -155,7 +155,7 @@ public class Column implements Comparable<Column> {
 
 	/**
 	 * Get the array with double values regardless of type
-	 * 
+	 *
 	 * @return the data as a double array
 	 */
 	public double[] getAsDoubleArray(DataEvent event) {
@@ -195,6 +195,18 @@ public class Column implements Comparable<Column> {
 					}
 				}
 				break;
+				
+			case Dictionary.INT64:
+				long l[] = getLongArray(event);
+				len = (l == null) ? 0 : l.length;
+				if (len > 0) {
+					da = new double[len];
+					for (int j = 0; j < len; j++) {
+						da[j] = l[j];
+					}
+				}
+				break;
+
 
 			case Dictionary.FLOAT32:
 				float f[] = getFloatArray(event);
@@ -218,7 +230,7 @@ public class Column implements Comparable<Column> {
 
 	/**
 	 * Get the length of the underlying data array
-	 * 
+	 *
 	 * @return the length of the underlying data array
 	 */
 	public int length(DataEvent event) {
@@ -273,9 +285,9 @@ public class Column implements Comparable<Column> {
 		//sort with ignore case
 		String s1 = getFullName().toLowerCase();
 		String s2 = o.getFullName().toLowerCase();
-		
+
 		return s1.compareTo(s2);
 	}
-	
+
 
 }

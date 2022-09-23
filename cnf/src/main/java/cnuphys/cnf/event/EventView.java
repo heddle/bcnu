@@ -47,7 +47,7 @@ public class EventView extends BaseView {
 
 	/**
 	 * Create the event view, or return the already created singleton.
-	 * 
+	 *
 	 * @return the event view singleton.
 	 */
 	public static EventView createEventView() {
@@ -60,7 +60,7 @@ public class EventView extends BaseView {
 
 	/**
 	 * Access to the singleton (might be <code>null</code>
-	 * 
+	 *
 	 * @return the event view singleton.
 	 */
 	public static EventView getInstance() {

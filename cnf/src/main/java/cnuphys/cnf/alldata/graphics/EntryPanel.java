@@ -34,9 +34,9 @@ public class EntryPanel extends JPanel {
 
 	//the add button
 	private JButton _addButton;
-	
+
 	private ExpressionPanel _expressionPanel;
-	
+
 
 	public EntryPanel(ExpressionPanel ePanel) {
 		_expressionPanel = ePanel;
@@ -63,10 +63,10 @@ public class EntryPanel extends JPanel {
 
 		sp.add(label);
 		sp.add(_nameTF);
-		
+
 		_addButton = new JButton("Add");
 		_addButton.setEnabled(false);
-		
+
 		//use lambda for action
 		_addButton.addActionListener(e -> nameExpression());
 		GraphicsUtilities.setSizeMini(_addButton);
@@ -127,7 +127,7 @@ public class EntryPanel extends JPanel {
 		KeyAdapter kl = new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent kev) {
-				
+
 				if (_addButton != null) {
 					String s = _nameTF.getText();
 					_addButton.setEnabled((s != null) && (s.length() > 0));
@@ -176,7 +176,7 @@ public class EntryPanel extends JPanel {
 
 	/**
 	 * Try to get the expression from the text area
-	 * 
+	 *
 	 * @return the expression or <code>null</code>
 	 */
 	private Expression getExpression() {
@@ -186,16 +186,12 @@ public class EntryPanel extends JPanel {
 
 	/**
 	 * Edit a row from the table
-	 * 
+	 *
 	 * @param row the zero-based row to edit
 	 */
 	public void editRow(int row) {
 		ExpressionTable table = _expressionPanel.getTable();
-		if (table == null) {
-			return;
-		}
-
-		if ((row < 0) || (row >= table.getRowCount())) {
+		if ((table == null) || (row < 0) || (row >= table.getRowCount())) {
 			return;
 		}
 

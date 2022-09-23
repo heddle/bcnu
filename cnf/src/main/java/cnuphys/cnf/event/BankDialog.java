@@ -6,12 +6,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.table.TableColumn;
 
-import org.jlab.io.base.DataDescriptor;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.ImageManager;
@@ -73,7 +73,7 @@ public class BankDialog extends JDialog implements ItemListener {
 
 	/**
 	 * Set the list to the columns of the given bank
-	 * 
+	 *
 	 * @param bankName the name of the bank
 	 */
 	public String[] colNames(String bankName) {

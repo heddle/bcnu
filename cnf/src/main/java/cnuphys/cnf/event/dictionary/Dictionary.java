@@ -13,7 +13,7 @@ import org.jlab.jnp.hipo4.data.Schema;
 
 
 public class Dictionary extends ArrayList<Bank> {
-	
+
 	/** type is unknown */
 	public static final int UNKNOWN = 0;
 
@@ -58,7 +58,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	//private work bank used for binary search
 	private Bank _workBank = new Bank("");
-	
+
 	// Bank exclusion list
 	private String _exclusions[] = null;
 
@@ -68,17 +68,17 @@ public class Dictionary extends ArrayList<Bank> {
 
 	//the singleton
 	private static Dictionary _instance;
-	
+
 	//convenient list of known banks
 	private String[] _knownBanks;
-	
+
 	//convenience to cache all columns
 	private Hashtable<String, Column> _allColumns = new Hashtable<>();
 
 	//private constructor for singleton
 	private Dictionary() {
 	}
-	
+
 	/**
 	 * Access to the singleton
 	 * @return the singleton dictionary
@@ -87,10 +87,10 @@ public class Dictionary extends ArrayList<Bank> {
 		if (_instance == null) {
 			_instance = new Dictionary();
 		}
-		
+
 		return _instance;
 	}
-	
+
 	/**
 	 * Update the dictionary, probably because a new file was opened.
 	 * @param source the data source, which is tied to a file
@@ -98,51 +98,49 @@ public class Dictionary extends ArrayList<Bank> {
 	public void updateDictionary(HipoDataSource source) {
 		clear();
 		_allColumns.clear();
-		
+
 		List<String> schemaNames = source.getReader().getSchemaFactory().getSchemaKeys();
 
 		for (String bankName : schemaNames) {
-			
+
 			if (exclude(bankName)) {
 				continue;
 			}
-			
+
 			Bank bank = new Bank(bankName);
 			add(bank);
-			
+
 			Schema schema = source.getReader().getSchemaFactory().getSchema(bankName);
 
 			//get the columns
 			List<String> columns = schema.getEntryList();
 
-			int bankIndex = 0;
 			for (String columnName : columns) {
 				int type = schema.getType(columnName);
 				Column column = new Column(bank, columnName, type);
-				column.bankIndex = bankIndex++;  //used for table coloring
 				_allColumns.put(column.getFullName(), column);
 				bank.put(columnName, column);
 			}
-			
-			
+
+
 		}
-		
+
 		//sort
 		Collections.sort(this);
-		
+
 		//for convenience
 		_knownBanks = new String[size()];
 		int index = 0;
 		for (Bank bank : this) {
 			_knownBanks[index++] = bank.getName();
 		}
-		
+
 		System.out.println(this);
-		
+
 		//tell whoever is interested
 		notifyListeners();
 	}
-	
+
 	// check exclusions
 	private boolean exclude(String bankName) {
 		if ((_exclusions != null) && (_exclusions.length > 0)) {
@@ -154,10 +152,10 @@ public class Dictionary extends ArrayList<Bank> {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Get the collection of recognized columns
-	 * 
+	 *
 	 * @return the collection of recognized columns
 	 */
 	public ArrayList<Column> getKnownColumns() {
@@ -166,14 +164,14 @@ public class Dictionary extends ArrayList<Bank> {
 			return null;
 		}
 
-		ArrayList<Column> columns = new ArrayList<Column>();
+		ArrayList<Column> columns = new ArrayList<>();
 		for (Column cd : _allColumns.values()) {
 			columns.add(cd);
 		}
 		Collections.sort(columns);
 		return columns;
 	}
-	
+
 	/**
 	 * Get the column names for a bank
 	 * @param bankName the name of the bank
@@ -181,25 +179,25 @@ public class Dictionary extends ArrayList<Bank> {
 	 */
 	public String[] getColumnNames(String bankName) {
 		Bank bank = getBank(bankName);
-		
+
 		if (bank == null) {
 			return null;
 		}
 		return bank.getColumnNames();
 	}
-	
+
 	/**
 	 * Get a list of all column  objects that have data in the given event for a
 	 * specific bank
-	 * 
+	 *
 	 * @param event    the event in question
 	 * @param bankName the bank
 	 * @return a list of all columns in the given bank with data
 	 */
 
-	public ArrayList<Column> hasData(DataEvent event, String bankName) {
+	public ArrayList<Column> columnsWithData(DataEvent event, String bankName) {
 
-		ArrayList<Column> list = new ArrayList<Column>();
+		ArrayList<Column> list = new ArrayList<>();
 
 		String columns[] = event.getColumnList(bankName);
 		if (columns != null) {
@@ -211,16 +209,16 @@ public class Dictionary extends ArrayList<Bank> {
 		return list;
 
 	}
-
-
+	
 	/**
 	 * Get a list of all column objects that have data in the given event
-	 * 
+	 *
 	 * @param event the event in question
 	 * @return a list of all columns in all banks with data
 	 */
-	public ArrayList<Column> hasData(DataEvent event) {
-		ArrayList<Column> list = new ArrayList<Column>();
+	public ArrayList<Column> columnsWithData(DataEvent event) {
+		ArrayList<Column> list = new ArrayList<>();
+
 
 		String banks[] = event.getBankList();
 		if (banks != null) {
@@ -228,15 +226,30 @@ public class Dictionary extends ArrayList<Bank> {
 				String columns[] = event.getColumnList(bankName);
 				if (columns != null) {
 					for (String columnName : columns) {
-						Column cd = getColumn(bankName, columnName);
+						Column column = getColumn(bankName, columnName);
 
-						if (cd != null) {
-							list.add(cd);
+						if (column != null) {
+							list.add(column);
 						}
 					}
 				}
 			}
 		}
+
+		Collections.sort(list);
+
+		//make it look nice in table
+		Bank bank = null;
+		int bankIndex = 0;
+
+		for (Column column : list) {
+			if (column.getBank() != bank) {
+				bankIndex++;
+				bank = column.getBank();
+			}
+			column.bankIndex = bankIndex;
+		}
+
 		return list;
 	}
 	/**
@@ -246,7 +259,7 @@ public class Dictionary extends ArrayList<Bank> {
 	public String[] getKnownBanks() {
 		return _knownBanks;
 	}
-	
+
 	/**
 	 * Notify all listeners that a change has occurred in the magnetic fields
 	 */
@@ -268,7 +281,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 		}
 	}
-	
+
 	/**
 	 * Add a dictionary change listener
 	 *
@@ -300,7 +313,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 		_listenerList.remove(IDictionaryListener.class, listener);
 	}
-	
+
 	/**
 	 * Get the bank using a binary search
 	 * @param bankName the name of the bank
@@ -316,7 +329,7 @@ public class Dictionary extends ArrayList<Bank> {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * Get the Column object from the bank and column names
 	 * @param bankName the bank name
@@ -328,10 +341,10 @@ public class Dictionary extends ArrayList<Bank> {
 		if (bank == null) {
 			return null;
 		}
-		
+
 		return bank.getColumn(columName);
 	}
-	
+
 	/**
 	 * Get a column from the full name
 	 * @param columnName the full name of the column
@@ -340,11 +353,11 @@ public class Dictionary extends ArrayList<Bank> {
 	public Column getColumnFromFullName(String columnName) {
 		return _allColumns.get(columnName);
 	}
-	
-	
+
+
 	/**
 	 * Obtain an byte array from the given event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -356,7 +369,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	/**
 	 * Obtain a short array from the given event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -368,7 +381,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	/**
 	 * Obtain an int array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -380,7 +393,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	/**
 	 * Obtain a long array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -392,7 +405,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	/**
 	 * Obtain a float array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -404,7 +417,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	/**
 	 * Obtain a double array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -417,7 +430,7 @@ public class Dictionary extends ArrayList<Bank> {
 	/**
 	 * (Approximate) test whether this is a valid column (full) name. Doesn't test whether
 	 * the column exists.
-	 * 
+	 *
 	 * @param name the name to test
 	 * @return <code>true</code> if name is structured as a valid column name.
 	 */
@@ -437,15 +450,15 @@ public class Dictionary extends ArrayList<Bank> {
 		}
 		return fullName.substring(index+1);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer(2048);
-		
+
 		for (Bank bank : this) {
 			sb.append(bank);
 		}
-	
+
 		return sb.toString();
 	}
 

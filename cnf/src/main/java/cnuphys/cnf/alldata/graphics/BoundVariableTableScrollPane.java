@@ -2,6 +2,7 @@ package cnuphys.cnf.alldata.graphics;
 
 import java.awt.Color;
 import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
@@ -18,7 +19,7 @@ public class BoundVariableTableScrollPane extends JScrollPane {
 
 	/**
 	 * Constructor will also create the table itself.
-	 * 
+	 *
 	 * @param cutList the list of cuts
 	 * @param label   a label for the list
 	 */
@@ -35,7 +36,7 @@ public class BoundVariableTableScrollPane extends JScrollPane {
 
 	/**
 	 * Accessor for the underlying table.
-	 * 
+	 *
 	 * @return the underlying bound variable table.
 	 */
 	public BoundVariableTable getTable() {
@@ -53,7 +54,7 @@ public class BoundVariableTableScrollPane extends JScrollPane {
 
 	/**
 	 * Simple accessor for underlying model.
-	 * 
+	 *
 	 * @return The underlying table model.
 	 */
 	public BoundVariableTableModel getBoundVariableModel() {

@@ -15,23 +15,29 @@ import javax.swing.JPanel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
+import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.dictionary.IDictionaryListener;
 import cnuphys.cnf.event.table.NodeTable;
 
 /**
  * Panel that shows which banks are present in an event
- * 
+ *
  * @author heddle
  *
  */
 @SuppressWarnings("serial")
 public class PresentBankPanel extends JPanel
-		implements ActionListener, IEventListener {
+		implements ActionListener, IEventListener, IDictionaryListener {
 
 	// the event manager
 	private EventManager _eventManager = EventManager.getInstance();
 
+	// the dictionary
+	private Dictionary _dictionary = Dictionary.getInstance();
+
+
 	// hash table
-	private Hashtable<String, ActionLabel> _alabels = new Hashtable<String, ActionLabel>(193);
+	private Hashtable<String, ActionLabel> _allLabels = new Hashtable<>(193);
 
 	// the node table
 	private NodeTable _nodeTable;
@@ -41,13 +47,27 @@ public class PresentBankPanel extends JPanel
 	/**
 	 * This panel holds all the known banks in a grid of buttons. Banks present will
 	 * be clickable, and will cause the table to scroll to that name
-	 * 
+	 *
 	 * @param nodeTable the table
 	 */
 	public PresentBankPanel(NodeTable nodeTable) {
 		_nodeTable = nodeTable;
 		_eventManager.addEventListener(this, 1);
+		_dictionary.addDictionaryListener(this);
+
 		setLayout(new GridLayout(40, 4, 2, 0));
+
+
+		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
+	}
+
+	//replace all the bank action labels
+	private void replaceLabels() {
+		//remove old labels
+
+		for (ActionLabel label : _allLabels.values()) {
+			remove(label);
+		}
 
 		// get all the known banks
 		String[] allBanks = _eventManager.getKnownBanks();
@@ -60,16 +80,11 @@ public class PresentBankPanel extends JPanel
 			}
 		}
 
-		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 	}
+
 
 	// skip certain irrelevant banks
 	private boolean skip(String s) {
-		// if ("CLAS6EVENT::particle".equals(s)) {
-		// return true;
-		// } else if ("SIMEVENT::particle".equals(s)) {
-		// return true;
-		// }
 		return false;
 	}
 
@@ -77,7 +92,7 @@ public class PresentBankPanel extends JPanel
 	private void update() {
 		String[] allBanks = _eventManager.getKnownBanks();
 		for (String s : allBanks) {
-			ActionLabel alabel = _alabels.get(s);
+			ActionLabel alabel = _allLabels.get(s);
 
 			if (alabel != null) {
 				boolean inCurrent = _eventManager.isBankInCurrentEvent(s);
@@ -121,7 +136,7 @@ public class PresentBankPanel extends JPanel
 						if (!bdlog.isVisible()) {
 							bdlog.setVisible(true);
 						}
-						
+
 						bdlog.toFront();
 					}
 				}
@@ -153,7 +168,7 @@ public class PresentBankPanel extends JPanel
 		alabel.addMouseListener(ml);
 
 		// alabel.addActionListener(this);
-		_alabels.put(label, alabel);
+		_allLabels.put(label, alabel);
 		add(alabel);
 		return alabel;
 	}
@@ -180,7 +195,7 @@ public class PresentBankPanel extends JPanel
 	 */
 	@Override
 	public void rewoundFile(File file) {
-		
+
 	}
 
 
@@ -192,7 +207,7 @@ public class PresentBankPanel extends JPanel
 	@Override
 	public void streamingStarted(File file, int numToStream) {
 	}
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed
@@ -200,5 +215,11 @@ public class PresentBankPanel extends JPanel
 	 */
 	@Override
 	public void streamingEnded(File file, int reason) {
+	}
+
+	@Override
+	public void dictionaryChanged() {
+		System.out.println("new dictionary");
+		replaceLabels();
 	}
 }

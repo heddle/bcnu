@@ -65,8 +65,8 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 	private static FileFilter _hipoEventFileFilter;
 
 	/**
-	 * The event menu 
-	 * 
+	 * The event menu
+	 *
 	 * @param includeQuit         include quite option
 	 */
 	public EventMenu(boolean includeQuit) {
@@ -109,7 +109,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 	}
 
 
-	/** 
+	/**
 	 * Get the menu item to open a HIPO event file
 	 * @return the menu item to open an event file
 	 */
@@ -127,7 +127,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 		item.addActionListener(al);
 		return item;
 	}
-	
+
 
 
 	// convenience method to add menu item
@@ -168,7 +168,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 
 	/**
 	 * Set the default directory in which to look for event files.
-	 * 
+	 *
 	 * @param defaultDataDir default directory in which to look for event files
 	 */
 	public static void setDefaultDataDir(String defaultDataDir) {
@@ -193,7 +193,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 
 				if (_hipoEventFileFilter.accept(file)) {
 					EventManager.getInstance().openHipoEventFile(file);
-				} 
+				}
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {
@@ -206,7 +206,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 
 	/**
 	 * Get the menu from which you can choose a recently opened file
-	 * 
+	 *
 	 * @return the menu from which you can choose a recently opened file
 	 */
 	public static JMenu getRecentEventFileMenu() {
@@ -242,7 +242,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 				_recentMenu.remove(item);
 			}
 		} else {
-			_menuItems = new Hashtable<String, JMenuItem>(41);
+			_menuItems = new Hashtable<>(41);
 		}
 
 		ActionListener al = new ActionListener() {
@@ -282,7 +282,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 
 	/**
 	 * Update the recent files for the recent file menu.
-	 * 
+	 *
 	 * @param path the path to the file
 	 */
 	private void updateRecentFiles(String path) {
@@ -291,7 +291,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 		}
 		Vector<String> recentFiles = Environment.getInstance().getPreferenceList(_recentFileKey);
 		if (recentFiles == null) {
-			recentFiles = new Vector<String>(10);
+			recentFiles = new Vector<>(10);
 		}
 
 		// keep no more than 10
@@ -424,7 +424,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 
 	/**
 	 * Part of the IEventListener interface
-	 * 
+	 *
 	 * @param event       the new current event
 	 * @param isStreaming <code>true</code> if this is during file streaming
 	 */
@@ -437,20 +437,20 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 
 	/**
 	 * Part of the IEventListener interface
-	 * 
+	 *
 	 * @param file the new file
 	 */
 	@Override
 	public void openedNewEventFile(File file) {
 
 		String path = file.getAbsolutePath();
-		
+
 		// remember which file was chosen
 		setDefaultDataDir(path);
 		updateRecentFiles(path);
 		fixState();
 	}
-	
+
 	/**
 	 * Rewound the current file
 	 * @param file the file
@@ -467,7 +467,7 @@ public class EventMenu extends JMenu implements ActionListener, IEventListener {
 	@Override
 	public void streamingStarted(File file, int numToStream) {
 	}
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed

@@ -10,6 +10,7 @@ import java.util.Vector;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.log.Log;
@@ -20,7 +21,7 @@ import cnuphys.splot.pdata.HistoData;
 
 /**
  * For managing defined histograms and scatter plots
- * 
+ *
  * @author heddle
  *
  */
@@ -42,13 +43,13 @@ public class DefinitionManager implements ActionListener {
 	private String _saveDir = Environment.getInstance().getHomeDirectory();
 
 	// all the define plots, which are dialogs
-	private Hashtable<String, Holder> _plots = new Hashtable<String, Holder>();
+	private Hashtable<String, Holder> _plots = new Hashtable<>();
 
 	// name bundings
-	protected Vector<NameBinding> _bindings = new Vector<NameBinding>();
+	protected Vector<NameBinding> _bindings = new Vector<>();
 
 	// expressions
-	protected Vector<NamedExpression> _expressions = new Vector<NamedExpression>();
+	protected Vector<NamedExpression> _expressions = new Vector<>();
 
 	// for creating expressions
 	protected DefineExpressionDialog _defineExpressionDialog;
@@ -59,7 +60,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * public access for the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static DefinitionManager getInstance() {
@@ -71,7 +72,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Get the plot save directory
-	 * 
+	 *
 	 * @return the plot save directory
 	 */
 	public String getSaveDir() {
@@ -80,7 +81,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Set the plot save directory
-	 * 
+	 *
 	 * @param saveDir the new plot save directory
 	 */
 	public void setSaveDir(String saveDir) {
@@ -89,7 +90,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Het the definition menu
-	 * 
+	 *
 	 * @return the menu
 	 */
 	public JMenu getMenu() {
@@ -228,7 +229,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Add a histogram
-	 * 
+	 *
 	 * @param histoData the HistoData object
 	 * @return the histogram
 	 */
@@ -262,7 +263,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Add a 2D histogram
-	 * 
+	 *
 	 * @param histoData the Histo2DData object
 	 * @return the 2D histogram
 	 */
@@ -309,7 +310,7 @@ public class DefinitionManager implements ActionListener {
 				} else {
 
 					JMenuItem item = new JMenuItem(name);
-					
+
 					final ScatterPlot plot = new ScatterPlot(dataSet);
 					int count = _plots.size();
 					int x = 10 + 30 * (count % 20);
@@ -333,7 +334,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Remove a plot
-	 * 
+	 *
 	 * @param name the name of the plot to remove
 	 */
 	public void remove(String name) {
@@ -359,7 +360,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Get all the current plots
-	 * 
+	 *
 	 * @return all the plots
 	 */
 	public Vector<PlotDialog> getAllPlots() {
@@ -367,7 +368,7 @@ public class DefinitionManager implements ActionListener {
 			return null;
 		}
 
-		Vector<PlotDialog> v = new Vector<PlotDialog>();
+		Vector<PlotDialog> v = new Vector<>();
 		Enumeration<Holder> e = _instance._plots.elements();
 		while (e.hasMoreElements()) {
 			Holder holder = e.nextElement();
@@ -379,7 +380,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Add a binding
-	 * 
+	 *
 	 * @param vname  the variable name, like "x" or "theta". Case sensitive.
 	 * @param bcname the bank column name, like "DC::dgtz.sector"
 	 */
@@ -398,7 +399,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Check to see if a name is already bound
-	 * 
+	 *
 	 * @param name the variable name, like "x" or "theta". Case sensitive.
 	 * @return <code>true</code> if the name is already bound
 	 */
@@ -416,7 +417,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Get the name bindings
-	 * 
+	 *
 	 * @return the name bindings
 	 */
 	public Vector<NameBinding> getBindings() {
@@ -425,7 +426,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Add an expression
-	 * 
+	 *
 	 * @param ename   the expression name. Case sensitive.
 	 * @param estring the expression
 	 */
@@ -444,7 +445,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Check to see if a name is already defined for an expression
-	 * 
+	 *
 	 * @param name the expression name.
 	 * @return <code>true</code> if the name is already bound to an expression
 	 */
@@ -462,7 +463,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Get the named expressions
-	 * 
+	 *
 	 * @return the expressions
 	 */
 	public Vector<NamedExpression> getExpressions() {
@@ -471,7 +472,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Find a NamedExpression with the matching name or return null.
-	 * 
+	 *
 	 * @param name the name to match
 	 * @return the matching NamedExpression
 	 */
@@ -493,7 +494,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Check whether we have any expressions
-	 * 
+	 *
 	 * @return <code>true</code> if we have at least one expression
 	 */
 	public boolean haveExpressions() {
@@ -502,7 +503,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Find a NameBinding with the matching name or return null.
-	 * 
+	 *
 	 * @param name the name to match
 	 * @return the matching NameBinding
 	 */
@@ -530,7 +531,7 @@ public class DefinitionManager implements ActionListener {
 
 	/**
 	 * Check whether we have any bindings
-	 * 
+	 *
 	 * @return <code>true</code> if we have at least one expression
 	 */
 	public boolean haveBindings() {

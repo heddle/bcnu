@@ -10,6 +10,7 @@ import javax.swing.JDialog;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.ImageManager;
@@ -28,8 +29,8 @@ public abstract class PlotDialog extends JDialog
 	protected static final String HISTOGRAM = "histogram";
 	protected static final String HISTOGRAM2D = "histogram2d";
 	protected static final String SCATTERPLOT = "scatterplot";
-	
-	
+
+
 	// is the plot accepting new data
 	private boolean _acceptingData = true;
 
@@ -56,7 +57,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Create a Plot Dialog
-	 * 
+	 *
 	 * @param name the name of the plot
 	 */
 	public PlotDialog(String name) {
@@ -114,31 +115,31 @@ public abstract class PlotDialog extends JDialog
 	/** Clear all the data */
 	protected abstract void clear();
 
-	
+
 	/** refresh the plot */
 	public void refresh() {
 		_plotPanel.getCanvas().needsRedraw(true);
 	}
-	
+
 	/**
 	 * Opened a new event file
-	 * 
+	 *
 	 * @param file the new file
 	 */
 	@Override
 	public void openedNewEventFile(File file) {
 		_errorCount = 0;
 	}
-	
+
 	@Override
 	public void newEvent(final DataEvent event, boolean isStreaming) {
 		if (_acceptingData) {
 			processEvent(event, isStreaming);
 		}
 	}
-	
+
 	public abstract void processEvent(final DataEvent event, boolean isStreaming);
-	
+
 	/**
 	 * Rewound the current file
 	 * @param file the file
@@ -147,7 +148,7 @@ public abstract class PlotDialog extends JDialog
 	public void rewoundFile(File file) {
 		_errorCount = 0;
 	}
-	
+
 	/**
 	 * Streaming start message
 	 * @param file file being streamed
@@ -155,9 +156,9 @@ public abstract class PlotDialog extends JDialog
 	 */
 	@Override
 	public void streamingStarted(File file, int numToStream) {
-		
+
 	}
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed
@@ -179,7 +180,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Add a cut
-	 * 
+	 *
 	 * @param cut the cut to add
 	 */
 	public void addCut(ICut cut) {
@@ -188,7 +189,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get all the defined cuts, active or not
-	 * 
+	 *
 	 * @return all the cuts
 	 */
 	protected Vector<ICut> getCuts() {
@@ -197,14 +198,14 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get a string representing the type
-	 * 
+	 *
 	 * @return a string representing the type
 	 */
 	public abstract String getPlotType();
 
 	/**
 	 * Get the plot parameters for the underlying plot.
-	 * 
+	 *
 	 * @return the plot parameters for the underlying plot.
 	 */
 	public PlotParameters getParameters() {
@@ -218,7 +219,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get the plot canvas for the underlying plot.
-	 * 
+	 *
 	 * @return the plot canvas for the underlying plot.
 	 */
 	public PlotCanvas getCanvas() {
@@ -232,7 +233,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get the effective length of the data
-	 * 
+	 *
 	 * @param event the event
 	 * @param cd    the column data
 	 * @param ne    the named expression
@@ -253,17 +254,14 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get a value for either the column data or the named expression
-	 * 
+	 *
 	 * @param index the index
 	 * @param cd    the column data
 	 * @param ne    the named expression
 	 * @return the value at the index or Double.NaN on error
 	 */
 	public double getValue(DataEvent event, int index, Column cd, NamedExpression ne) {
-		if (index < 0) {
-			return Double.NaN;
-		}
-		if ((cd == null) && (ne == null)) {
+		if ((index < 0) || ((cd == null) && (ne == null))) {
 			return Double.NaN;
 		}
 

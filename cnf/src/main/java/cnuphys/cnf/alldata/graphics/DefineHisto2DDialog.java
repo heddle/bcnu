@@ -63,7 +63,7 @@ public class DefineHisto2DDialog extends JDialog implements ActionListener, Prop
 
 	/**
 	 * Get the reason the dialog closed
-	 * 
+	 *
 	 * @return the reason the dialog closed
 	 */
 	public int getReason() {
@@ -72,7 +72,7 @@ public class DefineHisto2DDialog extends JDialog implements ActionListener, Prop
 
 	/**
 	 * Return a HistoData ready for filling if the user hit ok
-	 * 
+	 *
 	 * @return a HistoData or <code>null</code>.
 	 */
 	public Histo2DData getHistoData() {
@@ -128,7 +128,7 @@ public class DefineHisto2DDialog extends JDialog implements ActionListener, Prop
 
 	/**
 	 * Get the name for the x axis variable
-	 * 
+	 *
 	 * @return the name for the x axis variable
 	 */
 	public String getXName() {
@@ -137,7 +137,7 @@ public class DefineHisto2DDialog extends JDialog implements ActionListener, Prop
 
 	/**
 	 * Get the name for the y axis variable
-	 * 
+	 *
 	 * @return the name for the y axis variable
 	 */
 	public String getYName() {

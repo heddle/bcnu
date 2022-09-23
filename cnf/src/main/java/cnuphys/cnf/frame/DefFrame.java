@@ -37,33 +37,33 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 	//the singleton
 	private static DefFrame _instance;
-	
+
 	//the file menu
 	private FileMenu _fileMenu;
-	
+
 	//export menu
 	private JMenu _exportMenu;
 
 	//definition menu
 	private JMenu _definitionMenu;
 
-	
+
 	//the log dialog
 	private static SimpleLogDialog _logDialog;
-	
+
 	// holds the panel that has the table
 	protected NodePanel _nodePanel;
 
 	// event menu
 	private EventMenu _eventMenu;
-	
-	// event number label 
+
+	// event number label
 	private static JLabel _eventNumberLabel;
 
 	// for the event count
 	private JMenuItem _eventCountLabel;
 
-	// event remaining label 
+	// event remaining label
 	private JMenuItem _eventRemainingLabel;
 
 	//rewind item
@@ -71,21 +71,21 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 	//stream events menu item
 	private static JMenuItem _streamItem;
-	
+
 	//private constructor
 	private DefFrame() {
-		
+
 		super("def release " + Def._release);
-		
+
 		Def.setFrame(this);
 
-		
+
 		setLayout(new BorderLayout(4, 4));
-		
+
 		addCenter();
-		
+
 		createMenus();
-		
+
 		WindowAdapter wa = new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent we) {
@@ -96,21 +96,21 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 		addWindowListener(wa);
 
 		EventManager.getInstance().addEventListener(this, 2);
-		
+
 		//size based on screen, and center
 		Dimension d = GraphicsUtilities.screenFraction(.7);
 		setSize(d);
 		GraphicsUtilities.centerComponent(this);
 
 	}
-	
+
 	//add the center component
 	private void addCenter() {
 		_nodePanel = new NodePanel();
-		
+
 		add(_nodePanel, BorderLayout.CENTER);
 	}
-	
+
 	/**
 	 * public access to the singleton
 	 * @return the singleton
@@ -122,12 +122,12 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 		}
 		return _instance;
 	}
-	
+
 	//create the menus
 	private void createMenus() {
 		setJMenuBar(new JMenuBar());
 		JMenuBar menuBar = getJMenuBar();
-		
+
 		_eventMenu = new EventMenu(false);
 		//add to the event menu
 		addToEventMenu();
@@ -135,27 +135,27 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 		_fileMenu = new FileMenu(false);
 		addToFileMenu();
-		
+
 		menuBar.add(_fileMenu);
 		menuBar.add(_eventMenu);
-		
+
 		//the definition menu
 		_definitionMenu = DefinitionManager.getInstance().getMenu();
 		menuBar.add(_definitionMenu);
-		
+
 		//the export menu
 		_exportMenu = ExportManager.getExportMenu();
 		menuBar.add(_exportMenu);
 
 
 	}
-	
+
 	// add to the file menu
 	private void addToFileMenu() {
-		
+
 		//the log
 		JMenuItem mitem = new JMenuItem("Log...");
-		
+
 		//use lambda for action
 		mitem.addActionListener(e -> displayLog());
 		_fileMenu.add(mitem, 0);
@@ -164,21 +164,21 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 		_fileMenu.add(EventMenu.getRecentEventFileMenu(), 0);
 		_fileMenu.add(EventMenu.getOpenHipoEventFileItem(), 0);
 		_fileMenu.insertSeparator(2);
-		
+
 	}
-	
+
 	//display the log
 	private void displayLog() {
 		_logDialog.setVisible(true);
 	}
-	
+
 	// add to the event menu
 	private void addToEventMenu() {
 		createStreamMenuItem();
 		_eventCountLabel = DefCommon.addEventCountToEventMenu(_eventMenu);
 		_eventRemainingLabel = DefCommon.addEventRemainingToEventMenu(_eventMenu);
 	}
-	
+
 	//create the menu item to stream to the end of the file
 	private void createStreamMenuItem() {
 
@@ -189,7 +189,7 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 				Object source = e.getSource();
 				if (source == _streamItem) {
 					setBusy(true);
-					
+
 					Runnable runner = new Runnable() {
 
 						@Override
@@ -197,8 +197,8 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 							EventManager.getInstance().streamToEndOfFile();
 						}
 
-					};				
-					
+					};
+
 					(new Thread(runner)).start();
 					setBusy(false);
 				}
@@ -208,9 +208,9 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 			}
 
 		};
-		
+
 		_eventMenu.insertSeparator(1);
-		
+
 		_rewindItem = new JMenuItem("Rewind to Start of File");
 		_rewindItem.setEnabled(false);
 		_rewindItem.addActionListener(al);
@@ -257,7 +257,7 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 	public void streamingEnded(File file, int reason) {
 		fixState();
 	}
-	
+
 	// create the event number label
 	private void createEventNumberLabel() {
 		_eventNumberLabel = DefCommon.createEventNumberLabel(this);
@@ -275,26 +275,26 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 	public void setEventNumberLabel(int num) {
 		DefCommon.setEventNumberLabel(_eventNumberLabel, num);
 	}
-	
-	
-	private void fixState() {		
-		
+
+
+	private void fixState() {
+
 		//any events remaining
 		int numRemaining = EventManager.getInstance().getNumRemainingEvents();
-		
+
 		//number of events
 		int eventCount = EventManager.getInstance().getEventCount();
-		
+
 		//set selectability
 		_streamItem.setEnabled(numRemaining > 0);
-		
+
 		_rewindItem.setEnabled(eventCount > 0);
-		
+
 		//fix labels
 		DefCommon.fixEventMenuLabels(_eventCountLabel, _eventRemainingLabel);
 	}
-	
-	
+
+
 	/**
 	 * Main program
 	 * @param arg command line arguments
@@ -332,18 +332,18 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 						done = (i >= len);
 					} // !done
 				} // end command arg processing
-				
+
 				//create the log dialog
 				_logDialog = new SimpleLogDialog();
 
-				
+
 				// initialize managers
 				Dictionary.getInstance(); //data columns
-				DefinitionManager.getInstance(); 
+				DefinitionManager.getInstance();
 				ExportManager.getInstance(); //exporters
 				Log.getInstance();
-				
-				
+
+
 				// now make the frame visible, in the AWT thread
 				EventQueue.invokeLater(new Runnable() {
 
@@ -352,7 +352,7 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 						getInstance();
 						getInstance().setVisible(true);
 						getInstance().fixTitle();
-						
+
 						System.out.println("def  " + Def._release + " is ready.");
 					}
 
@@ -361,7 +361,7 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 				Log.getInstance().info("def is ready.");
 
-		
+
 	}
 
 

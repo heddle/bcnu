@@ -8,7 +8,7 @@ import org.jlab.io.base.DataEvent;
 public interface IEventListener extends EventListener {
 	/**
 	 * a new event has arrived.
-	 * 
+	 *
 	 * @param event the new event
 	 * @param isStreaming <code>true</code> if this is during file streaming
 	 */
@@ -16,24 +16,24 @@ public interface IEventListener extends EventListener {
 
 	/**
 	 * Opened a new event file
-	 * 
+	 *
 	 * @param file the new file
 	 */
 	public void openedNewEventFile(File file);
-	
+
 	/**
 	 * Rewound the current file
 	 * @param file the file
 	 */
 	public void rewoundFile(File file);
-	
+
 	/**
 	 * Streaming start message
 	 * @param file file being streamed
 	 * @param numToStream number that will be streamed
 	 */
 	public void streamingStarted(File file, int numToStream);
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed

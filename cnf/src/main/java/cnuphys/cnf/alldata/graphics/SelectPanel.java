@@ -42,7 +42,7 @@ public class SelectPanel extends JPanel implements ListSelectionListener {
 	private DefaultListSelectionModel _expressionSelectionModel;
 
 	/**
-	 * 
+	 *
 	 * @param label
 	 * @param addExpressionTable
 	 */
@@ -109,7 +109,7 @@ public class SelectPanel extends JPanel implements ListSelectionListener {
 
 	/**
 	 * Add a selection listener to the bank and column lists
-	 * 
+	 *
 	 * @param lsl the selection listener
 	 */
 	public void addBankColumnListener(ListSelectionListener lsl) {
@@ -177,7 +177,7 @@ public class SelectPanel extends JPanel implements ListSelectionListener {
 
 	/**
 	 * Get the full column name
-	 * 
+	 *
 	 * @return the full column name
 	 */
 	public String getFullColumnName() {
@@ -186,7 +186,7 @@ public class SelectPanel extends JPanel implements ListSelectionListener {
 
 	/**
 	 * Get the full bank-column name. If that is no good, get the expression name.
-	 * 
+	 *
 	 * @return the name
 	 */
 	public String getResolvedName() {
@@ -202,7 +202,7 @@ public class SelectPanel extends JPanel implements ListSelectionListener {
 
 	/**
 	 * Get the expression name
-	 * 
+	 *
 	 * @return the expression name
 	 */
 	public String getExpressionName() {

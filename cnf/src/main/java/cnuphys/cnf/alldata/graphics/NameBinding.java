@@ -3,7 +3,7 @@ package cnuphys.cnf.alldata.graphics;
 /**
  * A simple class that binds a name like "x" or "theta" to abank.column, like
  * DC::dgtz.sector
- * 
+ *
  * @author heddle
  *
  */

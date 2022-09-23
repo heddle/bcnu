@@ -22,7 +22,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Create a bank table
-	 * 
+	 *
 	 * @param bankName the name of the bank, e.g. "DC::tdc"
 	 */
 	public BankDataTable(String bankName) {
@@ -58,7 +58,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Get all the TableColumns in an array
-	 * 
+	 *
 	 * @return all the table columns
 	 */
 	public TableColumn[] getTableColumns() {
@@ -77,7 +77,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Get the underlying model
-	 * 
+	 *
 	 * @return the data model
 	 */
 	public BankTableModel getBankTableModel() {
@@ -86,7 +86,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Set the event for table display
-	 * 
+	 *
 	 * @param event the event
 	 */
 	public void setEvent(DataEvent event) {
@@ -95,7 +95,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Get the table's scroll pane
-	 * 
+	 *
 	 * @return te table's scroll pane
 	 */
 	public JScrollPane getScrollPane() {

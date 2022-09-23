@@ -3,9 +3,11 @@ package cnuphys.cnf.alldata.graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Collection;
+
 import javax.swing.BorderFactory;
 
 import org.jlab.io.base.DataEvent;
+
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.cnf.event.dictionary.Column;
@@ -26,8 +28,8 @@ public class ScatterPlot extends PlotDialog {
 
 	// the data set
 	private DataSet _dataSet;
-	
-	//the plot canvas 
+
+	//the plot canvas
 	private PlotCanvas _canvas;
 
 	// the x and y column data
@@ -42,13 +44,13 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Create a Scatter Plot
-	 * 
+	 *
 	 * @param dataSet the underlying data set
 	 */
 	public ScatterPlot(DataSet dataSet) {
 		super(ScatterPanel.getTitle(dataSet));
 		_dataSet = dataSet;
-		
+
 		//create the canvas
 		String title = ScatterPanel.getTitle(_dataSet);
 		String xname = _dataSet.getColumnName(0);
@@ -77,7 +79,7 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Get the NamedExpression (for X) which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpressionX() {
@@ -91,7 +93,7 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Get the NamedExpression (for Y) which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpressionY() {
@@ -165,8 +167,8 @@ public class ScatterPlot extends PlotDialog {
 
 	@Override
 	protected void clear() {
-		
-				
+
+
 		_dataSet.clear();
 		_plotPanel.getCanvas().needsRedraw(true);
 		_errorCount = 0;

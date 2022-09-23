@@ -9,8 +9,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
-
-
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.cnf.event.dictionary.Dictionary;
 
@@ -24,7 +22,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 	public ColumnList() {
 		this(ListSelectionModel.SINGLE_SELECTION);
 	}
-	
+
 	public ColumnList(int selectionMode) {
 		super(new DefaultListModel());
 		setSelectionMode(selectionMode);
@@ -42,7 +40,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 
 	/**
 	 * Set the list to the columns of the given bank
-	 * 
+	 *
 	 * @param bankName the name of the bank
 	 */
 	public void setList(String bankName) {
@@ -50,7 +48,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 			String columns[] = Dictionary.getInstance().getColumnNames(bankName);
 			if (columns != null) {
 				Arrays.sort(columns);
-				
+
 				DefaultListModel model = (DefaultListModel)(this.getModel());
 				model.clear();
 				for (String cn : columns) {
@@ -66,7 +64,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 
 	/**
 	 * Get the scroll pane
-	 * 
+	 *
 	 * @return the scroll pane
 	 */
 	public JScrollPane getScrollPane() {
@@ -81,14 +79,14 @@ public class ColumnList extends DragDropList implements KeyListener {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int selected[] = getSelectedIndices();
-		
+
 		if ((selected == null) || (selected.length != 1)) {
 			return;
 		}
-		
+
 		int index = selected[0];
 		int dropIndex = -1;
-		
+
 		System.out.println("key pressed");
 		int keyCode = e.getKeyCode();
 		if (keyCode == KeyEvent.VK_DOWN) {
@@ -99,7 +97,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 			dropIndex = index-1;
 			System.out.println(" up arrow on index: " + index);
 		}
-		
+
 		swap(index, dropIndex);
 	}
 

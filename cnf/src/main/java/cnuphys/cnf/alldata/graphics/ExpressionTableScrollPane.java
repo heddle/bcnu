@@ -19,7 +19,7 @@ public class ExpressionTableScrollPane extends JScrollPane {
 
 	/**
 	 * Constructor will also create the table itself.
-	 * 
+	 *
 	 * @param cutList the list of cuts
 	 * @param label   a label for the list
 	 */
@@ -36,7 +36,7 @@ public class ExpressionTableScrollPane extends JScrollPane {
 
 	/**
 	 * Accessor for the underlying table.
-	 * 
+	 *
 	 * @return the underlying expression table.
 	 */
 	public ExpressionTable getTable() {
@@ -54,7 +54,7 @@ public class ExpressionTableScrollPane extends JScrollPane {
 
 	/**
 	 * Simple accessor for underlying model.
-	 * 
+	 *
 	 * @return The underlying table model.
 	 */
 	public ExpressionTableModel getExpressionModel() {
@@ -67,7 +67,7 @@ public class ExpressionTableScrollPane extends JScrollPane {
 
 	/**
 	 * Get the selected (or first selected) named expression
-	 * 
+	 *
 	 * @return the selected (or first selected) named expression
 	 */
 	public NamedExpression getSelectedExpression() {

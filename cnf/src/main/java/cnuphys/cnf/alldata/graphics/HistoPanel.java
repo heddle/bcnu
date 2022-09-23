@@ -42,7 +42,7 @@ public class HistoPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the select panel
-	 * 
+	 *
 	 * @return the select panel
 	 */
 	public SelectPanel getSelectPanel() {
@@ -163,7 +163,7 @@ public class HistoPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Create the histogram data
-	 * 
+	 *
 	 * @return the histogram data
 	 */
 	public HistoData getHistoData() {
@@ -181,7 +181,7 @@ public class HistoPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the number of bins
-	 * 
+	 *
 	 * @return the number of bins
 	 */
 	public int getNumBins() {
@@ -190,7 +190,7 @@ public class HistoPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the minimum value
-	 * 
+	 *
 	 * @return the minimum value
 	 */
 	public double getMinVal() {
@@ -199,7 +199,7 @@ public class HistoPanel extends JPanel implements PropertyChangeListener {
 
 	/**
 	 * Get the maximum value
-	 * 
+	 *
 	 * @return the maximum value
 	 */
 	public double getMaxVal() {

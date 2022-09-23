@@ -23,7 +23,7 @@ public class CutTableModel extends DefaultTableModel {
 	protected static final int columnWidths[] = { 10, 150 };
 
 	// the model data
-	protected Vector<ICut> _data = new Vector<ICut>();
+	protected Vector<ICut> _data = new Vector<>();
 
 	/**
 	 * Constructor
@@ -45,7 +45,7 @@ public class CutTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -55,7 +55,7 @@ public class CutTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -73,7 +73,7 @@ public class CutTableModel extends DefaultTableModel {
 
 	/**
 	 * Set the value at a given row and column.
-	 * 
+	 *
 	 * @param value The string to set.
 	 * @param row   The zero based row.
 	 * @param col   The zero based column.
@@ -98,7 +98,7 @@ public class CutTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -124,7 +124,7 @@ public class CutTableModel extends DefaultTableModel {
 
 	/**
 	 * Add a new ICut into the table.
-	 * 
+	 *
 	 * @param icut the new object to add to the model.
 	 */
 	public synchronized void add(ICut icut) {
@@ -152,22 +152,19 @@ public class CutTableModel extends DefaultTableModel {
 	 */
 	public synchronized void setData(Vector<ICut> data) {
 		if (data == null) {
-			data = new Vector<ICut>();
+			data = new Vector<>();
 		}
 		_data = data;
 	}
 
 	/**
 	 * Get the ICut in the model at the given row.
-	 * 
+	 *
 	 * @param row the zero based row
 	 * @return the ICut corresponding to the row.
 	 */
 	public ICut getCutAtRow(int row) {
-		if ((_data == null) || (row < 0)) {
-			return null;
-		}
-		if (row >= _data.size()) {
+		if ((_data == null) || (row < 0) || (row >= _data.size())) {
 			return null;
 		}
 		return _data.elementAt(row);

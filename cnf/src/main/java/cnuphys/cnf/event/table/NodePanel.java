@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.MenuSelectionManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.format.DoubleFormat;
@@ -159,7 +160,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Set the model data based on a hipo DataEvent
-	 * 
+	 *
 	 * @param event the event
 	 */
 	public void setData(DataEvent event) {
@@ -241,7 +242,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * /** Set the displayed event source value.
-	 * 
+	 *
 	 * @param source event source.
 	 */
 	public void setSource(String source) {
@@ -250,7 +251,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Get the displayed event source value.
-	 * 
+	 *
 	 * @return the displayed event source value.
 	 */
 	public String getSource() {
@@ -259,7 +260,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Set the displayed event number value.
-	 * 
+	 *
 	 * @param eventNumber event number.
 	 */
 	public void setEventNumber(int eventNumber) {
@@ -268,7 +269,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Get the displayed event number value.
-	 * 
+	 *
 	 * @return the displayed event number value.
 	 */
 	public int getEventNumber() {
@@ -277,7 +278,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Set the displayed number-of-events value.
-	 * 
+	 *
 	 * @param numberOfEvents number of events.
 	 */
 	public void setNumberOfEvents(int numberOfEvents) {
@@ -286,7 +287,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Get the displayed number-of-events value.
-	 * 
+	 *
 	 * @return the displayed number-of-events value.
 	 */
 	public int getNumberOfEvents() {
@@ -299,7 +300,7 @@ public class NodePanel extends JPanel
 
 		if (source == nextButton) {
 			_eventManager.getNextEvent();
-		} 
+		}
 	}
 
 	@Override
@@ -310,7 +311,7 @@ public class NodePanel extends JPanel
 		int row = _nodeTable.getSelectedRow();
 
 		_currentColumnData = _nodeTable.getColumnData(row);
-		
+
 		updateDataArea(_currentColumnData);
 	}
 
@@ -468,7 +469,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Part of the IEventListener interface
-	 * 
+	 *
 	 * @param event the new current event
 	 */
 	@Override
@@ -480,7 +481,7 @@ public class NodePanel extends JPanel
 		setEventNumber(_eventManager.getEventNumber());
 		fixButtons();
 	}
-	
+
 
 	/**
 	 * Streaming start message
@@ -490,7 +491,7 @@ public class NodePanel extends JPanel
 	@Override
 	public void streamingStarted(File file, int numToStream) {
 	}
-	
+
 	/**
 	 * Streaming ended message
 	 * @param file the file that was streamed
@@ -502,7 +503,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Part of the IEventListener interface
-	 * 
+	 *
 	 * @param file the new file
 	 */
 	@Override
@@ -521,7 +522,7 @@ public class NodePanel extends JPanel
 	 */
 	@Override
 	public void rewoundFile(File file) {
-		
+
 	}
 
 }

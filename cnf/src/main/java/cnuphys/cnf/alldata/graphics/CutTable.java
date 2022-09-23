@@ -20,7 +20,7 @@ public class CutTable extends JTable implements ItemListener {
 
 	/**
 	 * Create a table for toggling activity of plot cuts
-	 * 
+	 *
 	 * @param container container holding the list of drawables (prpbably layers)
 	 * @param cutList   the list of iCuts
 	 */
@@ -75,7 +75,7 @@ public class CutTable extends JTable implements ItemListener {
 
 	/**
 	 * One of the vis toggles has changed. Refresh the container.
-	 * 
+	 *
 	 * @param e the causal event
 	 */
 	@Override

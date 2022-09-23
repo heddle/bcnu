@@ -1,9 +1,11 @@
 package cnuphys.cnf.alldata.graphics;
 
 import java.awt.BorderLayout;
+
 import javax.swing.BorderFactory;
 
 import org.jlab.io.base.DataEvent;
+
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.cnf.event.dictionary.Column;
@@ -57,7 +59,7 @@ public class Histogram2D extends PlotDialog {
 
 	/**
 	 * Get the NamedExpression (for X) which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpressionX() {
@@ -71,7 +73,7 @@ public class Histogram2D extends PlotDialog {
 
 	/**
 	 * Get the NamedExpression (for Y) which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpressionY() {
@@ -154,7 +156,7 @@ public class Histogram2D extends PlotDialog {
 
 	/**
 	 * Get the plot type for properties
-	 * 
+	 *
 	 * @return the plot type
 	 */
 	@Override

@@ -29,7 +29,7 @@ public class SelectColumnsPanel extends JPanel implements ListSelectionListener 
 	private JTextField _expressionName;
 
 	/**
-	 * 
+	 *
 	 * @param label
 	 * @param addExpressionTable
 	 */
@@ -41,7 +41,7 @@ public class SelectColumnsPanel extends JPanel implements ListSelectionListener 
 
 	/**
 	 * Add a selection listener to the bank and column lists
-	 * 
+	 *
 	 * @param lsl the selection listener
 	 */
 	public void addBankColumnListener(ListSelectionListener lsl) {
@@ -80,17 +80,17 @@ public class SelectColumnsPanel extends JPanel implements ListSelectionListener 
 		}
 
 	}
-	
+
 	/**
-	 * Get the selected bank 
+	 * Get the selected bank
 	 * @return the selected bank  (or <code>null</code>
 	 */
 	public String getSelectedBank() {
 		return _blist.getSelectedValue();
 	}
-	
+
 	/**
-	 * Get the selected columns 
+	 * Get the selected columns
 	 * @return a list of selected columns  (or <code>null</code>
 	 */
 	public List<String> getSelectedColumns() {
@@ -103,7 +103,7 @@ public class SelectColumnsPanel extends JPanel implements ListSelectionListener 
 
 	/**
 	 * Get the expression name
-	 * 
+	 *
 	 * @return the expression name
 	 */
 	public String getExpressionName() {
