@@ -68,6 +68,9 @@ public class NodePanel extends JPanel
 
 	// present banks
 	private PresentBankPanel _presentPanel;
+	
+	//the center panel
+	private JPanel _centerPanel;
 
 	/**
 	 * Create a node panel for displaying events
@@ -94,7 +97,7 @@ public class NodePanel extends JPanel
 		panel.add(_presentPanel);
 		panel.add(Box.createVerticalGlue());
 
-		add(panel, BorderLayout.EAST);
+		_centerPanel.add(panel, BorderLayout.EAST);
 	}
 
 	/**
@@ -135,8 +138,8 @@ public class NodePanel extends JPanel
 
 	// add the center components
 	private void addCenter() {
-		JPanel centerPanel = new JPanel();
-		centerPanel.setLayout(new BorderLayout(0, 0));
+		_centerPanel = new JPanel();
+		_centerPanel.setLayout(new BorderLayout(0, 0));
 
 		// event info
 		_eventInfoPanel = new EventInfoPanel();
@@ -145,7 +148,7 @@ public class NodePanel extends JPanel
 		JPanel npanel = new JPanel();
 		npanel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 4));
 		npanel.add(_eventInfoPanel);
-		centerPanel.add(npanel, BorderLayout.NORTH);
+		_centerPanel.add(npanel, BorderLayout.NORTH);
 
 		_nodeTable = new NodeTable();
 		_nodeTable.getSelectionModel().addListSelectionListener(this);
@@ -153,9 +156,9 @@ public class NodePanel extends JPanel
 		JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, false, createDataTextArea(),
 				_nodeTable.getScrollPane());
 		splitPane.setResizeWeight(0.1);
-		centerPanel.add(splitPane, BorderLayout.CENTER);
+		_centerPanel.add(splitPane, BorderLayout.CENTER);
 
-		add(centerPanel, BorderLayout.CENTER);
+		add(_centerPanel, BorderLayout.CENTER);
 	}
 
 	/**

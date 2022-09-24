@@ -6,16 +6,15 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.List;
 
+import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
-import cnuphys.bCNU.format.DoubleFormat;
+
 import cnuphys.bCNU.log.Log;
 import cnuphys.cnf.alldata.graphics.ColumnsDialog;
-import cnuphys.cnf.event.dictionary.Column;
 import cnuphys.cnf.event.dictionary.Dictionary;
 
 /**
@@ -30,15 +29,18 @@ public class CSVExporter extends AExporter {
 
 	private OutputStreamWriter _osw;
 
-	//the columns being exported
-	private List<Column> _columns;
-
 	//used to write column data names
 	private boolean _first = true;
 	
 	//simple counter
-	private int count;
-
+	private int _count;
+	
+	//bank name selected from dialog
+	private String _bankName;
+	
+	//list of column names selected from the dialog
+	private List<String> _columnNames;
+	
 	@Override
 	public String getMenuName() {
 		return "CSV";
@@ -46,39 +48,40 @@ public class CSVExporter extends AExporter {
 
 	@Override
 	public boolean prepareToExport() {
-		count = 0;
+		_count = 0;
 		Log.getInstance().info("CSV export requested");
 
 		//reset
-		_columns = null;
+		_bankName = null;
+		_columnNames = null;
 
 		//what columns to export?
-		ColumnsDialog cd = new ColumnsDialog("Select Bank and Columns to Export");
-		cd.setVisible(true);
+		ColumnsDialog columnDialog = new ColumnsDialog("Select Bank and Columns to Export");
+		columnDialog.setVisible(true);
 
-		int reason = cd.getReason();
+		int reason = columnDialog.getReason();
 		if (reason == DialogUtilities.CANCEL_RESPONSE) {
 			Log.getInstance().info("CSV Export was cancelled.");
 			return false;
 		}
 
 		//see what I have selected
-		String bankName = cd.getSelectedBank();
-		if (bankName == null) {
+		_bankName = columnDialog.getSelectedBank();
+		if (_bankName == null) {
 			Log.getInstance().error("null bankname in CSV prepareToExport. That should not have happened.");
 			return false;
 		}
-		List<String> colNames = cd.getSelectedColumns();
+		_columnNames = columnDialog.getSelectedColumns();
 
-		if ((colNames == null) || colNames.isEmpty()) {
+		if ((_columnNames == null) || _columnNames.isEmpty()) {
 			Log.getInstance().error("null or empty column names in CSV prepareToExport. That should not have happened.");
 			return false;
 		}
-		Log.getInstance().info("CSV exporting bank [" + bankName + "]");
+		Log.getInstance().info("CSV exporting bank [" + _bankName + "]");
 
 		StringBuffer sb = new StringBuffer(256);
 		sb.append("CSV exporting column[s] ");
-		for (String c : colNames) {
+		for (String c : _columnNames) {
 			sb.append(" [" + c + "]");
 		}
 
@@ -90,17 +93,6 @@ public class CSVExporter extends AExporter {
 		if (_exportFile != null) {
 			Log.getInstance().info("CSV: export to [" + _exportFile.getAbsolutePath() + "]");
 
-			_columns = new ArrayList<>();
-
-			for (String c : colNames) {
-				Column cdata = Dictionary.getInstance().getColumn(bankName, c);
-				if (cdata == null) {
-					Log.getInstance().error("null ColumnData in CSV prepareToExport. Bank [" + bankName + "] column [" + c + "]");
-					return false;
-				}
-				Log.getInstance().info("CSV adding ColumnData [" + cdata.getFullName() + "]");
-				_columns.add(cdata);
-			}
 
 			try {
 				OutputStream os = new FileOutputStream(_exportFile);
@@ -122,73 +114,62 @@ public class CSVExporter extends AExporter {
 		_first = true;
 		return true;
 	}
+	
 
 	@Override
 	public void nextEvent(DataEvent event) {
-		count++;
-		if ((count % 1000) == 0) {
-			System.err.println("Export count: " + count);
+		
+		DataBank bank = event.getBank(_bankName);
+		if (bank == null || _columnNames == null || _columnNames.isEmpty()) {
+			return;
+		}
+		
+		
+		_count++;
+		if ((_count % 1000) == 0) {
+			System.err.println("Export count: " + _count);
 		}
 
-		if ((_columns != null) && !_columns.isEmpty()) {
 
 			if (_first) {
 				writeColumnNames();
 				_first  = false;
 			}
 
-			int minNum = Integer.MAX_VALUE;
-			int count = _columns.size();
-
-	//		ArrayList<double[]> doubleArrays = new ArrayList<>();
-
-			//get the minimum common number of rows
-			for (int i = 0; i < count; i++) {
-				Column column = _columns.get(i);
-	//			doubleArrays.add(column.getAsDoubleArray(event));
-				int num = column.length(event);
-				minNum = Math.min(minNum, num);
-			}
-
-			if (minNum < 1) {
-				return;
-			}
-
 			// the data
 
-			for (int index = 0; index < minNum; index++) {
+			for (int row = 0; row < bank.rows(); row++) {
 				StringBuffer sb = new StringBuffer(512);
-				for (int i = 0; i < count; i++) {
-					Column column = _columns.get(i);
+				
+				for (int i = 0; i < _columnNames.size(); i++) {
+					String columnName = _columnNames.get(i);
 					
-					
-					
-	//				double data[] = doubleArrays.get(i);
-
 					if (i > 0) {
 						sb.append(",");
 					}
 					
+					int type = Dictionary.getInstance().getDataType(_bankName, columnName);
+					
 					String s;
-					switch (column.getType()) {
+					switch (type) {
 					case Dictionary.INT8:
-						s = "" + column.getByteArray(event)[i];
+						s = "" + bank.getByte(columnName, row);
 						break;
 					case Dictionary.INT16:
-						s = "" + column.getShortArray(event)[i];
+						s = "" + bank.getShort(columnName, row);
 						break;
 					case Dictionary.INT32:
-						s = "" + column.getIntArray(event)[i];
+						s = "" + bank.getInt(columnName, row);
 						break;
 					case Dictionary.INT64:
-						s = "" + column.getLongArray(event)[i];
+						s = "" + bank.getLong(columnName, row);
 						break;
 					case Dictionary.FLOAT32:
-						float f = column.getFloatArray(event)[i];
+						float f = bank.getFloat(columnName, row);
 						s = String.format("%5.4g", f);
 						break;
 					case Dictionary.FLOAT64:
-						double d = column.getDoubleArray(event)[i];
+						double d = bank.getDouble(columnName, row);
 						s = String.format("%5.4g", d);
 						break;
 					default:
@@ -197,25 +178,22 @@ public class CSVExporter extends AExporter {
 
 					sb.append(s);
 
-					//sb.append(data[index]);
 				}
+				
 				stringLn(_osw, sb.toString());
 			}
-		}
+
 	}
 
 	//write the column names
 	private void writeColumnNames() {
-		int count = _columns.size();
 		StringBuffer sb = new StringBuffer(512);
-		String cname;
 
-		for (int i = 0; i < count; i++) {
-			Column cdata = _columns.get(i);
+		for (int i = 0; i < _columnNames.size(); i++) {
+			String cname = _columnNames.get(i);
 			if (i > 0) {
 				sb.append(",");
 			}
-			cname = cdata.getName();
 			System.err.print(String.format("[%s]", cname));
 			sb.append(cname);
 		}

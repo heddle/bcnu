@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -58,16 +59,26 @@ public class PresentBankPanel extends JPanel
 		setLayout(new GridLayout(40, 4, 2, 0));
 
 
-		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
+		setBorder(BorderFactory.createEtchedBorder());
+	}
+		
+	//replace all the bank action labels as result of new event
+	private void replaceBankLabels(DataEvent event) {
+		removeAll();
+		String[] allBanks = event.getBankList();
+		Arrays.sort(allBanks);
+		if (allBanks != null) {
+			for (String s : allBanks) {
+				if (!skip(s)) {
+					makeLabel(s);
+				}
+			}
+		}
 	}
 
-	//replace all the bank action labels
-	private void replaceLabels() {
-		//remove old labels
-
-		for (ActionLabel label : _allLabels.values()) {
-			remove(label);
-		}
+	//replace all the bank action labels as result of new dictionary
+	private void replaceBankLabels() {
+		removeAll();
 
 		// get all the known banks
 		String[] allBanks = _eventManager.getKnownBanks();
@@ -181,6 +192,7 @@ public class PresentBankPanel extends JPanel
 	@Override
 	public void newEvent(DataEvent event, boolean isStreaming) {
 		if (!isStreaming) {
+			replaceBankLabels(event);
 			update();
 		}
 	}
@@ -220,6 +232,6 @@ public class PresentBankPanel extends JPanel
 	@Override
 	public void dictionaryChanged() {
 		System.out.println("new dictionary");
-		replaceLabels();
+		replaceBankLabels();
 	}
 }

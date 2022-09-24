@@ -34,7 +34,7 @@ public class ExportManager implements IEventListener {
 		_exportMenu = new JMenu("Export");
 		
 		//create a MC Particle exporter
-		addExporter(new MCParticleExporter());
+		addExporter(new RecParticleExporter());
 
 		//create a CSV exporter
 		addExporter(new CSVExporter());

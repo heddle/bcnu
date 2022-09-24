@@ -11,7 +11,11 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.hipo.HipoDataSource;
 import org.jlab.jnp.hipo4.data.Schema;
 
-
+/**
+ * Used to store all the banks and columns for a given data source
+ * @author heddle
+ *
+ */
 public class Dictionary extends ArrayList<Bank> {
 
 	/** type is unknown */
@@ -74,6 +78,9 @@ public class Dictionary extends ArrayList<Bank> {
 
 	//convenience to cache all columns
 	private Hashtable<String, Column> _allColumns = new Hashtable<>();
+	
+	//the data source
+	private HipoDataSource _dataSource;
 
 	//private constructor for singleton
 	private Dictionary() {
@@ -90,16 +97,38 @@ public class Dictionary extends ArrayList<Bank> {
 
 		return _instance;
 	}
+	
+	/**
+	 * Get the int data type for a column
+	 * @param bankName the name of the bank
+	 * @param columnName the name of the column
+	 * @return the integer data type
+	 */
+	public int getDataType(String bankName, String columnName) {
+		if (_dataSource == null) {
+			return -1;
+		}
+		
+		Schema bank = _dataSource.getReader().getSchemaFactory().getSchema(bankName);
+		if (bank == null) {
+			return -1;
+		}
+		
+		return bank.getType(columnName);
+		
+	}
 
 	/**
 	 * Update the dictionary, probably because a new file was opened.
-	 * @param source the data source, which is tied to a file
+	 * @param dataSource the data source, which is tied to a file
 	 */
-	public void updateDictionary(HipoDataSource source) {
+	public void updateDictionary(HipoDataSource dataSource) {
+		
+		_dataSource = dataSource;
 		clear();
 		_allColumns.clear();
 
-		List<String> bankNames = source.getReader().getSchemaFactory().getSchemaKeys();
+		List<String> bankNames = dataSource.getReader().getSchemaFactory().getSchemaKeys();
 
 		for (String bankName : bankNames) {
 
@@ -110,7 +139,7 @@ public class Dictionary extends ArrayList<Bank> {
 			Bank bank = new Bank(bankName);
 			add(bank);
 
-			Schema schema = source.getReader().getSchemaFactory().getSchema(bankName);
+			Schema schema = dataSource.getReader().getSchemaFactory().getSchema(bankName);
 
 			//get the columns
 			List<String> columns = schema.getEntryList();
