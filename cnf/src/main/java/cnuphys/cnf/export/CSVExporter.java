@@ -12,7 +12,6 @@ import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
-
 import cnuphys.bCNU.log.Log;
 import cnuphys.cnf.alldata.graphics.ColumnsDialog;
 import cnuphys.cnf.event.dictionary.Dictionary;
@@ -31,16 +30,16 @@ public class CSVExporter extends AExporter {
 
 	//used to write column data names
 	private boolean _first = true;
-	
+
 	//simple counter
 	private int _count;
-	
+
 	//bank name selected from dialog
 	private String _bankName;
-	
+
 	//list of column names selected from the dialog
 	private List<String> _columnNames;
-	
+
 	@Override
 	public String getMenuName() {
 		return "CSV";
@@ -114,17 +113,17 @@ public class CSVExporter extends AExporter {
 		_first = true;
 		return true;
 	}
-	
+
 
 	@Override
 	public void nextEvent(DataEvent event) {
-		
+
 		DataBank bank = event.getBank(_bankName);
 		if (bank == null || _columnNames == null || _columnNames.isEmpty()) {
 			return;
 		}
-		
-		
+
+
 		_count++;
 		if ((_count % 1000) == 0) {
 			System.err.println("Export count: " + _count);
@@ -140,16 +139,16 @@ public class CSVExporter extends AExporter {
 
 			for (int row = 0; row < bank.rows(); row++) {
 				StringBuffer sb = new StringBuffer(512);
-				
+
 				for (int i = 0; i < _columnNames.size(); i++) {
 					String columnName = _columnNames.get(i);
-					
+
 					if (i > 0) {
 						sb.append(",");
 					}
-					
+
 					int type = Dictionary.getInstance().getDataType(_bankName, columnName);
-					
+
 					String s;
 					switch (type) {
 					case Dictionary.INT8:
@@ -174,12 +173,12 @@ public class CSVExporter extends AExporter {
 						break;
 					default:
 						s = "???";
-					}					
+					}
 
 					sb.append(s);
 
 				}
-				
+
 				stringLn(_osw, sb.toString());
 			}
 

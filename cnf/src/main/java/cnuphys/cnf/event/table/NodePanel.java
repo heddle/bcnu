@@ -68,7 +68,7 @@ public class NodePanel extends JPanel
 
 	// present banks
 	private PresentBankPanel _presentPanel;
-	
+
 	//the center panel
 	private JPanel _centerPanel;
 

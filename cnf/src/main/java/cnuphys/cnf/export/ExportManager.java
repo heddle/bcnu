@@ -32,7 +32,7 @@ public class ExportManager implements IEventListener {
 		EventManager.getInstance().addEventListener(this, 2);
 		_exporters = new Hashtable<>();
 		_exportMenu = new JMenu("Export");
-		
+
 		//create a MC Particle exporter
 		addExporter(new RecParticleExporter());
 

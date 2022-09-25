@@ -61,7 +61,7 @@ public class PresentBankPanel extends JPanel
 
 		setBorder(BorderFactory.createEtchedBorder());
 	}
-		
+
 	//replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
 		removeAll();

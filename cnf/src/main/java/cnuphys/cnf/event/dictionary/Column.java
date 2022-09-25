@@ -195,7 +195,7 @@ public class Column implements Comparable<Column> {
 					}
 				}
 				break;
-				
+
 			case Dictionary.INT64:
 				long l[] = getLongArray(event);
 				len = (l == null) ? 0 : l.length;

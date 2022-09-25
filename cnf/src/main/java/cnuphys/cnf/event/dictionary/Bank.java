@@ -86,7 +86,7 @@ public class Bank extends Hashtable<String, Column> implements Comparable<Bank> 
 
 		return cnames;
 	}
-	
+
 	/**
 	 * Does the bank have any data for this evet?n
 	 * @param event the event
@@ -102,7 +102,7 @@ public class Bank extends Hashtable<String, Column> implements Comparable<Bank> 
 	}
 
 
-	
+
 	/**
 	 * Get all the columns
 	 * @return the collection of columns

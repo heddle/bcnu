@@ -78,7 +78,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 	//convenience to cache all columns
 	private Hashtable<String, Column> _allColumns = new Hashtable<>();
-	
+
 	//the data source
 	private HipoDataSource _dataSource;
 
@@ -97,7 +97,7 @@ public class Dictionary extends ArrayList<Bank> {
 
 		return _instance;
 	}
-	
+
 	/**
 	 * Get the int data type for a column
 	 * @param bankName the name of the bank
@@ -108,14 +108,14 @@ public class Dictionary extends ArrayList<Bank> {
 		if (_dataSource == null) {
 			return -1;
 		}
-		
+
 		Schema bank = _dataSource.getReader().getSchemaFactory().getSchema(bankName);
 		if (bank == null) {
 			return -1;
 		}
-		
+
 		return bank.getType(columnName);
-		
+
 	}
 
 	/**
@@ -123,7 +123,7 @@ public class Dictionary extends ArrayList<Bank> {
 	 * @param dataSource the data source, which is tied to a file
 	 */
 	public void updateDictionary(HipoDataSource dataSource) {
-		
+
 		_dataSource = dataSource;
 		clear();
 		_allColumns.clear();
@@ -238,7 +238,7 @@ public class Dictionary extends ArrayList<Bank> {
 		return list;
 
 	}
-	
+
 	/**
 	 * Get a list of all column objects that have data in the given event
 	 *

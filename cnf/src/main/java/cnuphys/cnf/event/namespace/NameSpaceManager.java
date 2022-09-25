@@ -16,7 +16,7 @@ import cnuphys.cnf.event.IEventListener;
 
 /**
  * Manages the name space of banks and columns forthe current data source
- * 
+ *
  * @author heddle
  *
  */
@@ -67,21 +67,21 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 
 	// list of namespace listeners
 	private EventListenerList _listenerList;
-	
+
 	//singleton
 	private static NameSpaceManager _instance;
-	
+
 	//for convenience
 	private String[] _knownBanks;
-	
+
 	//for binary search
 	private BankInfo _workBankInfo = new BankInfo(null);
-	
+
 	//private constructor for singleton
 	private NameSpaceManager() {
 		EventManager.getInstance().addEventListener(this, 1);
 	}
-	
+
 	/**
 	 * Access to the singleton
 	 * @return the singleton name space manager
@@ -93,25 +93,25 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 
 		return _instance;
 	}
-	
+
 	/**
 	 * Update the namespace, probably because a new file was opened.
 	 * @param dataSource the data source, which is usually tied to a file
 	 */
 	public void updateNameSpace(HipoDataSource dataSource) {
-		
+
 		clear();
 		_knownBanks = null;
-	
+
 		List<Schema> schemas = dataSource.getReader().getSchemaFactory().getSchemaList();
-		
+
 
 		for (Schema schema : schemas) {
 	        add(new BankInfo(schema));
 		}
 
 		Collections.sort(this);
-		
+
 		//for convenience
 		if (size() > 0) {
 			_knownBanks = new String[size()];
@@ -119,14 +119,22 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 				_knownBanks[i] = get(i).getName();
 			}
 		}
-		
+
 		System.out.println(this);
 
 		//tell whoever is interested
 		notifyListeners();
 	}
 
-	
+	/**
+	 * Get the type name for a given int type
+	 * @param type the int type
+	 * @return the type name
+	 */
+	public static String getTypeName(int type) {
+		return ((type < 0) || (type >= typeNames.length) ? "???" : typeNames[type]);
+	}
+
 	/**
 	 * Notify all listeners that a change has occurred in the namespace
 	 */
@@ -180,13 +188,13 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 
 		_listenerList.remove(INameSpaceListener.class, listener);
 	}
-	
+
 	/**
 	 * Get the bank using a binary search
 	 * @param bankName the name of the bank
 	 * @return  the bank, or null if not found
 	 */
-	public BankInfo getBank(String bankName) {
+	public BankInfo getBankInfo(String bankName) {
 		_workBankInfo.setName(bankName);
 		int index = Collections.binarySearch(this, _workBankInfo);
 		if (index >= 0) {
@@ -197,12 +205,27 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 		}
 	}
 
+	/**
+	 * Get the data type for the given bank and column names
+	 * @param bankName the bank name
+	 * @param columnName the column name
+	 * @return the data type, or -1 on failure
+	 */
+	public int getDataType(String bankName, String columnName) {
+		BankInfo bankInfo = getBankInfo(bankName);
+		if (bankInfo != null) {
+			ColumnInfo columnInfo = bankInfo.getColumnInfo(columnName);
+			return columnInfo.getType();
+		}
+		return -1;
+	}
+
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer(2048);
-		
+
 		sb.append("Number of banks: " + size() + "\n");
-		
+
 		for (BankInfo bankInfo : this) {
 			sb.append(bankInfo + "\n");
 		}
@@ -212,9 +235,9 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 	@Override
 	public void newEvent(DataEvent event, boolean isStreaming) {
 		if (isStreaming) {
-			
+
 		}
-		
+
 		ArrayList<ColumnInfo> dataColumns = DataUtils.columnsWithData(event);
 		for (ColumnInfo s : dataColumns) {
 			System.out.println("[" + s.getFullName() +"] " + s.colorIndex);
@@ -227,7 +250,7 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 
 	@Override
 	public void rewoundFile(File file) {
-		
+
 	}
 
 	@Override
