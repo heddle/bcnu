@@ -15,6 +15,7 @@ import org.jlab.io.base.DataSource;
 import org.jlab.io.hipo.HipoDataSource;
 
 import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.cnf.frame.Def;
 import cnuphys.cnf.frame.IDefCommon;
 
@@ -137,6 +138,7 @@ public class EventManager {
 		_dataSource.open(file.getPath());
 
 		Dictionary.getInstance().updateDictionary(_dataSource);
+		NameSpaceManager.getInstance().updateNameSpace(_dataSource);
 
 
 

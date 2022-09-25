@@ -164,7 +164,7 @@ public class Dictionary extends ArrayList<Bank> {
 			_knownBanks[index++] = bank.getName();
 		}
 
-		System.out.println(this);
+//		System.out.println(this);
 
 		//tell whoever is interested
 		notifyListeners();
