@@ -1,4 +1,4 @@
-package cnuphys.cnf.event.namespace;
+package cnuphys.eventManager.namespace;
 
 import java.util.ArrayList;
 import java.util.Arrays;

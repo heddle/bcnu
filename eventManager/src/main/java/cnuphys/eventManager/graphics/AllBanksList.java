@@ -1,4 +1,4 @@
-package cnuphys.cnf.alldata.graphics;
+package cnuphys.eventManager.graphics;
 
 import java.awt.Dimension;
 
@@ -7,7 +7,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.cnf.event.namespace.NameSpaceManager;
+import cnuphys.eventManager.namespace.NameSpaceManager;
 
 /**
  * Puts all known banks into a scrollable list

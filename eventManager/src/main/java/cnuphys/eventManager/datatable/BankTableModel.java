@@ -1,4 +1,4 @@
-package cnuphys.cnf.event.datatable;
+package cnuphys.eventManager.datatable;
 
 import java.util.Arrays;
 
@@ -7,8 +7,8 @@ import javax.swing.table.DefaultTableModel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.cnf.event.namespace.DataUtils;
-import cnuphys.cnf.event.namespace.NameSpaceManager;
+import cnuphys.eventManager.namespace.DataUtils;
+import cnuphys.eventManager.namespace.NameSpaceManager;
 
 public class BankTableModel extends DefaultTableModel {
 

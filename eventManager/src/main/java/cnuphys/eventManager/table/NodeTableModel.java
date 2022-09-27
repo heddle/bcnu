@@ -1,4 +1,4 @@
-package cnuphys.cnf.event.table;
+package cnuphys.eventManager.table;
 
 import java.util.ArrayList;
 
@@ -6,8 +6,8 @@ import javax.swing.table.DefaultTableModel;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.cnf.event.namespace.ColumnInfo;
-import cnuphys.cnf.event.namespace.DataUtils;
+import cnuphys.eventManager.namespace.ColumnInfo;
+import cnuphys.eventManager.namespace.DataUtils;
 
 public class NodeTableModel extends DefaultTableModel {
 
