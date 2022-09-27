@@ -2,8 +2,6 @@ package cnuphys.cnf.frame;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -12,85 +10,11 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import cnuphys.bCNU.log.Log;
-import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.cnf.event.EventManager;
+import cnuphys.eventManager.event.EventManager;
 
 
 public class DefCommon {
-
-	/** Environment variable name */
-	public static final String VNAME = "CLAS12DIR";
-
-	//return true on success
-	private static boolean clas12DirFromEnvVar() {
-		String c12dir = System.getenv(VNAME);
-
-		if (c12dir == null) {
-			System.err.println("No environment variable named [" + VNAME + "] was found.");
-			return false;
-		}
-
-		System.err.println("Found environment variable named [" + VNAME + "] value [" + c12dir + "]");
-
-		//see if it is a directory
-		File file = new File(c12dir);
-		if (!file.exists()) {
-			System.err.println("The directory [" + c12dir + "] does not exist. Please check your " + VNAME + " environment variable.");
-			System.exit(1);
-		}
-		if (!file.isDirectory()) {
-			System.err.println("[" + c12dir + "] is not a directory. Please check your " + VNAME + " environment variable.");
-			System.exit(1);
-		}
-
-		return true;
-	}
-
-	// this is so we can find json files
-	protected static void initClas12Dir(boolean checkEnv) throws IOException {
-
-		// first try, environment variable
-		if (checkEnv) {
-			if (clas12DirFromEnvVar()) {
-				return;
-			}
-		}
-
-		// for running from runnable jar (for coatjava)
-		String clas12dir = System.getProperty("CLAS12DIR");
-
-		if (clas12dir == null) {
-			clas12dir = "coatjava";
-		}
-
-		File clasDir = new File(clas12dir);
-
-		if (clasDir.exists() && clasDir.isDirectory()) {
-			System.err.println("**** Found CLAS12DIR [" + clasDir.getCanonicalPath() + "]");
-			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
-			return;
-		} else {
-			System.err.println("**** Did not find CLAS12DIR [" + clasDir.getCanonicalPath() + "]");
-		}
-
-		String cwd = Environment.getInstance().getCurrentWorkingDirectory();
-		clas12dir = cwd + "/../../../coatjava";
-		clasDir = new File(clas12dir);
-
-		if (clasDir.exists() && clasDir.isDirectory()) {
-			System.err.println("**** Found CLAS12DIR [" + clasDir.getCanonicalPath() + "]");
-			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
-			return;
-		} else {
-			System.err.println("**** Did not find CLAS12DIR [" + clasDir.getCanonicalPath() + "]");
-		}
-
-		throw (new IOException("Could not locate the coatjava directory."));
-	}
 
 
 	/**

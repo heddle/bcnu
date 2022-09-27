@@ -10,8 +10,9 @@ import javax.swing.JMenuItem;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.cnf.event.EventManager;
-import cnuphys.cnf.event.IEventListener;
+import cnuphys.eventManager.event.EventManager;
+import cnuphys.eventManager.event.IEventListener;
+
 
 public class ExportManager implements IEventListener {
 

@@ -13,8 +13,8 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.log.Log;
-import cnuphys.cnf.alldata.graphics.ColumnsDialog;
-import cnuphys.cnf.event.namespace.NameSpaceManager;
+import cnuphys.eventManager.graphics.ColumnsDialog;
+import cnuphys.eventManager.namespace.NameSpaceManager;
 
 /**
  * A exporter to CSV. The use must choose what bank, and then what columns to export.

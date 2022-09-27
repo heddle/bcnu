@@ -33,14 +33,14 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
-import cnuphys.cnf.alldata.graphics.DefinitionManager;
-import cnuphys.cnf.event.EventManager;
-import cnuphys.cnf.event.EventMenu;
-import cnuphys.cnf.event.EventView;
-import cnuphys.cnf.event.IEventListener;
-import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.cnf.export.ExportManager;
-import cnuphys.cnf.properties.PropertiesManager;
+import cnuphys.eventManager.event.EventManager;
+import cnuphys.eventManager.event.EventMenu;
+import cnuphys.eventManager.event.EventView;
+import cnuphys.eventManager.event.IEventListener;
+import cnuphys.eventManager.graphics.DefinitionManager;
+import cnuphys.eventManager.namespace.NameSpaceManager;
+import cnuphys.eventManager.properties.PropertiesManager;
 import cnuphys.splot.example.MemoryUsageDialog;
 
 @SuppressWarnings("serial")
@@ -483,14 +483,6 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	public static void main(String[] arg) {
 		// read in userprefs
 		PropertiesManager.getInstance();
-
-		// init the clas 12 dir wherev the json files are
-		try {
-			DefCommon.initClas12Dir(false);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
 		FileUtilities.setDefaultDir("data");
 
 //process command args

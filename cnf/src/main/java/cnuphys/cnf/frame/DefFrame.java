@@ -23,14 +23,14 @@ import cnuphys.bCNU.log.SimpleLogDialog;
 import cnuphys.bCNU.menu.FileMenu;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
-import cnuphys.cnf.alldata.graphics.DefinitionManager;
-import cnuphys.cnf.event.EventManager;
-import cnuphys.cnf.event.EventMenu;
-import cnuphys.cnf.event.IEventListener;
-import cnuphys.cnf.event.namespace.NameSpaceManager;
-import cnuphys.cnf.event.table.NodePanel;
 import cnuphys.cnf.export.ExportManager;
-import cnuphys.cnf.properties.PropertiesManager;
+import cnuphys.eventManager.event.EventManager;
+import cnuphys.eventManager.event.EventMenu;
+import cnuphys.eventManager.event.IEventListener;
+import cnuphys.eventManager.graphics.DefinitionManager;
+import cnuphys.eventManager.namespace.NameSpaceManager;
+import cnuphys.eventManager.properties.PropertiesManager;
+import cnuphys.eventManager.table.NodePanel;
 import cnuphys.splot.plot.GraphicsUtilities;
 
 public class DefFrame extends JFrame implements IEventListener, IDefCommon {
@@ -303,14 +303,6 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 		// read in userprefs
 		PropertiesManager.getInstance();
-
-		// init the clas 12 dir wherev the json files are
-		try {
-			DefCommon.initClas12Dir(true);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
 		FileUtilities.setDefaultDir("data");
 
 

@@ -6,7 +6,7 @@ import java.io.OutputStreamWriter;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.FileUtilities;
-import cnuphys.cnf.event.EventManager;
+import cnuphys.eventManager.event.EventManager;
 
 public abstract class AExporter {
 
