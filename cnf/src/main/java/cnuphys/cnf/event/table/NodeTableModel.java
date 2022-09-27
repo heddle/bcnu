@@ -1,13 +1,15 @@
 package cnuphys.cnf.event.table;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.table.DefaultTableModel;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.DataUtils;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 public class NodeTableModel extends DefaultTableModel {
 
@@ -26,7 +28,7 @@ public class NodeTableModel extends DefaultTableModel {
 	};
 
 	// the model data
-	private ArrayList<Column> _data = new ArrayList<>();
+	private ArrayList<ColumnInfo> _data = new ArrayList<>();
 
 	// the current event
 	private DataEvent _event;
@@ -41,14 +43,15 @@ public class NodeTableModel extends DefaultTableModel {
 	/**
 	 * Find the row by the value in the name column
 	 *
-	 * @param name the column name to search for
+	 * @param name the full column name to search for
 	 * @return the row, or -1
 	 */
 	public int findRowByName(String name) {
 
 		if ((name != null) && (_data != null) && !_data.isEmpty()) {
+
 			int index = 0;
-			for (Column cd : _data) {
+			for (ColumnInfo cd : _data) {
 				if (name.equals(cd.getFullName())) {
 					return index;
 				}
@@ -79,8 +82,8 @@ public class NodeTableModel extends DefaultTableModel {
 	}
 
 	/**
-	 * Get the number of rows
-	 *
+	 * Get the number of rows, which is the total
+	 * number of columns for all columns with data
 	 * @return the number of rows
 	 */
 	@Override
@@ -97,9 +100,10 @@ public class NodeTableModel extends DefaultTableModel {
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
-
+		
+		
 		if (row < getRowCount()) {
-			Column cd = _data.get(row);
+			ColumnInfo cd = _data.get(row);
 
 			if (cd != null) {
 				switch (col) {
@@ -110,7 +114,7 @@ public class NodeTableModel extends DefaultTableModel {
 					return cd.getTypeName();
 
 				case COUNT_INDEX:
-					String rs = "" + cd.length(_event);
+					String rs = "" + DataUtils.bankLength(_event, cd.getBankInfo().getName());
 					return rs;
 
 				default:
@@ -136,17 +140,7 @@ public class NodeTableModel extends DefaultTableModel {
 		clear();
 		_event = event;
 
-		if (event != null) {
-			String banks[] = event.getBankList();
-			if (banks != null) {
-				for (String bank : banks) {
-
-					_data = Dictionary.getInstance().columnsWithData(event);
-
-				}
-			}
-		}
-
+		_data = DataUtils.columnsWithData(event);
 		fireTableDataChanged();
 	}
 
@@ -156,12 +150,12 @@ public class NodeTableModel extends DefaultTableModel {
 	 * @param row the row in question
 	 * @return the corresponding data bank column name, or <code>null</code>
 	 */
-	public Column getColumnData(int row) {
+	public ColumnInfo getColumnData(int row) {
 		if (row < 0) {
 			return null;
 		}
 
-		Column cd = (_data == null) ? null : _data.get(row);
+		ColumnInfo cd = (_data == null) ? null : _data.get(row);
 		return cd;
 	}
 

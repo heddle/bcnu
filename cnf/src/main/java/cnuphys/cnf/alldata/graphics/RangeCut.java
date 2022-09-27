@@ -5,8 +5,9 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
 import cnuphys.cnf.event.EventManager;
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.DataUtils;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 public class RangeCut implements ICut {
 
@@ -23,7 +24,7 @@ public class RangeCut implements ICut {
 	protected String _name;
 
 	// Column Data (if the name is a column name)
-	protected Column _columnData;
+	protected ColumnInfo _columnData;
 
 	// The expression (if expression used instead of columnData)
 	private String _namedExpressionName;
@@ -42,9 +43,9 @@ public class RangeCut implements ICut {
 	public RangeCut(String name, double minVal, double maxVal) {
 		_name = name;
 
-		boolean isColumn = Dictionary.getInstance().validColumnName(name);
+		boolean isColumn = NameSpaceManager.validColumnName(name);
 		if (isColumn) {
-			_columnData = Dictionary.getInstance().getColumnFromFullName(name);
+			_columnData = NameSpaceManager.getInstance().getColumnInfo(name);
 			if (_columnData == null) {
 				Log.getInstance().warning("null ColumnData in RangeCut for [" + name + "]");
 			}
@@ -115,7 +116,7 @@ public class RangeCut implements ICut {
 
 		double val;
 		if (_columnData != null) {
-			double vals[] = _columnData.getAsDoubleArray(event);
+			double vals[] = DataUtils.getAsDoubleArray(event, _columnData);
 
 			if ((vals == null) || (index < 0) || (index >= vals.length)) {
 				return false;

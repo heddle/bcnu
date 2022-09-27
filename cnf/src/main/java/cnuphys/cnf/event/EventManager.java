@@ -14,7 +14,6 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.io.base.DataSource;
 import org.jlab.io.hipo.HipoDataSource;
 
-import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.cnf.frame.Def;
 import cnuphys.cnf.frame.IDefCommon;
@@ -137,7 +136,6 @@ public class EventManager {
 		_dataSource = new HipoDataSource();
 		_dataSource.open(file.getPath());
 
-		Dictionary.getInstance().updateDictionary(_dataSource);
 		NameSpaceManager.getInstance().updateNameSpace(_dataSource);
 
 
@@ -493,12 +491,12 @@ public class EventManager {
 	}
 
 	/**
-	 * Get a sorted list of known banks from the dictinary
+	 * Get a sorted list of known banks from the name space manager
 	 *
 	 * @return a sorted list of known banks
 	 */
 	public String[] getKnownBanks() {
-		return Dictionary.getInstance().getKnownBanks();
+		return NameSpaceManager.getInstance().getKnownBanks();
 	}
 
 	/**

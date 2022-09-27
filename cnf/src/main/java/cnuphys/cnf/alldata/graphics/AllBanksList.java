@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 /**
  * Puts all known banks into a scrollable list
@@ -24,19 +24,13 @@ public class AllBanksList extends JList<String> {
 	private JScrollPane _scrollPane;
 
 	public AllBanksList() {
-		super(sorted(Dictionary.getInstance().getKnownBanks()));
+		super(NameSpaceManager.getInstance().getKnownBanks());
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		_scrollPane = new JScrollPane(this);
 		_scrollPane.setPreferredSize(_size);
 		_scrollPane.setBorder(new CommonBorder("Bank Name"));
 	}
-
-	// sort the known banks
-	private static String[] sorted(String knownBanks[]) {
-		Arrays.sort(knownBanks);
-		return knownBanks;
-	}
-
+	
 	/**
 	 * Get the scroll pane
 	 *

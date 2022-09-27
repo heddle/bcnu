@@ -9,8 +9,8 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.splot.fit.FitType;
 import cnuphys.splot.pdata.DataSet;
 import cnuphys.splot.pdata.DataSetException;
@@ -21,7 +21,7 @@ import cnuphys.splot.plot.PlotPanel;
 public class Histogram extends PlotDialog {
 
 	// the column being binned (unless it is binning an expression)
-	private Column _column;
+	private ColumnInfo _column;
 
 	// the expression being binned (unless it is binning a column)
 	private String _namedExpressionName;
@@ -41,10 +41,11 @@ public class Histogram extends PlotDialog {
 
 		// are we dealing with an expression or a column?
 		String name = _histoData.getName();
-		boolean isColumn = Dictionary.getInstance().validColumnName(name);
+		boolean isColumn = NameSpaceManager.validColumnName(name);
 
 		if (isColumn) {
-			_column = Dictionary.getInstance().getColumnFromFullName(histoData.getName());
+			//histo has full column name
+			_column = NameSpaceManager.getInstance().getColumnInfo(histoData.getName());
 		} else {
 			_namedExpressionName = name;
 		}

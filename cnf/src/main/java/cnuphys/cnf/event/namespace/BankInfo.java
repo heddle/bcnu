@@ -16,6 +16,9 @@ public class BankInfo extends ArrayList<ColumnInfo> implements Comparable<BankIn
 
 	//for binary search
 	private ColumnInfo _workColumnInfo = new ColumnInfo(null, null, -1);
+	
+	//cache column names 
+	private String[] _columnNames;
 
 	/**
 	 * Create a BankInfo object from a schema
@@ -75,6 +78,22 @@ public class BankInfo extends ArrayList<ColumnInfo> implements Comparable<BankIn
 		}
 	}
 
+	/**
+	 * Get an array of the column names
+	 * @return the column names
+	 */
+	public String[] getColumnNames() {
+		
+		if (_columnNames == null) {
+			int len = size();
+			_columnNames = new String[len];
+			for (int i = 0; i < len; i++) {
+				_columnNames[i] = get(i).getName();
+			}
+		}
+		
+		return _columnNames;
+	}
 
 	@Override
 	public int compareTo(BankInfo o) {

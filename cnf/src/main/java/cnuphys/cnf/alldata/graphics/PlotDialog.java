@@ -17,7 +17,8 @@ import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.log.Log;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.IEventListener;
-import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.DataUtils;
 import cnuphys.splot.plot.PlotCanvas;
 import cnuphys.splot.plot.PlotPanel;
 import cnuphys.splot.plot.PlotParameters;
@@ -239,10 +240,10 @@ public abstract class PlotDialog extends JDialog
 	 * @param ne    the named expression
 	 * @return the effective length of the data
 	 */
-	public int getMinLength(DataEvent event, Column cd, NamedExpression ne) {
+	public int getMinLength(DataEvent event, ColumnInfo cd, NamedExpression ne) {
 		int len = 0;
 		if (cd != null) {
-			double vals[] = cd.getAsDoubleArray(event);
+			double vals[] = DataUtils.getAsDoubleArray(event, cd);
 			len = (vals == null) ? 0 : vals.length;
 		} // colData != null
 		else if (ne != null) {
@@ -260,7 +261,7 @@ public abstract class PlotDialog extends JDialog
 	 * @param ne    the named expression
 	 * @return the value at the index or Double.NaN on error
 	 */
-	public double getValue(DataEvent event, int index, Column cd, NamedExpression ne) {
+	public double getValue(DataEvent event, int index, ColumnInfo cd, NamedExpression ne) {
 		if ((index < 0) || ((cd == null) && (ne == null))) {
 			return Double.NaN;
 		}
@@ -268,7 +269,7 @@ public abstract class PlotDialog extends JDialog
 		double val = Double.NaN;
 
 		if (cd != null) {
-			double vals[] = cd.getAsDoubleArray(event);
+			double vals[] = DataUtils.getAsDoubleArray(event, cd);
 			if ((vals != null) && (index < vals.length)) {
 				val = vals[index];
 			}

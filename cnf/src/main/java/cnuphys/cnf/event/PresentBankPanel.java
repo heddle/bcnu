@@ -16,8 +16,6 @@ import javax.swing.JPanel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
-import cnuphys.cnf.event.dictionary.Dictionary;
-import cnuphys.cnf.event.dictionary.IDictionaryListener;
 import cnuphys.cnf.event.table.NodeTable;
 
 /**
@@ -28,14 +26,10 @@ import cnuphys.cnf.event.table.NodeTable;
  */
 @SuppressWarnings("serial")
 public class PresentBankPanel extends JPanel
-		implements ActionListener, IEventListener, IDictionaryListener {
+		implements ActionListener, IEventListener {
 
 	// the event manager
 	private EventManager _eventManager = EventManager.getInstance();
-
-	// the dictionary
-	private Dictionary _dictionary = Dictionary.getInstance();
-
 
 	// hash table
 	private Hashtable<String, ActionLabel> _allLabels = new Hashtable<>(193);
@@ -54,7 +48,6 @@ public class PresentBankPanel extends JPanel
 	public PresentBankPanel(NodeTable nodeTable) {
 		_nodeTable = nodeTable;
 		_eventManager.addEventListener(this, 1);
-		_dictionary.addDictionaryListener(this);
 
 		setLayout(new GridLayout(40, 4, 2, 0));
 
@@ -229,9 +222,4 @@ public class PresentBankPanel extends JPanel
 	public void streamingEnded(File file, int reason) {
 	}
 
-	@Override
-	public void dictionaryChanged() {
-		System.out.println("new dictionary");
-		replaceBankLabels();
-	}
 }

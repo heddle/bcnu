@@ -12,7 +12,6 @@ import org.jlab.io.hipo.HipoDataSource;
 import org.jlab.jnp.hipo4.data.Schema;
 
 import cnuphys.cnf.event.EventManager;
-import cnuphys.cnf.event.IEventListener;
 
 /**
  * Manages the name space of banks and columns forthe current data source
@@ -20,7 +19,7 @@ import cnuphys.cnf.event.IEventListener;
  * @author heddle
  *
  */
-public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListener {
+public class NameSpaceManager extends ArrayList<BankInfo> {
 
 	/** type is unknown */
 	public static final int UNKNOWN = 0;
@@ -79,7 +78,6 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 
 	//private constructor for singleton
 	private NameSpaceManager() {
-		EventManager.getInstance().addEventListener(this, 1);
 	}
 
 	/**
@@ -124,6 +122,14 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 
 		//tell whoever is interested
 		notifyListeners();
+	}
+	
+	/**
+	 * Get the names of banks present in the current datasource
+	 * @return the names of known banks
+	 */
+	public String[] getKnownBanks() {
+		return _knownBanks;
 	}
 
 	/**
@@ -204,6 +210,58 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 			return null;
 		}
 	}
+	
+	/**
+	 * Get an array of column names for the given bank name 
+	 * @param bankName the bank name
+	 * @return the column names, or null on failure
+	 */
+	public String[] getColumnNames(String bankName) {
+		BankInfo bankInfo = getBankInfo(bankName);
+		
+		if (bankInfo != null) {
+			return bankInfo.getColumnNames();
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Get the ColumnInfo object
+	 * @param bankName the bank name
+	 * @param columnName the column name
+	 * @return the ColumnInfo, or null
+	 */
+	public ColumnInfo getColumnInfo(String bankName, String columnName) {
+		if (bankName == null || columnName == null) {
+			return null;
+		}
+		
+		BankInfo bank = this.getBankInfo(bankName);
+		return (bank == null) ? null : bank.getColumnInfo(columnName);
+	}
+	
+	/**
+	 * Get the ColumnInfo object
+	 * @param fullColumnName of the form a::b.c
+	 * @return the ColumnInfo, or null
+	 */
+	public ColumnInfo getColumnInfo(String fullColumnName) {
+		if (fullColumnName == null) {
+			return null;
+		}
+		
+		int index = fullColumnName.indexOf(".");
+		if (index < 2) {
+			return null;
+		}
+		
+		String bankName = fullColumnName.substring(0, index);
+		String columnName = fullColumnName.substring(index+1);
+
+		return getColumnInfo(bankName, columnName);
+	}
+
 
 	/**
 	 * Get the data type for the given bank and column names
@@ -219,6 +277,16 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 		}
 		return -1;
 	}
+	
+	/**
+	 * Check to see if string appears to have the correct format
+	 * for a full column name i.e. a::b.c
+	 * @param columnName a full column name to check
+	 * @return true if the full name passes this basic test
+	 */
+	public static boolean validColumnName(String columnName) {
+		return (columnName != null && columnName.length() > 4 && columnName.contains("::") && columnName.contains("."));
+	}
 
 	@Override
 	public String toString() {
@@ -232,33 +300,5 @@ public class NameSpaceManager extends ArrayList<BankInfo> implements IEventListe
 		return sb.toString();
 	}
 
-	@Override
-	public void newEvent(DataEvent event, boolean isStreaming) {
-		if (isStreaming) {
-
-		}
-
-		ArrayList<ColumnInfo> dataColumns = DataUtils.columnsWithData(event);
-		for (ColumnInfo s : dataColumns) {
-			System.out.println("[" + s.getFullName() +"] " + s.colorIndex);
-		}
-	}
-
-	@Override
-	public void openedNewEventFile(File file) {
-	}
-
-	@Override
-	public void rewoundFile(File file) {
-
-	}
-
-	@Override
-	public void streamingStarted(File file, int numToStream) {
-	}
-
-	@Override
-	public void streamingEnded(File file, int reason) {
-	}
 
 }

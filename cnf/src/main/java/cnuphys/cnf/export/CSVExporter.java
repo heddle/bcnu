@@ -14,7 +14,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.log.Log;
 import cnuphys.cnf.alldata.graphics.ColumnsDialog;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 /**
  * A exporter to CSV. The use must choose what bank, and then what columns to export.
@@ -147,27 +147,27 @@ public class CSVExporter extends AExporter {
 						sb.append(",");
 					}
 
-					int type = Dictionary.getInstance().getDataType(_bankName, columnName);
+					int type = NameSpaceManager.getInstance().getDataType(_bankName, columnName);
 
 					String s;
 					switch (type) {
-					case Dictionary.INT8:
+					case NameSpaceManager.INT8:
 						s = "" + bank.getByte(columnName, row);
 						break;
-					case Dictionary.INT16:
+					case NameSpaceManager.INT16:
 						s = "" + bank.getShort(columnName, row);
 						break;
-					case Dictionary.INT32:
+					case NameSpaceManager.INT32:
 						s = "" + bank.getInt(columnName, row);
 						break;
-					case Dictionary.INT64:
+					case NameSpaceManager.INT64:
 						s = "" + bank.getLong(columnName, row);
 						break;
-					case Dictionary.FLOAT32:
+					case NameSpaceManager.FLOAT32:
 						float f = bank.getFloat(columnName, row);
 						s = String.format("%5.4g", f);
 						break;
-					case Dictionary.FLOAT64:
+					case NameSpaceManager.FLOAT64:
 						double d = bank.getDouble(columnName, row);
 						s = String.format("%5.4g", d);
 						break;

@@ -17,7 +17,7 @@ import javax.swing.table.TableColumn;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.cnf.event.dictionary.Column;
+import cnuphys.cnf.event.namespace.ColumnInfo;
 import cnuphys.splot.plot.X11Colors;
 
 public class NodeTable extends JTable {
@@ -91,7 +91,7 @@ public class NodeTable extends JTable {
 	 * @param row the row in question
 	 * @return the corresponding node, or <code>null</code>
 	 */
-	public Column getColumnData(int row) {
+	public ColumnInfo getColumnData(int row) {
 		return getNodeModel().getColumnData(row);
 	}
 
@@ -124,7 +124,7 @@ public class NodeTable extends JTable {
 
 			cellComponent.setFont(pfont);
 
-			Column cd = _table.getColumnData(row);
+			ColumnInfo cd = _table.getColumnData(row);
 			if (cd == null) {
 				cellComponent.setBackground(Color.red);
 				cellComponent.setForeground(Color.white);
@@ -133,7 +133,7 @@ public class NodeTable extends JTable {
 					cellComponent.setBackground(Color.yellow);
 					cellComponent.setForeground(Color.black);
 				} else {
-					if ((cd.bankIndex % 2) == 0) {
+					if ((cd.colorIndex % 2) == 0) {
 						cellComponent.setBackground(X11Colors.getX11Color("alice blue"));
 						cellComponent.setForeground(X11Colors.getX11Color("dark blue"));
 					} else {

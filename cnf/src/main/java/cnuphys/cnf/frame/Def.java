@@ -38,7 +38,6 @@ import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.EventMenu;
 import cnuphys.cnf.event.EventView;
 import cnuphys.cnf.event.IEventListener;
-import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.cnf.export.ExportManager;
 import cnuphys.cnf.properties.PropertiesManager;
@@ -514,7 +513,6 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 		} // end command arg processing
 
 		// initialize managers
-		Dictionary.getInstance(); //data columns
 		NameSpaceManager.getInstance(); //data columns
 
 		DefinitionManager.getInstance();

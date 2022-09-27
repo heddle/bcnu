@@ -6,8 +6,6 @@ import java.util.Arrays;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.cnf.event.dictionary.Dictionary;
-
 /**
  * A set of static convenience methods leveraging the NameSpace
  *
@@ -94,6 +92,7 @@ public class DataUtils {
 		}
 		return 0;
 	}
+	
 
 	/**
 	 * Get a byte array for the bank and column names in the given event
@@ -203,6 +202,20 @@ public class DataUtils {
 		return null;
 	}
 
+	/**
+	 * Get the array with double values regardless of type
+	 * @param event the given event
+	 * @param columnInfo the info object
+	 * @return the data as a double array
+	 */
+	public static double[] getAsDoubleArray(DataEvent event, ColumnInfo columnInfo) {
+		if (columnInfo == null) {
+			return null;
+		}
+		
+		return getAsDoubleArray(event, columnInfo.getBankInfo().getName(), columnInfo.getName());
+	}
+
 
 	/**
 	 * Get the array with double values regardless of type
@@ -211,7 +224,7 @@ public class DataUtils {
 	 * @param columnName the column name
 	 * @return the data as a double array
 	 */
-	public double[] getAsDoubleArray(DataEvent event, String bankName, String columnName) {
+	public static double[] getAsDoubleArray(DataEvent event, String bankName, String columnName) {
 		double da[] = null;
 
 		if (event != null) {
@@ -220,7 +233,7 @@ public class DataUtils {
 				int type = _nameSpace.getDataType(bankName, columnName);
 				if (type > 0) {
 					switch (type) {
-					case Dictionary.INT8:
+					case NameSpaceManager.INT8:
 						byte b[] = getByteArray(event, bankName, columnName);
 						da = new double[len];
 						for (int j = 0; j < len; j++) {
@@ -228,7 +241,7 @@ public class DataUtils {
 						}
 						break;
 
-					case Dictionary.INT16:
+					case NameSpaceManager.INT16:
 						short s[] = getShortArray(event, bankName, columnName);
 						da = new double[len];
 						for (int j = 0; j < len; j++) {
@@ -236,7 +249,7 @@ public class DataUtils {
 						}
 						break;
 
-					case Dictionary.INT32:
+					case NameSpaceManager.INT32:
 						int i[] = getIntArray(event, bankName, columnName);
 						da = new double[len];
 						for (int j = 0; j < len; j++) {
@@ -244,7 +257,7 @@ public class DataUtils {
 						}
 						break;
 
-					case Dictionary.INT64:
+					case NameSpaceManager.INT64:
 						long l[] = getLongArray(event, bankName, columnName);
 						da = new double[len];
 						for (int j = 0; j < len; j++) {
@@ -253,7 +266,7 @@ public class DataUtils {
 						break;
 
 
-					case Dictionary.FLOAT32:
+					case NameSpaceManager.FLOAT32:
 						float f[] = getFloatArray(event, bankName, columnName);
 						da = new double[len];
 						for (int j = 0; j < len; j++) {
@@ -261,7 +274,7 @@ public class DataUtils {
 						}
 						break;
 
-					case Dictionary.FLOAT64:
+					case NameSpaceManager.FLOAT64:
 						da = getDoubleArray(event, bankName, columnName);
 						break;
 					}

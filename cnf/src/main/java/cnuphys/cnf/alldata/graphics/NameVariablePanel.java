@@ -24,7 +24,7 @@ import javax.swing.SwingUtilities;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 public class NameVariablePanel extends JPanel implements PropertyChangeListener {
 
@@ -167,7 +167,7 @@ public class NameVariablePanel extends JPanel implements PropertyChangeListener 
 
 		// get the bank and column name
 		String fn = _selectPanel.getFullColumnName();
-		boolean valid = Dictionary.getInstance().validColumnName(fn);
+		boolean valid = NameSpaceManager.validColumnName(fn);
 		if (!valid) {
 			return;
 		}
@@ -185,7 +185,7 @@ public class NameVariablePanel extends JPanel implements PropertyChangeListener 
 		String prop = evt.getPropertyName();
 		if ((o == _selectPanel) && prop.equals("newname")) {
 			String fn = (String) (evt.getNewValue());
-			boolean valid = Dictionary.getInstance().validColumnName(fn);
+			boolean valid = NameSpaceManager.validColumnName(fn);
 			_variableNameTextField.setEnabled(valid);
 		}
 

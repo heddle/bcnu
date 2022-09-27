@@ -33,8 +33,9 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.IEventListener;
 import cnuphys.cnf.event.PresentBankPanel;
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.DataUtils;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 public class NodePanel extends JPanel
 		implements ActionListener, ListSelectionListener, IEventListener {
@@ -64,7 +65,7 @@ public class NodePanel extends JPanel
 	private boolean _isReady;
 
 	// current selected node
-	private Column _currentColumnData;
+	private ColumnInfo _currentColumnData;
 
 	// present banks
 	private PresentBankPanel _presentPanel;
@@ -323,7 +324,7 @@ public class NodePanel extends JPanel
 	 *
 	 * @param treeSelectionEvent the causal event.
 	 */
-	protected void updateDataArea(Column cd) {
+	protected void updateDataArea(ColumnInfo cd) {
 
 		_dataTextArea.setText("");
 		int blankLineEveryNth = 5; // put in a blank line after every Nth
@@ -337,16 +338,16 @@ public class NodePanel extends JPanel
 			return;
 		}
 
-		Dictionary dm = Dictionary.getInstance();
-		String fullName = cd.getFullName();
+		String bankName = cd.getBankInfo().getName();
+		String columnName = cd.getName();
 
 		int lineCounter = 1;
 		int index = 1;
 
 		switch (cd.getType()) {
 
-		case Dictionary.INT8: // byte
-			byte bytes[] = dm.getByteArray(event, fullName);
+		case NameSpaceManager.INT8: // byte
+			byte bytes[] = DataUtils.getByteArray(event, bankName, columnName);
 			if (bytes != null) {
 				for (byte i : bytes) {
 					String s;
@@ -370,8 +371,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case Dictionary.INT16:
-			short shorts[] = dm.getShortArray(event, fullName);
+		case NameSpaceManager.INT16:
+			short shorts[] = DataUtils.getShortArray(event, bankName, columnName);
 			if (shorts != null) {
 				for (short i : shorts) {
 					String s;
@@ -395,8 +396,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case Dictionary.INT32:
-			int ints[] = dm.getIntArray(event, fullName);
+		case NameSpaceManager.INT32:
+			int ints[] = DataUtils.getIntArray(event, bankName, columnName);
 			if (ints != null) {
 				for (int i : ints) {
 					String s;
@@ -420,8 +421,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case Dictionary.FLOAT32:
-			float floats[] = dm.getFloatArray(event, fullName);
+		case NameSpaceManager.FLOAT32:
+			float floats[] = DataUtils.getFloatArray(event, bankName, columnName);
 			if (floats != null) {
 				for (float f : floats) {
 					String doubStr = DoubleFormat.doubleFormat(f, 6, 4);
@@ -441,8 +442,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case Dictionary.FLOAT64:
-			double doubles[] = dm.getDoubleArray(event, fullName);
+		case NameSpaceManager.FLOAT64:
+			double doubles[] = DataUtils.getDoubleArray(event, bankName, columnName);
 			if (doubles != null) {
 				for (double d : doubles) {
 					String doubStr = DoubleFormat.doubleFormat(d, 6, 4);

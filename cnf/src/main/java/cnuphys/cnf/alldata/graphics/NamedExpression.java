@@ -7,8 +7,9 @@ import javax.swing.text.JTextComponent;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.FileUtilities;
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.DataUtils;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 import net.oh.exp4j.Expression;
 import net.oh.exp4j.ExpressionBuilder;
 import net.oh.exp4j.ValidationResult;
@@ -28,7 +29,7 @@ public class NamedExpression implements Comparable<NamedExpression> {
 	protected String[] _variables;
 
 	/** A matching array of ColumnData objects */
-	protected Column[] _columnData;
+	protected ColumnInfo[] _columnData;
 
 	public NamedExpression(String eName, String eString) {
 		_expName = eName;
@@ -60,13 +61,13 @@ public class NamedExpression implements Comparable<NamedExpression> {
 		if (_expression == null) {
 			_variables = getVariables(_expString);
 			if ((_variables != null) && (_variables.length > 0)) {
-				_columnData = new Column[_variables.length];
+				_columnData = new ColumnInfo[_variables.length];
 				for (int i = 0; i < _variables.length; i++) {
 					_columnData[i] = null;
 					NameBinding nb = DefinitionManager.getInstance().getNameBinding(_variables[i]);
 
 					if (nb != null) {
-						_columnData[i] = Dictionary.getInstance().getColumnFromFullName(nb.bankColumnName);
+						_columnData[i] = NameSpaceManager.getInstance().getColumnInfo(nb.bankColumnName);
 					}
 
 					System.err.println("var name: [" + _variables[i] + "]  columnData: " + _columnData[i]);
@@ -195,11 +196,11 @@ public class NamedExpression implements Comparable<NamedExpression> {
 			return 0;
 		}
 
-		double a[] = _columnData[0].getAsDoubleArray(event);
+		double a[] = DataUtils.getAsDoubleArray(event, _columnData[0]);
 		int dataLen = (a == null) ? 0 : a.length;
 
 		for (int i = 1; i < len; i++) {
-			a = _columnData[i].getAsDoubleArray(event);
+			a = DataUtils.getAsDoubleArray(event, _columnData[i]);
 			int alen = (a == null) ? 0 : a.length;
 			dataLen = Math.min(alen, dataLen);
 		}
@@ -245,7 +246,7 @@ public class NamedExpression implements Comparable<NamedExpression> {
 		if (readyToCompute()) {
 			int vlen = (_variables == null) ? 0 : _variables.length;
 			for (int i = 0; i < vlen; i++) {
-				double val[] = _columnData[i].getAsDoubleArray(event);
+				double val[] = DataUtils.getAsDoubleArray(event, _columnData[i]);
 				if (val == null) {
 					return Double.NaN;
 				}

@@ -21,7 +21,7 @@ import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.cnf.event.datatable.BankDataTable;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.cnf.frame.Def;
 import cnuphys.cnf.properties.PropertiesManager;
 
@@ -78,7 +78,7 @@ public class BankDialog extends JDialog implements ItemListener {
 	 */
 	public String[] colNames(String bankName) {
 		if (bankName != null) {
-			return Dictionary.getInstance().getColumnNames(bankName);
+			return NameSpaceManager.getInstance().getColumnNames(bankName);
 		}
 		return null;
 	}

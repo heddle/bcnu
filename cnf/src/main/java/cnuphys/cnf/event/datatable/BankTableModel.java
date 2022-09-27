@@ -8,8 +8,8 @@ import javax.swing.table.DefaultTableModel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.DataUtils;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 public class BankTableModel extends DefaultTableModel {
 
@@ -61,28 +61,14 @@ public class BankTableModel extends DefaultTableModel {
 	 */
 	@Override
 	public int getRowCount() {
-		if (_event == null) {
-			return 0;
-		}
-
-		ArrayList<Column> cds = Dictionary.getInstance().columnsWithData(_event, _bankName);
-		int rowCount = 0;
-
-		for (Column cd : cds) {
-
-			if (cd != null) {
-				rowCount = Math.max(rowCount, cd.length(_event));
-			}
-		}
-
-		return rowCount;
+		return DataUtils.bankLength(_event, _bankName);
 	}
 
 	/**
 	 * Get the value at a given row and column
 	 *
 	 * @param row the 0-based row
-	 * @param col the 0-based column
+	 * @param col the 0-based column (column 0 is for index)
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -95,31 +81,29 @@ public class BankTableModel extends DefaultTableModel {
 			return " " + (row + 1);
 		}
 
-		Column column = Dictionary.getInstance().getColumn(_bankName, _columnNames[col]);
-		if (column == null) {
-			return "???";
-		}
-		int len = column.length(_event);
+		int len = getRowCount();
+		
 		if ((len == 0) || (row >= len)) {
 			return "";
 		}
 
-		String fullName = column.getFullName();
+		String columnName = _columnNames[col];
+		int type = DataUtils.getDataType(_bankName, columnName);
 
-		switch (column.getType()) {
-		case Dictionary.INT8:
-			return "" + Dictionary.getInstance().getByteArray(_event, fullName)[row];
-		case Dictionary.INT16:
-			return "" + Dictionary.getInstance().getShortArray(_event, fullName)[row];
-		case Dictionary.INT32:
-			return "" + Dictionary.getInstance().getIntArray(_event, fullName)[row];
-		case Dictionary.INT64:
-			return "" + Dictionary.getInstance().getLongArray(_event, fullName)[row];
-		case Dictionary.FLOAT32:
-			float f = Dictionary.getInstance().getFloatArray(_event, fullName)[row];
+		switch (type) {
+		case NameSpaceManager.INT8:
+			return "" + DataUtils.getByteArray(_event, _bankName, columnName)[row];
+		case NameSpaceManager.INT16:
+			return "" + DataUtils.getShortArray(_event, _bankName, columnName)[row];
+		case NameSpaceManager.INT32:
+			return "" + DataUtils.getIntArray(_event, _bankName, columnName)[row];
+		case NameSpaceManager.INT64:
+			return "" + DataUtils.getLongArray(_event, _bankName, columnName)[row];
+		case NameSpaceManager.FLOAT32:
+			float f = DataUtils.getFloatArray(_event, _bankName, columnName)[row];
 			return DoubleFormat.doubleFormat(f, 5, 4);
-		case Dictionary.FLOAT64:
-			double d = Dictionary.getInstance().getDoubleArray(_event, fullName)[row];
+		case NameSpaceManager.FLOAT64:
+			double d = DataUtils.getDoubleArray(_event, _bankName, columnName)[row];
 			return DoubleFormat.doubleFormat(d, 5, 4);
 		default:
 			return "???";
@@ -152,9 +136,9 @@ public class BankTableModel extends DefaultTableModel {
 
 	// add an extra column name for index
 	private static String[] getColumnNames(String bankName) {
-		String cnames[] = Dictionary.getInstance().getColumnNames(bankName);
+		String cnames[] = NameSpaceManager.getInstance().getColumnNames(bankName);
 
-		Arrays.sort(cnames);
+		//add an extra for index in column 0
 		String expNames[] = new String[cnames.length + 1];
 		expNames[0] = "";
 		for (int i = 0; i < cnames.length; i++) {

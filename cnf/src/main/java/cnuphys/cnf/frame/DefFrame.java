@@ -27,7 +27,6 @@ import cnuphys.cnf.alldata.graphics.DefinitionManager;
 import cnuphys.cnf.event.EventManager;
 import cnuphys.cnf.event.EventMenu;
 import cnuphys.cnf.event.IEventListener;
-import cnuphys.cnf.event.dictionary.Dictionary;
 import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.cnf.event.table.NodePanel;
 import cnuphys.cnf.export.ExportManager;
@@ -339,7 +338,6 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 
 				// initialize managers
-				Dictionary.getInstance(); //data columns
 				NameSpaceManager.getInstance(); //data columns
 
 				DefinitionManager.getInstance();

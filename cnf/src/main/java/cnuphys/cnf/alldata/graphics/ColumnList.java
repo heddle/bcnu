@@ -10,7 +10,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 
 public class ColumnList extends DragDropList implements KeyListener {
 
@@ -45,7 +45,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 	 */
 	public void setList(String bankName) {
 		if (bankName != null) {
-			String columns[] = Dictionary.getInstance().getColumnNames(bankName);
+			String columns[] = NameSpaceManager.getInstance().getColumnNames(bankName);
 			if (columns != null) {
 				Arrays.sort(columns);
 

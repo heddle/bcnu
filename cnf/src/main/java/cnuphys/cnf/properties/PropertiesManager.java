@@ -3,15 +3,11 @@ package cnuphys.cnf.properties;
 import java.io.File;
 import java.util.Properties;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.SerialIO;
-import cnuphys.cnf.event.EventManager;
-import cnuphys.cnf.event.IEventListener;
 
-public class PropertiesManager implements IEventListener {
+public class PropertiesManager {
 
 	private static PropertiesManager _instance;
 
@@ -21,7 +17,7 @@ public class PropertiesManager implements IEventListener {
 	// the user preferences file
 	private static File _upFile;
 
-	// private constructor for simgleton
+	// private constructor for singleton
 	private PropertiesManager() {
 	}
 
@@ -34,7 +30,6 @@ public class PropertiesManager implements IEventListener {
 		if (_instance == null) {
 			_instance = new PropertiesManager();
 			_instance.getPropertiesFromDisk();
-			EventManager.getInstance().addEventListener(_instance, 0);
 		}
 		return _instance;
 	}
@@ -94,40 +89,5 @@ public class PropertiesManager implements IEventListener {
 		}
 	}
 
-	@Override
-	public void newEvent(DataEvent event, boolean isStreaming) {
-	}
-
-	@Override
-	public void openedNewEventFile(File file) {
-	}
-
-	/**
-	 * Rewound the current file
-	 * @param file the file
-	 */
-	@Override
-	public void rewoundFile(File file) {
-
-	}
-
-
-	/**
-	 * Streaming start message
-	 * @param file file being streamed
-	 * @param numToStream number that will be streamed
-	 */
-	@Override
-	public void streamingStarted(File file, int numToStream) {
-	}
-
-	/**
-	 * Streaming ended message
-	 * @param file the file that was streamed
-	 * @param int the reason the streaming ended
-	 */
-	@Override
-	public void streamingEnded(File file, int reason) {
-	}
 
 }

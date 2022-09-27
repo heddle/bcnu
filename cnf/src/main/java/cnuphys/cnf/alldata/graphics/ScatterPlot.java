@@ -10,8 +10,8 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.cnf.event.dictionary.Column;
-import cnuphys.cnf.event.dictionary.Dictionary;
+import cnuphys.cnf.event.namespace.ColumnInfo;
+import cnuphys.cnf.event.namespace.NameSpaceManager;
 import cnuphys.splot.fit.FitType;
 import cnuphys.splot.pdata.DataColumn;
 import cnuphys.splot.pdata.DataColumnType;
@@ -32,9 +32,9 @@ public class ScatterPlot extends PlotDialog {
 	//the plot canvas
 	private PlotCanvas _canvas;
 
-	// the x and y column data
-	private Column _colDatX;
-	private Column _colDatY;
+	// the x and y column info
+	private ColumnInfo _colDatX;
+	private ColumnInfo _colDatY;
 
 	// the (alternative) x and y expressions
 	private String _namedExpressionNameX;
@@ -58,16 +58,16 @@ public class ScatterPlot extends PlotDialog {
 
 		_canvas = new PlotCanvas(_dataSet, title, xname, yname);
 
-		boolean isColumnX = Dictionary.getInstance().validColumnName(xname);
-		boolean isColumnY = Dictionary.getInstance().validColumnName(yname);
+		boolean isColumnX = NameSpaceManager.validColumnName(xname);
+		boolean isColumnY = NameSpaceManager.validColumnName(xname);
 
 		if (isColumnX) {
-			_colDatX = Dictionary.getInstance().getColumnFromFullName(xname);
+			_colDatX = NameSpaceManager.getInstance().getColumnInfo(xname);
 		} else {
 			_namedExpressionNameX = xname;
 		}
 		if (isColumnY) {
-			_colDatY = Dictionary.getInstance().getColumnFromFullName(yname);
+			_colDatY = NameSpaceManager.getInstance().getColumnInfo(yname);
 		} else {
 			_namedExpressionNameY = yname;
 		}
