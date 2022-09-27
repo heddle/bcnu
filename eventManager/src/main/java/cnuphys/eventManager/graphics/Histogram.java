@@ -35,6 +35,7 @@ public class Histogram extends PlotDialog {
 	 *
 	 * @param histoData
 	 */
+	
 	public Histogram(HistoData histoData) {
 		super(histoData.getName());
 		_histoData = histoData;
