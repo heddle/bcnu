@@ -52,7 +52,7 @@ public class Def extends BaseMDIApplication implements IEventListener, IDefCommo
 	private static Def _instance;
 
 	// release string
-	protected static final String _release = "build 0.01";
+	protected static final String _release = "build 0.4";
 
 	// used for one time inits
 	private int _firstTime = 0;
