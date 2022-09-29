@@ -10,11 +10,13 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.UIManager;
 
 import org.jlab.io.base.DataEvent;
 
@@ -76,6 +78,8 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 	private DefFrame() {
 
 		super("def release " + Def._release);
+		
+		UIManager.put("List.focusCellHighlightBorder", BorderFactory.createEmptyBorder());
 
 		Def.setFrame(this);
 

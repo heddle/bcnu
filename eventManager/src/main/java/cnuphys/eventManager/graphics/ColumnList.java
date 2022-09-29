@@ -24,7 +24,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 	}
 
 	public ColumnList(int selectionMode) {
-		super(new DefaultListModel());
+		super(new DefaultListModel<String>());
 		setSelectionMode(selectionMode);
 		_scrollPane = new JScrollPane(this);
 		_scrollPane.setPreferredSize(_size);
@@ -34,7 +34,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 
 
 	private void clear() {
-		DefaultListModel listModel = (DefaultListModel) getModel();
+		DefaultListModel<String> listModel = (DefaultListModel<String>) getModel();
 		listModel.removeAllElements();
 	}
 
@@ -49,7 +49,7 @@ public class ColumnList extends DragDropList implements KeyListener {
 			if (columns != null) {
 				Arrays.sort(columns);
 
-				DefaultListModel model = (DefaultListModel)(this.getModel());
+				DefaultListModel<String> model = (DefaultListModel<String>)(getModel());
 				model.clear();
 				for (String cn : columns) {
 					model.addElement(cn);

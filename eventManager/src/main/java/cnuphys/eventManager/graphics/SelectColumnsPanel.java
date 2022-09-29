@@ -121,6 +121,12 @@ public class SelectColumnsPanel extends JPanel implements ListSelectionListener 
 		}
 
 	}
+	
+	//clear all selections
+	public void clear() {
+//		_blist.clearSelection();
+		_clist.clearSelection();
+	}
 
 	/**
 	 * Get the selected bank

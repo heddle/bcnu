@@ -13,6 +13,7 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.log.Log;
+import cnuphys.eventManager.graphics.BanksAndColumnsDialog;
 import cnuphys.eventManager.graphics.ColumnsDialog;
 import cnuphys.eventManager.namespace.NameSpaceManager;
 
@@ -55,63 +56,77 @@ public class CSVExporter extends AExporter {
 		_columnNames = null;
 
 		//what columns to export?
-		ColumnsDialog columnDialog = new ColumnsDialog("Select Bank and Columns to Export");
-		columnDialog.setVisible(true);
+		BanksAndColumnsDialog bncDialog = new BanksAndColumnsDialog("Select Bank and Columns to Export", "Export");
+		bncDialog.setVisible(true);
 
-		int reason = columnDialog.getReason();
+		int reason = bncDialog.getReason();
 		if (reason == DialogUtilities.CANCEL_RESPONSE) {
 			Log.getInstance().info("CSV Export was cancelled.");
 			return false;
 		}
-
-		//see what I have selected
-		_bankName = columnDialog.getSelectedBank();
-		if (_bankName == null) {
-			Log.getInstance().error("null bankname in CSV prepareToExport. That should not have happened.");
+		
+		//selected "export"
+		List<String> fullNames = bncDialog.getFullNames();
+		
+		if (fullNames == null || fullNames.size() < 1) {
 			return false;
 		}
-		_columnNames = columnDialog.getSelectedColumns();
-
-		if ((_columnNames == null) || _columnNames.isEmpty()) {
-			Log.getInstance().error("null or empty column names in CSV prepareToExport. That should not have happened.");
-			return false;
+		
+		for (String s : fullNames) {
+			System.out.println("FN: [" + s + "]");
 		}
-		Log.getInstance().info("CSV exporting bank [" + _bankName + "]");
+		
+		
+		return false;
 
-		StringBuffer sb = new StringBuffer(256);
-		sb.append("CSV exporting column[s] ");
-		for (String c : _columnNames) {
-			sb.append(" [" + c + "]");
-		}
-
-		Log.getInstance().info(sb.toString());
-
-
-		//open a file for writing
-		_exportFile = getFile("CSV Files", "csv", "csv", "CSV");
-		if (_exportFile != null) {
-			Log.getInstance().info("CSV: export to [" + _exportFile.getAbsolutePath() + "]");
-
-
-			try {
-				OutputStream os = new FileOutputStream(_exportFile);
-				_osw = new OutputStreamWriter(os, "UTF-8");
-
-				//_dos = new DataOutputStream(new FileOutputStream(_exportFile));
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		} //export file != null
-		else {
-			return false;
-		}
-
-		_first = true;
-		return true;
+//		//see what I have selected
+//		_bankName = columnDialog.getSelectedBank();
+//		if (_bankName == null) {
+//			Log.getInstance().error("null bankname in CSV prepareToExport. That should not have happened.");
+//			return false;
+//		}
+//		_columnNames = columnDialog.getSelectedColumns();
+//
+//		if ((_columnNames == null) || _columnNames.isEmpty()) {
+//			Log.getInstance().error("null or empty column names in CSV prepareToExport. That should not have happened.");
+//			return false;
+//		}
+//		Log.getInstance().info("CSV exporting bank [" + _bankName + "]");
+//
+//		StringBuffer sb = new StringBuffer(256);
+//		sb.append("CSV exporting column[s] ");
+//		for (String c : _columnNames) {
+//			sb.append(" [" + c + "]");
+//		}
+//
+//		Log.getInstance().info(sb.toString());
+//
+//
+//		//open a file for writing
+//		_exportFile = getFile("CSV Files", "csv", "csv", "CSV");
+//		if (_exportFile != null) {
+//			Log.getInstance().info("CSV: export to [" + _exportFile.getAbsolutePath() + "]");
+//
+//
+//			try {
+//				OutputStream os = new FileOutputStream(_exportFile);
+//				_osw = new OutputStreamWriter(os, "UTF-8");
+//
+//				//_dos = new DataOutputStream(new FileOutputStream(_exportFile));
+//			} catch (FileNotFoundException e) {
+//				e.printStackTrace();
+//			} catch (UnsupportedEncodingException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//
+//		} //export file != null
+//		else {
+//			return false;
+//		}
+//
+//		_first = true;
+//		return true;
 	}
 
 

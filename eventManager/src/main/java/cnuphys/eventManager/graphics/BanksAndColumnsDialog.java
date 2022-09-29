@@ -12,9 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.UIManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -29,14 +31,26 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 	private JButton _okButton;
 	private JButton _cancelButton;
 	private JButton _addButton;
-
+	private JButton _removeButton;
+	
+	private String _okLabel;
+	
 	//the reason
 	private int _reason;
 
 	//selection panel
 	private SelectColumnsPanel _columnsPanel;
 	
+	//for the selected fullnames
+	private FullColumnNameList _fullNameList;
+	
 	public BanksAndColumnsDialog(String title) {
+		this(title, "  OK  ");
+	}
+
+	
+	public BanksAndColumnsDialog(String title, String okLabel) {
+		_okLabel = okLabel;
 		setTitle(title);
 		setModal(true);
 
@@ -60,6 +74,29 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 		GraphicsUtilities.centerComponent(this);
 		
 	}
+	//		List<String> slist = _clist.getSelectedValuesList();
+
+	//create the remove button
+	private JButton makeRemoveButton() {
+		
+		ActionListener al = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				List<String> selectedNames = _fullNameList.getSelectedValuesList();
+				if (selectedNames != null) {
+					_fullNameList.removeSelected();
+				}
+			}
+			
+		};
+		
+		JButton button = new JButton("Remove");
+		button.addActionListener(al);
+		button.setEnabled(false);
+		return button;
+	}
+
 	
 	//create the add button
 	private JButton makeAddButton() {
@@ -68,8 +105,10 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
+				String selectedBank = _columnsPanel.getSelectedBank();
+				List<String> selectedColumns = _columnsPanel.getSelectedColumns();
+				_fullNameList.add(selectedBank, selectedColumns);
+				_columnsPanel.clear();
 			}
 			
 			
@@ -77,23 +116,32 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 		
 		JButton button = new JButton(" Add ");
 		button.addActionListener(al);
-		
+		button.setEnabled(false);
 		return button;
 	}
 	
 
+	//set up the components
 	private void setup() {
+		addNorth();
 		addCenter();
 		addSouth();
 	}
-
-	private void addCenter() {
+	
+	//add the north component
+	private void addNorth() {
 		_addButton = makeAddButton();
 		_columnsPanel = new SelectColumnsPanel("Choose a bank,then multiple columns. Select \"Add\" to include in list of exported columns.",
 				_addButton);
 		_columnsPanel.addBankColumnListener(this);
-		add(_columnsPanel, BorderLayout.CENTER);
+		add(_columnsPanel, BorderLayout.NORTH);		
+	}
 
+	//add the center component
+	private void addCenter() {
+		_fullNameList = new FullColumnNameList();
+		_fullNameList.addListSelectionListener(this);
+    	add(_fullNameList.getScrollPane(), BorderLayout.CENTER);
 	}
 
 	//close the dialog
@@ -111,11 +159,15 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 		return _reason;
 	}
 
+	//ad the south (button) panel
 	private void addSouth() {
 		JPanel sp = new JPanel();
 		sp.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 4));
+		
+		_removeButton = makeRemoveButton();;
 
-		_okButton = new JButton("  OK  ");
+
+		_okButton = new JButton(_okLabel);
 		//use lambda for action
 		_okButton.addActionListener(e -> doClose(DialogUtilities.OK_RESPONSE));
 		_okButton.setEnabled(false);
@@ -124,20 +176,40 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 		_cancelButton = new JButton("Cancel");
 		//use lambda for action
 		_cancelButton.addActionListener(e -> doClose(DialogUtilities.CANCEL_RESPONSE));
+		
 
+
+		sp.add(_removeButton);
 		sp.add(_okButton);
 		sp.add(_cancelButton);
 		add(sp, BorderLayout.SOUTH);
 
 	}
+	
+	//fix the state of all the widgets
+	private void fixState()  {
+		boolean haveBank = (_columnsPanel.getSelectedBank() != null);
+		boolean haveColumn = (_columnsPanel.getSelectedColumns() != null);
+		boolean haveFullNames = _fullNameList.count() > 0;
+		boolean haveSelectedFullNames = (_fullNameList.getSelectedFullNames() != null);
 
+		_okButton.setEnabled(haveFullNames);
+		_addButton.setEnabled(haveBank && haveColumn);
+		_removeButton.setEnabled(haveSelectedFullNames);
+	}
+
+
+	/**
+	 * Get all the full names in the list
+	 * @return all the full names in the list
+	 */
+	public List<String> getFullNames() {
+		return _fullNameList.getFullNames();
+	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		boolean haveBank = (_columnsPanel.getSelectedBank() != null);
-		boolean haveColumn = (_columnsPanel.getSelectedColumns() != null);
-
-		_okButton.setEnabled(haveBank && haveColumn);
+		fixState();
 	}
 
 	/**
@@ -161,7 +233,7 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 	 * @param arg command arguments (ignored)
 	 */
 	public static void main(String[] arg) {
-		String testFile = "/Users/heddle/data/out_sidis_noVtC.hipo";
+		String testFile = "/Users/heddle/data/testdata.hipo";
 		try {
 			EventManager.getInstance().openHipoEventFile(new File(testFile));
 		} catch (FileNotFoundException e) {
@@ -170,6 +242,8 @@ public class BanksAndColumnsDialog extends JDialog implements ListSelectionListe
 			e.printStackTrace();
 		}
 		
+		UIManager.put("List.focusCellHighlightBorder", BorderFactory.createEmptyBorder());
+
 		// now make the frame visible, in the AWT thread
 		EventQueue.invokeLater(new Runnable() {
 
