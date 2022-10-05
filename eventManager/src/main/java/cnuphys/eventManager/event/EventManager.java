@@ -28,7 +28,6 @@ public class EventManager {
 	/** Constant indicated streaming was cancelled before completion */
 	public static final int STREAMING_CANCELLED   = 1;
 
-
 	//are we streaming?
 	private static boolean _streaming = false;
 
@@ -40,6 +39,8 @@ public class EventManager {
 
 	// all the filters
 	private ArrayList<IEventFilter> _eventFilters = new ArrayList<>();
+	
+	private String _dataSourceName;
 
 
 	// list of view listeners. There are actually three lists. Those in index 0
@@ -64,7 +65,6 @@ public class EventManager {
 
 	// private constructor for singleton
 	private EventManager() {
-//		_dataSource = new HipoDataSource();
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class EventManager {
 	public void openHipoEventFile(File file) throws FileNotFoundException, IOException {
 
 		System.err.println("opening hipo file " + file.getPath());
-
+		
 		if (!file.exists()) {
 			throw (new FileNotFoundException("Event event file not found"));
 		}
@@ -130,30 +130,12 @@ public class EventManager {
 		}
 
 		_currentHipoFile = file;
+		_dataSourceName = file.getPath();
 
 		_dataSource = new HipoDataSource();
 		_dataSource.open(file.getPath());
 
 		NameSpaceManager.getInstance().updateNameSpace(_dataSource);
-
-
-
-//		//get the dictionary from the file
-//		List<String> schemaNames = _dataSource.getReader().getSchemaFactory().getSchemaKeys();
-//
-//		for (String name : schemaNames) {
-//			Schema sch = _dataSource.getReader().getSchemaFactory().getSchema(name);
-//
-//			List<String> entries = sch.getEntryList();
-//
-//			for (String column : entries) {
-//				String fullName = sch.getName() + "." + column;
-//				int type = sch.getType(column);
-//				System.out.println("Found [" + fullName + "]  type: " + ColumnData.typeNames[type]);
-//			}
-//
-//
-//		}
 
 		notifyEventListeners(_currentHipoFile, 0);
 
@@ -165,6 +147,14 @@ public class EventManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	/**
+	 * Get an identifying name for the data source. Usually the file name.
+	 * @return an identifying name for the data source.
+	 */
+	public String getDataSourceName() {
+		return _dataSourceName;
 	}
 
 	/**
