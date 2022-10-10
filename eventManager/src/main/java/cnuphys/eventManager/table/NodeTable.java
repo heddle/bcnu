@@ -86,7 +86,7 @@ public class NodeTable extends JTable {
 	}
 
 	/**
-	 * Get the node corresponding to the givens row
+	 * Get the node corresponding to the given row
 	 *
 	 * @param row the row in question
 	 * @return the corresponding node, or <code>null</code>

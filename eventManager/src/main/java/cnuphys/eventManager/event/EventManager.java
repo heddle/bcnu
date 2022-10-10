@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
@@ -564,6 +563,10 @@ public class EventManager {
 
 	}
 
+	//interrupt the streaming
+	public void interruptStreaming() {
+		_streaming = false;
+	}
 
 	/**
 	 * Stream to the end of the file
@@ -572,6 +575,7 @@ public class EventManager {
 
 		boolean isAWTThread = SwingUtilities.isEventDispatchThread();
 		System.out.println("Is AWT Thread: " + isAWTThread);
+		System.out.println("Streaming start ");
 
 		_streaming = true;
 
@@ -580,13 +584,13 @@ public class EventManager {
 		int numRemain = getNumRemainingEvents();
 
 		for (int i = 0; i < numRemain; i++) {
+			if (!_streaming) {
+				break;
+			}
 			getNextEvent();
-
-//			if (!isAWTThread && ((i % 1000) == 0)) {
-//				Thread.currentThread().yield();
-//			}
 		}
 
+		System.out.println("Streaming done ");
 		_streaming = false;
 		notifyEventListenersStreaming(STOP_STREAMING, STREAMING_COMPLETED);
 		reloadCurrentEvent();

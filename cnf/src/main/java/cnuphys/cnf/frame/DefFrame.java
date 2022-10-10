@@ -8,7 +8,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
-import java.io.IOException;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -36,6 +35,9 @@ import cnuphys.eventManager.table.NodePanel;
 import cnuphys.splot.plot.GraphicsUtilities;
 
 public class DefFrame extends JFrame implements IEventListener, IDefCommon {
+	
+	// release string
+	protected static final String _release = "build 0.4";
 
 	//the singleton
 	private static DefFrame _instance;
@@ -77,12 +79,9 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 	//private constructor
 	private DefFrame() {
 
-		super("def release " + Def._release);
-		
+		super("def release " + _release);
+
 		UIManager.put("List.focusCellHighlightBorder", BorderFactory.createEmptyBorder());
-
-		Def.setFrame(this);
-
 
 		setLayout(new BorderLayout(4, 4));
 
@@ -192,7 +191,6 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 				if (source == _streamItem) {
-					setBusy(true);
 
 					Runnable runner = new Runnable() {
 
@@ -204,7 +202,6 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 					};
 
 					(new Thread(runner)).start();
-					setBusy(false);
 				}
 				else if (source == _rewindItem) {
 					EventManager.getInstance().rewindFile();
@@ -255,10 +252,12 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 
 	@Override
 	public void streamingStarted(File file, int numToStream) {
+		setBusy(true);
 	}
 
 	@Override
 	public void streamingEnded(File file, int reason) {
+		setBusy(false);
 		fixState();
 	}
 
@@ -350,7 +349,7 @@ public class DefFrame extends JFrame implements IEventListener, IDefCommon {
 						getInstance().setVisible(true);
 						getInstance().fixTitle();
 
-						System.out.println("def  " + Def._release + " is ready.");
+						System.out.println("def  " + _release + " is ready.");
 					}
 
 				});

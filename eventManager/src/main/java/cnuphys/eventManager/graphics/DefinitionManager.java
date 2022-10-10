@@ -117,7 +117,6 @@ public class DefinitionManager implements ActionListener {
 			_menu.addSeparator();
 			_menu.add(_saveDefinitions);
 			_menu.add(_readDefinitions);
-			_menu.addSeparator();
 		}
 		return _menu;
 	}

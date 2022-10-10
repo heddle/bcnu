@@ -153,7 +153,12 @@ public class NodeTableModel extends DefaultTableModel {
 			return null;
 		}
 
-		ColumnInfo cd = (_data == null) ? null : _data.get(row);
+		ColumnInfo cd = null;
+		try {
+			cd = (_data == null) ? null : _data.get(row);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return cd;
 	}
 

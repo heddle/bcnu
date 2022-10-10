@@ -313,7 +313,10 @@ public class NodePanel extends JPanel
 		if (e.getValueIsAdjusting()) {
 			return;
 		}
+		
+		
 		int row = _nodeTable.getSelectedRow();
+		System.err.println("VALUE CHANGED row " + row);
 
 		_currentColumnData = _nodeTable.getColumnData(row);
 

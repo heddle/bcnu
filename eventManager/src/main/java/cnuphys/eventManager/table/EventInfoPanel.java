@@ -46,8 +46,8 @@ public class EventInfoPanel extends JPanel {
 		setBorder(new EmptyBorder(5, 0, 5, 0)); // top, left, bot, right
 
 		eventSourceLabel = new NamedLabel("source", "event_source", 400);
-		eventNumberLabel = new NamedLabel("event #", "event #", 65);
-		numEventsLabel = new NamedLabel("count", "event #", 65);
+		eventNumberLabel = new NamedLabel("event #", "event #", 80);
+		numEventsLabel = new NamedLabel("count", "event #", 80);
 
 		// limit size of labels
 		Dimension d1 = eventSourceLabel.getPreferredSize();
