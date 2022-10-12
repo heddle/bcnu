@@ -50,8 +50,8 @@ public abstract class PhysicsEventConsumer implements IPhysicsEventListener, ISt
 	 * @return StreamProcessStatus.CONTINUE (success) or StreamingReason.FLAG
 	 *         (problem). Any consumer returning StreamingReason.FLAG will halt the
 	 *         process and cause the GUI to display the event that caused the
-	 *         StreamingReason.FLAG. The normal return (nothing interesting) is
-	 *         StreamingReason.CONTINUE
+	 *         StreamProcessStatus.FLAG. The normal return (nothing interesting) is
+	 *         StreamProcessStatus.CONTINUE
 	 */
 	@Override
 	public abstract StreamProcessStatus streamingPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits);

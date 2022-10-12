@@ -58,7 +58,6 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 
 	// seed and max p perp
 	private JTextField _seedTextField;
-	private JTextField _pperpTextField;
 	private long _defaultSeed = -1;
 
 	/**
@@ -116,13 +115,10 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
 		_seedTextField = new JTextField("" + _defaultSeed, 10);
-		_pperpTextField = new JTextField("" + GeneratorManager.getPPerpMax(), 6);
 
 		panel.add(new JLabel("Seed: "));
 		panel.add(_seedTextField);
 		panel.add(Box.createHorizontalStrut(30));
-		panel.add(new JLabel("<html> Max P&perp; (GeV/C): "));
-		panel.add(_pperpTextField);
 
 		add(panel, BorderLayout.NORTH);
 	}
@@ -137,22 +133,6 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 			return Long.parseLong(_seedTextField.getText());
 		} catch (Exception e) {
 			return _defaultSeed;
-		}
-	}
-
-	/**
-	 * Get the max p perp
-	 * 
-	 * @return the max p perp in GeV/c
-	 */
-	public double getMaxPPerp() {
-		try {
-			double pperpMax = Double.parseDouble(_pperpTextField.getText());
-			GeneratorManager.setPPerpMax(pperpMax);
-			return pperpMax;
-		} catch (Exception e) {
-			_pperpTextField.setText("" + GeneratorManager.getPPerpMax());
-			return GeneratorManager.getPPerpMax();
 		}
 	}
 

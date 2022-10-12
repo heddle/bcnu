@@ -184,18 +184,6 @@ public class VariablePanel extends JPanel implements FocusListener, KeyListener 
 		return _minValue + _del * rand.nextDouble();
 	}
 
-	/**
-	 * Generate a random value in range
-	 * 
-	 * @param altMax and alternative max
-	 * @param rand   the generator
-	 * @return a random value in range
-	 */
-	public double randomValue(double altMax, Random rand) {
-		double del = altMax - _minValue;
-		return _minValue + del * rand.nextDouble();
-	}
-
 	@Override
 	public String toString() {
 		return _name + " " + _minValue + " to " + _maxValue + " " + _units;

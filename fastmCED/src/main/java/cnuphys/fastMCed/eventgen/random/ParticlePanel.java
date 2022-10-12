@@ -130,11 +130,7 @@ public class ParticlePanel extends JPanel implements ItemListener {
 		// TODO take into account pperp
 		double theta = Math.toRadians(_thetaPanel.randomValue(rand));
 
-		// take into account max pperp
-		// take into account max pperp
-		double altPMax = _dialog.getMaxPPerp() / (0.0001 + Math.sin(theta));
-		altPMax = Math.min(_pPanel.getMaximumValue(), altPMax);
-		double p = _pPanel.randomValue(altPMax, rand);
+		double p = _pPanel.randomValue(rand);
 
 		double phi = Math.toRadians(_phiPanel.randomValue(rand));
 		double pperp = p * Math.sin(theta);

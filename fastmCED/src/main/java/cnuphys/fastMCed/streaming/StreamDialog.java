@@ -282,7 +282,7 @@ public class StreamDialog extends JDialog implements IStreamProcessor {
 
 						} else {
 							if (_eventManager.moreEvents()) {
-								_eventManager.nextEvent();
+									_eventManager.nextEvent();
 								count++;
 							}
 

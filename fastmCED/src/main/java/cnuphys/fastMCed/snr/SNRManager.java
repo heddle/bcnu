@@ -281,11 +281,11 @@ public class SNRManager {
 	 * Get a hash key for the segments in the given sector This encodes all the
 	 * segment info plus a summary key
 	 * 
-	 * @param sect0     the zero based sector
+	 * @param sector     the zero based sector
 	 * @param direction should be LEFT or RIGHT
 	 * @return hash key for the segments in the given sector
 	 */
-	public String hashKey(int sect0, int direction) {
+	public String hashKey(int sector, int direction) {
 
 		// The summary word that will have 12 meaningful bits.
 		// A bit is set if the corresponding long (two longs per extended word,
@@ -298,10 +298,10 @@ public class SNRManager {
 		ExtendedWord segments;
 
 		// start with the summary word
-		sb.append(summaryWord(sect0, direction));
+		sb.append(summaryWord(sector, direction));
 
-		for (int supl0 = 0; supl0 < 6; supl0++) {
-			NoiseReductionParameters params = getParameters(sect0, supl0);
+		for (int superlayer = 0; superlayer < 6; superlayer++) {
+			NoiseReductionParameters params = getParameters(sector, superlayer);
 
 			// the tokenizer delitter
 			sb.append(HASHDELIM);

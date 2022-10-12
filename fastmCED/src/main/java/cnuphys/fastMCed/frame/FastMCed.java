@@ -80,7 +80,7 @@ public class FastMCed extends BaseMDIApplication
 	private static FastMCed _instance;
 
 	// release (version) string
-	private static final String _release = "build 0.52";
+	private static final String _release = "build 0.53";
 
 	// used for one time inits
 	private int _firstTime = 0;

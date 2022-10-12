@@ -2,14 +2,12 @@ package cnuphys.fastMCed.eventgen.sweep;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -40,6 +38,9 @@ public class SweepEvGenDialog extends JDialog implements ActionListener, IEventS
 
 	private static String OKSTR = "OK";
 	private static String CANCELSTR = "Cancel";
+	
+	//singleton
+	private static SweepEvGenDialog _instance;
 
 	// steps for each variable
 	int steps[] = new int[6];
@@ -59,16 +60,13 @@ public class SweepEvGenDialog extends JDialog implements ActionListener, IEventS
 	// to handle the indexing
 	private Odometer odometer;
 
-	// seed and max p perp
-	private JTextField _pperpTextField;
-
 	/**
 	 * Create a random event generator
 	 * 
 	 * @param parent the parent frame
 	 * @param maxNum the max number of particles
 	 */
-	public SweepEvGenDialog(JFrame parent) {
+	private SweepEvGenDialog(JFrame parent) {
 		super(parent, "Sweep Event Generator", true);
 
 		// close is like a close
@@ -95,6 +93,14 @@ public class SweepEvGenDialog extends JDialog implements ActionListener, IEventS
 
 		fix();
 	}
+	
+	public static SweepEvGenDialog getInstance(JFrame parent) {
+		if (_instance == null) {
+			_instance = new SweepEvGenDialog(parent);
+		}
+		
+		return _instance;
+	}
 
 	@Override
 	public Insets getInsets() {
@@ -107,32 +113,13 @@ public class SweepEvGenDialog extends JDialog implements ActionListener, IEventS
 		JPanel panel = new JPanel();
 
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
-		_pperpTextField = new JTextField("" + GeneratorManager.getPPerpMax(), 6);
 		_totalLabel = new JLabel("Total number sweep steps:                  ");
 
-		panel.add(new JLabel("<html> Max P&perp; (GeV/C): "));
-		panel.add(_pperpTextField);
 		panel.add(Box.createHorizontalStrut(50));
 		panel.add(_totalLabel);
 
 		add(panel, BorderLayout.NORTH);
 
-	}
-
-	/**
-	 * Get the max p perp
-	 * 
-	 * @return the max p perp in GeV/c
-	 */
-	public double getMaxPPerp() {
-		try {
-			double pperpMax = Double.parseDouble(_pperpTextField.getText());
-			GeneratorManager.setPPerpMax(pperpMax);
-			return pperpMax;
-		} catch (Exception e) {
-			_pperpTextField.setText("" + GeneratorManager.getPPerpMax());
-			return GeneratorManager.getPPerpMax();
-		}
 	}
 
 	public void fix() {
@@ -244,19 +231,6 @@ public class SweepEvGenDialog extends JDialog implements ActionListener, IEventS
 			odometer.increment();
 		}
 
-		// take max pperp into account
-		// this my cause us to return a null event
-
-		double theta = Math.toRadians(ppanel.getTheta(odometer.thetaStep));
-		double altPMax = getMaxPPerp() / (0.0001 + Math.sin(theta));
-
-//		System.err.println("P: " + ppanel.getMomentum(odometer.pStep));
-		if (ppanel.getMomentum(odometer.pStep) > altPMax) {
-//			System.err.println("NOPE P: " + ppanel.getMomentum(odometer.pStep) + "    Pmax: "+ altPMax + 
-//					"  mapPPerp: " + getMaxPPerp() +  "   theta:  " + ppanel.getTheta(odometer.thetaStep));
-			return null;
-		}
-
 		PhysicsEvent event = new PhysicsEvent();
 		Particle p = ppanel.createParticle(odometer.xStep, odometer.yStep, odometer.zStep, odometer.pStep,
 				odometer.thetaStep, odometer.phiStep);
@@ -265,32 +239,5 @@ public class SweepEvGenDialog extends JDialog implements ActionListener, IEventS
 		return event;
 	}
 
-	public static void main(String arg[]) {
-		SweepEvGenDialog dialog = new SweepEvGenDialog(null);
-
-		try {
-			EventQueue.invokeAndWait(new Runnable() {
-
-				@Override
-				public void run() {
-					dialog.setVisible(true);
-
-					if (dialog.getReason() == DialogUtilities.OK_RESPONSE) {
-						System.err.println("OK");
-					} else {
-						System.err.println("Cancelled");
-					}
-
-					System.exit(1);
-				}
-
-			});
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }

@@ -15,10 +15,9 @@ import cnuphys.fastMCed.eventio.PhysicsEventManager;
 public class GeneratorManager implements ActionListener {
 
 	// suggestions
-	private static double _pMin = 0.5; // GeV/c
-	private static double _pMax = 8.5; // GeV/c
-	private static double _pPerpMax = 2.5; // GeV/c
-	private static double _thetaMin = 5.; // degrees
+	private static double _pMin = 6.0; // GeV/c
+	private static double _pMax = 11.5; // GeV/c
+	private static double _thetaMin = 10.; // degrees
 	private static double _thetaMax = 40.; // degrees
 	private static double _phiMin = -20; // degrees
 	private static double _phiMax = 20.; // degrees
@@ -64,9 +63,8 @@ public class GeneratorManager implements ActionListener {
 	private void createMenu() {
 		ButtonGroup bgroup = new ButtonGroup();
 		_menu = new JMenu("Generators");
-		_fileGenerator = menuItem("Lund File Generator...", bgroup);
-		_menu.addSeparator();
 		_sweepGenerator = menuItem("Sweep Generator...", bgroup);
+		_fileGenerator = menuItem("Lund File Generator...", bgroup);
 		_randomGenerator = menuItem("Random Generator...", bgroup);
 	}
 
@@ -110,24 +108,6 @@ public class GeneratorManager implements ActionListener {
 				PhysicsEventManager.getInstance().setEventGenerator(generator);
 			}
 		}
-	}
-
-	/**
-	 * Get the default value for p-perp (Gev/c)
-	 * 
-	 * @return the default value for p-perp
-	 */
-	public static double getPPerpMax() {
-		return _pPerpMax;
-	}
-
-	/**
-	 * Set the default value for p-perp (Gev/c)
-	 * 
-	 * @param pPerpMax the default value for p-perp
-	 */
-	public static void setPPerpMax(double pPerpMax) {
-		_pPerpMax = pPerpMax;
 	}
 
 	public static double getPMin() {

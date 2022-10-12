@@ -77,22 +77,22 @@ public class ConsumerManager extends Vector<PhysicsEventConsumer>
 	// private singleton constructor
 	private ConsumerManager() {
 		String cwd = Environment.getInstance().getCurrentWorkingDirectory();
+		
+		CSVTestDataConsumer csvConsumer = new CSVTestDataConsumer();
+		csvConsumer.setActive(true);
+		add(csvConsumer);
 
 		// always add a test consumer
 //		AcceptanceMapperConsumer accConsumer = new AcceptanceMapperConsumer();
 //		accConsumer.setActive(true);
 //		add(accConsumer);
 
-		SNRSector1TestConsumer testConsumer = new SNRSector1TestConsumer();
-		testConsumer.setActive(false);
-		add(testConsumer);
-
 		SNRShiftTestConsumer shiftConsumer = new SNRShiftTestConsumer();
 		shiftConsumer.setActive(false);
 		add(shiftConsumer);
 
 		SNRThreeLevelTestConsumer snr3Consumer = new SNRThreeLevelTestConsumer();
-		snr3Consumer.setActive(true);
+		snr3Consumer.setActive(false);
 		add(snr3Consumer);
 
 //		SNRSector1TestConsumerV2 testConsumer2 = new SNRSector1TestConsumerV2();

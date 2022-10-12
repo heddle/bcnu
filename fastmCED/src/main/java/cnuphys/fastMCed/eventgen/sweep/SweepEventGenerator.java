@@ -21,7 +21,7 @@ public class SweepEventGenerator extends AEventGenerator {
 	}
 
 	public static SweepEventGenerator createSweepGenerator() {
-		SweepEvGenDialog dialog = new SweepEvGenDialog(null);
+		SweepEvGenDialog dialog = SweepEvGenDialog.getInstance(null);
 		dialog.setVisible(true);
 
 		if (dialog.getReason() == DialogUtilities.OK_RESPONSE) {
@@ -40,6 +40,11 @@ public class SweepEventGenerator extends AEventGenerator {
 	public PhysicsEvent nextEvent() {
 		_currentEvent = _dialog.getEvent();
 		_eventNumber++;
+
+		if ((_eventNumber % 1000) == 0) {
+			System.out.println("Event number: " + _eventNumber);
+		}
+
 		return _currentEvent;
 	}
 
