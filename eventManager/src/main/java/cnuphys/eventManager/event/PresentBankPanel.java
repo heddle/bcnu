@@ -69,23 +69,6 @@ public class PresentBankPanel extends JPanel
 		}
 	}
 
-	//replace all the bank action labels as result of new dictionary
-	private void replaceBankLabels() {
-		removeAll();
-
-		// get all the known banks
-		String[] allBanks = _eventManager.getKnownBanks();
-
-		if (allBanks != null) {
-			for (String s : allBanks) {
-				if (!skip(s)) {
-					makeLabel(s);
-				}
-			}
-		}
-
-	}
-
 
 	// skip certain irrelevant banks
 	private boolean skip(String s) {

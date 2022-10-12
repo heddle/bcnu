@@ -51,40 +51,16 @@ public class ColumnData implements Comparable<ColumnData> {
 	public static String[] typeNames = { "Unknown", "byte", "short", "int", "float", "double", "string", "group", "long", "vector3f", "composite", "table", "branch"};
 
 
-//	/** type is unknown */
-//	public static final int UNKNOWN = 0;
-//
-//	/** type is a byte */
-//	public static final int INT8 = 1;
-//
-//	/** type is a short */
-//	public static final int INT16 = 2;
-//
-//	/** type is an int */
-//	public static final int INT32 = 3;
-//
-//	/** type is a long int */
-//	public static final int INT64 = 4;
-//
-//	/** type is a float */
-//	public static final int FLOAT32 = 5;
-//
-//	/** type is a double */
-//	public static final int FLOAT64 = 6;
-//
-//	/** type names */
-//	public static String[] typeNames = { "Unknown", "byte", "short", "int", "long", "float", "double" };
-
-	// the bank name
+	// the simple bank name
 	private String _bankName;
 
-	// the column name
+	// the simple column name
 	private String _columnName;
 
 	// the data type
 	private int _type;
 
-	// the full name
+	// the full a::b.c name
 	private String _fullName;
 
 	// used for table rendering
@@ -238,51 +214,6 @@ public class ColumnData implements Comparable<ColumnData> {
 		return array;
 	}
 	
-//	/**
-//	 * Get the data array as an object. It is up to the caller to cast it to the
-//	 * correct type of array.
-//	 * 
-//	 * @return the data array corresponding to the type
-//	 */
-//	public Object getDataArray(DataEvent event) {
-//
-//		Object oa = null;
-//
-//		if (event != null) {
-//			try {
-//				switch (_type) {
-//				case INT8:
-//					oa = event.getByte(_fullName);
-//					break;
-//
-//				case INT16:
-//					oa = event.getShort(_fullName);
-//					break;
-//
-//				case INT32:
-//					oa = event.getInt(_fullName);
-//					break;
-//
-//				case INT64:
-//					oa = event.getLong(_fullName);
-//					break;
-//
-//				case FLOAT32:
-//					oa = event.getFloat(_fullName);
-//					break;
-//
-//				case FLOAT64:
-//					oa = event.getDouble(_fullName);
-//					break;
-//				}
-//			} catch (Exception e) {
-//				System.err.println(e.getMessage() + " Exception with fullName: " + _fullName);
-//				// e.printStackTrace();
-//			}
-//		}
-//
-//		return oa;
-//	}
 
 	/**
 	 * Get the array with double values regardless of type

@@ -14,7 +14,6 @@ import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.table.TableColumn;
 
-import org.jlab.io.base.DataDescriptor;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
@@ -30,23 +29,23 @@ import cnuphys.ced.clasio.table.NamedLabel;
 import cnuphys.ced.properties.PropertiesManager;
 
 public class ClasIoBankView extends BaseView implements ItemListener, ActionListener {
-	
+
 	// the event manager
 	private static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// counter
 	private static int count = 0;
-	
+
 	// bank name
 	private String _bankName;
-	
+
 	// table to hold the data
 	private BankDataTable _table;
 
 	// check boxes
 	private JPanel _checkboxPanel;
 	private JCheckBox _cbarray[];
-	
+
 	// set true when constructor finished
 	private boolean _isReady;
 
@@ -54,7 +53,7 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 	 * A label for displaying the ordinal number of the event from an event file.
 	 */
 	private NamedLabel seqEventNumberLabel;
-	
+
 	/**
 	 * A label for displaying the true number of the event from the RUN::config bank.
 	 */
@@ -68,30 +67,30 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 	protected JButton prevButton;
 
 
-	
+
 	public ClasIoBankView(String bankName) {
-		
-		super(PropertySupport.TITLE, bankName, 
-				PropertySupport.ICONIFIABLE, true, 
-				PropertySupport.MAXIMIZABLE, true, 
-				PropertySupport.CLOSABLE, true, 
-				PropertySupport.RESIZABLE, true, 
+
+		super(PropertySupport.TITLE, bankName,
+				PropertySupport.ICONIFIABLE, true,
+				PropertySupport.MAXIMIZABLE, true,
+				PropertySupport.CLOSABLE, true,
+				PropertySupport.RESIZABLE, true,
 				PropertySupport.LEFT, 40 + (count % 5) * 10 + (count / 5) * 40,
 				PropertySupport.TOP, 40 + (count % 5) * 30,
-				PropertySupport.VISIBLE, true, 
+				PropertySupport.VISIBLE, true,
 				PropertySupport.TOOLBAR, false);
-		
+
 		count++;
 
 		_bankName = bankName;
-		
+
 		this.getContentPane().removeAll();
 		setLayout(new BorderLayout(2, 2));
 
 		addNorth();
 		addCenter();
 		addSouth();
-		
+
 		readVisibility();
 
 		pack();
@@ -102,8 +101,8 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 	private void addNorth() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 4));
-		
-		
+
+
 		nextButton = new JButton("next");
 		nextButton.setFont(Fonts.smallFont);
 		nextButton.addActionListener(this);
@@ -111,7 +110,7 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 		prevButton = new JButton("prev");
 		prevButton.setFont(Fonts.smallFont);
 		prevButton.addActionListener(this);
-		
+
 		seqEventNumberLabel = new NamedLabel("seq #", "true #", 65);
 		trueEventNumberLabel = new NamedLabel("true #", "true #", 65);
 
@@ -119,10 +118,10 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 		panel.add(prevButton);
 		panel.add(seqEventNumberLabel);
 		panel.add(trueEventNumberLabel);
-		
+
 		add(panel, BorderLayout.NORTH);
 	}
-	
+
 
 	private void addCenter() {
 		// add the table
@@ -130,7 +129,7 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 		add(_table.getScrollPane(), BorderLayout.CENTER);
 
 	}
-	
+
 	private void addSouth() {
 		// add the visibility checkbox panel
 		_checkboxPanel = new JPanel();
@@ -180,17 +179,12 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 
 	/**
 	 * Set the list to the columns of the given bank
-	 * 
+	 *
 	 * @param bankName the name of the bank
 	 */
 	public String[] colNames(String bankName) {
 		if (bankName != null) {
-			DataDescriptor dd = DataManager.getInstance().getDictionary().getDescriptor(bankName);
-			if (dd != null) {
-				String columns[] = dd.getEntryList();
-				// Arrays.sort(columns);
-				return columns;
-			}
+			return DataManager.getInstance().getColumnNames(bankName);
 		}
 		return null;
 	}
@@ -236,8 +230,8 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 			}
 		}
 	}  //readvis
-	
-	
+
+
 	/**
 	 * Update the table with the new event
 	 */
@@ -290,7 +284,7 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 			writeVisibility();
 		}
 	}
-	
+
 	/**
 	 * Set the selectability of the buttons
 	 */
@@ -303,7 +297,7 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 		setSeqEventNumber();
 		setTrueEventNumber();
 	}
-	
+
 
 	/**
 	 * Set the displayed sequential event number value.
@@ -316,7 +310,7 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 			seqEventNumberLabel.setText("" + seqEventNum);
 		}
 	}
-	
+
 	/**
 	 * Set the displayed true event number value.
 	 * The true event number comes from the RUN::config bank.

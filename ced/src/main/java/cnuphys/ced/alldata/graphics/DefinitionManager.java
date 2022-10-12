@@ -131,7 +131,6 @@ public class DefinitionManager implements ActionListener, XmlPrintStreamWritable
 			_menu.addSeparator();
 			_menu.add(_saveDefinitions);
 			_menu.add(_readDefinitions);
-			_menu.addSeparator();
 		}
 		return _menu;
 	}

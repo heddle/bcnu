@@ -58,7 +58,6 @@ public class ClasIoEventManager {
 
 	// listen for events even in accumulation mode
 	private Vector<IClasIoEventListener> _specialListeners = new Vector<>();
-
 	// A sorted list of banks present in the current event
 	private String _currentBanks[];
 
@@ -319,6 +318,13 @@ public class ClasIoEventManager {
 
 		_dataSource = new HipoDataSource();
 		_dataSource.open(file.getPath());
+		
+		
+		//let the data manager know
+		_schemaFactory = ((HipoDataSource)_dataSource).getReader().getSchemaFactory();
+		DataManager.getInstance().updateSchema(_schemaFactory);
+		
+		//notify the listeners
 		notifyEventListeners(_currentHipoFile);
 		setEventSourceType(EventSourceType.HIPOFILE);
 
@@ -666,6 +672,9 @@ public class ClasIoEventManager {
 	        _schemaFactory.initFromDirectory(dir);
 	        
 			_decoder = new CLASDecoder4();
+			
+			DataManager.getInstance().updateSchema(_schemaFactory);
+
 		}
 
 		Event decodedEvent = _decoder.getDataEvent(event);
@@ -1204,22 +1213,13 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Get a sorted list of known banks from the dictionary
-	 * 
-	 * @return a sorted list of known banks
-	 */
-	public String[] getKnownBanks() {
-		return DataManager.getInstance().getKnownBanks();
-	}
-
-	/**
 	 * Check whether a given bank is a known bank
 	 * 
 	 * @param bankName the bank name
 	 * @return <code>true</code> if the name is recognized.
 	 */
 	public boolean isKnownBank(String bankName) {
-		String allBanks[] = getKnownBanks();
+		String allBanks[] = DataManager.getInstance().getKnownBanks();
 		if (allBanks == null) {
 			return false;
 		}

@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
@@ -15,6 +16,7 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.clasio.table.NodeTable;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
@@ -50,18 +52,24 @@ public class ClasIoPresentBankPanel extends JPanel
 		_nodeTable = nodeTable;
 		_eventManager.addClasIoEventListener(this, 1);
 		setLayout(new GridLayout(40, 4, 2, 0));
-
-		// get all the known banks
-		String[] allBanks = _eventManager.getKnownBanks();
-		for (String s : allBanks) {
-			if (!skip(s)) {
-				makeLabel(s);
-			}
-		}
-
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 		AccumulationManager.getInstance().addAccumulationListener(this);
 	}
+	
+	//replace all the bank action labels as result of new event
+	private void replaceBankLabels(DataEvent event) {
+		removeAll();
+		String[] allBanks = event.getBankList();
+		Arrays.sort(allBanks);
+		if (allBanks != null) {
+			for (String s : allBanks) {
+				if (!skip(s)) {
+					makeLabel(s);
+				}
+			}
+		}
+	}
+
 
 	// skip certain irrelevant banks
 	private boolean skip(String s) {
@@ -70,7 +78,12 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	// update as the result of a new event arriving
 	private void update() {
-		String[] allBanks = _eventManager.getKnownBanks();
+		String[] allBanks = DataManager.getInstance().getKnownBanks();
+
+		if (allBanks == null) {
+			return;
+		}
+		
 		for (String s : allBanks) {
 			
 			ActionLabel alabel = _alabels.get(s);
@@ -165,6 +178,7 @@ public class ClasIoPresentBankPanel extends JPanel
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		if (!_eventManager.isAccumulating()) {
+			replaceBankLabels(event);
 			update();
 		}
 	}

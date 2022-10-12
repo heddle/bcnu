@@ -11,17 +11,21 @@ import org.jlab.detector.base.DetectorType;
 import org.jlab.io.base.DataDescriptor;
 import org.jlab.io.base.DataDictionary;
 import org.jlab.io.base.DataEvent;
+
+import org.jlab.io.base.DataSource;
 import org.jlab.io.hipo.HipoDataDictionary;
+import org.jlab.io.hipo.HipoDataSource;
+import org.jlab.jnp.hipo4.data.Bank;
+import org.jlab.jnp.hipo4.data.Schema;
+import org.jlab.jnp.hipo4.data.SchemaFactory;
 
 import cnuphys.bCNU.log.Log;
 
+
 public class DataManager {
 
-	// EXCLUSION LIST
-	private String _exclusions[] = null;
-
 	// the data dictionary
-	private DataDictionary _dictionary;
+	//private DataDictionary _dictionary;
 
 	// all the known banks
 	private String[] _knownBanks;
@@ -29,56 +33,85 @@ public class DataManager {
 	// the full set of column data. ALL columns for a full bank name key
 	// key is something like DET::NAME.COLUMN e.g.
 	// DC::dgtz.doca,
-	// or
-	// HitBasedTrkg::HBTracks.Cross1_ID
 	// this maps bank name to a ColumnData object
 	private Hashtable<String, ColumnData> _columnData;
+	
+	//this maps a bank name to a list of columns
+	private Hashtable<String, String[]> _banks;
 
 	// singleton
 	private static DataManager _instance;
+	
 
+	//the current schema
+	private SchemaFactory _currentSchemaFactory;
+	
+	
 	/**
 	 * Create a DataManager
 	 * 
 	 * @param dictionary
 	 */
 	private DataManager() {
+		_columnData = new Hashtable<>();
+		_banks = new Hashtable<>();
+	}
+	
 
-		System.out.println("DICTIONARY");
-		_dictionary = new HipoDataDictionary();
+	
+	/**
+	 * Update the schema factory and the columa dataobjects
+	 * @param schemaFactory
+	 */
+	public void updateSchema(SchemaFactory schemaFactory) {
+		_currentSchemaFactory = schemaFactory;
+		
+		_columnData.clear();
+		_banks.clear();
+		_knownBanks = null;
 
-		// HACK filter out dgtz banks
-		String allBanks[] = _dictionary.getDescriptorList();
-		ArrayList<String> okbanks = new ArrayList<String>();
-		for (String s : allBanks) {
-			// check for exclusions
-			if (include(s)) {
-				okbanks.add(s);
-			}
+		
+		List<Schema> schemas = schemaFactory.getSchemaList();
+		
+		if (schemas == null || schemas.isEmpty()) {
+			return;
 		}
-		_knownBanks = new String[okbanks.size()];
-		for (int i = 0; i < okbanks.size(); i++) {
-			_knownBanks[i] = okbanks.get(i);
-		}
 
-		// _knownBanks = _dictionary.getDescriptorList();
+		int size = schemas.size();
+		_knownBanks = new String[size];
+		for (int i = 0; i < size; i++) {
+			Schema schema = schemas.get(i);
+			_knownBanks[i] = schema.getName();
+		}
 		Arrays.sort(_knownBanks);
+		
 
-		initializeColumnData();
-	}
+		// a schema is a bank
+		for (Schema schema : schemas) {
+			String bankName = schema.getName();
+			List<String> columns = schema.getEntryList();
+			
+			if (columns == null || columns.isEmpty()) {
+				continue;
+			}
+			
+			size = columns.size();
+			String[] colArray = new String[size];
+			for (int i = 0; i < size; i++) {
+				colArray[i] = columns.get(i);
+			}
+			Arrays.sort(colArray);
+			_banks.put(bankName, colArray);
+			
+			for (String columnName : columns) {
+				int type = schema.getType(columnName);
+				ColumnData cd = new ColumnData(bankName, columnName, type);
+				_columnData.put(cd.getFullName(), cd);
 
-	// check exclusions
-	private boolean include(String bankName) {
-		if ((_exclusions != null) && (_exclusions.length > 0)) {
-			for (String es : _exclusions) {
-				if (bankName.contains(es)) {
-					return false;
-				}
 			}
 		}
-		return true;
-	}
 
+	}
 	/**
 	 * Get the collection of recognized columns
 	 * 
@@ -208,51 +241,9 @@ public class DataManager {
 	 * @return the list of column names
 	 */
 	public String[] getColumnNames(String bankName) {
-		DataDescriptor dd = _dictionary.getDescriptor(bankName);
-		return dd.getEntryList();
+		return _banks.get(bankName);
 	}
 
-	// initialize the column data
-	private void initializeColumnData() {
-		_columnData = new Hashtable<String, ColumnData>();
-
-		Log.getInstance().info("Initializing column data from discovered bank definitions.");
-
-		if (_knownBanks != null) {
-
-			for (String bankName : _knownBanks) {
-				Log.getInstance().info(bankName);
-
-				DataDescriptor dd = _dictionary.getDescriptor(bankName);
-				
-				String entries[] = dd.getEntryList();
-				for (String columnName : entries) {
-					int type = dd.getProperty("type", columnName);
-
-
-					if ((type < 1) || (type > 6) || (type == 24)) {
-//							Log.getInstance()
-//									.warning("Bank: [" + bankName
-//											+ "] Column: [" + columnName
-//											+ "] bad data type in ColumnData initialization: ["
-//											+ type + "]");
-					} else {
-						ColumnData cd = new ColumnData(bankName, columnName, type);
-						_columnData.put(cd.getFullName(), cd);
-					}
-				}
-			} // bank names
-		} // known banks not null
-	}
-
-	/**
-	 * Get the dictionary
-	 * 
-	 * @return the dictionary
-	 */
-	public DataDictionary getDictionary() {
-		return _dictionary;
-	}
 
 	/**
 	 * Get the known banks

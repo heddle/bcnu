@@ -47,7 +47,6 @@ import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventMenu;
 import cnuphys.ced.clasio.ClasIoEventView;
 import cnuphys.ced.clasio.ClasIoMonteCarloView;
-import cnuphys.ced.clasio.CNFManager;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoReconEventView;
 import cnuphys.ced.clasio.filter.FilterManager;
@@ -1176,9 +1175,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	// this is so we can find json files
 	private static void initClas12Dir() throws IOException {
-
+		
 		// for running from runnable jar (for coatjava)
-		String clas12dir = System.getProperty("CLAS12DIR");
+		String clas12dir = System.getProperty("CLAS12DIR");		
 
 		if (clas12dir == null) {
 			clas12dir = "coatjava";
@@ -1219,6 +1218,23 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		} else {
 			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 		}
+		
+		//one last try
+		clas12dir = System.getenv("CLAS12DIR");	
+		if (clas12dir != null) {
+			System.err.println("Trying with environment variable CLAS12DIR = "  + clas12dir);
+			_clasDir = new File(clas12dir);
+			if (_clasDir.exists() && _clasDir.isDirectory()) {
+				System.err.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+				System.setProperty("CLAS12DIR", clas12dir);
+				Log.getInstance().config("CLAS12DIR: " + clas12dir);
+				return;
+			}
+			else {
+				System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			}
+		}
+
 
 		throw (new IOException("Could not locate the coatjava directory."));
 	}
@@ -1285,9 +1301,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// initialize the filter manager
 		FilterManager.getInstance();
-
-		// initialize CNF (Nuc Femtog) Manager
-		CNFManager.getInstance();
 
 		// init the clas 12 dir wherev the json files are
 		try {
