@@ -87,10 +87,6 @@ public class ConsumerManager extends Vector<PhysicsEventConsumer>
 //		accConsumer.setActive(true);
 //		add(accConsumer);
 
-		SNRShiftTestConsumer shiftConsumer = new SNRShiftTestConsumer();
-		shiftConsumer.setActive(false);
-		add(shiftConsumer);
-
 		SNRThreeLevelTestConsumer snr3Consumer = new SNRThreeLevelTestConsumer();
 		snr3Consumer.setActive(false);
 		add(snr3Consumer);

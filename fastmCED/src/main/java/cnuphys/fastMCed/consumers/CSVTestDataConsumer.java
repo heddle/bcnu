@@ -1,6 +1,7 @@
 package cnuphys.fastMCed.consumers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.jlab.clas.physics.PhysicsEvent;
@@ -13,14 +14,13 @@ import cnuphys.fastMCed.streaming.StreamReason;
 import cnuphys.lund.GeneratedParticleRecord;
 
 public class CSVTestDataConsumer extends ASNRConsumer {
-	
-	CSVWriter _csvWriter;
+
+	private CSVWriter _csvWriter;
 
 	@Override
 	public String getConsumerName() {
 		return "CSV File for ML Test Data";
 	}
-
 
 	/**
 	 * A message about a change in the streaming state.
@@ -31,29 +31,43 @@ public class CSVTestDataConsumer extends ASNRConsumer {
 	 */
 	@Override
 	public void streamingChange(StreamReason reason) {
-		
+
 		System.out.println("CSVTestDataConsumer streaming change reason: [" + reason.name() + "]");
-		
+
 		if (reason == StreamReason.STARTED) {
 			System.out.println("Stream Started");
-		String homeDir = System.getProperty("user.home");
-			File file = new File(homeDir, "testdata/mltest.csv");
-			_csvWriter = new CSVWriter(file);
+			String homeDir = System.getProperty("user.home");
 			
-			_csvWriter.writeRow("Hey", "Man");
-			_csvWriter.writeRow("What's", "\"Up\"", "dude");
+			new File(homeDir, "testdata").mkdirs();
 
-	}
-		else if (reason == StreamReason.PAUSED) {
+			File file = new File(homeDir, "testdata/mltest.csv");
+				
+			if (!file.exists()) {
+				try {
+					file.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			_csvWriter = new CSVWriter(file);
+			writeHeaderRow();
+
+		} else if (reason == StreamReason.PAUSED) {
 			System.out.println("Stream Paused");
-		}
-		else if (reason == StreamReason.STOPPED) {
+		} else if (reason == StreamReason.STOPPED) {
 			System.out.println("Stream Stopped");
 			if (_csvWriter != null) {
 				_csvWriter.close();
 			}
 		}
 
+	}
+
+	//write the header row
+	private void writeHeaderRow() {
+		_csvWriter.writeRow("sector", "direct", "w1", "w2", "w3", "w4", "w5", "w6", "w7", "w8", "w9", "w10", "w11", "w12", "xo", "yo",
+				"zo", "p", "theta", "phi");
 	}
 
 	/**
@@ -71,32 +85,36 @@ public class CSVTestDataConsumer extends ASNRConsumer {
 	 */
 	@Override
 	public StreamProcessStatus streamingPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
-		
-		
-		//first test, right benders only, segments in all sectors
-		
+
+		// first test, right benders only, segments in all sectors
+
 		boolean haveRightSegsAllSectors = snr.segmentsInAllSuperlayers(0, SNRManager.RIGHT);
 		
-		
+		String wordcsv[] = new String[6];
+
 		if (haveRightSegsAllSectors) {
 			GeneratedParticleRecord gpr = particleHits.get(0).getGeneratedParticleRecord();
-			
-			//get the zero based sector
+			String gprcsv = gpr.csvString();
+
+			// get the zero based sector
 			int sect0 = gpr.getSector() - 1;
 			
-			String hash = snr.hashKey(sect0, SNRManager.RIGHT);
+			_csvWriter.writeStartOfRow(""+(sect0+1), "R");
 			
-			if (_csvWriter != null) {
-				
+			
+			for (int superlayer = 0; superlayer < 6; superlayer++) {
+				wordcsv[superlayer] = snr.csvSegmentWords(sect0, superlayer, SNRManager.RIGHT);
 			}
-			
+	
+			if (_csvWriter != null) {
+				_csvWriter.writeRow(wordcsv[0], wordcsv[1], wordcsv[2], wordcsv[3], wordcsv[4], wordcsv[5], gprcsv);
+			}
+
 		}
-		
-		
+
 		return StreamProcessStatus.CONTINUE;
 	}
-	
-	
+
 	/**
 	 * Get the sector [1..6] from the phi value
 	 *
@@ -131,7 +149,6 @@ public class CSVTestDataConsumer extends ASNRConsumer {
 		return 6;
 	}
 
-
 	/**
 	 * New event has arrived from the FastMC engine via the "next event" mechanism.
 	 * Note that in streaming mode, do not get broadcast this way, they are
@@ -140,7 +157,7 @@ public class CSVTestDataConsumer extends ASNRConsumer {
 	 * @param event the generated physics event
 	 * @see cnuphys.fastMCed.streaming.IStreamProcessor
 	 */
-    @Override
+	@Override
 	public void newPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
 	}
 

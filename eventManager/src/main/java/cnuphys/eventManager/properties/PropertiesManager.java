@@ -77,7 +77,7 @@ public class PropertiesManager {
 		try {
 			String homeDir = Environment.getInstance().getHomeDirectory();
 			_upFile = new File(homeDir, ".evm.user.pref");
-			// System.err.println("User pref file: " + _upFile.getPath());
+			 System.err.println("User pref file: " + _upFile.getPath());
 			if (_upFile.exists()) {
 				_userPref = (Properties) SerialIO.serialRead(_upFile.getPath());
 			} else {
