@@ -46,13 +46,15 @@ public class RecParticleExporter extends AExporter {
 	// the data output stream
 	// private DataOutputStream _dos;
 	private OutputStreamWriter _osw;
+	
+	//used to write column data names
+	private boolean _first = true;
 
-	// simple counter
-	private int count;
 
-	private int nevent = -1;
+
+	private int nevent;
 	private int ntrack = 0;
-
+	
 	@Override
 	public String getMenuName() {
 		return "RECParticle";
@@ -60,7 +62,7 @@ public class RecParticleExporter extends AExporter {
 
 	@Override
 	public boolean prepareToExport() {
-		count = 0;
+		nevent = 0;
 
 		// open a file for writing
 		_exportFile = getFile("CSV Files", "csv", "csv", "CSV");
@@ -74,7 +76,6 @@ public class RecParticleExporter extends AExporter {
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -82,6 +83,8 @@ public class RecParticleExporter extends AExporter {
 		else {
 			return false;
 		}
+
+		_first = true;
 
 		return true;
 	}
@@ -114,8 +117,90 @@ public class RecParticleExporter extends AExporter {
 		canvas.getPad().setTitleFontSize(18);
 	}
 
+	//write the header row
+	private void writeHeader() {
+		stringLn(_osw, "event, status/1000, pid, px, py, pz, vx, vy, vz, q2, w");
+	}
+	
+	
+	//write rec particle bank
+	private void writeRecParticle(int event, short  status, 
+			int pid, 
+			float px, float py, float pz,
+			float vx, float vy, float vz,
+			double q2, double w) {
+		
+		String s;
+		if (q2 < 0) {	
+			s = String.format("%d,%d,%d,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,-1,-1",
+					event, status, pid, px, py, pz, vx, vy, vz);
+		}
+		else {
+			s = String.format("%d,%d,%d,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f,%4.2f",
+					event, status, pid, px, py, pz, vx, vy, vz, q2, w);
+		}
+		
+		
+		stringLn(_osw, s);
+	}
+	
+	private void writeRecParticle(int event, int row, DataBank recPart) {
+		
+		int pid = recPart.getInt("pid", row);
+		
+		
+		Particle beam_Part = new Particle(11, 0, 0, beamEnergy, 0, 0, 0);
+		Particle target_Part = Particle.createWithMassCharge(targetMass, +1, 0, 0, 0, 0, 0, 0);
+		Particle electron = null;
+//		Particle proton = null;
+		Particle q_Part = new Particle();
+		Particle w_Part = new Particle();
+
+		
+	//	float beta = recPart.getFloat("beta", row);
+	//	byte charge = recPart.getByte("charge", row);
+	//	float chi2pid = recPart.getFloat("chi2pid", row);
+		
+		float px = recPart.getFloat("px", row);
+		float py = recPart.getFloat("py", row);
+		float pz = recPart.getFloat("pz", row);
+		short status = (short) (recPart.getShort("status", row)/1000);
+
+	//	float vt = recPart.getFloat("vt", row);
+		float vx = recPart.getFloat("vx", row);
+		float vy = recPart.getFloat("vy", row);
+		float vz = recPart.getFloat("vz", row);
+		
+		double q2 = -1;
+		double w = -1;
+
+		// electron is trigger particle (ii==0) and has correct pid
+		if (pid == 11 && row == 0) {
+			electron = new Particle(pid, px, py, pz, vx, vy, vz);
+
+			// W and Q2
+			q_Part.copy(beam_Part);
+			q_Part.combine(electron, -1);
+			w_Part.copy(target_Part);
+			w_Part.combine(q_Part, +1);
+
+			q2 = -q_Part.mass2();
+			w = w_Part.mass();
+		}
+		
+		writeRecParticle(event, status, pid, px, py, pz, vx, vy, vz, q2, w);
+	}
+
+	
 	@Override
 	public void nextEvent(DataEvent event) {
+		
+		
+		if (_first) {
+			writeHeader();
+			_first  = false;
+		}
+
 
 		nevent++;
 
@@ -146,8 +231,10 @@ public class RecParticleExporter extends AExporter {
 
 		// ignore events that don't have necessary banks
 		if (recPart == null || recTrack == null || recTraj == null || recScin == null || recCal == null
-				|| recCher == null)
+				|| recCher == null) {
 			return;
+		}
+		
 
 		// ----------------------------//
 		// ----------PARTICLES---------//
@@ -158,15 +245,20 @@ public class RecParticleExporter extends AExporter {
 		Particle proton = null;
 		Particle q_Part = new Particle();
 		Particle w_Part = new Particle();
+		
 
 		// -----------------------------//
 		// --------REC::Particle--------//
 		// -----------------------------//
 		for (int ii = 0; ii < recPart.rows(); ii++) {
+			
+			writeRecParticle(nevent, ii, recPart);
+			
 			int pid = recPart.getInt("pid", ii);
 
-			if (pid != 11 && pid != 2212)
+			if (pid != 11 && pid != 2212) {
 				continue;
+			}
 
 			float chi2pid = recPart.getFloat("chi2pid", ii);
 			int status = Math.abs(recPart.getShort("status", ii));
@@ -178,11 +270,13 @@ public class RecParticleExporter extends AExporter {
 			float px = recPart.getFloat("px", ii);
 			float py = recPart.getFloat("py", ii);
 			float pz = recPart.getFloat("pz", ii);
+			float vx = recPart.getFloat("vx", ii);
+			float vy = recPart.getFloat("vy", ii);
+			float vz = recPart.getFloat("vz", ii);
+
 			// double p = Math.sqrt(px*px + py*py + pz*pz);
 
-			Particle part = new Particle(pid, recPart.getFloat("px", ii), recPart.getFloat("py", ii),
-					recPart.getFloat("pz", ii), recPart.getFloat("vx", ii), recPart.getFloat("vy", ii),
-					recPart.getFloat("vz", ii));
+			Particle part = new Particle(pid, px, py, pz, vx, vy, vz);
 
 			double p = part.p();
 

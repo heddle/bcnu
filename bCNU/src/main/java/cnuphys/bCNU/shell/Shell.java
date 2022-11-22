@@ -362,7 +362,6 @@ public class Shell extends TextPaneScrollPane {
 
 		shell.execute("ls -al", 0, 0);
 		shell.execute("printenv | grep PATH", 0, 0);
-		shell.execute("passwd", 0, 0);
 	}
 
 	class Executive {

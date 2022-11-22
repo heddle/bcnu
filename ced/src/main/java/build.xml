@@ -85,6 +85,12 @@
 				<include name="**/*.class"/>
 			</fileset>
 			
+			<!-- simanneal -->
+			<fileset dir="${bcnudir}/simanneal/src/main/java/cnuphys/bin">
+				<include name="**/*.class"/>
+			</fileset>
+
+			
 			<!-- swimmer -->
 			<fileset dir="${cnuphysdir}/swimmer/src/main/java/cnuphys/bin">
 				<include name="**/*.class"/>

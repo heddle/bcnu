@@ -12,7 +12,6 @@ public class AttributePanel extends JPanel {
 
 	public AttributePanel(Attributes attributes) {
 		_attributeTable = new AttributeTable();
-//		_attributeTable.setData(attributes.clone());
 		_attributeTable.setData(attributes);
 		setLayout(new BorderLayout(4, 4));
 

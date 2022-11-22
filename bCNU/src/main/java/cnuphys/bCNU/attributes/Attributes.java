@@ -83,6 +83,19 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 		add(index, attribute);
 		return true;
 	}
+	
+	/**
+	 * Remove an attribute
+	 * @param key the key (name)
+	 * @return true if the attribute was sucessfully removed
+	 */
+	public boolean removeAttribute(String key) {
+		Attribute attribute = getAttribute(key);
+		if (attribute != null) {
+			return remove(attribute);
+		}
+		return false;
+	}
 
 	/**
 	 * Add an attribute

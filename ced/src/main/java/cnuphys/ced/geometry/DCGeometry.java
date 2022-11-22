@@ -23,7 +23,6 @@ import cnuphys.ced.frame.Ced;
 
 public class DCGeometry {
 
-	private static ConstantProvider _dcDataProvider;
 	private static DCDetector _dcDetector;
 	private static DCSector sector0;
 
@@ -93,8 +92,6 @@ public class DCGeometry {
 					double yy1 = line.end().y();
 					double zz1 = line.end().z();
 
-					double wireLen = dcw.getLength();
-					// double wireLen = line.length();
 
 					minWireX = Math.min(minWireX, xx0);
 					minWireX = Math.min(minWireX, xx1);
@@ -613,71 +610,6 @@ public class DCGeometry {
 
 	}
 
-	//for csv output
-	private static void stringLn(DataOutputStream dos, String s) {
-		
-		s = s.replace("  ", "");		
-		s = s.replace(" ", "");		
-		s = s.replace(", ", ",");		
-		s = s.replace(", ", ",");		
-		s = s.replace(" ,", ",");		
 
-		
-		try {
-			dos.writeBytes(s);
-			dos.writeBytes("\n");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	public static void main(String arg[]) {
-		initialize();
-
-		printWire(0, 0, 65);
-		printWire(4, 3, 75);
-
-//		DriftChamberWire dcw = wires[0][0][0];
-//		System.out.println("num vol edges: " + dcw.getNumVolumeEdges());
-//		for (int i = 0; i < dcw.getNumVolumeEdges(); i++) {
-//			System.out.println(dcw.getVolumeEdge(i));
-//		}
-		
-		
-		try {
-			
-			File file = new File(Environment.getInstance().getHomeDirectory(), "dcwires.csv");
-			DataOutputStream dos = new DataOutputStream(new FileOutputStream(file.getPath()));
-			
-			String header = "sector,superlayer,layer,wire,x1(m),y1(m),z1(m),x2(m),y2(m),z2(m)";
-			stringLn(dos, header);
-			
-			//public static Line3D getWire(int sector, int superlayer, int layer, int wire) {
-
-			for (int sector = 1; sector <= 6; sector++) {
-				for (int superlayer = 1; superlayer <= 6; superlayer++) {
-					for (int layer = 1; layer <= 6; layer++) {
-						for (int wire = 1; wire <= 112; wire++) {
-							Line3D line = getWire(sector, superlayer, layer, wire);
-							Point3D origin = line.origin();
-							Point3D end = line.end();
-							//print in meters
-							String s = String.format("%d,%d,%d,%d,%f,%f,%f,%f,%f,%f", sector, superlayer, layer, wire,
-									origin.x()/100, origin.y()/100, origin.z()/100, 
-									end.x()/100, end.y()/100, end.z()/100);
-							stringLn(dos, s);
-						}
-					}
-
-				}
-
-			}
-			
-			dos.close();
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }

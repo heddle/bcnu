@@ -662,7 +662,7 @@ public final class Environment {
 	 */
 	public static void main(String arg[]) {
 		Environment env = Environment.getInstance();
-//		env.say("Hello " + env.getUserName() + ", this is the bCNU Environment test.");
+		env.say("Hello " + env.getUserName() + ", this is the bCNU Environment test.");
 		System.out.println(env);
 		System.out.println("Done.");
 

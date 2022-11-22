@@ -132,7 +132,6 @@ public class AttributeTable extends JTable {
 	 * @param attributes the data
 	 */
 	public void setData(Attributes attributes) {
-		System.err.println("ATTRIBUTE COUNT: " + attributes.size());
 		AttributeTableModel model = getAttributeTableModel();
 		if (model != null) {
 			model.setData(attributes);

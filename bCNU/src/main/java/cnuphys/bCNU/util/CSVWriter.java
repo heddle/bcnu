@@ -191,28 +191,5 @@ public class CSVWriter {
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * Main program for testing
-	 * @param arg command line arguments (ignored)
-	 */
-	public static void main(String[] arg) {
-		System.out.println("Testing CSV Writer");
-		
-		String homeDir = System.getProperty("user.home");
-		File file = new File(homeDir, "testfile.csv");
-		System.out.println("test file: [" + file.getAbsolutePath() + "]");
-		
-		CSVWriter writer =  new CSVWriter(file);
-		
-		writer.writeRow("Hey", "Man");
-		writer.writeRow("What's", "\"Up\"", "dude");
-		
-		writer.writeRow(Math.PI, Math.E, 6, 6.0e-10, .1, .01, .001, 100, 1000);
-		writer.writeRow(-1, -2, 3, 5, 99, 1023);
-		writer.close();
-		
-		System.out.println("Done");
-	}
 
 }
