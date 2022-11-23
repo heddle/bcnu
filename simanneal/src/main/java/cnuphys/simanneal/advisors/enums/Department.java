@@ -5,7 +5,8 @@ import java.util.EnumMap;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Department {
-COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, MUSIC, OEBIO, PCSE, PHILREL, POLYSCI, PSYCH, SOCANTH, THEADAN;
+COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, 
+MUSIC, OEBIO, PCSE, PHIREL, POLSCI, PSYCH, SOCANT, THEADN;
 	
 	
 	
@@ -20,7 +21,7 @@ COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, MUSIC, OEBIO, PCSE
 	}
 
 	/**
-	 * A map for the names of the student classes
+	 * A map for the names and synonyms of the student classes
 	 */
 	public static EnumMap<Department, String[]> names = new EnumMap<Department, String[]>(Department.class);
 	
@@ -43,11 +44,11 @@ COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, MUSIC, OEBIO, PCSE
 		names.put(MUSIC, new String[] {"music"});
 		names.put(OEBIO, new String[] {"o&e bio"});
 		names.put(PCSE, new String[] {"pcse"});
-		names.put(PHILREL, new String[] {"phil & religion"});
-		names.put(POLYSCI, new String[] {"polySci"});
+		names.put(PHIREL, new String[] {"phil & religion"});
+		names.put(POLSCI, new String[] {"polysci"});
 		names.put(PSYCH, new String[] {"psychology"});
-		names.put(SOCANTH, new String[] {"soc, soc & anth"});
-		names.put(THEADAN, new String[] {"theater & dance"});
+		names.put(SOCANT, new String[] {"soc, soc & anth"});
+		names.put(THEADN, new String[] {"theater & dance"});
 	}
 	
 	
@@ -75,7 +76,7 @@ COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, MUSIC, OEBIO, PCSE
 			
 			String[] syn = names.get(val);
 			for (String s : syn) {
-				if (name.equals(s)) {
+				if (name.equals(s.toLowerCase())) {
 					return val;
 				}
 			}
@@ -94,7 +95,7 @@ COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, MUSIC, OEBIO, PCSE
 	
 	/**
 	 * Increment a count
-	 * @param dept the enum value whose count will be incrementted
+	 * @param dept the enum value whose count will be incremented
 	 */
 	public static void incrementCount(Department dept) {
 		int val = counts.get(dept) + 1;

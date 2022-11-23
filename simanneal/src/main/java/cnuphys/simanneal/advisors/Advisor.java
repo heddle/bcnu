@@ -41,8 +41,8 @@ public class Advisor implements ITabled {
 	 * @param dept department
 	 */
 	public Advisor(String last, String first, String dept) {
-		lastName = last.replace("\"", "");;
-		firstName = first.replace("\"", "");;
+		lastName = last.replace("\"", "");
+		firstName = first.replace("\"", "");
 		String deptstr = dept.replace("\"", "");
 		
 		department = Department.getValue(deptstr);

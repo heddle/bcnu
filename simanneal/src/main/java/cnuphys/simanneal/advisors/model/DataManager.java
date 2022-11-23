@@ -5,12 +5,16 @@ public class DataManager {
 	//base file name for advisors csv file in data dir
     private static final String _advisorBaseName = "advisors.csv";
     private static final String _scheduleBaseName = "ScheduleOfClasses.csv";
+    private static final String _studentsBaseName = "students.csv";
 	
     //the advisor data
 	private static AdvisorData _advisorData;
 	
-	//the schedue
+	//the class schedule
 	private static Schedule _schedule;
+	
+	//the student data
+	private static StudentData _studentData;
 	
 	//synonym lists
 	public static final DataAttribute idAtt = new DataAttribute("ID", 30, "");
@@ -29,6 +33,13 @@ public class DataManager {
 	public static final DataAttribute timeAtt = new DataAttribute("TIME", 90, "");
 	public static final DataAttribute locationAtt = new DataAttribute("LOC", 70, "location");
 	public static final DataAttribute instructorAtt = new DataAttribute("INSTRUCTOR", 120, "");
+	
+	public static final DataAttribute plpAtt = new DataAttribute("PLP", 40, "");
+	public static final DataAttribute honrAtt = new DataAttribute("HONR", 40, "");
+	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40, "");
+	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 40, "");
+	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 120, "Major_1st");
+	
 
 	/**
 	 * Initialize all the data
@@ -36,6 +47,7 @@ public class DataManager {
 	public static void init() {
 		_advisorData = new AdvisorData(_advisorBaseName);
 		_schedule = new Schedule(_scheduleBaseName);
+		_studentData = new StudentData(_studentsBaseName);
 	}
 	
 	/**
@@ -53,5 +65,13 @@ public class DataManager {
 	public static Schedule getSchedule() {
 		return _schedule;
 	}
+	/**
+	 * Get the data for all students
+	 * @return the student data
+	 */
+	public static StudentData getStudentData() {
+		return _studentData;
+	}
+	
 
 }

@@ -45,7 +45,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	
 	//handle click on students button
 	private void handleStudents() {
-		
+		AdvisorDisplay.getInstance().setContent(DataManager.getStudentData().getScrollPane());		
 	}
 	
 	//handle click on save button
