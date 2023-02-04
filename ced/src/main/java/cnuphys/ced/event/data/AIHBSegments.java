@@ -11,7 +11,7 @@ public class AIHBSegments extends Segments {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static AIHBSegments getInstance() {

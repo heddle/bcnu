@@ -18,7 +18,7 @@ import cnuphys.splot.pdata.DataSet;
 
 /**
  * Used to define a scatter plot
- * 
+ *
  * @author heddle
  *
  */
@@ -77,7 +77,7 @@ public class DefineScatterDialog extends JDialog implements ActionListener, Prop
 
 	/**
 	 * Get the reason the dialog closed
-	 * 
+	 *
 	 * @return the reason the dialog closed
 	 */
 	public int getReason() {
@@ -86,7 +86,7 @@ public class DefineScatterDialog extends JDialog implements ActionListener, Prop
 
 	/**
 	 * Return a DataSet ready for filling if the user hit ok
-	 * 
+	 *
 	 * @return a DataSet or <code>null</code>.
 	 */
 	public DataSet getDataSeta() {

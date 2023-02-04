@@ -42,7 +42,7 @@ public class NoiseManager implements IClasIoEventListener {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the NoiseManager singleton
 	 */
 	public static NoiseManager getInstance() {
@@ -55,7 +55,7 @@ public class NoiseManager implements IClasIoEventListener {
 //	/**
 //	 * Get the noise array which is parallel to the other dc_dgtz arrays such as
 //	 * dgtz_sector etc.
-//	 * 
+//	 *
 //	 * @return the noise array
 //	 */
 //	public boolean[] getNoise() {
@@ -64,7 +64,7 @@ public class NoiseManager implements IClasIoEventListener {
 
 	/**
 	 * Get the parameters for a given 0-based superlayer
-	 * 
+	 *
 	 * @param sect0 the 0-based sector
 	 * @param supl0 the 0-based superlayer in question
 	 * @return the parameters for that superlayer
@@ -127,7 +127,7 @@ public class NoiseManager implements IClasIoEventListener {
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -136,7 +136,7 @@ public class NoiseManager implements IClasIoEventListener {
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

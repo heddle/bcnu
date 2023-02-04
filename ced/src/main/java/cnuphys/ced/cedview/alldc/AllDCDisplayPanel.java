@@ -58,7 +58,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 		_aihbHitsButton = createButton(panels[4], 4);
 		_aitbHitsButton = createButton(panels[5], 5);
 
-		
+
 		for (JPanel panel : panels) {
 			add(panel);
 		}
@@ -66,28 +66,28 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	private JCheckBox createButton(JPanel panel, int opt) {
 		JCheckBox button = null;
-		
+
 		JComponent component = null;
-	
+
 		int w = 8;
 		int h = 12;
-		
+
 		switch (opt) {
 		case 0:
-			
+
 			component =  new JComponent() {
 				@Override
 				public void paintComponent(Graphics g) {
 					g.setColor(Color.red);
 					g.fillRect(0, 0, w, h);
 				}
-				
+
 			};
-			
-			
+
+
 			button = new JCheckBox("Raw ", true);
 			break;
-			
+
 		case 1:
 			component =  new JComponent() {
 				@Override
@@ -96,9 +96,9 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 					g.setColor(CedColors.NN_COLOR);
 					g.fillOval(0, 0, w, h);
 				}
-				
+
 			};
-	
+
 			button = new JCheckBox("NN ", false);
 			break;
 
@@ -109,9 +109,9 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 					g.setColor(CedColors.HB_COLOR);
 					g.fillRect(0, 0, w, h);
 				}
-				
+
 			};
-	
+
 			button = new JCheckBox("Reg HB ", false);
 			break;
 
@@ -121,11 +121,11 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 				public void paintComponent(Graphics g) {
 					Rectangle b = getBounds();
 					g.setColor(CedColors.TB_COLOR);
-					g.fillRect(0, 0, w, h);				
+					g.fillRect(0, 0, w, h);
 				}
-				
+
 			};
-	
+
 			button = new JCheckBox("Reg TB ", false);
 			break;
 
@@ -138,13 +138,13 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 					Stroke saveStroke = g2.getStroke();
 					g2.setStroke(new BasicStroke(2));
 					g.drawLine(0, 0, w, h);
-					g.drawLine(w, 0, 0, h);		
-					
+					g.drawLine(w, 0, 0, h);
+
 					g2.setStroke(saveStroke);
 				}
-				
+
 			};
-	
+
 			button = new JCheckBox("AI HB ", false);
 			break;
 
@@ -158,12 +158,12 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 					Stroke saveStroke = g2.getStroke();
 					g2.setStroke(new BasicStroke(2));
 					g.drawLine(w/2, 0, w/2, h);
-					g.drawLine(0, h/2, w, h/2);		
+					g.drawLine(0, h/2, w, h/2);
 					g2.setStroke(saveStroke);
 				}
-				
+
 			};
-	
+
 			button = new JCheckBox("AI TB ", false);
 			break;
 
@@ -182,7 +182,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Display raw DC hits?
-	 * 
+	 *
 	 * @return <code> if we should display raw hits
 	 */
 	public boolean showRawHits() {
@@ -191,7 +191,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Display regular hit based hits?
-	 * 
+	 *
 	 * @return <code> if we should display hit based hits
 	 */
 	public boolean showHBHits() {
@@ -200,16 +200,16 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Display regular time based hits?
-	 * 
+	 *
 	 * @return <code> if we should display hits
 	 */
 	public boolean showTBHits() {
 		return _tbHitsButton.isSelected();
 	}
-	
+
 	/**
 	 * Display AI hit based hits?
-	 * 
+	 *
 	 * @return <code> if we should display hit based hits
 	 */
 	public boolean showAIHBHits() {
@@ -218,7 +218,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Display AI time based hits?
-	 * 
+	 *
 	 * @return <code> if we should display hits
 	 */
 	public boolean showAITBHits() {
@@ -228,7 +228,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Display neural net marked hits?
-	 * 
+	 *
 	 * @return <code> if we should display neural net marked hits
 	 */
 	public boolean showNNHits() {

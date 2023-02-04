@@ -138,7 +138,7 @@ public class CutTablePanel extends JPanel implements ActionListener, ListSelecti
 
 	/**
 	 * Add a cut
-	 * 
+	 *
 	 * @param cut the cut to add
 	 */
 	public void addCut(ICut cut) {
@@ -173,7 +173,7 @@ public class CutTablePanel extends JPanel implements ActionListener, ListSelecti
 
 	/**
 	 * Get all the defined cuts, active or not
-	 * 
+	 *
 	 * @return all the cuts
 	 */
 	protected Vector<ICut> getCuts() {

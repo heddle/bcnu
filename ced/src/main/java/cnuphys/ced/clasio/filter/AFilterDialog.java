@@ -36,7 +36,7 @@ public class AFilterDialog extends SimpleDialog {
 	/**
 	 * Override to create the component that goes in the center. Usually this is the
 	 * "main" component.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	@Override
@@ -55,7 +55,7 @@ public class AFilterDialog extends SimpleDialog {
 
 	/**
 	 * Override to create the component that goes in the north.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	@Override
@@ -69,7 +69,7 @@ public class AFilterDialog extends SimpleDialog {
 
 	/**
 	 * Create the main component
-	 * 
+	 *
 	 * @return the main component of the editor
 	 */
 	public JComponent createMainComponent() {
@@ -107,10 +107,10 @@ public class AFilterDialog extends SimpleDialog {
 	private void savePreferences() {
 		_filter.savePreferences();
 	}
-	
+
 	/**
 	 * A closeout button was hit. The default behavior is to shutdown the dialog.
-	 * 
+	 *
 	 * @param command the label on the button that was hit.
 	 */
 	@Override
@@ -149,7 +149,7 @@ public class AFilterDialog extends SimpleDialog {
 
 	/**
 	 * Set the comment text area text
-	 * 
+	 *
 	 * @param text the new text
 	 */
 	public void setCommentText(String text) {

@@ -28,7 +28,7 @@ public class ExpressionTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -38,7 +38,7 @@ public class ExpressionTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -57,7 +57,7 @@ public class ExpressionTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -83,7 +83,7 @@ public class ExpressionTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the collection of expressions
-	 * 
+	 *
 	 * @return the expressions
 	 */
 	public Vector<NamedExpression> getData() {
@@ -92,7 +92,7 @@ public class ExpressionTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the named expression at a given row
-	 * 
+	 *
 	 * @param row the zero based row
 	 * @return the NamedExpression or null.
 	 */

@@ -19,7 +19,7 @@ public class SegmentList extends Vector<Segment> {
 		int length = 0;
 
 		byte[] superlayer = ColumnData.getByteArray(bankName + ".superlayer");
-		;
+
 		float[] x1 = ColumnData.getFloatArray(bankName + ".SegEndPoint1X");
 		float[] z1 = ColumnData.getFloatArray(bankName + ".SegEndPoint1Z");
 		float[] x2 = ColumnData.getFloatArray(bankName + ".SegEndPoint2X");

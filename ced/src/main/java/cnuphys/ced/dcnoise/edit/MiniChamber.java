@@ -16,9 +16,9 @@ import cnuphys.snr.NoiseReductionParameters;
  * Displays a little chamber so that the parameters can be represented
  * graphically. This will sit on the dialog so that when changes are made they
  * are reflected.
- * 
+ *
  * @author DHeddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class MiniChamber extends JComponent {
@@ -43,7 +43,7 @@ public class MiniChamber extends JComponent {
 
 	/**
 	 * Create a little display to show the parameters
-	 * 
+	 *
 	 * @param parameters the initial values
 	 */
 	public MiniChamber() {
@@ -51,7 +51,7 @@ public class MiniChamber extends JComponent {
 
 	/**
 	 * Paint the MiniChamber.
-	 * 
+	 *
 	 * @param g the Graphics context.
 	 * @return
 	 */
@@ -107,7 +107,7 @@ public class MiniChamber extends JComponent {
 	/**
 	 * Get the cell boundary for a given layer and wire. Mimic the traditional
 	 * layout--wires increase from right to left and layers from bottom to top.
-	 * 
+	 *
 	 * @param layer the layer [0..(GeoConstants.NUM_LAYER-1)]
 	 * @param wire  the wire [0..(_NUMWIRES-1)]
 	 * @return the rectangular boundary.
@@ -127,7 +127,7 @@ public class MiniChamber extends JComponent {
 
 	/**
 	 * Get the preferred size.
-	 * 
+	 *
 	 * @return the preferred size.
 	 */
 	@Override
@@ -139,7 +139,7 @@ public class MiniChamber extends JComponent {
 
 	/**
 	 * Set new display parameters.
-	 * 
+	 *
 	 * @param parameters the parameters to set
 	 */
 	public void setParameters(NoiseReductionParameters parameters) {

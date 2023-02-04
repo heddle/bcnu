@@ -25,10 +25,15 @@ public class SimpleRenderer extends JTextField implements TableCellRenderer {
 	}
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean arg2, boolean arg3, int row,
-			int col) {
+	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean arg3,
+			int row, int col) {
 		setText(value.toString());
-		setBackground(bgColors[row % 2]);
+
+		if (isSelected) {
+			setBackground(Color.yellow);
+		} else {
+			setBackground(bgColors[row % 2]);
+		}
 		return this;
 	}
 

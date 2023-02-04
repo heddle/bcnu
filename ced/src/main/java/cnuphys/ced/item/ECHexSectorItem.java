@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -24,9 +25,9 @@ import cnuphys.splot.plot.X11Colors;
 
 /**
  * This is the "hex item" specific for EC views
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class ECHexSectorItem extends HexSectorItem {
 
@@ -37,7 +38,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get a hex sector item
-	 * 
+	 *
 	 * @param layer  the logical layer
 	 * @param sector the 1-based sector
 	 */
@@ -48,7 +49,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -215,7 +216,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Convert ijk coordinates to world graphics coordinates
-	 * 
+	 *
 	 * @param pijk the ijk coordinates
 	 * @param pp   the screen coordinates
 	 */
@@ -227,7 +228,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Convert ijk coordinates to world graphics coordinates
-	 * 
+	 *
 	 * @param pijk the ijk coordinates
 	 * @param wp   the world graphics coordinates
 	 */
@@ -241,7 +242,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the polygon for a u, v or w strip
-	 * 
+	 *
 	 * @param plane      either EC_INNER or EC_OUTER [0, 1]
 	 * @param stripType  EC_U, EC_V, or EC_W [0..2]
 	 * @param stripIndex the strip index [0..(EC_NUMSTRIP-1)]
@@ -250,7 +251,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	public Polygon stripPolygon(IContainer container, int plane, int stripType, int stripIndex) {
 		Polygon poly = new Polygon();
 		Point pp = new Point();
-		
+
 		for (int i = 0; i < 4; i++) {
 			Point3D pijk = ECGeometry.getStripPoint(plane, stripType, stripIndex, i);
 			ijkToScreen(container, pijk, pp);
@@ -263,7 +264,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the world polygon for a strip
-	 * 
+	 *
 	 * @param plane      either EC_INNER or EC_OUTER [0, 1]
 	 * @param stripType  EC_U, EC_V, or EC_W [0..2]
 	 * @param stripIndex the strip index [0..(EC_NUMSTRIP-1)]
@@ -286,7 +287,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the extension of the strip polygon
-	 * 
+	 *
 	 * @param plane      inner or outer
 	 * @param stripType  the type of strip UVW
 	 * @param stripIndex the index of the strip
@@ -331,7 +332,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the extension of the strip polygon
-	 * 
+	 *
 	 * @param container
 	 * @param plane
 	 * @param stripType
@@ -362,7 +363,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Converts a graphical world point to sector xyz
-	 * 
+	 *
 	 * @param planeIndex the plane index, either EC_INNER or EC_OUTER
 	 * @param wp         the world graphical point
 	 * @param sectorXYZ  the sector xyz point

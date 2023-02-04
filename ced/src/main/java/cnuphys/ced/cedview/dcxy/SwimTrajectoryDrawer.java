@@ -19,7 +19,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * Actual drawing method
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the base container
 	 */
@@ -29,13 +29,13 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			super.draw(g, container);
 		}
 	}
-	
+
 	@Override
 	public void drawTrajectories(Graphics g, IContainer container) {
 		for (SwimTrajectory2D trajectory2D : _trajectories2D) {
-			
+
 			boolean show = true;
-			
+
 			String source = trajectory2D.getSource();
 
 			if (source != null) {
@@ -55,7 +55,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			if (!show) {
 				continue;
 			}
-			
+
 			drawSwimTrajectory(g, container, trajectory2D);
 			if (_view.showSectorChange()) {
 				markSectorChanges(g, container, trajectory2D);
@@ -68,7 +68,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)
 	 * and so don't bother to compute it. The default implementation vetoes nothing.
-	 * 
+	 *
 	 * @param trajectory the trajectory to test.
 	 * @return <code>true</code> if this trajectory is vetoed.
 	 */
@@ -79,7 +79,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * Just us the xy coordinates directly. Ignore z.
-	 * 
+	 *
 	 * @param v3d the 3D vector (meters)
 	 * @param wp  the projected world point.
 	 */
@@ -117,7 +117,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 		boolean show = true;
 		String source = trajectory.getSource();
-		
+
 	//	System.err.println("AST SOURCE: [" +  source + "]");
 
 		if (source != null) {

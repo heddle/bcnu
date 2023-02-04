@@ -2,9 +2,9 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
-import cnuphys.lund.X11Colors;
-
 import com.jogamp.opengl.GLAutoDrawable;
+
+import cnuphys.lund.X11Colors;
 
 public class FTOF3D extends DetectorItem3D {
 
@@ -19,7 +19,7 @@ public class FTOF3D extends DetectorItem3D {
 
 	/**
 	 * The 3D FTOF
-	 * 
+	 *
 	 * @param panel3d the 3D panel owner
 	 * @param sector  the 1-based sector [1..6]
 	 */
@@ -69,7 +69,7 @@ public class FTOF3D extends DetectorItem3D {
 
 	/**
 	 * Create a set of same color and size points for use on a Panel3D.
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param coords    the points as [x1, y1, z1, ..., xn, yn, zn]
 	 * @param color     the color of the points
@@ -116,7 +116,7 @@ public class FTOF3D extends DetectorItem3D {
 
 	/**
 	 * Get the sector [1..6]
-	 * 
+	 *
 	 * @return the sector 1..6
 	 */
 	public int getSector() {

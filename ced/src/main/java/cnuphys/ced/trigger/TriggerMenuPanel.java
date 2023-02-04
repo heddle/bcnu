@@ -6,8 +6,8 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
+import cnuphys.ced.clasio.IClasIoEventListener;
 
 public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListener {
 
@@ -60,7 +60,7 @@ public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListen
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

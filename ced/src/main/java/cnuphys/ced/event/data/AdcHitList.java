@@ -62,7 +62,7 @@ public class AdcHitList extends Vector<AdcHit> {
 
 	/**
 	 * Get the max average adc
-	 * 
+	 *
 	 * @return the max average adc
 	 */
 	public int maxADC() {
@@ -105,7 +105,7 @@ public class AdcHitList extends Vector<AdcHit> {
 
 	/**
 	 * Find the index of a hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer
 	 * @param component the 1-based component
@@ -126,7 +126,7 @@ public class AdcHitList extends Vector<AdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer 1..36
 	 * @param component the 1-based component
@@ -139,7 +139,7 @@ public class AdcHitList extends Vector<AdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer 1..36
 	 * @param component the 1-based component
@@ -151,7 +151,7 @@ public class AdcHitList extends Vector<AdcHit> {
 
 	/**
 	 * Get a color with apha based of relative adc
-	 * 
+	 *
 	 * @param hit the hit
 	 * @return a fill color for adc hits
 	 */
@@ -174,7 +174,7 @@ public class AdcHitList extends Vector<AdcHit> {
 //		System.err.println("AVG ADC: " + avgADC + "   fract: " + fract + "   maxADC: "  + _maxADC);
 		return AdcColorScale.getInstance().getAlphaColor(fract, alpha);
 //		int alpha = (int)(254*fract);
-//		
+//
 //		return new Color(255, 0, 0, alpha);
 	}
 }

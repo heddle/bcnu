@@ -1,9 +1,6 @@
 package cnuphys.ced.geometry;
 
 import java.awt.geom.Point2D;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 
 import org.jlab.detector.base.GeometryFactory;
 import org.jlab.detector.geom.dc.DCGeantFactory;
@@ -18,7 +15,6 @@ import org.jlab.geom.prim.Plane3D;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Triangle3D;
 
-import cnuphys.bCNU.util.Environment;
 import cnuphys.ced.frame.Ced;
 
 public class DCGeometry {
@@ -71,7 +67,7 @@ public class DCGeometry {
 		minWireZ = Double.POSITIVE_INFINITY;
 		maxWireZ = Double.NEGATIVE_INFINITY;
 
-	
+
 		wires = new DriftChamberWire[6][6][112];
 		for (int suplay = 0; suplay < 6; suplay++) {
 			DCSuperlayer sl = sector0.getSuperlayer(suplay);
@@ -114,7 +110,7 @@ public class DCGeometry {
 
 	/**
 	 * Used by the 3D drawing
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superlayer 1 based superlayer [1..6]
 	 * @param coords     holds 6*3 = 18 values [x1, y1, z1, ..., x6, y6, z6]
@@ -123,16 +119,16 @@ public class DCGeometry {
 
 		Line3D wire1 = getWire(sector, superlayer, 1, 1);
 		Line3D wire2 = getWire(sector, superlayer, 1, 112);
-		
+
 		Line3D wire3 = getWire(sector, superlayer, 6, 1);
 		Line3D wire4 = getWire(sector, superlayer, 6, 112);
 
-		
+
 		Triangle3D triangle1 = new Triangle3D(wire1.midpoint(), wire2.origin(), wire2.end());
 		Triangle3D triangle6 = new Triangle3D(wire3.midpoint(), wire4.origin(), wire4.end());
 
-		
-		
+
+
 //		DCSuperlayer sl = sector0.getSuperlayer(superlayer - 1);
 //		DCLayer dcLayer1 = sl.getLayer(0);
 //		DCLayer dcLayer6 = sl.getLayer(5);
@@ -170,7 +166,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the minimum x of a wire in the sector system (cm)
-	 * 
+	 *
 	 * @return the minimum x of a wire in the sector system (cm)
 	 */
 	public static double getMinWireX() {
@@ -179,7 +175,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the maximum x coordinate of all the wires.
-	 * 
+	 *
 	 * @return the max xin cm
 	 */
 	public static double getMaxWireX() {
@@ -188,7 +184,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the minimum y coordinate of all the wires.
-	 * 
+	 *
 	 * @return the min y in cm
 	 */
 	public static double getMinWireY() {
@@ -197,7 +193,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the absolute value of the largest y coordinate of any wire.
-	 * 
+	 *
 	 * @return the absolute value of the largest y coordinate of any wire.
 	 */
 	public static double getAbsMaxWireY() {
@@ -206,7 +202,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the absolute value of the largest x coordinate of any wire.
-	 * 
+	 *
 	 * @return the absolute value of the largest x coordinate of any wire.
 	 */
 	public static double getAbsMaxWireX() {
@@ -215,7 +211,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the maximum y coordinate of all the wires.
-	 * 
+	 *
 	 * @return the max y in cm
 	 */
 	public static double getMaxWireY() {
@@ -224,7 +220,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the minimum z coordinate of all the wires.
-	 * 
+	 *
 	 * @return the min z in cm
 	 */
 	public static double getMinWireZ() {
@@ -233,7 +229,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the maximum z coordinate of all the wires.
-	 * 
+	 *
 	 * @return the max z in cm
 	 */
 	public static double getMaxWireZ() {
@@ -243,7 +239,7 @@ public class DCGeometry {
 	/**
 	 * Get the midpoint of the untransformed wire in sector 1 NOTE: the indices are
 	 * 1-based
-	 * 
+	 *
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
 	 * @param wire       the wire [1..112]
@@ -255,7 +251,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the wire in given sector NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param sector     the 1-based sector [1..6]
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
@@ -274,7 +270,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the wire in sector 0 NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
 	 * @param wire       the wire [1..112]
@@ -286,7 +282,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the origin of the wire in sector 0 NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
 	 * @param wire       the wire [1..112]
@@ -298,7 +294,7 @@ public class DCGeometry {
 
 	/**
 	 * Get the end of the wire in sector 0 NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
 	 * @param wire       the wire [1..112]
@@ -311,9 +307,9 @@ public class DCGeometry {
 	/**
 	 * Get the intersections of a dcwire with a constant phi plane. If the wire does
 	 * not intersect (happens as phi grows) return null;
-	 * 
+	 *
 	 * NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer      the superlayer [1..6]
 	 * @param layer           the layer [1..6]
 	 * @param wire            the wire [1..112]
@@ -333,9 +329,9 @@ public class DCGeometry {
 
 	/**
 	 * Get the approximate center of the projected hexagon
-	 * 
+	 *
 	 * NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer  the superlayer [1..6]
 	 * @param layer       the layer [1..6]
 	 * @param wire        the wire [1..112]
@@ -359,7 +355,7 @@ public class DCGeometry {
 
 	/**
 	 * Get a super layer plane
-	 * 
+	 *
 	 * @param sector     the 1-based sector (result IS sector dependent)
 	 * @param superlayer the 1-based superlayer
 	 * @return the plane perpendicular to the wires for this superlayer
@@ -373,14 +369,14 @@ public class DCGeometry {
 
 	/**
 	 * Get the position of the sense wire in sector 0
-	 * 
+	 *
 	 * NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
 	 * @param wire       the wire [1..112]
 	 * @param phi        the relative phi (degrees)
-	 * 
+	 *
 	 * @return the position of the sense wire
 	 */
 	public static Point2D.Double getCenter(int superlayer, int layer, int wire, double phi) {
@@ -413,9 +409,9 @@ public class DCGeometry {
 
 	/**
 	 * Get a point on either side of a layer
-	 * 
+	 *
 	 * NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer  the superlayer [1..6]
 	 * @param layer       the layer [1..6]
 	 * @param wire        the wire [1..112]
@@ -447,9 +443,9 @@ public class DCGeometry {
 
 	/**
 	 * Get the boundary of a layer
-	 * 
+	 *
 	 * NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer  the superlayer [1..6]
 	 * @param layer       the layer [1..6]
 	 * @param transform3D the transformation to the constant phi
@@ -505,9 +501,9 @@ public class DCGeometry {
 
 	/**
 	 * Get the boundary of a super layer
-	 * 
+	 *
 	 * NOTE: the indices are 1-based
-	 * 
+	 *
 	 * @param superlayer  the superlayer [1..6]
 	 * @param transform3D the transformation to the constant phi
 	 * @param wp          a four point super layer boundary
@@ -584,7 +580,7 @@ public class DCGeometry {
 
 	/**
 	 * print the wire location
-	 * 
+	 *
 	 * @param superlayer the 0-based superlayer
 	 * @param layer      the zero based layer
 	 * @param wire       the zero based wire

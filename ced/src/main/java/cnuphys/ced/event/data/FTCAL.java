@@ -10,7 +10,7 @@ public class FTCAL extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the FTOF singleton
 	 */
 	public static FTCAL getInstance() {
@@ -27,7 +27,7 @@ public class FTCAL extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the updated list
 	 */
 	public AdcHitList updateAdcList() {
@@ -37,7 +37,7 @@ public class FTCAL extends DetectorData {
 
 	/**
 	 * Get the adc hit list
-	 * 
+	 *
 	 * @return the adc hit list
 	 */
 	public AdcHitList getHits() {

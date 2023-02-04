@@ -16,10 +16,10 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.BMTCrosses;
+import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.Cross2;
 import cnuphys.ced.event.data.CrossList2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.BSTCrosses;
 
 public class CrossDrawerXY extends CentralXYViewDrawer {
 
@@ -42,11 +42,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (ClasIoEventManager.getInstance().isAccumulating() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -71,7 +67,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 	/**
 	 * Draw BST crosses
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the drawing container
 	 */
@@ -137,7 +133,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 	/**
 	 * Draw the BMT Crosses
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 */
@@ -199,7 +195,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

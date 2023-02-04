@@ -3,8 +3,8 @@ package cnuphys.ced.cedview.central;
 import java.awt.BorderLayout;
 
 /**
- * Note this view started out as just the XY view for the BST. But it has evolved into the xy view for 
- * all central detectors. 
+ * Note this view started out as just the XY view for the BST. But it has evolved into the xy view for
+ * all central detectors.
  */
 
 import java.awt.Color;
@@ -41,21 +41,21 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcHitList;
 import cnuphys.ced.event.data.BMT;
+import cnuphys.ced.event.data.BST;
+import cnuphys.ced.event.data.BaseHit2;
+import cnuphys.ced.event.data.BaseHit2List;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.CosmicList;
 import cnuphys.ced.event.data.Cosmics;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BaseHit2;
-import cnuphys.ced.event.data.BaseHit2List;
 import cnuphys.ced.event.data.TdcAdcHit;
 import cnuphys.ced.event.data.TdcAdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
-import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.ced.geometry.GeometryManager;
+import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.lund.X11Colors;
 import cnuphys.swim.SwimTrajectory2D;
 
@@ -101,7 +101,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Create a Central detector XY View
-	 * 
+	 *
 	 * @param keyVals
 	 */
 	private CentralXYView(Object... keyVals) {
@@ -139,7 +139,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Create a Central detector XY view
-	 * 
+	 *
 	 * @return a Central detector XY View
 	 */
 	public static CentralXYView createCentralXYView() {
@@ -165,7 +165,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.DRAWLEGEND,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
-						+ DisplayBits.ADC_HITS + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS 
+						+ DisplayBits.ADC_HITS + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
 						+ DisplayBits.GLOBAL_TB,
 				3, 5);
@@ -280,7 +280,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Get the panel based on the layer and sector
-	 * 
+	 *
 	 * @param layer  1..8
 	 * @param sector 1..24
 	 * @return the panel
@@ -344,7 +344,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draw one BST panel
 	public void drawBSTPanel(Graphics2D g2, IContainer container, BSTxyPanel panel, Color color) {
-		
+
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		Stroke oldStroke = g2.getStroke();
@@ -447,7 +447,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Get the BMT Sector item
-	 * 
+	 *
 	 * @param sector the geo sector 1..3
 	 * @param layer  the layer 1..6
 	 * @return the BMS Sector Item
@@ -461,7 +461,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Get the panel closest to the mouse
-	 * 
+	 *
 	 * @return the panel closest to the mouse
 	 */
 	protected BSTxyPanel closestPanel() {
@@ -471,7 +471,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -644,7 +644,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Get a CTOF scintillator polygon
-	 * 
+	 *
 	 * @param index1 the 1=based index [1..48]
 	 * @return the most recently drawn polygon
 	 */
@@ -658,16 +658,13 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Get the CND polygon from Gagik's geometry layer and paddle
-	 * 
+	 *
 	 * @param layer    1..3
 	 * @param paddleId 1..48
 	 * @return the CND polygon
 	 */
 	public CNDXYPolygon getCNDPolygon(int layer, int paddleId) {
-		if ((layer < 1) || (layer > 3)) {
-			return null;
-		}
-		if ((paddleId < 1) || (paddleId > 48)) {
+		if ((layer < 1) || (layer > 3) || (paddleId < 1) || (paddleId > 48)) {
 			return null;
 		}
 
@@ -676,17 +673,14 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Get the CND polygon from "real" numbering
-	 * 
+	 *
 	 * @param sector    1..24
 	 * @param layer     1..3
 	 * @param component 1..2
 	 * @return the CND polygon
 	 */
 	public CNDXYPolygon getCNDPolygon(int sector, int layer, int component) {
-		if ((sector < 1) || (sector > 24)) {
-			return null;
-		}
-		if ((layer < 1) || (layer > 3)) {
+		if ((sector < 1) || (sector > 24) || (layer < 1) || (layer > 3)) {
 			return null;
 		}
 		if ((component < 1) || (component > 2)) {
@@ -703,7 +697,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

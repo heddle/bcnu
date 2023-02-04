@@ -6,6 +6,8 @@ import java.awt.FontMetrics;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
 import javax.swing.table.TableColumn;
 
 import org.jlab.io.base.DataEvent;
@@ -20,14 +22,22 @@ public class BankDataTable extends JTable {
 
 	public static final int COLWIDTH = 100;
 
+
+	//the bank name
+	private String _bankName;
+
 	/**
 	 * Create a bank table
-	 * 
+	 *
 	 * @param bankName the name of the bank, e.g. "DC::tdc"
 	 */
 	public BankDataTable(String bankName) {
 		super(new BankTableModel(bankName));
+		_bankName = bankName;
 		getBankTableModel().setTable(this);
+
+		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
 		HeaderRenderer hrender = new HeaderRenderer();
 		SimpleRenderer renderer = new SimpleRenderer();
@@ -56,9 +66,25 @@ public class BankDataTable extends JTable {
 
 	}
 
+	@Override
+	public void valueChanged(ListSelectionEvent e) {
+		   if (e.getValueIsAdjusting())
+		        return;
+
+		super.valueChanged(e);
+
+		int index = getSelectedRow() + 1;  //make one based
+
+		if (index > 0) {
+			System.err.println("Selected 1-based index " + index + " in bank [" + _bankName + "]");
+			SelectedDataManager.notifyListeners(_bankName, index);
+		}
+	}
+
+
 	/**
 	 * Get all the TableColumns in an array
-	 * 
+	 *
 	 * @return all the table columns
 	 */
 	public TableColumn[] getTableColumns() {
@@ -77,7 +103,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Get the underlying model
-	 * 
+	 *
 	 * @return the data model
 	 */
 	public BankTableModel getBankTableModel() {
@@ -86,7 +112,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Set the event for table display
-	 * 
+	 *
 	 * @param event the event
 	 */
 	public void setEvent(DataEvent event) {
@@ -95,7 +121,7 @@ public class BankDataTable extends JTable {
 
 	/**
 	 * Get the table's scroll pane
-	 * 
+	 *
 	 * @return te table's scroll pane
 	 */
 	public JScrollPane getScrollPane() {
@@ -111,5 +137,6 @@ public class BankDataTable extends JTable {
 		}
 		return _scrollPane;
 	}
+
 
 }

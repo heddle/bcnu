@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.magneticfield.swim.ASwimTrajectoryDrawer;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -24,7 +25,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * Actual drawing method
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the base container
 	 */
@@ -76,7 +77,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)
 	 * and so don't bother to compute it. The default implementation vetoes nothing.
-	 * 
+	 *
 	 * @param trajectory the trajectory to test.
 	 * @return <code>true</code> if this trajectory is vetoed.
 	 */
@@ -89,7 +90,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * From detector xyz get the projected world point.
-	 * 
+	 *
 	 * @param v3d the 3D vector (meters)
 	 * @param wp  the projected world point.
 	 */

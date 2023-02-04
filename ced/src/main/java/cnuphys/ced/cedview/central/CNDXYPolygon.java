@@ -11,6 +11,7 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import org.jlab.geom.component.ScintillatorPaddle;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
@@ -47,7 +48,7 @@ public class CNDXYPolygon extends Polygon {
 
 	/**
 	 * Create a XY Polygon for the CND
-	 * 
+	 *
 	 * @param layer    the layer 1..3
 	 * @param paddleId the paddle ID 1..48
 	 */
@@ -66,7 +67,7 @@ public class CNDXYPolygon extends Polygon {
 
 	/**
 	 * Draw the polygon
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
 	 */
@@ -76,7 +77,7 @@ public class CNDXYPolygon extends Polygon {
 
 	/**
 	 * Draw the polygon
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
 	 */
@@ -118,7 +119,7 @@ public class CNDXYPolygon extends Polygon {
 
 	/**
 	 * Get the feedback strings
-	 * 
+	 *
 	 * @param container       the cdrawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world point

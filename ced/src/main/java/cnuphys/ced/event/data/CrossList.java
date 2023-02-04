@@ -19,9 +19,9 @@ public class CrossList extends Vector<Cross> {
 		int length = 0;
 
 		byte[] region = ColumnData.getByteArray(bankName + ".region");
-		;
+
 		short[] id = ColumnData.getShortArray(bankName + ".id");
-		;
+
 		float[] x = ColumnData.getFloatArray(bankName + ".x");
 		float[] y = ColumnData.getFloatArray(bankName + ".y");
 		float[] z = ColumnData.getFloatArray(bankName + ".z");
@@ -76,16 +76,7 @@ public class CrossList extends Vector<Cross> {
 			return -1;
 		}
 
-		if (lengthMismatch(sector, region, "region")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, id, "id")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, x, "x")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, y, "y")) {
+		if (lengthMismatch(sector, region, "region") || lengthMismatch(sector, id, "id") || lengthMismatch(sector, x, "x") || lengthMismatch(sector, y, "y")) {
 			return -1;
 		}
 		if (lengthMismatch(sector, z, "z")) {

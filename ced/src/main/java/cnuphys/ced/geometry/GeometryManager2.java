@@ -22,7 +22,7 @@ public class GeometryManager2 {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param x
 	 * @param y
 	 * @param z

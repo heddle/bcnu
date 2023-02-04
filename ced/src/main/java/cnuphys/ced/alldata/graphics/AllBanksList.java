@@ -12,7 +12,7 @@ import cnuphys.ced.alldata.DataManager;
 
 /**
  * Puts all known banks into a scrollable list
- * 
+ *
  * @author heddle
  *
  */
@@ -42,7 +42,7 @@ public class AllBanksList extends JList<String> {
 
 	/**
 	 * Get the scroll pane
-	 * 
+	 *
 	 * @return the scroll pane
 	 */
 	public JScrollPane getScrollPane() {

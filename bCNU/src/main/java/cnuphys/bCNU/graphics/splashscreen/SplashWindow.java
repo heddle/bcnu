@@ -31,12 +31,17 @@ public class SplashWindow extends JWindow {
 
 	private StreamCapturePane _scp;
 	
-	public static final String[] animatedGifs = { "images/anicat.gif", "images/anir2d2.gif", "images/coffee.gif", "images/sun.gif", "images/rubik80.gif",
-			"images/bee.gif", "images/loading.gif", "images/progress33.gif", "images/saucer.gif",
-			"images/spinglobe.gif", "images/runner.gif", "images/sun2.gif", "images/push.gif", "images/walker.gif",
-			"images/rooftop.gif", "images/bee2.gif", "images/stickdancer.gif", "images/cricket.gif",
-			"images/wiggly.gif" };
-	
+	public static final String[] animatedGifs = { "images/anicat.gif", "images/anir2d2.gif", "images/coffee.gif",
+			"images/sun.gif", "images/rubik80.gif", "images/bee.gif", "images/loading.gif", "images/progress33.gif",
+			"images/saucer.gif", "images/spinglobe.gif", "images/runner.gif", "images/sun2.gif", "images/push.gif",
+			"images/walker.gif", "images/rooftop.gif", "images/bee2.gif", "images/stickdancer.gif",
+			"images/cricket.gif", "images/wiggly.gif", "images/alarmclock.gif", "images/bell.gif",
+			"images/benchpress.gif", "images/boring.gif", "images/checkarrow.gif", "images/circles.gif",
+			"images/escalator.gif", "images/eye.gif", "images/fidget.gif", "images/fire2.gif", "images/ghost.gif",
+			"images/girl1.gif", "images/girl2.gif", "images/heart.gif", "images/hearthand.gif", "images/laugh.gif",
+			"images/launch.gif", "images/phonemessage.gif", "images/pie.gif", "images/plant.gif", "images/rain.gif",
+			"images/settings.gif", "images/skateboard.gif", "images/truck.gif", "images/wink.gif" };
+
 
 
 	// If <code>true</code>, tile the background with an image.

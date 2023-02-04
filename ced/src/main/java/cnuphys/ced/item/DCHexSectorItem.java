@@ -24,7 +24,7 @@ public class DCHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get a hex sector item
-	 * 
+	 *
 	 * @param logLayer the logical layer
 	 * @param sector   the 1-based sector
 	 */
@@ -34,7 +34,7 @@ public class DCHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -86,7 +86,7 @@ public class DCHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Wire endpoints
-	 * 
+	 *
 	 * @param superlayer the superlayer 1..6
 	 * @param layer      the layer 1..6
 	 * @param wire       the wire 1..112

@@ -26,7 +26,7 @@ public class BMTSectorItem extends DonutItem {
 
 	public enum LAYERTYPE {
 		C, Z
-	};
+	}
 
 	public static final Color cColor = new Color(220, 255, 220);
 	public static final Color zColor = new Color(240, 240, 240);
@@ -92,7 +92,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Get the inner radius in mm
-	 * 
+	 *
 	 * @return the inner radius in mm
 	 */
 	public double getInnerRadius() {
@@ -101,7 +101,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Get the start angle in degrees
-	 * 
+	 *
 	 * @return the start angle in degrees
 	 */
 	public double getStartAngle() {
@@ -110,7 +110,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Get the end angle in degrees
-	 * 
+	 *
 	 * @return the end angle in degrees
 	 */
 	public double getEndAngle() {
@@ -119,7 +119,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Get the outer radius in mm
-	 * 
+	 *
 	 * @return the outer radius in mm
 	 */
 	public double getOuterRadius() {
@@ -152,7 +152,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -219,7 +219,7 @@ public class BMTSectorItem extends DonutItem {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 * @param strip     1-based strip
@@ -227,24 +227,24 @@ public class BMTSectorItem extends DonutItem {
 	 * @param lineColor
 	 */
 	public FeedbackRect drawHit(Graphics g, IContainer container, int hit, Color fillColor, Color lineColor) {
-//		
+//
 //		if ((_layer % 2) == 0) {
 //			return null;
 //		}
-//		
+//
 //		int strips[] = BMT.strip();
 //		double edep[] = BMT.Edep();
 //
 //		int strip = strips[hit];
-//		
+//
 //		//double ang = Math.PI-geo.CRZ_GetAngleStrip(_sector, _layer, strip);
 //		double ang = geo.CRZ_GetAngleStrip(_sector, _layer, strip);
-//		
+//
 //		if (ang > Math.PI) {
 //			ang -= (2 * Math.PI);
 //		}
 ////		System.err.println("SECT: " + sectorNames[_sector-1] + "  LAYER: " + _layer +
-////				" STRIP: " + strip + " Zstrip: " + zstrip + 
+////				" STRIP: " + strip + " Zstrip: " + zstrip +
 ////				"  ANGLE: " + Math.toDegrees(ang));
 //
 //		double rad = (innerRadius[_layer - 1] + outerRadius[_layer - 1]) / 2;
@@ -256,20 +256,20 @@ public class BMTSectorItem extends DonutItem {
 //		g.fillOval(pp.x - 3, pp.y - 3, 6, 6);
 //		g.setColor(lineColor);
 //		g.drawOval(pp.x - 3, pp.y - 3, 6, 6);
-//				
+//
 //		String edepStr="";
 //		if (edep != null) {
 //			edepStr = "  edep " + DoubleFormat.doubleFormat(edep[hit],2);
 //		}
-//		
-//		return new FeedbackRect(FeedbackRect.Dtype.BMT, pp.x - 3, pp.y - 3, 6, 6, hit, 0, 
+//
+//		return new FeedbackRect(FeedbackRect.Dtype.BMT, pp.x - 3, pp.y - 3, 6, 6, hit, 0,
 //				microMegasStr + " hit " + hit  + " strip " + strip + edepStr);
 		return null;
 	}
 
 	/**
 	 * Convenience method to check if this is a Z layer
-	 * 
+	 *
 	 * @return <code>true</code> if this is a Z layer
 	 */
 	public boolean isZLayer() {
@@ -278,7 +278,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Convenience method to check if this is a C layer
-	 * 
+	 *
 	 * @return <code>true</code> if this is a C layer
 	 */
 	public boolean isCLayer() {
@@ -287,7 +287,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.
@@ -320,7 +320,7 @@ public class BMTSectorItem extends DonutItem {
 
 	/**
 	 * Get the number of strips
-	 * 
+	 *
 	 * @return the number of strips
 	 */
 	public int getNumStrips() {
@@ -337,29 +337,29 @@ public class BMTSectorItem extends DonutItem {
 //		Polygon poly = null;
 //		if (isZLayer()) {
 //			Point pp = new Point();
-//			double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(_sector, 
+//			double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(_sector,
 //					_layer, strip);
-//			
+//
 //			double phi2;
 //			if (strip < (getNumStrips()/2)) {
-//				phi2 = BMTGeometry.getGeometry().CRZStrip_GetPhi(_sector, 
+//				phi2 = BMTGeometry.getGeometry().CRZStrip_GetPhi(_sector,
 //						_layer, strip+1);
 //			}
 //			else {
-//				phi2 = BMTGeometry.getGeometry().CRZStrip_GetPhi(_sector, 
+//				phi2 = BMTGeometry.getGeometry().CRZStrip_GetPhi(_sector,
 //						_layer, strip-1);
 //			}
 //			double delPhi = (Math.abs(phi2-phi))/2;
-//			
+//
 //			double phiMin = phi - delPhi;
 //			double phiMax = phi + delPhi;
 //			double cmin = Math.cos(phiMin);
 //			double cmax = Math.cos(phiMax);
 //			double smin = Math.sin(phiMin);
 //			double smax = Math.sin(phiMax);
-//			
+//
 //			poly = new Polygon();
-//			
+//
 //			container.worldToLocal(pp, getInnerRadius()*cmin, getInnerRadius()*smin);
 //			poly.addPoint(pp.x, pp.y);
 //			container.worldToLocal(pp, getOuterRadius()*cmin, getOuterRadius()*smin);
@@ -368,9 +368,9 @@ public class BMTSectorItem extends DonutItem {
 //			poly.addPoint(pp.x, pp.y);
 //			container.worldToLocal(pp, getInnerRadius()*cmax, getInnerRadius()*smax);
 //			poly.addPoint(pp.x, pp.y);
-//			
+//
 //		}
-//		
+//
 //		return poly;
 
 		return this._lastDrawnPolygon;

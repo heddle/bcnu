@@ -4,22 +4,24 @@ import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import cnuphys.ced.clasio.datatable.SelectedDataManager;
+
 
 public class TimedRefreshManager {
 
 	//views that have pending refreshes
 	private ArrayList<CedView> _pendingRefresh = new ArrayList<>();
-	
+
 	//time that fires the refresh
 	private Timer _timer;
-	
+
 	//the singleton
 	private static TimedRefreshManager _instance;
-	
+
 	private TimedRefreshManager() {
 		TimerTask task = new TimerTask() {
 
-			
+
 			@Override
 			public void run() {
 				timerFired();
@@ -29,20 +31,20 @@ public class TimedRefreshManager {
 		_timer = new Timer();
 		_timer.scheduleAtFixedRate(task, 3000, 1000);
 	}
-	
+
 	/**
 	 * Public access to the singleton
 	 * @return the one and only TimerRefreshManager
 	 */
 	public static TimedRefreshManager getInstance() {
-		
+
 		if (_instance == null) {
 			_instance = new TimedRefreshManager();
 		}
 		return _instance;
 
 	}
-	
+
 	/**
 	 * Add a view to the list of views waiting to be refreshed.
 	 * @param view the view to add
@@ -54,13 +56,16 @@ public class TimedRefreshManager {
 			}
 		}
 	}
-	
+
 	//the timer has fired
 	private void timerFired() {
-		
+
+		//for the highlighting selected data feature
+		SelectedDataManager.updateDataHighlighting();
+
 		ArrayList<CedView> tempList = _pendingRefresh;
 		_pendingRefresh = new ArrayList<>();
-		
+
 		for (CedView view : tempList) {
 			view.refresh();
 		}

@@ -57,7 +57,7 @@ public abstract class CentralXYViewDrawer implements IDrawable {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

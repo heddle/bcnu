@@ -10,7 +10,7 @@ public class BSTCrosses extends Crosses2 {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static BSTCrosses getInstance() {

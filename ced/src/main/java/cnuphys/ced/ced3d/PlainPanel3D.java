@@ -28,17 +28,17 @@ import cnuphys.magfield.MagneticFields;
 import item3D.Axes3D;
 
 public abstract class PlainPanel3D extends Panel3D {
-	
+
 	// cm
 	private final float xymax = 600f;
 	private final float zmax = 600f;
 	private final float zmin = -100f;
-	
+
 	private static final Color _torusColor = new Color(0, 255, 255, 255);
 	private static final Color _solenoidColor = new Color(255, 0, 255, 255);
 
 
-	
+
 	// labels for the check box
 	public static final String SHOW_VOLUMES = "Volumes";
 	public static final String SHOW_TRUTH = "Truth";
@@ -86,26 +86,26 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	public static final String SHOW_TB_CROSS = "TB Cross";
 	public static final String SHOW_HB_CROSS = "HB Cross";
-	
+
 	public static final String SHOW_AITB_CROSS = "AITB Cross";
 	public static final String SHOW_AIHB_CROSS = "AIHB Cross";
 
-	
+
 	public static final String SHOW_TB_TRACK = "Reg TB Track";
 	public static final String SHOW_HB_TRACK = "Reg HB Track";
-	
+
 	public static final String SHOW_AITB_TRACK = "AI TB Track";
 	public static final String SHOW_AIHB_TRACK = "AI HB Track";
 
 	public static final String SHOW_CVTREC_TRACK = "CVT Rec Track";
 	public static final String SHOW_CVTP1_TRACK = "CVT P1 Track";
-	
+
 	public static final String SHOW_REC_TRACK = "REC Track";
 
 	public static final String SHOW_MAP_EXTENTS = "Map Extents";
 
 	public static final String SHOW_COSMIC = "Cosmics";
-	
+
 	public static final String SHOW_REC_CAL = "REC Cal";
 
 	// Check box array
@@ -118,26 +118,26 @@ public abstract class PlainPanel3D extends Panel3D {
 	protected String _cbaLabels[];
 
 	protected PlainView3D _view;
-	
+
 	/*
 	 * The panel that holds the 3D objects
-	 * 
+	 *
 	 * @param angleX the initial x rotation angle in degrees
-	 * 
+	 *
 	 * @param angleY the initial y rotation angle in degrees
-	 * 
+	 *
 	 * @param angleZ the initial z rotation angle in degrees
-	 * 
+	 *
 	 * @param xdist move viewpoint left/right
-	 * 
+	 *
 	 * @param ydist move viewpoint up/down
-	 * 
+	 *
 	 * @param zdist the initial viewer z distance should be negative
 	 */
-	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist, 
-			float bgRed, float bgGreen, float bgBlue, 
+	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist,
+			float bgRed, float bgGreen, float bgBlue,
 			String... cbaLabels) {
-	
+
 		super(angleX, angleY, angleZ, xDist, yDist, zDist, bgRed, bgGreen, bgBlue);
 
 		_view = view;
@@ -177,7 +177,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 		enableBSTOuterLayers();
 	}
-	
+
 	@Override
 	public void createInitialItems() {
 		// coordinate axes
@@ -232,7 +232,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		}
 
 	} // create initial items
-	
+
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		if (VirtualView.getInstance().isViewVisible(_view)) {
@@ -244,14 +244,14 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	// add north panel
 	protected abstract void addNorth();
-	
+
 	// add west panel
 	protected abstract void addWest();
 
 	// add south panel
 	protected abstract void addSouth();
 
-	
+
 	// add eastern panel
 	private void addEast() {
 		JPanel ep = new JPanel();
@@ -259,12 +259,12 @@ public abstract class PlainPanel3D extends Panel3D {
 
 		ep.add(new KeyboardLegend(this));
 		_checkBoxArray = new CheckBoxArray(2, 4, 4, _cbaLabels);
-		
+
 		AbstractButton ab =_checkBoxArray.getButton(SHOW_MAP_EXTENTS);
 		if (ab != null) {
 			ab.setSelected(false);
 		}
-		
+
 		_checkBoxArray.setBorder(new CommonBorder());
 		ep.add(_checkBoxArray);
 
@@ -297,7 +297,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Get the alpha for volume drawing
-	 * 
+	 *
 	 * @return the alpha for volume drawing
 	 */
 	public int getVolumeAlpha() {
@@ -306,7 +306,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Get one of the display buttons
-	 * 
+	 *
 	 * @param label the button label
 	 * @return the button or null on failure
 	 */
@@ -319,15 +319,11 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Get all the display buttons in an array
-	 * 
+	 *
 	 * @return all the display buttons
 	 */
 	public AbstractButton[] gatAllDisplayButtons() {
-		if ((_checkBoxArray == null) || (_cbaLabels == null)) {
-			return null;
-		}
-
-		if (_cbaLabels.length < 1) {
+		if ((_checkBoxArray == null) || (_cbaLabels == null) || (_cbaLabels.length < 1)) {
 			return null;
 		}
 
@@ -342,7 +338,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Check if a feature should be drawn
-	 * 
+	 *
 	 * @param label the label for the check box on the option array
 	 * @return <code>true</code> if the feature should be drawn
 	 */
@@ -366,7 +362,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show ECAL?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show ECAL
 	 */
 	public boolean showECAL() {
@@ -375,7 +371,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show PCAL?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show PCAL
 	 */
 	public boolean showPCAL() {
@@ -384,7 +380,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show forward TOF?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show FTOF
 	 */
 	public boolean showFTOF() {
@@ -393,7 +389,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show CTOF?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CTOF
 	 */
 	public boolean showCTOF() {
@@ -402,7 +398,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST
 	 */
 	public boolean showBST() {
@@ -411,7 +407,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT
 	 */
 	public boolean showBMT() {
@@ -420,7 +416,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show CND?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CND
 	 */
 	public boolean showCND() {
@@ -429,7 +425,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show CND Layer 1?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CND Layer 1
 	 */
 	public boolean showCNDLayer1() {
@@ -438,7 +434,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show CND Layer 2?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CND Layer 2
 	 */
 	public boolean showCNDLayer2() {
@@ -447,7 +443,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show CND Layer 3?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CND Layer 3
 	 */
 	public boolean showCNDLayer3() {
@@ -456,7 +452,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show reconstructed Crosses?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show reconstructed crosses
 	 */
 	public boolean showReconCrosses() {
@@ -465,7 +461,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show reconstructed FTOF?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show reconstructed ftof
 	 */
 	public boolean showReconFTOF() {
@@ -474,7 +470,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show time based track?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show time based track
 	 */
 	public boolean showTBTrack() {
@@ -483,16 +479,16 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show hit based track?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show hit based track
 	 */
 	public boolean showHBTrack() {
 		return show(PlainPanel3D.SHOW_HB_TRACK);
 	}
-	
+
 	/**
 	 * Show AI time based track?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show time based tracks
 	 */
 	public boolean showAITBTrack() {
@@ -501,25 +497,25 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show AI hit based track?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show hit based tracks
 	 */
 	public boolean showAIHBTrack() {
 		return show(PlainPanel3D.SHOW_AIHB_TRACK);
 	}
-	
+
 	/**
 	 * Show REC::Particle tracks?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show recon tracks
 	 */
 	public boolean showRecTrack() {
 		return show(PlainPanel3D.SHOW_REC_TRACK);
 	}
-	
+
 	/**
 	 * Show REC::Calorimiter data?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to REC::Calorimeter data
 	 */
 	public boolean showRecCal() {
@@ -528,7 +524,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show field map extents
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show torus and solenoid extent
 	 */
 	public boolean showMapExtents() {
@@ -537,16 +533,16 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show cvt rec based track?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show cvt based track
 	 */
 	public boolean showCVTRecTrack() {
 		return show(PlainPanel3D.SHOW_CVTREC_TRACK);
 	}
-	
+
 	/**
 	 * Show cvt pass 1based track?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show cvt based track
 	 */
 	public boolean showCVTP1Track() {
@@ -555,16 +551,16 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show hit based cross?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show hit based cross
 	 */
 	public boolean showHBCross() {
 		return show(PlainPanel3D.SHOW_HB_CROSS);
 	}
-	
+
 	/**
 	 * Show time based cross?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show time based cross
 	 */
 	public boolean showTBCross() {
@@ -573,16 +569,16 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show AI hit based cross?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI hit based cross
 	 */
 	public boolean showAIHBCross() {
 		return show(PlainPanel3D.SHOW_AIHB_CROSS);
 	}
-	
+
 	/**
 	 * Show AI time based cross?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI time based cross
 	 */
 	public boolean showAITBCross() {
@@ -591,7 +587,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Hits?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Hits
 	 */
 	public boolean showBSTHits() {
@@ -600,7 +596,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Hits?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Hits
 	 */
 	public boolean showBMTHits() {
@@ -609,7 +605,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show DC?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show DC
 	 */
 	public boolean showDC() {
@@ -618,7 +614,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 1?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 1
 	 */
 	public boolean showBSTLayer1() {
@@ -627,7 +623,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 2?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 2
 	 */
 	public boolean showBSTLayer2() {
@@ -636,7 +632,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 3?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 3
 	 */
 	public boolean showBSTLayer3() {
@@ -645,7 +641,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 4?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 4
 	 */
 	public boolean showBSTLayer4() {
@@ -654,7 +650,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 5?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 5
 	 */
 	public boolean showBSTLayer5() {
@@ -663,7 +659,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 6?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 6
 	 */
 	public boolean showBSTLayer6() {
@@ -672,7 +668,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 7?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 7
 	 */
 	public boolean showBSTLayer7() {
@@ -682,7 +678,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BST Layer 8?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BST Layer 8
 	 */
 	public boolean showBSTLayer8() {
@@ -692,7 +688,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Layer 1?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Layer 1
 	 */
 	public boolean showBMTLayer1() {
@@ -701,7 +697,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Layer 2?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Layer 2
 	 */
 	public boolean showBMTLayer2() {
@@ -710,7 +706,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Layer 3?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Layer 3
 	 */
 	public boolean showBMTLayer3() {
@@ -719,7 +715,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Layer 4?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Layer 4
 	 */
 	public boolean showBMTLayer4() {
@@ -728,7 +724,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Layer 5?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Layer 5
 	 */
 	public boolean showBMTLayer5() {
@@ -737,7 +733,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show BMT Layer 6?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show BMT Layer 6
 	 */
 	public boolean showBMTLayer6() {
@@ -746,7 +742,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show sector 1?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show sector 1
 	 */
 	public boolean showSector1() {
@@ -755,7 +751,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show sector 2?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show sector 2
 	 */
 	public boolean showSector2() {
@@ -764,7 +760,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show sector 3?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show sector 3
 	 */
 	public boolean showSector3() {
@@ -773,7 +769,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show sector 4?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show sector 4
 	 */
 	public boolean showSector4() {
@@ -782,7 +778,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show sector 5?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show sector 5
 	 */
 	public boolean showSector5() {
@@ -791,7 +787,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show sector 6?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show sector 6
 	 */
 	public boolean showSector6() {
@@ -800,7 +796,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show Cosmics?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show Cosmics
 	 */
 	public boolean showCosmics() {
@@ -809,7 +805,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show we show the 1-based sector?
-	 * 
+	 *
 	 * @param sector the sector [1..6]
 	 * @return <code>true</code> if we are to show the sector
 	 */
@@ -833,7 +829,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show MC truth?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show simulation truth
 	 */
 	public boolean showMCTruth() {
@@ -842,7 +838,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	/**
 	 * Show Volumes?
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show volumes
 	 */
 	public boolean showVolumes() {
@@ -853,7 +849,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	 * This gets the z step used by the mouse and key adapters, to see how fast we
 	 * move in or in in response to mouse wheel or up/down arrows. It should be
 	 * overridden to give something sensible. like the scale/100;
-	 * 
+	 *
 	 * @return the z step (changes to zDist) for moving in and out
 	 */
 	@Override

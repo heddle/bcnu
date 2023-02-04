@@ -224,7 +224,7 @@ public class NoiseParameterDialog extends JDialog {
 
 	/**
 	 * Create a panel for the layer shifts.
-	 * 
+	 *
 	 * @param lean either LEAN_LEFT or LEAN_RIGHT.
 	 * @return the layer shift panel.
 	 */
@@ -275,7 +275,7 @@ public class NoiseParameterDialog extends JDialog {
 
 	/**
 	 * Create the button panel.
-	 * 
+	 *
 	 * @return the button panel.
 	 */
 	private JPanel createButtonPanel() {
@@ -337,7 +337,7 @@ public class NoiseParameterDialog extends JDialog {
 
 	/**
 	 * Why the dialog closed.
-	 * 
+	 *
 	 * @return either DialogUtilities.OK_RESPONSE or DialogUtilities.CANCEL_RESPONSE
 	 */
 	public int getReason() {
@@ -346,7 +346,7 @@ public class NoiseParameterDialog extends JDialog {
 
 	/**
 	 * Main program for testing
-	 * 
+	 *
 	 * @param arg
 	 * @return
 	 */

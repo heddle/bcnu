@@ -21,7 +21,7 @@ public class GeometryReportPane extends TextPaneScrollPane {
 	private static EnumMap<MCOLOR, SimpleAttributeSet> styles;
 
 	static {
-		styles = new EnumMap<MCOLOR, SimpleAttributeSet>(MCOLOR.class);
+		styles = new EnumMap<>(MCOLOR.class);
 		styles.put(MCOLOR.M_BLACK, createStyle(Color.black, "monospaced", FONTSIZE, false, false));
 		styles.put(MCOLOR.M_BLACK2,
 				createStyle(Color.black, new Color(240, 240, 240), "monospaced", FONTSIZE, false, false));

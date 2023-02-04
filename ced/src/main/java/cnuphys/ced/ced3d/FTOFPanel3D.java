@@ -20,7 +20,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	/**
 	 * An FTOF Panel 3D item
-	 * 
+	 *
 	 * @param panel3d the owner graphical panel
 	 * @param sector  the sector 1..6
 	 * @param panelId the super layer [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
@@ -38,7 +38,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	/**
 	 * Get the number of paddles
-	 * 
+	 *
 	 * @return the number of paddles
 	 */
 	public int getPaddleCount() {
@@ -47,7 +47,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	/**
 	 * Get the paddle
-	 * 
+	 *
 	 * @param paddleId the 1-based index
 	 * @return the paddle
 	 */
@@ -114,7 +114,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	/**
 	 * Get the sector [1..6]
-	 * 
+	 *
 	 * @return the sector 1..6
 	 */
 	public int getSector() {
@@ -123,7 +123,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	/**
 	 * Get the superlayer [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
-	 * 
+	 *
 	 * @return the superlayer [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
 	 */
 	public int getSuperLayer() {

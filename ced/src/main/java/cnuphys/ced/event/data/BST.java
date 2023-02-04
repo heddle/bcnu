@@ -14,7 +14,7 @@ public class BST extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the BST singleton
 	 */
 	public static BST getInstance() {
@@ -31,7 +31,7 @@ public class BST extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the updated list
 	 */
 	public AdcHitList updateAdcList() {
@@ -41,7 +41,7 @@ public class BST extends DetectorData {
 
 	/**
 	 * Get the adc hit list
-	 * 
+	 *
 	 * @return the adc hit list
 	 */
 	public AdcHitList getHits() {
@@ -50,7 +50,7 @@ public class BST extends DetectorData {
 
 	/**
 	 * Get a collection of all strip, adc doublets for a given sector and layer
-	 * 
+	 *
 	 * @param sector the 1-based sector
 	 * @param layer  the 1-based layer
 	 * @return a collection of all strip, adc doublets for a given sector and layer.
@@ -58,7 +58,7 @@ public class BST extends DetectorData {
 	 *         the 1-based strip and the 1 entry is the adc.
 	 */
 	public Vector<int[]> allStripsForSectorAndLayer(int sector, int layer) {
-		Vector<int[]> strips = new Vector<int[]>();
+		Vector<int[]> strips = new Vector<>();
 
 		AdcHitList hits = getHits();
 		if ((hits != null) && !hits.isEmpty()) {
@@ -72,7 +72,7 @@ public class BST extends DetectorData {
 
 		// sort based on strips
 		if (strips.size() > 1) {
-			Comparator<int[]> c = new Comparator<int[]>() {
+			Comparator<int[]> c = new Comparator<>() {
 
 				@Override
 				public int compare(int[] o1, int[] o2) {

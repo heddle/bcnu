@@ -20,7 +20,7 @@ public class AdcColorScale extends ColorScaleModel {
 	/**
 	 * Get the values array for the color scale. Note the range is 0..1 so use
 	 * fraction of max value to get color
-	 * 
+	 *
 	 * @return the values array.
 	 */
 	private static double[] getScaleValues() {

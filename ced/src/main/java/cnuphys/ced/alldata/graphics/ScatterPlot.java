@@ -3,9 +3,11 @@ package cnuphys.ced.alldata.graphics;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.Collection;
+
 import javax.swing.BorderFactory;
 
 import org.jlab.io.base.DataEvent;
+
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.xml.XmlPrintStreamWriter;
@@ -40,7 +42,7 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Create a Scatter Plot
-	 * 
+	 *
 	 * @param dataSet the underlying data set
 	 */
 	public ScatterPlot(DataSet dataSet) {
@@ -71,7 +73,7 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Get the NamedExpression (for X) which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpressionX() {
@@ -85,7 +87,7 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Get the NamedExpression (for Y) which might be null
-	 * 
+	 *
 	 * @return the named expression
 	 */
 	public NamedExpression getNamedExpressionY() {
@@ -180,7 +182,7 @@ public class ScatterPlot extends PlotDialog {
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

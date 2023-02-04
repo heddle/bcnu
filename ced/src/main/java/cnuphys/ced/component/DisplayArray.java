@@ -14,9 +14,9 @@ import cnuphys.ced.cedview.CedView;
 /**
  * Create the display flags based on bits. This allows for a common appearance
  * across all views
- * 
+ *
  * @author DHeddle
- * 
+ *
  */
 
 @SuppressWarnings("serial")
@@ -86,10 +86,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Label for dc HB Hits button */
 	private static final String DC_HIT_LABEL = "DC Recon Hits";
-	
+
 	/** Label for magnetic field grid */
 	private static final String MAGGRID_LABEL = "Fieldmap Grids";
-	
+
 	/** Label for REC::Calorimeter Hits button */
 	private static final String RECCAL_LABEL = "REC Cal";
 
@@ -104,10 +104,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Label for reconstructed fmt crosses button */
 	public static final String FMTCROSS_LABEL = "FMT Crosses";
-	
+
 	/** Label for REC Particle button */
 	public static final String RECPART_LABEL = "REC::Particles";
-	
+
 	/** Label for sector change diamonds */
 	public static final String SECTORCHANGE_LABEL = "Sector Change";
 
@@ -116,10 +116,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Global show TB */
 	private static final String GLOBAL_TB_LABEL = "Reg TB";
-	
+
 	/** Global show Neural Net data */
 	private static final String GLOBAL_NN_LABEL = "NN Data";
-	
+
 	/** Global show AI HB */
 	private static final String GLOBAL_AIHB_LABEL = "AI HB";
 
@@ -134,7 +134,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Label for reconstructed CVT Rec Trajectory */
 	private static final String CVTREC_TRAJ_LABEL = "CVTRec Traj";
-	
+
 	/** Label for reconstructed CVT Pass 1Tracks */
 	private static final String CVTP1_TRACK_LABEL = "CVTP1 Tracks";
 
@@ -146,10 +146,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	// controls whether any TB data displayed
 	private AbstractButton _showTBButton;
-	
+
 	// controls whether any neural net data displayed
     private AbstractButton _showNNButton;
-    
+
  // controls whether any AI HB data displayed
  	private AbstractButton _showAIHBButton;
 
@@ -158,10 +158,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	// controls whether dc reconstructed Hits are displayed
 	private AbstractButton _dcHitsButton;
-	
+
 	// controls whether REC::Calorimeter data are displayed
     private AbstractButton _recCalButton;
-    
+
     // controls whether field map grids are displayed
     private AbstractButton _magGridButton;
 
@@ -179,13 +179,13 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	// controls display of cvt reconstructed tracks
 	private AbstractButton _cvtRecTrackButton;
-	
+
 	// controls display od cvt reconstructed trajectory bank data
 	private AbstractButton _cvtRecTrajButton;
-	
+
 	// controls display of cvt pass 1 tracks
 	private AbstractButton _cvtP1TrackButton;
-	
+
 	// controls display od cvt pass 1 trajectory bank data
 	private AbstractButton _cvtP1TrajButton;
 
@@ -249,7 +249,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Create a display flag array. This constructor produces a two column array.
-	 * 
+	 *
 	 * @param view the parent view
 	 * @param bits controls what flags are added
 	 */
@@ -323,7 +323,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_TB)) {
 			_showTBButton = add(GLOBAL_TB_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		// global hit based AI data
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_AIHB)) {
 			_showAIHBButton = add(GLOBAL_AIHB_LABEL, true, true, this, _buttonColor).getCheckBox();
@@ -333,7 +333,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_AITB)) {
 			_showAITBButton = add(GLOBAL_AITB_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		// global neural data
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_NN)) {
 			_showNNButton = add(GLOBAL_NN_LABEL, true, true, this, _buttonColor).getCheckBox();
@@ -348,17 +348,17 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.DC_HITS)) {
 			_dcHitsButton = add(DC_HIT_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		// dc reonstructed hits?
 		if (Bits.checkBit(bits, DisplayBits.RECCAL)) {
 			_recCalButton = add(RECCAL_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		// mag field grid?
 		if (Bits.checkBit(bits, DisplayBits.MAGGRID)) {
 			_magGridButton = add(MAGGRID_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		// reconstructed dc segments?
 		if (Bits.checkBit(bits, DisplayBits.SEGMENTS)) {
 			_segmentButton = add(SEGMENT_LABEL, true, true, this, _buttonColor).getCheckBox();
@@ -372,15 +372,15 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.CVTRECTRACKS)) {
 			_cvtRecTrackButton = add(CVTREC_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		if (Bits.checkBit(bits, DisplayBits.CVTRECTRAJ)) {
 			_cvtRecTrajButton = add(CVTREC_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		if (Bits.checkBit(bits, DisplayBits.CVTP1TRACKS)) {
 			_cvtP1TrackButton = add(CVTP1_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		if (Bits.checkBit(bits, DisplayBits.CVTP1TRAJ)) {
 			_cvtP1TrajButton = add(CVTP1_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
@@ -399,13 +399,13 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.FMTCROSSES)) {
 			_fmtCrossButton = add(FMTCROSS_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		// REC Particles
 		if (Bits.checkBit(bits, DisplayBits.RECPART)) {
 			_recPartButton = add(RECPART_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
-		
+
 		// reconstructed clusters
 		if (Bits.checkBit(bits, DisplayBits.CLUSTERS)) {
 			_clusterButton = add(CLUSTER_LABEL, true, true, this, _buttonColor).getCheckBox();
@@ -416,7 +416,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * A button has been clicked
-	 * 
+	 *
 	 * @param e the causal event
 	 */
 	@Override
@@ -440,7 +440,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see it we show the montecarlo truth.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the montecarlo truth, if it is
 	 *         available.
 	 */
@@ -450,7 +450,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see it we show the cosmic tracks.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the cosmic tracks, if it is
 	 *         available.
 	 */
@@ -460,7 +460,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if scale is displayed
-	 * 
+	 *
 	 * @return <code>true</code> if we are to display the distance scale
 	 */
 	public boolean showScale() {
@@ -470,7 +470,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if u strips displayed
-	 * 
+	 *
 	 * @return <code>true</code> if we are to display u strips
 	 */
 	public boolean showUStrips() {
@@ -479,7 +479,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if v strips displayed
-	 * 
+	 *
 	 * @return <code>true</code> if we are to display v strips
 	 */
 	public boolean showVStrips() {
@@ -488,7 +488,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if w strips displayed
-	 * 
+	 *
 	 * @return <code>true</code> if we are to display w strips
 	 */
 	public boolean showWStrips() {
@@ -497,7 +497,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the reconstructed clusters.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show reconstructed clusters
 	 */
 	public boolean showClusters() {
@@ -506,25 +506,25 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the reconstructed FMT Crosses.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show reconstructed FMT Crosses
 	 */
 	public boolean showFMTCrosses() {
 		return (_fmtCrossButton != null) && _fmtCrossButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show the REC::Particle tracks.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show REC::Particle tracks
 	 */
 	public boolean showRecPart() {
 		return (_recPartButton != null) && _recPartButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show the sector change diamonds.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show  sector change diamonds
 	 */
 	public boolean showSectorChange() {
@@ -535,7 +535,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/**
 	 * Convenience method to see if we show the reconstructed hits. These are
 	 * reconstructed hits except DC hits
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show reconstructed hits.
 	 */
 	public boolean showReconHits() {
@@ -544,7 +544,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the ADC hits. These are ADC hits
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show ADC hits.
 	 */
 	public boolean showADCHits() {
@@ -552,28 +552,28 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 	/**
-	 * Convenience method to see if we show CVT reconstructed tracks. 
-	 * 
+	 * Convenience method to see if we show CVT reconstructed tracks.
+	 *
 	 * @return <code>true</code> if we are to show CVT reconstructed tracks.
 	 */
 	public boolean showCVTRecTracks() {
 		return (_cvtRecTrackButton != null) && _cvtRecTrackButton.isSelected();
 	}
-	
+
 	/**
-	 * Convenience method to see if we show CVT Pass 1 tracks. 
-	 * 
+	 * Convenience method to see if we show CVT Pass 1 tracks.
+	 *
 	 * @return <code>true</code> if we are to show CVT Pass 1 tracks.
 	 */
 	public boolean showCVTP1Tracks() {
 		return (_cvtP1TrackButton != null) && _cvtP1TrackButton.isSelected();
 	}
-	
-	
+
+
 	/**
-	 * Convenience method to see if we show CVT reconstructed trajectory data. 
+	 * Convenience method to see if we show CVT reconstructed trajectory data.
 	 * hits except
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
 	 */
 	public boolean showCVTRecTraj() {
@@ -581,9 +581,9 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 	/**
-	 * Convenience method to see if we show CVT pass 1 trajectory data. 
+	 * Convenience method to see if we show CVT pass 1 trajectory data.
 	 * hits except
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show CVT pass 1 trajectory data.
 	 */
 	public boolean showCVTP1Traj() {
@@ -592,7 +592,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method global hit based display
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show hb globally
 	 */
 	public boolean showHB() {
@@ -601,16 +601,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method global time based display
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show tb globally
 	 */
 	public boolean showTB() {
 		return (_showTBButton != null) && _showTBButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method global AI hit based display
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI hb globally
 	 */
 	public boolean showAIHB() {
@@ -619,27 +619,27 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method global AI time based display
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI tb globally
 	 */
 	public boolean showAITB() {
 		return (_showAITBButton != null) && _showAITBButton.isSelected();
 	}
-	
-	
+
+
 	/**
 	 * Convenience method global neural net based display
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show nn globally
 	 */
 	public boolean showNN() {
 		return (_showNNButton != null) && _showNNButton.isSelected();
 	}
 
-	
+
 	/**
 	 * Convenience method to see if we show the dc neural net hits.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc neural net hits.
 	 */
 	public boolean showDCNNHits() {
@@ -648,7 +648,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the dc HB reconstructed hits.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc HB reconstructed hits.
 	 */
 	public boolean showDCHBHits() {
@@ -657,16 +657,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the AI dc TB reconstructed hits.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI dc TB reconstructed hits.
 	 */
 	public boolean showAIDCTBHits() {
 		return showAITB() && (_dcHitsButton != null) && _dcHitsButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show the AI dc HB reconstructed hits.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI dc HB reconstructed hits.
 	 */
 	public boolean showAIDCHBHits() {
@@ -675,43 +675,43 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the dc TB reconstructed hits.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc TB reconstructed hits.
 	 */
 	public boolean showDCTBHits() {
 		return showTB() && (_dcHitsButton != null) && _dcHitsButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show REC::Calorimeter data
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show REC::Calorimeter.
 	 */
 	public boolean showRecCal() {
 		return (_recCalButton != null) && _recCalButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show field map grid
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show field map grid
 	 */
 	public boolean showMagGrid() {
 		return (_magGridButton != null) && _magGridButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show the dc HB reconstructed clusters.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc HB reconstructed clusters.
 	 */
 	public boolean showDCHBClusters() {
 		return showHB() && showClusters();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show the dc TB reconstructed clusters.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc TB reconstructed clusters.
 	 */
 	public boolean showDCTBClusters() {
@@ -720,7 +720,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the reconstructed segments.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to showreconstructed crosses.
 	 */
 	public boolean showSegments() {
@@ -729,7 +729,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the dc hb reconstructed segments.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc hb reconstructed segments.
 	 */
 	public boolean showDCHBSegments() {
@@ -738,17 +738,17 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the dc tb reconstructed segments.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc tb reconstructed segments.
 	 */
 	public boolean showDCTBSegments() {
 		return showTB() && showSegments();
 	}
-	
+
 
 	/**
 	 * Convenience method to see if we show the AI dc hb reconstructed segments.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI dc hb reconstructed segments.
 	 */
 	public boolean showAIDCHBSegments() {
@@ -757,7 +757,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the AI dc tb reconstructed segments.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI dc tb reconstructed segments.
 	 */
 	public boolean showAIDCTBSegments() {
@@ -766,7 +766,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the reconstructed crosses.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show reconstructed crosses.
 	 */
 	public boolean showCrosses() {
@@ -775,7 +775,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the dc HB reconstructed crosses.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc HB reconstructed crosses.
 	 */
 	public boolean showDCHBCrosses() {
@@ -784,16 +784,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the dc TB reconstructed crosses.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show dc TB reconstructed crosses.
 	 */
 	public boolean showDCTBCrosses() {
 		return showTB() && showCrosses();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show the AI dc HB reconstructed crosses.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI dc HB reconstructed crosses.
 	 */
 	public boolean showAIDCHBCrosses() {
@@ -802,7 +802,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the AI dc TB reconstructed crosses.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show AI dc TB reconstructed crosses.
 	 */
 	public boolean showAIDCTBCrosses() {
@@ -812,7 +812,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show no doca at all.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show no doca.
 	 */
 	public boolean showNoDoca() {
@@ -821,7 +821,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show all doca at all.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show all doca.
 	 */
 	public boolean showAllDoca() {
@@ -830,7 +830,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the track doca column.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show track doca column.
 	 */
 	public boolean showTrkDoca() {
@@ -839,7 +839,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the doca column.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the doca column.
 	 */
 	public boolean showDoca() {
@@ -848,7 +848,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the HB trkDoca column.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show HB trkDoca column.
 	 */
 	public boolean showHBTrkDoca() {
@@ -857,7 +857,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the TB trkDoca column.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show TB trkDoca column.
 	 */
 	public boolean showTBTrkDoca() {
@@ -866,7 +866,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the HB doca column.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show HB doca column.
 	 */
 	public boolean showHBDoca() {
@@ -875,7 +875,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/**
 	 * Convenience method to see if we show the TB doca column.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show TB doca column.
 	 */
 	public boolean showTBDoca() {

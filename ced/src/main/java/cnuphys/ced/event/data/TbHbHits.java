@@ -20,7 +20,7 @@ public class TbHbHits extends DetectorData {
 
 	/**
 	 * Get the cross list
-	 * 
+	 *
 	 * @return the cross list
 	 */
 	public TbHbHitList getHits() {

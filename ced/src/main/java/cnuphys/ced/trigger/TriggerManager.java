@@ -4,9 +4,9 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.filter.FilterManager;
-import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 
 public class TriggerManager implements IClasIoEventListener {
 
@@ -30,7 +30,7 @@ public class TriggerManager implements IClasIoEventListener {
 
 	/**
 	 * Public access to the TriggerManager
-	 * 
+	 *
 	 * @return the TriggerManager singleton
 	 */
 	public static TriggerManager getInstance() {
@@ -47,7 +47,7 @@ public class TriggerManager implements IClasIoEventListener {
 
 	/**
 	 * Set the active state of the trigger filter. Will take effect
-	 * 
+	 *
 	 * @param active the active state of the trigger filter
 	 */
 	public void setFilterActive(boolean active) {
@@ -57,7 +57,7 @@ public class TriggerManager implements IClasIoEventListener {
 
 	/**
 	 * Get the Trigger filter
-	 * 
+	 *
 	 * @return the trigger filter
 	 */
 	protected TriggerFilter getTriggerFilter() {
@@ -91,7 +91,7 @@ public class TriggerManager implements IClasIoEventListener {
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

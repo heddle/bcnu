@@ -2,6 +2,7 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 import java.util.ArrayList;
+
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
@@ -12,28 +13,28 @@ import cnuphys.swim.SwimTrajectory;
 import item3D.Item3D;
 
 public class SwimResultDrawer extends Item3D {
-	
+
 	private static final Color failColor = Color.black;
 	private static final Color posColor = Color.red;
 	private static final Color negColor = Color.blue;
-	
+
 	public SwimResultDrawer(PlainPanel3D panel3D) {
 		super(panel3D);
 	}
 
 	@Override
 	public void draw(GLAutoDrawable drawable) {
-		
+
 		ArrayList<AdaptiveSwimResult> results = SwimmerControlPanel.getSwimResults();
-		
+
 		for (AdaptiveSwimResult result : results) {
-			
+
 			if (!SwimmerControlPanel.showTrajectory(result)) {
 				continue;
 			}
-			
+
 			SwimTrajectory traj = result.getTrajectory();
-			
+
 			if (traj != null) {
 				Color color = failColor;
 				if (result.getStatus() == 0) { //success

@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -33,7 +34,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get a hex sector item
-	 * 
+	 *
 	 * @param layer  the logical layer
 	 * @param sector the 1-based sector
 	 */
@@ -44,7 +45,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -195,7 +196,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Convert ijk coordinates to world graphics coordinates
-	 * 
+	 *
 	 * @param pijk the ijk coordinates
 	 * @param pp   the screen coordinates
 	 */
@@ -207,7 +208,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Convert ijk coordinates to world graphics coordinates
-	 * 
+	 *
 	 * @param pijk the ijk coordinates
 	 * @param wp   the world graphics coordinates
 	 */
@@ -221,7 +222,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the polygon for a u, v or w strip
-	 * 
+	 *
 	 * @param stripType  PCAL_U, PCAL_V, or PCAL_W [0..2]
 	 * @param stripIndex the strip index [0..(EC_NUMSTRIP-1)]
 	 * @return the screen polygon
@@ -241,7 +242,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the world polygon for a strip
-	 * 
+	 *
 	 * @param stripType  PCAL_U, PCAL_V, or PCAL_W [0..2]
 	 * @param stripIndex the strip index [0..]
 	 */
@@ -263,7 +264,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the extension of the strip polygon
-	 * 
+	 *
 	 * @param stripType  the type of strip UVW
 	 * @param stripIndex the index of the strip
 	 * @param work       workspace
@@ -300,7 +301,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Get the extension of the strip polygon
-	 * 
+	 *
 	 * @param container
 	 * @param stripType
 	 * @param stripIndex
@@ -330,7 +331,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 	/**
 	 * Converts a graphical world point to sector xyz
-	 * 
+	 *
 	 * @param wp        the world graphical point
 	 * @param sectorXYZ the sector xyz point
 	 */

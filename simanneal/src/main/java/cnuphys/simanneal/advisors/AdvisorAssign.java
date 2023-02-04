@@ -2,7 +2,9 @@ package cnuphys.simanneal.advisors;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -28,9 +30,20 @@ import cnuphys.simanneal.advisors.table.InputOutput;
  */
 public class AdvisorAssign extends Simulation {
 	
-	// custom attributes
+	/**
+	 * A custom attribute for the number of advisors
+	 */
 	public static final String NUMADVISOR = "advisor count";
+	
+	/**
+	 * A custom attribute for the number of students
+	 */
+	public static final String NUMSTUDENT = "student count";
 
+	/**
+	 * The screen size
+	 */
+	public static Dimension screenSize;
 	
 	/**
 	 * flag specifying if we are in debug mode
@@ -52,6 +65,7 @@ public class AdvisorAssign extends Simulation {
 	//private constructor for singleton
 	private AdvisorAssign() {
 		_frame = new JFrame("CNU Core Advisor Assignments");
+		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	}
 	
 	/**
@@ -104,6 +118,7 @@ public class AdvisorAssign extends Simulation {
 	@Override
 	protected void setInitialAttributes() {
 		_attributes.add(NUMADVISOR, 0, false, false);
+		_attributes.add(NUMSTUDENT, 0, false, false);
 		_attributes.removeAttribute(SimulationAttributes.USELOGTEMP);
 		_attributes.setPlotTitle("Assignment Quality");
 		_attributes.setYAxisLabel("1/Quality");
@@ -120,6 +135,7 @@ public class AdvisorAssign extends Simulation {
 	//last minute preparation
 	private void finalPrep() {
 		_attributes.setValue(NUMADVISOR, DataManager.getAdvisorData().count());		
+		_attributes.setValue(NUMSTUDENT, DataManager.getStudentData().count());		
 	}
 	
 	/**

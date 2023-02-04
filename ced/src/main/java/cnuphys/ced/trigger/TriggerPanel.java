@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -80,7 +81,7 @@ public class TriggerPanel extends JPanel implements KeyListener {
 
 	/**
 	 * Create a trigger panel
-	 * 
+	 *
 	 * @param extended
 	 */
 	public TriggerPanel(boolean extended) {
@@ -89,7 +90,7 @@ public class TriggerPanel extends JPanel implements KeyListener {
 
 	/**
 	 * Create a trigger panel
-	 * 
+	 *
 	 * @param extended adds extra components
 	 * @param editable can be click edited
 	 */
@@ -212,7 +213,7 @@ public class TriggerPanel extends JPanel implements KeyListener {
 
 	/**
 	 * Set the bits to reflect the trigger value
-	 * 
+	 *
 	 * @param id      the id of the trigger
 	 * @param trigger the trigger value
 	 */
@@ -239,7 +240,7 @@ public class TriggerPanel extends JPanel implements KeyListener {
 	/**
 	 * Get the trigger word corresponding to the display. Note it is an int, so if
 	 * the 31st but is set it will be negative
-	 * 
+	 *
 	 * @return the trigger word represented by the bit display
 	 */
 	public int getBits() {

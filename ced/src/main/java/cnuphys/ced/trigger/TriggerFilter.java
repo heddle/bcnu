@@ -34,11 +34,7 @@ public class TriggerFilter extends AEventFilter {
 		}
 
 		ColumnData cd = DataManager.getInstance().getColumnData(_columnName);
-		if (cd == null) {
-			return false;
-		}
-
-		if (!event.hasBank(cd.getBankName())) {
+		if ((cd == null) || !event.hasBank(cd.getBankName())) {
 			return false;
 		}
 
@@ -85,7 +81,7 @@ public class TriggerFilter extends AEventFilter {
 
 	/**
 	 * Set the type of trigger match
-	 * 
+	 *
 	 * @param type the trigger match
 	 */
 	public void setType(TriggerMatch type) {
@@ -94,20 +90,20 @@ public class TriggerFilter extends AEventFilter {
 
 	/**
 	 * Get the pattern matching type
-	 * 
+	 *
 	 * @return the pattern matching type
 	 */
 	public TriggerMatch getType() {
 		return _type;
 	}
-	
+
 	/**
 	 * Save the preferences to user pref
 	 */
 	@Override
-	public void savePreferences() {	
+	public void savePreferences() {
 	}
-	
+
 	/**
 	 * Read the preferences from the user pref
 	 */

@@ -17,7 +17,7 @@ public class DataDrawSupport {
 	public static final int BST_CROSS = 4;
 	public static final int BMT_CROSS = 5;
 	public static final int FMT_CROSS = 6;
-	
+
 
 
 	private static final Color TRANSYELLOW = new Color(255, 255, 0, 240);
@@ -25,10 +25,10 @@ public class DataDrawSupport {
 	private static final Color TRANSBLUE = X11Colors.getX11Color("sky blue", 250);
 	private static final Color TRANSRED = X11Colors.getX11Color("red", 128);
 
-	public static Color transColors[] = { CedColors.HB_TRANS, CedColors.TB_TRANS, CedColors.AIHB_TRANS, CedColors.AITB_TRANS, 
+	public static Color transColors[] = { CedColors.HB_TRANS, CedColors.TB_TRANS, CedColors.AIHB_TRANS, CedColors.AITB_TRANS,
 			TRANSYELLOW, TRANSGREEN, TRANSRED};
-	
-	
+
+
 	public static String prefix[] = { "Reg HB ", "Reg TB ", "AI HB ", "AI TB ", "BST ", "BMT ", "FMT " };
 
 	// half the size of a cross
@@ -56,7 +56,7 @@ public class DataDrawSupport {
 
 	/**
 	 * Draw a GEMC truth hit at the given screen location
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
@@ -73,7 +73,7 @@ public class DataDrawSupport {
 
 	/**
 	 * Draw a reconstructed hit at the given screen location
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
@@ -90,7 +90,7 @@ public class DataDrawSupport {
 
 	/**
 	 * Draw a reconstructed hit at the given screen location
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
@@ -107,7 +107,7 @@ public class DataDrawSupport {
 
 	/**
 	 * Draw a reconstructed hit at the given screen location
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
@@ -124,7 +124,7 @@ public class DataDrawSupport {
 
 	/**
 	 * Draw a reconstructed cross
-	 * 
+	 *
 	 * @param g    the graphics context
 	 * @param x    the x location
 	 * @param y    the y location
@@ -137,7 +137,7 @@ public class DataDrawSupport {
 
 	/**
 	 * Get a string representing the id array
-	 * 
+	 *
 	 * @param ids variable length ids
 	 * @return a string representing the id array
 	 */

@@ -48,7 +48,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 
 	/**
 	 * Set the mode. 0 for hit based, 1 for time based
-	 * 
+	 *
 	 * @param mode the new mode
 	 */
 	public void setMode(int mode) {
@@ -58,11 +58,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (ClasIoEventManager.getInstance().isAccumulating() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -70,7 +66,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 		CrossList crosses = null;
 		if (_mode == HB) {
 			crosses = HBCrosses.getInstance().getCrosses();
-		} 
+		}
 		else if (_mode == TB) {
 			crosses = TBCrosses.getInstance().getCrosses();
 		}
@@ -80,7 +76,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 		else if (_mode == AITB) {
 			crosses = AITBCrosses.getInstance().getCrosses();
 		}
-		
+
 		if ((crosses == null) || crosses.isEmpty()) {
 			return;
 		}
@@ -145,7 +141,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location
@@ -159,7 +155,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 		CrossList crosses = null;
 		if (_mode == HB) {
 			crosses = HBCrosses.getInstance().getCrosses();
-		} 
+		}
 		else if (_mode == TB) {
 			crosses = TBCrosses.getInstance().getCrosses();
 		}
@@ -169,7 +165,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 		else if (_mode == AITB) {
 			crosses = AITBCrosses.getInstance().getCrosses();
 		}
-		
+
 		if ((crosses == null) || crosses.isEmpty()) {
 			return;
 		}

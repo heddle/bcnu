@@ -65,16 +65,7 @@ public class CosmicList extends Vector<Cosmic> {
 			return -1;
 		}
 
-		if (lengthMismatch(id, chi2, "chi2")) {
-			return -1;
-		}
-		if (lengthMismatch(id, phi, "phi")) {
-			return -1;
-		}
-		if (lengthMismatch(id, theta, "theta")) {
-			return -1;
-		}
-		if (lengthMismatch(id, trkline_yx_interc, "trkline_yx_interc")) {
+		if (lengthMismatch(id, chi2, "chi2") || lengthMismatch(id, phi, "phi") || lengthMismatch(id, theta, "theta") || lengthMismatch(id, trkline_yx_interc, "trkline_yx_interc")) {
 			return -1;
 		}
 		if (lengthMismatch(id, trkline_yx_slope, "trkline_yx_slope")) {

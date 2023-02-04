@@ -8,8 +8,18 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
+
 import org.jlab.geom.prim.Point3D;
 
+import cnuphys.bCNU.format.DoubleFormat;
+import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.graphics.style.LineStyle;
+import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.RectangleItem;
+import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.log.Log;
+import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -32,15 +42,6 @@ import cnuphys.lund.LundId;
 import cnuphys.lund.LundStyle;
 import cnuphys.lund.LundSupport;
 import cnuphys.snr.NoiseReductionParameters;
-import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.style.LineStyle;
-import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.item.RectangleItem;
-import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
-import cnuphys.bCNU.util.Fonts;
-import cnuphys.bCNU.util.UnicodeSupport;
 
 public class AllDCSuperLayer extends RectangleItem {
 
@@ -52,7 +53,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	// font for label text
 	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
-	
+
 	private Color _lastColor;
 
 	// the sector [1..6]
@@ -88,7 +89,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Constructor for a geometrically unfaithful "all dc" superlayer.
-	 * 
+	 *
 	 * @param layer          the Layer this item is on.
 	 * @param alldc          the AllDCView parent
 	 * @param worldRectangle the boundaries which are not the real boundaries.
@@ -147,7 +148,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -180,7 +181,7 @@ public class AllDCSuperLayer extends RectangleItem {
 //				WorldGraphicsUtilities.drawWorldRectangle(g, container, _positionWorldRects[i], cellOverlayColor, null);
 //
 //			}
-			
+
 			singleEventDrawItem(g, container);
 
 		} else {
@@ -194,7 +195,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Draw in single event mode
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 */
@@ -211,7 +212,7 @@ public class AllDCSuperLayer extends RectangleItem {
 		if (_view.showMasks()) {
 			drawMasks(g, container, parameters);
 		}
-					
+
 		// draw raw hits
 		if (_view.showRawHits()) {
 			DCTdcHitList hits = DC.getInstance().getTDCHits();
@@ -248,7 +249,7 @@ public class AllDCSuperLayer extends RectangleItem {
 				}
 			}
 		}
-		
+
 		// draw AI HB Hits
 		if (_view.showAIHBHits()) {
 			DCReconHitList hits = AIDC.getInstance().getAIHBHits();
@@ -288,14 +289,14 @@ public class AllDCSuperLayer extends RectangleItem {
 
 
 //		int hitCount = DC.hitCount();
-//		
+//
 //		if (hitCount > 0)  {
 //			byte sector[] = DC.sector();
 //			byte superlayer[] = DC.superlayer();
 //			byte layer[] = DC.layer();
 //			short wire[] = DC.wire();
 //			int pid[] = DC.pid();
-//			
+//
 //			for (int i = 0; i < hitCount; i++) {
 //				int sect1 = sector[i]; // 1 based
 //				int supl1 = superlayer[i]; // 1 based
@@ -303,7 +304,7 @@ public class AllDCSuperLayer extends RectangleItem {
 //				if ((sect1 == _sector) && (supl1 == _superLayer)) {
 //					int lay1 = layer[i]; // 1 based
 //					int wire1 = wire[i]; // 1 based
-//					
+//
 //					boolean noise = false;
 //					if (_noiseManager.getNoise() != null) {
 //						noise = _noiseManager.getNoise()[i];
@@ -321,7 +322,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Highlight a noise hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param dchit     the wire hit object
@@ -347,7 +348,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Draw a single dc hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param layer     a 1-based layer
@@ -396,15 +397,15 @@ public class AllDCSuperLayer extends RectangleItem {
 		} else {
 			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, hitFill, hitLine);
 		}
-		
+
 		_lastColor = hitFill;
-		
+
 	}
-	
+
 
 	/**
 	 * Draw a single dc hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param layer     a 1-based layer
@@ -416,7 +417,7 @@ public class AllDCSuperLayer extends RectangleItem {
 	 * @param color     color
 	 * @param option    0 for rect, 1 for X, 2 for +
 	 */
-	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, 
+	private void drawDCHit(Graphics g, IContainer container, int layer, int wire,
 			Rectangle pr, Rectangle2D.Double wr, Color color, int option) {
 
 		if (wire > GeoConstants.NUM_WIRE) {
@@ -431,21 +432,21 @@ public class AllDCSuperLayer extends RectangleItem {
 		if (option == 1) { //draw X
 			container.worldToLocal(pr, wr);
 			g.setColor(color);
-			
+
 			int l = pr.x;
 			int t = pr.y;
 			int r = pr.x + pr.width;
 			int b = pr.y + pr.height;
-			
+
 			g.drawLine(l, t, r, b);
-			g.drawLine(r, t, l, b);	
+			g.drawLine(r, t, l, b);
 			g.setColor(_defaultHitCellLine);
 			g.drawRect(l, t, pr.width, pr.height);
 		}
 		else if (option == 2) { //draw cross
 			container.worldToLocal(pr, wr);
 			g.setColor(color);
-			
+
 			int l = pr.x;
 			int t = pr.y;
 			int r = pr.x + pr.width;
@@ -456,16 +457,16 @@ public class AllDCSuperLayer extends RectangleItem {
 			g.drawLine(xc, t, xc, b);
 			g.setColor(_defaultHitCellLine);
 			g.drawRect(l, t, pr.width, pr.height);
-						
+
 		} else {
 			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, color, _defaultHitCellLine);
 		}
 		_lastColor  = color;
 	}
-	
+
 	/**
 	 * Draw a single nn marked hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param dcHit     a dc hit object
@@ -493,7 +494,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Draw the masks showing the effect of the noise finding algorithm
-	 * 
+	 *
 	 * @param g          the graphics context
 	 * @param container  the rendering container
 	 * @param parameters the noise algorithm parameters
@@ -519,7 +520,7 @@ public class AllDCSuperLayer extends RectangleItem {
 	/**
 	 * Draws the masking that shows where the noise algorithm thinks there are
 	 * segments. Anything not masked is noise.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the rendering container
 	 * @param wire      the ZERO BASED wire 0..
@@ -556,7 +557,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Draw hits in accumulated mode
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 */
@@ -585,7 +586,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.
@@ -636,7 +637,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Get the feedback strings for single event mode
-	 * 
+	 *
 	 * @param wire            [1..6]
 	 * @param layer           [1..6]
 	 * @param feedbackStrings
@@ -667,7 +668,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Get the feedback strings for single event mode
-	 * 
+	 *
 	 * @param wire            [1..6]
 	 * @param layer           [1..6]
 	 * @param feedbackStrings
@@ -695,7 +696,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * For the given world point return the 1-based layer.
-	 * 
+	 *
 	 * @param worldPoint the point in question
 	 * @return the layer [1..6]
 	 */
@@ -713,7 +714,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * For the given world point return the 1-based wire.
-	 * 
+	 *
 	 * @param worldPoint the point in question
 	 * @return the wire [1..]
 	 */
@@ -731,7 +732,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	/**
 	 * Get the world rectangle for a given cell (the wire is in the center)
-	 * 
+	 *
 	 * @param layer the 1-based layer [1..6]
 	 * @param wire  the 1-based wire [1..] return the world rectangle cell for this
 	 *              layer, wire

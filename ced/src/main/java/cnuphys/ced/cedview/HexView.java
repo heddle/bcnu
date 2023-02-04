@@ -16,7 +16,7 @@ public abstract class HexView extends CedView {
 	/**
 	 * Create a hex view that lays items out in six sectors NOTE: In Hex views, the
 	 * world system should be the same as the 2D (xy) lab system
-	 * 
+	 *
 	 * @param title the title of the view
 	 */
 	public HexView(Object... keyVals) {
@@ -34,7 +34,7 @@ public abstract class HexView extends CedView {
 
 	/**
 	 * Get the 1-based sector.
-	 * 
+	 *
 	 * @return the 1-based sector
 	 */
 	@Override
@@ -44,7 +44,7 @@ public abstract class HexView extends CedView {
 
 	/**
 	 * Get the 1-based sector.
-	 * 
+	 *
 	 * @return the 1-based sector
 	 */
 	public int getSector(Point2D.Double worldPoint) {
@@ -67,7 +67,7 @@ public abstract class HexView extends CedView {
 
 	/**
 	 * Get the azimuthal angle
-	 * 
+	 *
 	 * @param worldPoint the world point
 	 * @return the value of phi in degrees.
 	 */
@@ -81,7 +81,7 @@ public abstract class HexView extends CedView {
 
 	/**
 	 * From detector xyz get the projected world point.
-	 * 
+	 *
 	 * @param x  the detector x coordinate
 	 * @param y  the detector y coordinate
 	 * @param z  the detector z coordinate
@@ -95,7 +95,7 @@ public abstract class HexView extends CedView {
 
 	/**
 	 * Project a space point. Projected by finding the closest point on the plane.
-	 * 
+	 *
 	 * @param x  the x coordinate
 	 * @param y  the y coordinate
 	 * @param z  the z coordinate

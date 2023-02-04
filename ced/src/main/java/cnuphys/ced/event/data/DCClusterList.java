@@ -10,7 +10,7 @@ public class DCClusterList extends Vector<DCCluster> {
 	private String _bankName;
 
 	public DCClusterList(String bankName) throws EventDataException {
-		
+
 		_bankName = bankName;
 
 		byte sector[] = ColumnData.getByteArray(bankName + ".sector");
@@ -19,8 +19,8 @@ public class DCClusterList extends Vector<DCCluster> {
 		if (length < 1) {
 			return;
 		}
-		
-//		public DCCluster(byte sector, byte superlayer, short id, byte size, short status, 
+
+//		public DCCluster(byte sector, byte superlayer, short id, byte size, short status,
 //				float avgWire, float fitChisqProb,
 //				float fitInterc, float fitIntercErr, float fitSlope, float fitSlopeErr,
 //				short... hitID) {
@@ -35,7 +35,7 @@ public class DCClusterList extends Vector<DCCluster> {
 		float fitIntercErr[] = ColumnData.getFloatArray(bankName + ".fitIntercErr");
 		float fitSlope[] = ColumnData.getFloatArray(bankName + ".fitSlope");
 		float fitSlopeErr[] = ColumnData.getFloatArray(bankName + ".fitSlopeErr");
-		
+
 		short hit1_ID[] = ColumnData.getShortArray(bankName + ".Hit1_ID");
 		short hit2_ID[] = ColumnData.getShortArray(bankName + ".Hit2_ID");
 		short hit3_ID[] = ColumnData.getShortArray(bankName + ".Hit3_ID");
@@ -48,21 +48,21 @@ public class DCClusterList extends Vector<DCCluster> {
 		short hit10_ID[] = ColumnData.getShortArray(bankName + ".Hit10_ID");
 		short hit11_ID[] = ColumnData.getShortArray(bankName + ".Hit11_ID");
 		short hit12_ID[] = ColumnData.getShortArray(bankName + ".Hit12_ID");
-		
+
 		for (int i = 0; i < length; i++) {
 			DCCluster cluster = new DCCluster(sector[i], superlayer[i],
-					id[i], size[i], status[i], 
+					id[i], size[i], status[i],
 					avgWire[i], fitChisqProb[i], fitInterc[i], fitIntercErr[i], fitSlope[i],
 					fitSlopeErr[i],
-					hit1_ID[i], hit2_ID[i], hit3_ID[i], hit4_ID[i], hit5_ID[i], hit6_ID[i], 
+					hit1_ID[i], hit2_ID[i], hit3_ID[i], hit4_ID[i], hit5_ID[i], hit6_ID[i],
 					hit7_ID[i], hit8_ID[i], hit9_ID[i], hit10_ID[i], hit11_ID[i], hit12_ID[i]);
-			
+
 			add(cluster);
 		}
-		
+
 
 	}
-	
+
 
 	/**
 	 * Obtain the cluster from the id
@@ -73,7 +73,7 @@ public class DCClusterList extends Vector<DCCluster> {
 		if (id < 1 ) {
 			return null;
 		}
-		
+
 		if (!isEmpty()) {
 			for (DCCluster cluster : this) {
 				if (cluster.id == id) {
@@ -81,7 +81,7 @@ public class DCClusterList extends Vector<DCCluster> {
 				}
 			}
 		}
-		
+
 		return null;
 	}
 

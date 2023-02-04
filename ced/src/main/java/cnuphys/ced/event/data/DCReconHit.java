@@ -42,7 +42,7 @@ public class DCReconHit {
 
 	/** DOCA in cm */
 	public float doca;
-	
+
 	/** cluster Id */
 	public short clusterID;
 
@@ -69,7 +69,7 @@ public class DCReconHit {
 	/**
 	 * Add to a list of feedback strings, no doubt because the mouse is ovwer this
 	 * hit
-	 * 
+	 *
 	 * @param v the list to add to
 	 */
 	public void getFeedbackStrings(String prefix, List<String> v) {
@@ -92,7 +92,7 @@ public class DCReconHit {
 
 	/**
 	 * Get the hit location where it was last drawn
-	 * 
+	 *
 	 * @return the screen location
 	 */
 	public Point getLocation() {
@@ -101,7 +101,7 @@ public class DCReconHit {
 
 	/**
 	 * For feedback
-	 * 
+	 *
 	 * @param pp
 	 */
 	public void setLocation(Point pp) {

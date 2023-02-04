@@ -33,7 +33,7 @@ public class Hit1 extends BaseHit {
 
 	/**
 	 * Get the azimuthal value of this hit
-	 * 
+	 *
 	 * @return the azimuthal value (phi) of this hit in degrees
 	 */
 	public double phi() {

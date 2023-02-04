@@ -1,20 +1,21 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.Color;
+
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.BST;
+import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.CosmicList;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.Cross2;
 import cnuphys.ced.event.data.CrossList2;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.lund.X11Colors;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class BSTPanel3D extends DetectorItem3D {
 

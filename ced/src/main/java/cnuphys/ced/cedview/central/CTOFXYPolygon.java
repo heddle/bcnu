@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
@@ -30,7 +31,7 @@ public class CTOFXYPolygon extends Polygon {
 
 	/**
 	 * Create a XY Polygon for the CND
-	 * 
+	 *
 	 * @param paddleId the paddle ID 1..48
 	 */
 	public CTOFXYPolygon(int paddleId) {
@@ -42,7 +43,7 @@ public class CTOFXYPolygon extends Polygon {
 
 	/**
 	 * Draw the polygon
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
 	 */
@@ -63,14 +64,14 @@ public class CTOFXYPolygon extends Polygon {
 
 	/**
 	 * Draw the polygon
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
 	 */
 	public void draw(Graphics g, IContainer container, int index, Color color) {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		reset();
 		Point pp = new Point();
 		for (int i = 0; i < 4; i++) {

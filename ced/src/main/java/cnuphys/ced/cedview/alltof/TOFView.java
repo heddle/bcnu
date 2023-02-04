@@ -8,8 +8,8 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D.Double;
+import java.awt.geom.Rectangle2D;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
@@ -71,7 +71,7 @@ public class TOFView extends CedView implements ISector {
 
 	/**
 	 * Convenience method for creating a TOFView View.
-	 * 
+	 *
 	 * @return a new TOFView.
 	 */
 	public static TOFView createTOFView() {
@@ -311,7 +311,7 @@ public class TOFView extends CedView implements ISector {
 
 	/**
 	 * Set the sector
-	 * 
+	 *
 	 * @param sector the new sector
 	 */
 	@Override
@@ -324,7 +324,7 @@ public class TOFView extends CedView implements ISector {
 	/**
 	 * Every view should be able to say what sector the current point location
 	 * represents.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -337,7 +337,7 @@ public class TOFView extends CedView implements ISector {
 
 	/**
 	 * Get the sector 1..6
-	 * 
+	 *
 	 * @return the sector
 	 */
 	@Override
@@ -347,7 +347,7 @@ public class TOFView extends CedView implements ISector {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

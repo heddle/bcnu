@@ -11,14 +11,14 @@ public class RTPCHitList extends Vector<RTPCHit> {
 
 	// for color scaling
 	private int _maxADC;
-	
+
 	public RTPCHitList(String adcBankName) {
 		byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
 		if ((layer == null) || (layer.length < 1)) {
 			return;
 		}
 
-		
+
 		short[] component = ColumnData.getShortArray(adcBankName + ".component");
 		int[] adc = ColumnData.getIntArray(adcBankName + ".ADC");
 		short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
@@ -26,7 +26,7 @@ public class RTPCHitList extends Vector<RTPCHit> {
 
 		try {
 			for (int i = 0; i < layer.length; i++) {
-				
+
 				RTPCHit hit = new RTPCHit(layer[i], component[i], adc[i], ped[i], time[i]);
                 add(hit);
 			}

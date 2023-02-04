@@ -10,7 +10,7 @@ public class CTOF extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the CTOF singleton
 	 */
 	public static CTOF getInstance() {
@@ -27,7 +27,7 @@ public class CTOF extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the updated list
 	 */
 	public TdcAdcHitList updateTdcAdcList() {
@@ -37,7 +37,7 @@ public class CTOF extends DetectorData {
 
 	/**
 	 * Get the tdc and adc hit list
-	 * 
+	 *
 	 * @return the tdc adc hit list
 	 */
 	public TdcAdcHitList getHits() {

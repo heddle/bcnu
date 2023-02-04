@@ -10,36 +10,36 @@ public class AIDC extends DetectorData {
 
 	// AI TB reconstructed hits
 	private DCReconHitList _tbHits;
-	
+
 	// AI HB reconstructed clusters
 	private DCClusterList _hbClusters;
 
 	// AI TB reconstructed clusters
 	private DCClusterList _tbClusters;
-	
-	
+
+
 	/** 1-based sectors */
 	public byte sector[];
-	
+
 	/** 1-based wires */
-	public short wire[]; 
-	
+	public short wire[];
+
 	/** 1-based superlayers */
 	public byte superlayer[];
-	
+
 	/** 1-based layers 1..36 */
 	public byte layer36[];
-	
+
 	/** 1-based layers 1..6 */
 	public byte layer6[];
-	
+
 
 	// singleton
 	private static AIDC _instance;
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static AIDC getInstance() {
@@ -51,8 +51,8 @@ public class AIDC extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		
-		
+
+
 		//the reconstructed hits, HB and TB
 		try {
 			_hbHits = new DCReconHitList("HitBasedTrkg::AIHits");
@@ -66,7 +66,7 @@ public class AIDC extends DetectorData {
 			_tbHits = null;
 			e.printStackTrace();
 		}
-		
+
 		//the clusters
 		try {
 			_hbClusters = new DCClusterList("HitBasedTrkg::AIClusters");
@@ -86,7 +86,7 @@ public class AIDC extends DetectorData {
 
 	/**
 	 * Get the hit based hit list
-	 * 
+	 *
 	 * @return the hit based hit list
 	 */
 	public DCReconHitList getAIHBHits() {
@@ -95,16 +95,16 @@ public class AIDC extends DetectorData {
 
 	/**
 	 * Get the time based hit list
-	 * 
+	 *
 	 * @return the time based hit list
 	 */
 	public DCReconHitList getAITBHits() {
 		return _tbHits;
 	}
-	
+
 	/**
 	 * Get the hit based cluster list
-	 * 
+	 *
 	 * @return the hit based cluster list
 	 */
 	public DCClusterList getAIHBClusters() {
@@ -113,7 +113,7 @@ public class AIDC extends DetectorData {
 
 	/**
 	 * Get the time based cluster list
-	 * 
+	 *
 	 * @return the time based cluster list
 	 */
 	public DCClusterList getAITBClusters() {

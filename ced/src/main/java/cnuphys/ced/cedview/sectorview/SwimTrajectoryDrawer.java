@@ -22,7 +22,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * Actual drawing method
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the base container
 	 */
@@ -32,15 +32,15 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			super.draw(g, container);
 		}
 	}
-	
+
 	@Override
 	public void drawTrajectories(Graphics g, IContainer container) {
-		
-		
+
+
 		for (SwimTrajectory2D trajectory2D : _trajectories2D) {
-			
+
 			boolean show = true;
-			
+
 			String source = trajectory2D.getSource();
 
 			if (source != null) {
@@ -56,23 +56,23 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 					show = _view.showRecPart();
 				}
 			}
-			
-			
+
+
 			if (show) {
 				drawSwimTrajectory(g, container, trajectory2D);
 			}
-			
-			
+
+
 			if (_view.showSectorChange()) {
 				markSectorChanges(g, container, trajectory2D);
 			}
 		}
 	}
 
-	
+
 	/**
 	 * Get the distance of closest approach to any 2D (projected) trajectory.
-	 * 
+	 *
 	 * @param wp the point in question
 	 * @return the closest distance. The closest trajectory will be cached in
 	 *         <code>closestTrajectory</code>.
@@ -88,9 +88,9 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 		// loop over all trajectories that are drawn
 		for (SwimTrajectory2D trajectory2D : _trajectories2D) {
-			
+
 			boolean show = true;
-			
+
 			String source = trajectory2D.getSource();
 
 			if (source != null) {
@@ -104,7 +104,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 					show = _view.showAITB();
 				}
 			}
-			
+
 			if (!show) {
 				continue;
 			}
@@ -124,7 +124,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)
 	 * and so don't bother to compute it. The default implementation vetoes nothing.
-	 * 
+	 *
 	 * @param trajectory the trajectory to test.
 	 * @return <code>true</code> if this trajectory is vetoed.
 	 */
@@ -143,7 +143,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * Get the average phi for this trajectory based on positions, not directions
-	 * 
+	 *
 	 * @return the average phi value in degrees
 	 */
 	public int getMostCommonSector(SwimTrajectory traj) {
@@ -177,7 +177,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	/**
 	 * From detector xyz get the projected world point.
-	 * 
+	 *
 	 * @param v3d the 3D vector (meters)
 	 * @param wp  the projected world point.
 	 */

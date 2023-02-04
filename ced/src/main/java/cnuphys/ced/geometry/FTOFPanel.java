@@ -25,7 +25,7 @@ public class FTOFPanel {
 
 	/**
 	 * Obtain the shell for the paddle.
-	 * 
+	 *
 	 * @index the zero based index of the paddle
 	 * @param projectionPlane the projection plane
 	 * @param wp              holds the shell for the paddle in 2D world coordinates
@@ -37,7 +37,7 @@ public class FTOFPanel {
 
 	/**
 	 * Does the paddle fully intersect the projection plane
-	 * 
+	 *
 	 * @index the zero based index of the paddle
 	 * @param projectionPlane the projection plane
 	 * @return
@@ -48,7 +48,7 @@ public class FTOFPanel {
 
 	/**
 	 * Obtain the shell for the whole panel.
-	 * 
+	 *
 	 * @param projectionPlane the projection plane
 	 * @return the shell for the whole panel.
 	 */
@@ -80,7 +80,7 @@ public class FTOFPanel {
 
 	/**
 	 * Get the number of paddles.
-	 * 
+	 *
 	 * @return the number of paddles.
 	 */
 	public int getCount() {
@@ -89,7 +89,7 @@ public class FTOFPanel {
 
 	/**
 	 * Get the panel type
-	 * 
+	 *
 	 * @return the panel type, one of the constants in FTOFDataContainer
 	 */
 	public int getPanelType() {

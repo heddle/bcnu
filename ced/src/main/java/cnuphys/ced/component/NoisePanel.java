@@ -35,7 +35,7 @@ public class NoisePanel extends JPanel implements ActionListener, ItemListener {
 
 	/**
 	 * Create a panel for controlling noise display
-	 * 
+	 *
 	 * @param view
 	 */
 	public NoisePanel(CedView view) {
@@ -68,7 +68,7 @@ public class NoisePanel extends JPanel implements ActionListener, ItemListener {
 
 	/**
 	 * Convenience method to see it we show the noise analysis
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the masks.
 	 */
 	public boolean showNoiseAnalysis() {
@@ -77,7 +77,7 @@ public class NoisePanel extends JPanel implements ActionListener, ItemListener {
 
 	/**
 	 * Convenience method to see it we show the noise analysis masks
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the masks.
 	 */
 	public boolean showMasks() {
@@ -86,7 +86,7 @@ public class NoisePanel extends JPanel implements ActionListener, ItemListener {
 
 	/**
 	 * Convenience method to see if we hide noise.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to hide noise. This is only relevant if
 	 *         we are using the noise analysis.
 	 */

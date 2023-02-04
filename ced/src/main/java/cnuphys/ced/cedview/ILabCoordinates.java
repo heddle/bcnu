@@ -6,7 +6,7 @@ import java.awt.geom.Point2D;
 import cnuphys.bCNU.graphics.container.IContainer;
 
 public interface ILabCoordinates {
-	
+
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of the view)
 	 * @param x the CLAS12 x coordinate

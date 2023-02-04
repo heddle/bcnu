@@ -14,15 +14,15 @@ import cnuphys.bCNU.util.Fonts;
 
 /**
  * A set of static methods to help ensure a uniform loon and feel
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class ComponentSupport {
 
 	/**
 	 * Create a simple label
-	 * 
+	 *
 	 * @param text the text of the label
 	 * @return the label
 	 */
@@ -34,7 +34,7 @@ public class ComponentSupport {
 
 	/**
 	 * Create a button
-	 * 
+	 *
 	 * @param label   the label on the button
 	 * @param enabled the selectability of the button
 	 * @param al      an optional action listener for the button
@@ -54,7 +54,7 @@ public class ComponentSupport {
 
 	/**
 	 * Create a radio button
-	 * 
+	 *
 	 * @param label    the label on the button
 	 * @param bg       the button group that will group this radio button
 	 * @param enabled  the selectability of the button
@@ -77,7 +77,7 @@ public class ComponentSupport {
 
 	/**
 	 * Create a check box
-	 * 
+	 *
 	 * @param label    the label on the check box
 	 * @param enabled  the selectability of the check box
 	 * @param selected the initial selection state

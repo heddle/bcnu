@@ -57,10 +57,7 @@ public class BaseHit2List extends Vector<BaseHit2> {
 			return -1;
 		}
 
-		if (lengthMismatch(sector, layer, "layer")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, component, "component")) {
+		if (lengthMismatch(sector, layer, "layer") || lengthMismatch(sector, component, "component")) {
 			return -1;
 		}
 		return sector.length;
@@ -113,7 +110,7 @@ public class BaseHit2List extends Vector<BaseHit2> {
 
 	/**
 	 * Get the bank name backing this list
-	 * 
+	 *
 	 * @return the bank name backing this list
 	 */
 	public String getBankName() {

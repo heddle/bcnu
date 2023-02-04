@@ -10,7 +10,7 @@ public class TBHits extends TbHbHits {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static TBHits getInstance() {

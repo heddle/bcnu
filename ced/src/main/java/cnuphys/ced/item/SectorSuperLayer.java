@@ -8,6 +8,9 @@ import java.util.List;
 
 import org.jlab.geom.prim.Plane3D;
 
+import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.item.PolygonItem;
+import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.ISuperLayer;
@@ -16,13 +19,10 @@ import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeometryManager;
-import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 /**
  * Used in SectorView views.
- * 
+ *
  * @author heddle
  *
  */
@@ -49,7 +49,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 	 * Create a super layer item for the sector view. Note, no points are added in
 	 * the constructor. The points will always be supplied by the setPoints method,
 	 * which will send projected wire positions (with a border of guard wires)
-	 * 
+	 *
 	 * @param logLayer   the Layer this item is on.
 	 * @param view       the view this item lives on.
 	 * @param sector     the 1-based sector [1..6]
@@ -65,7 +65,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Get the superlayer drawer for this item
-	 * 
+	 *
 	 * @return the superlayer drawer
 	 */
 	public SuperLayerDrawing getSuperLayerDrawer() {
@@ -74,7 +74,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Draw a single reconstructed dc hit, either hit or time based
-	 * 
+	 *
 	 * @param g          graphics context
 	 * @param container  drawing container
 	 * @param fillColor  cell fill color
@@ -87,10 +87,10 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 		_superlayerDrawer.drawReconDCHitAndDOCA(g, container, fillColor, frameColor, hit, isTimeBased);
 	}
-	
+
 	/**
 	 * Draw a single raw dc hit, also used for the neural net overlays
-	 * 
+	 *
 	 * @param g          graphics context
 	 * @param container  drawing container
 	 * @param fillColor  cell fill color
@@ -105,7 +105,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -124,7 +124,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -142,7 +142,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.
@@ -156,7 +156,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * The wires are dirty, probably because of a phi rotation
-	 * 
+	 *
 	 * @param wires the new wire projections.
 	 */
 	public void dirtyWires() {
@@ -178,7 +178,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Get the plane perpendicular to the wires
-	 * 
+	 *
 	 * @return the plane perpendicular to the wires
 	 */
 	@Override
@@ -188,7 +188,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Test whether this is a lower sector
-	 * 
+	 *
 	 * @return <code>true</code> if this is a lower sector
 	 */
 	@Override
@@ -198,7 +198,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Get the 1-based sector
-	 * 
+	 *
 	 * @return the 1-based sector
 	 */
 	@Override
@@ -208,7 +208,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * Get the one based superlayer
-	 * 
+	 *
 	 * @return the one based superlayyer
 	 */
 	@Override
@@ -218,7 +218,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 
 	/**
 	 * return the underlying polygon item
-	 * 
+	 *
 	 * @return the underlying polygon item
 	 */
 	@Override

@@ -10,6 +10,7 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import org.jlab.geom.prim.Line3D;
 import org.jlab.geom.prim.Point3D;
 
@@ -72,7 +73,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param view  the owner view
 	 * @param isupl the superlayer geometry interface
 	 */
@@ -152,7 +153,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw the wires.
-	 * 
+	 *
 	 * @param g           the graphics context
 	 * @param container   the rendering container
 	 * @param reallyClose if <code>true</code> we are really close
@@ -190,7 +191,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw the masks showing the effect of the noise finding algorithm
-	 * 
+	 *
 	 * @param g          the graphics context
 	 * @param container  the rendering container
 	 * @param parameters the noise algorithm parameters
@@ -211,7 +212,7 @@ public class SuperLayerDrawing {
 	/**
 	 * Draws the masking that shows where the noise algorithm thinks there are
 	 * segments. Anything not masked is noise.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the rendering container
 	 * @param wire      the ZERO BASED wire 0..
@@ -255,7 +256,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw hits and related data
-	 * 
+	 *
 	 * @param g         The graphics object
 	 * @param container the drawing container
 	 */
@@ -301,7 +302,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw hits (and other data) when we are in single hit mode
-	 * 
+	 *
 	 * @param g         The graphics object
 	 * @param container the drawing container
 	 */
@@ -335,7 +336,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw a single dc hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param layer     1-based layer 1..6
@@ -386,7 +387,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw a single dc hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param layer     1-based layer 1..6
@@ -418,7 +419,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw a single dc hit
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param layer     1-based layer 1..6
@@ -438,7 +439,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw a single reconstructed dc hit
-	 * 
+	 *
 	 * @param g           the graphics context
 	 * @param container   the rendering container
 	 * @param fillColor   the fill clor
@@ -458,10 +459,10 @@ public class SuperLayerDrawing {
 		}
 
 	}
-	
+
 	/**
 	 * Draw a single raw dc hit (also used for NN overlays)
-	 * 
+	 *
 	 * @param g           the graphics context
 	 * @param container   the rendering container
 	 * @param fillColor   the fill clor
@@ -475,7 +476,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Obtain a crude outline of a sense wire layer
-	 * 
+	 *
 	 * @param container the container being rendered
 	 * @param layer     the layer in question--a 1-based sensewire layer [1..6]
 	 * @return a layer outline
@@ -509,7 +510,7 @@ public class SuperLayerDrawing {
 	/**
 	 * Gets the layer from the screen point. This only gives sensible results if the
 	 * world point has already passed the "inside" test.
-	 * 
+	 *
 	 * @param pp the screen point in question.
 	 * @return the layer containing the given world point. It returns [1..6] or -1
 	 *         on failure
@@ -534,7 +535,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Get the layer and the wire we are in
-	 * 
+	 *
 	 * @param container holds 1-based layer and wire
 	 * @param pp        the mouse point
 	 * @param data      holds results [later, wire]
@@ -576,7 +577,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Get the layer polygon
-	 * 
+	 *
 	 * @param layer the 1-based layer [1..6]
 	 * @return the layer polygon
 	 */
@@ -586,7 +587,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Highlight a noise hit on a drift chamber
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the drawing container
 	 * @param simple    if <code>true</code>, use simpler drawing
@@ -624,7 +625,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Gets the cell hexagon as a screen polygon.
-	 * 
+	 *
 	 * @param container the container being rendered.
 	 * @param layer     the 1-based layer 1..6
 	 * @param wire      the one based wire 1..112
@@ -637,7 +638,6 @@ public class SuperLayerDrawing {
 		if (!DCGeometry.getHexagon(_iSupl.superlayer(), layer, wire, _iSupl.projectionPlane(), wpoly, null)) {
 			return null;
 		}
-		;
 
 		if (_iSupl.isLowerSector()) {
 			flipPolyToLowerSector(wpoly);
@@ -646,8 +646,7 @@ public class SuperLayerDrawing {
 		Point pp = new Point();
 		Polygon poly = new Polygon();
 
-		for (int i = 0; i < wpoly.length; i++) {
-			Point2D.Double wp = wpoly[i];
+		for (java.awt.geom.Point2D.Double wp : wpoly) {
 			container.worldToLocal(pp, wp);
 			poly.addPoint(pp.x, pp.y);
 		}
@@ -657,7 +656,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * flip a poly created for the upper sector to the lower sector
-	 * 
+	 *
 	 * @param wpoly the polygon to flip
 	 */
 	public static void flipPolyToLowerSector(Point2D.Double wpoly[]) {
@@ -668,7 +667,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Get the projected wire location
-	 * 
+	 *
 	 * @param superlayer the 1-based superlayer 1..6
 	 * @param layer      the 1-based layer 1..6
 	 * @param wire       the 1-based wire 1..112
@@ -695,7 +694,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Draw a distance of closest approach circle
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 * @param layer     the 1-based layer 1..6
@@ -746,8 +745,8 @@ public class SuperLayerDrawing {
 				// _superLayer - 1, layer, wire, radius);
 				Polygon docaPoly = new Polygon();
 				Point dp = new Point();
-				for (int i = 0; i < doca.length; i++) {
-					container.worldToLocal(dp, doca[i]);
+				for (java.awt.geom.Point2D.Double element : doca) {
+					container.worldToLocal(dp, element);
 					docaPoly.addPoint(dp.x, dp.y);
 				}
 				g.setColor(fillColors[j]);
@@ -760,7 +759,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * projected space point. Projected by finding the closest point on the plane.
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate
@@ -833,8 +832,8 @@ public class SuperLayerDrawing {
 		}
 
 	} // drawTimeBasedSegments
-	
-	
+
+
 
 	/**
 	 * Draw AI hit based segments
@@ -930,7 +929,7 @@ public class SuperLayerDrawing {
 	 * Gets the wire from the world point. This only gives sensible results if the
 	 * world point has already passed the "inside" test and we used getLayer on the
 	 * same point to get the layer.
-	 * 
+	 *
 	 * @param layer the one based layer [1..6]
 	 * @param wp    the world point in question.
 	 * @return the closest wire index on the given layer in range [1..112].
@@ -950,7 +949,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Get the direction in the lab system of a wire in this superlayer
-	 * 
+	 *
 	 * @return a unit vector in the wire direction
 	 */
 	public double[] getWireDirection() {
@@ -959,7 +958,7 @@ public class SuperLayerDrawing {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.

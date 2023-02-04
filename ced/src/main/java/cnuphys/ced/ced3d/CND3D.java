@@ -4,7 +4,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 /**
  * 3D version of the central neutron detector
- * 
+ *
  * @author heddle
  *
  */
@@ -15,7 +15,7 @@ public class CND3D extends DetectorItem3D {
 
 	/**
 	 * The 3D CND
-	 * 
+	 *
 	 * @param panel3d the 3D panel owner
 	 */
 	public CND3D(CedPanel3D panel3D) {

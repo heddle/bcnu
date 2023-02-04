@@ -5,8 +5,8 @@ import java.util.EnumMap;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Department {
-COMM, ECON, ENGL, FAAH, HIST, LDSPAS, LUTER, MATH, MBCH, MCL, 
-MUSIC, OEBIO, PCSE, PHIREL, POLSCI, PSYCH, SOCANT, THEADN;
+COMM, ECON, ENGL, FAAH, HIST, LAMS, LUTR, MATH, MBCH, MCLL, 
+MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 	
 	
 	
@@ -31,24 +31,24 @@ MUSIC, OEBIO, PCSE, PHIREL, POLSCI, PSYCH, SOCANT, THEADN;
 	public static EnumMap<Department, Integer> counts = new EnumMap<Department, Integer>(Department.class);
 
 	static {
-		names.put(COMM, new String[] {"comm"});
-		names.put(ECON, new String[] {"econ"});
+		names.put(COMM, new String[] {"comm", "communication"});
+		names.put(ECON, new String[] {"econ", "economics"});
 		names.put(ENGL, new String[] {"english"});
-		names.put(FAAH, new String[] {"fine art & art hist"});
+		names.put(FAAH, new String[] {"fine art & art hist", "fine art & art history"});
 		names.put(HIST, new String[] {"history"});
-		names.put(LDSPAS, new String[] {"leadership & as"});
-		names.put(LUTER, new String[] {"luter"});
-		names.put(MATH, new String[] {"math"});
-		names.put(MBCH, new String[] {"mbch"});
-		names.put(MCL, new String[] {"mod & class lang"});
-		names.put(MUSIC, new String[] {"music"});
-		names.put(OEBIO, new String[] {"o&e bio"});
-		names.put(PCSE, new String[] {"pcse"});
-		names.put(PHIREL, new String[] {"phil & religion"});
-		names.put(POLSCI, new String[] {"polysci"});
-		names.put(PSYCH, new String[] {"psychology"});
-		names.put(SOCANT, new String[] {"soc, soc & anth"});
-		names.put(THEADN, new String[] {"theater & dance"});
+		names.put(LAMS, new String[] {"leadership & as", "leadership & american studies"});
+		names.put(LUTR, new String[] {"luter"});
+		names.put(MATH, new String[] {"math", "mathematics"});
+		names.put(MBCH, new String[] {"mbch", "molecular biology and chemistry"});
+		names.put(MCLL, new String[] {"mod & class lang", "modern & classical languages & literatures"});
+		names.put(MUSC, new String[] {"music"});
+		names.put(OENB, new String[] {"o&e bio", "organismal and environmental biology"});
+		names.put(PCSE, new String[] {"pcse", "physics, computer science & engineering"});
+		names.put(PHIL, new String[] {"phil & religion", "philosophy & religion"});
+		names.put(POLS, new String[] {"polysci", "political science"});
+		names.put(PSYC, new String[] {"psychology", "psych"});
+		names.put(SOCL, new String[] {"soc, soc & anth", "sociology, social work & anthropology"});
+		names.put(THEA, new String[] {"theater & dance"});
 	}
 	
 	

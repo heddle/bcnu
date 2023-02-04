@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Hashtable;
 import java.util.List;
+
 import org.jlab.detector.base.GeometryFactory;
 import org.jlab.geom.base.ConstantProvider;
 import org.jlab.geom.component.ScintillatorPaddle;
@@ -115,7 +116,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Convert the x y indices into a component id
-	 * 
+	 *
 	 * @param p the indices
 	 * @return the component id
 	 */
@@ -125,7 +126,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Convert the x y indices into a component id
-	 * 
+	 *
 	 * @param x the x index
 	 * @param y the y index
 	 * @return the component id
@@ -137,7 +138,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Get a scintillator paddle
-	 * 
+	 *
 	 * @param componentId the componentId
 	 * @return the paddle, might be null
 	 */
@@ -147,7 +148,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Used by the 3D drawing
-	 * 
+	 *
 	 * @param paddleId the 1-based paddle 1..332
 	 * @param coords   holds 8*3 = 24 values [x1, y1, z1, ..., x8, y8, z8]
 	 */
@@ -172,7 +173,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Obtain the paddle xy corners for 2D view
-	 * 
+	 *
 	 * @param paddleId the paddle ID 1..48
 	 * @param wp       the four XY corners (cm)
 	 */
@@ -191,7 +192,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Get the XY (for 2D) center of the paddle
-	 * 
+	 *
 	 * @param paddleId the padle id
 	 * @param center   the center, or NaNs
 	 */
@@ -207,7 +208,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Get the indices from the id
-	 * 
+	 *
 	 * @param id the id
 	 * @return the XY grid indices or null
 	 */
@@ -221,7 +222,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Get the indices from the padle
-	 * 
+	 *
 	 * @param paddle the paddle
 	 * @return the XY grid indices or null
 	 */
@@ -234,7 +235,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Returns the grid index [-11, -10, ... -1, 1, .., 11] for the given value
-	 * 
+	 *
 	 * @param val an x or y value
 	 * @return the grid index, or 0 on error. Zero is not a possible value.
 	 */
@@ -264,7 +265,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Get the maximum absolute extent in x or y. Used for grid drawing
-	 * 
+	 *
 	 * @return the maximum absolute extent in x or y
 	 */
 	public static final double getMaxAbsXYExtent() {
@@ -273,7 +274,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Take an index [-11, -10, ... -1, 1, .., 11] and get the coordinate limits
-	 * 
+	 *
 	 * @param index the index
 	 * @param range the limits
 	 */
@@ -304,7 +305,7 @@ public class FTCALGeometry {
 	 * 5: xmax, ymin, zmin <br>
 	 * 6: xmax, ymax, zmin <br>
 	 * 7: xmin, ymax, zmin <br>
-	 * 
+	 *
 	 * @param paddleId the paddle ID 1..48
 	 * @param corners  the eight XYZ corners (cm)
 	 */
@@ -325,7 +326,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Check whether the id is one of the good id
-	 * 
+	 *
 	 * @param id the 1-based id to check
 	 * @return true if it is a good id
 	 */
@@ -339,7 +340,7 @@ public class FTCALGeometry {
 
 	/**
 	 * Get all the good ids
-	 * 
+	 *
 	 * @return all the good ids
 	 */
 	public static short[] getGoodIds() {
@@ -389,7 +390,7 @@ public class FTCALGeometry {
 
 //					String xvStr = String.format("%-6.1f", p3d.x()).trim();
 //					String yvStr = String.format("%-6.1f", p3d.y()).trim();
-//					
+//
 //					xs.remove(xvStr);
 //					ys.remove(yvStr);
 //					xs.add(xvStr);
@@ -407,12 +408,12 @@ public class FTCALGeometry {
 //				Double d1 = Double.parseDouble(arg1);
 //				return d0.compareTo(d1);
 //			}
-//			
+//
 //		};
-//		
+//
 //		Collections.sort(xs, c);
 //		Collections.sort(ys, c);
-//		
+//
 //		for (int i = 0; i < xs.size(); i++) {
 //			System.out.println(xs.get(i) + "   "  + ys.get(i));
 //		}
@@ -425,18 +426,18 @@ public class FTCALGeometry {
 //		System.out.println("zmin: " + zmin);
 
 //		int numGood = 0;
-//		
-//		Point2D.Double wp = new Point2D.Double(); 
+//
+//		Point2D.Double wp = new Point2D.Double();
 //		for (int i = 0; i <= 475; i++) {
 //			if (isGoodId(i)) {
 //				numGood++;
 //				 paddleXYCenter(i, wp);
-//				 
+//
 //				 String lstr = String.format("[%-7.3f, %-7.3f]", wp.x, wp.y);
 //				System.err.println("[" + i +"]  centroid: " + lstr);
 //			}
 //		}
-//		
+//
 //		System.err.println("num good paddles: " + numGood);
 
 	}

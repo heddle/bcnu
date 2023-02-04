@@ -15,10 +15,10 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.BMTCrosses;
+import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.Cross2;
 import cnuphys.ced.event.data.CrossList2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.BSTCrosses;
 
 public class CrossDrawerZ extends CentralZViewDrawer {
 
@@ -37,7 +37,7 @@ public class CrossDrawerZ extends CentralZViewDrawer {
 
 	/**
 	 * A BST Cross drawer
-	 * 
+	 *
 	 * @param view the owner vie
 	 */
 	public CrossDrawerZ(CentralZView view) {
@@ -46,11 +46,7 @@ public class CrossDrawerZ extends CentralZViewDrawer {
 
 	@Override
 	public void draw(Graphics g, IContainer container) {
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (ClasIoEventManager.getInstance().isAccumulating() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -68,7 +64,7 @@ public class CrossDrawerZ extends CentralZViewDrawer {
 
 	/**
 	 * Draw the reconstructed crosses on the BST Z view
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the drawing container
 	 */
@@ -226,7 +222,7 @@ public class CrossDrawerZ extends CentralZViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

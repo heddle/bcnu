@@ -63,7 +63,7 @@ public class BitEditor extends JPanel implements ActionListener {
 
 	/**
 	 * Set the bits. Have to fix the GUI and the actual trigger filter.
-	 * 
+	 *
 	 * @param word the bits to use.
 	 */
 	public void setBits(int word) {
@@ -73,7 +73,7 @@ public class BitEditor extends JPanel implements ActionListener {
 
 	/**
 	 * Set the word being displayed
-	 * 
+	 *
 	 * @return the word being displayed
 	 */
 	public int getBits() {

@@ -22,7 +22,7 @@ public class EventInfoPanel extends JPanel {
 	 * A label for displaying the ordinal number of the event from an event file.
 	 */
 	private NamedLabel seqEventNumberLabel;
-	
+
 	/**
 	 * A label for displaying the true number of the event from the RUN::config bank.
 	 */
@@ -74,7 +74,7 @@ public class EventInfoPanel extends JPanel {
 
 		_numPanel = new JPanel();
 		_numPanel.setLayout(new BorderLayout(4, 4));
-		
+
 		JPanel sPanel = new JPanel();
 		sPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -93,7 +93,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Get the panel that holds the event source
-	 * 
+	 *
 	 * @return the event source panel
 	 */
 	public JPanel getEventSourcePanel() {
@@ -102,7 +102,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Get the panel that holds the event number
-	 * 
+	 *
 	 * @return the number panel
 	 */
 	public JPanel getNumberPanel() {
@@ -111,7 +111,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Set the displayed event source value.
-	 * 
+	 *
 	 * @param source event source.
 	 */
 	public void setSource(String source) {
@@ -122,7 +122,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Get the displayed event source value.
-	 * 
+	 *
 	 * @return the displayed event source value.
 	 */
 	public String getSource() {
@@ -139,7 +139,7 @@ public class EventInfoPanel extends JPanel {
 			seqEventNumberLabel.setText("" + seqEventNum);
 		}
 	}
-	
+
 	/**
 	 * Set the displayed true event number value.
 	 * The true event number comes from the RUN::config bank.
@@ -156,7 +156,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Set the displayed run number value.
-	 * 
+	 *
 	 * @param runNumber the run number.
 	 */
 	public void setRunNumber(int runNumber) {
@@ -169,7 +169,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Get the displayed event number value.
-	 * 
+	 *
 	 * @return the displayed event number value.
 	 */
 	public int getEventNumber() {
@@ -178,7 +178,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Set the displayed number-of-events value.
-	 * 
+	 *
 	 * @param numberOfEvents number of events.
 	 */
 	public void setNumberOfEvents(int numberOfEvents) {
@@ -191,7 +191,7 @@ public class EventInfoPanel extends JPanel {
 
 	/**
 	 * Get the displayed number-of-events value.
-	 * 
+	 *
 	 * @return the displayed number-of-events value.
 	 */
 	public int getNumberOfEvents() {

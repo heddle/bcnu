@@ -66,7 +66,7 @@ public class BaseHitList<T extends BaseHit> extends Vector<T> {
 
 	/**
 	 * Get the bank name backing this list
-	 * 
+	 *
 	 * @return the bank name backing this list
 	 */
 	public String getBankName() {

@@ -12,7 +12,7 @@ import cnuphys.ced.frame.Ced;
 
 /**
  * An abstract class for an event filter
- * 
+ *
  * @author heddle
  *
  */
@@ -26,7 +26,7 @@ public abstract class AEventFilter implements IEventFilter {
 
 	// used primarily for event filter menu
 	protected JMenuItem _menuComponent;
-	
+
 	//optional editor
 	protected AFilterDialog _editor;
 
@@ -88,14 +88,14 @@ public abstract class AEventFilter implements IEventFilter {
 	public String getName() {
 		return _name;
 	}
-	
+
 	/**
 	 * Edit the filter
 	 */
 	@Override
 	public void edit() {
 	}
-	
+
 	/**
 	 * Create the filter editor (optional)
 	 * @return the filter editor
@@ -106,7 +106,7 @@ public abstract class AEventFilter implements IEventFilter {
 
 	/**
 	 * Get the menu component
-	 * 
+	 *
 	 * @return the menu component
 	 */
 	@Override

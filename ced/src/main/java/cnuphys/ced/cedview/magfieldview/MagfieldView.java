@@ -8,9 +8,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.util.List;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -37,15 +37,15 @@ import cnuphys.magfield.Torus;
 
 /**
  * The mag field view is used for testing the magnetic field
- * 
+ *
  * @author heddle
  *
  */
 public class MagfieldView extends SliceView implements ChangeListener {
-	
+
 	private static final Color TRANSSOLENOID = new Color(30, 30, 190, 64);
 	private static final Color TRANSTORUS = new Color(190, 0, 30, 64);
-	
+
 	// used to draw swum trajectories (if any) in the after drawer
 	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
 
@@ -55,11 +55,11 @@ public class MagfieldView extends SliceView implements ChangeListener {
 
 	private MagfieldView(DisplaySectors displaySectors, Object... keyVals) {
 		super(displaySectors, keyVals);
-		
+
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
 
-		
+
 		addItems();
 		setBeforeDraw();
 		setAfterDraw();
@@ -99,14 +99,14 @@ public class MagfieldView extends SliceView implements ChangeListener {
 		// create the view
 		view = new MagfieldView(displaySectors, PropertySupport.WORLDSYSTEM,
 				new Rectangle2D.Double(zo, xo, wwidth, wheight),
-				PropertySupport.LEFT, LEFT, PropertySupport.TOP, TOP, 
+				PropertySupport.LEFT, LEFT, PropertySupport.TOP, TOP,
 				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.TOOLBAR, true,
 				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true,
 				PropertySupport.BACKGROUND, Color.white, PropertySupport.TITLE, title,
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
-		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY + 
-				ControlPanel.PHISLIDER + ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND, 
+		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY +
+				ControlPanel.PHISLIDER + ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.MAGGRID, 3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
@@ -158,10 +158,10 @@ public class MagfieldView extends SliceView implements ChangeListener {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
+
 				Graphics2D g2 = (Graphics2D)g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				
+
 				// draw trajectories
 				_swimTrajectoryDrawer.draw(g, container);
 
@@ -173,7 +173,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 		//			if ((_scaleDrawer != null) && showScale()) {
 					_scaleDrawer.draw(g, container);
 				}
-				
+
 				//redraw beamline
 				_beamLineItem.draw(g2, container);
 
@@ -185,14 +185,14 @@ public class MagfieldView extends SliceView implements ChangeListener {
 
 	// draw the field map grids
 	private void drawGrids(Graphics g, IContainer container) {
-		
+
 		if (!showMagGrid()) {
 			return;
 		}
 
 		Solenoid solenoid = MagneticFields.getInstance().getSolenoid();
 		Torus torus = MagneticFields.getInstance().getTorus();
-		
+
 		Rectangle.Double wr = new Rectangle.Double();
 		worldBounds(container, wr);
 
@@ -212,7 +212,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 		}
 
 	}
-	
+
 	//get the world bounds
 	private void worldBounds(IContainer container, Rectangle.Double wr) {
 		Rectangle b = container.getComponent().getBounds();
@@ -222,7 +222,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 	}
 
 	// draw a grid
-	private void drawGrid(Graphics g, IContainer container, Color color, 
+	private void drawGrid(Graphics g, IContainer container, Color color,
 			Rectangle.Double worldBounds,
 			GridCoordinate rhoGrid,
 			GridCoordinate zGrid) {
@@ -230,7 +230,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 		g.setColor(color);
 		Point p0 = new Point();
 		Point p1 = new Point();
-		
+
 		double rhoMax = rhoGrid.getMax();
 		double minY = worldBounds.getMinY();
 		double maxY = worldBounds.getMaxY();
@@ -239,17 +239,17 @@ public class MagfieldView extends SliceView implements ChangeListener {
 
 		for (int iz = 0; iz < zGrid.getNumPoints(); iz++) {
 			double z = zGrid.getValue(iz);
-			
+
 			if ((z >= worldBounds.getMinX()) && (z <= worldBounds.getMaxX())) {
-				
-				
+
+
 				if (minY > 0) {
 					minY = Math.min(minY, rhoMax);
 				}
 				if (minY < 0) {
 					minY = Math.max(minY, -rhoMax);
 				}
-				
+
 				if (maxY > 0) {
 					maxY = Math.min(maxY, rhoMax);
 				}
@@ -257,18 +257,18 @@ public class MagfieldView extends SliceView implements ChangeListener {
 					maxY = Math.max(maxY, -rhoMax);
 				}
 
-				
+
 				container.worldToLocal(p0, z, minY);
 				container.worldToLocal(p1, z, maxY);
 				g.drawLine(p0.x, p0.y, p1.x, p1.y);
 			}
 
 		}
-		
+
 		for (int ir = 0; ir < rhoGrid.getNumPoints(); ir++) {
 			double yplus = rhoGrid.getValue(ir);
 			double yminus = -yplus;
-			
+
 			double z0 = Math.max(zMin, worldBounds.getMinX());
 			double z1 = Math.min(zMax, worldBounds.getMaxX());
 
@@ -277,14 +277,14 @@ public class MagfieldView extends SliceView implements ChangeListener {
 				container.worldToLocal(p1, z1, yplus);
 				g.drawLine(p0.x, p0.y, p1.x, p1.y);
 			}
-			
+
 			if ((yminus >= minY) && (yminus <= maxY)) {
 				container.worldToLocal(p0, z0, yminus);
 				container.worldToLocal(p1, z1, yminus);
 				g.drawLine(p0.x, p0.y, p1.x, p1.y);
 			}
 
-			
+
 		}
 
 	}
@@ -303,7 +303,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container the base container for the view.
 	 * @param pp        the pixel point
 	 * @param wp        the corresponding world location.
@@ -319,7 +319,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

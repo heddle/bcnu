@@ -32,7 +32,7 @@ public class RunThroughDialog extends JDialog {
 
 	//description
 	private JLabel _describeLabel;
-	
+
 	// path to event file
 	private JLabel _pathLabel;
 
@@ -41,7 +41,7 @@ public class RunThroughDialog extends JDialog {
 
 	// the ClasIO event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	private IRunThrough _rthrough;
 
 	/**
@@ -67,7 +67,7 @@ public class RunThroughDialog extends JDialog {
 		GraphicsUtilities.centerComponent(this);
 
 	}
-	
+
 	// add all the widgets
 	private void addComponents() {
 		setLayout(new BorderLayout(6, 6));
@@ -114,7 +114,7 @@ public class RunThroughDialog extends JDialog {
 
 	/**
 	 * Create the button panel.
-	 * 
+	 *
 	 * @return the button panel.
 	 */
 	private JPanel createButtonPanel() {
@@ -139,14 +139,14 @@ public class RunThroughDialog extends JDialog {
 		return ButtonPanel.closeOutPanel(ButtonPanel.USE_CANCEL, alist, 50);
 
 	}
-	
+
 	public void process() {
 		try {
 			final int totalCount = _eventManager.getEventCount();
 			if (totalCount < 1) {
 				_reason = DialogUtilities.CANCEL_RESPONSE;
 			}
-			
+
 			_eventManager.gotoEvent(1);
 
 			Runnable runnable = new Runnable() {
@@ -174,7 +174,7 @@ public class RunThroughDialog extends JDialog {
 						}
 					}
 
-					// we are done 
+					// we are done
 
 					_rthrough.runThroughtDone();
 					doClose(DialogUtilities.OK_RESPONSE);
@@ -196,7 +196,7 @@ public class RunThroughDialog extends JDialog {
 
 	/**
 	 * Why the dialog closed.
-	 * 
+	 *
 	 * @return either DialogUtilities.OK_RESPONSE or DialogUtilities.CANCEL_RESPONSE
 	 */
 	public int getReason() {

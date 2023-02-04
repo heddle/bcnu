@@ -1,6 +1,7 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.Color;
+
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
@@ -90,7 +91,7 @@ public class CrossDrawer3D extends Item3D {
 	/**
 	 * Convert tilted sector coordinates to sector coordinates. The two vectors can
 	 * be the same in which case it is overwritten.
-	 * 
+	 *
 	 * @param tiltedXYZ will hold the tilted coordinates
 	 * @param sectorXYZ the sector coordinates
 	 */

@@ -12,43 +12,43 @@ import cnuphys.lund.LundSupport;
  *
  */
 public class RECCalorimeter extends DetectorData {
-	
+
 	public static final int NOPID = -999999;
-	
+
 	//the singleton
 	private static RECCalorimeter _instance;
-	
+
 	/** the number of rows in the current bank */
 	public int count;
-	
+
 	/** 1 based sector [1..6] */
 	public byte sector[];
-	
+
 	/** (1-3) PCAL (4-6) ECAL inner (7-9) ECAL outer */
 	public byte layer[];
-	
+
 	/** Energy in GeV */
 	public float energy[];
-	
+
 	/** x coordinate in (CLAS 3D system) in  cm */
 	public float x[];
-	
+
 	/** coordinate in (CLAS 3D system) in cm */
 	public float y[];
-	
+
 	/** z coordinate in (CLAS 3D system) in cm */
 	public float z[];
-	
+
 	/** Lund particle ids */
 	public int pid[];
-		
+
 	private short pindex[];
-	
+
 	//private constructor for singleton
 	private RECCalorimeter() {
 		super();
 	}
-	
+
 	/**
 	 * public access to the singleton
 	 * @return the singleton
@@ -59,7 +59,7 @@ public class RECCalorimeter extends DetectorData {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		update(event);
@@ -74,17 +74,17 @@ public class RECCalorimeter extends DetectorData {
 		x = null;
 		y = null;
 		z = null;
-		pid = null;		
+		pid = null;
 	}
 
 	//update due to new event arriving
 	private void update(DataEvent event) {
-		
+
 		if (event == null) {
 			nullify();
 			return;
 		}
-		
+
 		DataBank bank = event.getBank("REC::Calorimeter");
 		if (bank == null) {
 			nullify();
@@ -105,7 +105,7 @@ public class RECCalorimeter extends DetectorData {
 		getPIDArray(event);
 
 	} //update
-	
+
 	/**
 	 * Get the cluster drawing radius from the energy
 	 * @param energy the energy in GeV
@@ -115,13 +115,13 @@ public class RECCalorimeter extends DetectorData {
 		if (energy < 0.05) {
 			return 0;
 		}
-		
+
 		float radius = (float) (Math.log((energy + 1.0e-8) / 1.0e-8));
 		radius = Math.max(1, Math.min(40f, radius));
 		return radius;
 	}
-	
-	
+
+
 
 	//get the pids from the REC::Particle bank
 	//the pindex array points to rows in this bank
@@ -137,7 +137,7 @@ public class RECCalorimeter extends DetectorData {
 		}
 
 	}
-	
+
 	/**
 	 * Get the feedback string for the PID
 	 * @param index the row
@@ -145,7 +145,7 @@ public class RECCalorimeter extends DetectorData {
 	 */
 	public String getPIDStr(int index) {
 		int pidval = getPID(index);
-		
+
 		if (pidval == NOPID) {
 			return "REC PID not available";
 		} else {
@@ -158,7 +158,7 @@ public class RECCalorimeter extends DetectorData {
 			}
 		}
 	}
-	
+
 	/**
 	 * Check whether there is any data at all
 	 * @return <code>true</code> if there are no data.
@@ -166,7 +166,7 @@ public class RECCalorimeter extends DetectorData {
 	public boolean isEmpty() {
 		return (count  < 1);
 	}
-	
+
 	/**
 	 * Try to get a pid associated with this index
 	 * @param index the index of the row in the REC::Calorimeter table
@@ -178,9 +178,9 @@ public class RECCalorimeter extends DetectorData {
 		}
 		return pid[pindex[index]];
 	}
-	
+
 	/**
-	 * Get the LundId object 
+	 * Get the LundId object
 	 * @param index the index (row)
 	 * @return the LindId if available, or <code>null</code>
 	 */

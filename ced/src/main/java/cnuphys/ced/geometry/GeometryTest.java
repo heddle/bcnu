@@ -2,7 +2,7 @@ package cnuphys.ced.geometry;
 
 /**
  * Test Gagi'ks geometry package
- * 
+ *
  * @author heddle
  *
  */

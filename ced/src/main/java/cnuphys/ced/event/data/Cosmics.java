@@ -30,7 +30,7 @@ public class Cosmics extends DetectorData {
 
 	/**
 	 * Get the cross list
-	 * 
+	 *
 	 * @return the cross list
 	 */
 	public CosmicList getCosmics() {

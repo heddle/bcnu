@@ -6,14 +6,14 @@ import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import cnuphys.ced.cedview.central.CentralZView;
-import cnuphys.ced.cedview.magfieldview.MagfieldView;
-import cnuphys.ced.cedview.sectorview.SectorView;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.BaseBeamLineItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.cedview.central.CentralZView;
+import cnuphys.ced.cedview.magfieldview.MagfieldView;
+import cnuphys.ced.cedview.sectorview.SectorView;
+import cnuphys.ced.clasio.ClasIoEventManager;
 
 public class BeamLineItem extends BaseBeamLineItem {
 
@@ -23,7 +23,7 @@ public class BeamLineItem extends BaseBeamLineItem {
 
 	/**
 	 * Create a beamline item which is a glorified line.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 */
 	public BeamLineItem(LogicalLayer layer) {
@@ -32,7 +32,7 @@ public class BeamLineItem extends BaseBeamLineItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */

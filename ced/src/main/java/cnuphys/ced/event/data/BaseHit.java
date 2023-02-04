@@ -30,7 +30,7 @@ public class BaseHit {
 
 	/**
 	 * Get the hit location where it was last drawn
-	 * 
+	 *
 	 * @return the screen location
 	 */
 	public Point getLocation() {
@@ -39,7 +39,7 @@ public class BaseHit {
 
 	/**
 	 * For feedback
-	 * 
+	 *
 	 * @param pp
 	 */
 	public void setLocation(Point pp) {

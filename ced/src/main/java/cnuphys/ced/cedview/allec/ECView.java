@@ -42,7 +42,7 @@ public class ECView extends HexView {
 
 	// for drawing MC hits
 	private McHitDrawer _mcHitDrawer;
-	
+
 	// for drawing REC::Calorimeter data
     private RecDrawer _recDrawer;
 
@@ -55,7 +55,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Create an allDCView
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	private ECView(String title) {
@@ -63,7 +63,7 @@ public class ECView extends HexView {
 
 		// MC hit drawer
 		_mcHitDrawer = new McHitDrawer(this);
-		
+
 		// REC::Calorimeter drawer
 		_recDrawer = new RecDrawer(this);
 
@@ -77,7 +77,7 @@ public class ECView extends HexView {
 
 	/**
 	 * See if we are to display the inner plane.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to display the inner plane, otherwise
 	 *         display the outer.
 	 */
@@ -99,7 +99,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Used to create the EC view
-	 * 
+	 *
 	 * @return the view
 	 */
 	public static ECView createECView() {
@@ -149,10 +149,10 @@ public class ECView extends HexView {
 
 					// draw MC Hits
 					_mcHitDrawer.draw(g, container);
-					
+
 					//draw REC::Calorimeter data
 					_recDrawer.draw(g, container);
-					
+
 				} // not acumulating
 			}
 
@@ -197,7 +197,7 @@ public class ECView extends HexView {
 		if (showMcTruth()) {
 			_mcHitDrawer.feedback(container, pp, wp, feedbackStrings);
 		}
-		
+
 		_recDrawer.feedback(container, pp, wp, feedbackStrings);
 
 	}
@@ -220,7 +220,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Convert ijk coordinates to sector xyz
-	 * 
+	 *
 	 * @param pijk      the ijk coordinates
 	 * @param sectorXYZ the sector xyz coordinates
 	 */
@@ -233,7 +233,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Convert sector xyz to ijk coordinates
-	 * 
+	 *
 	 * @param pijk      the ijk coordinates
 	 * @param sectorXYZ the sector xyz coordinates
 	 */
@@ -254,7 +254,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Lab (CLAS) 3D Cartesian coordinates to world graphical coordinates.
-	 * 
+	 *
 	 * @param labXYZ the lab 3D coordinates
 	 * @param wp     will hold the graphical world coordinates
 	 */
@@ -264,7 +264,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Get the hex item for the given 1-based sector
-	 * 
+	 *
 	 * @param sector the 1-based sector
 	 * @return the corresponding item
 	 */
@@ -274,7 +274,7 @@ public class ECView extends HexView {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

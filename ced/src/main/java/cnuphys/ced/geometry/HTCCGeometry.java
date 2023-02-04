@@ -24,7 +24,7 @@ public class HTCCGeometry {
 
 	/**
 	 * Get the world polygon for the mirror in simple geometry
-	 * 
+	 *
 	 * @param ring     the ring 1..4
 	 * @param half     the half 1..2
 	 * @param localPhi [-30..30] degrees

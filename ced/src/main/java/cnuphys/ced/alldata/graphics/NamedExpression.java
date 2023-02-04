@@ -48,7 +48,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 
 	/**
 	 * Get the expression name
-	 * 
+	 *
 	 * @return the expression name
 	 */
 	public String getExpressionName() {
@@ -57,7 +57,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 
 	/**
 	 * Get the Expression for this NamedExpression
-	 * 
+	 *
 	 * @return the Expression for this NamedExpression
 	 */
 	public Expression getExpression() {
@@ -82,7 +82,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 
 	/**
 	 * Obtain a valid expression from an expression string
-	 * 
+	 *
 	 * @param expStr the expression string
 	 * @return an Expression, or null;
 	 */
@@ -92,7 +92,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 
 	/**
 	 * Get an array of variables from the expression string
-	 * 
+	 *
 	 * @param expStr the expression string
 	 * @return an array of variables which should have a leading underscore
 	 */
@@ -118,7 +118,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 //		}
 
 		// Step 3 get the variables
-		Vector<String> vv = new Vector<String>();
+		Vector<String> vv = new Vector<>();
 		for (String token : tokens) {
 			if (token.startsWith("_")) {
 				vv.remove(token);
@@ -140,7 +140,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 
 	/**
 	 * Obtain a valid expression from an expression string
-	 * 
+	 *
 	 * @param expStr the expression string
 	 * @param tf     an optional textfield for messages
 	 * @return an Expression, or null;
@@ -213,7 +213,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 	 * The named expression is ready to compute if it has an expression, and the
 	 * length of the variable array is the length of the ColumnData array, and not
 	 * of the ColumnData elements are <code>null</code>.
-	 * 
+	 *
 	 * @return <code>true</code> if the named expression is eady to compute
 	 */
 	public boolean readyToCompute() {
@@ -240,7 +240,7 @@ public class NamedExpression implements Comparable<NamedExpression>, XmlPrintStr
 
 	/**
 	 * Compute the value of the expression
-	 * 
+	 *
 	 * @param index the index into the data arrays
 	 * @return the value
 	 */

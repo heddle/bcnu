@@ -10,7 +10,7 @@ public class HBSegments extends Segments {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static HBSegments getInstance() {

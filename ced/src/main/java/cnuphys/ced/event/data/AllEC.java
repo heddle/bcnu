@@ -45,7 +45,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the FTOF singleton
 	 */
 	public static AllEC getInstance() {
@@ -57,7 +57,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Get the layer name
-	 * 
+	 *
 	 * @param layer the 1-based layer 1..9
 	 * @return the brief layer name
 	 */
@@ -96,7 +96,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the updated list
 	 */
 	public TdcAdcHitList updateTdcAdcList() {
@@ -106,7 +106,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Get the max adc for just the PCAL
-	 * 
+	 *
 	 * @return the max adc for just the PCAL
 	 */
 	public int getMaxPCALAdc() {
@@ -115,7 +115,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Get the max adc for just the ECAL
-	 * 
+	 *
 	 * @return the max adc for just the ECAL
 	 */
 	public int getMaxECALAdc() {
@@ -124,7 +124,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Get the tdc and adc hit list
-	 * 
+	 *
 	 * @return the tdc adc hit list
 	 */
 	public TdcAdcHitList getHits() {
@@ -133,7 +133,7 @@ public class AllEC extends DetectorData {
 
 	/**
 	 * Get the reconstructed cluster list
-	 * 
+	 *
 	 * @return reconstructed list
 	 */
 	public ClusterList getClusters() {

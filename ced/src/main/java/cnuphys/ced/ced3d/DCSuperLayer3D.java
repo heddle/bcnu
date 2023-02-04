@@ -1,14 +1,15 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.Color;
+
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DCTdcHitList;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.lund.X11Colors;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class DCSuperLayer3D extends DetectorItem3D {
 
@@ -27,7 +28,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 
 	/**
 	 * The owner panel
-	 * 
+	 *
 	 * @param panel3d
 	 * @param sector     one based sector [1..6]
 	 * @param superLayer one based superlayer [1..6]
@@ -68,7 +69,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 		}
 
 //		int hitCount = DC.hitCount();
-//		
+//
 //		if (hitCount > 0) {
 //			byte sector[] = DC.sector();
 //			byte superlayer[] = DC.superlayer();
@@ -80,7 +81,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 //			double avgZ[] = DC.avgZ();
 //			float docas[] = DC.doca();
 //
-//			
+//
 //			for (int i = 0; i < hitCount; i++) {
 //				try {
 //					int sect1 = sector[i]; // 1 based
@@ -92,9 +93,9 @@ public class DCSuperLayer3D extends DetectorItem3D {
 //							getWire(lay1, wire1, coords);
 //
 //							if (showMCTruth() && (pid != null) && (avgX != null)) {
-//								
 //
-//								
+//
+//
 //								Color color = truthColor(pid, i);
 //								Support3D.drawLine(drawable, coords, color, 2f);
 //								// convert mm to cm
@@ -133,7 +134,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 //			int layer[] = DC.timeBasedTrkgLayer();
 //			int wire[] = DC.timeBasedTrkgWire();
 //			double doca[] = DC.timeBasedTrkgDoca();
-//			
+//
 //			for (int i = 0; i < hitCount; i++) {
 //				try {
 //					int sect1 = sector[i]; // 1 based
@@ -166,7 +167,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 
 	/**
 	 * Get the 1-based sector [1..6]
-	 * 
+	 *
 	 * @return the 1-based sector [1..6]
 	 */
 	public int getSector() {
@@ -175,7 +176,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 
 	/**
 	 * Get the 1-based super layer [1..6]
-	 * 
+	 *
 	 * @return the 1-based super layer [1..6]
 	 */
 	public int getSuperLayer() {

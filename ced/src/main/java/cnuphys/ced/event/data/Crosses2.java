@@ -20,7 +20,7 @@ public class Crosses2 extends DetectorData {
 
 	/**
 	 * Get the cross list
-	 * 
+	 *
 	 * @return the cross list
 	 */
 	public CrossList2 getCrosses() {

@@ -23,7 +23,7 @@ import cnuphys.ced.event.IAccumulationListener;
 
 /**
  * Panel that shows which banks are present in an event
- * 
+ *
  * @author heddle
  *
  */
@@ -35,7 +35,7 @@ public class ClasIoPresentBankPanel extends JPanel
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// hash table
-	private Hashtable<String, ActionLabel> _alabels = new Hashtable<String, ActionLabel>(193);
+	private Hashtable<String, ActionLabel> _alabels = new Hashtable<>(193);
 
 	// the node table
 	private NodeTable _nodeTable;
@@ -45,7 +45,7 @@ public class ClasIoPresentBankPanel extends JPanel
 	/**
 	 * This panel holds all the known banks in a grid of buttons. Banks present will
 	 * be clickable, and will cause the table to scroll to that name
-	 * 
+	 *
 	 * @param nodeTable the table
 	 */
 	public ClasIoPresentBankPanel(NodeTable nodeTable) {
@@ -55,7 +55,7 @@ public class ClasIoPresentBankPanel extends JPanel
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 		AccumulationManager.getInstance().addAccumulationListener(this);
 	}
-	
+
 	//replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
 		removeAll();
@@ -83,13 +83,13 @@ public class ClasIoPresentBankPanel extends JPanel
 		if (allBanks == null) {
 			return;
 		}
-		
+
 		for (String s : allBanks) {
-			
+
 			ActionLabel alabel = _alabels.get(s);
 
 			if (alabel != null) {
-				
+
 				boolean inCurrent = _eventManager.isBankInCurrentEvent(s);
 				alabel.setEnabled(inCurrent);
 
@@ -126,7 +126,7 @@ public class ClasIoPresentBankPanel extends JPanel
 							if (_dataBanks.isEmpty()) {
 								ViewManager.getInstance().getViewMenu().addSeparator();
 							}
-							
+
 							bankView = new ClasIoBankView(label);
 							_dataBanks.put(label, bankView);
 						}
@@ -204,7 +204,7 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -213,7 +213,7 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

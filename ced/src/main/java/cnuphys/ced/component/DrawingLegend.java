@@ -31,7 +31,7 @@ import cnuphys.ced.frame.CedColors;
  *
  */
 public class DrawingLegend extends JComponent {
-	
+
 	private static final int TRAJSIZE = 10;
 
 	private static final Font labelFont = new Font("SansSerif", Font.PLAIN, 9);
@@ -43,7 +43,7 @@ public class DrawingLegend extends JComponent {
 
 	/**
 	 * Set the parent view
-	 * 
+	 *
 	 * @param view the parent view
 	 */
 	public void setView(BaseView view) {
@@ -52,7 +52,7 @@ public class DrawingLegend extends JComponent {
 
 	/**
 	 * Get the parent view
-	 * 
+	 *
 	 * @return the parent view
 	 */
 	public BaseView getView() {
@@ -96,7 +96,7 @@ public class DrawingLegend extends JComponent {
 		}
 
 	}
-	
+
 
 	private int paintRecTrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
@@ -105,7 +105,7 @@ public class DrawingLegend extends JComponent {
 		x += (TRAJSIZE + 4);
 		return quickString(g, x, y, "Rec Traj Pnt");
 	}
-	
+
 	private int paintP1TrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.green);
@@ -147,13 +147,13 @@ public class DrawingLegend extends JComponent {
 		Graphics2D g2 = (Graphics2D) g;
 		x = drawCross(g, x, yc, DataDrawSupport.HB_CROSS);
 		x = drawCross(g, x, yc, DataDrawSupport.TB_CROSS);
-		
+
 		yc += 17;
 		x = xo;
 
 		x = drawCross(g, x, yc, DataDrawSupport.AIHB_CROSS);
 		x = drawCross(g, x, yc, DataDrawSupport.AITB_CROSS);
-		
+
 		yc += 17;
 		x = xo;
 		x = drawCross(g, x, yc, DataDrawSupport.FMT_CROSS);
@@ -174,12 +174,12 @@ public class DrawingLegend extends JComponent {
 		x = xo;
 		x = drawLine(g2, x, yc, CedColors.HB_COLOR, "Reg HB Track ");
 		x = drawLine(g2, x, yc, CedColors.TB_COLOR, "Reg TB Track ");
-		
+
 		yc += 17;
 		x = xo;
 		x = drawLine(g2, x, yc, CedColors.AIHB_COLOR, "AI HB Track ");
 		x = drawLine(g2, x, yc, CedColors.AITB_COLOR, "AI TB Track ");
-		
+
 		yc += 17;
 		x = xo;
 		x = drawLine(g2, x, yc, CedColors.cvtTrackColor, "CVT Track ");

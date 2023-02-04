@@ -36,19 +36,18 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
 import cnuphys.ced.event.data.RTPCHitList;
-
 import cnuphys.lund.X11Colors;
 
 
 public class RTPCView extends CedXYView implements ChangeListener {
-	
-	/* layers are the z divisions and will be the vertical axis, with a physical range 
+
+	/* layers are the z divisions and will be the vertical axis, with a physical range
 	 * of -192mm to 192 mm and 96 divisions, so each division in (2*192)/96 = 4mm.
-	 * 
+	 *
 	 * components are the phi divisions and will be the horizontal axis, with a physical
 	 * range of 0 to 360 deg and 180 divisions, so each division is 2 deg.
 	 */
-	
+
 	private static final double DELZ = 4.; //mm
 	private static final double DELPHI = 2.; //deg
 	private static final double ZMIN = -192;
@@ -59,20 +58,20 @@ public class RTPCView extends CedXYView implements ChangeListener {
 //	private static final double STRETCHPHIMIN = 1.005*PHIMIN;
 //	private static final double STRETCHZMAX = 1.005*ZMAX;
 //	private static final double STRETCHPHIMAX = 1.005*PHIMAX;
-	
+
 	//the local screen rect
 	private Rectangle screenRect;
-	
+
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 
 	// base title
 	private static final String _baseTitle = "RTPC";
 
-	// units are 
-//	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(STRETCHPHIMIN, STRETCHZMIN, 
+	// units are
+//	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(STRETCHPHIMIN, STRETCHZMIN,
 //			(STRETCHPHIMAX - STRETCHPHIMIN), (STRETCHZMAX - STRETCHZMIN));
-	
+
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-10, -200, 380, 400);
 
 	/**
@@ -82,11 +81,11 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	public RTPCView(Object... keyVals) {
 		super(keyVals);
 	}
-	
+
 
 	/**
 	 * Create an RTPC View view
-	 * 
+	 *
 	 * @return an RTPC View View
 	 */
 	public static RTPCView createRTPCView() {
@@ -102,17 +101,17 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		String title = _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")"));
 
 		// create the view
-		view = new RTPCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, 
+		view = new RTPCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle,
 				PropertySupport.WIDTH, width,
-				PropertySupport.HEIGHT, height, 
-				PropertySupport.LEFTMARGIN, LMARGIN, 
+				PropertySupport.HEIGHT, height,
+				PropertySupport.LEFTMARGIN, LMARGIN,
 				PropertySupport.TOPMARGIN, TMARGIN,
-				PropertySupport.RIGHTMARGIN, RMARGIN, 
-				PropertySupport.BOTTOMMARGIN, BMARGIN, 
-				PropertySupport.TOOLBAR, true, 
-				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, 
+				PropertySupport.RIGHTMARGIN, RMARGIN,
+				PropertySupport.BOTTOMMARGIN, BMARGIN,
+				PropertySupport.TOOLBAR, true,
+				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
 				PropertySupport.VISIBLE, true,
-				PropertySupport.TITLE, title, 
+				PropertySupport.TITLE, title,
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
@@ -155,24 +154,24 @@ public class RTPCView extends CedXYView implements ChangeListener {
 
 			// draw the rtpc pad board grid
 			private void drawGrid(Graphics g, IContainer container, Rectangle screenRect) {
-				
+
 				Rectangle.Double wr = new Rectangle.Double();
 				container.localToWorld(screenRect, wr);
-				
+
 				double xmin = wr.x;
 				double xmax =  wr.getMaxX();
 				double ymin = wr.y;
 				double ymax =  wr.getMaxY();
 
-				
+
 				Point p0 = new Point();
 				Point p1 = new Point();
-			
+
 				//horizontal lines
 				for (int i = 0; i <= RTPC.NUMLAYER; i++) {
 					double z = ZMIN + i*DELZ;
-					
-					
+
+
 					if ((z >= ymin) && (z <= ymax)) {
 						g.setColor((Math.abs(z) < 1) ? Color.gray : Color.lightGray);
 
@@ -180,15 +179,15 @@ public class RTPCView extends CedXYView implements ChangeListener {
 						container.worldToLocal(p1, Math.min(PHIMAX, xmax), z);
 						g.drawLine(p0.x, p0.y, p1.x, p1.y);
 					}
-					
-					
+
+
 				}
-				
+
 				// vertical lines
 				for (int i = 0; i <= RTPC.NUMCOMPONENT; i++) {
 					double phi = PHIMIN + i * DELPHI;
-					
-					
+
+
 					if ((phi >= xmin) && (phi <= xmax)) {
 						g.setColor((Math.abs(phi-180) < 1) ? Color.gray : Color.lightGray);
 
@@ -235,9 +234,9 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 		RTPCHitList hits = RTPC.getInstance().getHits();
 //		System.err.println("DRAWING RTPC HITS count " + ((hits == null) ? 0 : hits.size()));
-		
+
 		if ((hits != null) && !hits.isEmpty()) {
-			
+
 			Rectangle hr = new Rectangle();
 			Point p0 = new Point();
 			Point p1 = new Point();
@@ -260,18 +259,18 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		}
 
 	}
-	
+
 	//set the rect based on component and layer
 	//component and layer are 1-based
 	private void setRect(IContainer container, short component, byte layer, Rectangle hr, Point p0, Point p1) {
 		double phi = PHIMIN + (component - 1)*DELPHI;
 		double z = ZMIN + (layer - 1)*DELZ;
-		
+
 		container.worldToLocal(p0, phi, z);
 		container.worldToLocal(p1, phi+DELPHI, z+DELZ);
-		 
+
 		hr.setBounds(p0.x, p1.y, p1.x -  p0.x, p0.y - p1.y);
-		
+
 //		System.err.println("RTPC hit rect: " +  hr);
 	}
 
@@ -287,23 +286,23 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		for (short cm1 = 0; cm1 < RTPC.NUMCOMPONENT; cm1++) {
 			for (byte lm1 = 0; lm1 < RTPC.NUMLAYER; lm1++) {
 				if (counts[cm1][lm1] > 0) {
-										
+
 					short component =  (short)(cm1 + 1);
 					byte layer = (byte)(lm1 + 1);
 					setRect(container, component, layer, hr, p0, p1);
-					
+
 					double fract = getMedianSetting() * (((double) counts[cm1][lm1]) / (1 + medianHit));
 
 					Color color = AccumulationManager.getInstance().getColor(getColorScaleModel(), fract);
 					g.setColor(color);
 					g.fillRect(hr.x, hr.y, hr.width, hr.height);
-					
+
 //					System.err.println("[" + component + ", " + layer + "] count: " +
 //							counts[cm1][lm1] + "  fract: " + fract + "  medianCount: " +  medianHit);
-					
+
 				}
 			}
-			
+
 		}
 
 	}
@@ -316,17 +315,17 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	@Override
 	protected void addItems() {
 	}
-	
-	
+
+
 	//find the matching hits
 	private ArrayList<RTPCHit> matchingHits(short component, byte layer) {
 		ArrayList<RTPCHit> list =  new ArrayList<>();
-		
+
 		RTPCHitList hits = RTPC.getInstance().getHits();
 //		System.err.println("DRAWING RTPC HITS count " + ((hits == null) ? 0 : hits.size()));
-		
+
 		if ((hits != null) && !hits.isEmpty()) {
-			
+
 			for (RTPCHit hit : hits) {
 				if (hit != null) {
 					if ((component ==  hit.component) && (layer == hit.layer)) {
@@ -336,14 +335,14 @@ public class RTPCView extends CedXYView implements ChangeListener {
 			}
 		}
 
-		
+
 		return list;
 	}
 
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param wp  the corresponding world location.
@@ -351,7 +350,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	@Override
 	public void getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double wp,
 			List<String> feedbackStrings) {
-		
+
 		boolean haveEvent = false;
 
 		EventSourceType estype = ClasIoEventManager.getInstance().getEventSourceType();
@@ -369,55 +368,51 @@ public class RTPCView extends CedXYView implements ChangeListener {
 			feedbackStrings.add("$orange red$No event");
 		} else {
 			feedbackStrings.add("$orange red$" + "sequential event " + _eventManager.getSequentialEventNumber());
-			
+
 			int trueEventNum = _eventManager.getTrueEventNumber();
 			feedbackStrings.add("$orange red$" + "true event " + ((trueEventNum < 0) ? "n/a" : trueEventNum ));
 			feedbackStrings.add("$orange red$" + _eventManager.getCurrentSourceDescription());
 		}
 
-		
-		if ((screenRect == null) || !screenRect.contains(screenPoint)) {
+
+		if ((screenRect == null) || !screenRect.contains(screenPoint) || (wp.x < PHIMIN) || (wp.x > PHIMAX)) {
 			return;
 		}
-		
-		if ((wp.x < PHIMIN) || (wp.x > PHIMAX)) {
-			return;
-		}
-		
+
 		if ((wp.y < ZMIN) || (wp.y > ZMAX)) {
 			return;
 		}
 
-		String locStr = String.format("(%6.2f" + UnicodeSupport.DEGREE + ", %6.2f mm" , 
+		String locStr = String.format("(%6.2f" + UnicodeSupport.DEGREE + ", %6.2f mm" ,
 				wp.x, wp.y);
 		String fullStr = "(" + UnicodeSupport.SMALL_PHI + ", z ) = " + locStr;
-		
+
 		feedbackStrings.add(fullStr);
-		
-		
+
+
 		//layer and component
 		Point pp = new Point();
 		worldToComponentLayer(container, pp, wp);
-		
+
 		short component = (short)(pp.x);
 		byte layer = (byte)(pp.y);
-		
+
 		String clStr = "component " + pp.x + ", layer " + pp.y;
 		feedbackStrings.add(clStr);
-		
+
 		//hits
 		ArrayList<RTPCHit> list = matchingHits(component, layer);
 		if ((list != null) && !list.isEmpty()) {
 			feedbackStrings.add("num hits: " + list.size());
 			for (RTPCHit hit : list) {
-				
+
 				String s = String.format("  adc %d ped %d time %-7.2f", hit.adc, hit.ped, hit.time);
 				feedbackStrings.add(s);
 			}
 		}
 
 	}
-	
+
 	//after return, p.x is the components 1..180 and p.y is layer 1..96
 	private void worldToComponentLayer(IContainer container, Point p, Point2D.Double wp) {
 		p.x = 1 + (int)((wp.x - PHIMIN)/DELPHI);
@@ -426,7 +421,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override
@@ -448,14 +443,14 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		return view;
 
 	}
-	
+
 
 	// draw the axes
 	protected void drawAxes(Graphics g, IContainer container, Rectangle bounds) {
-		
+
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		Rectangle sr = getActiveScreenRectangle(container);
 		// Rectangle sr = container.getInsetRectangle();
 
@@ -531,17 +526,17 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		g2.drawString(UnicodeSupport.SMALL_PHI, right-3, bottom + fm.getHeight());
 
 	}
-	
+
 	/**
 	 * Get the default value for the adc threshold
-	 * 
+	 *
 	 * @return the default value for the adc threshold
 	 */
 	@Override
 	public int getAdcThresholdDefault() {
 		return 340;
 	}
-	
+
 	/**
 	 * Some views (e.g., RTPC) have a threshold. Thay must override.
 	 * @return the adc threshold for viewing hits
@@ -552,7 +547,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	}
 
 
-	
+
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
@@ -563,7 +558,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 			_controlPanel.getAdcThresholdBorder().setTitle("ADC Display Threshold (" + getAdcThreshold() + ")");
 			getContainer().refresh();
 			_controlPanel.getAdcThresholdSlider().getParent().repaint();
-		} 
+		}
 	}
 
 }

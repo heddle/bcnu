@@ -2,6 +2,7 @@ package cnuphys.ced.event;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
@@ -45,7 +46,7 @@ public class PlotManager {
 
 	/**
 	 * Access to the PlotManager singleton
-	 * 
+	 *
 	 * @return the PlotManager singleton
 	 */
 	public static PlotManager getInstance() {

@@ -62,7 +62,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Create a Plot Dialog
-	 * 
+	 *
 	 * @param name the name of the plot
 	 */
 	public PlotDialog(String name) {
@@ -150,7 +150,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -168,7 +168,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Add a cut
-	 * 
+	 *
 	 * @param cut the cut to add
 	 */
 	public void addCut(ICut cut) {
@@ -177,7 +177,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get all the defined cuts, active or not
-	 * 
+	 *
 	 * @return all the cuts
 	 */
 	protected Vector<ICut> getCuts() {
@@ -186,14 +186,14 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get a string representing the type
-	 * 
+	 *
 	 * @return a string representing the type
 	 */
 	public abstract String getPlotType();
 
 	/**
 	 * Get the plot parameters for the underlying plot.
-	 * 
+	 *
 	 * @return the plot parameters for the underlying plot.
 	 */
 	public PlotParameters getParameters() {
@@ -207,7 +207,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get the plot canvas for the underlying plot.
-	 * 
+	 *
 	 * @return the plot canvas for the underlying plot.
 	 */
 	public PlotCanvas getCanvas() {
@@ -220,7 +220,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Write out the cuts of the plot dialog
-	 * 
+	 *
 	 * @param xmlPrintStreamWriter the writer
 	 */
 	protected void writeCuts(XmlPrintStreamWriter xmlPrintStreamWriter) {
@@ -234,7 +234,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Write out the bounds of the plot dialog
-	 * 
+	 *
 	 * @param xmlPrintStreamWriter the writer
 	 */
 	protected void writeBounds(XmlPrintStreamWriter xmlPrintStreamWriter) {
@@ -249,7 +249,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Write out the data set for scatter plots
-	 * 
+	 *
 	 * @param writer
 	 * @param dataSet
 	 */
@@ -266,7 +266,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Write out 1D histo data
-	 * 
+	 *
 	 * @param writer
 	 * @param hd     the histo data
 	 */
@@ -291,7 +291,7 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Write out 1D histo data
-	 * 
+	 *
 	 * @param writer
 	 * @param hd     the histo data
 	 */
@@ -328,14 +328,14 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Write out plot specific xml
-	 * 
+	 *
 	 * @param writer the writer
 	 */
 	public abstract void customXml(XmlPrintStreamWriter writer);
 
 	/**
 	 * Get the effective length of the data
-	 * 
+	 *
 	 * @param event the event
 	 * @param cd    the column data
 	 * @param ne    the named expression
@@ -356,17 +356,14 @@ public abstract class PlotDialog extends JDialog
 
 	/**
 	 * Get a value for either the column data or the named expression
-	 * 
+	 *
 	 * @param index the index
 	 * @param cd    the column data
 	 * @param ne    the named expression
 	 * @return the value at the index or Double.NaN on error
 	 */
 	public double getValue(DataEvent event, int index, ColumnData cd, NamedExpression ne) {
-		if (index < 0) {
-			return Double.NaN;
-		}
-		if ((cd == null) && (ne == null)) {
+		if ((index < 0) || ((cd == null) && (ne == null))) {
 			return Double.NaN;
 		}
 

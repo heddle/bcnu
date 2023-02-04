@@ -8,7 +8,7 @@ public enum DataSourceType {
 	/**
 	 * A map for the names of the event sources
 	 */
-	public static EnumMap<DataSourceType, String> names = new EnumMap<DataSourceType, String>(DataSourceType.class);
+	public static EnumMap<DataSourceType, String> names = new EnumMap<>(DataSourceType.class);
 
 	static {
 		names.put(HIPPOFILE, "Hippo File");
@@ -17,7 +17,7 @@ public enum DataSourceType {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -26,7 +26,7 @@ public enum DataSourceType {
 
 	/*
 	 * Returns the mapped "nice name"
-	 * 
+	 *
 	 * @see java.lang.Enum#toString()
 	 */
 	@Override
@@ -36,7 +36,7 @@ public enum DataSourceType {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>DataSourceType</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -48,10 +48,7 @@ public enum DataSourceType {
 		}
 
 		for (DataSourceType fs : values()) {
-			if (name.equalsIgnoreCase(fs.name())) {
-				return fs;
-			}
-			if (name.equalsIgnoreCase(names.get(fs))) {
+			if (name.equalsIgnoreCase(fs.name()) || name.equalsIgnoreCase(names.get(fs))) {
 				return fs;
 			}
 		}

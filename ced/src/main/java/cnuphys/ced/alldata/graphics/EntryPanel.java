@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -155,7 +156,7 @@ public class EntryPanel extends JPanel {
 
 	/**
 	 * Try to get the expression from the text area
-	 * 
+	 *
 	 * @return the expression or <code>null</code>
 	 */
 	private Expression getExpression() {
@@ -165,16 +166,12 @@ public class EntryPanel extends JPanel {
 
 	/**
 	 * Edit a row from the table
-	 * 
+	 *
 	 * @param row the zero-based row to edit
 	 */
 	public void editRow(int row) {
 		ExpressionTable table = _expressionPanel.getTable();
-		if (table == null) {
-			return;
-		}
-
-		if ((row < 0) || (row >= table.getRowCount())) {
+		if ((table == null) || (row < 0) || (row >= table.getRowCount())) {
 			return;
 		}
 

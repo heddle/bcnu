@@ -50,7 +50,7 @@ public class FTCalPanel3D extends CedPanel3D {
 	 * This gets the z step used by the mouse and key adapters, to see how fast we
 	 * move in or in in response to mouse wheel or up/down arrows. It should be
 	 * overridden to give something sensible. like the scale/100;
-	 * 
+	 *
 	 * @return the z step (changes to zDist) for moving in and out
 	 */
 	@Override

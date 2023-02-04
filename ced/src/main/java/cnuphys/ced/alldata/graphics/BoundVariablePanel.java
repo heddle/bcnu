@@ -39,7 +39,7 @@ public class BoundVariablePanel extends JPanel implements ActionListener, ListSe
 
 	/**
 	 * Accessor for the underlying table.
-	 * 
+	 *
 	 * @return the underlying bound variable table.
 	 */
 	public BoundVariableTable getTable() {
@@ -48,7 +48,7 @@ public class BoundVariablePanel extends JPanel implements ActionListener, ListSe
 
 	/**
 	 * Simple accessor for underlying model.
-	 * 
+	 *
 	 * @return The underlying table model.
 	 */
 	public BoundVariableTableModel getBoundVariableModel() {
@@ -62,7 +62,7 @@ public class BoundVariablePanel extends JPanel implements ActionListener, ListSe
 			int rows[] = getTable().getSelectedRows();
 			if ((rows != null) && (rows.length > 0)) {
 				int len = rows.length;
-				Vector<NameBinding> nbv = new Vector<NameBinding>();
+				Vector<NameBinding> nbv = new Vector<>();
 				for (int i = 0; i < len; i++) {
 					nbv.add(getBoundVariableModel().getNameBinding(rows[i]));
 				}

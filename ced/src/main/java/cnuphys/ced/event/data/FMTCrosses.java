@@ -10,7 +10,7 @@ public class FMTCrosses extends Crosses2 {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static FMTCrosses getInstance() {

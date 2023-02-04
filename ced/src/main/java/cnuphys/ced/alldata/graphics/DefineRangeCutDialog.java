@@ -57,7 +57,7 @@ public class DefineRangeCutDialog extends JDialog implements ActionListener, Pro
 
 	/**
 	 * Get the reason the dialog closed
-	 * 
+	 *
 	 * @return the reason the dialog closed
 	 */
 	public int getReason() {
@@ -66,7 +66,7 @@ public class DefineRangeCutDialog extends JDialog implements ActionListener, Pro
 
 	/**
 	 * Return a RangeCut if the user hit ok
-	 * 
+	 *
 	 * @return a Range or <code>null</code>.
 	 */
 	public RangeCut getRangeCut() {

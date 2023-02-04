@@ -47,9 +47,7 @@ public class AdcHit implements Comparable<AdcHit> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		AdcHit other = (AdcHit) obj;
 		if (sector != other.sector)
@@ -63,7 +61,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * Get the average ADC value
-	 * 
+	 *
 	 * @return the average of left and right
 	 */
 	public int averageADC() {
@@ -102,7 +100,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * Get a string for just the tdc data
-	 * 
+	 *
 	 * @return a string for just the tdc data
 	 */
 	private String valString(int valL, int valR, String name) {
@@ -119,7 +117,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * Get a string for just the ped data
-	 * 
+	 *
 	 * @return a string for just the ped data
 	 */
 	public String pedString() {
@@ -128,7 +126,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * Get a string for just the tdc data
-	 * 
+	 *
 	 * @return a string for just the tdc data
 	 */
 	public String adcString() {
@@ -143,7 +141,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * Add this hit to the feedback list
-	 * 
+	 *
 	 * @param feedbackStrings the list of strings
 	 */
 	public void tdcAdcFeedback(List<String> feedbackStrings) {
@@ -152,7 +150,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * Add this hit to the feedback list
-	 * 
+	 *
 	 * @param layerName       a nice name for the layer
 	 * @param componentName   a nice name for the component
 	 * @param feedbackStrings
@@ -178,7 +176,7 @@ public class AdcHit implements Comparable<AdcHit> {
 
 	/**
 	 * For feedback
-	 * 
+	 *
 	 * @param pp
 	 */
 	public void setLocation(Point pp) {

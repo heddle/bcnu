@@ -23,13 +23,13 @@ import cnuphys.snr.SNRCluster;
 import cnuphys.snr.WireList;
 
 public class ClusterDrawer {
-	
+
 	//the parent view
 	private AllDCView _view;
-	
+
 	public static final Stroke THICKLINE = new BasicStroke(2.0f);
 
-	
+
 	/**
 	 * A cluster drawer for the all dc view
 	 * @param view the all dc parent view
@@ -37,8 +37,8 @@ public class ClusterDrawer {
 	public ClusterDrawer(AllDCView view) {
 		_view = view;
 	}
-	
-	
+
+
 	/**
 	 * Draw the hit based DC clusters
 	 */
@@ -48,7 +48,7 @@ public class ClusterDrawer {
 			drawDCClusterList(g, container, list, DC.getInstance().getHBHits(), CedColors.HB_COLOR);
 		}
 	}
-	
+
 	/**
 	 * Draw the time based DC clusters
 	 */
@@ -58,7 +58,7 @@ public class ClusterDrawer {
 			drawDCClusterList(g, container, list, DC.getInstance().getTBHits(), CedColors.TB_COLOR);
 		}
 	}
-	
+
 	/**
 	 * Draw the AI hit based DC clusters
 	 */
@@ -68,7 +68,7 @@ public class ClusterDrawer {
 			drawDCClusterList(g, container, list, AIDC.getInstance().getAIHBHits(), CedColors.AIHB_COLOR);
 		}
 	}
-	
+
 	/**
 	 * Draw the AI time based DC clusters
 	 */
@@ -78,13 +78,13 @@ public class ClusterDrawer {
 			drawDCClusterList(g, container, list, AIDC.getInstance().getAITBHits(), CedColors.AITB_COLOR);
 		}
 	}
-	
+
 	/**
 	 * Draw the snr DC clusters
 	 */
 	public void drawSNRDCClusters(Graphics g, IContainer container) {
 		NoiseManager nm = NoiseManager.getInstance();
-		
+
 		for (int sect0 = 0; sect0 < 6; sect0++) {
 			for (int supl0 = 0; supl0 < 6; supl0++) {
 				NoiseReductionParameters params = nm.getParameters(sect0, supl0);
@@ -92,7 +92,7 @@ public class ClusterDrawer {
 				if (clusters != null) {
 					for (SNRCluster cluster : clusters) {
 						for (int lay0 = 0; lay0< 6; lay0++) {
-							drawSingleSNRClusterOfWires(g, container, sect0, supl0, lay0, 
+							drawSingleSNRClusterOfWires(g, container, sect0, supl0, lay0,
 									cluster.wireLists[lay0], CedColors.SNR_CLUSTER_COLOR);
 						}
 
@@ -100,29 +100,29 @@ public class ClusterDrawer {
 					}
 				}
 			}
-			
+
 		}
 	}
-	
-	
+
+
 	//draws the HB or TB clusters
 	private void drawDCClusterList(Graphics g, IContainer container, DCClusterList list, DCReconHitList reconHits, Color color) {
-		
+
 		for (DCCluster cluster : list) {
 			if ((cluster != null) && (cluster.hitID != null)) {
-				
+
 
 				//count the non-negative hit ids
 				int length = 0;
-				for (int i = 0; i < cluster.hitID.length; i++) {
-					if (cluster.hitID[i] > 0) {
+				for (short element : cluster.hitID) {
+					if (element > 0) {
 						length++;
 					}
 					else {
 						break;
 					}
 				}
-				
+
 				//get the hits
 				if (length > 0) {
 					int sector = cluster.sector; // 1..6
@@ -143,12 +143,12 @@ public class ClusterDrawer {
 					drawSingleClusterOfWires(g, container, sector, superlayer, layer, wire, color);
 				}
 			}
-			
+
 		}
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 * @param sector 1-based sector
@@ -156,30 +156,30 @@ public class ClusterDrawer {
 	 * @param layer array of 1-based wires
 	 * @param wire array of 1-based wires
 	 */
-	private void drawSingleClusterOfWires(Graphics g, IContainer container, 
+	private void drawSingleClusterOfWires(Graphics g, IContainer container,
 			int sector, int superlayer, int layer[], int wire[], Color color) {
-		
-		
+
+
 		Graphics2D g2 = (Graphics2D)g;
-		
+
 		Stroke saveStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
-		
+
 		Rectangle sr = new Rectangle();
 		Rectangle.Double wr = new Rectangle.Double();
-		
+
 		Area area = new Area();
-		
+
 		for (int i = 0; i < wire.length; i++) {
 			//drawing hack
 			int hackSL = (sector < 4) ? superlayer : 7-superlayer;
 			_view.getCell(sector, hackSL, layer[i], wire[i], wr);
-			
-			
+
+
 			container.worldToLocal(sr, wr);
 			area.add(new Area(sr));
 		}
-		
+
 		if (!area.isEmpty()) {
 			g2.setColor(color);
             g2.fill(area);
@@ -189,9 +189,9 @@ public class ClusterDrawer {
 
 		g2.setStroke(saveStroke);
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 * @param cluster
@@ -199,26 +199,26 @@ public class ClusterDrawer {
 	 * @param superlayer 0-based superlayer
 	 */
 	private void drawSNRBestFitLine(Graphics g, IContainer container, SNRCluster cluster, int sector, int superlayer) {
-		
+
 		sector += 1;
 		superlayer += 1;
 
 		//draw best fit line
-		
+
 		Graphics2D g2 = (Graphics2D)g;
 		Rectangle cell = new Rectangle();
 		Rectangle.Double wr = new Rectangle.Double();
 
-		
+
 		double wire1 = 1 + cluster.getWirePosition(0);
 		double wire2 = 1 + cluster.getWirePosition(5);
-		
+
 		int iwire1 =  (int)wire1;
 		int iwire2 =  (int)wire2;
-		
+
 		double fwire1 = wire1 -  iwire1;
 		double fwire2 = wire2 -  iwire2;
-		
+
 		int hackSL = (sector < 4) ? superlayer : 7 - superlayer;
 
 		if ((iwire1 > 0) && (iwire1 < 112) && (iwire2 > 0) && (iwire2 < 112)) {
@@ -257,9 +257,9 @@ public class ClusterDrawer {
 
 
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 * @param sector 0-based sector
@@ -267,33 +267,33 @@ public class ClusterDrawer {
 	 * @param layer 0-based layer
 	 * @param wireList list of 0-based wires
 	 */
-	private void drawSingleSNRClusterOfWires(Graphics g, IContainer container, 
+	private void drawSingleSNRClusterOfWires(Graphics g, IContainer container,
 			int sector, int superlayer, int layer, WireList wireList, Color lineColor) {
-		
-		
+
+
 		Graphics2D g2 = (Graphics2D)g;
-		
+
 		Stroke saveStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
 		Rectangle sr = new Rectangle();
 		Rectangle.Double wr = new Rectangle.Double();
-		
+
 		Area area = new Area();
-		
+
 		sector += 1;
 		superlayer += 1;
 		layer += 1;
-		
+
 		for (int wire : wireList) {
 			//drawing hack
 			int hackSL = (sector < 4) ? superlayer : 7-superlayer;
 			_view.getCell(sector, hackSL, layer, wire+1, wr);
-			
-			
+
+
 			container.worldToLocal(sr, wr);
 			area.add(new Area(sr));
 		}
-		
+
 		if (!area.isEmpty()) {
 //			g2.setColor(_clusterFillColor);
 //            g2.fill(area);
@@ -303,7 +303,7 @@ public class ClusterDrawer {
 
 
 		g2.setStroke(saveStroke);
-		
+
 	}
 
 }

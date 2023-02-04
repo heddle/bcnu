@@ -2,9 +2,9 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
-import cnuphys.lund.X11Colors;
-
 import com.jogamp.opengl.GLAutoDrawable;
+
+import cnuphys.lund.X11Colors;
 
 public class CNDLayer3D extends DetectorItem3D {
 
@@ -54,7 +54,7 @@ public class CNDLayer3D extends DetectorItem3D {
 
 	/**
 	 * Get the 3D Paddle
-	 * 
+	 *
 	 * @param paddleId the paddle Id [..48]
 	 * @return the 3D paddle
 	 */

@@ -30,9 +30,9 @@ import cnuphys.magfield.Torus;
  * This is a magnetic field item. It is restricted to live only on sector views.
  * It will show the composite magnetic field--the sum of all fields loaded and
  * not set to the zero field.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
@@ -60,7 +60,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
 	/**
 	 * Create a magnetic field item. Only allowed on sector views
-	 * 
+	 *
 	 * @param layer the layer this item lives on
 	 * @param view  the view--which must be a SectorView
 	 */
@@ -75,7 +75,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
 	/**
 	 * Always return false for this item.
-	 * 
+	 *
 	 * @return false--never care if mouse is inside the field.
 	 */
 	@Override
@@ -85,13 +85,13 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
 	/**
 	 * Custom drawing for the field.
-	 * 
+	 *
 	 * @param g         the Graphics context.
 	 * @param container the rendering container.
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
-		
+
 		if (_failedToLoad) {
 			return;
 		}
@@ -100,11 +100,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 			_activeProbe = FieldProbe.factory();
 		}
 
-		if (_activeProbe == null) {
-			return;
-		}
-
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
+		if ((_activeProbe == null) || ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
 
@@ -255,9 +251,9 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 		container.worldToLocal(fieldRect, fieldBoundary);
 		return fieldRect;
 	}
-	
+
 	// drawer for sector views
-	private void drawItemMagfieldView(Graphics g, IContainer container, 
+	private void drawItemMagfieldView(Graphics g, IContainer container,
 			int displayOption, boolean hasTorus,
 			boolean hasSolenoid) {
 		drawItemSectorView(g, container, displayOption, hasTorus, hasSolenoid);
@@ -381,7 +377,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 	 * Checks whether the item should be drawn. This is an additional check, beyond
 	 * the simple visibility flag check. For example, it might check whether the
 	 * item intersects the area being drawn.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 * @return <code>true</code> if the item passes any and all tests, and should be
@@ -420,7 +416,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
 	/**
 	 * Get the values array for the plot.
-	 * 
+	 *
 	 * @return the values array.
 	 */
 	private static double[] getTorusValues() {
@@ -446,7 +442,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
 	/**
 	 * Get the values array for the plot.
-	 * 
+	 *
 	 * @return the values array.
 	 */
 	private static double[] getSolenoidValues() {
@@ -481,15 +477,15 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 	private static Color[] getGradientColors() {
 		return getTorusColors();
 	}
-	
+
 
 	/**
 	 * Get the color array for the plot.
-	 * 
+	 *
 	 * @return the color array for the plot.
 	 */
 	private static Color[] getTorusColors() {
-		
+
 		int r[] = { 255, 216, 176, 106, 37, 132, 193, 255, 255, 255, 255, 127 };
 		int g[] = { 255, 239, 224, 193, 162, 155, 205, 255, 191, 128, 0, 0 };
 		int b[] = { 255, 242, 230, 136, 42, 51, 25, 0, 0, 0, 0, 127 };
@@ -521,11 +517,11 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 
 	/**
 	 * Get the color array for the plot.
-	 * 
+	 *
 	 * @return the color array for the plot.
 	 */
 	private static Color[] getSolenoidColors() {
-		
+
 		int r[] = { 255, 106, 37, 132, 255, 255, 255, 127 };
 		int g[] = { 255, 193, 162, 155, 255, 128, 0, 0 };
 		int b[] = { 255, 136, 42, 51, 0, 0, 0, 127 };

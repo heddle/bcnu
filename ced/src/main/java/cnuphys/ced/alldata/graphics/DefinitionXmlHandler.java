@@ -24,7 +24,7 @@ public class DefinitionXmlHandler implements ContentHandler {
 	private Histo2DData _histoData2D;
 	private DataSet _dataSetXYXY;
 
-	Vector<ICut> _cuts = new Vector<ICut>();
+	Vector<ICut> _cuts = new Vector<>();
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes atts) throws SAXException {

@@ -70,7 +70,7 @@ public class Transformations {
 
 	/**
 	 * Convert from the local system to the sector system
-	 * 
+	 *
 	 * @param txf a Transferable in the local system that will be modified to be in
 	 *            the sector system
 	 */
@@ -80,7 +80,7 @@ public class Transformations {
 
 	/**
 	 * Convert from the sector system to the local system
-	 * 
+	 *
 	 * @param txf a Transferable in the sector system that will be modified to be in
 	 *            the local system
 	 */
@@ -90,7 +90,7 @@ public class Transformations {
 
 	/**
 	 * Convert from the local system to the sector system
-	 * 
+	 *
 	 * @param localP  a point in the local system (not modified)
 	 * @param sectorP a point in the sector system (modified)
 	 */
@@ -101,7 +101,7 @@ public class Transformations {
 
 	/**
 	 * Convert from the sector system to the local system
-	 * 
+	 *
 	 * @param localP  a point in the local system (modified)
 	 * @param sectorP a point in the sector system (not modified)
 	 */
@@ -112,7 +112,7 @@ public class Transformations {
 
 	/**
 	 * Convert from the sector system to the local system
-	 * 
+	 *
 	 * @param localP a point in the local system (modified)
 	 * @param clasP  a point in the clas (lab) system (not modified)
 	 */
@@ -124,7 +124,7 @@ public class Transformations {
 
 	/**
 	 * Convert from the clas (lab) system to the local system
-	 * 
+	 *
 	 * @param localP a point in the local system (not modified)
 	 * @param clasP  a point in the clas (lab) system (modified)
 	 */
@@ -136,7 +136,7 @@ public class Transformations {
 
 	/**
 	 * Get the detector type of the transformation
-	 * 
+	 *
 	 * @return the detector type
 	 */
 	public DetectorType getDetectorType() {

@@ -20,9 +20,9 @@ public class TbHbHitList extends Vector<TbHbHit> {
 		int length = 0;
 
 		byte[] superlayer = ColumnData.getByteArray(bankName + ".superlayer");
-		;
+
 		byte[] layer6 = ColumnData.getByteArray(bankName + ".layer");
-		;
+
 		short[] wire = ColumnData.getShortArray(bankName + ".wire");
 		short[] id = ColumnData.getShortArray(bankName + ".id");
 		short[] status = ColumnData.getShortArray(bankName + ".status");
@@ -73,16 +73,7 @@ public class TbHbHitList extends Vector<TbHbHit> {
 			return -1;
 		}
 
-		if (lengthMismatch(sector, superlayer, "superlayer")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, layer6, "layer6")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, wire, "wire")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, id, "id")) {
+		if (lengthMismatch(sector, superlayer, "superlayer") || lengthMismatch(sector, layer6, "layer6") || lengthMismatch(sector, wire, "wire") || lengthMismatch(sector, id, "id")) {
 			return -1;
 		}
 		if (lengthMismatch(sector, status, "status")) {
@@ -107,7 +98,7 @@ public class TbHbHitList extends Vector<TbHbHit> {
 
 	/**
 	 * Find the index of a hit
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superlayer the superlayer
 	 * @param layer6     the 1-based layer 1..6
@@ -132,7 +123,7 @@ public class TbHbHitList extends Vector<TbHbHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superlayer the superlayer
 	 * @param layer6     the 1-based layer 1..6

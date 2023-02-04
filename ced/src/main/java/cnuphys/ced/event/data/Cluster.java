@@ -39,7 +39,7 @@ public class Cluster {
 	/**
 	 * Add to a list of feedback strings, no doubt because the mouse is ovwer this
 	 * hit
-	 * 
+	 *
 	 * @param v the list to add to
 	 */
 	public void getFeedbackStrings(String prefix, List<String> v) {
@@ -60,7 +60,7 @@ public class Cluster {
 
 	/**
 	 * For feedback
-	 * 
+	 *
 	 * @param pp
 	 */
 	public void setLocation(Point pp) {
@@ -75,7 +75,7 @@ public class Cluster {
 
 	/**
 	 * Get the azimuthal value of this hit
-	 * 
+	 *
 	 * @return the azimuthal value (phi) of this hit in degrees
 	 */
 	public double phi() {

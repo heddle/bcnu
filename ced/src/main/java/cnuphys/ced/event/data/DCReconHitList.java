@@ -47,13 +47,13 @@ public class DCReconHitList extends Vector<DCReconHit> {
 
 	/**
 	 * Get the bank name backing this list
-	 * 
+	 *
 	 * @return the bank name backing this list
 	 */
 	public String getBankName() {
 		return _bankName;
 	}
-	
+
 	/**
 	 * Get the hit from the id. Brute force, because
 	 * they are not sorted.
@@ -66,9 +66,9 @@ public class DCReconHitList extends Vector<DCReconHit> {
 				return hit;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 
 }

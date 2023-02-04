@@ -29,7 +29,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Provide a link to the owner table
-	 * 
+	 *
 	 * @param table the owner table
 	 */
 	public void setTable(BankDataTable table) {
@@ -38,7 +38,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -77,7 +77,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @param row the 0-based row
 	 * @param col the 0-based column
 	 * @return the value at a given row and column
@@ -132,7 +132,7 @@ public class BankTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the bank name
-	 * 
+	 *
 	 * @return the bank name
 	 */
 	public String getBankName() {
@@ -142,7 +142,7 @@ public class BankTableModel extends DefaultTableModel {
 	/**
 	 * Get the table column names, which are the names of all the known banks for
 	 * this bank
-	 * 
+	 *
 	 * @return the tames of all known data columns for this bank
 	 */
 	public String[] columnNames() {

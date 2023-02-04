@@ -23,7 +23,7 @@ import cnuphys.magfield.MagneticFields;
 import cnuphys.magfield.MagneticFields.FieldType;
 
 public abstract class SliceView extends CedView {
-	
+
 	// each sector view has an upper and lower sector: 1-4, 2-5, 3-6
 	public static final int UPPER_SECTOR = 0;
 	public static final int LOWER_SECTOR = 1;
@@ -40,7 +40,7 @@ public abstract class SliceView extends CedView {
 
 	// line stroke
 	protected static Stroke stroke = GraphicsUtilities.getStroke(1.5f, LineStyle.SOLID);
-	
+
 	// for naming clones
 	protected static int CLONE_COUNT[] = { 0, 0, 0 };
 
@@ -64,13 +64,13 @@ public abstract class SliceView extends CedView {
 	 */
 	public SliceView(DisplaySectors displaySectors, Object... keyVals) {
 		super(keyVals);
-		
+
 		_displaySectors = displaySectors;
 
 		// the projection plane starts as midplane
 		projectionPlane = GeometryManager.constantPhiPlane(0);
 	}
-	
+
 	// draw the tilted axis
 	protected void drawTiltedAxis(Graphics g, IContainer container, int sector) {
 
@@ -118,13 +118,13 @@ public abstract class SliceView extends CedView {
 			p0.y = p1.y;
 		}
 	}
-	
-	
+
+
 
 	/**
 	 * Every view should be able to say what sector the current point location
 	 * represents.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -145,10 +145,10 @@ public abstract class SliceView extends CedView {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Is the sector one of the two on this view
-	 * 
+	 *
 	 * @param sector the sector [1..6]
 	 */
 	public boolean containsSector(byte sector) {
@@ -166,20 +166,20 @@ public abstract class SliceView extends CedView {
 
 		return false;
 	}
-	
+
 	/**
 	 * Get the target z location.
-	 * 
+	 *
 	 * @return the target position in cm on z axis
 	 */
 	public double getTargetZ() {
 		return _targetZ;
 	}
-	
+
 	/**
 	 * Returns the absolute phi. This is the actual, global phi, e.g, -30 to 30 for
 	 * sector 1, 30 to 90 for sector 2, etc.
-	 * 
+	 *
 	 * @return the absolute phi from the relative phi
 	 */
 	public double getAbsolutePhi(IContainer container, Point screenPoint, Point2D.Double worldPoint) {
@@ -187,12 +187,12 @@ public abstract class SliceView extends CedView {
 		// return (sector - 1) * 60.0 + _phiRelMidPlane;
 		return (sector - 1) * 60.0 + getSliderPhi();
 	}
-	
+
 	/**
 	 * Get the rotation angle to transform from world coordinates to global
 	 * coordinates. This is the sum of the phi for the upper sector of the view and
 	 * the phi relative to the midplane.
-	 * 
+	 *
 	 * @return the rotation angle to transform from world coordinates to global
 	 *         coordinates, in degrees.
 	 */
@@ -215,11 +215,11 @@ public abstract class SliceView extends CedView {
 			phiRotate += 120.0;
 		}
 		return phiRotate;
-	} 
-	
+	}
+
 	/**
 	 * Get the relative phi value, int the range [-30, 30].
-	 * 
+	 *
 	 * @return the phi value--the slider setting. This is between -30 and 30 for all
 	 *         sectors--i.e., this is the relative phi, not the absolute phi.
 	 */
@@ -235,7 +235,7 @@ public abstract class SliceView extends CedView {
 	/**
 	 * Get the relative phi (what the slider setting should be) corresponding to the
 	 * absolute value of phi.
-	 * 
+	 *
 	 * @param absPhi the value of phi in degrees, e.g., from a MC track.
 	 * @return the corresponding slider value;
 	 */
@@ -254,7 +254,7 @@ public abstract class SliceView extends CedView {
 	/**
 	 * Converts the local screen coordinate obtained by a previous localToWorld call
 	 * to full 3D CLAS coordinates
-	 * 
+	 *
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
 	 * @param result      holds the result. It has five elements. Cartesian x, y,
@@ -288,12 +288,12 @@ public abstract class SliceView extends CedView {
 		result[3] = rho;
 		result[4] = absphi;
 	}
-	
-	
+
+
 	/**
 	 * Are the given global x and y in this view? That is, does the sector they
 	 * correspond to in this view based on the calculated phi?
-	 * 
+	 *
 	 * @param x the global x
 	 * @param y the global y in the same units as x
 	 * @return <code>true</code> if the point is in
@@ -323,10 +323,10 @@ public abstract class SliceView extends CedView {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Check whether this sect is on this view
-	 * 
+	 *
 	 * @param sector the sector [1..6]
 	 * @return <code>true</code> if the sector is on the view.
 	 */
@@ -344,10 +344,10 @@ public abstract class SliceView extends CedView {
 
 		return false;
 	}
-	
+
 	/**
 	 * Check whether a give phi is included in this view's range.
-	 * 
+	 *
 	 * @param phi the value of phi on decimal degrees.
 	 * @return <code>true</code> if it is included.
 	 */
@@ -379,16 +379,16 @@ public abstract class SliceView extends CedView {
 	/**
 	 * Get the display sectors which tell us which pair of sectors are being
 	 * displayed
-	 * 
+	 *
 	 * @return the display sectors type
 	 */
 	public DisplaySectors getDisplaySectors() {
 		return _displaySectors;
 	}
-	
+
 	/**
 	 * Convert world (not global, but graphical world) to clas global (lab)
-	 * 
+	 *
 	 * @param wp     the world point
 	 * @param labXYZ the clas global coordinates
 	 */
@@ -405,10 +405,10 @@ public abstract class SliceView extends CedView {
 		labXYZ[1] = perp * Math.sin(phiRotate);
 		labXYZ[2] = z;
 	}
-	
+
 	/**
 	 * Convert world (not global, but graphical world) to sector
-	 * 
+	 *
 	 * @param wp        the world point
 	 * @param sectorXYZ the sector coordinates
 	 */
@@ -429,7 +429,7 @@ public abstract class SliceView extends CedView {
 	}
 	/**
 	 * From detector xyz get the projected world point.
-	 * 
+	 *
 	 * @param x  the detector x coordinate
 	 * @param y  the detector y coordinate
 	 * @param z  the detector z coordinate
@@ -444,11 +444,11 @@ public abstract class SliceView extends CedView {
 			wp.y = -wp.y;
 		}
 	}
-	
+
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container the base container for the view.
 	 * @param pp        the pixel point
 	 * @param wp        the corresponding world location.
@@ -457,7 +457,7 @@ public abstract class SliceView extends CedView {
 	public void getFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 		super.getFeedbackStrings(container, pp, wp, feedbackStrings);
 	}
-	
+
 	protected void commonFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 		double result[] = new double[3];
 		worldToLabXYZ(wp, result);
@@ -553,10 +553,10 @@ public abstract class SliceView extends CedView {
 			feedbackStrings.add("$Lawn Green$Field is Zero");
 		}
 	}
-	
+
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
 	 */
@@ -567,7 +567,7 @@ public abstract class SliceView extends CedView {
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
 	 */

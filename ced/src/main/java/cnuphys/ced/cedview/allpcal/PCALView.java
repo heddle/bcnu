@@ -42,7 +42,7 @@ public class PCALView extends HexView {
 
 	// for drawing MC hits
 	private McHitDrawer _mcHitDrawer;
-	
+
 	// for drawing REC::Calorimeter data
     private RecDrawer _recDrawer;
 
@@ -57,7 +57,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * Create an allDCView
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	private PCALView(String title) {
@@ -65,7 +65,7 @@ public class PCALView extends HexView {
 
 		// MC hit drawer
 		_mcHitDrawer = new McHitDrawer(this);
-		
+
 		// REC::Calorimeter drawer
 		_recDrawer = new RecDrawer(this);
 
@@ -79,7 +79,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * See if we are to display the inner plane.
-	 * 
+	 *
 	 * @return <code>true</code> if we are to display the inner plane, otherwise
 	 *         display the outer.
 	 */
@@ -101,7 +101,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * Used to create the EC view
-	 * 
+	 *
 	 * @return the view
 	 */
 	public static PCALView createPCALView() {
@@ -150,10 +150,10 @@ public class PCALView extends HexView {
 
 					// draw MC Hits
 					_mcHitDrawer.draw(g, container);
-					
+
 					//draw REC::Calorimeter data
 					_recDrawer.draw(g, container);
-					
+
 				} // not acumulating
 			}
 
@@ -199,7 +199,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * Convert ijk coordinates to sector xyz
-	 * 
+	 *
 	 * @param pijk      the ijk coordinates
 	 * @param sectorXYZ the sector xyz coordinates
 	 */
@@ -209,7 +209,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * Convert sector xyz to ijk coordinates
-	 * 
+	 *
 	 * @param pijk      the ijk coordinates
 	 * @param sectorXYZ the sector xyz coordinates
 	 */
@@ -220,7 +220,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * Get the hex item for the given 1-based sector
-	 * 
+	 *
 	 * @param sector the 1-based sector
 	 * @return the corresponding item
 	 */
@@ -230,7 +230,7 @@ public class PCALView extends HexView {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

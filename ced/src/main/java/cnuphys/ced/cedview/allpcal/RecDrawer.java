@@ -30,7 +30,7 @@ public class RecDrawer extends PCALViewDrawer {
 
 	// the event manager
 	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//the current event
 	private DataEvent _currentEvent;
 
@@ -41,22 +41,18 @@ public class RecDrawer extends PCALViewDrawer {
 	public RecDrawer(PCALView view) {
 		super(view);
 	}
-	
+
 	//ignore drawing or feedback
 	private boolean ignore() {
-		if (!_view.showRecCal()) {
+		if (!_view.showRecCal() || ClasIoEventManager.getInstance().isAccumulating()) {
 			return true;
 		}
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return true;
-		}
-		
 		_currentEvent = _eventManager.getCurrentEvent();
 		if (_currentEvent == null) {
 			return true;
 		}
-		
+
 		if (!_currentEvent.hasBank("REC::Calorimeter")) {
 			return true;
 		}
@@ -67,11 +63,11 @@ public class RecDrawer extends PCALViewDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 		_fbData.clear();
-		
+
 		if (ignore()) {
 			return;
 		}
-		
+
 		RECCalorimeter recCal = RECCalorimeter.getInstance();
 		if (recCal.isEmpty()) {
 			return;
@@ -82,33 +78,33 @@ public class RecDrawer extends PCALViewDrawer {
 		Point2D.Double wp = new Point2D.Double();
 
 		for (int i = 0; i < recCal.count; i++) {
-			
+
 			if (recCal.layer[i] > 3) {  //is it ecal rather than pcal?
 				continue;
-			} 
-			
+			}
+
 			Point3D clasP = new Point3D(recCal.x[i], recCal.y[i], recCal.z[i]);
 			Point3D localP = new Point3D();
 			PCALGeometry.getTransformations().clasToLocal(localP, clasP);
-			
+
 			localP.setZ(0);
 
 			// get the right item
 			_view.getHexSectorItem(recCal.sector[i]).ijkToScreen(container, localP, pp);
 
 
-			SymbolDraw.drawDavid(g, pp.x, pp.y, 4, Color.black, Color.red);			
-			
-			
+			SymbolDraw.drawDavid(g, pp.x, pp.y, 4, Color.black, Color.red);
+
+
 			float radius = recCal.getRadius(recCal.energy[i]);
 			if (radius > 0) {
 				container.localToWorld(pp, wp);
 				wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-				
+
 				LundId lid = recCal.getLundId(i);
 				Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-				
-				
+
+
 				WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
 			}
 
@@ -128,7 +124,7 @@ public class RecDrawer extends PCALViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location
@@ -151,6 +147,6 @@ public class RecDrawer extends PCALViewDrawer {
 		}
 
 	}
-	
+
 
 }

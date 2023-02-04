@@ -23,7 +23,7 @@ import cnuphys.lund.LundId;
 
 /**
  * Rec drawer for the AllECView
- * 
+ *
  * @author davidheddle
  *
  */
@@ -44,11 +44,7 @@ public class RecDrawer extends ECViewDrawer {
 
 	// ignore drawing or feedback
 	private boolean ignore() {
-		if (!_view.showRecCal()) {
-			return true;
-		}
-
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
+		if (!_view.showRecCal() || ClasIoEventManager.getInstance().isAccumulating()) {
 			return true;
 		}
 
@@ -89,11 +85,7 @@ public class RecDrawer extends ECViewDrawer {
 
 			int plane = (recCal.layer[i] < 7) ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
 
-			if ((plane == ECGeometry.EC_INNER) && !_view.displayInner()) {
-				continue;
-			}
-
-			if ((plane == ECGeometry.EC_OUTER) && _view.displayInner()) {
+			if (((plane == ECGeometry.EC_INNER) && !_view.displayInner()) || ((plane == ECGeometry.EC_OUTER) && _view.displayInner())) {
 				continue;
 			}
 
@@ -107,17 +99,17 @@ public class RecDrawer extends ECViewDrawer {
 			_view.getHexSectorItem(recCal.sector[i]).ijkToScreen(container, localP, pp);
 
 			SymbolDraw.drawDavid(g, pp.x, pp.y, 4, Color.black, Color.red);
-			
-			
+
+
 			float radius = recCal.getRadius(recCal.energy[i]);
 			if (radius > 0) {
 				container.localToWorld(pp, wp);
 				wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-				
+
 				LundId lid = recCal.getLundId(i);
 				Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-				
-				
+
+
 				WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
 			}
 
@@ -135,7 +127,7 @@ public class RecDrawer extends ECViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

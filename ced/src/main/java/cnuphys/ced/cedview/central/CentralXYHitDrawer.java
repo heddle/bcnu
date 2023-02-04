@@ -12,12 +12,12 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcHitList;
 import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.CTOF;
-import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.BaseHit2List;
 import cnuphys.ced.event.data.CND;
+import cnuphys.ced.event.data.CTOF;
+import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.TdcAdcHit;
 import cnuphys.ced.event.data.TdcAdcHitList;
 import cnuphys.ced.geometry.BMTGeometry;
@@ -89,7 +89,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 					Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 					_view.drawBSTPanel((Graphics2D) g, container, panel, color);
 
-				} 
+				}
 			}
 		}
 	}
@@ -125,7 +125,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		drawCVTP1Traj(g, container);
 		drawCVTRecTraj(g, container);
 	}
-	
+
 
 	// draw CTOF hits
 	@Override

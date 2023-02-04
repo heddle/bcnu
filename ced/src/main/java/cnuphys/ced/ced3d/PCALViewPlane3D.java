@@ -2,14 +2,14 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.TdcAdcHit;
 import cnuphys.ced.event.data.TdcAdcHitList;
 import cnuphys.ced.geometry.PCALGeometry;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class PCALViewPlane3D extends DetectorItem3D {
 
@@ -87,7 +87,7 @@ public class PCALViewPlane3D extends DetectorItem3D {
 		} // have hits
 
 //		int hitCount = PCAL.hitCount();
-//		
+//
 //		if (hitCount > 0) {
 //			int sector[] = PCAL.sector();
 //			int view[] = PCAL.view();
@@ -96,7 +96,7 @@ public class PCALViewPlane3D extends DetectorItem3D {
 //			double avgX[] = PCAL.avgX();
 //			double avgY[] = PCAL.avgY();
 //			double avgZ[] = PCAL.avgZ();
-//			
+//
 //			float coords[] = new float[24];
 //			for (int i = 0; i < hitCount; i++) {
 //				if ((_sector == sector[i]) && (_view == view[i])) {

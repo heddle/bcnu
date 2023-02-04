@@ -26,7 +26,7 @@ public class DetectorData implements IClasIoEventListener {
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

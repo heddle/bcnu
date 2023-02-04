@@ -52,34 +52,34 @@ public class DisplayBits {
 
 	/** A flag for trkDoca v. doca */
 	public static final int DOCA = 0200000;
-	
+
 	/** cvt recon traj */
 	public static final int CVTRECTRAJ = 0400000;
-	
+
 	/** sector change diamonds */
     public static final int SECTORCHANGE = 01000000;
-    
+
     /** global nn data */
     public static final int GLOBAL_NN = 02000000;
-    
+
     /** global nn data */
     public static final int GLOBAL_AIHB = 04000000;
-    
+
     /** global nn data */
     public static final int GLOBAL_AITB = 010000000;
-    
+
     /** data from REC::Calorimeter */
     public static final int RECCAL = 020000000;
-    
+
     /** mag field grid */
     public static final int MAGGRID = 040000000;
-    
+
     /** REC::Particles */
     public static final int RECPART = 0100000000;
-    
+
 	/** cvt pass 1 tracks */
 	public static final int CVTP1TRACKS = 0200000000;
-	
+
 	/** cvt pass 1 traj */
 	public static final int CVTP1TRAJ = 0400000000;
 

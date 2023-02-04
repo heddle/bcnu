@@ -15,6 +15,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Properties;
+
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
@@ -98,7 +99,7 @@ public class DCXYView extends HexView {
 
 	/**
 	 * Create an allDCView
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	private DCXYView(String title) {
@@ -181,7 +182,7 @@ public class DCXYView extends HexView {
 
 	/**
 	 * Used to create the DCXY view
-	 * 
+	 *
 	 * @return the view
 	 */
 	public static DCXYView createDCXYView() {
@@ -293,37 +294,37 @@ public class DCXYView extends HexView {
 				g2.setStroke(oldStroke);
 			}
 
-//			
+//
 //			if (showMcTruth()) {
 //				_mcHitDrawer.draw(g, container);
-//				
+//
 //				int hitCount = DC.hitCount();
-//				
+//
 //				if (hitCount > 0) {
 //					byte sector[] = DC.sector();
 //					byte superlayer[] = DC.superlayer();
 //					byte layer[] = DC.layer();
 //					short wire[] = DC.wire();
-//					
+//
 //					Graphics2D g2 = (Graphics2D)g;
 //					Stroke oldStroke = g2.getStroke();
 //					g2.setStroke(stroke);
-//					
+//
 //					Point pp1 = new Point();
 //					Point pp2 = new Point();
 //					Point2D.Double wp1 = new Point2D.Double();
 //					Point2D.Double wp2 = new Point2D.Double();
-//					
+//
 //					for (int hit = 0; hit < hitCount; hit++) {
 //						projectWire(g, container, sector[hit], superlayer[hit], layer[hit], wire[hit], wp1, wp2, pp1, pp2);
 //						g.setColor(_wireColors[superlayer[hit]-1]);
 //						g.drawLine(pp1.x, pp1.y, pp2.x, pp2.y);
 //					}
-//					
+//
 //					g2.setStroke(oldStroke);
 //
 //				} //hitCount > 0
-//				
+//
 //			}
 		} else {
 			drawAccumulatedHits(g, container);
@@ -496,7 +497,7 @@ public class DCXYView extends HexView {
 
 	/**
 	 * Lab (CLAS) xy coordinates to local screen coordinates.
-	 * 
+	 *
 	 * @param container the drawing container
 	 * @param pp        will hold the graphical world coordinates
 	 * @param lab       the lab coordinates
@@ -507,7 +508,7 @@ public class DCXYView extends HexView {
 
 	/**
 	 * Get the hex item for the given 1-based sector
-	 * 
+	 *
 	 * @param sector the 1-based sector
 	 * @return the corresponding item
 	 */
@@ -521,7 +522,7 @@ public class DCXYView extends HexView {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

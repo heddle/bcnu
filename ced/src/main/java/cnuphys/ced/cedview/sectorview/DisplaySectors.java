@@ -10,7 +10,7 @@ public enum DisplaySectors {
 	/**
 	 * A map for the names of the symbols
 	 */
-	public static EnumMap<DisplaySectors, String> names = new EnumMap<DisplaySectors, String>(DisplaySectors.class);
+	public static EnumMap<DisplaySectors, String> names = new EnumMap<>(DisplaySectors.class);
 
 	static {
 		names.put(SECTORS14, "Sectors 1 and 4");
@@ -20,7 +20,7 @@ public enum DisplaySectors {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -29,7 +29,7 @@ public enum DisplaySectors {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>SymbolType</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -44,11 +44,8 @@ public enum DisplaySectors {
 
 		for (DisplaySectors val : values()) {
 			// check the nice name
-			if (name.equalsIgnoreCase(val.toString())) {
-				return val;
-			}
 			// check the base name
-			if (name.equalsIgnoreCase(val.name())) {
+			if (name.equalsIgnoreCase(val.toString()) || name.equalsIgnoreCase(val.name())) {
 				return val;
 			}
 		}
@@ -57,7 +54,7 @@ public enum DisplaySectors {
 
 	/**
 	 * Obtain a combo box of choices.
-	 * 
+	 *
 	 * @param defaultChoice the default selection
 	 * @return
 	 */

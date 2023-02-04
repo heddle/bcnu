@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
@@ -33,7 +34,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 	/**
 	 * Create a FTOFPanelItem
-	 * 
+	 *
 	 * @param logLayer the Layer this item is on.
 	 */
 	public FTOFPanelItem(LogicalLayer logLayer, FTOFPanel panel, int sector) {
@@ -52,7 +53,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -170,7 +171,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 	/**
 	 * Get the FTOFPanel which contains the geometry
-	 * 
+	 *
 	 * @return the ftofPanel
 	 */
 	public FTOFPanel getFtofPanel() {
@@ -179,7 +180,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 	/**
 	 * Get a paddle outline of the tof panel.
-	 * 
+	 *
 	 * @param view   the view being rendered.
 	 * @param index  the zero-based paddle index.
 	 * @param panel  the panel holding the geometry data
@@ -215,7 +216,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 	/**
 	 * Get the shell of the tof panel.
-	 * 
+	 *
 	 * @param view   the view being rendered.
 	 * @param panel  the panel holding the geometry data
 	 * @param sector the 1-based sector 1..6
@@ -241,7 +242,7 @@ public class FTOFPanelItem extends PolygonItem {
 	/**
 	 * Add any appropriate feedback strings panel. Default implementation returns
 	 * the item's name.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.

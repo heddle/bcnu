@@ -17,7 +17,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 	private static ClasIoReconEventView instance;
 
 	// one row for each reconstructed trajectory
-	private static Vector<TrajectoryRowData> _trajData = new Vector<TrajectoryRowData>();
+	private static Vector<TrajectoryRowData> _trajData = new Vector<>();
 
 	private ClasIoReconEventView() {
 		super("Reconstructed Tracks");
@@ -25,7 +25,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 
 	/**
 	 * Get the reconstructed event view
-	 * 
+	 *
 	 * @return the reconstructed event view
 	 */
 	public static ClasIoReconEventView getInstance() {
@@ -53,10 +53,10 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 			addTracks(event, _trajData, "HitBasedTrkg::HBTracks");
 			addTracks(event, _trajData, "TimeBasedTrkg::TBTracks");
 			addTracks(event, _trajData, "REC::Particle");
-			
+
 			addTracks(event, _trajData, "HitBasedTrkg::AITracks");
 			addTracks(event, _trajData, "TimeBasedTrkg::AITracks");
-			
+
 			// look for cvt tyracks
 			addTracks(event, _trajData, "CVTRec::Tracks");
 			addTracks(event, _trajData, "CVT::Tracks"); //pass 1
@@ -78,11 +78,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 				return;
 			}
 
-			if (bankName.contains("CVT::Tracks")) { //pass 1
-				addCVTTracks(event, data, bankName);
-				return;
-			}
-			if (bankName.contains("CVTRec::Tracks")) {
+			if (bankName.contains("CVT::Tracks") || bankName.contains("CVTRec::Tracks")) {
 				addCVTTracks(event, data, bankName);
 				return;
 			}
@@ -93,8 +89,8 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 			}
 
 			boolean hitBased = bankName.contains("HitBased");
-			
-			
+
+
 			DataManager dm = DataManager.getInstance();
 			float[] vx = dm.getFloatArray(event, bankName + "." + "Vtx0_x"); // vertex x cm
 			if ((vx != null) && (vx.length > 0)) {
@@ -135,12 +131,12 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 			Log.getInstance().warning(warning);
 		}
 	}
-	
+
 	// add CVT reconstructed tracks
 	private void addRECParticleTracks(DataEvent event, Vector<TrajectoryRowData> data, String bankName) {
-		
+
 		DataManager dm = DataManager.getInstance();
-		
+
 		try {
 		float[] vx = dm.getFloatArray(event, bankName + "." + "vx"); // vertex x cm
 		if ((vx != null) && (vx.length > 0)) {
@@ -154,7 +150,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 				int pid[] = dm.getIntArray(event, bankName + "." + "pid");
 
 				LundId lid;
-				
+
 				for (int i = 0; i < vx.length; i++) {
 
 					if (pid[i] == 0) {
@@ -238,7 +234,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 //			Z_vtx = z0
 //			Px_vtx = pt*cos(phi0)
 //			Py_vtx = pt*sin(phi0)
-//			Pz_vtx = pt*tandip			
+//			Pz_vtx = pt*tandip
 
 		} catch (Exception e) {
 			String warning = "[ClasIoReconEventView.addCVTTracks] " + e.getMessage();
@@ -252,7 +248,7 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override

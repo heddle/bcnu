@@ -174,7 +174,7 @@ public class ClasIoAccumulationDialog extends JDialog {
 
 	/**
 	 * Create the button panel.
-	 * 
+	 *
 	 * @return the button panel.
 	 */
 	private JPanel createButtonPanel() {
@@ -340,7 +340,7 @@ public class ClasIoAccumulationDialog extends JDialog {
 
 	/**
 	 * Why the dialog closed.
-	 * 
+	 *
 	 * @return either DialogUtilities.OK_RESPONSE or DialogUtilities.CANCEL_RESPONSE
 	 */
 	public int getReason() {

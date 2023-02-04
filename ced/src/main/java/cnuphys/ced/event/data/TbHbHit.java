@@ -3,7 +3,7 @@ package cnuphys.ced.event.data;
 /**
  * This is not the basic TdcAdc hit, this is the base for Hit Based and Time
  * based hits.
- * 
+ *
  * @author heddle
  *
  */

@@ -10,19 +10,19 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 	private static final String _fbColor = "$Orange$";
 
 	public byte sector;
-	
+
 	/** The full layer range 1..36 */
 	public byte layer36; // 1..36
 	public short wire;
 	public byte superlayer; // 1..6
 	public byte layer6; // 1..6
-	
+
 	//if true, nnet used this hit
 	public boolean nnHit = false;
-	
+
 	//if nn used this hit, this is he nnet track id (-1 by default)
 	public byte nnTrackId =  -1;
-	
+
 
 	public int tdc = -1;
 
@@ -63,7 +63,7 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 
 	/**
 	 * Checks whether the indices are valid
-	 * 
+	 *
 	 * @return <code>true</code> if the hit has valid indices
 	 */
 	public boolean inRange() {
@@ -97,7 +97,7 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 
 	/**
 	 * Get a string for just the tdc data
-	 * 
+	 *
 	 * @return a string for just the tdc data
 	 */
 	public String tdcString() {
@@ -137,23 +137,23 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 
 	/**
 	 * Add to the feedback list
-	 * 
+	 *
 	 * @param showNoise       if <code>true<code> add string for noise status
 	 * @param showDoca        if <code>true<code> add string for doca data (if
 	 *                        present)
 	 * @param feedbackStrings
 	 */
 	public void tdcAdcFeedback(boolean showNoise, boolean showDoca, List<String> feedbackStrings) {
-		
 
-		feedbackStrings.add(_fbColor + "sector " + sector + 
+
+		feedbackStrings.add(_fbColor + "sector " + sector +
 				" suplay " + superlayer + " layer " + layer6 + " wire " + wire);
 
 		String tdcStr = tdcString();
 		if (tdcStr.length() > 3) {
 			feedbackStrings.add(_fbColor + tdcStr);
 		}
-		
+
 		if (nnHit) {
 			feedbackStrings.add(_fbColor + "marked by neural net, nn track Id " + nnTrackId);
 		}

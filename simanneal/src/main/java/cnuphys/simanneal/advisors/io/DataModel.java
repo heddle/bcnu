@@ -170,7 +170,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	 * @return the data count
 	 */
 	public int count() {
-		return (_data == null) ? 0 : _data.size();
+		return (_tableData == null) ? 0 : _tableData.size();
 	}
 	
 	//try to get a column index

@@ -16,18 +16,18 @@ import cnuphys.lund.LundId;
 import item3D.Item3D;
 
 public class RecDrawer3D extends Item3D {
-	
+
 	// the event manager
 	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//the current event
 	private DataEvent _currentEvent;
 
 	private static final float POINTSIZE = 5f;
 	private CedPanel3D _cedPanel3D;
-	
 
-	
+
+
 	public RecDrawer3D(CedPanel3D panel3D) {
 		super(panel3D);
 		_cedPanel3D = panel3D;
@@ -35,25 +35,25 @@ public class RecDrawer3D extends Item3D {
 
 	@Override
 	public void draw(GLAutoDrawable drawable) {
-		
+
 		_currentEvent = _eventManager.getCurrentEvent();
 		if (_currentEvent == null) {
 			return;
 		}
-		
+
 		if (_panel3D instanceof ForwardPanel3D) { // forward detectors
-			
+
 			//show any data from REC::Calorimiter?
 			if (((ForwardPanel3D) _panel3D).showRecCal()) {
 				showEconCalorimeter(drawable);
 			}
 		}
 	}
-	
-	
+
+
 	//show data from REC::Calorimeter
 	private void showEconCalorimeter(GLAutoDrawable drawable) {
-		
+
 		RECCalorimeter recCal = RECCalorimeter.getInstance();
 		if (recCal.isEmpty()) {
 			return;

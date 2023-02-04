@@ -22,6 +22,7 @@ import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
+
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.TransparentPanel;
@@ -51,7 +52,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	// for goto sequential
 	private JTextField seqEvNum;
-	
+
 	// for goto true event from RUN::config
 	private JTextField trueEvNum;
 
@@ -81,7 +82,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * The event menu used for the clasio package
-	 * 
+	 *
 	 * @param includeAccumulation include accumulation option
 	 * @param includeQuit         include quite option
 	 */
@@ -137,7 +138,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 		// goto sequential
 		add(createGotoSequentialPanel());
-		
+
 		// goto true
 		add(createGotoTruePanel());
 
@@ -156,7 +157,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Get the menu item to open a HIPO event file
-	 * 
+	 *
 	 * @return the menu item to open an event file
 	 */
 	public static JMenuItem getOpenEventFileItem() {
@@ -174,7 +175,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		return item;
 	}
 
-//	/** 
+//	/**
 //	 * Get the menu item to open a HIPO event file
 //	 * @return the menu item to open an event file
 //	 */
@@ -192,8 +193,8 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 //		item.addActionListener(al);
 //		return item;
 //	}
-//	
-//	/** 
+//
+//	/**
 //	 * Get the menu item to open an evio event file
 //	 * @return the menu item to open an event file
 //	 */
@@ -214,7 +215,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Get the menu item to connect to any DAQ ring
-	 * 
+	 *
 	 * @return the menu item to open any DAQ ring
 	 */
 //	public static JMenuItem getConnectAnyRingItem() {
@@ -293,7 +294,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Set the default directory in which to look for event files.
-	 * 
+	 *
 	 * @param defaultDataDir default directory in which to look for event files
 	 */
 	public static void setDefaultDataDir(String defaultDataDir) {
@@ -333,7 +334,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Get the menu from which you can choose a recently opened file
-	 * 
+	 *
 	 * @return the menu from which you can choose a recently opened file
 	 */
 	public static JMenu getRecentEventFileMenu() {
@@ -369,7 +370,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 				_recentMenu.remove(item);
 			}
 		} else {
-			_menuItems = new Hashtable<String, JMenuItem>(41);
+			_menuItems = new Hashtable<>(41);
 		}
 
 		ActionListener al = new ActionListener() {
@@ -412,7 +413,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Update the recent files for the recent file menu.
-	 * 
+	 *
 	 * @param path the path to the file
 	 */
 	private void updateRecentFiles(String path) {
@@ -421,7 +422,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		}
 		Vector<String> recentFiles = Environment.getInstance().getPreferenceList(_recentFileKey);
 		if (recentFiles == null) {
-			recentFiles = new Vector<String>(10);
+			recentFiles = new Vector<>(10);
 		}
 
 		// keep no more than 10
@@ -435,7 +436,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		// add to menu
 		addMenu(path, true);
 	}
-	
+
 	// create the goto sequential event widget
 	private JPanel createGotoSequentialPanel() {
 		JPanel sp = new TransparentPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
@@ -499,7 +500,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		trueEvNum.setEnabled(false);
 		return sp;
 	}
-	
+
 
 	// create the event every so many seconds widget
 	private JPanel createEventPeriodPanel() {
@@ -594,7 +595,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Part of the IClasIoEventListener interface
-	 * 
+	 *
 	 * @param event the new current event
 	 */
 	@Override
@@ -604,7 +605,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Part of the IClasIoEventListener interface
-	 * 
+	 *
 	 * @param path the new path to the event file
 	 */
 	@Override
@@ -618,7 +619,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -628,7 +629,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

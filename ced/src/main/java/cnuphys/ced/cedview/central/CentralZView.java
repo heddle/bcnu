@@ -42,13 +42,13 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.CosmicList;
 import cnuphys.ced.event.data.Cosmics;
+import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
+import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.ced.geometry.bmt.Constants;
 import cnuphys.ced.geometry.util.VectorSupport;
-import cnuphys.ced.geometry.BMTGeometry;
-import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.BeamLineItem;
 import cnuphys.ced.item.MagFieldItem;
 import cnuphys.magfield.MagneticFields;
@@ -110,7 +110,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Create a CentralZView object
-	 * 
+	 *
 	 * @return the new view
 	 */
 	public static CentralZView createCentralZView() {
@@ -144,7 +144,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
 						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
-						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS | 
+						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS |
 						DisplayBits.CVTRECTRAJ | DisplayBits.CVTP1TRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
 				3, 5);
 
@@ -496,7 +496,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	private void drawCoordinateSystem(Graphics g, IContainer container) {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		Rectangle sr = getActiveScreenRectangle(container);
 
 		FontMetrics fm = container.getComponent().getFontMetrics(labelFont);
@@ -640,7 +640,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	/**
 	 * Converts the local screen coordinate obtained by a previous localToWorld call
 	 * to full 3D CLAS coordinates
-	 * 
+	 *
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
 	 * @param result      holds the result. It has five elements. Cartesian x, y,
@@ -665,7 +665,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -737,7 +737,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
 	 */
@@ -753,7 +753,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
 	 */
@@ -764,7 +764,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Get the world graphic coordinates from lab XYZ
-	 * 
+	 *
 	 * @param x  the lab x in cm
 	 * @param y  the lab y in cm
 	 * @param z  the lab z in cm
@@ -787,7 +787,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Convert lab coordinates xyz to local screen coordinates
-	 * 
+	 *
 	 * @param x  the x coordinate
 	 * @param y  the y coordinate
 	 * @param z  the z coordinate
@@ -812,7 +812,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Draw an svt strip
-	 * 
+	 *
 	 * @param g2        graphics context
 	 * @param container the container
 	 * @param color     the color
@@ -863,7 +863,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 //		// cm to mm
 //		double alpha1 = labToLocal(10 * _sCoords[0], 10 * _sCoords[1], 10 * _sCoords[2], _sP1);
 //		double alpha2 = labToLocal(10 * _sCoords[3], 10 * _sCoords[4], 10 * _sCoords[5], _sP2);
-//		
+//
 //
 //		drawAlphaLine(g2, _sP1.x, _sP1.y, _sP2.x, _sP2.y, alpha1, alpha2);
 		g2.setStroke(oldStroke);
@@ -888,7 +888,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * The z location of the target
-	 * 
+	 *
 	 * @return z location of the target in cm
 	 */
 	public double getTargetZ() {
@@ -897,7 +897,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * This is used to listen for changes on components like sliders.
-	 * 
+	 *
 	 * @param e the causal event.
 	 */
 	@Override
@@ -923,7 +923,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

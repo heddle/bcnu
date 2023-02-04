@@ -8,14 +8,7 @@ import java.util.List;
 
 import org.jlab.clas.detector.DetectorResponse;
 import org.jlab.detector.base.DetectorType;
-import org.jlab.io.base.DataDescriptor;
-import org.jlab.io.base.DataDictionary;
 import org.jlab.io.base.DataEvent;
-
-import org.jlab.io.base.DataSource;
-import org.jlab.io.hipo.HipoDataDictionary;
-import org.jlab.io.hipo.HipoDataSource;
-import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
 
@@ -35,44 +28,40 @@ public class DataManager {
 	// DC::dgtz.doca,
 	// this maps bank name to a ColumnData object
 	private Hashtable<String, ColumnData> _columnData;
-	
+
 	//this maps a bank name to a list of columns
 	private Hashtable<String, String[]> _banks;
 
 	// singleton
 	private static DataManager _instance;
-	
 
-	//the current schema
-	private SchemaFactory _currentSchemaFactory;
-	
-	
+
+
 	/**
 	 * Create a DataManager
-	 * 
+	 *
 	 * @param dictionary
 	 */
 	private DataManager() {
 		_columnData = new Hashtable<>();
 		_banks = new Hashtable<>();
 	}
-	
 
-	
+
+
 	/**
 	 * Update the schema factory and the columa dataobjects
 	 * @param schemaFactory
 	 */
 	public void updateSchema(SchemaFactory schemaFactory) {
-		_currentSchemaFactory = schemaFactory;
-		
+
 		_columnData.clear();
 		_banks.clear();
 		_knownBanks = null;
 
-		
+
 		List<Schema> schemas = schemaFactory.getSchemaList();
-		
+
 		if (schemas == null || schemas.isEmpty()) {
 			return;
 		}
@@ -84,17 +73,17 @@ public class DataManager {
 			_knownBanks[i] = schema.getName();
 		}
 		Arrays.sort(_knownBanks);
-		
+
 
 		// a schema is a bank
 		for (Schema schema : schemas) {
 			String bankName = schema.getName();
 			List<String> columns = schema.getEntryList();
-			
+
 			if (columns == null || columns.isEmpty()) {
 				continue;
 			}
-			
+
 			size = columns.size();
 			String[] colArray = new String[size];
 			for (int i = 0; i < size; i++) {
@@ -102,7 +91,7 @@ public class DataManager {
 			}
 			Arrays.sort(colArray);
 			_banks.put(bankName, colArray);
-			
+
 			for (String columnName : columns) {
 				int type = schema.getType(columnName);
 				ColumnData cd = new ColumnData(bankName, columnName, type);
@@ -114,17 +103,14 @@ public class DataManager {
 	}
 	/**
 	 * Get the collection of recognized columns
-	 * 
+	 *
 	 * @return the collection of recognized columns
 	 */
 	public ArrayList<ColumnData> getColumnData() {
-		if (_columnData == null) {
+		if ((_columnData == null) || (_columnData.size() < 1)) {
 			return null;
 		}
-		if (_columnData.size() < 1) {
-			return null;
-		}
-		ArrayList<ColumnData> columns = new ArrayList<ColumnData>();
+		ArrayList<ColumnData> columns = new ArrayList<>();
 		for (ColumnData cd : _columnData.values()) {
 			columns.add(cd);
 		}
@@ -134,7 +120,7 @@ public class DataManager {
 
 	/**
 	 * public access to singleton
-	 * 
+	 *
 	 * @return data manager singleton
 	 */
 	public static DataManager getInstance() {
@@ -147,14 +133,14 @@ public class DataManager {
 	/**
 	 * Get a list of all column data objects that have data in the given event for a
 	 * specific bank
-	 * 
+	 *
 	 * @param event    the event in question
 	 * @param bankName the bank
 	 * @return a list of all columns in the given bank with data
 	 */
 
 	public ArrayList<ColumnData> hasData(DataEvent event, String bankName) {
-		ArrayList<ColumnData> list = new ArrayList<ColumnData>();
+		ArrayList<ColumnData> list = new ArrayList<>();
 
 		String columns[] = event.getColumnList(bankName);
 		if (columns != null) {
@@ -169,12 +155,12 @@ public class DataManager {
 
 	/**
 	 * Get a list of all column data objects that have data in the given event
-	 * 
+	 *
 	 * @param event the event in question
 	 * @return a list of all columns in all banks with data
 	 */
 	public ArrayList<ColumnData> hasData(DataEvent event) {
-		ArrayList<ColumnData> list = new ArrayList<ColumnData>();
+		ArrayList<ColumnData> list = new ArrayList<>();
 
 		String banks[] = event.getBankList();
 		if (banks != null) {
@@ -219,24 +205,24 @@ public class DataManager {
 			return 0;
 		}
 		String colNames[] = getColumnNames(bankName);
-		
+
 		if ((colNames == null) || (colNames.length < 1)) {
 			return 0;
 		}
-		
+
 		//uses the 1st column, assumes all columns have the same length
 		ColumnData cd = getColumnData(bankName, colNames[0]);
-		
+
 		if (cd == null) {
 			return 0;
 		}
-		
+
 		return cd.getLength(event);
 	}
-	
+
 	/**
 	 * Get the list of column names for a bank name
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return the list of column names
 	 */
@@ -247,7 +233,7 @@ public class DataManager {
 
 	/**
 	 * Get the known banks
-	 * 
+	 *
 	 * @return the (sorted) known bank names
 	 */
 	public String[] getKnownBanks() {
@@ -256,7 +242,7 @@ public class DataManager {
 
 	/**
 	 * Get a ColumnData
-	 * 
+	 *
 	 * @param bankName   the bank name
 	 * @param columnName the column data
 	 * @return the ColumnData
@@ -267,7 +253,7 @@ public class DataManager {
 
 	/**
 	 * Get a ColumnData
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the ColumnData
 	 */
@@ -277,7 +263,7 @@ public class DataManager {
 
 	/**
 	 * Obtain an byte array from the given event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -289,7 +275,7 @@ public class DataManager {
 
 	/**
 	 * Obtain a short array from the given event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -301,7 +287,7 @@ public class DataManager {
 
 	/**
 	 * Obtain an int array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -313,7 +299,7 @@ public class DataManager {
 
 	/**
 	 * Obtain a long array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -325,7 +311,7 @@ public class DataManager {
 
 	/**
 	 * Obtain a float array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -337,7 +323,7 @@ public class DataManager {
 
 	/**
 	 * Obtain a double array from the current event for the given full name
-	 * 
+	 *
 	 * @param event    the given event
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
@@ -350,7 +336,7 @@ public class DataManager {
 	/**
 	 * (Approximate) test whether this is a valid column name. Doesn't test whether
 	 * the column exists.
-	 * 
+	 *
 	 * @param name the name to test
 	 * @return <code>true</code> if name is structured as a valid column name.
 	 */
@@ -360,7 +346,7 @@ public class DataManager {
 
 	/**
 	 * Get a list of detector responses
-	 * 
+	 *
 	 * @param event    the event
 	 * @param bankName the bank name
 	 * @param type     the detector type

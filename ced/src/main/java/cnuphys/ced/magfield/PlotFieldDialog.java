@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.FileNotFoundException;
+
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -83,7 +84,7 @@ public class PlotFieldDialog extends APlotDialog implements ActionListener {
 
 	/**
 	 * Create the dialog for ploting the field
-	 * 
+	 *
 	 * @param parent the parent dialog
 	 * @param modal  the usual meaning
 	 */

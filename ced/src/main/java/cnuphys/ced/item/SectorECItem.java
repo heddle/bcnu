@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
@@ -41,7 +42,7 @@ public class SectorECItem extends PolygonItem {
 
 	/**
 	 * Create a world polygon item
-	 * 
+	 *
 	 * @param layer      the Layer this item is on.
 	 * @param planeIndex should be EC_INNER or EC_OUTER
 	 * @param stripIndex should be EC_U, EC_V, or EC_W
@@ -63,7 +64,7 @@ public class SectorECItem extends PolygonItem {
 		_view = (SectorView) getLayer().getContainer().getView();
 
 	}
-	
+
 	@Override
 	public boolean shouldDraw(Graphics g, IContainer container) {
 		return true;
@@ -71,7 +72,7 @@ public class SectorECItem extends PolygonItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -110,7 +111,7 @@ public class SectorECItem extends PolygonItem {
 
 	/**
 	 * Get a strip outline
-	 * 
+	 *
 	 * @param stripIndex the 0-based index
 	 * @return
 	 */
@@ -207,7 +208,7 @@ public class SectorECItem extends PolygonItem {
 
 	/**
 	 * Get the shell of the ec.
-	 * 
+	 *
 	 * @param view       the view being rendered.
 	 * @param planeIndex the index (0: inner, 1:outer)
 	 * @param stripType  the strip index (0:U, 1:V, 2:W)
@@ -237,7 +238,7 @@ public class SectorECItem extends PolygonItem {
 	/**
 	 * Add any appropriate feedback strings panel. Default implementation returns
 	 * the item's name.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.

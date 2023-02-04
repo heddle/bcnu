@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.jlab.geom.prim.Point3D;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.FeedbackRect;
@@ -19,7 +20,7 @@ import cnuphys.ced.geometry.PCALGeometry;
 public class McHitDrawer extends PCALViewDrawer {
 
 	// cached rectangles for feedback
-	private Vector<FeedbackRect> _fbRects = new Vector<FeedbackRect>();
+	private Vector<FeedbackRect> _fbRects = new Vector<>();
 
 	public McHitDrawer(PCALView view) {
 		super(view);
@@ -34,11 +35,7 @@ public class McHitDrawer extends PCALViewDrawer {
 
 		_fbRects.clear();
 
-		if (!_view.showMcTruth()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (!_view.showMcTruth() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -90,7 +87,7 @@ public class McHitDrawer extends PCALViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

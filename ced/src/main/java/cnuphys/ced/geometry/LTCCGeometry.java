@@ -48,7 +48,7 @@ public class LTCCGeometry {
 
 	/**
 	 * Get the world polygon for the mirror in simple geometry
-	 * 
+	 *
 	 * @param ring     the ring 1..18
 	 * @param half     the half 1..2 (left/right)
 	 * @param localPhi [-30..30] degrees

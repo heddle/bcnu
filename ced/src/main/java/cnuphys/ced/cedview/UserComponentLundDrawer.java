@@ -12,9 +12,9 @@ import cnuphys.lund.LundId;
  * This is used to draw the user component on the tool bar. For example, it will
  * put a legend of montecarlo particles--just the ones it finds in in the
  * current event.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 
 public class UserComponentLundDrawer extends AUserComponentDrawer {
@@ -28,7 +28,7 @@ public class UserComponentLundDrawer extends AUserComponentDrawer {
 
 	/**
 	 * Draw on the component.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on the view.
 	 */
@@ -44,7 +44,7 @@ public class UserComponentLundDrawer extends AUserComponentDrawer {
 	/**
 	 * This method must be filled in to return all the unique LundIds associated
 	 * with this event.
-	 * 
+	 *
 	 * @return all the unique LundIds associated with this event.
 	 */
 	@Override

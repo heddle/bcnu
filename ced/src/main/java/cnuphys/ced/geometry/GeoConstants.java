@@ -2,9 +2,9 @@ package cnuphys.ced.geometry;
 
 /**
  * Constants related to geometry to make coding more tgransparent.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class GeoConstants {
 

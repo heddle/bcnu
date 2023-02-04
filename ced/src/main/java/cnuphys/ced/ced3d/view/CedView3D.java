@@ -21,7 +21,7 @@ public abstract class CedView3D extends PlainView3D
 
 	/**
 	 * Create a 3D view
-	 * 
+	 *
 	 * @param title
 	 * @param angleX
 	 * @param angleY
@@ -62,7 +62,7 @@ public abstract class CedView3D extends PlainView3D
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -98,7 +98,7 @@ public abstract class CedView3D extends PlainView3D
 	/**
 	 * Fix the title of the view after an event arrives. The default is to append
 	 * the event number.
-	 * 
+	 *
 	 * @param event the new event
 	 */
 	protected void fixTitle(DataEvent event) {
@@ -123,7 +123,7 @@ public abstract class CedView3D extends PlainView3D
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

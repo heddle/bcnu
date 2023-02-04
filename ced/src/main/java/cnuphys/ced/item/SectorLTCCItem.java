@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
@@ -46,7 +47,7 @@ public class SectorLTCCItem extends PolygonItem {
 	 * Create a super layer item for the sector view. Note, no points are added in
 	 * the constructor. The points will always be supplied by the setPoints method,
 	 * which will send projected wire positions (with a border of guard wires)
-	 * 
+	 *
 	 * @param logLayer   the Layer this item is on.
 	 * @param view       the view this item lives on.
 	 * @param sector     the 1-based sector [1..6]
@@ -63,7 +64,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -129,7 +130,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.
@@ -171,7 +172,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	/**
 	 * Test whether this is a lower sector
-	 * 
+	 *
 	 * @return <code>true</code> if this is a lower sector
 	 */
 	public boolean isLowerSector() {
@@ -180,7 +181,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	/**
 	 * Get the 1-based sector
-	 * 
+	 *
 	 * @return the 1-based sector
 	 */
 	public int sector() {
@@ -189,7 +190,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	/**
 	 * Get the 1-based ring
-	 * 
+	 *
 	 * @return the 1-based ring
 	 */
 	public int ring() {
@@ -198,7 +199,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	/**
 	 * Get the 1-based half
-	 * 
+	 *
 	 * @return the 1-based half
 	 */
 	public int half() {

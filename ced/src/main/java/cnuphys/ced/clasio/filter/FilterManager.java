@@ -7,8 +7,8 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.ced.frame.Ced;
 
 public class FilterManager extends ArrayList<IEventFilter> {
-	
-	
+
+
 	// singleton
 	private static FilterManager _instance;
 
@@ -24,7 +24,7 @@ public class FilterManager extends ArrayList<IEventFilter> {
 
 	/**
 	 * Public access to the FilterManager
-	 * 
+	 *
 	 * @return the FilterManager singleton
 	 */
 	public static FilterManager getInstance() {
@@ -33,10 +33,10 @@ public class FilterManager extends ArrayList<IEventFilter> {
 		}
 		return _instance;
 	}
-	
+
 	/**
 	 * Check if there are any active filters
-	 * 
+	 *
 	 * @return <code>true</code> if there are any active filters
 	 */
 	public boolean isFilteringOn() {
@@ -47,7 +47,7 @@ public class FilterManager extends ArrayList<IEventFilter> {
 		}
 		return false;
 	}
-	
+
 
 	/**
 	 * Do this late in ced initialization
@@ -60,19 +60,19 @@ public class FilterManager extends ArrayList<IEventFilter> {
 		}
 	}
 
-	
+
 	/**
 	 * Does the event pass all the active registered filters?
 	 * @param event the event to check
 	 * @return <code>true</code> if the event passes all the filters
 	 */
 	public boolean pass(DataEvent event) {
-		
+
 		if (!isEmpty()) {
 			for(IEventFilter filter : this) {
 				if (filter.isActive()) {
 					boolean pass = filter.pass(event);
-					
+
 					if (!pass) {
 						return false;
 					}

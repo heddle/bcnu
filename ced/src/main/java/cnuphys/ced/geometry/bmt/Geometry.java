@@ -19,7 +19,7 @@ public class Geometry {
 	// The cylinder phi profile in divided into 3 sectors, A, B, C.
 	//
 	/**
-	 * 
+	 *
 	 * @param sector
 	 * @return detector index A (=0), B (=1), C (=2)
 	 */
@@ -37,7 +37,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param sector the sector in CLAS12 1...3
 	 * @param layer  the layer 1...6
 	 * @param strip  the strip number (starts at 1)
@@ -62,7 +62,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer the layer 1...6
 	 * @param angle the position angle of the hit in the Z detector
 	 * @return the Z strip as a function of azimuthal angle
@@ -116,7 +116,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer the layer 1...6
 	 * @return the Z position of the strip center
 	 */
@@ -129,7 +129,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param sector the sector in CLAS12 1...3
 	 * @param layer  the layer 1...6
 	 * @return the angle to localize the beginning of the strips
@@ -151,7 +151,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param sector the sector in CLAS12 1...3
 	 * @param layer  the layer 1...6
 	 * @return the angle to localize the end of the strips
@@ -173,7 +173,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer the hit layer
 	 * @param strip the hit strip
 	 * @return the z position in mm for the C-detectors
@@ -249,7 +249,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer
 	 * @param x     x-coordinate of the hit in the lab frame
 	 * @param y     y-coordinate of the hit in the lab frame
@@ -267,7 +267,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer
 	 * @param x     x-coordinate of the hit in the lab frame
 	 * @param y     y-coordinate of the hit in the lab frame
@@ -287,7 +287,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer
 	 * @param x     x-coordinate of the hit in the lab frame
 	 * @param y     y-coordinate of the hit in the lab frame
@@ -341,7 +341,7 @@ public class Geometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param sector
 	 * @param layer
 	 * @param x
@@ -451,25 +451,25 @@ public class Geometry {
 		boolean isOK = false;
 
 //		int num_region = (int) (layer+1)/2 - 1;
-//	
+//
 //		int axis = Geometry.getZorC(layer);
-//		
+//
 //		double R = 0;
 //		if(axis==0)
 //			R = org.jlab.rec.cvt.bmt.Constants.getCRCRADIUS()[num_region];
 //		if(axis==1)
 //			R = org.jlab.rec.cvt.bmt.Constants.getCRZRADIUS()[num_region];
-//		
+//
 //		double CRZLENGTH	=	org.jlab.rec.cvt.bmt.Constants.getCRCLENGTH()[num_region];
 //		double CRZZMIN		=	org.jlab.rec.cvt.bmt.Constants.getCRZZMIN()[num_region];
 //		double CRZOFFSET	=	org.jlab.rec.cvt.bmt.Constants.getCRZOFFSET()[num_region];
-//		
+//
 //		double z_min = CRZZMIN+CRZOFFSET;
 //		double z_max = z_min + CRZLENGTH;
-//		
+//
 //
 //		double epsilon=1e-1;
-//		
+//
 //		if(Math.abs(x)<R+epsilon && Math.abs(y)<R+epsilon && z>z_min-epsilon && z<z_max+epsilon ) {
 //			isOK = true;
 //		}
@@ -520,14 +520,14 @@ public class Geometry {
 	public void getCRCEndPoints(int sector, int layer, int strip, float[] coords) {
 //		int region = (int) (layer+1)/2 - 1; // region index (0...2) 0=layers 1&2, 1=layers 3&4, 2=layers 5&6
 //		int numStrips =  Constants.getCRZNSTRIPS()[region];
-//		
+//
 //		if ((strip < 1) || (strip > numStrips)) {
 //			for (int i = 0; i < 6; i++) {
 //				coords[i] = Float.NaN;
 //			}
 //			return;
 //		}
-//		
+//
 //		double phi1 = CRC_GetBeginStrip(sector, layer);
 //		double phi2 = CRC_GetEndStrip(sector, layer);
 //		double r = Constants.getCRCRADIUS()[region] + Constants.LYRTHICKN/2;
@@ -560,10 +560,10 @@ public class Geometry {
 		 * System.out.println((""+1*1+""+1*0+"")); // get group int len =
 		 * Constants.CRCGROUP[num_region].length; double[] Z_lowBound = new double[len];
 		 * double[] Z_uppBound = new double[len]; int[] NStrips = new int[len];
-		 * 
+		 *
 		 * double zi= Constants.CRCZMIN[num_region]+Constants.CRCOFFSET[num_region];
 		 * double z = trk_z - zi;
-		 * 
+		 *
 		 * Z_lowBound[0] = Constants.CRCWIDTH[num_region][0]/2.; // the lower bound is
 		 * the zMin+theOffset with half the width Z_uppBound[0] = Z_lowBound[0] +
 		 * (Constants.CRCGROUP[num_region][0]-1)*(Constants.CRCWIDTH[num_region][0]+
@@ -574,14 +574,14 @@ public class Geometry {
 		 * Z_uppBound[i] = Z_lowBound[i] +
 		 * (Constants.CRCGROUP[num_region][i]-1)*(Constants.CRCWIDTH[num_region][i] +
 		 * Constants.CRCSPACING[num_region]);
-		 * 
+		 *
 		 * NStrips[i] = NStrips[i-1] + Constants.CRCGROUP[num_region][i];
-		 * 
+		 *
 		 * if(z>=Z_lowBound[i] && z<=Z_uppBound[i]) { strip_group = i; ClosestStrip = 1
 		 * + (int)
 		 * (Math.round(((z-Z_lowBound[strip_group])/(Constants.CRCWIDTH[num_region][
 		 * strip_group] + Constants.CRCSPACING[num_region]))))+NStrips[i-1];
-		 * 
+		 *
 		 * len =i; } } double[] X = geo.smearedPosition(5, 0 , Constants.CRZRADIUS[2] ,
 		 * 0);
 		 * System.out.println(0+", "+(0.3+Constants.CRZRADIUS[2])+" , "+0+"  smeared "+X

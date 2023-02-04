@@ -7,9 +7,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.List;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
@@ -45,7 +45,7 @@ public class FTCalXYView extends CedXYView {
 
 	/**
 	 * Create a FTCalXYView View
-	 * 
+	 *
 	 */
 	public FTCalXYView(Object... keyVals) {
 		super(keyVals);
@@ -66,7 +66,7 @@ public class FTCalXYView extends CedXYView {
 
 	/**
 	 * Create a FTCalXYView view
-	 * 
+	 *
 	 * @return a FTCalXYView View
 	 */
 	public static FTCalXYView createFTCalXYView() {
@@ -260,7 +260,7 @@ public class FTCalXYView extends CedXYView {
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -309,7 +309,7 @@ public class FTCalXYView extends CedXYView {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

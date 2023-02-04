@@ -19,32 +19,32 @@ public class DC extends DetectorData {
 
 	// TB reconstructed hits
 	private DCReconHitList _tbHits;
-	
+
 	// HB reconstructed clusters
 	private DCClusterList _hbClusters;
 
 	// TB reconstructed clusters
 	private DCClusterList _tbClusters;
-	
-	
+
+
 	/** 1-based sectors */
 	public byte sector[];
-	
+
 	/** 1-based wires */
-	public short wire[]; 
-	
+	public short wire[];
+
 	/** 1-based superlayers */
 	public byte superlayer[];
-	
+
 	/** 1-based layers 1..36 */
 	public byte layer36[];
-	
+
 	/** 1-based layers 1..6 */
 	public byte layer6[];
-	
+
 	/** tdc values */
 	public int tdc[];
-			
+
 
 
 	// singleton
@@ -52,7 +52,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static DC getInstance() {
@@ -64,35 +64,35 @@ public class DC extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		
+
 		layer36 = null;
 		layer6 = null;
 		tdc = null;
 		superlayer = null;
 		wire = null;
-		
+
 		sector = ColumnData.getByteArray("DC::tdc.sector");
 		int length = (sector == null) ? 0 : sector.length;
-		
+
 		if (length > 0)  {
 			layer36 = ColumnData.getByteArray("DC::tdc.layer");
 			wire = ColumnData.getShortArray("DC::tdc.component");
 			tdc = ColumnData.getIntArray("DC::tdc.TDC");
-			
+
 			layer6 = new byte[length];
 			superlayer = new byte[length];
 			for (int i = 0; i < length; i++) {
 				superlayer[i] = (byte) (((layer36[i] - 1) / 6) + 1);
 				layer6[i] = (byte) (((layer36[i] - 1) % 6) + 1);
 			}
-			
-			
+
+
 		}
-		
-		
+
+
 		//the base tdc hits
 		_tdcHits = new DCTdcHitList();
-		
+
 		//the reconstructed hits, HB and TB
 		try {
 			_hbHits = new DCReconHitList("HitBasedTrkg::HBHits");
@@ -106,7 +106,7 @@ public class DC extends DetectorData {
 			_tbHits = null;
 			e.printStackTrace();
 		}
-		
+
 		//the clusters
 		try {
 			_hbClusters = new DCClusterList("HitBasedTrkg::HBClusters");
@@ -128,7 +128,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the update l;ist
 	 */
 	public DCTdcHitList updateTdcAdcList() {
@@ -138,7 +138,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * Get the tdc hit list
-	 * 
+	 *
 	 * @return the tdc hit list
 	 */
 	public DCTdcHitList getTDCHits() {
@@ -147,7 +147,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * Get the hit based hit list
-	 * 
+	 *
 	 * @return the hit based hit list
 	 */
 	public DCReconHitList getHBHits() {
@@ -156,16 +156,16 @@ public class DC extends DetectorData {
 
 	/**
 	 * Get the time based hit list
-	 * 
+	 *
 	 * @return the time based hit list
 	 */
 	public DCReconHitList getTBHits() {
 		return _tbHits;
 	}
-	
+
 	/**
 	 * Get the hit based cluster list
-	 * 
+	 *
 	 * @return the hit based cluster list
 	 */
 	public DCClusterList getHBClusters() {
@@ -174,7 +174,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * Get the time based cluster list
-	 * 
+	 *
 	 * @return the time based cluster list
 	 */
 	public DCClusterList getTBClusters() {
@@ -183,7 +183,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * total DC occupancy all sectors all layers
-	 * 
+	 *
 	 * @return total DC occupancy
 	 */
 	public double totalOccupancy() {
@@ -192,7 +192,7 @@ public class DC extends DetectorData {
 
 	/**
 	 * total DC occupancy for a sector
-	 * 
+	 *
 	 * @return total DC occupancy for a sector
 	 */
 	public double totalSectorOccupancy(int sector) {

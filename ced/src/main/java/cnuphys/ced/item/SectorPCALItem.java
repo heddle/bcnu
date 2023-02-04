@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.List;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
@@ -40,7 +41,7 @@ public class SectorPCALItem extends PolygonItem {
 
 	/**
 	 * Create a sector view pcal item
-	 * 
+	 *
 	 * @param layer      the Layer this item is on.
 	 * @param stripIndex should be PCAL_U, PCAL_V, or PCAL_W
 	 * @param sector     the 1-based sector
@@ -63,7 +64,7 @@ public class SectorPCALItem extends PolygonItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -99,7 +100,7 @@ public class SectorPCALItem extends PolygonItem {
 		drawHits(g, container);
 
 	}
-	
+
 	@Override
 	public boolean shouldDraw(Graphics g, IContainer container) {
 		return true;
@@ -108,7 +109,7 @@ public class SectorPCALItem extends PolygonItem {
 
 	/**
 	 * Get a strip outline
-	 * 
+	 *
 	 * @param stripIndex the 0-based index
 	 * @return
 	 */
@@ -200,7 +201,7 @@ public class SectorPCALItem extends PolygonItem {
 
 	/**
 	 * Get the shell of the ec.
-	 * 
+	 *
 	 * @param view      the view being rendered.
 	 * @param stripType the strip index (0:U, 1:V, 2:W)
 	 * @param sector    the 1-based sector 1..6
@@ -228,7 +229,7 @@ public class SectorPCALItem extends PolygonItem {
 	/**
 	 * Add any appropriate feedback strings panel. Default implementation returns
 	 * the item's name.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param screenPoint     the mouse location.
 	 * @param worldPoint      the corresponding world point.

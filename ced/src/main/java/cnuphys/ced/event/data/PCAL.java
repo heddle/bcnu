@@ -13,7 +13,7 @@ import cnuphys.ced.geometry.Transformations;
 
 /**
  * static methods to centralize getting data arrays
- * 
+ *
  * @author heddle
  *
  */
@@ -21,7 +21,7 @@ public class PCAL {
 
 	/**
 	 * Get the pid array from the true data
-	 * 
+	 *
 	 * @return the pid array
 	 */
 	public static int[] pid() {
@@ -30,7 +30,7 @@ public class PCAL {
 
 	/**
 	 * Get the sector array from the dgtz array
-	 * 
+	 *
 	 * @return the sector array
 	 */
 	public static int[] sector() {
@@ -39,7 +39,7 @@ public class PCAL {
 
 	/**
 	 * Get the stack array from the dgtz array
-	 * 
+	 *
 	 * @return the stack array (should contain all "1s" for pcal)
 	 */
 	public static int[] stack() {
@@ -48,7 +48,7 @@ public class PCAL {
 
 	/**
 	 * Get the view array from the dgtz array
-	 * 
+	 *
 	 * @return the view array
 	 */
 	public static int[] view() {
@@ -57,7 +57,7 @@ public class PCAL {
 
 	/**
 	 * Get the strip array from the dgtz array
-	 * 
+	 *
 	 * @return the strip array
 	 */
 	public static int[] strip() {
@@ -66,7 +66,7 @@ public class PCAL {
 
 	/**
 	 * Get the totEdep array from the true data
-	 * 
+	 *
 	 * @return the totEdep array
 	 */
 	public static double[] totEdep() {
@@ -75,7 +75,7 @@ public class PCAL {
 
 	/**
 	 * Get the avgX array from the true data
-	 * 
+	 *
 	 * @return the avgX array
 	 */
 	public static double[] avgX() {
@@ -84,7 +84,7 @@ public class PCAL {
 
 	/**
 	 * Get the avgY array from the true data
-	 * 
+	 *
 	 * @return the avgY array
 	 */
 	public static double[] avgY() {
@@ -93,7 +93,7 @@ public class PCAL {
 
 	/**
 	 * Get the avgZ array from the true data
-	 * 
+	 *
 	 * @return the avgZ array
 	 */
 	public static double[] avgZ() {
@@ -102,7 +102,7 @@ public class PCAL {
 
 	/**
 	 * Get the avgLx array from the true data
-	 * 
+	 *
 	 * @return the avgLx array
 	 */
 	public static double[] avgLx() {
@@ -111,7 +111,7 @@ public class PCAL {
 
 	/**
 	 * Get the avgLy array from the true data
-	 * 
+	 *
 	 * @return the avgLy array
 	 */
 	public static double[] avgLy() {
@@ -120,7 +120,7 @@ public class PCAL {
 
 	/**
 	 * Get the avgLz array from the true data
-	 * 
+	 *
 	 * @return the avgLz array
 	 */
 	public static double[] avgLz() {
@@ -129,7 +129,7 @@ public class PCAL {
 
 	/**
 	 * Get the hitn array from the dgtz data
-	 * 
+	 *
 	 * @return the hitn array
 	 */
 	public static int[] hitn() {
@@ -138,7 +138,7 @@ public class PCAL {
 
 	/**
 	 * Get the ADC array from the dgtz data
-	 * 
+	 *
 	 * @return the ADC array
 	 */
 	public static int[] ADC() {
@@ -147,7 +147,7 @@ public class PCAL {
 
 	/**
 	 * Get the TDC array from the dgtz data
-	 * 
+	 *
 	 * @return the TDC array
 	 */
 	public static int[] TDC() {
@@ -156,7 +156,7 @@ public class PCAL {
 
 	/**
 	 * Get the hit count
-	 * 
+	 *
 	 * @return the hit count
 	 */
 	public static int hitCount() {
@@ -166,7 +166,7 @@ public class PCAL {
 
 	/**
 	 * Get the index of the dc hit
-	 * 
+	 *
 	 * @param sect  the 1-based sector
 	 * @param view  the 1-based strip type (u, v, w) = (1, 2, 3)
 	 * @param strip the 1-based strip
@@ -179,7 +179,7 @@ public class PCAL {
 			return null;
 		}
 
-		Vector<HitRecord> hits = new Vector<HitRecord>();
+		Vector<HitRecord> hits = new Vector<>();
 
 		int sectors[] = sector();
 		int views[] = view();
@@ -199,7 +199,7 @@ public class PCAL {
 
 	/**
 	 * Add some dgtz hit feedback for ec and pcal
-	 * 
+	 *
 	 * @param hitIndex        the hit index
 	 * @param feedbackStrings the collection of feedback strings
 	 */
@@ -223,7 +223,7 @@ public class PCAL {
 
 	/**
 	 * Some true feedback for ec and pcal
-	 * 
+	 *
 	 * @param hitIndex
 	 * @param bits     controls what is displayed
 	 * @param trans    a geometry package transformation object
@@ -231,7 +231,7 @@ public class PCAL {
 	 */
 	public static List<String> gemcHitFeedback(int hitIndex, int bits, Transformations trans) {
 
-		Vector<String> fbs = new Vector<String>();
+		Vector<String> fbs = new Vector<>();
 
 		if (hitIndex < 0) {
 			return fbs;
@@ -296,7 +296,7 @@ public class PCAL {
 
 	/**
 	 * Some preliminary feedback for EC and PCAL
-	 * 
+	 *
 	 * @param hitIndex        the hit index
 	 * @param feedbackStrings the collection of feedback strings
 	 */

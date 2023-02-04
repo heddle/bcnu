@@ -10,7 +10,7 @@ public class CentralSupport {
 
 	/**
 	 * Mark which panels have hits. Used by CentralZView and SectorView(s).
-	 * 
+	 *
 	 * @param panels the list of panels
 	 */
 	public static void markPanelHits(CedView view, List<BSTxyPanel> panels) {

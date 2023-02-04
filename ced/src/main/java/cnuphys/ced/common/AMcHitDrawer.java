@@ -23,7 +23,7 @@ import cnuphys.ced.geometry.GeometryManager;
 public abstract class AMcHitDrawer extends CedViewDrawer {
 
 	// cached rectangles for feedback
-	private Vector<FeedbackRect> _fbRects = new Vector<FeedbackRect>();
+	private Vector<FeedbackRect> _fbRects = new Vector<>();
 
 	public AMcHitDrawer(CedView view) {
 		super(view);
@@ -34,15 +34,7 @@ public abstract class AMcHitDrawer extends CedViewDrawer {
 
 		_fbRects.clear();
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-
-		if (!_view.showMcTruth()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (ClasIoEventManager.getInstance().isAccumulating() || !_view.showMcTruth() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -57,10 +49,10 @@ public abstract class AMcHitDrawer extends CedViewDrawer {
 	}
 
 	protected void drawGemCXYZHits_DC(Graphics g, IContainer container) {
-//		showGemcXYZHits(g, container, FeedbackRect.Dtype.DC, 
-//				DC.avgX(), 
-//				DC.avgY(), 
-//				DC.avgZ(), 
+//		showGemcXYZHits(g, container, FeedbackRect.Dtype.DC,
+//				DC.avgX(),
+//				DC.avgY(),
+//				DC.avgZ(),
 //				0);
 	}
 
@@ -120,7 +112,7 @@ public abstract class AMcHitDrawer extends CedViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location
@@ -182,7 +174,7 @@ public abstract class AMcHitDrawer extends CedViewDrawer {
 
 	/**
 	 * Check if this is the correct sector
-	 * 
+	 *
 	 * @param sector the sector we want to draw in
 	 * @return <code>true</code> if we are in the correct sector, so go ahead and
 	 *         draw.

@@ -18,6 +18,7 @@ import org.jlab.geom.prim.Vector3D;
 
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.frame.Ced;
+import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 import cnuphys.swim.SwimTrajectory;
 
 public class GeometryManager {
@@ -28,8 +29,8 @@ public class GeometryManager {
 	private static GeometryManager instance;
 
 	// BSTxy panels
-	private static Vector<BSTxyPanel> _bstXYpanels8Layers = new Vector<BSTxyPanel>(); // old
-	private static Vector<BSTxyPanel> _bstXYpanels6Layers = new Vector<BSTxyPanel>(); // new
+	private static Vector<BSTxyPanel> _bstXYpanels8Layers = new Vector<>(); // old
+	private static Vector<BSTxyPanel> _bstXYpanels6Layers = new Vector<>(); // new
 
 	// cal sector 0 in clas coordinates
 	public static ECSector clas_Cal_Sector0;
@@ -62,8 +63,11 @@ public class GeometryManager {
 		// get the FTOF geometry
 		FTOFGeometry.initialize();
 
-		// get the FTOF geometry
+		// get the CTOF geometry
 		CTOFGeometry.initialize();
+
+		// get the uRwell geometry
+		UrWELLGeometry.initialize();
 
 		// get BST data
 		BSTGeometry.initialize();
@@ -92,7 +96,7 @@ public class GeometryManager {
 
 	/**
 	 * Public access to the singleton manager.
-	 * 
+	 *
 	 * @return the GeometryManager singleton.
 	 */
 	public static GeometryManager getInstance() {
@@ -153,7 +157,7 @@ public class GeometryManager {
 
 	/**
 	 * Get the sector [1..6] from the phi value
-	 * 
+	 *
 	 * @param phi the value of phi in degrees
 	 * @return the sector [1..6]
 	 */
@@ -187,7 +191,7 @@ public class GeometryManager {
 
 	/**
 	 * Get the sector [1..6] from the lab x and y coordinates
-	 * 
+	 *
 	 * @param labX the lab x
 	 * @param labY the lab y
 	 * @return the sector [1..6]
@@ -199,7 +203,7 @@ public class GeometryManager {
 
 	/**
 	 * Obtains the relative phi (relative to the midplane of the appropriate sector)
-	 * 
+	 *
 	 * @param absPhi the absolute value of phi
 	 * @return the relative phi (i.e., the "slider" value)
 	 */
@@ -217,7 +221,7 @@ public class GeometryManager {
 
 	/**
 	 * Get the list of BST XY panels
-	 * 
+	 *
 	 * @return the panels
 	 */
 	public static List<BSTxyPanel> getBSTxyPanels() {
@@ -229,7 +233,7 @@ public class GeometryManager {
 
 	/**
 	 * Obtain the 1-based sector from the xyz coordinates
-	 * 
+	 *
 	 * @param clasP the lab xyz coordinates
 	 * @return the sector [1..6]
 	 */
@@ -244,7 +248,7 @@ public class GeometryManager {
 
 	/**
 	 * Converts the lab 3D coordinates to sector 3D coordinates
-	 * 
+	 *
 	 * @param clasP   the lab 3D Cartesian coordinates (not modified)
 	 * @param sectorP the sector 3D Cartesian coordinates (modified)
 	 */
@@ -275,7 +279,7 @@ public class GeometryManager {
 
 	/**
 	 * Converts the lab 3D coordinates to sector 3D coordinates
-	 * 
+	 *
 	 * @param x       the lab (clas) x coordinate
 	 * @param y       the lab (clas) y coordinate
 	 * @param z       the lab (clas) z coordinate
@@ -288,7 +292,7 @@ public class GeometryManager {
 
 	/**
 	 * Converts the sector 3D coordinates to clas (lab) 3D coordinates
-	 * 
+	 *
 	 * @param sector  the 1-based sector [1..6]
 	 * @param clasP   the lab 3D Cartesian coordinates (modified)
 	 * @param sectorP the sector 3D Cartesian coordinates (not modified)
@@ -324,7 +328,7 @@ public class GeometryManager {
 
 	/**
 	 * Obtain the 1-based sector from the xyz coordinates
-	 * 
+	 *
 	 * @param labXYZ the lab xyz coordinates
 	 * @return the sector [1..6]
 	 */
@@ -339,7 +343,7 @@ public class GeometryManager {
 
 	/**
 	 * Converts the lab 3D coordinates to sector 3D coordinates
-	 * 
+	 *
 	 * @param labXYZ    the lab 3D Cartesian coordinates
 	 * @param sectorXYZ the sector 3D Cartesian coordinates
 	 */
@@ -370,7 +374,7 @@ public class GeometryManager {
 
 	/**
 	 * Converts the lab 3D coordinates to sector 3D coordinates
-	 * 
+	 *
 	 * @param sector    the 1-based sector [1..6]
 	 * @param labXYZ    the lab 3D Cartesian coordinates
 	 * @param sectorXYZ the sector 3D Cartesian coordinates
@@ -403,7 +407,7 @@ public class GeometryManager {
 
 	/**
 	 * Get the front plane of a calorimeter detector
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superlayer 0,1,2 for PCAL, EC_INNER, EC_OUTER
 	 * @return
@@ -418,7 +422,7 @@ public class GeometryManager {
 
 	/**
 	 * Lab (CLAS) 3D Cartesian coordinates to world graphical coordinates.
-	 * 
+	 *
 	 * @param superlayer 0,1,2 for PCAL, EC_INNER, EC_OUTER
 	 * @param labXYZ     the lab 3D coordinates
 	 * @param wp         will hold the graphical world coordinates
@@ -456,7 +460,7 @@ public class GeometryManager {
 
 	/**
 	 * See if the projected polygon intersects a plane
-	 * 
+	 *
 	 * @param geoObj
 	 * @param projectionPlane
 	 * @param startIndex
@@ -487,7 +491,7 @@ public class GeometryManager {
 
 	/**
 	 * Get a world 2D polygon from a clas geo object like a FTOF slab.
-	 * 
+	 *
 	 * @param geoObj          the geometric object
 	 * @param projectionPlane the projection plane
 	 * @param startIndex      the firstIndex of the volume edges corresponding to a
@@ -510,7 +514,7 @@ public class GeometryManager {
 			projectionPlane.intersection(l3d, pp[i]);
 		}
 
-		Vector<Line3D> lines = new Vector<Line3D>();
+		Vector<Line3D> lines = new Vector<>();
 		for (int i = 0; i < count; i++) {
 			int j = (i + 1) % count;
 			lines.add(new Line3D(pp[i], pp[j]));
@@ -545,7 +549,7 @@ public class GeometryManager {
 
 	/**
 	 * Create an XY plane
-	 * 
+	 *
 	 * @param z the z location of the plane
 	 * @return the new plane
 	 */
@@ -560,7 +564,7 @@ public class GeometryManager {
 
 	/**
 	 * Get a plane of constant phi
-	 * 
+	 *
 	 * @param phi the azimutha angle in degrees
 	 * @return a plane of constant phi
 	 */
@@ -575,7 +579,7 @@ public class GeometryManager {
 
 	/**
 	 * allocate an array of allocated points
-	 * 
+	 *
 	 * @param n the number of points
 	 * @return an array of allocated points
 	 */
@@ -589,7 +593,7 @@ public class GeometryManager {
 
 	/**
 	 * Create a Geometry package Path3D object from the trajectory
-	 * 
+	 *
 	 * @param traj the swum trajectory
 	 * @return the Path3D object
 	 */
@@ -610,7 +614,7 @@ public class GeometryManager {
 	/**
 	 * Get the rotation matrix from an axis specified by unit vector components and
 	 * an angle.
-	 * 
+	 *
 	 * @param ux     the x component of the unit vector giving the axis direction
 	 * @param uy     the y component of the unit vector giving the axis direction
 	 * @param uz     the z component of the unit vector giving the axis direction

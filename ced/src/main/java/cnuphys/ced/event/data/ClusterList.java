@@ -59,16 +59,7 @@ public class ClusterList extends Vector<Cluster> {
 			return -1;
 		}
 
-		if (lengthMismatch(sector, layer, "layer")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, time, "time")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, energy, "energy")) {
-			return -1;
-		}
-		if (lengthMismatch(sector, x, "x")) {
+		if (lengthMismatch(sector, layer, "layer") || lengthMismatch(sector, time, "time") || lengthMismatch(sector, energy, "energy") || lengthMismatch(sector, x, "x")) {
 			return -1;
 		}
 		if (lengthMismatch(sector, y, "y")) {

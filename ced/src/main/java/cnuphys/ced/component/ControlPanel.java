@@ -31,7 +31,7 @@ import cnuphys.ced.item.MagFieldItem;
 @SuppressWarnings("serial")
 /**
  * This is the control panel that sits on the side of the view
- * 
+ *
  * @author heddle
  *
  */
@@ -68,10 +68,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** Bit used to make phi slider have full 360 degree range */
 	public static final int PHI_SLIDER_BIG = 0400;
-	
+
 	/** and adc threshold slider */
 	public static final int ADCTHRESHOLDSLIDER = 01000;
-	
+
 	/** all dc display panel */
 	public static final int ALLDCDISPLAYPANEL = 02000;
 
@@ -89,8 +89,8 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// control the value of phi
 	private JSlider _phiSlider;
-	
-	
+
+
 	//control threshold value of adc to display
 	private JSlider _adcThresholdSlider;
 	private CommonBorder _adcThresholdBorder;
@@ -107,16 +107,16 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// color model panel for accumulation
 	private ColorModelPanel _colorPanel;
-	
+
 	//only for all dc view
 	private AllDCDisplayPanel _allDCDisplayPanel;
-	
+
 	//the tabbed pane
 	private JTabbedPane _tabbedPane;
 
 	/**
 	 * Create a view control panel
-	 * 
+	 *
 	 * @param container        the parent container
 	 * @param controlPanelBits the bits fo which components are added
 	 * @param displayArrayBits the bits for which display flags are added to the
@@ -150,7 +150,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Add a component to the south, below the feedback.
-	 * 
+	 *
 	 * @param component the added component
 	 */
 	public void addSouth(JComponent component) {
@@ -160,7 +160,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the color scale model if there is one.
-	 * 
+	 *
 	 * @return the color scale model for accumulation, etc.
 	 */
 	public ColorScaleModel getColorScaleModel() {
@@ -170,7 +170,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		return null;
 	}
-	
+
 	/**
 	 * Get the tabbed pane for customization
 	 * @return the tabbed pane
@@ -227,9 +227,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		if ((Bits.checkBit(controlPanelBits, DISPLAYARRAY)) && (displayArrayBits != 0)) {
 			_displayArray = new DisplayArray(_view, displayArrayBits, _nc, _hgap);
 		}
-		
+
 		// phi slider
-		
+
 		Box phiSlider = null;
 		if (Bits.checkBit(controlPanelBits, PHISLIDER)) {
 			boolean isBig = Bits.checkBit(controlPanelBits, PHI_SLIDER_BIG);
@@ -244,19 +244,19 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 
 		if (_displayArray != null) {
-			
+
 			JPanel sp = new JPanel();
 			sp.setLayout(new BoxLayout(sp, BoxLayout.Y_AXIS));
-			
-			
+
+
 			_displayArray.setBorder(new CommonBorder("Visibility"));
 			sp.add(_displayArray);
-			
+
 			if (Bits.checkBit(controlPanelBits, ALLDCDISPLAYPANEL)) {
 				_allDCDisplayPanel = new AllDCDisplayPanel(_view);
 				sp.add(_allDCDisplayPanel);
 			}
-			
+
 			// accumulation
 			if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
 				_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
@@ -264,16 +264,16 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 				sp.add(_colorPanel);
 			}
-			
+
 			//adc threshold
 			if (Bits.checkBit(controlPanelBits, ADCTHRESHOLDSLIDER)) {
 				sp.add(createAdcThresholdSlider());
 			}
 
-			
+
 			tabbedPane.add(sp, "display");
 		}
-		
+
 		if (phiSlider != null) {
 			tabbedPane.add(phiSlider, "phi");
 		}
@@ -296,7 +296,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 //	/**
 //	 * Get the slider for the accumulation legend
-//	 * 
+//	 *
 //	 * @return the slider
 //	 */
 //	public JSlider getAccumulationSlider() {
@@ -305,7 +305,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 //	/**
 //	 * Create the slider used to control the target z
-//	 * 
+//	 *
 //	 * @return the slider used to control the target z
 //	 */
 //	private Box createTargetSlider() {
@@ -337,10 +337,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 //		return box;
 //	}
 
-	
+
 	/**
 	 * Create the slider used to control the target z
-	 * 
+	 *
 	 * @return the slider used to control the target z
 	 */
 	private Box createAdcThresholdSlider() {
@@ -355,7 +355,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		_adcThresholdSlider.setMajorTickSpacing(250);
 		_adcThresholdSlider.setMinorTickSpacing(50);
 
-		
+
 		_adcThresholdSlider.setPaintTicks(true);
 		_adcThresholdSlider.setPaintLabels(true);
 		_adcThresholdSlider.setFont(Fonts.tinyFont);
@@ -374,11 +374,11 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		box.setBorder(_adcThresholdBorder);
 		return box;
 	}
-	
-	
+
+
 	/**
 	 * Create the slider used to control the target z
-	 * 
+	 *
 	 * @return the slider used to control the target z
 	 */
 	private Box createPhiSlider(boolean isBig) {
@@ -424,10 +424,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 		return box;
 	}
-	
+
 	/**
 	 * Get the slider for adc threshold.
-	 * 
+	 *
 	 * @return the slider for adc threshold.
 	 */
 	public JSlider getAdcThresholdSlider() {
@@ -444,7 +444,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the slider for target position.
-	 * 
+	 *
 	 * @return the slider for target position.
 	 */
 	public JSlider getTargetSlider() {
@@ -453,7 +453,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the slider for the relative phi.
-	 * 
+	 *
 	 * @return the slider for the relative phi.
 	 */
 	public JSlider getPhiSlider() {
@@ -462,7 +462,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the display options array
-	 * 
+	 *
 	 * @return the display options array
 	 */
 	public DisplayArray getDisplayArray() {
@@ -471,7 +471,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the mag field options array
-	 * 
+	 *
 	 * @return the mag fielddisplay options array
 	 */
 	public MagFieldDisplayArray getMagFieldDisplayArray() {
@@ -480,7 +480,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Convenience method to see it we show results of the noise analysis
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show results of the noise analysis
 	 */
 	public boolean showNoiseAnalysis() {
@@ -492,7 +492,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Convenience method to see it we show the segment masks
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the masks.
 	 */
 	public boolean showMasks() {
@@ -504,7 +504,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Convenience method to see it we show the scale
-	 * 
+	 *
 	 * @return <code>true</code> if we are to show the scale.
 	 */
 	public boolean showScale() {
@@ -516,7 +516,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Convenience method to see it we hide the noise hits
-	 * 
+	 *
 	 * @return <code>true</code> if we are to hide the noise hits
 	 */
 	public boolean hideNoise() {
@@ -526,7 +526,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		return _noisePanel.hideNoise();
 	}
-	
+
 	/**
 	 * Get the display panel used by the all dc view
 	 * @return the display panel used by the all dc view

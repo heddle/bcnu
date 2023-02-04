@@ -29,7 +29,7 @@ public class ETDialog extends SimpleDialog {
 
 	/**
 	 * Create the panel for selected
-	 * 
+	 *
 	 * @param id
 	 * @param level
 	 */
@@ -40,7 +40,7 @@ public class ETDialog extends SimpleDialog {
 	/**
 	 * Override to create the component that goes in the center. Usually this is the
 	 * "main" component.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class ETDialog extends SimpleDialog {
 
 	/*
 	 * Returns the reason that the dialog was closed
-	 * 
+	 *
 	 * @return <code>DialogUtilities.OK_RESPONSE</code> or
 	 * <code>DialogUtilities.CANCEL_RESPONSE</code>
 	 */

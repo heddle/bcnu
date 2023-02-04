@@ -1,6 +1,7 @@
 package cnuphys.ced.frame;
 
 import java.awt.Color;
+
 import cnuphys.bCNU.util.X11Colors;
 
 public class CedColors {
@@ -19,7 +20,7 @@ public class CedColors {
 
 	// tb segment line color
 	public static final Color tbSegmentLine = X11Colors.getX11Color("Navy");
-	
+
 	// ai hb segment color
 	public static final Color aihbSegmentLine = X11Colors.getX11Color("dark khaki");
 
@@ -75,11 +76,11 @@ public class CedColors {
 	public static final Color HB_CLUSTER_COLOR = new Color(255, 255, 0, 220);
 	public static final Color TB_CLUSTER_COLOR = X11Colors.getX11Color("dark orange", 220);
 	public static final Color SNR_CLUSTER_COLOR = new Color(46, 169, 87, 220);
-	
+
 	//cvt
 	public static final Color CVTREC_COLOR = X11Colors.getX11Color("green");
 	public static final Color CVTP1_COLOR = X11Colors.getX11Color("coral");
-	
+
 	//REC::Calorimeter
 	public static final Color RECEcalFill = new Color(255, 0, 0, 48);
 	public static final Color RECPcalFill = new Color(196, 64, 0, 48);

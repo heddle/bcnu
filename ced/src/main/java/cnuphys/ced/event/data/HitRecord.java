@@ -17,7 +17,7 @@ public class HitRecord {
 
 	/**
 	 * Hold information about a hit
-	 * 
+	 *
 	 * @param dContainer the data container
 	 * @param hIndex     the 0-based hit index
 	 * @param idArray    The 1-based ints (int order) used to identify the hit. For
@@ -36,7 +36,7 @@ public class HitRecord {
 
 	/**
 	 * Get a string representing the id array
-	 * 
+	 *
 	 * @return a string representing the id array
 	 */
 	public String getIDString() {

@@ -9,6 +9,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -22,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.MenuSelectionManager;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.format.DoubleFormat;
@@ -55,7 +57,7 @@ public class NodePanel extends JPanel
 
 	/** Used for "goto" sequential event */
 	protected JTextField seqEventNumberInput;
-	
+
 	/** Used for "goto" true event */
 	protected JTextField trueEventNumberInput;
 
@@ -167,7 +169,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Set the model data based on a clasIO DataEvent
-	 * 
+	 *
 	 * @param event the event
 	 */
 	public void setData(DataEvent event) {
@@ -193,7 +195,7 @@ public class NodePanel extends JPanel
 
 		JLabel seqLabel = new JLabel("Goto seq # ");
 		GraphicsUtilities.setSizeSmall(seqLabel);
-		
+
 		JLabel trueLabel = new JLabel("Goto true # ");
 		GraphicsUtilities.setSizeSmall(trueLabel);
 
@@ -256,7 +258,7 @@ public class NodePanel extends JPanel
 
 		eventSourcePanel.add(Box.createHorizontalStrut(4));
 		eventSourcePanel.add(intsInHexButton);
-		
+
 
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 2, 2));
@@ -265,10 +267,10 @@ public class NodePanel extends JPanel
 		panel.add(Box.createHorizontalStrut(2));
 		panel.add(nextButton);
 		panel.add(Box.createHorizontalStrut(2));
-		
+
 		numPanel.add(panel, BorderLayout.NORTH);
-		
-		
+
+
 		panel.add(seqLabel);
 		panel.add(seqEventNumberInput);
 		panel.add(Box.createHorizontalStrut(6));
@@ -293,7 +295,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * /** Set the displayed event source value.
-	 * 
+	 *
 	 * @param source event source.
 	 */
 	public void setSource(String source) {
@@ -302,7 +304,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Get the displayed event source value.
-	 * 
+	 *
 	 * @return the displayed event source value.
 	 */
 	public String getSource() {
@@ -317,7 +319,7 @@ public class NodePanel extends JPanel
 	public void setSeqEventNumber(int seqEventNumber) {
 		_eventInfoPanel.setSeqEventNumber(seqEventNumber);
 	}
-	
+
 	/**
 	 * Set the displayed true event number value.
 	 * That is the number in the RUN::config bank
@@ -329,7 +331,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Set the displayed run number value.
-	 * 
+	 *
 	 * @param runNumber run number.
 	 */
 	public void setRunNumber(int runNumber) {
@@ -338,7 +340,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Get the displayed event number value.
-	 * 
+	 *
 	 * @return the displayed event number value.
 	 */
 	public int getEventNumber() {
@@ -347,7 +349,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Set the displayed number-of-events value.
-	 * 
+	 *
 	 * @param numberOfEvents number of events.
 	 */
 	public void setNumberOfEvents(int numberOfEvents) {
@@ -356,7 +358,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Get the displayed number-of-events value.
-	 * 
+	 *
 	 * @return the displayed number-of-events value.
 	 */
 	public int getNumberOfEvents() {
@@ -539,7 +541,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Part of the IClasIoEventListener interface
-	 * 
+	 *
 	 * @param event the new current event
 	 */
 	@Override
@@ -556,7 +558,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Part of the IClasIoEventListener interface
-	 * 
+	 *
 	 * @param path the new path to the event file
 	 */
 	@Override
@@ -573,7 +575,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -602,7 +604,7 @@ public class NodePanel extends JPanel
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

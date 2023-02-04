@@ -29,7 +29,7 @@ public class CND extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the CND singleton
 	 */
 	public static CND getInstance() {
@@ -67,7 +67,7 @@ public class CND extends DetectorData {
 
 	/**
 	 * Get the number of adc hits
-	 * 
+	 *
 	 * @return the number of adc hits
 	 */
 	public int getCountAdc() {
@@ -76,7 +76,7 @@ public class CND extends DetectorData {
 
 	/**
 	 * Get the number of tdc hits
-	 * 
+	 *
 	 * @return the number of tdc hits
 	 */
 	public int getCountTdc() {
@@ -85,7 +85,7 @@ public class CND extends DetectorData {
 
 	/**
 	 * Get a color with apha based of relative adc
-	 * 
+	 *
 	 * @param adc the adc value
 	 * @return a fill color for adc hits
 	 */
@@ -124,7 +124,7 @@ public class CND extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the updated list
 	 */
 //	public TdcAdcHitList updateTdcAdcList() {
@@ -134,7 +134,7 @@ public class CND extends DetectorData {
 
 	/**
 	 * Get the tdc and adc hit list
-	 * 
+	 *
 	 * @return the tdc adc hit list
 	 */
 //	public TdcAdcHitList getHits() {

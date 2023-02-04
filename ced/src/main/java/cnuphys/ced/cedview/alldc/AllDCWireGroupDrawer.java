@@ -45,7 +45,7 @@ public abstract class AllDCWireGroupDrawer extends AWireGroupDrawer {
 
 	/**
 	 * draw the hull
-	 * 
+	 *
 	 * @param g          the graphics context
 	 * @param container  the rendering container
 	 * @param sector     parallel array of sector ids
@@ -149,7 +149,7 @@ public abstract class AllDCWireGroupDrawer extends AWireGroupDrawer {
 
 	/**
 	 * Gets the wire groupings for drawing, effectively, a convex hull;
-	 * 
+	 *
 	 * @param container  the rendering container
 	 * @param sector     parallel array of 1-based sector ids
 	 * @param superlayer parallel array of 1-based superlayer ids

@@ -17,9 +17,9 @@ import cnuphys.swim.Swimming;
 
 /**
  * Swims all the particles in the Recon bank
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class SwimAllRecon implements ISwimAll {
 
@@ -29,7 +29,7 @@ public class SwimAllRecon implements ISwimAll {
 
 	/**
 	 * Get all the row data so the trajectory dialog can be updated.
-	 * 
+	 *
 	 * @param manager the swim manager
 	 * @return a vector of TrajectoryRowData objects.
 	 */
@@ -40,7 +40,7 @@ public class SwimAllRecon implements ISwimAll {
 
 	/**
 	 * Swim all reconstructed particles
-	 * 
+	 *
 	 * @param manager the swim manager
 	 */
 	@Override
@@ -55,21 +55,21 @@ public class SwimAllRecon implements ISwimAll {
 		if (data == null) {
 			return;
 		}
-		
+
 		AdaptiveSwimmer swimmer = new AdaptiveSwimmer();
 		double stepSize = 1.0e-3;
 		double eps = 1.0e-6;
-		
+
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
-			
+
 			double sf = PATHMAX;
 			String source = trd.getSource();
-			
+
 			if ((source != null) && (source.contains("CVT"))) {
 				sf = 1.5; //shorter max path for cvt tracks
 			}
-			
+
 			if (lid != null) {
 				try {
 					AdaptiveSwimResult result = new AdaptiveSwimResult(true);
@@ -77,25 +77,25 @@ public class SwimAllRecon implements ISwimAll {
 							trd.getMomentum() / 1000, trd.getTheta(), trd.getPhi(), sf, stepSize, eps, result);
 					result.getTrajectory().setLundId(lid);
 					result.getTrajectory().setSource(trd.getSource());
-					
+
 					if (result.getTrajectory().getGeneratedParticleRecord() == null) {
 						InitialValues iv = result.getInitialValues();
 						GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.charge,
 								iv.xo, iv.yo, iv.zo, iv.p, iv.theta, iv.phi);
 						result.getTrajectory().setGeneratedParticleRecord(genPart);
 					}
-					
+
 	//				result.printOut(System.err, trd.getSource());
 					Swimming.addReconTrajectory(result.getTrajectory());
 				} catch (AdaptiveSwimException e) {
 					e.printStackTrace();
 				}
-				
+
 			}
 		} //for trd
-		
-		
-		
+
+
+
 
 
 //		Swimmer swimmer = new Swimmer();

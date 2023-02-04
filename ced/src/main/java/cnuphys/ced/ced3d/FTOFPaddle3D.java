@@ -1,9 +1,11 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.Color;
+
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.ced.geometry.FTOFGeometry;
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class FTOFPaddle3D {
 
@@ -38,7 +40,7 @@ public class FTOFPaddle3D {
 
 	/**
 	 * Get the sector [1..6]
-	 * 
+	 *
 	 * @return the sector 1..6
 	 */
 	public int getSector() {
@@ -47,7 +49,7 @@ public class FTOFPaddle3D {
 
 	/**
 	 * Get the superlayer [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
-	 * 
+	 *
 	 * @return the superlayer [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
 	 */
 	public int getSuperLayer() {
@@ -56,7 +58,7 @@ public class FTOFPaddle3D {
 
 	/**
 	 * Get the 1-based paddleId 1..
-	 * 
+	 *
 	 * @return the paddle Id
 	 */
 	public int getPaddleId() {
@@ -65,7 +67,7 @@ public class FTOFPaddle3D {
 
 	/**
 	 * Draw the paddle
-	 * 
+	 *
 	 * @param drawable the drawable
 	 * @param color    the color
 	 */

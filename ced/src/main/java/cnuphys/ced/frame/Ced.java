@@ -26,6 +26,23 @@ import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.dialog.TextDisplayDialog;
+import cnuphys.bCNU.eliza.ElizaDialog;
+import cnuphys.bCNU.fortune.FortuneManager;
+import cnuphys.bCNU.graphics.ImageManager;
+import cnuphys.bCNU.log.Log;
+import cnuphys.bCNU.magneticfield.swim.ISwimAll;
+import cnuphys.bCNU.menu.MenuManager;
+import cnuphys.bCNU.ping.Ping;
+import cnuphys.bCNU.util.Environment;
+import cnuphys.bCNU.util.FileUtilities;
+import cnuphys.bCNU.util.PropertySupport;
+import cnuphys.bCNU.view.HistoGridView;
+import cnuphys.bCNU.view.IPlotMaker;
+import cnuphys.bCNU.view.LogView;
+import cnuphys.bCNU.view.PlotView;
+import cnuphys.bCNU.view.ViewManager;
+//import cnuphys.bCNU.view.XMLView;
+import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.graphics.DefinitionManager;
 import cnuphys.ced.ced3d.view.CentralView3D;
@@ -44,10 +61,10 @@ import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.rtpc.RTPCView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
 import cnuphys.ced.cedview.sectorview.SectorView;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventMenu;
 import cnuphys.ced.clasio.ClasIoEventView;
 import cnuphys.ced.clasio.ClasIoMonteCarloView;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoReconEventView;
 import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.dcnoise.edit.NoiseParameterDialog;
@@ -60,6 +77,9 @@ import cnuphys.ced.event.data.AITBSegments;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;
+import cnuphys.ced.event.data.BST;
+import cnuphys.ced.event.data.BSTCrosses;
+import cnuphys.ced.event.data.CND;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.CVT;
 import cnuphys.ced.event.data.Cosmics;
@@ -71,9 +91,6 @@ import cnuphys.ced.event.data.HBCrosses;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.RECCalorimeter;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.CND;
 import cnuphys.ced.event.data.TBCrosses;
 import cnuphys.ced.event.data.TBSegments;
 import cnuphys.ced.geometry.BSTGeometry;
@@ -98,23 +115,6 @@ import cnuphys.splot.example.MemoryUsageDialog;
 import cnuphys.splot.plot.PlotPanel;
 import cnuphys.swim.SwimMenu;
 import cnuphys.swim.Swimmer;
-import cnuphys.bCNU.eliza.ElizaDialog;
-import cnuphys.bCNU.fortune.FortuneManager;
-import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.bCNU.log.Log;
-import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.bCNU.menu.MenuManager;
-import cnuphys.bCNU.ping.Ping;
-import cnuphys.bCNU.util.Environment;
-import cnuphys.bCNU.util.FileUtilities;
-import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.view.HistoGridView;
-import cnuphys.bCNU.view.IPlotMaker;
-import cnuphys.bCNU.view.LogView;
-import cnuphys.bCNU.view.PlotView;
-import cnuphys.bCNU.view.ViewManager;
-//import cnuphys.bCNU.view.XMLView;
-import cnuphys.bCNU.view.VirtualView;
 
 @SuppressWarnings("serial")
 public class Ced extends BaseMDIApplication implements PropertyChangeListener, MagneticFieldChangeListener {
@@ -129,7 +129,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "build 1.4.80";
+	private static final String _release = "build 1.5.01";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -186,7 +186,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private PCALView _pcalView;
 	private LogView _logView;
 	private ForwardView3D _forward3DView;
-	
+
 	private SwimmimgPlayground3D _swimming3DView;
 	private CentralView3D _central3DView;
 	private FTCalView3D _ftCal3DView;
@@ -232,7 +232,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Constructor (private--used to create singleton)
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of attributes in type-value
 	 *                pairs. For example, PropertySupport.NAME, "my application",
 	 *                PropertySupport.CENTER, true, etc.
@@ -274,7 +274,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the common Ping object
-	 * 
+	 *
 	 * @return the ping object
 	 */
 	public Ping getPing() {
@@ -341,7 +341,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			_virtualView.moveTo(_forward3DView, 9, VirtualView.CENTER);
 			_virtualView.moveTo(_central3DView, 10, VirtualView.BOTTOMLEFT);
 			_virtualView.moveTo(_ftCal3DView, 10, VirtualView.BOTTOMRIGHT);
-			
+
 			if (isExperimental()) {
 				_virtualView.moveTo(_swimming3DView, 18, VirtualView.CENTER);
 			}
@@ -425,7 +425,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			_forward3DView = new ForwardView3D();
 			_central3DView = new CentralView3D();
 			_ftCal3DView = new FTCalView3D();
-			
+
 			if (isExperimental()) {
 				_swimming3DView = new SwimmimgPlayground3D();
 			}
@@ -583,7 +583,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Accessor for the event menu
-	 * 
+	 *
 	 * @return the event menu
 	 */
 	public ClasIoEventMenu getEventMenu() {
@@ -842,14 +842,14 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		omenu.add(DefinitionManager.getInstance().getMenu());
 
 //		omenu.addSeparator();
-//		
+//
 //		ActionListener al2 = new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e) {
 //				refresh();
-//			}			
+//			}
 //		};
-//		
+//
 //		_oldBSTGeometry = new JCheckBoxMenuItem("Use old (four-region) BST"
 //				+ " Geometry", false);
 //		_oldBSTGeometry.addActionListener(al2);
@@ -865,7 +865,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Change the label to reflect whether or not we are filtering events
-	 * 
+	 *
 	 * @param filtering if <code>true</code> we are filtering
 	 */
 	public void setEventFilteringLabel(boolean filtering) {
@@ -874,7 +874,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Change the label to reflect whether or not we are filtering events
-	 * 
+	 *
 	 * @param filtering if <code>true</code> we are filtering
 	 */
 	public void fixEventFilteringLabel() {
@@ -883,7 +883,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Set the event number label
-	 * 
+	 *
 	 * @param num the event number
 	 */
 	public static void setEventNumberLabel(int num) {
@@ -912,7 +912,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the event filter menu
-	 * 
+	 *
 	 * @return the event filter menu
 	 */
 	public JMenu getEventFilterMenu() {
@@ -952,7 +952,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Flag controlling whether a tone indicating the DC occupancy is played
-	 * 
+	 *
 	 * @return <code>true</code> if the tone should be played
 	 */
 	public boolean playDCOccupancy() {
@@ -964,7 +964,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Flag controlling whether we use the old BST geometry
-	 * 
+	 *
 	 * @return <code>true</code> if the tone should be played
 	 */
 	public boolean useOldBSTGeometry() {
@@ -976,7 +976,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the virtual view
-	 * 
+	 *
 	 * @return the virtual view
 	 */
 	public VirtualView getVirtualView() {
@@ -985,7 +985,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * private access to the Ced singleton.
-	 * 
+	 *
 	 * @return the singleton Ced (the main application frame.)
 	 */
 	private static Ced getInstance() {
@@ -1011,7 +1011,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * public access to the singleton
-	 * 
+	 *
 	 * @return the singleton Ced (the main application frame.)
 	 */
 	public static Ced getCed() {
@@ -1020,7 +1020,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Generate the version string
-	 * 
+	 *
 	 * @return the version string
 	 */
 	public static String versionString() {
@@ -1091,7 +1091,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the plot view
-	 * 
+	 *
 	 * @return the plot voew;
 	 */
 	public PlotView getPlotView() {
@@ -1131,7 +1131,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the shared busy panel
-	 * 
+	 *
 	 * @return the shared progress bar
 	 */
 //	public static BusyPanel getBusyPanel() {
@@ -1140,7 +1140,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Check whether we use 3D
-	 * 
+	 *
 	 * @return <code>true</code> if we use 3D
 	 */
 	public static boolean use3D() {
@@ -1157,7 +1157,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the parent frame
-	 * 
+	 *
 	 * @return the parent frame
 	 */
 	public static JFrame getFrame() {
@@ -1166,7 +1166,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the COAT Java clasdir
-	 * 
+	 *
 	 * @return the COAT Java clasdir
 	 */
 	public static File getCLASDir() {
@@ -1175,9 +1175,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	// this is so we can find json files
 	private static void initClas12Dir() throws IOException {
-		
+
 		// for running from runnable jar (for coatjava)
-		String clas12dir = System.getProperty("CLAS12DIR");		
+		String clas12dir = System.getProperty("CLAS12DIR");
 
 		if (clas12dir == null) {
 			clas12dir = "coatjava";
@@ -1218,9 +1218,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		} else {
 			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 		}
-		
+
 		//one last try
-		clas12dir = System.getenv("CLAS12DIR");	
+		clas12dir = System.getenv("CLAS12DIR");
 		if (clas12dir != null) {
 			System.err.println("Trying with environment variable CLAS12DIR = "  + clas12dir);
 			_clasDir = new File(clas12dir);
@@ -1241,7 +1241,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	/**
 	 * Get the geometry variation
-	 * 
+	 *
 	 * @return the geometry variation
 	 */
 	public static String getGeometryVariation() {
@@ -1283,7 +1283,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 * <p>
 	 * Command line arguments:</br>
 	 * -p [dir] dir is the default directory
-	 * 
+	 *
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {

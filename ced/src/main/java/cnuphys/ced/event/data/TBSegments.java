@@ -10,7 +10,7 @@ public class TBSegments extends Segments {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static TBSegments getInstance() {

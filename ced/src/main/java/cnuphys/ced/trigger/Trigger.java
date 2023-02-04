@@ -10,7 +10,7 @@ public class Trigger {
 
 	/**
 	 * Create a trigger pattern
-	 * 
+	 *
 	 * @param name    the namne of the pattern
 	 * @param trigger the trigger bits
 	 */
@@ -21,7 +21,7 @@ public class Trigger {
 
 	/**
 	 * Set the trigger bits
-	 * 
+	 *
 	 * @param trigger the trigger bits
 	 */
 	public void setTrigger(int trigger) {
@@ -30,7 +30,7 @@ public class Trigger {
 
 	/**
 	 * Get the trigger bits
-	 * 
+	 *
 	 * @return the trigger bits
 	 */
 	public int getTrigger() {
@@ -39,7 +39,7 @@ public class Trigger {
 
 	/**
 	 * Set the name of the trigger
-	 * 
+	 *
 	 * @param name the name of the trigger
 	 */
 	public void setName(String name) {
@@ -48,7 +48,7 @@ public class Trigger {
 
 	/**
 	 * Get the name of the trigger
-	 * 
+	 *
 	 * @return the name of the trigger
 	 */
 	public String getName() {

@@ -121,7 +121,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	/**
 	 * Get the max average adc
-	 * 
+	 *
 	 * @return the max average adc
 	 */
 	public int maxADC() {
@@ -236,7 +236,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	/**
 	 * Find the index of a hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer
 	 * @param component the 1-based component
@@ -257,7 +257,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer 1..36
 	 * @param component the 1-based component
@@ -270,7 +270,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer 1..36
 	 * @param component the 1-based component
@@ -282,7 +282,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	/**
 	 * Get a color with apha based of relative adc
-	 * 
+	 *
 	 * @param hit the hit
 	 * @return a fill color for adc hits
 	 */
@@ -292,7 +292,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	/**
 	 * Get a color with apha based of relative adc
-	 * 
+	 *
 	 * @param hit    the hit
 	 * @param maxAdc the max adc value
 	 * @return a fill color for adc hits

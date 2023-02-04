@@ -26,7 +26,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Create an BSTxyPanel. The panel is really just a thick line
-	 * 
+	 *
 	 * @param sect 1-based
 	 * @param lay  1..8
 	 * @param vals should be an array of 10 numbers x y x y z0..z5
@@ -51,7 +51,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z index, 0..2 for the three sensitive areas
-	 * 
+	 *
 	 * @param z the z value
 	 * @return the z index or -1 for out of range
 	 */
@@ -70,7 +70,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the perpendicular distance to the panel line segment
-	 * 
+	 *
 	 * @param wp the point in question
 	 * @return the perpendicular distance
 	 */
@@ -80,7 +80,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the layer, [1..8]
-	 * 
+	 *
 	 * @return the layer
 	 */
 	public int getLayer() {
@@ -90,7 +90,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 	/**
 	 * the "sector" 1..max, max depends on layer, max = {10, 14, 18, 24} for layers
 	 * {(1,2), (3,4), (5,6), (7,8)} respectively
-	 * 
+	 *
 	 * @return the sector
 	 */
 	public int getSector() {
@@ -99,7 +99,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the x1 value
-	 * 
+	 *
 	 * @return the x1 value
 	 */
 	public double getX1() {
@@ -108,7 +108,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the y1 value
-	 * 
+	 *
 	 * @return the y1 value
 	 */
 	public double getY1() {
@@ -117,7 +117,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the x2 value
-	 * 
+	 *
 	 * @return the x2 value
 	 */
 	public double getX2() {
@@ -126,7 +126,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the y2 value
-	 * 
+	 *
 	 * @return the y2 value
 	 */
 	public double getY2() {
@@ -135,7 +135,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z0 value
-	 * 
+	 *
 	 * @return the z0 value
 	 */
 	public double getZ0() {
@@ -144,7 +144,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z1 value
-	 * 
+	 *
 	 * @return the z1 value
 	 */
 	public double getZ1() {
@@ -153,7 +153,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z2 value
-	 * 
+	 *
 	 * @return the z2 value
 	 */
 	public double getZ2() {
@@ -162,7 +162,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z3 value
-	 * 
+	 *
 	 * @return the z3
 	 */
 	public double getZ3() {
@@ -171,7 +171,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z3 value
-	 * 
+	 *
 	 * @return the z4 value
 	 */
 	public double getZ4() {
@@ -180,7 +180,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the z5 value
-	 * 
+	 *
 	 * @return the z5 value
 	 */
 	public double getZ5() {
@@ -189,7 +189,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Set the perp value used by the z view for ordering
-	 * 
+	 *
 	 * @param perpVal the new perp value
 	 */
 	public void setPerp(double perpVal) {
@@ -198,7 +198,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the perp value used by the z view for ordering
-	 * 
+	 *
 	 * @return the perp value
 	 */
 	public double getPerp() {
@@ -207,7 +207,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	/**
 	 * Get the average lab xy of this panel
-	 * 
+	 *
 	 * @return the average lab xy of this panel
 	 */
 	public Point2D.Double getXyAverage() {

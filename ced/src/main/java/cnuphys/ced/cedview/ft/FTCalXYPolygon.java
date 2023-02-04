@@ -24,7 +24,7 @@ public class FTCalXYPolygon extends Polygon {
 
 	/**
 	 * Create a XY Polygon for the CND
-	 * 
+	 *
 	 * @param Id the paddle ID
 	 */
 	public FTCalXYPolygon(int paddleId) {
@@ -37,7 +37,7 @@ public class FTCalXYPolygon extends Polygon {
 
 	/**
 	 * Draw the polygon
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
 	 */
@@ -58,7 +58,7 @@ public class FTCalXYPolygon extends Polygon {
 
 	/**
 	 * Get the feedback strings
-	 * 
+	 *
 	 * @param container
 	 * @param screenPoint
 	 * @param worldPoint

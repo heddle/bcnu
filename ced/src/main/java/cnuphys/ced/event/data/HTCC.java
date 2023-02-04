@@ -23,7 +23,7 @@ public class HTCC {
 
 	/**
 	 * Get the pid array from the true data
-	 * 
+	 *
 	 * @return the pid array
 	 */
 	public static int[] pid() {
@@ -32,7 +32,7 @@ public class HTCC {
 
 	/**
 	 * Get the hitn array from the dgtz data
-	 * 
+	 *
 	 * @return the hitn array
 	 */
 	public static int[] hitn() {
@@ -41,7 +41,7 @@ public class HTCC {
 
 	/**
 	 * Get the sector array from the dgtz data
-	 * 
+	 *
 	 * @return the sector array
 	 */
 	public static int[] sector() {
@@ -50,7 +50,7 @@ public class HTCC {
 
 	/**
 	 * Get the ring array from the dgtz data
-	 * 
+	 *
 	 * @return the ring array
 	 */
 	public static int[] ring() {
@@ -59,7 +59,7 @@ public class HTCC {
 
 	/**
 	 * Get the half array from the dgtz data
-	 * 
+	 *
 	 * @return the half array
 	 */
 	public static int[] half() {
@@ -68,7 +68,7 @@ public class HTCC {
 
 	/**
 	 * Get the nphe (num phot electrons) array from the dgtz data
-	 * 
+	 *
 	 * @return the nphe array
 	 */
 	public static int[] nphe() {
@@ -77,7 +77,7 @@ public class HTCC {
 
 	/**
 	 * Get the time array from the dgtz data
-	 * 
+	 *
 	 * @return the time array
 	 */
 	public static double[] time() {
@@ -86,7 +86,7 @@ public class HTCC {
 
 	/**
 	 * Get the avgX array from the true data
-	 * 
+	 *
 	 * @return the avgX array
 	 */
 	public static double[] avgX() {
@@ -95,7 +95,7 @@ public class HTCC {
 
 	/**
 	 * Get the avgY array from the true data
-	 * 
+	 *
 	 * @return the avgY array
 	 */
 	public static double[] avgY() {
@@ -104,7 +104,7 @@ public class HTCC {
 
 	/**
 	 * Get the avgZ array from the true data
-	 * 
+	 *
 	 * @return the avgZ array
 	 */
 	public static double[] avgZ() {
@@ -113,7 +113,7 @@ public class HTCC {
 
 	/**
 	 * Get the avgLx array from the true data
-	 * 
+	 *
 	 * @return the avgLx array
 	 */
 	public static double[] avgLx() {
@@ -122,7 +122,7 @@ public class HTCC {
 
 	/**
 	 * Get the avgLy array from the true data
-	 * 
+	 *
 	 * @return the avgLy array
 	 */
 	public static double[] avgLy() {
@@ -131,7 +131,7 @@ public class HTCC {
 
 	/**
 	 * Get the avgLz array from the true data
-	 * 
+	 *
 	 * @return the avgLz array
 	 */
 	public static double[] avgLz() {
@@ -140,7 +140,7 @@ public class HTCC {
 
 	/**
 	 * Get the totEdep array from the true data
-	 * 
+	 *
 	 * @return the totEdep array
 	 */
 	public static double[] totEdep() {
@@ -149,7 +149,7 @@ public class HTCC {
 
 	/**
 	 * Get the hit count
-	 * 
+	 *
 	 * @return the hit count
 	 */
 	public static int hitCount() {
@@ -159,7 +159,7 @@ public class HTCC {
 
 	/**
 	 * Add some dgtz hit feedback for ec and pcal
-	 * 
+	 *
 	 * @param hitIndex        the hit index
 	 * @param feedbackStrings the collection of feedback strings
 	 */
@@ -183,7 +183,7 @@ public class HTCC {
 
 	/**
 	 * Get the index of the HTCC hit
-	 * 
+	 *
 	 * @param sect the 1-based sector
 	 * @param ring the 1-based ring [1..4]
 	 * @param half the 1-based half [1..2]
@@ -196,7 +196,7 @@ public class HTCC {
 			return null;
 		}
 
-		Vector<HitRecord> hits = new Vector<HitRecord>();
+		Vector<HitRecord> hits = new Vector<>();
 
 		int sectors[] = sector();
 		int rings[] = ring();
@@ -216,7 +216,7 @@ public class HTCC {
 
 	/**
 	 * Some true feedback for htcc
-	 * 
+	 *
 	 * @param hitIndex
 	 * @param bits     controls what is displayed
 	 * @param trans    a geometry package transformation object
@@ -224,7 +224,7 @@ public class HTCC {
 	 */
 	public static List<String> gemcHitFeedback(int hitIndex, int bits, Transformations trans) {
 
-		Vector<String> fbs = new Vector<String>();
+		Vector<String> fbs = new Vector<>();
 
 		if (hitIndex < 0) {
 			return fbs;
@@ -289,7 +289,7 @@ public class HTCC {
 
 	/**
 	 * Some preliminary feedback for HTCC
-	 * 
+	 *
 	 * @param hitIndex        the hit index
 	 * @param feedbackStrings the collection of feedback strings
 	 */
@@ -312,7 +312,7 @@ public class HTCC {
 	/**
 	 * Get the values array for the color scale. Note the range is 0..1 so use
 	 * fraction of max value to get color
-	 * 
+	 *
 	 * @return the values array.
 	 */
 
@@ -335,7 +335,7 @@ public class HTCC {
 
 	/**
 	 * Get the color array for the plot.
-	 * 
+	 *
 	 * @return the color array for the plot.
 	 */
 	private static Color getNPheColors()[] {

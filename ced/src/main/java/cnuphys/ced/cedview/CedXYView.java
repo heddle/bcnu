@@ -10,8 +10,8 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 import java.awt.geom.Point2D.Double;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import cnuphys.bCNU.format.DoubleFormat;
@@ -42,7 +42,7 @@ public abstract class CedXYView extends CedView {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param keyVals variable length argument list
 	 */
 	public CedXYView(Object... keyVals) {
@@ -71,10 +71,10 @@ public abstract class CedXYView extends CedView {
 
 	// draw the axes
 	protected void drawAxes(Graphics g, IContainer container, Rectangle bounds, boolean drawPhi) {
-		
+
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		Rectangle sr = getActiveScreenRectangle(container);
 		// Rectangle sr = container.getInsetRectangle();
 
@@ -201,7 +201,7 @@ public abstract class CedXYView extends CedView {
 
 	/**
 	 * Some basic feedback
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the pixel location
 	 * @param worldPoint      the world location

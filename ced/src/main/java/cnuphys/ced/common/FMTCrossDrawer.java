@@ -42,15 +42,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 
-		if (!_view.showFMTCrosses()) {
-			return;
-		}
-
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (!_view.showFMTCrosses() || ClasIoEventManager.getInstance().isAccumulating() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -72,7 +64,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 
 	/**
 	 * Draw FMT crosses
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the drawing container
 	 */
@@ -152,7 +144,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 
 	/**
 	 * Draw FMT crosses
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the drawing container
 	 */
@@ -211,7 +203,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

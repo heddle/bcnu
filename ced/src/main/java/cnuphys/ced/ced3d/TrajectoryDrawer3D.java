@@ -2,6 +2,9 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 import java.util.List;
+
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.frame.CedColors;
@@ -10,9 +13,6 @@ import cnuphys.lund.LundStyle;
 import cnuphys.swim.SwimMenu;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.Swimming;
-
-import com.jogamp.opengl.GLAutoDrawable;
-
 import item3D.Item3D;
 
 public class TrajectoryDrawer3D extends Item3D {
@@ -82,7 +82,7 @@ public class TrajectoryDrawer3D extends Item3D {
 					}
 
 					LundId lid = trajectory.getLundId();
-					
+
 					if (lid != null) {
 						color = lid.getStyle().getLineColor();
 					}

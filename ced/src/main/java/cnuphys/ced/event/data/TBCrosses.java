@@ -10,7 +10,7 @@ public class TBCrosses extends Crosses {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static TBCrosses getInstance() {

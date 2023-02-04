@@ -20,7 +20,7 @@ public class Segments extends DetectorData {
 
 	/**
 	 * Get the segment list
-	 * 
+	 *
 	 * @return the segment list
 	 */
 	public SegmentList getSegments() {

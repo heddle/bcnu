@@ -1,6 +1,7 @@
 package cnuphys.ced.event.data;
 
 import java.util.List;
+
 import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -27,7 +28,7 @@ public class DataSupport {
 
 	/**
 	 * Add the pid information
-	 * 
+	 *
 	 * @param pid             the pid.array
 	 * @param hitIndex        the hit index
 	 * @param feedbackStrings the collection of feedback strings
@@ -44,7 +45,7 @@ public class DataSupport {
 
 	/**
 	 * Add positional feedback
-	 * 
+	 *
 	 * @param hitIndex
 	 * @param x
 	 * @param y
@@ -78,7 +79,7 @@ public class DataSupport {
 
 	/**
 	 * Safe method for extracting a byte from an array
-	 * 
+	 *
 	 * @param array the array
 	 * @param index the index
 	 * @return the value at the index or errorVal on any error
@@ -95,7 +96,7 @@ public class DataSupport {
 
 	/**
 	 * Safe method for extracting a short from an array
-	 * 
+	 *
 	 * @param array the array
 	 * @param index the index
 	 * @return the value at the index or errorVal on any error
@@ -112,7 +113,7 @@ public class DataSupport {
 
 	/**
 	 * Safe method for extracting an int from an array
-	 * 
+	 *
 	 * @param array the array
 	 * @param index the index
 	 * @return the value at the index or errorVal on any error
@@ -129,7 +130,7 @@ public class DataSupport {
 
 	/**
 	 * Safe method for extracting a long from an array
-	 * 
+	 *
 	 * @param array the array
 	 * @param index the index
 	 * @return the value at the index or errorVal on any error
@@ -146,7 +147,7 @@ public class DataSupport {
 
 	/**
 	 * Safe method for extracting a float from an array
-	 * 
+	 *
 	 * @param array the array
 	 * @param index the index
 	 * @return the value at the index or errorVal on any error
@@ -163,7 +164,7 @@ public class DataSupport {
 
 	/**
 	 * Safe method for extracting a double from an array
-	 * 
+	 *
 	 * @param array the array
 	 * @param index the index
 	 * @return the value at the index or errorVal on any error
@@ -180,7 +181,7 @@ public class DataSupport {
 
 	/**
 	 * Safe way to get an integer element from an array for printing
-	 * 
+	 *
 	 * @param array the array in question
 	 * @param index the array index
 	 * @return a string for printing
@@ -197,7 +198,7 @@ public class DataSupport {
 
 	/**
 	 * Safe way to get an integer element from an array for printing
-	 * 
+	 *
 	 * @param array the array in question
 	 * @param index the array index
 	 * @return a string for printing
@@ -214,7 +215,7 @@ public class DataSupport {
 
 	/**
 	 * Safe way to get an integer element from an array for printing
-	 * 
+	 *
 	 * @param array the array in question
 	 * @param index the array index
 	 * @return a string for printing
@@ -231,7 +232,7 @@ public class DataSupport {
 
 	/**
 	 * Safe way to get an double element from an array for printing
-	 * 
+	 *
 	 * @param array  the array in question
 	 * @param index  the array index
 	 * @param numdec the number of decimal points
@@ -249,7 +250,7 @@ public class DataSupport {
 
 	/**
 	 * Get a string for the particle Id
-	 * 
+	 *
 	 * @param pid the Lund particle Id
 	 * @return the string representation of the particle Id
 	 */
@@ -269,7 +270,7 @@ public class DataSupport {
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param v      the vector (any double array)
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
@@ -303,7 +304,7 @@ public class DataSupport {
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param p3d    the 3D point
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
@@ -333,7 +334,7 @@ public class DataSupport {
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param xyz    the Cartesian coordinates in cm
 	 * @param numDec the number of decimal places for each value.
 	 * @return a String representation of the vector in spherical coordinates
@@ -364,7 +365,7 @@ public class DataSupport {
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param v      the value
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector

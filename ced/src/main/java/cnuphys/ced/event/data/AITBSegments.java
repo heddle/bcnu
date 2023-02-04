@@ -10,7 +10,7 @@ public class AITBSegments extends Segments {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static AITBSegments getInstance() {

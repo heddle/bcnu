@@ -1,6 +1,7 @@
 package cnuphys.ced.geometry;
 
 import java.awt.geom.Point2D;
+
 import org.jlab.geom.component.ScintillatorPaddle;
 import org.jlab.geom.detector.ec.ECLayer;
 import org.jlab.geom.detector.ec.ECSuperlayer;
@@ -9,7 +10,7 @@ import org.jlab.geom.prim.Point3D;
 
 /**
  * Holds the EC geometery from the geometry packages
- * 
+ *
  * @author heddle
  *
  */
@@ -77,7 +78,7 @@ public class PCALGeometry {
 	/**
 	 * Obtain the separation between the front of the inner and the front of the
 	 * outer in the k direction.
-	 * 
+	 *
 	 * @return the separation in cm.
 	 */
 	public static double getDeltaK() {
@@ -87,7 +88,7 @@ public class PCALGeometry {
 	/**
 	 * Get the normal vector in sector xyz (cm) from the nominal target to the front
 	 * plane of the inner EC. All coordinates are in cm.
-	 * 
+	 *
 	 * @return the normal vector for the given plane
 	 */
 	public static Point3D getR0() {
@@ -96,7 +97,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the front plane of the PCAL
-	 * 
+	 *
 	 * @param sector the 1-based sector [1..6]
 	 * @return the front plane of the PCAL
 	 */
@@ -109,7 +110,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the coordinate transformation object
-	 * 
+	 *
 	 * @return the coordinate transformations
 	 */
 	public static Transformations getTransformations() {
@@ -149,7 +150,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get a point from the IJK boundary
-	 * 
+	 *
 	 * @param pointIndex the point index [0..2]
 	 * @return the corresponding point
 	 */
@@ -159,7 +160,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get a point from a u, v or w strip
-	 * 
+	 *
 	 * @param stripType  EC_U, EC_V, or EC_W [0..2]
 	 * @param stripIndex the strip index [0..(PCAL_NUMSTRIP-1)]
 	 * @param pointIndex the point index [0..3]
@@ -171,7 +172,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the minimum value if the sector x coordinate in cm
-	 * 
+	 *
 	 * @return the minimum value of the i coordinate
 	 */
 	public static double getXmin() {
@@ -180,7 +181,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the minimum value if the sector x coordinate in cm
-	 * 
+	 *
 	 * @return the minimum value of the i coordinate
 	 */
 	public static double getXmax() {
@@ -189,7 +190,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the minimum value if the i coordinate in cm
-	 * 
+	 *
 	 * @return the minimum value of the i coordinate
 	 */
 	public static double getImin() {
@@ -198,7 +199,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the maximum value if the i coordinate in cm
-	 * 
+	 *
 	 * @return the maximum value of the i coordinate
 	 */
 	public static double getImax() {
@@ -207,7 +208,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the minimum value if the j coordinate in cm
-	 * 
+	 *
 	 * @return the minimum value of the j coordinate
 	 */
 	public static double getJmin() {
@@ -216,7 +217,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the maximum value if the j coordinate in cm
-	 * 
+	 *
 	 * @return the maximum value of the j coordinate
 	 */
 	public static double getJmax(int planeIndex) {
@@ -225,7 +226,7 @@ public class PCALGeometry {
 
 	/**
 	 * For the front face of a given plane, compute z from x
-	 * 
+	 *
 	 * @param x the x coordinate in cm
 	 * @return the z coordinate in cm
 	 */
@@ -237,7 +238,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the triangle for a given view for 3D
-	 * 
+	 *
 	 * @param sector the sector 1..6
 	 * @param view   (aka layer) 1..3 for u, v, w
 	 * @param coords will hold the corners as [x1, y1, z1, ..., x3, y3, z3]
@@ -250,7 +251,7 @@ public class PCALGeometry {
 
 	/**
 	 * Get the strips for use by 3D view
-	 * 
+	 *
 	 * @param sector the sector 1..6
 	 * @param view   (aka layer) 1..3 for u, v, w
 	 * @param strip  1..36
@@ -264,7 +265,7 @@ public class PCALGeometry {
 	/**
 	 * Obtain the shell (for sector views) for the whole PCAL correct for the
 	 * relative phi.
-	 * 
+	 *
 	 * @param stripType       should be PCAL_U, PCAL_V, or PCAL_W
 	 * @param projectionPlane the projection plane
 	 * @return the shell for the whole panel.
@@ -314,7 +315,7 @@ public class PCALGeometry {
 
 	/**
 	 * Convert ijk coordinates to sector xyz
-	 * 
+	 *
 	 * @param pijk      the ijk coordinates
 	 * @param sectorXYZ the sector xyz coordinates
 	 */
@@ -455,7 +456,7 @@ public class PCALGeometry {
 	/**
 	 * Get the intersections of a with a constant phi plane. If the paddle does not
 	 * intersect (happens as phi grows) return null;
-	 * 
+	 *
 	 * @param layer           PCAL_U, PCAL_V, PCAL_W
 	 * @param stripid         the 0-based paddle id
 	 * @param projectionPlane the projection plane

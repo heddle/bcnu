@@ -5,7 +5,7 @@ import java.awt.geom.Point2D;
 /**
  * A common class of four (probably not rectangular) 2D points. An example would
  * be the ecal u,v, and w strips
- * 
+ *
  * @author heddle
  *
  */
@@ -28,7 +28,7 @@ public class FourPoints2D {
 
 	/**
 	 * Add another point. The index will be incremented
-	 * 
+	 *
 	 * @param x the horizontal coordinate
 	 * @param y the vertical coordinate
 	 */
@@ -43,7 +43,7 @@ public class FourPoints2D {
 
 	/**
 	 * Get the point for a given index
-	 * 
+	 *
 	 * @param index should be [0..3]
 	 * @return the corresponding point
 	 */
@@ -53,7 +53,7 @@ public class FourPoints2D {
 
 	/**
 	 * Get all the points
-	 * 
+	 *
 	 * @return the points array with 4 points
 	 */
 	public Point2D.Double[] getPoints() {

@@ -7,7 +7,7 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public class ColumnData implements Comparable<ColumnData> {
-	
+
 	/** type is unknown */
 	public static final int UNKNOWN = 0;
 
@@ -68,7 +68,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Holds the data for one column, one event
-	 * 
+	 *
 	 * @param bankName   the bank name
 	 * @param columnName the column name
 	 * @param type       the data type (one of the class constants)
@@ -94,7 +94,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Get the name of the data type
-	 * 
+	 *
 	 * @return the name of the data type
 	 */
 	public String getTypeName() {
@@ -107,7 +107,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Get the length of the backing data array
-	 * 
+	 *
 	 * @param event the current event
 	 * @return the length of the array
 	 */
@@ -148,7 +148,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 		return 0;
 	}
-	
+
 	/**
 	 * Get a byte array for the bank and column names in the given event
 	 * @param event the given event
@@ -159,7 +159,7 @@ public class ColumnData implements Comparable<ColumnData> {
 		byte[] array = bank.getByte(_columnName);
 		return array;
 	}
-	
+
 	/**
 	 * Get a short array for the bank and column names in the given event
 	 * @param event the given event
@@ -181,7 +181,7 @@ public class ColumnData implements Comparable<ColumnData> {
 		int[] array = bank.getInt(_columnName);
 		return array;
 	}
-	
+
 	/**
 	 * Get a long array for the bank and column names in the given event
 	 * @param event the given event
@@ -202,7 +202,7 @@ public class ColumnData implements Comparable<ColumnData> {
 		float[] array = bank.getFloat(_columnName);
 		return array;
 	}
-	
+
 	/**
 	 * Get a double array for the bank and column names in the given event
 	 * @param event the given event
@@ -213,11 +213,11 @@ public class ColumnData implements Comparable<ColumnData> {
 		double[] array = bank.getDouble(_columnName);
 		return array;
 	}
-	
+
 
 	/**
 	 * Get the array with double values regardless of type
-	 * 
+	 *
 	 * @return the data as a double array
 	 */
 	public double[] getAsDoubleArray(DataEvent event) {
@@ -280,7 +280,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Get the length of the underlying data array
-	 * 
+	 *
 	 * @return the length of the underlying data array
 	 */
 	public int length(DataEvent event) {
@@ -324,7 +324,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Get the bank name
-	 * 
+	 *
 	 * @return the bank name
 	 */
 	public String getBankName() {
@@ -333,7 +333,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Get the column name
-	 * 
+	 *
 	 * @return column name
 	 */
 	public String getColumnName() {
@@ -342,7 +342,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * get the full name
-	 * 
+	 *
 	 * @return the full name
 	 */
 	public String getFullName() {
@@ -351,7 +351,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Get the data type
-	 * 
+	 *
 	 * @return the data type [0..6] (0 is error)
 	 */
 	public int getType() {
@@ -366,11 +366,7 @@ public class ColumnData implements Comparable<ColumnData> {
 		}
 
 		ColumnData cd = DataManager.getInstance().getColumnData(fullName);
-		if (cd == null) {
-			return null;
-		}
-
-		if (!event.hasBank(cd.getBankName())) {
+		if ((cd == null) || !event.hasBank(cd.getBankName())) {
 			return null;
 		}
 
@@ -379,7 +375,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Obtain a byte array from the current event for the given full name
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
@@ -390,7 +386,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Obtain a short array from the current event for the given full name
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
@@ -401,7 +397,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Obtain an int array from the current event for the given full name
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
@@ -412,7 +408,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Obtain a long array from the current event for the given full name
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
@@ -423,7 +419,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Obtain a float array from the current event for the given full name
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
@@ -434,7 +430,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/**
 	 * Obtain double array from the current event for the given full name
-	 * 
+	 *
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */

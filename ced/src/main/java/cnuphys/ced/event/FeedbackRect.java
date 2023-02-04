@@ -9,7 +9,7 @@ public class FeedbackRect extends Rectangle {
 
 	public enum Dtype {
 		BMT, CVTREC, CVTP1, CND, DC, EC, FMT, FTOF, PCAL, HTCC
-	};
+	}
 
 	/** the hit index associated with this feedback rect */
 	public int hitIndex;
@@ -71,7 +71,7 @@ public class FeedbackRect extends Rectangle {
 	/**
 	 * Convenience function that both checks for inside and also, if it is inside,
 	 * adds the cached feedback String (if there is one.)
-	 * 
+	 *
 	 * @param pp              the screen location
 	 * @param feedbackStrings the collection of feedback strings
 	 * @return <code>true</code> if the point is inside

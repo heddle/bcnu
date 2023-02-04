@@ -20,7 +20,7 @@ public class CutTableScrollPane extends JScrollPane {
 
 	/**
 	 * Constructor will also create the table itself.
-	 * 
+	 *
 	 * @param cutList the list of cuts
 	 * @param label   a label for the list
 	 */
@@ -37,7 +37,7 @@ public class CutTableScrollPane extends JScrollPane {
 
 	/**
 	 * Accessor for the underlying table.
-	 * 
+	 *
 	 * @return the underlying cut table.
 	 */
 	public CutTable getCutTable() {
@@ -55,7 +55,7 @@ public class CutTableScrollPane extends JScrollPane {
 
 	/**
 	 * Simple accessor for underlying model.
-	 * 
+	 *
 	 * @return The underlying table model.
 	 */
 	public CutTableModel getCutTableModel() {

@@ -49,7 +49,7 @@ public class PIDLegend extends JComponent {
 
 	/**
 	 * Create a User Component (on the toolbar) drawer for a given view.
-	 * 
+	 *
 	 * @param view the view with a toolbar that has a user component.
 	 */
 	public PIDLegend(JComponent parent) {
@@ -70,7 +70,7 @@ public class PIDLegend extends JComponent {
 
 	/**
 	 * Draw on the component.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on the view.
 	 */
@@ -126,7 +126,7 @@ public class PIDLegend extends JComponent {
 
 	/**
 	 * Draw a line for use on a toolbar user component, most likely
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal staring point
 	 * @param yc the central vertical position
@@ -140,7 +140,7 @@ public class PIDLegend extends JComponent {
 
 	/**
 	 * Draw a line for use on a toolbar user component, most likely
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal staring point
 	 * @param yc the central vertical position
@@ -173,7 +173,7 @@ public class PIDLegend extends JComponent {
 	/**
 	 * This method must be filled in to return all the unique LundIds associated
 	 * with this event.
-	 * 
+	 *
 	 * @return all the unique LundIds associated with this event.
 	 */
 	protected Vector<LundId> getUniqueLundIds() {

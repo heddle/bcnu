@@ -4,7 +4,7 @@ import org.jlab.io.base.DataEvent;
 
 /**
  * static methods to centralize getting data arrays
- * 
+ *
  * @author heddle
  *
  */
@@ -28,7 +28,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the FTOF singleton
 	 */
 	public static FTOF getInstance() {
@@ -40,7 +40,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the brief panel name
-	 * 
+	 *
 	 * @param layer the 1-based layer 1..3
 	 * @return the brif panel name
 	 */
@@ -65,7 +65,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the update list
 	 */
 	public TdcAdcHitList updateTdcAdcList() {
@@ -75,7 +75,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the avgX array from the true data
-	 * 
+	 *
 	 * @param panelType one of the constants (PANEL_1A, PANEL_1B, PANEL_2)
 	 * @return the avgX array
 	 */
@@ -85,7 +85,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the avgY array from the true data
-	 * 
+	 *
 	 * @param panelType one of the constants (PANEL_1A, PANEL_1B, PANEL_2)
 	 * @return the avgY array
 	 */
@@ -95,7 +95,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the avgZ array from the true data
-	 * 
+	 *
 	 * @param panelType one of the constants (PANEL_1A, PANEL_1B, PANEL_2)
 	 * @return the avgZ array
 	 */
@@ -105,7 +105,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the name from the panel type
-	 * 
+	 *
 	 * @param panelType one of the constants (PANEL_1A, PANEL_1B, PANEL_2)
 	 * @return the name of the panel type
 	 */
@@ -119,7 +119,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the tdc and adc hit list
-	 * 
+	 *
 	 * @return the tdc adc hit list
 	 */
 	public TdcAdcHitList getTdcAdcHits() {
@@ -128,7 +128,7 @@ public class FTOF extends DetectorData {
 
 	/**
 	 * Get the reconstructed hit list
-	 * 
+	 *
 	 * @return reconstructed hit list
 	 */
 	public Hit1List getHits() {

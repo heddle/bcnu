@@ -9,11 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cnuphys.adaptiveSwim.geometry.Plane;
-import cnuphys.bCNU.util.Fonts;
 import cnuphys.ced.ced3d.view.PlainView3D;
 import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
-import cnuphys.magfield.MagneticFieldChangeListener;
-import cnuphys.magfield.MagneticFields;
 import item3D.Cylinder;
 import item3D.Item3D;
 import item3D.Quad3D;
@@ -22,7 +19,7 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 
 	// the control panel
 	private SwimmerControlPanel _controlPanel;
-	
+
 	// changing display item
 	private Item3D _displayItem;
 	private Color _displayItemColor = new Color(0, 0, 0, 24);
@@ -71,7 +68,7 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 	@Override
 	protected void addSouth() {
 	}
-	
+
 	/**
 	 * Remove the display item
 	 */
@@ -82,7 +79,7 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 
 		_displayItem = null;
 	}
-	
+
 	/**
 	 * Set the display item to a constant z plane,
 	 * which is in fact a cylinder centered on the z axis.
@@ -93,7 +90,7 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 		addItem(_displayItem);
 
 	}
-	
+
 	/**
 	 * Set the display item to a constant rho cylinder,
 	 * which is in fact a cylinder centered on the z axis.
@@ -104,20 +101,20 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 		addItem(_displayItem);
 
 	}
-	
+
 	/**
 	 * Set the display item to a plane
 	 * @param normal normal to the plane
 	 * @param point a point in the plane
 	 */
 	public void setDisplayItemPlane(double[] normal, double[] point) {
-		
+
 		Plane plane = new Plane(normal, point);
 		float coords[] = plane.planeQuadCoordinates(1000);
 		_displayItem = new Quad3D(this, coords, _displayItemColor, 1f, true);
 		addItem(_displayItem);
 	}
-	
+
 	/**
 	 * Set the display item to a cylinder
 	 * @param p1 one point of the end line
@@ -125,19 +122,19 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 	 * @param radius the radius of the cylinder
 	 */
 	public void setDisplayItemCylinder(double[] p1, double[] p2, double radius) {
-		
+
 		float data[] = new float[7];
 		for (int i = 0; i < 3; i++) {
 			data[i] = (float)p1[i];
 			data[i+3] = (float)p2[i];
 		}
 		data[6] = (float)radius;
-		
+
 		Cylinder cylinder = new Cylinder(this, data, _displayItemColor);
 		cylinder.setExtend(true);
 		cylinder.setExtensionFactor(2);
 
-		
+
 		_displayItem = cylinder;
 		addItem(_displayItem);
 	}

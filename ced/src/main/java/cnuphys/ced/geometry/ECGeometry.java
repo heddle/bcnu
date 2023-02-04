@@ -1,8 +1,6 @@
 package cnuphys.ced.geometry;
 
 import java.awt.geom.Point2D;
-import java.io.File;
-import java.io.PrintStream;
 
 import org.jlab.geom.component.ScintillatorPaddle;
 import org.jlab.geom.detector.ec.ECLayer;
@@ -12,11 +10,9 @@ import org.jlab.geom.prim.Plane3D;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Triangle3D;
 
-import cnuphys.splot.plot.Environment;
-
 /**
  * Holds the EC geometry from the geometry packages
- * 
+ *
  * @author heddle
  *
  */
@@ -99,7 +95,7 @@ public class ECGeometry {
 	/**
 	 * Obtain the separation between the front of the inner and the front of the
 	 * outer in the k direction.
-	 * 
+	 *
 	 * @return the separation in cm.
 	 */
 	public static double getDeltaK(int index) {
@@ -109,7 +105,7 @@ public class ECGeometry {
 	/**
 	 * Get the normal vector in sector xyz (cm) from the nominal target to the front
 	 * plane of the inner EC. All coordinates are in cm.
-	 * 
+	 *
 	 * @param index the plane, EC_INNER or EC_OUTER
 	 * @return the normal vector for the given plane
 	 */
@@ -119,7 +115,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the front plane of the PCAL
-	 * 
+	 *
 	 * @param sector the 1-based sector [1..6]
 	 * @param plane  EC_INNER or EC_OUTER
 	 * @return the front plane of the PCAL
@@ -133,7 +129,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the coordinate transformation object
-	 * 
+	 *
 	 * @param index the plane, EC_INNER or EC_OUTER
 	 * @return the coordinate transformations
 	 */
@@ -187,7 +183,7 @@ public class ECGeometry {
 
 	/**
 	 * Get a point from the IJK boundary
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @param pointIndex the point index [0..2]
 	 * @return the corresponding point
@@ -198,7 +194,7 @@ public class ECGeometry {
 
 	/**
 	 * Get a point from a u, v or w strip
-	 * 
+	 *
 	 * @param planeIndex either EC_INNER or EC_OUTER [0, 1]
 	 * @param stripType  EC_U, EC_V, or EC_W [0..2]
 	 * @param stripIndex the strip index [0..(EC_NUMSTRIP-1)]
@@ -211,7 +207,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the minimum value if the sector x coordinate in cm
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @return the minimum value of the i coordinate
 	 */
@@ -221,7 +217,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the minimum value if the sector x coordinate in cm
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @return the minimum value of the i coordinate
 	 */
@@ -231,7 +227,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the minimum value if the i coordinate in cm
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @return the minimum value of the i coordinate
 	 */
@@ -241,7 +237,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the maximum value if the i coordinate in cm
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @return the maximum value of the i coordinate
 	 */
@@ -251,7 +247,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the minimum value if the j coordinate in cm
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @return the minimum value of the j coordinate
 	 */
@@ -261,7 +257,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the maximum value if the j coordinate in cm
-	 * 
+	 *
 	 * @param planeIndex the plane index (EC_INNER or EC_OUTER) [0,1]
 	 * @return the maximum value of the j coordinate
 	 */
@@ -271,7 +267,7 @@ public class ECGeometry {
 
 	/**
 	 * For the front face of a given plane, compute z from x
-	 * 
+	 *
 	 * @param planeIndex EC_INNER or EC_OUTER [0,1]
 	 * @param x          the x coordinate in cm
 	 * @return the z coordinate in cm
@@ -284,7 +280,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the midplane sector cs corners in cm
-	 * 
+	 *
 	 * @param index should be EC_INNER or EC_OUTER
 	 * @return the corners for the inner or outer EC
 	 */
@@ -295,7 +291,7 @@ public class ECGeometry {
 	/**
 	 * Obtain the shell (for sector views) for the whole inner or outer EC correct
 	 * for the relative phi.
-	 * 
+	 *
 	 * @param planeIndex      should be EC_INNER or EC_OUTER
 	 * @param stripType       should be EC_U, EC_V, or EC_W
 	 * @param projectionPlane the projection plane
@@ -351,7 +347,7 @@ public class ECGeometry {
 	 * "real". For example, there is no (36, 36, 36) triplet; those strips do not
 	 * intersect. Proper triplets have u + w + w = (2N+1) or (2N+2), where N = 36.
 	 * Possible uvw triplets always yield a positive pixel value from [1..1296].
-	 * 
+	 *
 	 * @param u the 1.based [1..36] u strip
 	 * @param v the 1 based [1..36] v strip
 	 * @param w the 1 based [1..36] w strip
@@ -363,7 +359,7 @@ public class ECGeometry {
 
 	/**
 	 * Converts a pixel back to a uvw triplet
-	 * 
+	 *
 	 * @param pixel the pixel. Only meaningful for pixels in the range [1..1296]
 	 * @param uvw   holds the 1-based strip ids
 	 */
@@ -379,7 +375,7 @@ public class ECGeometry {
 
 	/**
 	 * Is this uvw triplet a good pixel?
-	 * 
+	 *
 	 * @param u the 1-based u strip [1..36]
 	 * @param v the 1-based v strip [1..36]
 	 * @param w the 1-based w strip [1..36]
@@ -392,7 +388,7 @@ public class ECGeometry {
 
 	/**
 	 * Convert ijk coordinates to sector xyz
-	 * 
+	 *
 	 * @param localP    the ijk coordinates
 	 * @param sectorXYZ the sector xyz coordinates
 	 */
@@ -561,7 +557,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the triangle for a given view for 3D
-	 * 
+	 *
 	 * @param sector the sector 1..6
 	 * @param stack  (aka the superlayer) 1..2 for inner and outer
 	 * @param view   (aka layer) 1..3 for u, v, w
@@ -611,7 +607,7 @@ public class ECGeometry {
 
 	/**
 	 * Get the strips for use by 3D view
-	 * 
+	 *
 	 * @param sector the sector 1..6
 	 * @param stack  (aka the superlayer) 1..2 for inner and outer
 	 * @param view   (aka layer) 1..3 for u, v, w
@@ -669,7 +665,7 @@ public class ECGeometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param superlayer      0, 1 (EC_INNER or EC_OUTER)
 	 * @param layer           EC_U, EC_V, EC_W
 	 * @param stripid         the 0-based paddle id
@@ -688,7 +684,7 @@ public class ECGeometry {
 	/**
 	 * Get the intersections of a with a constant phi plane. If the paddle does not
 	 * intersect (happens as phi grows) return null;
-	 * 
+	 *
 	 * @param superlayer      0, 1 (EC_INNER or EC_OUTER)
 	 * @param layer           EC_U, EC_V, EC_W
 	 * @param stripid         the 0-based paddle id
@@ -700,11 +696,8 @@ public class ECGeometry {
 		// argh the geometry package superlayers are 1,2 rather than 0,1 because
 		// they use 0 for PCAL--hence the +1
 
-		ECLayer ecLayer = GeometryManager.clas_Cal_Sector0.getSuperlayer(superlayer + 1).getLayer(layer);
-		ScintillatorPaddle strip = ecLayer.getComponent(stripid);
 
 		Point2D.Double wp[] = GeometryManager.allocate(4);
-		boolean isects = GeometryManager.getProjectedPolygon(strip, projectionPlane, 6, 4, wp, null);
 
 		// note reordering
 		Point2D.Double p2d[] = new Point2D.Double[4];
@@ -739,73 +732,6 @@ public class ECGeometry {
 		start.y += dely;
 		end.x += delx;
 		end.y += dely;
-	}
-
-	public static void main(String arg[]) {
-
-		GeometryManager.getInstance();
-
-		int sector = 1;
-		int stack = 1;
-		int view = 1;
-		int strip = 1;
-
-		float coords[] = new float[24];
-
-		getStrip(sector, stack, view, strip, coords);
-
-		for (int i = 0; i < 8; i++) {
-			int j = 3 * i;
-
-			System.err.println(String.format("%8.1f, %8.1f, %8.1f", coords[j], coords[j + 1], coords[j + 2]));
-		}
-
-		System.err.println();
-		view = 3;
-		getStrip(sector, stack, view, strip, coords);
-
-		for (int i = 0; i < 8; i++) {
-			int j = 3 * i;
-
-			System.err.println(String.format("%8.1f, %8.1f, %8.1f", coords[j], coords[j + 1], coords[j + 2]));
-		}
-		
-		
-		//VMRL
-		
-		int[][] indices = {{0, 1, 2, 3}, {4, 5, 6, 7}, {0, 1, 5, 4}, {3, 0, 4, 7}, {2, 3, 7, 6}, {1, 2, 6, 5}};
-		
-		String dir = Environment.getInstance().getHomeDirectory();
-		File file = new File(dir, "ec.wrl");
-		if (file.exists()) {
-			file.delete();
-		}
-		
-//		int [][] red =   {{1, 0, 0}, {1, 0, 1}};
-//		int [][] green = {{0, 1, 0}, {0, 1, 1}};
-//		int [][] blue =  {{0, 0, 1}, {1, 1, 0}};
-
-//		float [][] red =   {{0.5f, 0.5f, 0.5f}, {0.5f, 0.5f, 0.5f}};
-//		float [][] green = {{0, 0, 0}, {0, 0, 0}};
-//		float [][] blue =  {{0, 0, 0}, {0, 0, 0}};
-
-		PrintStream ps = VRMLSupport.openForWriting(file.getPath());
-		float transparency = 0.5f;
-
-		for (int isect = 1; isect <= 6; isect++) {
-			for (int istack = 1; istack <= 2; istack++) {  //inner, outer
-				for (int iview = 1; iview <= 3; iview++) { //u, v, w
-					for (int istrip = 1; istrip <= 36; istrip++) {
-						getStrip(isect, istack, iview, istrip, coords);
-						float grayScale = ((istrip % 2) == 0) ? 0.5f : 0.7f;
-						VRMLSupport.indexedFaceSet(ps, grayScale, grayScale, grayScale, transparency, coords, indices);
-					}
-				}
-			}
-		}
-		
-		
-		VRMLSupport.close(ps);
 	}
 
 }

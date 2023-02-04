@@ -4,7 +4,7 @@ import org.jlab.io.base.DataEvent;
 
 /**
  * static methods to centralize getting data arrays related to BMT
- * 
+ *
  * @author heddle
  *
  */
@@ -21,7 +21,7 @@ public class BMT extends DetectorData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the BMT singleton
 	 */
 	public static BMT getInstance() {
@@ -39,7 +39,7 @@ public class BMT extends DetectorData {
 
 	/**
 	 * Update the list. This is probably needed only during accumulation
-	 * 
+	 *
 	 * @return the updated list
 	 */
 	public AdcHitList updateAdcList() {
@@ -49,7 +49,7 @@ public class BMT extends DetectorData {
 
 	/**
 	 * Get the adc hit list
-	 * 
+	 *
 	 * @return the adc hit list
 	 */
 	public AdcHitList getADCHits() {
@@ -58,7 +58,7 @@ public class BMT extends DetectorData {
 
 	/**
 	 * Get the BMT reconstructed hits
-	 * 
+	 *
 	 * @return the BMT reconstructed hits
 	 */
 	public BaseHit2List getRecHits() {

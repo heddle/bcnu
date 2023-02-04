@@ -40,7 +40,7 @@ public class HipoTest {
 
 //			for (String bankName : _dictionary.getDescriptorList()) {
 //				DataBank bank = dataEvent.getBank(bankName);
-//				
+//
 //				System.out.println("  Data bank for [" + bankName + "]  found: " + (bank != null));
 //			}
 
@@ -139,7 +139,7 @@ public class HipoTest {
 
 	/**
 	 * main program for hippo test
-	 * 
+	 *
 	 * @param arg command line arguments
 	 */
 	public static void main(String arg[]) {

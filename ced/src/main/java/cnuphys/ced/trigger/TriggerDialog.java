@@ -13,6 +13,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
+
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.ced.frame.Ced;
 
@@ -92,7 +93,7 @@ public class TriggerDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Override to create the component that goes in the north.
-	 * 
+	 *
 	 * @return the component that is placed in the north
 	 */
 	protected Component createNorthComponent() {
@@ -134,7 +135,7 @@ public class TriggerDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Set the data for the current event
-	 * 
+	 *
 	 * @param id      the ids from the trigger bank
 	 * @param trigger the words from the trigger bank
 	 */

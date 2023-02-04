@@ -2,14 +2,13 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.ECAL;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.PCAL;
-
-import com.jogamp.opengl.GLAutoDrawable;
-
 import item3D.Item3D;
 
 public class MCHitDrawer3D extends Item3D {

@@ -31,13 +31,13 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 			return;
 		}
 		length = sector.length;
-		
+
 		byte[] layer = ColumnData.getByteArray(DCBank + ".layer");
 		short[] wire = ColumnData.getShortArray(DCBank + ".component");
 		// byte[] order = ColumnData.getByteArray(DCBank + ".order");
 		int[] TDC = ColumnData.getIntArray(DCBank + ".TDC");
 
-		
+
 		//see if there is a nnhits bank
 		byte[] nntrackid = ColumnData.getByteArray(DCNNBank + ".id");
 		short[] nnindex = ColumnData.getShortArray(DCNNBank + ".index");
@@ -53,9 +53,9 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 		int docalen = -1;
 		if ((lr != null) && (lr.length != 0)) {
 			doca = ColumnData.getFloatArray(DocaBank + ".doca");
-			
+
 			docalen = (doca == null) ? 0 : doca.length;
-			
+
 			time = ColumnData.getFloatArray(DocaBank + ".time");
 			sdoca = ColumnData.getFloatArray(DocaBank + ".sdoca");
 			stime = ColumnData.getFloatArray(DocaBank + ".stime");
@@ -68,7 +68,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 		}
 
 		// now build the list
-		
+
 		//array just used locally
 		DCTdcHit[] hitArray = new DCTdcHit[length];
 		for (int i = 0; i < length; i++) {
@@ -81,7 +81,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 			hitArray[i] = hit;
 			add(hit);
 		}
-		
+
 		if (nnlen > 0) {
 			for (int j = 0; j < nnlen; j++) {
 				int idx = nnindex[j] - 1;
@@ -91,7 +91,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 			}
 		}
 
-		
+
 
 		if (size() > 1) {
 			Collections.sort(this);
@@ -101,7 +101,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Find the index of a hit
-	 * 
+	 *
 	 * @param sector the 1-based sector
 	 * @param layer  the 1-based layer
 	 * @param wire   the 1-based wire
@@ -122,7 +122,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector the 1-based sector
 	 * @param layer  the 1-based layer
 	 * @param wire   the 1-based wire
@@ -135,7 +135,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer 1..36
 	 * @param component the 1-based component
@@ -147,7 +147,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Find the hit
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superlayer the 1-based superlayer 1..6
 	 * @param layer6     the 1-based layer 1..36
@@ -161,7 +161,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Extract the sectors as an array. Used by the Noise package
-	 * 
+	 *
 	 * @return the sectors as an array.
 	 */
 	public int[] sectorArray() {
@@ -179,7 +179,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Extract the superlayers as an array. Used by the Noise package
-	 * 
+	 *
 	 * @return the superlayers as an array.
 	 */
 	public int[] superlayerArray() {
@@ -197,7 +197,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Extract the layer6's as an array. Used by the Noise package
-	 * 
+	 *
 	 * @return the layer6's [1..6] as an array.
 	 */
 	public int[] layer6Array() {
@@ -215,7 +215,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	/**
 	 * Extract the wires as an array. Used by the Noise package
-	 * 
+	 *
 	 * @return the wires as an array.
 	 */
 	public int[] wireArray() {

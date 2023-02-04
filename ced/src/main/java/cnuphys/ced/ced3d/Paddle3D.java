@@ -35,7 +35,7 @@ public abstract class Paddle3D {
 
 	/**
 	 * Set whether we frame the paddle
-	 * 
+	 *
 	 * @param frame the new frame flag
 	 */
 	public void setFrame(boolean frame) {
@@ -44,7 +44,7 @@ public abstract class Paddle3D {
 
 	/**
 	 * Draw the paddle
-	 * 
+	 *
 	 * @param drawable the drawable
 	 * @param color    the color
 	 */

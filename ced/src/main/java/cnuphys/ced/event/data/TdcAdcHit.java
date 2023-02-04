@@ -47,9 +47,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		TdcAdcHit other = (TdcAdcHit) obj;
 		if (sector != other.sector)
@@ -63,7 +61,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Get the average ADC value
-	 * 
+	 *
 	 * @return the average of left and right
 	 */
 	public int averageADC() {
@@ -102,7 +100,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Get a string for just the tdc data
-	 * 
+	 *
 	 * @return a string for just the tdc data
 	 */
 	private String valString(int valL, int valR, String name) {
@@ -119,7 +117,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Get a string for just the tdc data
-	 * 
+	 *
 	 * @return a string for just the tdc data
 	 */
 	public String tdcString() {
@@ -128,7 +126,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Get a string for just the ped data
-	 * 
+	 *
 	 * @return a string for just the ped data
 	 */
 	public String pedString() {
@@ -137,7 +135,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Get a string for just the tdc data
-	 * 
+	 *
 	 * @return a string for just the tdc data
 	 */
 	public String adcString() {
@@ -152,7 +150,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Add this hit to the feedback list
-	 * 
+	 *
 	 * @param feedbackStrings the list of strings
 	 */
 	public void tdcAdcFeedback(List<String> feedbackStrings) {
@@ -161,7 +159,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Add this hit to the feedback list
-	 * 
+	 *
 	 * @param layerName       a nice name for the layer
 	 * @param componentName   a nice name for the component
 	 * @param feedbackStrings
@@ -189,7 +187,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	/**
 	 * Add this hit to the feedback list
-	 * 
+	 *
 	 * @param componentName   a nice name for the component
 	 * @param feedbackStrings
 	 */

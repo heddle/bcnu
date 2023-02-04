@@ -42,7 +42,7 @@ public class FTOFGeometry {
 
 	/**
 	 * Get the array of (3) forward time of flight panels.
-	 * 
+	 *
 	 * @return the ftofPanel array
 	 */
 	public static FTOFPanel[] getFtofPanel() {
@@ -51,7 +51,7 @@ public class FTOFGeometry {
 
 	/**
 	 * Get the layer hits
-	 * 
+	 *
 	 * @param sect0 the 0-based sector 0..5
 	 * @param ptype the panel type (0,1,2) = (1A, 1B, 2)
 	 * @param path  the 3D path
@@ -98,7 +98,7 @@ public class FTOFGeometry {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param superlayer PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
 	 * @param paddleId   the 1-based paddle id
 	 */
@@ -110,7 +110,7 @@ public class FTOFGeometry {
 
 	/**
 	 * Used by the 3D drawing
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superlayer PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
 	 * @param paddleId   the 1-based paddle ID
@@ -141,7 +141,7 @@ public class FTOFGeometry {
 
 	/**
 	 * Chech paddle intersection
-	 * 
+	 *
 	 * @param superlayer the 0 based superlayer for 1A, 1B, 2
 	 * @param paddleid   the 0 based paddle id
 	 * @return if the projected polygon fully intersects the plane
@@ -166,7 +166,7 @@ public class FTOFGeometry {
 	/**
 	 * Get the intersections with a constant phi plane. If the paddle does not
 	 * intersect (happens as phi grows) return null;
-	 * 
+	 *
 	 * @param superlayer      0, 1 or 2 for 1A, 1B, 2
 	 * @param paddleid        the 0-based paddle id
 	 * @param projectionPlane the projection plane
@@ -179,7 +179,7 @@ public class FTOFGeometry {
 
 	/**
 	 * Get the length of a paddle in cm
-	 * 
+	 *
 	 * @param superlayer 0, 1 or 2 for 1A, 1B, 2
 	 * @param paddleid   the 0-based paddle id
 	 * @return the length of the paddle
@@ -192,7 +192,7 @@ public class FTOFGeometry {
 
 	/**
 	 * Get an array of all the lengths
-	 * 
+	 *
 	 * @param superlayer 0, 1 or 2 for 1A, 1B, 2
 	 * @return an array of all the paddle lengths
 	 */

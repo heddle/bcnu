@@ -172,7 +172,7 @@ public class NameVariablePanel extends JPanel implements PropertyChangeListener 
 
 	/**
 	 * Main program for testing
-	 * 
+	 *
 	 * @param arg command arguments (ignored)
 	 */
 	public static void main(String arg[]) {

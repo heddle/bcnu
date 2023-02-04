@@ -38,7 +38,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Get a hex sector item
-	 * 
+	 *
 	 * @param layer  the logical layer
 	 * @param sector the 1-based sector
 	 */
@@ -53,7 +53,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -82,7 +82,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Draw a dashed thin line based on sector xy points
-	 * 
+	 *
 	 * @param g2        graphics context
 	 * @param container the owner
 	 * @param sp1       first sector point
@@ -106,7 +106,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Draw a thin line based on sector xy points
-	 * 
+	 *
 	 * @param g2        graphics context
 	 * @param container the owner
 	 * @param sp1       first sector point
@@ -131,7 +131,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Get the sector
-	 * 
+	 *
 	 * @return the 1-based sector [1..6]
 	 */
 	public int getSector() {
@@ -160,7 +160,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Rotate a point around the z axis
-	 * 
+	 *
 	 * @param wp  the point being rotated
 	 * @param phi rotation angle in radians
 	 */
@@ -174,7 +174,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Converts a sector xyz to lab (CLAS) xyz
-	 * 
+	 *
 	 * @param sp  the sector point
 	 * @param lab the lab (CLAS) point
 	 */
@@ -190,7 +190,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Converts a lab (CLAS) xy to sector
-	 * 
+	 *
 	 * @param sp  the sector point
 	 * @param lab lab xy point
 	 */
@@ -203,7 +203,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Converts a sector to lab (CLAS) xy
-	 * 
+	 *
 	 * @param sp  the sector point
 	 * @param lab the lab (CLAS) point
 	 */
@@ -216,7 +216,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * World graphical coordinates to sector coordinates.
-	 * 
+	 *
 	 * @param sp will hold the sector coordinates
 	 * @param wp the graphical world coordinates
 	 */
@@ -226,7 +226,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Sector to local screen coordinates
-	 * 
+	 *
 	 * @param pp will hold the screen coordinates
 	 * @param sp the sector coordinates
 	 */
@@ -240,7 +240,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * local screen coordinates to sector coordinates
-	 * 
+	 *
 	 * @param pp the screen coordinates
 	 * @param sp will hold the sector coordinates
 	 */
@@ -258,7 +258,7 @@ public abstract class HexSectorItem extends PolygonItem {
 
 	/**
 	 * Returns a string representation of the form: "(x,y,z)".
-	 * 
+	 *
 	 * @param numDec the number of decimal places for each coordinate.
 	 * @return a String representation of the vector
 	 */

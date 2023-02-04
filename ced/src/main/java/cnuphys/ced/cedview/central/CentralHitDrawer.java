@@ -20,24 +20,24 @@ import cnuphys.ced.event.FeedbackRect;
 import cnuphys.ced.event.data.CVT;
 
 public abstract class CentralHitDrawer implements IDrawable {
-	
+
 	private boolean _visible = true;
-	
+
 	// the event manager
 	private final ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// cached rectangles for feedback
-	protected Vector<FeedbackRect> _fbRects = new Vector<FeedbackRect>();
+	protected Vector<FeedbackRect> _fbRects = new Vector<>();
 
 	protected CedView _view;
-	
+
 	private ILabCoordinates labCoord;
 
 	public CentralHitDrawer(CedView view) {
 		_view = view;
 		labCoord = (ILabCoordinates)view;
 	}
-	
+
 	@Override
 	public boolean isVisible() {
 		return _visible;
@@ -64,7 +64,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 	@Override
 	public void prepareForRemoval() {
 	}
-	
+
 	@Override
 	public void draw(Graphics g, IContainer container) {
 
@@ -93,7 +93,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 		g2.setClip(oldClip);
 
 	}
-	
+
 	//single event mode
 	protected void drawHitsSingleMode(Graphics g, IContainer container) {
 		drawBSTHitsSingleMode(g, container);
@@ -104,60 +104,60 @@ public abstract class CentralHitDrawer implements IDrawable {
 		drawCVTRecTraj(g, container);
 	}
 
-	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {		
+	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
 	}
-	
-	protected void drawBMTHitsSingleMode(Graphics g, IContainer container) {		
+
+	protected void drawBMTHitsSingleMode(Graphics g, IContainer container) {
 	}
-	
-	protected void drawCTOFSingleHitsMode(Graphics g, IContainer container) {		
+
+	protected void drawCTOFSingleHitsMode(Graphics g, IContainer container) {
 	}
-	
-	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {		
+
+	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {
 	}
-	
+
 	private static int TRAJSIZE = 12;
-	
-	
+
+
 	//CVT Rec
 	protected void drawCVTRecTraj(Graphics g, IContainer container) {
-		
+
 		if (!(_view.showCVTRecTraj())) {
 			return;
 		}
-		
+
 		CVT cvt = CVT.getInstance();
 		cvt.fillData();
-		
+
 		float[] x = cvt.rec_x;
-		
+
 		int count = (x == null) ? 0 : x.length;
 		if (count == 0) {
 			return;
 		}
-		
+
 		Point pp = new Point();
 		float[] y = cvt.rec_y;
 		float[] z = cvt.rec_z;
-		
+
 		short[] id = cvt.rec_id;
 		byte[] detector = cvt.rec_detector;
 		byte[] sector = cvt.rec_sector;
 		byte[] layer = cvt.rec_layer;
-		
+
 		float[] phi = cvt.rec_phi;
 		float[] theta = cvt.rec_theta;
 		float[] langle = cvt.rec_langle;
 		float[] centroid = cvt.rec_centroid;
 		float[] path = cvt.rec_path;
-		
+
 		g.setColor(Color.black);
 		int s2 = TRAJSIZE/2;
 
 		for (int i = 0; i < count; i++) {
 			//cm to mm
 			labCoord.labToLocal(container, 10*x[i], 10*y[i], 10*z[i], pp);
-			
+
 
 			String fb1 = String.format("CVTRec Traj index: %d", i+1);
 			String fb2 = String.format("  id: %d  detector: %d  sector: %d  layer: %d", id[i], detector[i], sector[i], layer[i]);
@@ -166,53 +166,53 @@ public abstract class CentralHitDrawer implements IDrawable {
 
 			FeedbackRect fbr = new FeedbackRect(FeedbackRect.Dtype.CVTREC, pp.x-s2, pp.y-s2,
 					TRAJSIZE, TRAJSIZE, i, 0, fb1, fb2, fb3, fb4);
-			
+
 			_fbRects.add(fbr);
-			
-			SymbolDraw.drawStar(g, pp.x, pp.y, s2, Color.black);					
+
+			SymbolDraw.drawStar(g, pp.x, pp.y, s2, Color.black);
 		}
 	}
-	
-	
+
+
 	//Pass 1 Rec
 	protected void drawCVTP1Traj(Graphics g, IContainer container) {
-		
+
 	if (!(_view.showCVTP1Traj())) {
 		return;
 	}
-	
+
 	CVT cvt = CVT.getInstance();
 	cvt.fillData();
-	
+
 	float[] x = cvt.p1_x;
-	
+
 	int count = (x == null) ? 0 : x.length;
 	if (count == 0) {
 		return;
 	}
-	
+
 	Point pp = new Point();
 	float[] y = cvt.p1_y;
 	float[] z = cvt.p1_z;
-	
+
 	short[] id = cvt.p1_id;
 	byte[] detector = cvt.p1_detector;
 	byte[] sector = cvt.p1_sector;
 	byte[] layer = cvt.p1_layer;
-	
+
 	float[] phi = cvt.p1_phi;
 	float[] theta = cvt.p1_theta;
 	float[] langle = cvt.p1_langle;
 	float[] centroid = cvt.p1_centroid;
 	float[] path = cvt.p1_path;
-	
+
 	g.setColor(Color.green);
 	int s2 = TRAJSIZE/2;
 
 	for (int i = 0; i < count; i++) {
 		//cm to mm
 		labCoord.labToLocal(container, 10*x[i], 10*y[i], 10*z[i], pp);
-		
+
 
 		String fb1 = String.format("CVTP1 Traj index: %d", i+1);
 		String fb2 = String.format("  id: %d  detector: %d  sector: %d  layer: %d", id[i], detector[i], sector[i], layer[i]);
@@ -221,30 +221,30 @@ public abstract class CentralHitDrawer implements IDrawable {
 
 		FeedbackRect fbr = new FeedbackRect(FeedbackRect.Dtype.CVTP1, pp.x-s2, pp.y-s2,
 				TRAJSIZE, TRAJSIZE, i, 0, fb1, fb2, fb3, fb4);
-		
+
 		_fbRects.add(fbr);
-		
-		SymbolDraw.drawStar(g, pp.x, pp.y, s2, Color.green);					
+
+		SymbolDraw.drawStar(g, pp.x, pp.y, s2, Color.green);
 	}
 }
-	
+
 	protected void drawAccumulatedHits(Graphics g, IContainer container) {
 		drawBSTAccumulatedHits(g, container);
 		drawBMTAccumulateHitsHits(g, container);
 		drawCTOFAccumulatedHits(g, container);
 		drawCNDAccumulatedHits(g, container);
 	}
-	
-	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {		
+
+	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {
 	}
-	
-	protected void drawBMTAccumulateHitsHits(Graphics g, IContainer container) {		
+
+	protected void drawBMTAccumulateHitsHits(Graphics g, IContainer container) {
 	}
-	
-	protected void drawCTOFAccumulatedHits(Graphics g, IContainer container) {		
+
+	protected void drawCTOFAccumulatedHits(Graphics g, IContainer container) {
 	}
-	
-	protected void drawCNDAccumulatedHits(Graphics g, IContainer container) {		
+
+	protected void drawCNDAccumulatedHits(Graphics g, IContainer container) {
 	}
 
 
@@ -253,7 +253,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 
 	/**
 	 * Mouse over feedback
-	 * 
+	 *
 	 * @param container
 	 * @param screenPoint
 	 * @param worldPoint

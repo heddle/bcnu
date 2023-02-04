@@ -48,7 +48,7 @@ public class CTOFGeometry {
 
 	/**
 	 * Get the quad for a paddle
-	 * 
+	 *
 	 * @param paddle the 1-based paddle
 	 * @return the quad for a paddle
 	 */
@@ -99,7 +99,7 @@ public class CTOFGeometry {
 //		CTOFGeant4Factory factory = new CTOFGeant4Factory();
 //		for(int ipad=11;ipad<=48;ipad++){
 //			Geant4Basic pad = factory.getPaddle(ipad);
-//			
+//
 //			System.err.println();
 ////			Line3d lineX = pad.getLineX();
 ////			System.err.println("X: " + lineX.toString());

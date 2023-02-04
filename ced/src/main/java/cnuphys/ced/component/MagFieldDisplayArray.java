@@ -14,9 +14,9 @@ import cnuphys.ced.cedview.CedView;
 /**
  * Create the display flags based on bits. This allows for a common appearance
  * across all views.
- * 
+ *
  * @author DHeddle
- * 
+ *
  */
 
 @SuppressWarnings("serial")
@@ -111,7 +111,7 @@ public class MagFieldDisplayArray extends CheckBoxArray implements ItemListener 
 
 	/**
 	 * Create a display flag array. This constructor produces a two column array.
-	 * 
+	 *
 	 * @param view the parent view
 	 * @param bits controls what flags are added
 	 */
@@ -149,7 +149,7 @@ public class MagFieldDisplayArray extends CheckBoxArray implements ItemListener 
 
 	/**
 	 * A button has been clicked
-	 * 
+	 *
 	 * @param e the causal event
 	 */
 	@Override
@@ -200,7 +200,7 @@ public class MagFieldDisplayArray extends CheckBoxArray implements ItemListener 
 	/**
 	 * Returns the value that specifies what information about the field is to be
 	 * displayed.
-	 * 
+	 *
 	 * @return value that specifies what information about the field is to be
 	 *         displayed.
 	 */

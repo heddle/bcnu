@@ -2,6 +2,8 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.event.data.AllEC;
@@ -9,8 +11,6 @@ import cnuphys.ced.event.data.TdcAdcHit;
 import cnuphys.ced.event.data.TdcAdcHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.lund.X11Colors;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class ECViewPlane3D extends DetectorItem3D {
 
@@ -101,7 +101,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 
 //
 //		int hitCount = ECAL.hitCount();
-//		
+//
 //		if (hitCount > 0) {
 //			int sector[] = ECAL.sector();
 //			int stack[] = ECAL.stack();
@@ -111,7 +111,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 //			double avgX[] = ECAL.avgX();
 //			double avgY[] = ECAL.avgY();
 //			double avgZ[] = ECAL.avgZ();
-//			
+//
 //			float coords[] = new float[24];
 //			for (int i = 0; i < hitCount; i++) {
 //				if ((_sector == sector[i]) && (_stack == stack[i])

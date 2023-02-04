@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+
 import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -63,7 +64,7 @@ public class NodeTable extends JTable {
 
 	/**
 	 * Get the node data model.
-	 * 
+	 *
 	 * @return the node data model.
 	 */
 	public NodeTableModel getNodeModel() {
@@ -86,7 +87,7 @@ public class NodeTable extends JTable {
 
 	/**
 	 * Get the node corresponding to the givens row
-	 * 
+	 *
 	 * @param row the row in question
 	 * @return the corresponding node, or <code>null</code>
 	 */
@@ -96,7 +97,7 @@ public class NodeTable extends JTable {
 
 	/**
 	 * Set the model data based on a clasIO DataEvent
-	 * 
+	 *
 	 * @param event the event
 	 */
 	public void setData(DataEvent event) {
@@ -148,7 +149,7 @@ public class NodeTable extends JTable {
 
 	/**
 	 * Get the event being displayed
-	 * 
+	 *
 	 * @return the event being displayed
 	 */
 	public DataEvent getCurrentEvent() {
@@ -157,7 +158,7 @@ public class NodeTable extends JTable {
 
 	/**
 	 * Make sure the row with the given name is visible
-	 * 
+	 *
 	 * @param name the name to look for
 	 */
 	public void makeNameVisible(String name) {

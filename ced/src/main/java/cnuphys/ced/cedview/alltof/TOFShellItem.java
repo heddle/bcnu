@@ -63,7 +63,7 @@ public class TOFShellItem extends PolygonItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -86,7 +86,7 @@ public class TOFShellItem extends PolygonItem {
 
 	/**
 	 * Get the strip rectangle
-	 * 
+	 *
 	 * @param container the drawing container
 	 * @param index     the 0 based paddle index
 	 * @param rr        the pixel rectangle to fill
@@ -104,7 +104,7 @@ public class TOFShellItem extends PolygonItem {
 	/**
 	 * Add any appropriate feedback strings panel. Default implementation returns
 	 * the item's name.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param pp              the mouse location.
 	 * @param wp              the corresponding world point.

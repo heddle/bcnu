@@ -8,7 +8,7 @@ import cnuphys.magfield.MagneticFields;
 
 /**
  * Information in the run bank
- * 
+ *
  * @author heddle
  *
  */
@@ -30,7 +30,7 @@ public class RunData {
 
 	/**
 	 * Change the fields if the event contains the run bank
-	 * 
+	 *
 	 * @param event the data event
 	 * @return true if a run config bank was found and successfully parsed
 	 */

@@ -3,6 +3,7 @@ package cnuphys.ced.cedview.central;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcHit;
@@ -52,7 +53,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 			}
 		}
 	}
-	
+
 	// draw gemc simulated hits single event mode
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {

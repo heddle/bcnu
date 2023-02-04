@@ -43,7 +43,7 @@ public class ConnectETDialog extends SimpleDialog {
 
 	/**
 	 * Create the panel for selected
-	 * 
+	 *
 	 * @param id
 	 * @param level
 	 */
@@ -54,7 +54,7 @@ public class ConnectETDialog extends SimpleDialog {
 	/**
 	 * Override to create the component that goes in the center. Usually this is the
 	 * "main" component.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	@Override
@@ -75,7 +75,7 @@ public class ConnectETDialog extends SimpleDialog {
 
 	/**
 	 * Get the selected file
-	 * 
+	 *
 	 * @return the selected file
 	 */
 	public String getFile() {
@@ -84,7 +84,7 @@ public class ConnectETDialog extends SimpleDialog {
 
 	/**
 	 * Get the selected station
-	 * 
+	 *
 	 * @return the selected station
 	 */
 	public String getStation() {
@@ -93,7 +93,7 @@ public class ConnectETDialog extends SimpleDialog {
 
 	/**
 	 * Get the selected port
-	 * 
+	 *
 	 * @return the selected port
 	 */
 	public int getPort() {
@@ -110,7 +110,7 @@ public class ConnectETDialog extends SimpleDialog {
 
 	/**
 	 * Get the machine to connect to
-	 * 
+	 *
 	 * @return the machine to connect to
 	 */
 	public String getMachine() {
@@ -129,7 +129,7 @@ public class ConnectETDialog extends SimpleDialog {
 	/**
 	 * Override to create the component that goes in the center. Usually this is the
 	 * "main" component.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	@Override
@@ -182,7 +182,7 @@ public class ConnectETDialog extends SimpleDialog {
 
 	/*
 	 * Returns the reason that the dialog was closed
-	 * 
+	 *
 	 * @return <code>DialogUtilities.OK_RESPONSE</code> or
 	 * <code>DialogUtilities.CANCEL_RESPONSE</code>
 	 */

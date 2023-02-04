@@ -17,7 +17,7 @@ public class RTPCHit implements Comparable<RTPCHit> {
 		this.ped = ped;
 		this.time = time;
 	}
-	
+
 	@Override
 	public int compareTo(RTPCHit hit) {
 			int c = Integer.valueOf(layer).compareTo(Integer.valueOf(hit.layer));

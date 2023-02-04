@@ -2,12 +2,13 @@ package cnuphys.ced.ced3d;
 
 import java.awt.Color;
 
-import item3D.Item3D;
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Support3D;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
-import com.jogamp.opengl.GLAutoDrawable;
+import item3D.Item3D;
 
 public abstract class DetectorItem3D extends Item3D {
 
@@ -48,14 +49,14 @@ public abstract class DetectorItem3D extends Item3D {
 
 	/**
 	 * Draw the boundary
-	 * 
+	 *
 	 * @param drawable the GL drawable
 	 */
 	public abstract void drawShape(GLAutoDrawable drawable);
 
 	/**
 	 * Draw the data
-	 * 
+	 *
 	 * @param drawable the GL drawable
 	 */
 	public abstract void drawData(GLAutoDrawable drawable);
@@ -65,7 +66,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 	/**
 	 * Get the alpha value used for drawing detector outlines
-	 * 
+	 *
 	 * @return the alpha used for drawing detector outlines
 	 */
 	protected int getVolumeAlpha() {
@@ -74,7 +75,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 	/**
 	 * Obtain the MC truth color, which corresponds to the LundId
-	 * 
+	 *
 	 * @param pid   the particle lund id array
 	 * @param index index into the array
 	 * @return the truth color
@@ -95,7 +96,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 	/**
 	 * Obtain the MC truth color, which corresponds to the LundId
-	 * 
+	 *
 	 * @param lundId
 	 * @return the truth color
 	 */
@@ -111,7 +112,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 	/**
 	 * Draw a MC 3D point
-	 * 
+	 *
 	 * @param drawable
 	 * @param xcm
 	 * @param ycm

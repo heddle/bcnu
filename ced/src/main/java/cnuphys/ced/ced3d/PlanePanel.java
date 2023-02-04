@@ -19,52 +19,52 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
  *
  */
 public class PlanePanel extends JPanel {
-	
+
 	//the text fields
 	private JTextField normalTF[];
 	private JTextField pointTF[];
-	
+
 	//the last good values
 	private double[] normal = {0, 0.4226, 0.9063};
 	private double[] point = {0, 0, 600};
-	
+
 
 	public PlanePanel() {
 		setLayout(new VerticalFlowLayout());
-		
+
 		add(normalPanel());
 		add(Box.createVerticalStrut(2));
 		add(pointPanel());
-		
+
 		setBorder(new CommonBorder("Specify the plane (normal and point)"));
 	}
-	
-	
+
+
 	//the panel for the normal vector
 	private JPanel normalPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
-		
+
 		panel.add(fixedLabel("Normal (xyz)"));
-		
+
 		normalTF = new JTextField[3];
 		for (int i = 0; i < 3; i++) {
 			normalTF[i] = textField(normal[i]);
 			panel.add(normalTF[i]);
 		}
-		
+
 		panel.add(unitLabel("arbitrary"));
 		return panel;
 	}
-	
+
 	//the panel for the point in the plane
 	private JPanel pointPanel() {
 		JPanel panel = new JPanel();
-		
+
 		panel.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
-		
+
 		panel.add(fixedLabel("Point (xyz)"));
-		
+
 		pointTF = new JTextField[3];
 		for (int i = 0; i < 3; i++) {
 			pointTF[i] = textField(point[i]);
@@ -75,7 +75,7 @@ public class PlanePanel extends JPanel {
 		panel.add(unitLabel("cm"));
 		return panel;
 	}
-	
+
 	//create a text field
 	private JTextField textField(double defVal) {
 		JTextField tf = new JTextField(6);
@@ -92,23 +92,23 @@ public class PlanePanel extends JPanel {
 		label.setFont(SwimmerControlPanel.swimFont);
 		FontMetrics fm = this.getFontMetrics(SwimmerControlPanel.swimFont);
 		int sw = fm.stringWidth(" Normal (xyz) ");
-		
+
 		Dimension d = label.getPreferredSize();
 		d.width = sw;
 		label.setPreferredSize(d);
 		return label;
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		
+
 		if (normalTF != null) {
 			for (JTextField tf : normalTF) {
 				tf.setEnabled(enabled);
 			}
 		}
-		
+
 		if (pointTF != null) {
 			for (JTextField tf : pointTF) {
 				tf.setEnabled(enabled);
@@ -116,13 +116,13 @@ public class PlanePanel extends JPanel {
 		}
 
 	}
-	
+
 	/**
 	 * get the normal vector
 	 * @return the normal vector
 	 */
 	public double[] getNormal() {
-		
+
 		for (int i = 0; i < 3; i++) {
 			try {
 				double val = Double.parseDouble(normalTF[i].getText());
@@ -130,20 +130,20 @@ public class PlanePanel extends JPanel {
 			}
 			catch (Exception e) {
 				normalTF[i].setText(valStr(normal[i]));
-			
+
 			}
 		}
-		
-		
+
+
 		return normal;
 	}
-	
+
 	/**
 	 * get the point in the plane
 	 * @return the point in the plane
 	 */
 	public double[] getPoint() {
-		
+
 		for (int i = 0; i < 3; i++) {
 			try {
 				double val = Double.parseDouble(pointTF[i].getText());
@@ -153,18 +153,18 @@ public class PlanePanel extends JPanel {
 				pointTF[i].setText(valStr(point[i]));
 			}
 		}
-		
-		
+
+
 		return point;
 	}
-	
+
 	//simple unit label
 	private JLabel unitLabel(String us) {
 		JLabel label = new JLabel(us);
 		label.setFont(SwimmerControlPanel.swimFont);
 		return label;
 	}
-	
+
 	//convenience method for a string rep of a double
 	private String valStr(double val) {
 		String s =  String.format("%-8.3f", val);

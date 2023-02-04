@@ -22,6 +22,21 @@ import javax.swing.JPopupMenu;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import cnuphys.bCNU.drawable.DrawableAdapter;
+import cnuphys.bCNU.drawable.IDrawable;
+import cnuphys.bCNU.format.DoubleFormat;
+import cnuphys.bCNU.graphics.GraphicsUtilities;
+import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.graphics.style.LineStyle;
+import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.graphics.world.WorldPolygon;
+import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.util.PropertySupport;
+import cnuphys.bCNU.util.UnicodeSupport;
+import cnuphys.bCNU.util.X11Colors;
+import cnuphys.bCNU.view.BaseView;
+import cnuphys.bCNU.view.PlotView;
+import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
 import cnuphys.ced.cedview.central.CentralSupport;
@@ -55,27 +70,12 @@ import cnuphys.splot.pdata.DataSetType;
 import cnuphys.splot.plot.PlotCanvas;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.SwimTrajectory2D;
-import cnuphys.bCNU.drawable.DrawableAdapter;
-import cnuphys.bCNU.drawable.IDrawable;
-import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.bCNU.graphics.GraphicsUtilities;
-import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.style.LineStyle;
-import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.graphics.world.WorldPolygon;
-import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.util.UnicodeSupport;
-import cnuphys.bCNU.util.X11Colors;
-import cnuphys.bCNU.view.BaseView;
-import cnuphys.bCNU.view.PlotView;
-import cnuphys.bCNU.view.ViewManager;
 
 /**
  * This is the classic sector view.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class SectorView extends SliceView implements ChangeListener {
@@ -107,14 +107,14 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	// drawing reconstructed data
 	private ReconDrawer _reconDrawer;
-	
+
 	// reconstructed cross drawer for DC (and feedback handler)
 	private CrossDrawer _dcCrossDrawer;
 
 	// for fmt
 	private FMTCrossDrawer _fmtCrossDrawer;
-	
-	
+
+
 	//redraw the segments?
 	private boolean segmentsOnTop = true;
 
@@ -124,12 +124,12 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * Create a sector view
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	private SectorView(DisplaySectors displaySectors, Object... keyVals) {
 		super(displaySectors, keyVals);
-		
+
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
 
@@ -144,7 +144,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		// Recon drawer
 		_reconDrawer = new ReconDrawer(this);
-		
+
 		addItems();
 		setBeforeDraw();
 		setAfterDraw();
@@ -153,7 +153,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * Convenience method for creating a Sector View.
-	 * 
+	 *
 	 * @param displaySectors controls which opposite sectors are displayed.
 	 * @return a new SectorView.
 	 */
@@ -387,7 +387,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * Get the super layer drawer
-	 * 
+	 *
 	 * @param upperLower 0 for upper sector, 1 for lower sector
 	 * @param superLayer super layer 1..6
 	 * @return the drawer
@@ -441,8 +441,8 @@ public class SectorView extends SliceView implements ChangeListener {
 
 				// draw reconstructed data
 				_reconDrawer.draw(g, container);
-				
-				
+
+
 				// draw bst panels
 				drawBSTPanels(g, container);
 
@@ -508,7 +508,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * This is used to listen for changes on components like sliders.
-	 * 
+	 *
 	 * @param e the causal event.
 	 */
 	@Override
@@ -533,7 +533,7 @@ public class SectorView extends SliceView implements ChangeListener {
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container the base container for the view.
 	 * @param pp        the pixel point
 	 * @param wp        the corresponding world location.
@@ -623,7 +623,7 @@ public class SectorView extends SliceView implements ChangeListener {
 	/**
 	 * Called by a container when a right click is not handled. The usual reason is
 	 * that the right click was on an inert spot.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -823,7 +823,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * Get the world graphic coordinates from lab XYZ
-	 * 
+	 *
 	 * @param x  the lab x in cm
 	 * @param y  the lab y in cm
 	 * @param z  the lab z in cm
@@ -926,7 +926,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * Draw a recon hit from hit based or time based tracking
-	 * 
+	 *
 	 * @param g the Graphics context
 	 * @param container the drawing container
 	 * @param fillColor the fill color
@@ -939,10 +939,10 @@ public class SectorView extends SliceView implements ChangeListener {
 		sectSL.drawDCReconHit(g, container, fillColor, frameColor, hit, isTimeBased);
 
 	}
-	
+
 	/**
 	 * Draw a raw dc hit (and also used for NN overlays) from hit based or time based tracking
-	 * 
+	 *
 	 * @param g the Graphics context
 	 * @param container the drawing container
 	 * @param fillColor the fill color
@@ -959,7 +959,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override

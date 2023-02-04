@@ -10,7 +10,7 @@ public class AIHBCrosses extends Crosses {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static AIHBCrosses getInstance() {

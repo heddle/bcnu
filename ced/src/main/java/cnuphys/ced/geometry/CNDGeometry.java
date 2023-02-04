@@ -12,9 +12,11 @@ import org.jlab.geom.detector.cnd.CNDSector;
 import org.jlab.geom.detector.cnd.CNDSuperlayer;
 import org.jlab.geom.prim.Point3D;
 
+import bCNU3D.DoubleFormat;
+
 /**
  * Central Neutron Detector
- * 
+ *
  * @author heddle
  *
  */
@@ -76,7 +78,7 @@ public class CNDGeometry {
 	/**
 	 * Converts the numbering from Gagik's database to real. This should not be
 	 * necessary but yet it is.
-	 * 
+	 *
 	 * @param geo  the geo triplets where sect=1, layer=1..3, component = 1..48
 	 * @param real the real triplets where sector = 1..24, layer=1..3, component =
 	 *             1..2
@@ -98,7 +100,7 @@ public class CNDGeometry {
 	/**
 	 * Converts the numbering from real to Gagik's database to real. This should not
 	 * be necessary but yet it is.
-	 * 
+	 *
 	 * @param geo  the geo triplets where sect=1, layer=1..3, component = 1..48
 	 * @param real the real triplets where sector = 1..24, layer=1..3, component =
 	 *             1..2
@@ -121,7 +123,7 @@ public class CNDGeometry {
 
 	/**
 	 * Get a scintillator paddle
-	 * 
+	 *
 	 * @param layer  the layer [1..3]
 	 * @param paddle the paddles [1..48]
 	 * @return the paddle
@@ -135,7 +137,7 @@ public class CNDGeometry {
 
 	/**
 	 * Used by the 3D drawing
-	 * 
+	 *
 	 * @param layer    the 1-based layer 1..3
 	 * @param paddleId the 1-based paddle 1..48
 	 * @param coords   holds 8*3 = 24 values [x1, y1, z1, ..., x8, y8, z8]
@@ -159,7 +161,7 @@ public class CNDGeometry {
 
 	/**
 	 * Obtain the paddle xy corners for 2D view
-	 * 
+	 *
 	 * @param layer    the layer 1..3
 	 * @param paddleId the paddle ID 1..48
 	 * @param wp       the four XY corners (cm)
@@ -187,7 +189,7 @@ public class CNDGeometry {
 	 * 5: xmax, ymin, zmin <br>
 	 * 6: xmax, ymax, zmin <br>
 	 * 7: xmin, ymax, zmin <br>
-	 * 
+	 *
 	 * @param layer    the layer 1..3
 	 * @param paddleId the paddle ID 1..48
 	 * @param corners  the eight XYZ corners (cm)
@@ -231,32 +233,48 @@ public class CNDGeometry {
 			}
 		}
 
-//		System.out.println("num sectors: " + cndDetector.getNumSectors());
-//		System.out.println("num supl: " + cndSector.getNumSuperlayers());
-//		System.out.println("num lay: " + cndSuperlayer.getNumLayers());
-//
+		System.out.println("num sectors: " + cndDetector.getNumSectors());
+		System.out.println("num supl: " + cndSector.getNumSuperlayers());
+		System.out.println("num lay: " + cndSuperlayer.getNumLayers());
+
 //		double xmax = Double.NEGATIVE_INFINITY;
 //		double ymax = Double.NEGATIVE_INFINITY;
 //		double zmax = Double.NEGATIVE_INFINITY;
 //		double zmin = Double.POSITIVE_INFINITY;
-//
-//		for (int layerId = 1; layerId <= 3; layerId++) {
+
+		System.out.println("layer, paddle, v1x, v1y, v1z, v2x, v2y, v2z, v3x, v3y, v3z, v4x, v4y, v4z, v5x, v5y, v5z, v6x, vy, v6z, v7x, v7y, v7z, v8x, v8y, v8z");
+
+		for (int layerId = 1; layerId <= 3; layerId++) {
 //			System.out.println("layer: " + layerId + " has "
 //					+ cndLayers[layerId - 1].getNumComponents() + " paddles");
-//
-//			for (int paddleId = 1; paddleId <= 48; paddleId++) {
-//				ScintillatorPaddle paddle = getPaddle(layerId, paddleId);
-//				for (int i = 0; i < 8; i++) {
-//					Point3D p3d = new Point3D(paddle.getVolumePoint(i));
-//
+
+			for (int paddleId = 1; paddleId <= 48; paddleId++) {
+				ScintillatorPaddle paddle = getPaddle(layerId, paddleId);
+
+				System.out.print(layerId + ", " + paddleId);
+				for (int i = 0; i < 8; i++) {
+					Point3D p3d = new Point3D(paddle.getVolumePoint(i));
+
+					String s1 = ", " + DoubleFormat.doubleFormat(p3d.x(), 3);
+					String s2 = ", " + DoubleFormat.doubleFormat(p3d.y(), 3);
+					String s3 = ", " + DoubleFormat.doubleFormat(p3d.z(), 3);
+
+					System.out.print(s1+s2+s3);
+
+
+					if(i == 7) {
+						System.out.println();
+					}
+
+
 //					xmax = Math.max(xmax, p3d.x());
 //					ymax = Math.max(ymax, p3d.y());
 //					zmax = Math.max(zmax, p3d.z());
 //					zmin = Math.min(zmin, p3d.z());
-//				}
-//			}
-//		}
-//
+				}
+			}
+		}
+
 //		System.out.println("xmax: " + xmax);
 //		System.out.println("ymax: " + ymax);
 //		System.out.println("zmax: " + zmax);
@@ -270,5 +288,6 @@ public class CNDGeometry {
 //			System.out.println("Point [" + (i + 1) + "] " + p3d);
 //		}
 	}
+
 
 }

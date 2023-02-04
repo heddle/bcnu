@@ -1,6 +1,7 @@
 package cnuphys.ced.cedview;
 
 import java.awt.Graphics;
+
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.log.Log;
@@ -16,7 +17,7 @@ public abstract class AWireGroupDrawer extends DrawableAdapter {
 
 	/**
 	 * Convenience method to check if array is non-null and has the expected length.
-	 * 
+	 *
 	 * @param array          the array to check.
 	 * @param expectedLength the length it should have.
 	 * @return <code>true</code> if the array does not match--i.e., it is bad.

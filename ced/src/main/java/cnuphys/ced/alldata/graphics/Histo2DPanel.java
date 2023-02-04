@@ -34,7 +34,7 @@ public class Histo2DPanel extends JPanel {
 
 	/**
 	 * Get the Histo2DData object based on the selections.
-	 * 
+	 *
 	 * @return the Histo2DData object
 	 */
 	public Histo2DData getHisto2DData() {

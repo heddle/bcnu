@@ -17,12 +17,6 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
-import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.component.ControlPanel;
-import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.geometry.GeoConstants;
-import cnuphys.ced.item.AllDCSuperLayer;
 import cnuphys.bCNU.component.IRollOverListener;
 import cnuphys.bCNU.component.RollOverPanel;
 import cnuphys.bCNU.drawable.DrawableAdapter;
@@ -37,45 +31,53 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.clasio.datatable.SelectedDataManager;
+import cnuphys.ced.component.ControlPanel;
+import cnuphys.ced.component.DisplayBits;
+import cnuphys.ced.event.data.DC;
+import cnuphys.ced.geometry.GeoConstants;
+import cnuphys.ced.item.AllDCSuperLayer;
 
 /**
  * The AllDC view is a non-faithful representation of all six sectors of
  * driftchambers. It is very useful for occupancy plots.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class AllDCView extends CedView implements IRollOverListener {
-	
+
 	//rollover colors
 	private static final Color inactiveFG = Color.cyan;
 	private static final Color inactiveBG = Color.black;
 	private static final Color activeFG = Color.yellow;
 	private static final Color activeBG = Color.darkGray;
-	
+
 	//roll over labels
 	private static final String HB_ROLLOVER = "Reg Hit Based DC Clusters";
 	private static final String TB_ROLLOVER = "Reg Time Based DC Clusters";
 	private static final String AIHB_ROLLOVER = "AI Hit Based DC Clusters";
 	private static final String AITB_ROLLOVER = "AI Time Based DC Clusters";
 	private static final String SNR_ROLLOVER = "SNR DC Clusters";
-	
+
 	//rollover labels
-	private static String roLabels[] = {HB_ROLLOVER, 
-			TB_ROLLOVER, 
+	private static String roLabels[] = {HB_ROLLOVER,
+			TB_ROLLOVER,
 			AIHB_ROLLOVER,
 			AITB_ROLLOVER,
 			SNR_ROLLOVER};
-	
+
 	//rollover boolean flags
 	private boolean _roShowHBDCClusters;
 	private boolean _roShowTBDCClusters;
 	private boolean _roShowAIHBDCClusters;
 	private boolean _roShowAITBDCClusters;
 	private boolean _roShowSNRDCClusters;
-	
-	
+
+
 	//cluster drawer
 	private ClusterDrawer _clusterDrawer;
 
@@ -100,7 +102,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	// The optional "before" drawer for this view
 	protected IDrawable _beforeDraw;
-	
+
 	//rollover panel for drawing clusters
 	private RollOverPanel _rollOverPanel;
 
@@ -125,7 +127,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Create an allDCView
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	protected AllDCView(Object... keyVals) {
@@ -139,7 +141,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Convenience method for creating an AllDC View.
-	 * 
+	 *
 	 * @return a new AllDCView.
 	 */
 	public static AllDCView createAllDCView() {
@@ -149,7 +151,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 		Dimension d = GraphicsUtilities.screenFraction(0.65);
 
 		// create the view
-		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, 
+		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width,
 				PropertySupport.HEIGHT, d.height, // container height, not total view width
 				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
 				PropertySupport.VISIBLE, true, PropertySupport.TITLE,
@@ -161,26 +163,26 @@ public class AllDCView extends CedView implements IRollOverListener {
 				+ ControlPanel.ALLDCDISPLAYPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
 		view.add(view._controlPanel, BorderLayout.EAST);
-		
+
 		customize(view);
 
 		view.pack();
 		return view;
 	}
-	
-//	public RollOverPanel(String title, int numCols, 
+
+//	public RollOverPanel(String title, int numCols,
 //			Font font, Color fg, Color bg, String... labels) {
 
-	
+
 	//add the rollover panel
 	private static void customize(AllDCView view) {
 		JTabbedPane tabbedPane =  view._controlPanel.getTabbedPane();
-		view._rollOverPanel = new RollOverPanel("DC Clusters", 1, Fonts.mediumFont, inactiveFG, inactiveBG, 
+		view._rollOverPanel = new RollOverPanel("DC Clusters", 1, Fonts.mediumFont, inactiveFG, inactiveBG,
 				roLabels);
-		
+
 		view._rollOverPanel.addRollOverListener(view);
 		tabbedPane.add(view._rollOverPanel, "DC Clusters");
-		
+
 		view._clusterDrawer = new ClusterDrawer(view);
 	}
 
@@ -218,39 +220,48 @@ public class AllDCView extends CedView implements IRollOverListener {
 	}
 
 	/**
-	 * Set the views before draw
+	 * Set the view's after draw
 	 */
 	private void setAfterDraw() {
 		IDrawable _afterDraw = new DrawableAdapter() {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
+
 				if (_roShowSNRDCClusters) {
-					_clusterDrawer.drawSNRDCClusters(g, container);					
+					_clusterDrawer.drawSNRDCClusters(g, container);
 				}
 
 				if (_roShowHBDCClusters) {
 					_clusterDrawer.drawHBDCClusters(g, container);
 				}
-				
+
 				if (_roShowTBDCClusters) {
-					_clusterDrawer.drawTBDCClusters(g, container);					
+					_clusterDrawer.drawTBDCClusters(g, container);
 				}
 
 				if (_roShowAIHBDCClusters) {
 					_clusterDrawer.drawAIHBDCClusters(g, container);
 				}
-				
+
 				if (_roShowAITBDCClusters) {
-					_clusterDrawer.drawAITBDCClusters(g, container);					
+					_clusterDrawer.drawAITBDCClusters(g, container);
 				}
 
+				//data selected highlight?
+				if (SelectedDataManager.isHighlightOn()) {
+					drawDataSelectedHighlight(g, container);
+				}
 
 			}
 
 		};
 		getContainer().setAfterDraw(_afterDraw);
+	}
+
+	//draw data selected hightlight data
+	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
+		System.err.println("draw highlighted data");
 	}
 
 	/**
@@ -334,17 +345,14 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Get the AllDCSuperLayer item for the given sector and superlayer.
-	 * 
+	 *
 	 * @param sector     the zero-based sector [0..5]
 	 * @param superLayer the zero based super layer [0..5]
 	 * @return the AllDCSuperLayer item for the given sector and superlayer (or
 	 *         <code>null</code>).
 	 */
 	public AllDCSuperLayer getAllDCSuperLayer(int sector, int superLayer) {
-		if ((sector < 0) || (sector >= GeoConstants.NUM_SECTOR)) {
-			return null;
-		}
-		if ((superLayer < 0) || (superLayer >= GeoConstants.NUM_SUPERLAYER)) {
+		if ((sector < 0) || (sector >= GeoConstants.NUM_SECTOR) || (superLayer < 0) || (superLayer >= GeoConstants.NUM_SUPERLAYER)) {
 			return null;
 		}
 		return _superLayerItems[sector][superLayer];
@@ -353,7 +361,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -378,7 +386,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Get the sector corresponding to the current pointer location..
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.
@@ -396,7 +404,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Get the world rectangle for a given cell (the wire is in the center)
-	 * 
+	 *
 	 * @param sector     the 1-based sector
 	 * @param superLayer the 1-based super layer
 	 * @param layer      the 1-based layer [1..6]
@@ -409,7 +417,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Clone the view.
-	 * 
+	 *
 	 * @return the cloned view
 	 */
 	@Override
@@ -431,10 +439,10 @@ public class AllDCView extends CedView implements IRollOverListener {
 		return view;
 
 	}
-	
+
 	/**
 	 * Display raw DC hits?
-	 * 
+	 *
 	 * @return <code> if we should display raw hits
 	 */
 	public boolean showRawHits() {
@@ -443,7 +451,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Display hit based hits?
-	 * 
+	 *
 	 * @return <code> if we should display hit based hits
 	 */
 	public boolean showHBHits() {
@@ -452,16 +460,16 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Display time based hits?
-	 * 
+	 *
 	 * @return <code> if we should display time based hits
 	 */
 	public boolean showTBHits() {
 		return _controlPanel.getAllDCDisplayPanel().showTBHits();
 	}
-	
+
 	/**
 	 * Display AI hit based hits?
-	 * 
+	 *
 	 * @return <code> if we should display AI hit based hits
 	 */
 	public boolean showAIHBHits() {
@@ -470,7 +478,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Display AI time based hits?
-	 * 
+	 *
 	 * @return <code> if we should display AI time based hits
 	 */
 	public boolean showAITBHits() {
@@ -479,18 +487,18 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	/**
 	 * Display neural net marked hits?
-	 * 
+	 *
 	 * @return <code> if we should display neural net marked hits
 	 */
 	public boolean showNNHits() {
 		return _controlPanel.getAllDCDisplayPanel().showNNHits();
 	}
-	
+
 
 
 	@Override
 	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
-		
+
 		String text = label.getText();
 		if (text.contains(HB_ROLLOVER)) {
 			_roShowHBDCClusters = true;
@@ -508,16 +516,16 @@ public class AllDCView extends CedView implements IRollOverListener {
 		else if (text.contains(SNR_ROLLOVER)) {
 			_roShowSNRDCClusters = true;
 		}
-		
+
 		label.setForeground(activeFG);
 		label.setBackground(activeBG);
-		
+
 		refresh();
 	}
 
 	@Override
 	public void RollOverMouseExit(JLabel label, MouseEvent e) {
-		
+
 		if (e.isAltDown() || e.isControlDown() || e.isMetaDown()) {
 			return;
 		}
@@ -541,8 +549,44 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 		label.setForeground(inactiveFG);
 		label.setBackground(inactiveBG);
-		
+
 		refresh();
 	}
+
+	/**
+	 * In the BankDataTable a row was selected. Notify listeners who may want to highlight
+	 * @param bankName the name of the bank
+	 * @param index the 1-based index into the bank
+	 */
+	@Override
+	public void dataSelected(String bankName, int index) {
+		if ("DC::tdc".equals(bankName)) {
+
+			int tdc = ClasIoEventManager.getInstance().getInt(bankName, "TDC", index-1);
+			System.err.println("SELECTED TDC: " + tdc);
+
+//			DCTdcHitList hits = DC.getInstance().getTDCHits();
+//			if ((hits != null) && (hits.size() >= index)) {
+//				DCTdcHit hit = hits.get(index-1);
+//
+//				int sector = hit.sector;
+//				int layer = hit.layer36;
+//				int wire = hit.wire;
+//				int tdc = hit.tdc;
+//
+//				System.err.println(String.format("In AllDCView highlight sect: %d  lay: %d  wire: %d with tdc: %d", sector, layer, wire, tdc));
+//			}
+			
+			refresh();
+		}
+	}
+	
+	/**
+	 * Highlight mode is now off
+	 */
+	@Override
+	public void highlightModeOff() {
+	}
+
 
 }

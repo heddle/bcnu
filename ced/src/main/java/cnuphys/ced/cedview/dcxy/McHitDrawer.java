@@ -15,7 +15,7 @@ import cnuphys.ced.event.data.DataSupport;
 public class McHitDrawer extends DCXYViewDrawer {
 
 	// cached rectangles for feedback
-	private Vector<FeedbackRect> _fbRects = new Vector<FeedbackRect>();
+	private Vector<FeedbackRect> _fbRects = new Vector<>();
 
 	public McHitDrawer(DCXYView view) {
 		super(view);
@@ -24,15 +24,7 @@ public class McHitDrawer extends DCXYViewDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-
-		if (!_view.showMcTruth()) {
-			return;
-		}
-
-		if (!_view.isSingleEventMode()) {
+		if (ClasIoEventManager.getInstance().isAccumulating() || !_view.showMcTruth() || !_view.isSingleEventMode()) {
 			return;
 		}
 
@@ -42,7 +34,7 @@ public class McHitDrawer extends DCXYViewDrawer {
 	}
 
 	private void showGemcXYHits(Graphics g, IContainer container) {
-//		
+//
 //		double x[] = DC.avgX();
 //		double y[] = DC.avgY();
 //		double z[] = DC.avgZ();
@@ -86,7 +78,7 @@ public class McHitDrawer extends DCXYViewDrawer {
 
 	/**
 	 * Use what was drawn to generate feedback strings
-	 * 
+	 *
 	 * @param container       the drawing container
 	 * @param screenPoint     the mouse location
 	 * @param worldPoint      the corresponding world location

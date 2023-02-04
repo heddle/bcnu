@@ -17,14 +17,14 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.ced3d.PlainPanel3D;
 
 public abstract class PlainView3D extends BaseView implements ActionListener {
-	
+
 	// the menu bar
 	private final JMenuBar _menuBar;
 
 
 	// the 3D panel
 	protected final PlainPanel3D _panel3D;
-	
+
 	// menu
 	private JMenuItem _printMenuItem;
 	private JMenuItem _pngMenuItem;
@@ -32,7 +32,7 @@ public abstract class PlainView3D extends BaseView implements ActionListener {
 
 	/**
 	 * Create a 3D view
-	 * 
+	 *
 	 * @param title
 	 * @param angleX
 	 * @param angleY
@@ -44,11 +44,11 @@ public abstract class PlainView3D extends BaseView implements ActionListener {
 	public PlainView3D(String title, float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist) {
 		super(PropertySupport.TITLE, title, PropertySupport.ICONIFIABLE, true, PropertySupport.MAXIMIZABLE, true,
 				PropertySupport.CLOSABLE, true, PropertySupport.RESIZABLE, true, PropertySupport.VISIBLE, true);
-		
+
 		_menuBar = new JMenuBar();
 		setJMenuBar(_menuBar);
 		addMenus();
-		
+
 		setLayout(new BorderLayout(1, 1));
 		_panel3D = make3DPanel(angleX, angleY, angleZ, xDist, yDist, zDist);
 
@@ -57,12 +57,12 @@ public abstract class PlainView3D extends BaseView implements ActionListener {
 		pack();
 
 	}
-	
+
 	// make the 3d panel
 	protected abstract PlainPanel3D make3DPanel(float angleX, float angleY, float angleZ, float xDist, float yDist,
 			float zDist);
 
-	
+
 	// add the menus
 	protected void addMenus() {
 		JMenu actionMenu = new JMenu("ced3D");

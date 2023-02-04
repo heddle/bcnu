@@ -6,20 +6,19 @@ import java.util.Collections;
 
 import javax.swing.event.EventListenerList;
 
+import org.jlab.io.base.DataEvent;
+
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.geometry.BSTGeometry;
-import cnuphys.ced.geometry.BSTxyPanel;
-import cnuphys.ced.geometry.FTOFGeometry;
-import cnuphys.ced.geometry.GeoConstants;
-import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcHitList;
 import cnuphys.ced.event.data.AllEC;
+import cnuphys.ced.event.data.BST;
+import cnuphys.ced.event.data.CND;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
@@ -31,18 +30,19 @@ import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
 import cnuphys.ced.event.data.RTPCHitList;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.CND;
 import cnuphys.ced.event.data.TdcAdcHit;
 import cnuphys.ced.event.data.TdcAdcHitList;
-
-import org.jlab.io.base.DataEvent;
+import cnuphys.ced.geometry.BSTGeometry;
+import cnuphys.ced.geometry.BSTxyPanel;
+import cnuphys.ced.geometry.FTOFGeometry;
+import cnuphys.ced.geometry.GeoConstants;
+import cnuphys.ced.geometry.PCALGeometry;
 
 /**
  * Manages the accumulation of data
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class AccumulationManager implements IAccumulator, IClasIoEventListener, IAccumulationListener {
 
@@ -83,7 +83,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// ftcc accumulated data
 	private int _FTCALAccumulatedData[];
-	
+
 	//rtpc accumulated data
 	private int _RTPCAccumulatedData[][];
 
@@ -134,7 +134,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		// FTCAL data
 		_FTCALAccumulatedData = new int[476];
-		
+
 		// RTPC Data
 		_RTPCAccumulatedData = new int[RTPC.NUMCOMPONENT][RTPC.NUMLAYER];
 
@@ -198,7 +198,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		for (int i = 0; i < _FTCALAccumulatedData.length; i++) {
 			_FTCALAccumulatedData[i] = 0;
 		}
-		
+
 		//clear RTPC
 		for (int i = 0; i < RTPC.NUMCOMPONENT; i++) {
 			for (int j = 0; j < RTPC.NUMLAYER; j++) {
@@ -300,7 +300,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Public access to the singleton.
-	 * 
+	 *
 	 * @return the singleton AccumulationManager
 	 */
 	public static AccumulationManager getInstance() {
@@ -312,7 +312,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated CTOF data
-	 * 
+	 *
 	 * @return the accumulated FTCAL data
 	 */
 
@@ -322,17 +322,17 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated FTCAL data
-	 * 
+	 *
 	 * @return the accumulated FTCAL data
 	 */
 
 	public int[] getAccumulatedFTCALData() {
 		return _FTCALAccumulatedData;
 	}
-	
+
 	/**
 	 * Get the accumulated RTPC data
-	 * 
+	 *
 	 * @return the accumulated RTPC data
 	 */
 
@@ -342,7 +342,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated CND data
-	 * 
+	 *
 	 * @return the accumulated CND data
 	 */
 	public int[][][] getAccumulatedCNDData() {
@@ -351,7 +351,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated HTCC data
-	 * 
+	 *
 	 * @return the accumulated HTCC data
 	 */
 	public int[][][] getAccumulatedHTCCData() {
@@ -360,7 +360,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated LTCC data
-	 * 
+	 *
 	 * @return the accumulated LTCC data
 	 */
 	public int[][][] getAccumulatedLTCCData() {
@@ -369,7 +369,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated EC data
-	 * 
+	 *
 	 * @return the accumulated ec data
 	 */
 	public int[][][][] getAccumulatedECALData() {
@@ -378,7 +378,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated PCAL data
-	 * 
+	 *
 	 * @return the accumulated PCAL data
 	 */
 	public int[][][] getAccumulatedPCALData() {
@@ -387,7 +387,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated DC data
-	 * 
+	 *
 	 * @return the accumulated dc data
 	 */
 	public int[][][][] getAccumulatedDCData() {
@@ -402,7 +402,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts on any bst panel
-	 * 
+	 *
 	 * @return the median counts for any bst panel.
 	 */
 	public int getMedianBSTCount() {
@@ -415,7 +415,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts on any BST strip
-	 * 
+	 *
 	 * @return the median counts for any BST strip.
 	 */
 	public int getMedianFullBSTCount() {
@@ -424,7 +424,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median count of accumulated hits
-	 * 
+	 *
 	 * @return the median count of accumulated hits
 	 */
 	public int getMedianPCALCount() {
@@ -439,7 +439,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median count for a given superlayer across all sectors
-	 * 
+	 *
 	 * @param suplay the superlayer 0..5
 	 * @return the median count for a given superlayer across all sectors
 	 */
@@ -467,7 +467,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated Bst panel data
-	 * 
+	 *
 	 * @return the accumulated bst panel data
 	 */
 	public int[][] getAccumulatedBSTData() {
@@ -476,7 +476,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated full Bst strip data
-	 * 
+	 *
 	 * @return the accumulated bst strip data
 	 */
 	public int[][][] getAccumulatedBSTFullData() {
@@ -485,16 +485,16 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts for FTCAL
-	 * 
+	 *
 	 * @return the median counts for FTCAL
 	 */
 	public int getMedianFTCALCount() {
 		return getMedian(_FTCALAccumulatedData);
 	}
-	
+
 	/**
 	 * Get the median counts for RTPC
-	 * 
+	 *
 	 * @return the median counts for RTPC
 	 */
 	public int getMedianRTPCCount() {
@@ -503,7 +503,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts for CND
-	 * 
+	 *
 	 * @return the median counts for CND
 	 */
 	public int getMedianCNDCount() {
@@ -512,7 +512,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts for HTCC
-	 * 
+	 *
 	 * @return the median counts for HTCC
 	 */
 	public int getMedianHTCCCount() {
@@ -521,7 +521,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts for LTCC
-	 * 
+	 *
 	 * @return the median counts for LTCC
 	 */
 	public int getMedianLTCCCount() {
@@ -530,7 +530,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated ftof panel 1a
-	 * 
+	 *
 	 * @return the accumulated ftof panel 1a
 	 */
 	public int[][] getAccumulatedFTOF1AData() {
@@ -539,7 +539,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated ftof panel 1b
-	 * 
+	 *
 	 * @return the accumulated ftof panel 1b
 	 */
 	public int[][] getAccumulatedFTOF1BData() {
@@ -548,7 +548,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the accumulated ftof panel 2
-	 * 
+	 *
 	 * @return the accumulated ftof panel 2
 	 */
 	public int[][] getAccumulatedFTOF2Data() {
@@ -557,7 +557,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts on any ftof1a panel
-	 * 
+	 *
 	 * @return the median counts for any ftof1a panel.
 	 */
 	public int getMedianFTOF1ACount() {
@@ -566,7 +566,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts on any ftof1b panel
-	 * 
+	 *
 	 * @return the median counts for any ftof1b panel.
 	 */
 	public int getMedianFTOF1BCount() {
@@ -575,7 +575,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the median counts on any ftof2 panel
-	 * 
+	 *
 	 * @return the median counts for any ftof2 panel.
 	 */
 	public int getMedianFTOF2Count() {
@@ -584,7 +584,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the color to use
-	 * 
+	 *
 	 * @param fract the fraction (compared to max hits)
 	 * @return the color to use
 	 */
@@ -600,7 +600,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get a color via getColor but add an alpha value
-	 * 
+	 *
 	 * @param value the value
 	 * @param alpha the alpha value [0..255]
 	 * @return the color corresponding to the value.
@@ -613,7 +613,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the number of events in the current accumulation
-	 * 
+	 *
 	 * @return the number of events in the current accumulation
 	 */
 	public long getAccumulationEventCount() {
@@ -622,7 +622,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Get the average occupancy for a given sector and superlayer
-	 * 
+	 *
 	 * @param sect0 0 based sector 0..5
 	 * @param supl0 0 based superlayer 0..5
 	 * @return the occupancy
@@ -647,11 +647,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		// FTCal Data
 		AdcHitList ftcalList = FTCAL.getInstance().updateAdcList();
 		accumFTCAL(ftcalList);
-		
+
 		//RTPCData
 		RTPCHitList rtpcList = RTPC.getInstance().updateAdcList();
 		accumRTPC(rtpcList);
-		
+
 		// CND a special case
 		CND.getInstance().updateData();
 		accumCND();
@@ -725,7 +725,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			_FTCALAccumulatedData[hit.component] += 1;
 		}
 	}
-	
+
 	// accumulate rtpc
 		private void accumRTPC(RTPCHitList list) {
 			if ((list == null) || list.isEmpty()) {
@@ -925,7 +925,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
@@ -935,7 +935,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	/**
 	 * Get the values array for the color scale. Note the range is 0..1 so use
 	 * fraction of max value to get color
-	 * 
+	 *
 	 * @return the values array.
 	 */
 	private static double getAccumulationValues()[] {
@@ -955,9 +955,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Notify listeners we of an accumulation event
-	 * 
+	 *
 	 * @param reason should be one of the ACCUMULATION_X constants
-	 * 
+	 *
 	 */
 	public void notifyListeners(int reason) {
 
@@ -978,7 +978,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Remove an Accumulation listener.
-	 * 
+	 *
 	 * @param listener the Accumulation listener to remove.
 	 */
 	public void removeAccumulationListener(IAccumulationListener listener) {
@@ -994,7 +994,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Add an Accumulation listener.
-	 * 
+	 *
 	 * @param listener the Accumulation listener to add.
 	 */
 	public void addAccumulationListener(IAccumulationListener listener) {
@@ -1044,8 +1044,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the prectange hit rate in the accumulated data for a given wire
-	 * 
+	 * Get the percentage hit rate in the accumulated data for a given wire
+	 *
 	 * @param sect0 0 based sector 0..5
 	 * @param supl0 0 based superlayer 0..5
 	 * @param lay0  0 based layer 0..5
@@ -1062,7 +1062,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	/**
 	 * Tests whether this listener is interested in events while accumulating
-	 * 
+	 *
 	 * @return <code>true</code> if this listener is NOT interested in events while
 	 *         accumulating
 	 */

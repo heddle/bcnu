@@ -1,13 +1,12 @@
 package cnuphys.ced.ced3d;
 
-import item3D.Axes3D;
-
 import java.awt.Color;
 import java.awt.Font;
 
 import cnuphys.ced.ced3d.view.CedView3D;
 import cnuphys.lund.X11Colors;
 import cnuphys.magfield.MagneticFields;
+import item3D.Axes3D;
 
 public class ForwardPanel3D extends CedPanel3D {
 
@@ -21,7 +20,7 @@ public class ForwardPanel3D extends CedPanel3D {
 
 	private static final String _cbaLabels[] = { SHOW_VOLUMES, SHOW_TRUTH, SHOW_SECTOR_1, SHOW_SECTOR_2, SHOW_SECTOR_3,
 			SHOW_SECTOR_4, SHOW_SECTOR_5, SHOW_SECTOR_6, SHOW_DC, SHOW_ECAL, SHOW_PCAL, SHOW_FTOF, SHOW_HB_CROSS,
-			SHOW_TB_CROSS, SHOW_AIHB_CROSS, SHOW_AITB_CROSS, SHOW_HB_TRACK, SHOW_TB_TRACK, 
+			SHOW_TB_CROSS, SHOW_AIHB_CROSS, SHOW_AITB_CROSS, SHOW_HB_TRACK, SHOW_TB_TRACK,
 			SHOW_AIHB_TRACK, SHOW_AITB_TRACK, SHOW_CVTREC_TRACK, SHOW_CVTP1_TRACK, SHOW_REC_TRACK,  SHOW_REC_CAL, SHOW_MAP_EXTENTS };
 
 	public ForwardPanel3D(CedView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist,
@@ -47,7 +46,7 @@ public class ForwardPanel3D extends CedPanel3D {
 //		 mc hit drawer
 		MCHitDrawer3D mchd = new MCHitDrawer3D(this);
 		addItem(mchd);
-		
+
 		//recon drawer
 		RecDrawer3D rd = new RecDrawer3D(this);
 		addItem(rd);
@@ -99,7 +98,7 @@ public class ForwardPanel3D extends CedPanel3D {
 	 * This gets the z step used by the mouse and key adapters, to see how fast we
 	 * move in or in in response to mouse wheel or up/down arrows. It should be
 	 * overridden to give something sensible. like the scale/100;
-	 * 
+	 *
 	 * @return the z step (changes to zDist) for moving in and out
 	 */
 	@Override

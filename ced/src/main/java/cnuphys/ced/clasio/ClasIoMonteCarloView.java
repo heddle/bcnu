@@ -13,21 +13,21 @@ import cnuphys.lund.TrajectoryTableModel;
 
 @SuppressWarnings("serial")
 public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
-	
+
 	// singleton
 	private static ClasIoMonteCarloView instance;
-	
+
 	// one row for each reconstructed trajectory
-	private static Vector<TrajectoryRowData> _trajData = new Vector<TrajectoryRowData>();
+	private static Vector<TrajectoryRowData> _trajData = new Vector<>();
 
 
 	private ClasIoMonteCarloView() {
 		super("Monte Carlo Tracks");
 	}
-	
+
 	/**
 	 * Get the monte carlo event view
-	 * 
+	 *
 	 * @return the monte carlo event view
 	 */
 	public static ClasIoMonteCarloView getInstance() {
@@ -60,7 +60,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 			_trajectoryTable.repaint();
 		} // !accumulating
 	}
-	
+
 	// add tracks
 	private void addTracks(DataEvent event, Vector<TrajectoryRowData> data, String bankName) {
 		try {
@@ -71,11 +71,11 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 				return;
 			}
 
-			
+
 			DataManager dm = DataManager.getInstance();
-			
-			
-			
+
+
+
 			float[] vx = dm.getFloatArray(event, bankName + ".vx"); // vertex x cm
 			if ((vx != null) && (vx.length > 0)) {
 				float[] vy = dm.getFloatArray(event, bankName + ".vy"); // vertex y cm
@@ -89,7 +89,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 				for (int i = 0; i < vx.length; i++) {
 
 					LundId lid = LundSupport.getInstance().get(pid[i]);
-					
+
 					if (lid == null) {
 						//can't swim if don't know the charge!
 						System.err.println("Cannot swim unknown LundID: " + pid[i]);
@@ -105,9 +105,9 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 					double pzo = pz[i];
 
 					double p = Math.sqrt(pxo * pxo + pyo * pyo + pzo * pzo); // GeV/c
-					
+
 					if (p < 1.0e-3) {
-						System.err.println(String.format("Skipping extremely low momentum track %-7.3f GeV/c for %s", 
+						System.err.println(String.format("Skipping extremely low momentum track %-7.3f GeV/c for %s",
 								p, lid.getName()));
 						continue;
 					}
@@ -134,7 +134,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 	/**
 	 * Change the event source type
-	 * 
+	 *
 	 * @param source the new source: File, ET
 	 */
 	@Override
