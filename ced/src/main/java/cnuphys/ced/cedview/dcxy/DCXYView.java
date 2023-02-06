@@ -223,8 +223,8 @@ public class DCXYView extends HexView {
 	}
 
 	private void setAfterDraw() {
-		// use a before-drawer to sector dividers and labels
-		IDrawable beforeDraw = new DrawableAdapter() {
+		// use a after-drawer to sector dividers and labels
+		IDrawable afterDraw = new DrawableAdapter() {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
@@ -266,7 +266,7 @@ public class DCXYView extends HexView {
 
 		};
 
-		getContainer().setAfterDraw(beforeDraw);
+		getContainer().setAfterDraw(afterDraw);
 	}
 
 	private void drawHits(Graphics g, IContainer container) {

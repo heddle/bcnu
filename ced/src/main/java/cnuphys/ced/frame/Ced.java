@@ -61,6 +61,7 @@ import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.rtpc.RTPCView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
 import cnuphys.ced.cedview.sectorview.SectorView;
+import cnuphys.ced.cedview.urwell.UrWELLXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventMenu;
 import cnuphys.ced.clasio.ClasIoEventView;
@@ -181,6 +182,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
+	private UrWELLXYView _urwellXyView;
 
 	private ECView _ecView;
 	private PCALView _pcalView;
@@ -203,11 +205,11 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private SectorView _sectorView36;
 
 	// histogram grids (which are also views)
-	protected HistoGridView dcHistoGrid;
-	protected HistoGridView ftofHistoGrid;
-	protected HistoGridView bstHistoGrid;
-	protected HistoGridView pcalHistoGrid;
-	protected HistoGridView ecHistoGrid;
+//	protected HistoGridView dcHistoGrid;
+//	protected HistoGridView ftofHistoGrid;
+//	protected HistoGridView bstHistoGrid;
+//	protected HistoGridView pcalHistoGrid;
+//	protected HistoGridView ecHistoGrid;
 
 	// plot view
 	private PlotView _plotView;
@@ -307,11 +309,11 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		_virtualView.moveTo(_plotView, 0, VirtualView.CENTER);
 
-		_virtualView.moveTo(dcHistoGrid, 13);
-		_virtualView.moveTo(ftofHistoGrid, 14);
-		_virtualView.moveTo(bstHistoGrid, 15);
-		_virtualView.moveTo(pcalHistoGrid, 16);
-		_virtualView.moveTo(ecHistoGrid, 17);
+//		_virtualView.moveTo(dcHistoGrid, 13);
+//		_virtualView.moveTo(ftofHistoGrid, 14);
+//		_virtualView.moveTo(bstHistoGrid, 15);
+//		_virtualView.moveTo(pcalHistoGrid, 16);
+//		_virtualView.moveTo(ecHistoGrid, 17);
 
 //		_virtualView.moveToStart(_magfieldView14, 18, VirtualView.UPPERLEFT);
 //		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
@@ -324,6 +326,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// note no constraint means "center"
 		_virtualView.moveTo(_dcXyView, 7);
+		
+		_virtualView.moveTo(_urwellXyView, 13, VirtualView.BOTTOMLEFT);
+
 
 		_virtualView.moveTo(_rtpcView, 8);
 
@@ -411,6 +416,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// add a DC XY View
 		_dcXyView = DCXYView.createDCXYView();
+		
+		//add a urwell xy view
+		_urwellXyView = UrWELLXYView.createUrWELLView();
 
 		// add an ec view
 		_ecView = ECView.createECView();
@@ -444,11 +452,11 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_logView = new LogView();
 
 		// add histograms
-		addDcHistogram();
-		addFtofHistogram();
-		addBstHistogram();
-		addPcalHistogram();
-		addEcHistogram();
+//		addDcHistogram();
+//		addFtofHistogram();
+//		addBstHistogram();
+//		addPcalHistogram();
+//		addEcHistogram();
 
 		// the trigger bit "view"
 		ActionListener al3 = new ActionListener() {
@@ -472,114 +480,114 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	}
 
 	// dc wire histogram
-	private void addDcHistogram() {
-		IPlotMaker maker = new IPlotMaker() {
-
-			@Override
-			public PlotPanel addPlot(int row, int col, int w, int h) {
-
-				PlotPanel panel;
-
-				int lay = col;
-				int sect = 1 + (row - 1) / 6;
-				int supl = 1 + (row - 1) % 6;
-				String title = "DC sect_" + sect + "  supl_" + supl + "  lay_" + lay;
-
-				panel = HistoGridView.createHistogram(dcHistoGrid, w, h, title, "wire", "count", -0.5, 112, 112);
-
-				return panel;
-			}
-
-		};
-		dcHistoGrid = HistoGridView.createHistoGridView("DC Wire Histograms", 36, 6, 260, 240, 0.7, maker);
-	}
+//	private void addDcHistogram() {
+//		IPlotMaker maker = new IPlotMaker() {
+//
+//			@Override
+//			public PlotPanel addPlot(int row, int col, int w, int h) {
+//
+//				PlotPanel panel;
+//
+//				int lay = col;
+//				int sect = 1 + (row - 1) / 6;
+//				int supl = 1 + (row - 1) % 6;
+//				String title = "DC sect_" + sect + "  supl_" + supl + "  lay_" + lay;
+//
+//				panel = HistoGridView.createHistogram(dcHistoGrid, w, h, title, "wire", "count", -0.5, 112, 112);
+//
+//				return panel;
+//			}
+//
+//		};
+//		dcHistoGrid = HistoGridView.createHistoGridView("DC Wire Histograms", 36, 6, 260, 240, 0.7, maker);
+//	}
 
 	// ftof paddle histogram
-	private void addFtofHistogram() {
-		IPlotMaker maker = new IPlotMaker() {
-
-			@Override
-			public PlotPanel addPlot(int row, int col, int w, int h) {
-
-				PlotPanel panel;
-
-				int panelType = col - 1; // 1A, 1B, 2 for 0,1,2
-				int numPaddle = FTOFGeometry.numPaddles[panelType];
-				int sect = 1 + (row - 1) % 6;
-				String title = "FTOF sect_" + sect + "  " + FTOF.name(panelType);
-
-				switch (panelType) {
-				case 0: // 1A has 23 paddles
-					panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "paddle", "count", -0.5,
-							numPaddle - 0.5, numPaddle);
-					break;
-				case 1: // 1B has 62 paddles
-					panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "paddle", "count", -0.5,
-							numPaddle - 0.5, numPaddle);
-					break;
-				default: // 2 has 5 paddles
-					panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "paddle", "count", -0.5,
-							numPaddle - 0.5, numPaddle);
-					break;
-				}
-
-				return panel;
-			}
-
-		};
-		ftofHistoGrid = HistoGridView.createHistoGridView("FTOF Histograms", 6, 3, 260, 240, 0.7, maker);
-	}
+//	private void addFtofHistogram() {
+//		IPlotMaker maker = new IPlotMaker() {
+//
+//			@Override
+//			public PlotPanel addPlot(int row, int col, int w, int h) {
+//
+//				PlotPanel panel;
+//
+//				int panelType = col - 1; // 1A, 1B, 2 for 0,1,2
+//				int numPaddle = FTOFGeometry.numPaddles[panelType];
+//				int sect = 1 + (row - 1) % 6;
+//				String title = "FTOF sect_" + sect + "  " + FTOF.name(panelType);
+//
+//				switch (panelType) {
+//				case 0: // 1A has 23 paddles
+//					panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "paddle", "count", -0.5,
+//							numPaddle - 0.5, numPaddle);
+//					break;
+//				case 1: // 1B has 62 paddles
+//					panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "paddle", "count", -0.5,
+//							numPaddle - 0.5, numPaddle);
+//					break;
+//				default: // 2 has 5 paddles
+//					panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "paddle", "count", -0.5,
+//							numPaddle - 0.5, numPaddle);
+//					break;
+//				}
+//
+//				return panel;
+//			}
+//
+//		};
+//		ftofHistoGrid = HistoGridView.createHistoGridView("FTOF Histograms", 6, 3, 260, 240, 0.7, maker);
+//	}
 
 	// ftof wire histogram
-	private void addBstHistogram() {
-		IPlotMaker maker = new IPlotMaker() {
-
-			@Override
-			public PlotPanel addPlot(int row, int col, int w, int h) {
-
-				int layer = row;
-				int sector = col;
-
-				int supl0 = (layer - 1) / 2;
-
-				int maxSector = BSTGeometry.sectorsPerSuperlayer[supl0];
-				if (sector > maxSector) {
-					return null;
-				}
-
-				PlotPanel panel;
-				String title = "BST layer_" + layer + " sector_" + sector;
-				panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "strip", "count", -0.5, 256 - 0.5,
-						256);
-				return panel;
-			}
-
-		};
-		bstHistoGrid = HistoGridView.createHistoGridView("BST Histograms", 8, 24, 300, 240, 0.7, maker);
-	}
+//	private void addBstHistogram() {
+//		IPlotMaker maker = new IPlotMaker() {
+//
+//			@Override
+//			public PlotPanel addPlot(int row, int col, int w, int h) {
+//
+//				int layer = row;
+//				int sector = col;
+//
+//				int supl0 = (layer - 1) / 2;
+//
+//				int maxSector = BSTGeometry.sectorsPerSuperlayer[supl0];
+//				if (sector > maxSector) {
+//					return null;
+//				}
+//
+//				PlotPanel panel;
+//				String title = "BST layer_" + layer + " sector_" + sector;
+//				panel = HistoGridView.createHistogram(ftofHistoGrid, w, h, title, "strip", "count", -0.5, 256 - 0.5,
+//						256);
+//				return panel;
+//			}
+//
+//		};
+//		bstHistoGrid = HistoGridView.createHistoGridView("BST Histograms", 8, 24, 300, 240, 0.7, maker);
+//	}
 
 	// pcal strip histogram
-	private void addPcalHistogram() {
-		IPlotMaker maker = new IPlotMaker() {
-
-			@Override
-			public PlotPanel addPlot(int row, int col, int w, int h) {
-
-				int sector = row;
-				int plane = col - 1; // u, v, w
-				int numStrip = PCALGeometry.PCAL_NUMSTRIP[plane];
-
-				PlotPanel panel;
-				String title = "PCAL sector_" + sector + "_" + PCALGeometry.PLANE_NAMES[plane];
-				panel = HistoGridView.createHistogram(pcalHistoGrid, w, h, title, "strip", "count", -0.5,
-						numStrip - 0.5, numStrip);
-				return panel;
-			}
-
-		};
-
-		pcalHistoGrid = HistoGridView.createHistoGridView("PCAL Histograms", 6, 3, 240, 240, 0.7, maker);
-	}
+//	private void addPcalHistogram() {
+//		IPlotMaker maker = new IPlotMaker() {
+//
+//			@Override
+//			public PlotPanel addPlot(int row, int col, int w, int h) {
+//
+//				int sector = row;
+//				int plane = col - 1; // u, v, w
+//				int numStrip = PCALGeometry.PCAL_NUMSTRIP[plane];
+//
+//				PlotPanel panel;
+//				String title = "PCAL sector_" + sector + "_" + PCALGeometry.PLANE_NAMES[plane];
+//				panel = HistoGridView.createHistogram(pcalHistoGrid, w, h, title, "strip", "count", -0.5,
+//						numStrip - 0.5, numStrip);
+//				return panel;
+//			}
+//
+//		};
+//
+//		pcalHistoGrid = HistoGridView.createHistoGridView("PCAL Histograms", 6, 3, 240, 240, 0.7, maker);
+//	}
 
 	/**
 	 * Accessor for the event menu
@@ -591,30 +599,30 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	}
 
 	// ec strip histogram
-	private void addEcHistogram() {
-		IPlotMaker maker = new IPlotMaker() {
-
-			@Override
-			public PlotPanel addPlot(int row, int col, int w, int h) {
-
-				int sector = row;
-				int stack = (col - 1) / 3; // inner outer
-				int plane = (col - 1) % 3; // u, v, w
-				int numStrip = 36;
-
-				PlotPanel panel;
-				String stackName = ECGeometry.STACK_NAMES[stack];
-				String planeName = ECGeometry.PLANE_NAMES[plane];
-
-				String title = "EC sector_" + sector + "_" + stackName + "_" + planeName;
-				panel = HistoGridView.createHistogram(ecHistoGrid, w, h, title, "strip", "count", -0.5, numStrip - 0.5,
-						numStrip);
-				return panel;
-			}
-
-		};
-		ecHistoGrid = HistoGridView.createHistoGridView("EC Histograms", 6, 6, 240, 240, 0.7, maker);
-	}
+//	private void addEcHistogram() {
+//		IPlotMaker maker = new IPlotMaker() {
+//
+//			@Override
+//			public PlotPanel addPlot(int row, int col, int w, int h) {
+//
+//				int sector = row;
+//				int stack = (col - 1) / 3; // inner outer
+//				int plane = (col - 1) % 3; // u, v, w
+//				int numStrip = 36;
+//
+//				PlotPanel panel;
+//				String stackName = ECGeometry.STACK_NAMES[stack];
+//				String planeName = ECGeometry.PLANE_NAMES[plane];
+//
+//				String title = "EC sector_" + sector + "_" + stackName + "_" + planeName;
+//				panel = HistoGridView.createHistogram(ecHistoGrid, w, h, title, "strip", "count", -0.5, numStrip - 0.5,
+//						numStrip);
+//				return panel;
+//			}
+//
+//		};
+//		ecHistoGrid = HistoGridView.createHistoGridView("EC Histograms", 6, 6, 240, 240, 0.7, maker);
+//	}
 
 	/**
 	 * Add items to existing menus and/or create new menus NOTE: Swim menu is

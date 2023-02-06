@@ -30,27 +30,27 @@ public class CedHistoFiller implements IAccumulationListener {
 	public void accumulationEvent(int reason) {
 		switch (reason) {
 
-		case AccumulationManager.ACCUMULATION_CLEAR:
-			clearHisto(ced.dcHistoGrid);
-			clearHisto(ced.ftofHistoGrid);
-			clearHisto(ced.bstHistoGrid);
-			clearHisto(ced.pcalHistoGrid);
-			clearHisto(ced.ecHistoGrid);
-			break;
-
-		case AccumulationManager.ACCUMULATION_STARTED:
-			break;
-
-		case AccumulationManager.ACCUMULATION_CANCELLED:
-		case AccumulationManager.ACCUMULATION_FINISHED:
-			Ced.setEventNumberLabel(ClasIoEventManager.getInstance().getSequentialEventNumber());
-
-			fillDcHistogramGrid(ced.dcHistoGrid);
-			fillFtofHistogramGrid(ced.ftofHistoGrid);
-			fillBstHistogramGrid(ced.bstHistoGrid);
-			fillPcalHistogramGrid(ced.pcalHistoGrid);
-			fillEcHistogramGrid(ced.ecHistoGrid);
-			break;
+//		case AccumulationManager.ACCUMULATION_CLEAR:
+//			clearHisto(ced.dcHistoGrid);
+//			clearHisto(ced.ftofHistoGrid);
+//			clearHisto(ced.bstHistoGrid);
+//			clearHisto(ced.pcalHistoGrid);
+//			clearHisto(ced.ecHistoGrid);
+//			break;
+//
+//		case AccumulationManager.ACCUMULATION_STARTED:
+//			break;
+//
+//		case AccumulationManager.ACCUMULATION_CANCELLED:
+//		case AccumulationManager.ACCUMULATION_FINISHED:
+//			Ced.setEventNumberLabel(ClasIoEventManager.getInstance().getSequentialEventNumber());
+//
+//			fillDcHistogramGrid(ced.dcHistoGrid);
+//			fillFtofHistogramGrid(ced.ftofHistoGrid);
+//			fillBstHistogramGrid(ced.bstHistoGrid);
+//			fillPcalHistogramGrid(ced.pcalHistoGrid);
+//			fillEcHistogramGrid(ced.ecHistoGrid);
+//			break;
 		}
 	}
 
