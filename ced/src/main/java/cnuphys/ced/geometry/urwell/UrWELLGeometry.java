@@ -59,12 +59,8 @@ public class UrWELLGeometry {
 		MAXSTRIP = 0;
 		for (int chamber = 0; chamber < URWellConstants.NCHAMBERS; chamber++) {
 			numStripsByChamber[chamber] = factory.getNStripChamber(chamber);
-			System.err.println(NAME + " num strips for chamber " + (chamber+1) + ": " + numStripsByChamber[chamber]);
 			MAXSTRIP += numStripsByChamber[chamber];
 		}
-
-//		System.err.println("Max strip ID: " + MAXSTRIP);
-
 
 		_chamberData = new ChamberData[6][URWellConstants.NCHAMBERS][URWellConstants.NLAYERS];
 		for (int sector = 0; sector < 6; sector++) {
@@ -78,6 +74,10 @@ public class UrWELLGeometry {
 		
 		//get some limits to make outlines
 
+		double maxTheta = Double.NEGATIVE_INFINITY;
+		double theta;
+
+		
 		int sector = 1;
 		for (int chamber = 1; chamber <= URWellConstants.NCHAMBERS; chamber++) {
 			int cm1 = chamber-1;
@@ -91,16 +91,49 @@ public class UrWELLGeometry {
 					minX[cm1] = Math.min(minX[cm1], line3D.end().x());
 					maxX[cm1] = Math.max(maxX[cm1], line3D.origin().x());
 					maxX[cm1] = Math.max(maxX[cm1], line3D.end().x());
+					
+					theta = Math.atan2(line3D.origin().y(), line3D.origin().x());
+					maxTheta = Math.abs(Math.max(theta, maxTheta));
+					theta = Math.atan2(line3D.end().y(), line3D.end().x());
+					maxTheta = Math.abs(Math.max(theta, maxTheta));
 
-					minY[cm1] = Math.min(minY[cm1], Math.abs(line3D.origin().y()));
-					minY[cm1] = Math.min(minY[cm1], Math.abs(line3D.end().y()));
+
+
+//					minY[cm1] = Math.min(minY[cm1], Math.abs(line3D.origin().y()));
+//					minY[cm1] = Math.min(minY[cm1], Math.abs(line3D.end().y()));
 					maxY[cm1] = Math.max(maxY[cm1], Math.abs(line3D.origin().y()));
 					maxY[cm1] = Math.max(maxY[cm1], Math.abs(line3D.end().y()));
 				}
 
 			}
+			
+			minY[cm1] = Math.abs(minX[cm1]*Math.tan(maxTheta));
+
+			
+		} //end chamber loop
+	}
+	
+	/**
+	 * Convert global strip to chamber and chamber strip
+	 * @param strip global strip 1..1884
+	 * @param data on return data[0] is the 1-based chamber, data[1] is the 1-based chamber strip.
+	 */
+	public static void chamberStrip(int strip, int data[]) {
+		data[0] = factory.getChamberIndex(strip) + 1;
+		
+		if (data[0] == 1) {
+			data[1] = strip;
+		}
+		else if (data[0] == 2) {
+			data[1] = strip  - numStripsByChamber[0];
+		}
+
+		else {
+			data[1] = strip - numStripsByChamber[0] - numStripsByChamber[1];
 		}
 	}
+	
+	
 
 	/**
 	 * Convert a chamber and chamber strip to a "global" strip.
@@ -148,16 +181,32 @@ public class UrWELLGeometry {
 
 	//test the chamber to global numbering
 	private static void stripNumberTest() {
+		
+		int data[] = new int[2];
 
 		int strip = 1;
 		for (int chamber = 1; chamber < URWellConstants.NCHAMBERS; chamber++) {
 			for (int chamberStrip = 1; chamberStrip <= numStripsByChamber[chamber-1]; chamberStrip++) {
 				int testStrip = stripNumber(chamber, chamberStrip);
 				if (testStrip != strip) {
-					System.err.println("FAILED stripNumberTest");
+					System.err.println("FAILED stripNumberTest (A)");
 					System.err.println(String.format("chamber: %d   chamberStrip: %d  strip: %d   testStrip: %d", chamber, chamberStrip, strip, testStrip));
 					System.exit(0);
 				}
+				
+				chamberStrip(strip, data);
+				if (data[0] != chamber) {
+					System.err.println("FAILED stripNumberTest (B)");
+					System.err.println(String.format("inverse chamber doesn't match chamber: %d  data[0]:  %d ", chamber, data[0]));
+					System.exit(0);
+				}
+				if (data[1] != chamberStrip) {
+					System.err.println("FAILED stripNumberTest (C)");
+					System.err.println(String.format("inverse chamber strip doesn't match chamberStrip: %d  data[1]:  %d ", chamberStrip, data[1]));
+					System.exit(0);
+				}
+
+				
 				strip++;
 			}
 		}

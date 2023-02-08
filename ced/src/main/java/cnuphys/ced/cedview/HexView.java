@@ -1,6 +1,12 @@
 package cnuphys.ced.cedview;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 
 import org.jlab.geom.prim.Line3D;
@@ -9,9 +15,20 @@ import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Vector3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.util.X11Colors;
 
 @SuppressWarnings("serial")
 public abstract class HexView extends CedView {
+	
+	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
+	private static final Color TRANS = new Color(192, 192, 192, 128);
+	
+	// font for sector numbee label text
+	private static final Color TRANSTEXT = new Color(64, 64, 192, 40);
+	private static final Font _font = Fonts.commonFont(Font.BOLD, 48);
+
+
 
 	/**
 	 * Create a hex view that lays items out in six sectors NOTE: In Hex views, the
@@ -115,5 +132,65 @@ public abstract class HexView extends CedView {
 		wp.y = pisect.y();
 		return pisect;
 	}
+	
+	/**
+	 * Draw an xy coordinate system  the graphics context
+	 * @param container the container
+	 */
+	protected void drawCoordinateSystem(Graphics g, IContainer container) {
+		// draw coordinate system
+		Component component = container.getComponent();
+		Rectangle sr = component.getBounds();
+
+		int left = 25;
+		int right = left + 50;
+		int bottom = sr.height - 20;
+		int top = bottom - 50;
+		g.setFont(labelFont);
+		FontMetrics fm = getFontMetrics(labelFont);
+
+		Rectangle r = new Rectangle(left - fm.stringWidth("x") - 4, top - fm.getHeight() / 2 + 1,
+				(right - left + fm.stringWidth("x") + fm.stringWidth("y") + 9), (bottom - top) + fm.getHeight() + 2);
+
+		g.setColor(TRANS);
+		g.fillRect(r.x, r.y, r.width, r.height);
+
+		g.setColor(X11Colors.getX11Color("dark red"));
+		g.drawLine(left, bottom, right, bottom);
+		g.drawLine(right, bottom, right, top);
+
+		g.drawString("y", right + 3, top + fm.getHeight() / 2 - 1);
+		g.drawString("x", left - fm.stringWidth("x") - 2, bottom + fm.getHeight() / 2);
+
+	}
+	
+	// draw the sector numbers
+	protected void drawSectorNumbers(Graphics g, IContainer container, double x) {
+		double r3over2 = Math.sqrt(3) / 2;
+
+		double y = 0;
+		FontMetrics fm = getFontMetrics(_font);
+		g.setFont(_font);
+		g.setColor(TRANSTEXT);
+		Point pp = new Point();
+
+		for (int sect = 1; sect <= 6; sect++) {
+			container.worldToLocal(pp, x, y);
+
+			String s = "" + sect;
+			int sw = fm.stringWidth(s);
+
+			g.drawString(s, pp.x - sw / 2, pp.y + fm.getHeight() / 2);
+
+			if (sect != 6) {
+				double tx = x;
+				double ty = y;
+				x = 0.5 * tx - r3over2 * ty;
+				y = r3over2 * tx + 0.5 * ty;
+			}
+		}
+	}
+
+
 
 }

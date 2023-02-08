@@ -76,11 +76,6 @@ public class DCXYView extends HexView {
 			X11Colors.getX11Color("cadet blue"), X11Colors.getX11Color("dark blue"), X11Colors.getX11Color("olive"),
 			X11Colors.getX11Color("dark green") };
 
-	// font for label text
-	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
-	private static final Color TRANS = new Color(192, 192, 192, 128);
-	private static final Color TRANSTEXT = new Color(64, 64, 192, 40);
-	private static final Font _font = Fonts.commonFont(Font.BOLD, 60);
 
 	private static Stroke stroke = GraphicsUtilities.getStroke(0.5f, LineStyle.SOLID);
 
@@ -260,7 +255,7 @@ public class DCXYView extends HexView {
 					}
 
 					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container);
+					drawSectorNumbers(g, container, 320);
 				} // not acumulating
 			}
 
@@ -341,61 +336,8 @@ public class DCXYView extends HexView {
 		container.worldToLocal(p2, wp2);
 	}
 
-	// draw the sector numbers
-	private void drawSectorNumbers(Graphics g, IContainer container) {
-		double r3over2 = Math.sqrt(3) / 2;
 
-		double x = 320;
-		double y = 0;
-		FontMetrics fm = getFontMetrics(_font);
-		g.setFont(_font);
-		g.setColor(TRANSTEXT);
-		Point pp = new Point();
 
-		for (int sect = 1; sect <= 6; sect++) {
-			container.worldToLocal(pp, x, y);
-
-			String s = "" + sect;
-			int sw = fm.stringWidth(s);
-
-			g.drawString(s, pp.x - sw / 2, pp.y + fm.getHeight() / 2);
-
-			if (sect != 6) {
-				double tx = x;
-				double ty = y;
-				x = 0.5 * tx - r3over2 * ty;
-				y = r3over2 * tx + 0.5 * ty;
-			}
-		}
-	}
-
-	// draw the coordinate system
-	private void drawCoordinateSystem(Graphics g, IContainer container) {
-		// draw coordinate system
-		Component component = container.getComponent();
-		Rectangle sr = component.getBounds();
-
-		int left = 25;
-		int right = left + 50;
-		int bottom = sr.height - 20;
-		int top = bottom - 50;
-		g.setFont(labelFont);
-		FontMetrics fm = getFontMetrics(labelFont);
-
-		Rectangle r = new Rectangle(left - fm.stringWidth("x") - 4, top - fm.getHeight() / 2 + 1,
-				(right - left + fm.stringWidth("x") + fm.stringWidth("y") + 9), (bottom - top) + fm.getHeight() + 2);
-
-		g.setColor(TRANS);
-		g.fillRect(r.x, r.y, r.width, r.height);
-
-		g.setColor(X11Colors.getX11Color("dark red"));
-		g.drawLine(left, bottom, right, bottom);
-		g.drawLine(right, bottom, right, top);
-
-		g.drawString("y", right + 3, top + fm.getHeight() / 2 - 1);
-		g.drawString("x", left - fm.stringWidth("x") - 2, bottom + fm.getHeight() / 2);
-
-	}
 
 	// draw the gemc global hits
 	private void drawAccumulatedHits(Graphics g, IContainer container) {

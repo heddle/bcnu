@@ -119,6 +119,10 @@ public class ClasIoPresentBankPanel extends JPanel
 
 					if (clickCount == 1) {
 						_nodeTable.makeNameVisible(label);
+						if (e.isAltDown() || e.isControlDown()) {
+							System.err.println("MODIFIER");
+						}
+
 					} else if (clickCount == 2) {
 						ClasIoBankView bankView = _dataBanks.get(label);
 
