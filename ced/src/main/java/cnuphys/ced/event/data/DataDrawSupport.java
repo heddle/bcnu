@@ -134,6 +134,20 @@ public class DataDrawSupport {
 		SymbolDraw.drawOval(g, x, y, CROSSHALF, CROSSHALF, Color.black, transColors[mode]);
 		SymbolDraw.drawCross(g, x, y, CROSSHALF, Color.black);
 	}
+	
+	/**
+	 * Draw a bigger reconstructed cross for highlighting
+	 *
+	 * @param g    the graphics context
+	 * @param x    the x location
+	 * @param y    the y location
+	 * @param mode the mode (HB, TB, etc)
+	 */
+	public static void drawBiggerCross(Graphics g, int x, int y, int mode) {
+		SymbolDraw.drawOval(g, x, y, CROSSHALF+2, CROSSHALF+2, Color.black, transColors[mode]);
+		SymbolDraw.drawCross(g, x, y, CROSSHALF+2, Color.black);
+	}
+
 
 	/**
 	 * Get a string representing the id array

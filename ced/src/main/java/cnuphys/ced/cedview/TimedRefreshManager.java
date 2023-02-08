@@ -60,9 +60,6 @@ public class TimedRefreshManager {
 	//the timer has fired
 	private void timerFired() {
 
-		//for the highlighting selected data feature
-		SelectedDataManager.updateDataHighlighting();
-
 		ArrayList<CedView> tempList = _pendingRefresh;
 		_pendingRefresh = new ArrayList<>();
 

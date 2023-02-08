@@ -248,10 +248,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 					_clusterDrawer.drawAITBDCClusters(g, container);
 				}
 
-				//data selected highlight?
-				if (SelectedDataManager.isHighlightOn()) {
-					drawDataSelectedHighlight(g, container);
-				}
+				drawDataSelectedHighlight(g, container);
 
 			}
 
@@ -581,12 +578,5 @@ public class AllDCView extends CedView implements IRollOverListener {
 		}
 	}
 	
-	/**
-	 * Highlight mode is now off
-	 */
-	@Override
-	public void highlightModeOff() {
-	}
-
 
 }

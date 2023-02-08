@@ -8,10 +8,18 @@ package cnuphys.ced.cedview.urwell;
  */
 public class HighlightData {
 	
-	private UrWELLXYView _view;
+	/** 1-based index of highlight hit, none if 0 */
+	public int hit;
 	
-	public HighlightData(UrWELLXYView view) {
-		_view = view;
+	/** 1-based index of highlight cluster, none if 0 */
+	public int cluster;
+	
+	/** 1-based index of highlight cross, none if 0 */
+	public int cross;
+
+
+	
+	public HighlightData() {
 	}
 
 }

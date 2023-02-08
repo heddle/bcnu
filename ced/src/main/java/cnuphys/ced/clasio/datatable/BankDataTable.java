@@ -74,11 +74,7 @@ public class BankDataTable extends JTable {
 		super.valueChanged(e);
 
 		int index = getSelectedRow() + 1;  //make one based
-
-		if (index > 0) {
-			System.err.println("Selected 1-based index " + index + " in bank [" + _bankName + "]");
-			SelectedDataManager.notifyListeners(_bankName, index);
-		}
+		SelectedDataManager.notifyListeners(_bankName, index);
 	}
 
 

@@ -89,7 +89,9 @@ public class DataManager {
 			for (int i = 0; i < size; i++) {
 				colArray[i] = columns.get(i);
 			}
-			Arrays.sort(colArray);
+			
+			//don't sort col array any more
+		//	Arrays.sort(colArray);
 			_banks.put(bankName, colArray);
 
 			for (String columnName : columns) {

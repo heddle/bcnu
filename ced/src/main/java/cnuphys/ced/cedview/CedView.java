@@ -1456,13 +1456,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public void dataSelected(String bankName, int index) {
 	}
 
-	/**
-	 * Notifies that highlight mode is now off
-	 */
-	@Override
-	public void highlightModeOff() {
-	}
-
 
 	/**
 	 * Clone the view.

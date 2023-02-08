@@ -2,10 +2,7 @@ package cnuphys.ced.cedview.urwell;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -16,6 +13,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.jlab.geom.prim.Line3D;
+import org.jlab.geom.prim.Point3D;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
@@ -25,7 +23,6 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
-import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
@@ -33,9 +30,9 @@ import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.clasio.datatable.SelectedDataManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
+import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 import cnuphys.ced.item.HexSectorItem;
@@ -45,31 +42,35 @@ public class UrWELLXYView extends HexView {
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
-	
+
 	//layer colors
 	private static Color _layerColors[] = {Color.red, Color.green};
 
+
 	// sector items
 	private UrWELLHexSectorItem _hexItems[];
-	
+
 	// chamber outline items
 	private UrWELLChamberItem _chamberItems[][];
-	
-	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
 
-	private static Stroke stroke = GraphicsUtilities.getStroke(0.5f, LineStyle.SOLID);
+	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
 
 	protected static Rectangle2D.Double _defaultWorld;
 
 	// the z location of the projection plane
-	private double _zplane = 10;
-	
-	//work soace
+	private double _zplane = 200;
+
+	//work space
 	private Point _pp1 = new Point();
 	private Point _pp2 = new Point();
 	private Point2D.Double _wp1 = new Point2D.Double();
 	private Point2D.Double _wp2 = new Point2D.Double();
+	private Point3D _p3d1 = new Point3D();
+	private Point3D _p3d2 = new Point3D();
+	private Rectangle _fbRect = new Rectangle();
 
+	//for highlighting
+	private HighlightData _highlightData = new HighlightData();
 
 	static {
 		double _xsize = 160;
@@ -84,7 +85,7 @@ public class UrWELLXYView extends HexView {
 
 		// projection plane
 		projectionPlane = GeometryManager.xyPlane(_zplane);
-		
+
 		//draw trajectories
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
 
@@ -102,9 +103,9 @@ public class UrWELLXYView extends HexView {
 		_controlPanel = new ControlPanel(this,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.DRAWLEGEND,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.FMTCROSSES + DisplayBits.RECPART
+				DisplayBits.ACCUMULATION + DisplayBits.CLUSTERS +  DisplayBits.CROSSES + DisplayBits.RECPART
 						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
-						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
+						+ DisplayBits.GLOBAL_AITB +
 						+ DisplayBits.MCTRUTH + DisplayBits.SECTORCHANGE,
 				3, 5);
 
@@ -128,8 +129,8 @@ public class UrWELLXYView extends HexView {
 	@Override
 	protected void addItems() {
 		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
-		
-		
+
+
 
 		_hexItems = new UrWELLHexSectorItem[6];
 
@@ -137,40 +138,18 @@ public class UrWELLXYView extends HexView {
 			_hexItems[sector] = new UrWELLHexSectorItem(detectorLayer, this, sector + 1);
 			_hexItems[sector].getStyle().setFillColor(Color.lightGray);
 		}
-		
+
 		//chamber outline items
 		_chamberItems = new UrWELLChamberItem[6][3];
 		for (int sector = 0; sector < 6; sector++) {
 			for (int chamber = 0; chamber < 3; chamber++) {
-				_chamberItems[sector][chamber] = UrWELLChamberItem.createUrWELLChamberItem(detectorLayer, sector+1, chamber+1); 
+				_chamberItems[sector][chamber] = UrWELLChamberItem.createUrWELLChamberItem(detectorLayer, sector+1, chamber+1);
 			}
-		}		
-
-		
-	}
-	
-	/**
-	 * Draw the strips
-	 * @param g the graphics context
-	 * @param container the container
-	 * @param sector sector [1..6]
-	 * @param chamber chamber [1..3]
-	 * @param layer [1..2]
-	 * @param color strip color
-	 */
-	public void drawStrips(Graphics g, IContainer container, int sector, int chamber, int layer, Color color) {
-		Point pp1 = new Point();
-		Point pp2 = new Point();
-		Point2D.Double wp1 = new Point2D.Double();
-		Point2D.Double wp2 = new Point2D.Double();
-
-		g.setColor(color);
-
-		for (int chamberStrip = 1; chamberStrip < UrWELLGeometry.numStripsByChamber[chamber-1]; chamberStrip++) {
-			projectStrip(g, container, sector, chamber, layer, chamberStrip, wp1, wp2, pp1, pp2);
-			g.drawLine(pp1.x, pp1.y, pp2.x, pp2.y);
 		}
+
+
 	}
+
 
 	/**
 	 * Create the view's before drawer.
@@ -181,7 +160,7 @@ public class UrWELLXYView extends HexView {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
+
 			}
 
 		};
@@ -197,20 +176,22 @@ public class UrWELLXYView extends HexView {
 			public void draw(Graphics g, IContainer container) {
 
 				if (!_eventManager.isAccumulating()) {
-					
+
 					// draw trajectories
 					_swimTrajectoryDrawer.draw(g, container);
 
-					
+
 					//draw hits
 					drawHits(g, container);
-					
+
+					//draw clusters
+					drawClusters(g, container);
+
+					//draw crosses
+					drawCrosses(g, container);
+
 					//data selected highlight?
-					if (SelectedDataManager.isHighlightOn()) {
-						drawDataSelectedHighlight(g, container);
-					}
-
-
+					drawDataSelectedHighlight(g, container);
 
 					drawCoordinateSystem(g, container);
 					drawSectorNumbers(g, container, 145);
@@ -218,14 +199,123 @@ public class UrWELLXYView extends HexView {
 			}
 
 		};
-		
+
 
 		getContainer().setAfterDraw(afterDraw);
 	}
-	
+
+	//draw the crosses
+	private void drawCrosses(Graphics g, IContainer container) {
+		if (!showCrosses()) {
+			return;
+		}
+
+		if (isSingleEventMode()) {
+			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
+			if (event == null) {
+				return;
+			}
+
+			byte sector[] = ColumnData.getByteArray("URWELL::crosses.sector");
+
+			int count = (sector == null) ? 0 : sector.length;
+			if (count == 0) {
+				return;
+			}
+
+			float x[] = ColumnData.getFloatArray("URWELL::crosses.x");
+			float y[] = ColumnData.getFloatArray("URWELL::crosses.y");
+			float z[] = ColumnData.getFloatArray("URWELL::crosses.z");
+
+			for (int i = 0; i < count; i++) {
+				projectPoint(container, x[i], y[i], z[i]);
+				DataDrawSupport.drawCross(g, _pp1.x, _pp1.y, 4);
+			}
+
+		}
+
+	}
+
+
+	//draw the clusters
+	private void drawClusters(Graphics g, IContainer container) {
+		if (!showClusters()) {
+			return;
+		}
+
+		if (isSingleEventMode()) {
+			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
+			if (event == null) {
+				return;
+			}
+
+			byte sector[] = ColumnData.getByteArray("URWELL::clusters.sector");
+
+			int count = (sector == null) ? 0 : sector.length;
+			if (count == 0) {
+				return;
+			}
+
+			float xo[] = ColumnData.getFloatArray("URWELL::clusters.xo");
+			float yo[] = ColumnData.getFloatArray("URWELL::clusters.yo");
+			float zo[] = ColumnData.getFloatArray("URWELL::clusters.zo");
+			float xe[] = ColumnData.getFloatArray("URWELL::clusters.xe");
+			float ye[] = ColumnData.getFloatArray("URWELL::clusters.ye");
+			float ze[] = ColumnData.getFloatArray("URWELL::clusters.ze");
+
+			for (int i = 0; i < count; i++) {
+				projectLine(container, xo[i], yo[i], zo[i], xe[i], ye[i], ze[i]);
+				GraphicsUtilities.drawHighlightedLine(g, _pp1.x, _pp1.y, _pp2.x, _pp2.y, Color.black, Color.yellow);
+			}
+
+		}
+	}
+
+
 	//draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
-		System.err.println("draw highlighted data");
+		if (_highlightData.hit > 0) {
+			int idx = _highlightData.hit-1; //0 based
+			
+			byte sector = ColumnData.getByteArray("URWELL::hits.sector")[idx];
+			byte layer = ColumnData.getByteArray("URWELL::hits.layer")[idx];
+			short strip = ColumnData.getShortArray("URWELL::hits.strip")[idx];
+
+			int data[] = new int[2];
+
+			UrWELLGeometry.chamberStrip(strip, data);
+			projectStrip(container, sector, data[0], layer, data[1]);
+			
+			GraphicsUtilities.drawOval(g, _pp1.x, _pp1.y, 6, 6, Color.black, Color.cyan);
+			GraphicsUtilities.drawOval(g, _pp2.x, _pp2.y, 6, 6, Color.black, Color.cyan);
+
+		}
+		
+		if (_highlightData.cluster > 0) {
+			int idx = _highlightData.cluster-1; //0 based
+
+			float xo = ColumnData.getFloatArray("URWELL::clusters.xo")[idx];
+			float yo = ColumnData.getFloatArray("URWELL::clusters.yo")[idx];
+			float zo = ColumnData.getFloatArray("URWELL::clusters.zo")[idx];
+			float xe = ColumnData.getFloatArray("URWELL::clusters.xe")[idx];
+			float ye = ColumnData.getFloatArray("URWELL::clusters.ye")[idx];
+			float ze = ColumnData.getFloatArray("URWELL::clusters.ze")[idx];
+
+			projectLine(container, xo, yo, zo, xe, ye, ze);
+			GraphicsUtilities.drawThickHighlightedLine(g, _pp1.x, _pp1.y, _pp2.x, _pp2.y, Color.orange, Color.white);
+
+		}
+		
+		if (_highlightData.cross > 0) {
+			int idx = _highlightData.cross-1; //0 based
+			float x = ColumnData.getFloatArray("URWELL::crosses.x")[idx];
+			float y = ColumnData.getFloatArray("URWELL::crosses.y")[idx];
+			float z = ColumnData.getFloatArray("URWELL::crosses.z")[idx];
+			projectPoint(container, x, y, z);
+			DataDrawSupport.drawBiggerCross(g, _pp1.x, _pp1.y, 5);
+		}
+
+
 	}
 
 
@@ -238,26 +328,26 @@ public class UrWELLXYView extends HexView {
 			if (event == null) {
 				return;
 			}
-			
+
 			byte sector[] = ColumnData.getByteArray("URWELL::hits.sector");
-			
+
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
-			
+
 			byte layer[] = ColumnData.getByteArray("URWELL::hits.layer");
 			short strip[] = ColumnData.getShortArray("URWELL::hits.strip");
-			
+
 			int data[] = new int[2];
-			
+
 			for (int i = 0; i < count; i++) {
 				g.setColor(_layerColors[layer[i]-1]);
 				UrWELLGeometry.chamberStrip(strip[i], data);
-				projectStrip(g, container, sector[i], data[0], layer[i], data[1], _wp1, _wp2, _pp1, _pp2);
+				projectStrip(container, sector[i], data[0], layer[i], data[1]);
 				g.drawLine(_pp1.x, _pp1.y, _pp2.x, _pp2.y);
 			}
-	
+
 
 		} else {
 			drawAccumulatedHits(g, container);
@@ -265,30 +355,62 @@ public class UrWELLXYView extends HexView {
 	}
 
 	/**
-	 * 
-	 * @param g the graphics context
+	 *
 	 * @param container the container
 	 * @param sector 1-based sector [1..6]
 	 * @param chamber 1-based sector [1..3]
 	 * @param layer 1-based layer [1..2]
 	 * @param chamberStrip 1-based strip
-	 * @param wp1
-	 * @param wp2
-	 * @param p1
-	 * @param p2
 	 */
-	private void projectStrip(Graphics g, IContainer container, int sector, int chamber, int layer, int chamberStrip, 
-			Point2D.Double wp1, Point2D.Double wp2, Point p1, Point p2) {
+	private void projectStrip(IContainer container, int sector, int chamber, int layer, int chamberStrip) {
 
-		
+
 		Line3D line = UrWELLGeometry.getStrip(sector, chamber, layer, chamberStrip);
-		projectClasToWorld(line.origin(), projectionPlane, wp1);
-		projectClasToWorld(line.end(), projectionPlane, wp2);
+		projectClasToWorld(line.origin(), projectionPlane, _wp1);
+		projectClasToWorld(line.end(), projectionPlane, _wp2);
 
-		container.worldToLocal(p1, wp1);
-		container.worldToLocal(p2, wp2);
+		container.worldToLocal(_pp1, _wp1);
+		container.worldToLocal(_pp2, _wp2);
 
 	}
+
+	/**
+	 *
+	 * @param container the container
+	 * @param x1
+	 * @param y1
+	 * @param z1
+	 * @param x2
+	 * @param y2
+	 * @param z2
+	 */
+	private void projectLine(IContainer container, float x1, float y1, float z1, float x2, float y2, float z2) {
+
+		_p3d1.set(x1, y1, z1);
+		_p3d2.set(x2, y2, z2);
+
+		projectClasToWorld(_p3d1, projectionPlane, _wp1);
+		projectClasToWorld(_p3d2, projectionPlane, _wp2);
+
+		container.worldToLocal(_pp1, _wp1);
+		container.worldToLocal(_pp2, _wp2);
+
+	}
+
+	/**
+	 *
+	 * @param container the container
+	 * @param x
+	 * @param y
+	 * @param z
+	 */
+	private void projectPoint(IContainer container, float x, float y, float z) {
+		_p3d1.set(x, y, z);
+		projectClasToWorld(_p3d1, projectionPlane, _wp1);
+		container.worldToLocal(_pp1, _wp1);
+	}
+
+
 
 	//draw accumulated hits
 	private void drawAccumulatedHits(Graphics g, IContainer container) {
@@ -323,7 +445,53 @@ public class UrWELLXYView extends HexView {
 		container.worldToLocal(pp, wp);
 
 		super.getFeedbackStrings(container, pp, wp, feedbackStrings);
+
+		//crosses feedback
+		crossesFeedback(container, pp, wp, feedbackStrings);
 	}
+
+	//on a cross?
+	private void crossesFeedback(IContainer container, Point pp, Point2D.Double wp, List<String> feedbackStrings) {
+
+		if (isSingleEventMode()) {
+			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
+			if (event == null) {
+				return;
+			}
+
+			byte sector[] = ColumnData.getByteArray("URWELL::crosses.sector");
+
+			int count = (sector == null) ? 0 : sector.length;
+			if (count == 0) {
+				return;
+			}
+
+			float x[] = ColumnData.getFloatArray("URWELL::crosses.x");
+			float y[] = ColumnData.getFloatArray("URWELL::crosses.y");
+			float z[] = ColumnData.getFloatArray("URWELL::crosses.z");
+
+			for (int i = 0; i < count; i++) {
+				projectPoint(container, x[i], y[i], z[i]);
+				_fbRect.setBounds(_pp1.x-5, _pp1.y-5, 10, 10);
+
+				if (_fbRect.contains(pp)) {
+					short id = ColumnData.getShortArray("URWELL::crosses.id")[i];
+					short cluster1 = ColumnData.getShortArray("URWELL::crosses.cluster1")[i];
+					short cluster2 = ColumnData.getShortArray("URWELL::crosses.cluster2")[i];
+					short status = ColumnData.getShortArray("URWELL::crosses.status")[i];
+
+					String fbs1 = String.format("$cyan$cross: %d  status: %d", id, status);
+					String fbs2 = String.format("$cyan$cross clusters: %d and %d", cluster1, cluster2);
+					feedbackStrings.add(fbs1);
+					feedbackStrings.add(fbs2);
+					return;
+				}
+			}
+
+		}
+
+	}
+
 
 	/**
 	 * Lab (CLAS) xy coordinates to local screen coordinates.
@@ -374,55 +542,29 @@ public class UrWELLXYView extends HexView {
 		return view;
 
 	}
-	
-	
+
+
 	/**
-	 * In the BankDataTable a row was selected. 
+	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank
 	 * @param index the 1-based index into the bank
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
-		
-		index--;  //convert to 0 based
-		if (index < 0) {
-			return;
-		}
-		
+
 		if ("URWELL::hits".equals(bankName)) {
-			int data[] = new int[2];
-
-			byte sectors[] = ColumnData.getByteArray("URWELL::hits.sector");
-			
-			int count = (sectors == null) ? 0 : sectors.length;
-			if ((count == 0) || (index >= count)) {
-				return;
-			}
-			
-			byte layers[] = ColumnData.getByteArray("URWELL::hits.layer");
-			short strips[] = ColumnData.getShortArray("URWELL::hits.strip");
-			
-	
-			int sector = sectors[index];
-			int layer = layers[index];
-			int strip = strips[index];
-			UrWELLGeometry.chamberStrip(strip, data);
-
-			int chamber = data[0];
-			int chamberStrip = data[1];
-			
-			System.err.println(String.format("sect: %d   layer: %d   strip: %d   chamber: %d   chamberStrip: %d", sector, layer, strip, chamber, chamberStrip));
-			
-			refresh();
+			_highlightData.hit = index;
 		}
-	}
-	
-	/**
-	 * Highlight mode is now off
-	 */
-	@Override
-	public void highlightModeOff() {
-		System.err.println("Highlight Mode Off");
+		else if ("URWELL::clusters".equals(bankName)) {
+			_highlightData.cluster = index;
+		}
+		else if ("URWELL::crosses".equals(bankName)) {
+			_highlightData.cross = index;
+		}
+
+		
+		refresh();
+
 	}
 
 

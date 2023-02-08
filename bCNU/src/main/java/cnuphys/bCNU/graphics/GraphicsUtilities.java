@@ -100,6 +100,19 @@ public class GraphicsUtilities {
 	 */
 	final public static BasicStroke dash2_2 = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 8.0f,
 			DASH, DASH[0]);
+	
+	/**
+	 * A stroke used for highlight drawing.
+	 */
+	final public static BasicStroke dash1_2t = new BasicStroke(4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 8.0f,
+			DASH, 0.0f);
+
+	/**
+	 * Another stroke used for highlight drawing.
+	 */
+	final public static BasicStroke dash2_2t = new BasicStroke(4.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 8.0f,
+			DASH, DASH[0]);
+
 
 	/**
 	 * A stroke used for common dashed lines.
@@ -979,6 +992,8 @@ public class GraphicsUtilities {
 		Graphics2D g2 = (Graphics2D) g;
 
 		Stroke oldStroke = g2.getStroke();
+		
+		
 
 		g2.setStroke(dash1_2);
 		g2.setColor(color1);
@@ -992,6 +1007,28 @@ public class GraphicsUtilities {
 		g2.setStroke(oldStroke);
 
 	}
+	
+	public static void drawThickHighlightedLine(Graphics g, int x1, int y1, int x2, int y2, Color color1, Color color2) {
+
+		Graphics2D g2 = (Graphics2D) g;
+
+		Stroke oldStroke = g2.getStroke();
+		
+		
+
+		g2.setStroke(dash1_2t);
+		g2.setColor(color1);
+		g2.drawLine(x1, y1, x2, y2);
+		g2.setStroke(dash2_2t);
+
+		g2.setColor(color2);
+		g2.drawLine(x1, y1, x2, y2);
+
+		// restore the stroke
+		g2.setStroke(oldStroke);
+
+	}
+
 
 	public static void drawHighlightedArc(Graphics g, int x, int y, int width, int height, int startAngle, int arcAngle,
 			Color color1, Color color2) {

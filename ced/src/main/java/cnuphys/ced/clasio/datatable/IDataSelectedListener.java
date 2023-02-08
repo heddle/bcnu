@@ -10,10 +10,5 @@ public interface IDataSelectedListener extends EventListener {
 	 * @param index the 1-based index into the bank
 	 */
 	public void dataSelected(String bankName, int index);
-	
-	/**
-	 * Notifies that highlight mode is now off
-	 */
-	public void highlightModeOff();
 
 }

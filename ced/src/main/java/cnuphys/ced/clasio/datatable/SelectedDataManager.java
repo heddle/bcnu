@@ -10,29 +10,20 @@ import javax.swing.event.EventListenerList;
 public class SelectedDataManager {
 
 
-	/**
-	 * Should we highlight data as a result of data selection
-	 * @return true if we should highlight data as a result of data selection
-	 */
-	public static boolean isHighlightOn() {
-		return _highlite;
-	}
-
 	// list of accumulation listeners
 	private static EventListenerList _listeners;
 
-	//highlight selected data?
-	private static boolean _highlite;
-	private static long _stopHighliteTime;
 
 	/**
 	 * Notify listeners of an selected data event
 	 *
 	 * @param bankName the name of the bank
-	 * @param index the 1-based index into the bank
+	 * @param index the 1-based index into the bank. Index of 0 indicates no row currently selected
 	 *
 	 */
 	public static void notifyListeners(String bankName, int index) {
+		
+		System.err.println(String.format("NOTIFY BANK: [%s]   index: %d", bankName, index));
 
 		if (_listeners != null) {
 
@@ -46,34 +37,9 @@ public class SelectedDataManager {
 					((IDataSelectedListener) listeners[i + 1]).dataSelected(bankName, index);
 				}
 			}
-
-			_highlite = true;
-			_stopHighliteTime = System.currentTimeMillis() + 5000;
 		}
 	}
 	
-	/**
-	 * Notify listeners highlight mode if off
-	 *
-	 */
-	public static void notifyListeners() {
-
-		if (_listeners != null) {
-
-			// Guaranteed to return a non-null array
-			Object[] listeners = _listeners.getListenerList();
-
-			// This weird loop is the bullet proof way of notifying all
-			// listeners.
-			for (int i = listeners.length - 2; i >= 0; i -= 2) {
-				if (listeners[i] == IDataSelectedListener.class) {
-					((IDataSelectedListener) listeners[i + 1]).highlightModeOff();
-				}
-			}
-
-			_stopHighliteTime = System.currentTimeMillis() + 5000;
-		}
-	}
 
 
 	/**
@@ -110,19 +76,6 @@ public class SelectedDataManager {
 		_listeners.add(IDataSelectedListener.class, listener);
 	}
 
-
-	/**
-	 * The maintenance timer calls this
-	 */
-	public static void updateDataHighlighting() {
-
-		if (_highlite) {
-			if (System.currentTimeMillis() > _stopHighliteTime) {
-				_highlite = false;
-				notifyListeners();
-			}
-		}
-	}
 
 
 }
