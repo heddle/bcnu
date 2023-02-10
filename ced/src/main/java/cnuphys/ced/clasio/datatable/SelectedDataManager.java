@@ -23,8 +23,6 @@ public class SelectedDataManager {
 	 */
 	public static void notifyListeners(String bankName, int index) {
 		
-		System.err.println(String.format("NOTIFY BANK: [%s]   index: %d", bankName, index));
-
 		if (_listeners != null) {
 
 			// Guaranteed to return a non-null array
