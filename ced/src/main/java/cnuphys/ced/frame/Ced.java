@@ -130,7 +130,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "build 1.5.01b";
+	private static final String _release = "build 1.5.02";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -636,6 +636,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// the options menu
 		addToOptionMenu(mmgr.getOptionMenu());
+		
+		//the color menu
+		getJMenuBar().add(new ColorMenu());
 
 		// ET menu
 		// mmgr.addMenu(ETSupport.getETMenu());
