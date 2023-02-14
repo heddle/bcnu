@@ -48,6 +48,19 @@ public class PropertiesManager {
 			writeProperties();
 		}
 	}
+	
+	/**
+	 * Put in a property, don't write the preferences
+	 * @param key the key
+	 * @param value the value
+	 */
+	public void put(String key, String value) {
+		if ((_userPref != null) && (_upFile != null) && (key != null) && (value != null)) {
+
+			_userPref.put(key, value);
+		}
+	}
+
 
 	/**
 	 * Get a property from the user preferences
@@ -64,7 +77,7 @@ public class PropertiesManager {
 	/**
 	 * Write the properties file. Should be .ced.user.pref in the home dir
 	 */
-	private void writeProperties() {
+	public void writeProperties() {
 		if ((_upFile == null) || (_userPref == null)) {
 			return;
 		}

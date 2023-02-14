@@ -248,6 +248,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 					_clusterDrawer.drawAITBDCClusters(g, container);
 				}
 
+				//row selected on bank dialog
 				drawDataSelectedHighlight(g, container);
 
 			}
@@ -258,7 +259,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 	//draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
-		System.err.println("draw highlighted data");
 	}
 
 	/**

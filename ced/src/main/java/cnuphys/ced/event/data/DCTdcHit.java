@@ -25,6 +25,9 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 
 
 	public int tdc = -1;
+	
+	//order column now relevant
+	public int order;
 
 	// used to indicate that snr thinks it is noise
 	public boolean noise;
@@ -48,13 +51,15 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 	 * @param layer36 the layer [1..36] will be converted to superlayer [1..6] and layer [1..6]
 	 * @param wire the wire [1..111]
 	 * @param tdc the tdc value
+	 * @param order the order value
 	 */
-	public DCTdcHit(byte sector, byte layer36, short wire, int tdc) {
+	public DCTdcHit(byte sector, byte layer36, short wire, int tdc, int order) {
 		super();
 		this.sector = sector;
 		this.layer36 = layer36;
 		this.wire = wire;
 		this.tdc = tdc;
+		this.order = order;
 
 		// for convenience compute the 1..6 indices
 		superlayer = (byte) (((layer36 - 1) / 6) + 1);
@@ -74,9 +79,9 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 		return ((val >= min) && (val <= max));
 	}
 
-	public DCTdcHit(byte sector, byte layer, short wire, int tdc, byte lr, float doca, float sdoca, float time,
+	public DCTdcHit(byte sector, byte layer, short wire, int tdc, int order, byte lr, float doca, float sdoca, float time,
 			float stime) {
-		this(sector, layer, wire, tdc);
+		this(sector, layer, wire, tdc, order);
 		this.doca = doca;
 		this.sdoca = sdoca;
 		this.time = time;
@@ -104,7 +109,7 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 		if (tdc < 0) {
 			return "";
 		} else {
-			return "tdc " + tdc;
+			return "tdc: " + tdc + "  order: " + order;
 		}
 	}
 

@@ -36,6 +36,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 		short[] wire = ColumnData.getShortArray(DCBank + ".component");
 		// byte[] order = ColumnData.getByteArray(DCBank + ".order");
 		int[] TDC = ColumnData.getIntArray(DCBank + ".TDC");
+		byte[] order = ColumnData.getByteArray(DCBank + ".order");
 
 
 		//see if there is a nnhits bank
@@ -74,9 +75,9 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 		for (int i = 0; i < length; i++) {
 			DCTdcHit hit;
 			if (docalen == length) {
-				hit = new DCTdcHit(sector[i], layer[i], wire[i], TDC[i], lr[i], doca[i], sdoca[i], time[i], stime[i]);
+				hit = new DCTdcHit(sector[i], layer[i], wire[i], TDC[i], order[i], lr[i], doca[i], sdoca[i], time[i], stime[i]);
 			} else {
-				hit = new DCTdcHit(sector[i], layer[i], wire[i], TDC[i]);
+				hit = new DCTdcHit(sector[i], layer[i], wire[i], TDC[i], order[i]);
 			}
 			hitArray[i] = hit;
 			add(hit);
@@ -111,7 +112,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 		if (isEmpty()) {
 			return -1;
 		}
-		DCTdcHit hit = new DCTdcHit(sector, layer, wire, -1);
+		DCTdcHit hit = new DCTdcHit(sector, layer, wire, -1, -1);
 		int index = Collections.binarySearch(this, hit);
 		if (index >= 0) {
 			return index;

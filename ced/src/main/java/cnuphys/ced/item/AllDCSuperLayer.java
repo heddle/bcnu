@@ -34,7 +34,9 @@ import cnuphys.ced.event.data.DCReconHitList;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DCTdcHitList;
 import cnuphys.ced.event.data.DataSupport;
+import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
+import cnuphys.ced.frame.OrderColors;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.noise.NoiseManager;
@@ -64,6 +66,9 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	// cell overlay transparent color
 	private static final Color cellOverlayColor = new Color(180, 180, 180, 32);
+	
+	private static final Color transLine = new Color(0, 0, 0, 20);
+
 
 	// the number of wires per layer
 	private int _numWires;
@@ -175,13 +180,6 @@ public class AllDCSuperLayer extends RectangleItem {
 				WorldGraphicsUtilities.drawWorldRectangle(g, container, _layerWorldRects[i], cellOverlayColor, null);
 
 			}
-
-			// causes cell shading
-//			for (int i = 0; i < _numWires; i += 2) {
-//				WorldGraphicsUtilities.drawWorldRectangle(g, container, _positionWorldRects[i], cellOverlayColor, null);
-//
-//			}
-
 			singleEventDrawItem(g, container);
 
 		} else {
@@ -220,7 +218,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 				for (DCTdcHit hit : hits) {
 					if ((hit.sector == _sector) && (hit.superlayer == _superLayer)) {
-						drawDCRawHit(g, container, hit.layer6, hit.wire, hit.noise, -1, wr);
+						drawDCRawHit(g, container, hit.layer6, hit.wire, hit.noise, -1, hit.order, wr);
 					}
 				}
 			}
@@ -355,10 +353,11 @@ public class AllDCSuperLayer extends RectangleItem {
 	 * @param wire      the 1-based wire
 	 * @param noise     is this marked as a noise hit
 	 * @param pid       the gemc pid
+	 * @param order     for optional coloring
 	 * @param wr        workspace
 	 */
 	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid,
-			Rectangle2D.Double wr) {
+			int order, Rectangle2D.Double wr) {
 
 		if (wire > GeoConstants.NUM_WIRE) {
 			String msg = "Bad wire number in drawDCHit " + wire + " seq event number " + _eventManager.getSequentialEventNumber();
@@ -377,8 +376,20 @@ public class AllDCSuperLayer extends RectangleItem {
 		// are we to show mc (MonteCarlo simulation) truth?
 		boolean showTruth = _view.showMcTruth();
 
+
+		
+		if (Ced.useOrderColoring()) {
+			if (order > 0) {
+				System.out.print("");
+			}
+			
+			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, OrderColors.getOrderColor(order), transLine);
+			return;
+		}
+		
 		Color hitFill = _defaultHitCellFill;
 		Color hitLine = _defaultHitCellLine;
+
 
 		// do we have simulated "truth" data?
 		if (showTruth && (pid >= 0)) {

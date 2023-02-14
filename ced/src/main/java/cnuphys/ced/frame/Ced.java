@@ -149,6 +149,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	// event menu
 	private ClasIoEventMenu _eventMenu;
+	
+	// color menu
+	private ColorMenu _colorMenu;
 
 	// weird menu
 	private JMenu _weirdMenu;
@@ -638,7 +641,8 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		addToOptionMenu(mmgr.getOptionMenu());
 		
 		//the color menu
-		getJMenuBar().add(new ColorMenu());
+		_colorMenu = new ColorMenu();
+		getJMenuBar().add(_colorMenu);
 
 		// ET menu
 		// mmgr.addMenu(ETSupport.getETMenu());
@@ -664,6 +668,15 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		addToEventMenu();
 
 	}
+	
+	/**
+	 * Check whether we should use the DC TDC coloring based or the order column
+	 * @return true if we should use the DC TDC coloring 
+	 */
+	public static boolean useOrderColoring() {
+		return getInstance()._colorMenu.useOrderColoring();
+	}
+
 
 	// add items to the basic mag field menu
 	private void addToMagneticFieldMenu() {

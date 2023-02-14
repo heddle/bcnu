@@ -16,7 +16,7 @@ public class ColorMenu extends JMenu implements ActionListener {
 	private JMenuItem _orderColorsItem;
 	
 	//show all the colors
-	private OrderColors _orderColors;
+	private OrderColors _orderColors = new OrderColors();
 	
 
 	public ColorMenu() {
@@ -54,6 +54,14 @@ public class ColorMenu extends JMenu implements ActionListener {
 		
 		_orderColors.setVisible(true);
 	}
+	
+	/**
+	 * Check whether we should use the DC TDC coloring based or the order column
+	 * @return true if we should use the DC TDC coloring 
+	 */
+	public boolean useOrderColoring() {
+		return _dcOrderColorsRB.isSelected();
+	}
 
 
 	@Override
@@ -65,9 +73,11 @@ public class ColorMenu extends JMenu implements ActionListener {
 			if (_orderColors != null) {
 				_orderColors.setVisible(false);
 			}
+			Ced.refresh();
 		}
 		else if (source == _dcOrderColorsRB) {
 			_orderColorsItem.setEnabled(true);
+			Ced.refresh();
 		}
 		else if (source == _orderColorsItem) {
 			handleOrderColors();

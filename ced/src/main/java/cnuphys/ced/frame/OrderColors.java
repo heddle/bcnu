@@ -2,63 +2,166 @@ package cnuphys.ced.frame;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cnuphys.bCNU.dialog.ColorLabel;
 import cnuphys.bCNU.dialog.IColorChangeListener;
 import cnuphys.bCNU.dialog.SimpleDialog;
+import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.properties.PropertiesManager;
 
 public class OrderColors extends SimpleDialog implements IColorChangeListener {
 	
-	private static Color _orderColors[] = {
-			X11Colors.getX11Color("cadet blue"),
-			X11Colors.getX11Color("dark red"),
-			X11Colors.getX11Color("dark green"),
-			X11Colors.getX11Color("coral"),
-			X11Colors.getX11Color("alice blue"),
-			X11Colors.getX11Color("orange"),
-			X11Colors.getX11Color("gray"),
-			X11Colors.getX11Color("dark orange"),
-			X11Colors.getX11Color("olive green"),
-			X11Colors.getX11Color("auqua marine"),
-			X11Colors.getX11Color("dark violet"),
-			X11Colors.getX11Color("fuchsia"),
-			X11Colors.getX11Color("forest green"),
-	};
+	private static String COL_KEY = "OCCOL_";
+	private static String CHK_KEY = "OCCHK_";
+
+	
+	public static Color TRANSCOLOR = new Color(0, 0, 0, 10);
+	
+	
+	private static ColorOption[] _colorOptions;
 	
 	public OrderColors() {
 		super("Color Selection", false, "Close");
+		
+		Dimension size = getPreferredSize();
+		
+		size.height = Math.max(size.height, 100 + 28*_colorOptions.length);
+		
+		//get saved values
+		
+		setSize(size);
+		
+		readSavedValues();
 	}
+	
+	//write saved values
+	
+	private void readSavedValues() {
+		for (int i = 0; i < _colorOptions.length; i++) {
+			String cprop = COL_KEY + i;
+			String vprop = CHK_KEY + i;
+
+			String rgbstr = PropertiesManager.getInstance().get(cprop);
+			if (rgbstr != null) {
+				int rgb = Integer.parseInt(rgbstr);
+				_colorOptions[i].setCurrentColor(new Color(rgb));
+			}
+			
+			String chkstr = PropertiesManager.getInstance().get(vprop);
+			if (chkstr != null) {
+				boolean checked = Boolean.parseBoolean(chkstr);
+				_colorOptions[i].setChecked(checked);
+			}
+
+		}
+		
+	}
+	
+	//write the properties
+	private static void writeSavedValues() {
+		for (int i = 0; i < _colorOptions.length; i++) {
+			String cprop = COL_KEY + i;
+			String vprop = CHK_KEY + i;
+
+			PropertiesManager.getInstance().put(cprop, ""+_colorOptions[i].getCurrentColor().getRGB());
+			PropertiesManager.getInstance().put(vprop, ""+_colorOptions[i].isChecked());
+			
+		}
+
+		PropertiesManager.getInstance().writeProperties();
+	}
+	
 
 	@Override
 	protected Component createNorthComponent() {
-		return new JLabel("DC Cell Fill Color Based on DC::tdc.order");
+		return new JLabel("      DC Cell Fill Color Based on DC::tdc.order      ");
+	}
+	
+	@Override
+	protected Component createWestComponent() {
+		return Box.createHorizontalStrut(10);
+	}
+
+	@Override
+	protected Component createEastComponent() {
+		return Box.createHorizontalStrut(10);
 	}
 	
 	@Override
 	protected Component createCenterComponent() {
+		
+		
+		Color defaultColors[] = {
+				X11Colors.getX11Color("cadet blue"),
+				X11Colors.getX11Color("red"),
+				X11Colors.getX11Color("coral"),
+				X11Colors.getX11Color("dark green"),
+				X11Colors.getX11Color("orange"),
+				X11Colors.getX11Color("blue"),
+				X11Colors.getX11Color("magenta"),
+				X11Colors.getX11Color("brown"),
+				X11Colors.getX11Color("wheat"),
+				X11Colors.getX11Color("fuchsia"),
+				X11Colors.getX11Color("forest green"),
+		};
+		
+		_colorOptions = new ColorOption[defaultColors.length];
+
+		
 		JPanel panel = new JPanel();
 		
-		panel.setLayout(new GridLayout(5, 3, 8, 8));
+		BoxLayout boxLayout = new BoxLayout(panel, BoxLayout.Y_AXIS);
+		panel.setLayout(boxLayout);
 		
-		for(int i = 0; i < 13; i++) {
+		panel.add(Box.createVerticalStrut(8));
+		
+		int len = defaultColors.length;
+			
+		for(int i = 0; i < len; i++) {
 			String prompt = String.format("%d - %d", 10*i, 10*i + 9);
-			Color color = _orderColors[i];
-			ColorLabel cl = new ColorLabel(this, color, prompt);
-			panel.add(cl);
+			_colorOptions[i] = new ColorOption(this, defaultColors[i], prompt);
+			panel.add(_colorOptions[i]);
 		}
+		
+		panel.add(Box.createVerticalStrut(8));
+
 		
 		return panel;
 	}
+	
+	/**
+	 * Get the color corresponding to the order value
+	 * @param order
+	 * @return
+	 */
+	public static Color getOrderColor(int order) {
+		
+		if (order < 0) {
+			return TRANSCOLOR;
+		}
+		
+		int index = order / 10;
+		
+		if (index >= _colorOptions.length) {
+			return TRANSCOLOR;
+		}
+		
+		return _colorOptions[index].getColor();
+	}
+	
 
 	@Override
 	public void colorChanged(Component component, Color color) {
-		// TODO Auto-generated method stub
-		
+		writeSavedValues();
+		Ced.refresh();
 	}
 
 }
