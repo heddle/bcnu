@@ -6,6 +6,9 @@ import cnuphys.bCNU.util.X11Colors;
 
 public class CedColors {
 
+	//for barely visible lines
+	public static final Color transLine = new Color(0, 0, 0, 20);
+
 	// doca's
 	public static final Color docaTruthLine = Color.blue;
 	public static final Color docaTruthFill = new Color(0, 0, 0, 76);

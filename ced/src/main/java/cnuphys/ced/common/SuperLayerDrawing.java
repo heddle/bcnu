@@ -36,7 +36,9 @@ import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.Segment;
 import cnuphys.ced.event.data.SegmentList;
 import cnuphys.ced.event.data.TBSegments;
+import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
+import cnuphys.ced.frame.OrderColors;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.geometry.GeometryManager;
@@ -315,7 +317,7 @@ public class SuperLayerDrawing {
 				Point pp = new Point();
 				for (DCTdcHit hit : hits) {
 					if ((hit.sector == _iSupl.sector()) && (hit.superlayer == _iSupl.superlayer())) {
-						drawBasicDCHit(g, container, hit.layer6, hit.wire, hit.noise, -1);
+						drawBasicDCHit(g, container, hit.layer6, hit.wire, hit.noise, -1, hit.order);
 
 						// just draw the wire again
 						drawOneWire(g, container, hit.layer6, hit.wire, reallyClose, pp);
@@ -343,8 +345,9 @@ public class SuperLayerDrawing {
 	 * @param wire      1-based wire 1..112
 	 * @param noise     is noise hit
 	 * @param pid       gemc particle id
+	 * @param order     tdc order
 	 */
-	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid) {
+	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order) {
 
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
@@ -378,6 +381,12 @@ public class SuperLayerDrawing {
 		if ((_view.showNoiseAnalysis()) && noise) {
 			highlightNoiseHit(g, container, !showTruth, hexagon);
 		} else {
+			
+			if (Ced.useOrderColoring()) {
+				hitFill = OrderColors.getOrderColor(order);
+				hitLine = CedColors.transLine;
+			}
+			
 			g.setColor(hitFill);
 			g.fillPolygon(hexagon);
 			g.setColor(hitLine);
@@ -426,15 +435,17 @@ public class SuperLayerDrawing {
 	 * @param wire      1-based wire 1..112
 	 * @param noise     is noise hit
 	 * @param pid       gemc particle id
+	 * @oaram order     from order column in tdc bank
 	 */
-	private void drawBasicDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid) {
+	private void drawBasicDCHit(Graphics g, IContainer container, int layer, 
+			int wire, boolean noise, int pid, int order) {
 
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
 			return;
 		}
 
-		drawDCHit(g, container, layer, wire, noise, pid);
+		drawDCHit(g, container, layer, wire, noise, pid, order);
 	}
 
 	/**

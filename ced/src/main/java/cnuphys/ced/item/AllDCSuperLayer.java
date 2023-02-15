@@ -67,9 +67,6 @@ public class AllDCSuperLayer extends RectangleItem {
 	// cell overlay transparent color
 	private static final Color cellOverlayColor = new Color(180, 180, 180, 32);
 	
-	private static final Color transLine = new Color(0, 0, 0, 20);
-
-
 	// the number of wires per layer
 	private int _numWires;
 
@@ -379,11 +376,8 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		
 		if (Ced.useOrderColoring()) {
-			if (order > 0) {
-				System.out.print("");
-			}
-			
-			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, OrderColors.getOrderColor(order), transLine);
+			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, 
+					OrderColors.getOrderColor(order), CedColors.transLine);
 			return;
 		}
 		

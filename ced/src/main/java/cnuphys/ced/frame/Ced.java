@@ -130,7 +130,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "build 1.5.02";
+	private static final String _release = "build 1.5.03";
 
 	// used for one time inits
 	private int _firstTime = 0;

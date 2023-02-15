@@ -950,7 +950,6 @@ public class SectorView extends SliceView implements ChangeListener {
 	 * @param hit the  hit to  draw
 	 */
 	public void drawDCRawHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCTdcHit hit) {
-
 		SectorSuperLayer sectSL = _superLayers[(hit.sector < 4) ? 0 : 1][hit.superlayer - 1];
 		sectSL.drawDCRawHit(g, container, fillColor, frameColor, hit);
 

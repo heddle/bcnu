@@ -98,7 +98,6 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 	 * @param hit        the reconstructed hit
 	 */
 	public void drawDCRawHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCTdcHit hit) {
-
 		_superlayerDrawer.drawRawDCHit(g, container, fillColor, frameColor, hit);
 	}
 
