@@ -27,6 +27,7 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -274,7 +275,14 @@ public class UrWELLXYView extends HexView {
 
 	//draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
-		if (_highlightData.hit > 0) {
+		
+		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
+		if (dataEvent == null) {
+			return;
+		}
+		
+		if (dataEvent.hasBank("URWELL::hits") && (_highlightData.hit > 0)) {
+			
 			int idx = _highlightData.hit-1; //0 based
 			
 			byte sector = ColumnData.getByteArray("URWELL::hits.sector")[idx];
@@ -291,7 +299,7 @@ public class UrWELLXYView extends HexView {
 
 		}
 		
-		if (_highlightData.cluster > 0) {
+		if (dataEvent.hasBank("URWELL::clusters") && (_highlightData.cluster > 0) && showClusters()) {
 			int idx = _highlightData.cluster-1; //0 based
 
 			float xo = ColumnData.getFloatArray("URWELL::clusters.xo")[idx];
@@ -306,7 +314,7 @@ public class UrWELLXYView extends HexView {
 
 		}
 		
-		if (_highlightData.cross > 0) {
+		if (dataEvent.hasBank("URWELL::crosses") && (_highlightData.cross > 0) && showCrosses()) {
 			int idx = _highlightData.cross-1; //0 based
 			float x = ColumnData.getFloatArray("URWELL::crosses.x")[idx];
 			float y = ColumnData.getFloatArray("URWELL::crosses.y")[idx];
@@ -566,6 +574,18 @@ public class UrWELLXYView extends HexView {
 		refresh();
 
 	}
+	
+	/**
+	 * Opened a new event file
+	 *
+	 * @param path the path to the new file
+	 */
+	@Override
+	public void openedNewEventFile(final String path) {
+		super.openedNewEventFile(path);
+		_highlightData.reset();
+	}
+
 
 
 }

@@ -130,7 +130,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "build 1.5.03";
+	private static final String _release = "build 1.5.06";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -139,7 +139,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private JMenuItem _eventCountLabel;
 
 	// using 3D?
-	private static boolean _use3D = true;
+	private static boolean _use3D = false;
 
 	// experimental version?
 	private static boolean _experimental;
@@ -309,8 +309,29 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_virtualView.moveToStart(_sectorView14, 0, VirtualView.UPPERLEFT);
 		_virtualView.moveToStart(_sectorView25, 0, VirtualView.UPPERLEFT);
 		_virtualView.moveToStart(_sectorView36, 0, VirtualView.UPPERLEFT);
+		_virtualView.moveTo(_plotView, 0, VirtualView.CENTER);  //for bdl plot
 
-		_virtualView.moveTo(_plotView, 0, VirtualView.CENTER);
+		
+		_virtualView.moveTo(_monteCarloView, 1, VirtualView.TOPCENTER);
+		_virtualView.moveTo(_reconEventView, 1, VirtualView.BOTTOMCENTER);
+		
+		_virtualView.moveTo(_centralXYView, 2, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_centralZView, 2, VirtualView.UPPERRIGHT);
+
+		_virtualView.moveTo(_allDCView, 3);
+		_virtualView.moveTo(_pcalView, 4);
+		_virtualView.moveTo(_ecView, 5);
+		_virtualView.moveTo(_eventView, 6, VirtualView.CENTER);
+
+		// note no constraint means "center"
+		_virtualView.moveTo(_dcXyView, 7);
+
+		_virtualView.moveTo(_rtpcView, 8);
+		_virtualView.moveTo(_urwellXyView, 9, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_tofView, 10, VirtualView.CENTER);
+		_virtualView.moveTo(_ftcalXyView, 11, VirtualView.CENTER);
+		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
+
 
 //		_virtualView.moveTo(dcHistoGrid, 13);
 //		_virtualView.moveTo(ftofHistoGrid, 14);
@@ -322,36 +343,18 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 //		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
 //		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
 
-		_virtualView.moveTo(_allDCView, 3);
-		_virtualView.moveTo(_eventView, 6, VirtualView.CENTER);
-		_virtualView.moveTo(_centralXYView, 2, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_centralZView, 2, VirtualView.UPPERRIGHT);
-
-		// note no constraint means "center"
-		_virtualView.moveTo(_dcXyView, 7);
 		
-		_virtualView.moveTo(_urwellXyView, 13, VirtualView.BOTTOMLEFT);
 
 
-		_virtualView.moveTo(_rtpcView, 8);
 
-		_virtualView.moveTo(_pcalView, 4);
-		_virtualView.moveTo(_ecView, 5);
-		_virtualView.moveTo(_logView, 12, VirtualView.UPPERRIGHT);
-		_virtualView.moveTo(_monteCarloView, 1, VirtualView.TOPCENTER);
-		_virtualView.moveTo(_reconEventView, 1, VirtualView.BOTTOMCENTER);
-
-		_virtualView.moveTo(_tofView, 11, VirtualView.CENTER);
-
-		_virtualView.moveTo(_ftcalXyView, 12, VirtualView.CENTER);
 
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 9, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 10, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 10, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 14, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 18, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
 			}
 		}
 
@@ -379,7 +382,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		AccumulationManager.getInstance();
 
 		// add a virtual view
-		_virtualView = VirtualView.createVirtualView(19);
+		
+		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		
+		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		// add event view
@@ -1369,9 +1375,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 						i++;
 						FileUtilities.setDefaultDir(arg[i]);
 					}
-				} else if (arg[i].contains("NO3D")) {
-					_use3D = false;
-					System.err.println("Not using 3D");
+				} else if (arg[i].contains("YES3D")) {
+					_use3D = true;
+					System.err.println("Trying 3D. If you get errors rerun without 3D");
 				} else if (arg[i].contains("EXP")) {
 					_experimental = true;
 					System.err.println("Note: This is an experimental version");

@@ -21,5 +21,14 @@ public class HighlightData {
 	
 	public HighlightData() {
 	}
+	
+	/**
+	 * Reset to starting values (which indicate no highlight)
+	 */
+	public void reset() {
+		hit = 0;
+		cluster = 0;
+		cross = 0;
+	}
 
 }

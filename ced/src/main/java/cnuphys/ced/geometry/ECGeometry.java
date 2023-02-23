@@ -696,12 +696,14 @@ public class ECGeometry {
 		// argh the geometry package superlayers are 1,2 rather than 0,1 because
 		// they use 0 for PCAL--hence the +1
 
+		ECLayer ecLayer = GeometryManager.clas_Cal_Sector0.getSuperlayer(superlayer + 1).getLayer(layer);
+		ScintillatorPaddle strip = ecLayer.getComponent(stripid);
 
 		Point2D.Double wp[] = GeometryManager.allocate(4);
+		boolean isects = GeometryManager.getProjectedPolygon(strip, projectionPlane, 6, 4, wp, null);
 
 		// note reordering
 		Point2D.Double p2d[] = new Point2D.Double[4];
-
 		p2d[0] = new Point2D.Double(wp[2].x, wp[2].y);
 		p2d[1] = new Point2D.Double(wp[3].x, wp[3].y);
 		p2d[2] = new Point2D.Double(wp[0].x, wp[0].y);
