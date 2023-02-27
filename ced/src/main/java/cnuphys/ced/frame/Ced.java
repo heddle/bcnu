@@ -1081,12 +1081,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		getJMenuBar().add(new TriggerMenuPanel());
 	}
 
-//	private void createBusyPanel() {
-//		getJMenuBar().add(Box.createHorizontalStrut(15));
-//		_busyPanel = new BusyPanel();
-//		_busyPanel.setVisible(false);
-//		getJMenuBar().add(_busyPanel);
-//	}
 
 	// create the event number label
 	private void createFilterLabel() {
@@ -1331,6 +1325,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// initialize the filter manager
 		FilterManager.getInstance();
+		
 
 		// init the clas 12 dir wherev the json files are
 		try {

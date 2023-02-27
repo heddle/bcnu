@@ -43,6 +43,8 @@ public class UrWELLXYView extends HexView {
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
+	
+	private static final int SPHERE_SIZE = 14;
 
 	//layer colors
 	private static Color _layerColors[] = {Color.red, Color.green};
@@ -228,9 +230,15 @@ public class UrWELLXYView extends HexView {
 			float y[] = ColumnData.getFloatArray("URWELL::crosses.y");
 			float z[] = ColumnData.getFloatArray("URWELL::crosses.z");
 
+			
+			//public static void drawSphere(Graphics g, String color, int xc, int yc, int width, int height) {
+
 			for (int i = 0; i < count; i++) {
 				projectPoint(container, x[i], y[i], z[i]);
+				
+//				DataDrawSupport.drawSphere(g, Color.red, _pp1.x, _pp1.y, 8f);
 				DataDrawSupport.drawCross(g, _pp1.x, _pp1.y, 4);
+
 			}
 
 		}
@@ -281,23 +289,6 @@ public class UrWELLXYView extends HexView {
 			return;
 		}
 		
-		if (dataEvent.hasBank("URWELL::hits") && (_highlightData.hit > 0)) {
-			
-			int idx = _highlightData.hit-1; //0 based
-			
-			byte sector = ColumnData.getByteArray("URWELL::hits.sector")[idx];
-			byte layer = ColumnData.getByteArray("URWELL::hits.layer")[idx];
-			short strip = ColumnData.getShortArray("URWELL::hits.strip")[idx];
-
-			int data[] = new int[2];
-
-			UrWELLGeometry.chamberStrip(strip, data);
-			projectStrip(container, sector, data[0], layer, data[1]);
-			
-			GraphicsUtilities.drawOval(g, _pp1.x, _pp1.y, 6, 6, Color.black, Color.cyan);
-			GraphicsUtilities.drawOval(g, _pp2.x, _pp2.y, 6, 6, Color.black, Color.cyan);
-
-		}
 		
 		if (dataEvent.hasBank("URWELL::clusters") && (_highlightData.cluster > 0) && showClusters()) {
 			int idx = _highlightData.cluster-1; //0 based
@@ -322,6 +313,26 @@ public class UrWELLXYView extends HexView {
 			projectPoint(container, x, y, z);
 			DataDrawSupport.drawBiggerCross(g, _pp1.x, _pp1.y, 5);
 		}
+		
+		
+		if (dataEvent.hasBank("URWELL::hits") && (_highlightData.hit > 0)) {
+			
+			int idx = _highlightData.hit-1; //0 based
+			
+			byte sector = ColumnData.getByteArray("URWELL::hits.sector")[idx];
+			byte layer = ColumnData.getByteArray("URWELL::hits.layer")[idx];
+			short strip = ColumnData.getShortArray("URWELL::hits.strip")[idx];
+
+			int data[] = new int[2];
+
+			UrWELLGeometry.chamberStrip(strip, data);
+			projectStrip(container, sector, data[0], layer, data[1]);
+			
+			GraphicsUtilities.drawOval(g, _pp1.x, _pp1.y, 6, 6, Color.black, Color.cyan);
+			GraphicsUtilities.drawOval(g, _pp2.x, _pp2.y, 6, 6, Color.black, Color.cyan);
+
+		}
+
 
 
 	}

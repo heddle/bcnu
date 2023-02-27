@@ -90,8 +90,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	// control the value of phi
 	private JSlider _phiSlider;
 
-
-	//control threshold value of adc to display
+	// control threshold value of adc to display
 	private JSlider _adcThresholdSlider;
 	private CommonBorder _adcThresholdBorder;
 
@@ -108,10 +107,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	// color model panel for accumulation
 	private ColorModelPanel _colorPanel;
 
-	//only for all dc view
+	// only for all dc view
 	private AllDCDisplayPanel _allDCDisplayPanel;
 
-	//the tabbed pane
+	// the tabbed pane
 	private JTabbedPane _tabbedPane;
 
 	/**
@@ -157,7 +156,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		add(component, BorderLayout.SOUTH);
 	}
 
-
 	/**
 	 * Get the color scale model if there is one.
 	 *
@@ -173,6 +171,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the tabbed pane for customization
+	 * 
 	 * @return the tabbed pane
 	 */
 	public JTabbedPane getTabbedPane() {
@@ -181,8 +180,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// use a tabbed pane to save space
 	private JTabbedPane addTabbedPane(CedView view, int controlPanelBits, int displayArrayBits) {
-		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.setFont(Fonts.smallFont);
 
 		// dc noise control?
 		if (Bits.checkBit(controlPanelBits, NOISECONTROL)) {
@@ -237,51 +234,30 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 
 		// legend
-		JPanel legend = null;
-		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
-			legend = DrawingLegend.getLegendPanel(_view);
+//		JPanel legend = null;
+//		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
+//			// legend = DrawingLegend.getLegendPanel(_view);
+//		}
+
+		JPanel daPanel = null;
+		if (_displayArray != null) {
+			daPanel = createDisplayArrayPanel(controlPanelBits);
 		}
 
+		JTabbedPane tabbedPane = new JTabbedPane();
+		tabbedPane.setFont(Fonts.smallFont);
 
-		if (_displayArray != null) {
-
-			JPanel sp = new JPanel();
-			sp.setLayout(new BoxLayout(sp, BoxLayout.Y_AXIS));
-
-
-			_displayArray.setBorder(new CommonBorder("Visibility"));
-			sp.add(_displayArray);
-
-			if (Bits.checkBit(controlPanelBits, ALLDCDISPLAYPANEL)) {
-				_allDCDisplayPanel = new AllDCDisplayPanel(_view);
-				sp.add(_allDCDisplayPanel);
-			}
-
-			// accumulation
-			if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
-				_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
-						"Relative Accumulation or ADC Value", 10, _view.getMedianSetting(), true, true);
-
-				sp.add(_colorPanel);
-			}
-
-			//adc threshold
-			if (Bits.checkBit(controlPanelBits, ADCTHRESHOLDSLIDER)) {
-				sp.add(createAdcThresholdSlider());
-			}
-
-
-			tabbedPane.add(sp, "display");
+		if (daPanel != null) {
+			tabbedPane.add(daPanel, "display");
 		}
 
 		if (phiSlider != null) {
 			tabbedPane.add(phiSlider, "phi");
 		}
 
-
-		if (legend != null) {
-			tabbedPane.add(legend, "legend");
-		}
+//		if (legend != null) {
+//			tabbedPane.add(legend, "legend");
+//		}
 
 		if (magFieldPanel != null) {
 			tabbedPane.add(magFieldPanel, "field");
@@ -292,6 +268,35 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 
 		return tabbedPane;
+	}
+
+	//create the panel that holds the display array
+	//and possibly other components
+	private JPanel createDisplayArrayPanel(int controlPanelBits) {
+		JPanel sp = new JPanel();
+		sp.setLayout(new BoxLayout(sp, BoxLayout.Y_AXIS));
+
+		_displayArray.setBorder(new CommonBorder("Visibility"));
+		sp.add(_displayArray);
+
+		if (Bits.checkBit(controlPanelBits, ALLDCDISPLAYPANEL)) {
+			_allDCDisplayPanel = new AllDCDisplayPanel(_view);
+			sp.add(_allDCDisplayPanel);
+		}
+
+		// accumulation
+		if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
+			_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
+					"Relative Accumulation or ADC Value", 10, _view.getMedianSetting(), true, true);
+
+			sp.add(_colorPanel);
+		}
+
+		// adc threshold
+		if (Bits.checkBit(controlPanelBits, ADCTHRESHOLDSLIDER)) {
+			sp.add(createAdcThresholdSlider());
+		}
+		return sp;
 	}
 
 //	/**
@@ -337,7 +342,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 //		return box;
 //	}
 
-
 	/**
 	 * Create the slider used to control the target z
 	 *
@@ -354,7 +358,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		_adcThresholdSlider.setMajorTickSpacing(250);
 		_adcThresholdSlider.setMinorTickSpacing(50);
-
 
 		_adcThresholdSlider.setPaintTicks(true);
 		_adcThresholdSlider.setPaintLabels(true);
@@ -374,7 +377,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		box.setBorder(_adcThresholdBorder);
 		return box;
 	}
-
 
 	/**
 	 * Create the slider used to control the target z
@@ -416,8 +418,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		box.add(_phiSlider);
 
 		if (isBig) {
-			box.setBorder(new CommonBorder(
-					UnicodeSupport.SMALL_PHI + " (deg)"));
+			box.setBorder(new CommonBorder(UnicodeSupport.SMALL_PHI + " (deg)"));
 		} else {
 			box.setBorder(new CommonBorder(
 					UnicodeSupport.CAPITAL_DELTA + UnicodeSupport.SMALL_PHI + " relative to midplane (deg)"));
@@ -436,6 +437,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the adc threshold border so we can adjust the title.
+	 * 
 	 * @return the adc threshold border
 	 */
 	public CommonBorder getAdcThresholdBorder() {
@@ -529,6 +531,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the display panel used by the all dc view
+	 * 
 	 * @return the display panel used by the all dc view
 	 */
 	public AllDCDisplayPanel getAllDCDisplayPanel() {

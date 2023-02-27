@@ -14,13 +14,16 @@ import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Polygon;
+import java.awt.RadialGradientPaint;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.Transparency;
 import java.awt.Window;
+import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
@@ -1568,6 +1571,62 @@ public class GraphicsUtilities {
 			}
 		} catch (Exception e) {
 			Log.getInstance().exception(e);
+		}
+	}
+	
+	/**
+	 * A gradient 3D looking sphere
+	 * @param g the graphics context
+	 * @param radius pixel radius (as a float)
+	 * @param fillColor the basic fill color (will be converted to a gradient)
+	 * @param frameColor option frame color (null for no frame)
+	 * @param center the center of the sphere
+	 * @param mode 1: best for most colors, with some transparency, 2: best for 
+	 * most colors, with opaque, 3: best for light base colors, like yellow or white
+	 */
+	public static void drawGradientCircle(Graphics g, float radius,
+			Color fillColor, Color frameColor, Point2D.Float center, int mode) {
+		
+		Graphics2D g2d = (Graphics2D)g;
+		Point2D.Float focus;
+		Color[] colors = new Color[2];
+		float[] dist = { 0f, 1f };
+
+		
+		if (mode == 1) {
+			focus = new Point2D.Float(center.x - 0.5f*radius, center.y - 0.5f*radius);
+
+			int red = fillColor.getRed();
+			int green = fillColor.getGreen();
+			int blue = fillColor.getBlue();
+
+			colors[0] = new Color(red, green, blue, 0);
+			colors[1] = new Color(red, green, blue, 255);
+		}
+		else if (mode == 2) {
+			focus = new Point2D.Float(center.x - 0.5f*radius, center.y - 0.5f*radius);
+			
+			colors[0] = Color.white;
+			colors[1] = fillColor;
+
+		}
+		else {
+			focus = new Point2D.Float(center.x - 0.25f*radius, center.y - 0.25f*radius);
+			
+			colors[1] = fillColor.darker();
+			colors[0] = fillColor;
+		}
+		
+		
+		RadialGradientPaint rgp = new RadialGradientPaint(center, radius, focus, dist, colors, CycleMethod.NO_CYCLE);
+		g2d.setPaint(rgp);
+		g2d.fill(new Ellipse2D.Double(center.getX() - radius, center.getY() - radius, radius * 2, radius * 2));
+
+		if (frameColor != null) {
+			g2d.setColor(frameColor);
+
+			int width = (int) (2 * radius);
+			g2d.drawOval((int) (center.x - radius), (int) (center.y - radius), width, width);
 		}
 	}
 

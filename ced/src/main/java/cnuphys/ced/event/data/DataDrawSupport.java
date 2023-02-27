@@ -1,9 +1,20 @@
 package cnuphys.ced.event.data;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.geom.Point2D;
+import java.util.Hashtable;
 
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+
+import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.splot.plot.X11Colors;
@@ -27,6 +38,12 @@ public class DataDrawSupport {
 
 	public static Color transColors[] = { CedColors.HB_TRANS, CedColors.TB_TRANS, CedColors.AIHB_TRANS, CedColors.AITB_TRANS,
 			TRANSYELLOW, TRANSGREEN, TRANSRED};
+
+
+	//spheres
+	private static Hashtable<String, ImageIcon> _spheres;
+	private static String _sphereColors[] = {"red", "blue"};
+
 
 
 	public static String prefix[] = { "Reg HB ", "Reg TB ", "AI HB ", "AI TB ", "BST ", "BMT ", "FMT " };
@@ -131,10 +148,36 @@ public class DataDrawSupport {
 	 * @param mode the mode (HB, TB, etc)
 	 */
 	public static void drawCross(Graphics g, int x, int y, int mode) {
-		SymbolDraw.drawOval(g, x, y, CROSSHALF, CROSSHALF, Color.black, transColors[mode]);
+//		SymbolDraw.drawOval(g, x, y, CROSSHALF, CROSSHALF, Color.black, transColors[mode]);
+		
+		int opt = 2;
+		if ((mode == 0) || (mode == 4)) {
+			opt = 3;
+		}
+		
+		drawSphere(g, transColors[mode], x, y, CROSSHALF, opt);
 		SymbolDraw.drawCross(g, x, y, CROSSHALF, Color.black);
 	}
-	
+
+
+	/**
+	 * Draw a #D sphere icon
+	 *
+	 * @param g    the graphics context
+	 * @param name
+	 * @param xc    the x center location
+	 * @param yc    the y center location
+	 * @param radius
+	 */
+	public static void drawSphere(Graphics g, Color baseColor, int xc, int yc, float radius, int opt) {
+		GraphicsUtilities.drawGradientCircle(g, radius, baseColor, Color.black, new Point2D.Float(xc, yc), opt);
+	}
+
+
+
+
+
+
 	/**
 	 * Draw a bigger reconstructed cross for highlighting
 	 *
@@ -144,7 +187,13 @@ public class DataDrawSupport {
 	 * @param mode the mode (HB, TB, etc)
 	 */
 	public static void drawBiggerCross(Graphics g, int x, int y, int mode) {
-		SymbolDraw.drawOval(g, x, y, CROSSHALF+2, CROSSHALF+2, Color.black, transColors[mode]);
+		int opt = 2;
+		if ((mode == 0) || (mode == 4)) {
+			opt = 3;
+		}
+		
+		drawSphere(g, transColors[mode], x, y, CROSSHALF+2, opt);
+
 		SymbolDraw.drawCross(g, x, y, CROSSHALF+2, Color.black);
 	}
 
@@ -168,6 +217,86 @@ public class DataDrawSupport {
 			}
 		}
 		return sb.toString();
+	}
+
+
+
+
+
+	public static void main(String arg[]) {
+		JFrame testFrame = new JFrame("Attributes");
+
+		Color baseColors[] = {
+				Color.black,
+				Color.red,
+				Color.green,
+				Color.yellow,
+				Color.cyan,
+				Color.DARK_GRAY,
+				Color.gray,
+				Color.magenta,
+				Color.orange,
+				Color.pink,
+				X11Colors.getX11Color("Dark Green"),
+				X11Colors.getX11Color("Deep Sky Blue"),
+				X11Colors.getX11Color("Medium Purple"),
+				X11Colors.getX11Color("Wheat"),
+				X11Colors.getX11Color("Gold"),
+				Color.white,
+		};
+
+		final float radius = 80;
+
+
+		JComponent component = new JComponent() {
+
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+
+
+				Point2D.Float center = new Point2D.Float();
+
+				int index =  0;
+				for (int col = 0; col < 4; col++) {
+					float x = 10 + radius +  col * (2*radius + 20);
+					for (int row = 0; row < 4; row++) {
+						float y = 10 + radius +  row * (2*radius + 20);
+						center.setLocation(x, y);
+						Color baseColor = baseColors[index++];
+						GraphicsUtilities.drawGradientCircle(g, radius, baseColor, Color.black, center, 2);
+					}
+				}
+
+			}
+
+			@Override
+			public Dimension getPreferredSize() {
+				return new Dimension(800, 800);
+			}
+		};
+
+
+		testFrame.setLayout(new BorderLayout(8, 8));
+		testFrame.add(component, BorderLayout.CENTER);
+
+		// set up what to do if the window is closed
+		WindowAdapter windowAdapter = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				System.err.println("Done");
+				System.exit(1);
+			}
+		};
+
+		testFrame.addWindowListener(windowAdapter);
+		testFrame.pack();
+		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				testFrame.setVisible(true);
+			}
+		});
 	}
 
 }

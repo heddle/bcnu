@@ -21,7 +21,15 @@
 
 		</jar>
 		<echo>Building bcnu jar</echo>
+		
+		<echo>Building bcnu image jar 2</echo>
+		<jar destfile="cnuphys/bin/lib/bcnuimages.jar">
+			<fileset includes="images/*.*, data/*" dir="../resources" />
+		</jar>
+		
+
 	</target>
+	
 
 </project>
 
