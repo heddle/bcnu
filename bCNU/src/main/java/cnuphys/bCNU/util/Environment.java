@@ -578,7 +578,7 @@ public final class Environment {
 	 * 
 	 * @return an array of the class path segments
 	 */
-	private String[] splitClassPath() {
+	public String[] splitClassPath() {
 		return splitPath(_classPath);
 	}
 

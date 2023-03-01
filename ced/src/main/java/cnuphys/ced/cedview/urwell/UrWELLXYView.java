@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -20,14 +19,12 @@ import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -43,8 +40,6 @@ public class UrWELLXYView extends HexView {
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
-	
-	private static final int SPHERE_SIZE = 14;
 
 	//layer colors
 	private static Color _layerColors[] = {Color.red, Color.green};
@@ -230,15 +225,12 @@ public class UrWELLXYView extends HexView {
 			float y[] = ColumnData.getFloatArray("URWELL::crosses.y");
 			float z[] = ColumnData.getFloatArray("URWELL::crosses.z");
 
-			
+
 			//public static void drawSphere(Graphics g, String color, int xc, int yc, int width, int height) {
 
 			for (int i = 0; i < count; i++) {
 				projectPoint(container, x[i], y[i], z[i]);
-				
-//				DataDrawSupport.drawSphere(g, Color.red, _pp1.x, _pp1.y, 8f);
 				DataDrawSupport.drawCross(g, _pp1.x, _pp1.y, 4);
-
 			}
 
 		}
@@ -283,15 +275,16 @@ public class UrWELLXYView extends HexView {
 
 	//draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
-		
+
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 		if (dataEvent == null) {
 			return;
 		}
-		
-		
-		if (dataEvent.hasBank("URWELL::clusters") && (_highlightData.cluster > 0) && showClusters()) {
-			int idx = _highlightData.cluster-1; //0 based
+
+		//indices are zero based
+
+		if (dataEvent.hasBank("URWELL::clusters") && (_highlightData.cluster >= 0) && showClusters()) {
+			int idx = _highlightData.cluster; //0 based
 
 			float xo = ColumnData.getFloatArray("URWELL::clusters.xo")[idx];
 			float yo = ColumnData.getFloatArray("URWELL::clusters.yo")[idx];
@@ -304,21 +297,21 @@ public class UrWELLXYView extends HexView {
 			GraphicsUtilities.drawThickHighlightedLine(g, _pp1.x, _pp1.y, _pp2.x, _pp2.y, Color.orange, Color.white);
 
 		}
-		
-		if (dataEvent.hasBank("URWELL::crosses") && (_highlightData.cross > 0) && showCrosses()) {
-			int idx = _highlightData.cross-1; //0 based
+
+		if (dataEvent.hasBank("URWELL::crosses") && (_highlightData.cross >= 0) && showCrosses()) {
+			int idx = _highlightData.cross; //0 based
 			float x = ColumnData.getFloatArray("URWELL::crosses.x")[idx];
 			float y = ColumnData.getFloatArray("URWELL::crosses.y")[idx];
 			float z = ColumnData.getFloatArray("URWELL::crosses.z")[idx];
 			projectPoint(container, x, y, z);
 			DataDrawSupport.drawBiggerCross(g, _pp1.x, _pp1.y, 5);
 		}
-		
-		
-		if (dataEvent.hasBank("URWELL::hits") && (_highlightData.hit > 0)) {
-			
-			int idx = _highlightData.hit-1; //0 based
-			
+
+
+		if (dataEvent.hasBank("URWELL::hits") && (_highlightData.hit >= 0)) {
+
+			int idx = _highlightData.hit; //0 based
+
 			byte sector = ColumnData.getByteArray("URWELL::hits.sector")[idx];
 			byte layer = ColumnData.getByteArray("URWELL::hits.layer")[idx];
 			short strip = ColumnData.getShortArray("URWELL::hits.strip")[idx];
@@ -327,7 +320,7 @@ public class UrWELLXYView extends HexView {
 
 			UrWELLGeometry.chamberStrip(strip, data);
 			projectStrip(container, sector, data[0], layer, data[1]);
-			
+
 			GraphicsUtilities.drawOval(g, _pp1.x, _pp1.y, 6, 6, Color.black, Color.cyan);
 			GraphicsUtilities.drawOval(g, _pp2.x, _pp2.y, 6, 6, Color.black, Color.cyan);
 
@@ -566,7 +559,7 @@ public class UrWELLXYView extends HexView {
 	/**
 	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank
-	 * @param index the 1-based index into the bank
+	 * @param index the 0-based index into the bank
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
@@ -581,11 +574,11 @@ public class UrWELLXYView extends HexView {
 			_highlightData.cross = index;
 		}
 
-		
+
 		refresh();
 
 	}
-	
+
 	/**
 	 * Opened a new event file
 	 *

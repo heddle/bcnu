@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Vector;
+import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.jar.Manifest;
 
 public class Jar {
 
@@ -112,6 +114,29 @@ public class Jar {
 		}
 
 		return v;
+	}
+	
+	/**
+	 * Get a attribute from a jar file manifes from mainAttributes
+	 * @param jarPath path to the jar file
+	 * @param attributeName attribute name , e.g., "Class-Path"
+	 * @return the attribute, or null
+	 */
+	public static String getManifestAttribute(String jarPath, String attributeName) {
+		try {
+			JarFile jarFile = new JarFile(jarPath);
+			Manifest mf = jarFile.getManifest();
+			if (mf == null) {
+				return null;
+			}
+			
+			return mf.getMainAttributes().getValue(attributeName);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

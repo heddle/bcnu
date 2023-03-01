@@ -89,7 +89,8 @@ public class BankTableModel extends DefaultTableModel {
 		}
 
 		if (col == 0) {
-			return " " + (row + 1);
+//			return " " + (row + 1);   //1-based index
+			return " " + row;   //0-based index
 		}
 
 		ColumnData cd = DataManager.getInstance().getColumnData(_bankName, _columnNames[col]);

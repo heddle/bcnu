@@ -73,7 +73,7 @@ public class BankDataTable extends JTable {
 
 		super.valueChanged(e);
 
-		int index = getSelectedRow() + 1;  //make one based
+		int index = getSelectedRow();  //Zero based
 		SelectedDataManager.notifyListeners(_bankName, index);
 	}
 

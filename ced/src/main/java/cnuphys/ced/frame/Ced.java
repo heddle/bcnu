@@ -35,6 +35,7 @@ import cnuphys.bCNU.menu.MenuManager;
 import cnuphys.bCNU.ping.Ping;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
+import cnuphys.bCNU.util.Jar;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.HistoGridView;
 import cnuphys.bCNU.view.IPlotMaker;
@@ -130,7 +131,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "build 1.5.06";
+	private static final String _release = "1.5.08";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -146,6 +147,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	// the coat java clasdir
 	private static File _clasDir;
+	
+	// coat java version;
+	private static String _coatjavaVersion;
+
 
 	// event menu
 	private ClasIoEventMenu _eventMenu;
@@ -361,6 +366,44 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		Log.getInstance().config("reset views on virtual dekstop");
 
 	}
+	
+	
+	//get a string that tells us what version of coatjava.
+	//uses the class path.
+	private static String getCoatJavaVersion() {
+		
+		if (_coatjavaVersion != null) {
+			return _coatjavaVersion;
+		}
+
+		String cpat = "coat-libs-";
+		String snap = "-SNAP";
+
+		String s = System.getProperty("java.class.path");
+
+		if (s.endsWith("ced.jar")) {
+
+			System.out.println("CP contains ced.jar");
+			
+			s = Jar.getManifestAttribute(s, "Class-Path");
+//			System.out.println("cp from jar manifest: [" + s + "]");
+		}
+
+		int index = s.indexOf(cpat);
+		if (index >= 0) {
+			_coatjavaVersion = s.substring(index + cpat.length());
+
+			index = _coatjavaVersion.indexOf(snap);
+
+			if (index > 0) {
+				_coatjavaVersion = _coatjavaVersion.substring(0, index);
+			}
+
+			return _coatjavaVersion;
+		}
+
+		return "???";
+	}
 
 	/**
 	 * Add the initial views to the desktop.
@@ -371,7 +414,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		NoiseManager.getInstance();
 
 		// make sure Timed refresh manager is instantiated
-		TimedRefreshManager.getInstance();
+//		TimedRefreshManager.getInstance();
 
 		// add an object that can respond to a "swim all MC" request.
 
@@ -1132,7 +1175,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			title = title.substring(0, index);
 		}
 
-		title += "   [Magnetic Field (" + MagneticFields.getInstance().getVersion() + ") "
+		title += "   [Magnetic Field " + MagneticFields.getInstance().getVersion() + " "
 				+ MagneticFields.getInstance().getActiveFieldDescription();
 
 		if (MagneticFields.getInstance().hasActiveTorus()) {
@@ -1140,7 +1183,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 			title += " (" + path + ")";
 		}
 
-		title += "] [Swimmer (" + Swimmer.getVersion() + ")]";
+		title += "] [Swimmer " + Swimmer.getVersion() + "]";
+		
+		title += " [Coatjava " + getCoatJavaVersion() + "]";
 
 		title += ("  " + ClasIoEventManager.getInstance().getCurrentSourceDescription());
 		setTitle(title);
@@ -1407,7 +1452,8 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 				FilterManager.getInstance().setUpFilterMenu();
 				// initialize data columns
 //				DataManager.getInstance();
-				System.out.println("ced  " + versionString() + " is ready. Using geometry variation: [" + _geoVariation + "]");
+								
+				System.out.println(String.format("ced %s us ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
 			}
 
 		});

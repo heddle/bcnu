@@ -19,31 +19,31 @@ public class TimedRefreshManager {
 	private static TimedRefreshManager _instance;
 
 	private TimedRefreshManager() {
-		TimerTask task = new TimerTask() {
-
-
-			@Override
-			public void run() {
-				timerFired();
-			}
-
-		};
-		_timer = new Timer();
-		_timer.scheduleAtFixedRate(task, 3000, 1000);
+//		TimerTask task = new TimerTask() {
+//
+//
+//			@Override
+//			public void run() {
+//				timerFired();
+//			}
+//
+//		};
+//		_timer = new Timer();
+//		_timer.scheduleAtFixedRate(task, 3000, 1000);
 	}
 
 	/**
 	 * Public access to the singleton
 	 * @return the one and only TimerRefreshManager
 	 */
-	public static TimedRefreshManager getInstance() {
-
-		if (_instance == null) {
-			_instance = new TimedRefreshManager();
-		}
-		return _instance;
-
-	}
+//	public static TimedRefreshManager getInstance() {
+//
+//		if (_instance == null) {
+//			_instance = new TimedRefreshManager();
+//		}
+//		return _instance;
+//
+//	}
 
 	/**
 	 * Add a view to the list of views waiting to be refreshed.

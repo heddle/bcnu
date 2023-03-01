@@ -980,7 +980,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void magneticFieldChanged() {
 		_activeProbe = FieldProbe.factory();
-		TimedRefreshManager.getInstance().add(this);
+		refresh();
+//		TimedRefreshManager.getInstance().add(this);
 	}
 
 	// we are hovering
@@ -1197,7 +1198,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void trajectoriesChanged() {
 		if (!_eventManager.isAccumulating()) {
-			TimedRefreshManager.getInstance().add(this);
+//			TimedRefreshManager.getInstance().add(this);
+			refresh();
 		}
 	}
 

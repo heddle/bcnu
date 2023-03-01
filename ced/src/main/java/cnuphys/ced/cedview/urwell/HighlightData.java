@@ -8,14 +8,14 @@ package cnuphys.ced.cedview.urwell;
  */
 public class HighlightData {
 	
-	/** 1-based index of highlight hit, none if 0 */
-	public int hit;
+	/** 0-based index of highlight hit, none if <0 */
+	public int hit = -1;
 	
-	/** 1-based index of highlight cluster, none if 0 */
-	public int cluster;
+	/** 0-based index of highlight cluster, none if <0 */
+	public int cluster = -1;
 	
-	/** 1-based index of highlight cross, none if 0 */
-	public int cross;
+	/** 0-based index of highlight cross, none if <0 */
+	public int cross = -1;
 
 
 	
@@ -26,9 +26,9 @@ public class HighlightData {
 	 * Reset to starting values (which indicate no highlight)
 	 */
 	public void reset() {
-		hit = 0;
-		cluster = 0;
-		cross = 0;
+		hit = -1;
+		cluster = -1;
+		cross = -1;
 	}
 
 }

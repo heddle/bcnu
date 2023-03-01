@@ -410,7 +410,7 @@ public class NodePanel extends JPanel
 		String fullName = cd.getFullName();
 
 		int lineCounter = 1;
-		int index = 1;
+		int index = 0;
 
 		switch (cd.getType()) {
 

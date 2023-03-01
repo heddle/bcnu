@@ -108,7 +108,6 @@ public class NodeTable extends JTable {
 
 		private NodeTable _table;
 
-		private Font ifont = Fonts.tweenItalicFont;
 		private Font pfont = Fonts.tweenFont;
 
 		public CustomRenderer(NodeTable table) {

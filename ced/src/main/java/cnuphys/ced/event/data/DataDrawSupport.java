@@ -192,9 +192,9 @@ public class DataDrawSupport {
 			opt = 3;
 		}
 		
-		drawSphere(g, transColors[mode], x, y, CROSSHALF+2, opt);
+		drawSphere(g, transColors[mode], x, y, CROSSHALF+3, opt);
 
-		SymbolDraw.drawCross(g, x, y, CROSSHALF+2, Color.black);
+		SymbolDraw.drawCross(g, x, y, CROSSHALF+3, Color.black);
 	}
 
 

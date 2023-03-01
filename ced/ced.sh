@@ -8,5 +8,4 @@ VARGS="-Dsun.java2d.pmoffscreen=false -Xmx1024M -Xss512k"
 CLAS12DIR=$SCRIPT_DIR/coatjava
 echo CLAS12DIR used by ced: $CLAS12DIR
 cd $SCRIPT_DIR
-java $VARGS -DCLAS12DIR="$CLAS12DIR" -jar $JARNAME $MAIN
-
+java $VARGS -DCLAS12DIR="$CLAS12DIR" -jar $JARNAME $MAIN YES3D

@@ -18,7 +18,7 @@ public class SelectedDataManager {
 	 * Notify listeners of an selected data event
 	 *
 	 * @param bankName the name of the bank
-	 * @param index the 1-based index into the bank. Index of 0 indicates no row currently selected
+	 * @param index the 0-based index into the bank. Index < 0 indicates no row currently selected
 	 *
 	 */
 	public static void notifyListeners(String bankName, int index) {
