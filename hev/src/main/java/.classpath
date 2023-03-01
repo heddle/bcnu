@@ -11,6 +11,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/Users/heddle/bCNU/bCNU/src/main/java/lib/bcnuimages.jar"/>
-	<classpathentry kind="lib" path="/coatjava/lib/clas/coat-libs-8.5.0-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="/coatjava/lib/clas/coat-libs-8.6.0-SNAPSHOT.jar"/>
 	<classpathentry kind="output" path="cnuphys/bin"/>
 </classpath>
