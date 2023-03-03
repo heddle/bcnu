@@ -18,6 +18,7 @@ import org.jlab.geom.prim.Vector3D;
 
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.frame.Ced;
+import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 import cnuphys.swim.SwimTrajectory;
 
@@ -68,6 +69,10 @@ public class GeometryManager {
 
 		// get the uRwell geometry
 		UrWELLGeometry.initialize();
+		
+		// get the alert geometry
+		AlertGeometry.initialize();
+
 
 		// get BST data
 		BSTGeometry.initialize();

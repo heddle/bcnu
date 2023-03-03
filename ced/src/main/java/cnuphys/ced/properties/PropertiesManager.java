@@ -92,13 +92,13 @@ public class PropertiesManager {
 		try {
 			String homeDir = Environment.getInstance().getHomeDirectory();
 			_upFile = new File(homeDir, ".ced.user.pref");
-			 System.err.println("User pref file: " + _upFile.getPath());
+			 System.out.print("User pref file: " + _upFile.getPath() + "     ");
 			if (_upFile.exists()) {
 				_userPref = (Properties) SerialIO.serialRead(_upFile.getPath());
-				System.err.println("Read preferences");
+				System.out.println("Read preferences");
 			} else {
 				_userPref = new Properties();
-				System.err.println("Could not read preferences");
+				System.out.println("Could not read preferences");
 			}
 		} catch (Exception e) {
 			_userPref = new Properties();

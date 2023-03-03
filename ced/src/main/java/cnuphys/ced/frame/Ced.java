@@ -22,6 +22,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
+import org.jlab.logging.DefaultLogger;
+
 import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
@@ -51,6 +53,7 @@ import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
 import cnuphys.ced.cedview.TimedRefreshManager;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
@@ -131,7 +134,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.5.08";
+	private static final String _release = "1.5.09";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -187,6 +190,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private ClasIoEventView _eventView;
 	private CentralXYView _centralXYView;
 	private CentralZView _centralZView;
+	
+	private AlertXYView _alertXYView;
+	
 	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
@@ -336,6 +342,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_virtualView.moveTo(_tofView, 10, VirtualView.CENTER);
 		_virtualView.moveTo(_ftcalXyView, 11, VirtualView.CENTER);
 		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
+		
+		_virtualView.moveTo(_alertXYView, 13, VirtualView.BOTTOMLEFT);
+
 
 
 //		_virtualView.moveTo(dcHistoGrid, 13);
@@ -354,12 +363,12 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 14, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_forward3DView, 14, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 15, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 15, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 16, VirtualView.CENTER);
 			}
 		}
 
@@ -426,7 +435,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// add a virtual view
 		
-		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 14 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
 		
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -459,6 +468,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// add a bstXYView
 		_centralXYView = CentralXYView.createCentralXYView();
+		
+		//add and ALERT XY view
+		_alertXYView = AlertXYView.createAlertXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
@@ -1255,12 +1267,12 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_clasDir = new File(clas12dir);
 
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
-			System.err.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
 			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
-			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 		}
 
 		String cwd = Environment.getInstance().getCurrentWorkingDirectory();
@@ -1268,39 +1280,39 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_clasDir = new File(clas12dir);
 
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
-			System.err.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
 			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
-			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 		}
 
 		clas12dir = cwd + "/../../../../../bCNU/coatjava";
 		_clasDir = new File(clas12dir);
 
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
-			System.err.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
 			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
-			System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 		}
 
 		//one last try
 		clas12dir = System.getenv("CLAS12DIR");
 		if (clas12dir != null) {
-			System.err.println("Trying with environment variable CLAS12DIR = "  + clas12dir);
+			System.out.println("Trying with environment variable CLAS12DIR = "  + clas12dir);
 			_clasDir = new File(clas12dir);
 			if (_clasDir.exists() && _clasDir.isDirectory()) {
-				System.err.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+				System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 				System.setProperty("CLAS12DIR", clas12dir);
 				Log.getInstance().config("CLAS12DIR: " + clas12dir);
 				return;
 			}
 			else {
-				System.err.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
+				System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			}
 		}
 
@@ -1356,6 +1368,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
+		
+		//this is supposed to create less pounding of ccdb
+		DefaultLogger.initialize();
 
 		String variation = System.getProperty("GEOVARIATION");
 		if (variation != null) {
@@ -1417,10 +1432,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 					}
 				} else if (arg[i].contains("YES3D")) {
 					_use3D = true;
-					System.err.println("Trying 3D. If you get errors rerun without 3D");
+					System.out.println("Trying 3D. If you get errors rerun without 3D");
 				} else if (arg[i].contains("EXP")) {
 					_experimental = true;
-					System.err.println("Note: This is an experimental version");
+					System.out.println("Note: This is an experimental version");
 				}
 
 				i++;

@@ -10,8 +10,6 @@ public class ConstantsLoader {
 
 	static boolean CSTLOADED = false;
 
-	public static boolean DEBUG = true;
-
 	// static FTOFGeant4Factory geometry ;
 
 	private static DatabaseConstantProvider DB;
@@ -137,16 +135,6 @@ public class ConstantsLoader {
 		Constants.setCRCRADIUS(CRCRADIUS);
 		Constants.setCRZRADIUS(CRZRADIUS);
 
-		if (DEBUG) {
-			System.out.println("-- [CSTRIPS] --");
-			for (int i = 0; i < CRCRADIUS.length; i++) {
-				System.out.println("[DEBUG] CRCRADIUS[" + i + "] = " + CRCRADIUS[i]);
-			}
-			System.out.println("----");
-			for (int i = 0; i < CRZRADIUS.length; i++) {
-				System.out.println("[DEBUG] CRZRADIUS[" + i + "] = " + CRZRADIUS[i]);
-			}
-		}
 
 		Constants.setCRZNSTRIPS(CRZNSTRIPS);
 		Constants.setCRZZMIN(CRZZMIN);
@@ -168,7 +156,6 @@ public class ConstantsLoader {
 		Constants.setCRZWIDTH(CRZWIDTH);
 
 		CSTLOADED = true;
-		System.out.println("SUCCESSFULLY LOADED BMT CONSTANTS....");
 		setDB(dbprovider);
 	}
 

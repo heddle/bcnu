@@ -29,6 +29,7 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.xml.XmlPrintStreamWritable;
 import cnuphys.bCNU.xml.XmlPrintStreamWriter;
 import cnuphys.bCNU.xml.XmlSupport;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.splot.pdata.DataSet;
 import cnuphys.splot.pdata.Histo2DData;
 import cnuphys.splot.pdata.HistoData;
@@ -137,6 +138,13 @@ public class DefinitionManager implements ActionListener, XmlPrintStreamWritable
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		
+		if (ClasIoEventManager.getInstance().getCurrentBanks() == null) {
+			System.err.println("no current event");
+			return;
+		}
+		
+		
 		Object o = e.getSource();
 		if (o == _histo) {
 			defineHistogram();

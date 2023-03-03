@@ -21,7 +21,7 @@ public class CTOFGeometry {
 	public static void initialize() {
 		System.out.println("\n=====================================");
 		System.out.println("===  CTOF Geometry Initialization ===");
-		System.out.println("===  Using Simple Geometery ===");
+		System.out.println("===  WARNING: SIMPLE GEOMETRY ===");
 		System.out.println("=====================================");
 		initQuads();
 	}
