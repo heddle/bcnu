@@ -39,6 +39,9 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	// the node table
 	private NodeTable _nodeTable;
+	
+	//a match list. If null, accept all
+	public String[] matchList;
 
 	private Hashtable<String, ClasIoBankView> _dataBanks = new Hashtable<>(193);
 
@@ -49,30 +52,65 @@ public class ClasIoPresentBankPanel extends JPanel
 	 * @param nodeTable the table
 	 */
 	public ClasIoPresentBankPanel(NodeTable nodeTable) {
+		this(nodeTable, 40, 4);
+	}
+	
+	public ClasIoPresentBankPanel(NodeTable nodeTable, int numRows, int numCols) {
 		_nodeTable = nodeTable;
 		_eventManager.addClasIoEventListener(this, 1);
-		setLayout(new GridLayout(40, 4, 2, 0));
+		setLayout(new GridLayout(numRows, numCols, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 		AccumulationManager.getInstance().addAccumulationListener(this);
 	}
 
+
 	//replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
+		
 		removeAll();
 		String[] allBanks = event.getBankList();
 		Arrays.sort(allBanks);
 		if (allBanks != null) {
 			for (String s : allBanks) {
-				if (!skip(s)) {
+				if (match(s)) {
 					makeLabel(s);
 				}
 			}
 		}
 	}
+	
+	/**
+	 * Set the match list to reduce the number of banks displayed
+	 * @param ml the match list
+	 */
+	public void setMatchList(String[] ml) {
+		matchList = ml;
+	}
+	
+	/**
+	 * Get the match list to reduce the number of banks displayed
+	 * @return the match list
+	 */
+	public String[] getMatchList() {
+		return matchList;
+	}
 
 
-	// skip certain irrelevant banks
-	private boolean skip(String s) {
+	// must match
+	private boolean match(String s) {
+		
+		
+		if (matchList == null) { //accept all
+			return true;
+		}
+		else {
+			for (String ms : matchList) {
+				if (s.contains(ms)) {
+					return true;
+				}
+			}
+		}
+		
 		return false;
 	}
 
@@ -117,10 +155,10 @@ public class ClasIoPresentBankPanel extends JPanel
 				if (_eventManager.isBankInCurrentEvent(label)) {
 					int clickCount = e.getClickCount();
 
-					if (clickCount == 1) {
+					if ((_nodeTable != null) && (clickCount == 1)) {
 						_nodeTable.makeNameVisible(label);
 						if (e.isAltDown() || e.isControlDown()) {
-							System.err.println("MODIFIER");
+					//		System.err.println("MODIFIER");
 						}
 
 					} else if (clickCount == 2) {
@@ -176,11 +214,11 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	@Override
 	public void actionPerformed(ActionEvent ae) {
-		// _nodeTable.makeNameVisible(ae.getActionCommand());
 	}
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
+
 		if (!_eventManager.isAccumulating()) {
 			replaceBankLabels(event);
 			update();

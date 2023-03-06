@@ -69,6 +69,10 @@ public class UrWELLXYView extends HexView {
 
 	//for highlighting
 	private HighlightData _highlightData = new HighlightData();
+	
+	//bank matches
+	private static String _defMatches[] = {"URWELL"};
+
 
 	static {
 		double _xsize = 160;
@@ -91,6 +95,8 @@ public class UrWELLXYView extends HexView {
 		setAfterDraw();
 		getContainer().getComponent().setBackground(Color.gray);
 
+		setBankMatches(_defMatches);
+		_controlPanel.getMatchedBankPanel().update();
 
 	}
 
@@ -100,7 +106,7 @@ public class UrWELLXYView extends HexView {
 
 		_controlPanel = new ControlPanel(this,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.DRAWLEGEND,
+						+ ControlPanel.DRAWLEGEND + ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CLUSTERS +  DisplayBits.CROSSES + DisplayBits.RECPART
 						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
 						+ DisplayBits.GLOBAL_AITB +
@@ -201,6 +207,8 @@ public class UrWELLXYView extends HexView {
 
 		getContainer().setAfterDraw(afterDraw);
 	}
+	
+
 
 	//draw the crosses
 	private void drawCrosses(Graphics g, IContainer container) {

@@ -74,6 +74,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** all dc display panel */
 	public static final int ALLDCDISPLAYPANEL = 02000;
+	
+	/** filtered banks */
+	public static final int MATCHINGBANKSPANEL = 04000;
 
 	// the view parent
 	private CedView _view;
@@ -99,6 +102,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// noise display panel
 	private NoisePanel _noisePanel;
+	
+	// matched bank panel
+	private MatchedBankPanel _matchedBankPanel;
 
 	// colums and gaps for display array
 	private int _nc;
@@ -238,6 +244,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 //		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
 //			// legend = DrawingLegend.getLegendPanel(_view);
 //		}
+		
+		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
+			_matchedBankPanel = new MatchedBankPanel(view);
+		}
 
 		JPanel daPanel = null;
 		if (_displayArray != null) {
@@ -249,6 +259,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (daPanel != null) {
 			tabbedPane.add(daPanel, "display");
+		}
+		
+		if (_matchedBankPanel != null) {
+			tabbedPane.add(_matchedBankPanel, "Banks");
 		}
 
 		if (phiSlider != null) {
@@ -433,6 +447,14 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	 */
 	public JSlider getAdcThresholdSlider() {
 		return _adcThresholdSlider;
+	}
+	
+	/**
+	 * Get the matched bank panel (might be null)
+	 * @return the matched bank panel
+	 */
+	public MatchedBankPanel getMatchedBankPanel() {
+		return _matchedBankPanel;
 	}
 
 	/**

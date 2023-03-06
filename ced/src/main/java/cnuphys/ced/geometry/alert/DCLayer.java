@@ -111,7 +111,7 @@ public class DCLayer {
 			shellWorldPoly();
 		}
 
-		System.out.println(String.format("sect: %d    supl: %d    lay: %d   nw:  %d rad: %8.4f", sector, superlayer, layer, numWires, midPointRadius));
+//		System.out.println(String.format("sect: %d    supl: %d    lay: %d   nw:  %d rad: %8.4f", sector, superlayer, layer, numWires, midPointRadius));
 	}
 	
 	/**

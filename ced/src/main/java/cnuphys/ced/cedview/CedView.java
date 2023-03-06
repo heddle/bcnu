@@ -122,7 +122,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * Name for the detector layer.
 	 */
 	public static final String _detectorLayerName = "Detectors";
-
+	
 	/**
 	 * Name for the magnetic field layer.
 	 */
@@ -148,6 +148,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	// the clasIO event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	
+	//for no matches
+	protected static final String[] _noMatches = {"NOMATCHES"};
+	protected String _matches[] = _noMatches;
 
 	/**
 	 * Constructor
@@ -247,6 +251,39 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 	}
 
+	/**
+	 * Get banks of interest for matching banks
+	 * panel on tabbed pane on control panel.
+	 * If null, all banks are of interest
+	 * @return banks of interest for matching banks
+	 */
+	public String[] getBanksMatches() {
+		return _matches;
+	}
+	
+	/**
+	 * Get banks of interest for matching banks
+	 * panel on tabbed pane on control panel.
+	 * If null, all banks are of interest (not advisable);
+	 * Default does nothing
+	 */
+	public void setBankMatches(String[] matches) {
+		
+		if ((matches == null) || (matches.length == 0)) {
+			_matches = _noMatches;
+		}
+		
+		_matches = new String[matches.length];
+		
+		for (int i = 0; i < matches.length; i++) {
+			String s = matches[i];
+			_matches[i] = new String(s);
+		}
+		
+		
+		System.arraycopy(matches, 0, _matches, 0, matches.length);
+	}
+	
 	// called when heartbeat goes off.
 	protected void heartbeat() {
 		// check for hover
