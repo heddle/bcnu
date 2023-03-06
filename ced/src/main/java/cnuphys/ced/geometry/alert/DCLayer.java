@@ -21,7 +21,7 @@ public class DCLayer {
 	//LENGTH units are mm
 
 	//layer shell
-	private static Color[] shellColors = {X11Colors.getX11Color("Cornsilk"), X11Colors.getX11Color("Light Cyan")};
+	private static Color[] shellColors = {X11Colors.getX11Color("Cornsilk"), X11Colors.getX11Color("Blanched Almond")};
 	
 	//wire fill
 	private static Color wireFill = Color.white;

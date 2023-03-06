@@ -6,6 +6,7 @@ import org.jlab.geom.detector.alert.AHDC.AlertDCFactory;
 import org.jlab.geom.detector.alert.AHDC.AlertDCLayer;
 import org.jlab.geom.detector.alert.AHDC.AlertDCSector;
 import org.jlab.geom.detector.alert.AHDC.AlertDCSuperlayer;
+import org.jlab.geom.detector.alert.ATOF.AlertTOFDetector;
 import org.jlab.geom.detector.alert.ATOF.AlertTOFFactory;
 import org.jlab.logging.DefaultLogger;
 
@@ -19,9 +20,6 @@ public class AlertGeometry {
 	//the alert dc geometry factory
 	public static AlertDCFactory dcFactory = new AlertDCFactory();
 
-	//the alert tof geometry factory
-	public static AlertTOFFactory tofFactory = new AlertTOFFactory();
-
 	private static AlertDCDetector _dcCLASDetector; //dc in clas coordinates
 	
 	/** number of sectors for alert DC detector */
@@ -32,9 +30,26 @@ public class AlertGeometry {
 
 	/** number of layers per superlater for alert DC detector */
 	public static int DC_NUM_LAY;
-	
+		
 	/** array of all DC layers for Alert detector indices are [sect, supl, lay]*/
 	public static DCLayer[][][] dcLayers;
+	
+	//the alert tof geometry factory
+	public static AlertTOFFactory tofFactory = new AlertTOFFactory();
+	
+	private static AlertTOFDetector _tofCLASDetector; //tof in clas coordinates
+	
+	/** number of sectors for alert TOF detector */
+	public static int TOF_NUM_SECT;
+	
+	/** number of superlayers per sector for alert TOF detector */
+	public static int TOF_NUM_SUPL;
+
+	/** number of layers per superlater for alert TOF detector */
+	public static int TOF_NUM_LAY;
+
+
+
 	
 	/** the radii in mm of the DC layers */
 	public static double midPointDCRadii[][][];
@@ -68,6 +83,12 @@ public class AlertGeometry {
 				}
 			}
 		}
+		
+		//create everything for tof
+		_tofCLASDetector = tofFactory.createDetectorCLAS(cp);
+        TOF_NUM_SECT = _tofCLASDetector.getNumSectors();
+        TOF_NUM_SUPL = tofFactory.createSector(cp, 0).getNumSuperlayers();
+        TOF_NUM_LAY = tofFactory.createSuperlayer(cp, 0, 0).getNumLayers();
 
 	}
 
@@ -79,11 +100,15 @@ public class AlertGeometry {
 		initialize();
 		
 		System.out.println("Alert DC");
-		System.out.println("Number of sectors: " + DC_NUM_SECT);
-		System.out.println("Number of superlayers: " + DC_NUM_SUPL);
-		System.out.println("Number of layers: " + DC_NUM_LAY);
+		System.out.println("  Number of sectors: " + DC_NUM_SECT);
+		System.out.println("  Number of superlayers: " + DC_NUM_SUPL);
+		System.out.println("  Number of layers: " + DC_NUM_LAY);
 		
 		
+		System.out.println("\nAlert TOF");
+		System.out.println("  Number of sectors: " + TOF_NUM_SECT);
+		System.out.println("  Number of superlayers: " + TOF_NUM_SUPL);
+		System.out.println("  Number of layers: " + TOF_NUM_LAY);
 		
 		
 		System.out.println("\nAlert TOF");

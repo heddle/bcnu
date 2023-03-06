@@ -458,37 +458,49 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
-		// add an alldc view and poosibly alldcaccumview
+		// add an alldc view 
 		_allDCView = AllDCView.createAllDCView();
+		
+		// add a DC XY View
+		_dcXyView = DCXYView.createDCXYView();
 
-		_tofView = TOFView.createTOFView();
+		ViewManager.getInstance().getViewMenu().addSeparator();
+		
+		// add a bstXYView
+		_centralXYView = CentralXYView.createCentralXYView();
 
 		// add a bstZView
 		_centralZView = CentralZView.createCentralZView();
-
-		// add a bstXYView
-		_centralXYView = CentralXYView.createCentralXYView();
 		
+		ViewManager.getInstance().getViewMenu().addSeparator();
+		
+		// add an ec view
+		_ecView = ECView.createECView();
+
+		// add an pcal view
+		_pcalView = PCALView.createPCALView();
+		
+		ViewManager.getInstance().getViewMenu().addSeparator();
+
 		//add and ALERT XY view
 		_alertXYView = AlertXYView.createAlertXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
 
-		// add an RTPC vie
-		_rtpcView = RTPCView.createRTPCView();
-
-		// add a DC XY View
-		_dcXyView = DCXYView.createDCXYView();
-		
 		//add a urwell xy view
 		_urwellXyView = UrWELLXYView.createUrWELLView();
 
-		// add an ec view
-		_ecView = ECView.createECView();
+		ViewManager.getInstance().getViewMenu().addSeparator();
+		
+		//FTOF and CTOF
+		_tofView = TOFView.createTOFView();
 
-		// add an pcal view
-		_pcalView = PCALView.createPCALView();
+		// add an RTPC vie
+		_rtpcView = RTPCView.createRTPCView();
+
+		
+
 
 		// 3D view?
 		if (_use3D) {

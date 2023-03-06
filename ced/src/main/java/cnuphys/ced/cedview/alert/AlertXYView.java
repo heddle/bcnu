@@ -1,8 +1,6 @@
 package cnuphys.ced.cedview.alert;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -15,7 +13,6 @@ import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.ced.cedview.CedView;
@@ -26,14 +23,14 @@ import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 
 public class AlertXYView extends CedXYView {
-	
+
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 
 	// base title
 	private static final String _baseTitle = "ALERT XY";
-	
+
 	// units are mm
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(100, -100, -200, 200);
 
@@ -45,7 +42,7 @@ public class AlertXYView extends CedXYView {
 	private AlertXYView(Object... keyVals) {
 		super(keyVals);
 	}
-	
+
 	public static AlertXYView createAlertXYView() {
 		// set to a fraction of screen
 		Dimension d = GraphicsUtilities.screenFraction(0.35);
@@ -53,7 +50,7 @@ public class AlertXYView extends CedXYView {
 		// make it square
 		int width = d.width;
 		int height = width;
-		 
+
 		String title = _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")"));
 
 		final AlertXYView view = new AlertXYView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle,
@@ -62,7 +59,7 @@ public class AlertXYView extends CedXYView {
 				BMARGIN, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
 				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS,
 				true);
-		
+
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
@@ -95,12 +92,12 @@ public class AlertXYView extends CedXYView {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
+
 				Rectangle screenRect = getActiveScreenRectangle(container);
 				drawAxes(g, container, screenRect, false);
 
 			}
-			
+
 
 
 		};
@@ -111,7 +108,8 @@ public class AlertXYView extends CedXYView {
 	@Override
 	protected void addItems() {
 	}
-	
+
+	//draw the dc wires
 	private void drawWires(Graphics g, IContainer container) {
 		DCLayer[][][] dcLayers = AlertGeometry.dcLayers;
 
@@ -119,7 +117,7 @@ public class AlertXYView extends CedXYView {
 			for (int supl = 0; supl < AlertGeometry.DC_NUM_SUPL; supl++) {
 				for (int lay = 0; lay < AlertGeometry.DC_NUM_LAY; lay++) {
 					DCLayer dcl = dcLayers[sect][supl][lay];
-					
+
 					if (dcl.numWires >  0) {
 						dcLayers[sect][supl][lay].drawXYWires(g, container);
 					}
@@ -128,25 +126,25 @@ public class AlertXYView extends CedXYView {
 		}
 	}
 
-	
+
 	private void drawLayerShells(Graphics g, IContainer container) {
-		
+
 		DCLayer[][][] dcLayers = AlertGeometry.dcLayers;
 
 		for (int sect = 0; sect < AlertGeometry.DC_NUM_SECT; sect++) {
 			for (int supl = 0; supl < AlertGeometry.DC_NUM_SUPL; supl++) {
 				for (int lay = 0; lay < AlertGeometry.DC_NUM_LAY; lay++) {
 					DCLayer dcl = dcLayers[sect][supl][lay];
-					
+
 					if (dcl.numWires >  0) {
 						dcLayers[sect][supl][lay].drawXYDonut(g, container);
 					}
 				}
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
@@ -160,14 +158,14 @@ public class AlertXYView extends CedXYView {
 			List<String> feedbackStrings) {
 
 		basicFeedback(container, pp, wp, "mm", feedbackStrings);
-		
+
 		DCLayer[][][] dcLayers = AlertGeometry.dcLayers;
-		
+
 		for (int sect = 0; sect < AlertGeometry.DC_NUM_SECT; sect++) {
 			for (int supl = 0; supl < AlertGeometry.DC_NUM_SUPL; supl++) {
 				for (int lay = 0; lay < AlertGeometry.DC_NUM_LAY; lay++) {
 					DCLayer dcl = dcLayers[sect][supl][lay];
-					
+
 					if (dcl.containsXY(wp)) {
 						dcl.feedbackXYString(pp, wp, feedbackStrings);
 						break;
@@ -175,8 +173,8 @@ public class AlertXYView extends CedXYView {
 				}
 			}
 		}
-		
-		
+
+
 		// anchor (urhere) feedback?
 		YouAreHereItem item = getContainer().getYouAreHereItem();
 		if (item != null) {
@@ -185,7 +183,7 @@ public class AlertXYView extends CedXYView {
 			feedbackStrings.add(dstr);
 		}
 
-		
+
 	}
 
 }
