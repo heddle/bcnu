@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.util.TextUtilities;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoPresentBankPanel;
 
@@ -37,7 +38,7 @@ public class MatchedBankPanel extends JPanel {
 	
 	private void makeTextArea() {
 		
-		_matchTextArea = new JTextArea(5, 30);
+		_matchTextArea = new JTextArea(5, 20);
 		_matchTextArea.setLineWrap(true);
 		_matchTextArea.setEditable(true);
 		_matchTextArea.setFont(Fonts.mediumFont);
@@ -70,15 +71,16 @@ public class MatchedBankPanel extends JPanel {
 	}
 	
 
-	
+	//create the bank panel
 	private void makeBankPanel() {
-		_presentBankPanel = new ClasIoPresentBankPanel(null, 6, 4);
-		_presentBankPanel.setMatchList(_view.getBanksMatches());
+		_presentBankPanel = new ClasIoPresentBankPanel(_view, null, 14, 3);
 		add(_presentBankPanel, BorderLayout.CENTER);
 	}
 	
+	//convert the string in the text area to an array of matches
 	private void stringToMatches() {
 		String s = _matchTextArea.getText();
+		
 		//cant set to null
 		if (s == null) {
 			_matchTextArea.setText(matchesToString());
@@ -91,35 +93,18 @@ public class MatchedBankPanel extends JPanel {
 			return;
 		}
 		
-		_view.setBankMatches(FileUtilities.tokens(s, ","));
-		_presentBankPanel.setMatchList(_view.getBanksMatches());
+		_view.setBankMatches(TextUtilities.tokens(s, ","));
 		_matchTextArea.setText(matchesToString());
+		_view.writeCommonProperties();
 	}
 	
 	//convert the view matches to a comma separated string
 	public String matchesToString() {
-		
-		String matches[] = _view.getBanksMatches();
-		if (matches == null) {
-			return "";
-		}
-		
-		int len = matches.length;
-		if (len == 0) {
-			return "";
-		}
-		
-		StringBuffer sb = new StringBuffer(256);
-		
-		for (int i = 0; i < (len-1); i++) {
-			sb.append(matches[i] + ", ");
-		}
-		sb.append(matches[len-1]);
-		return sb.toString();
+		return TextUtilities.stringArrayToString(_view.getBanksMatches());
 	}
 	
+	
 	public void update() {
-		_presentBankPanel.setMatchList(_view.getBanksMatches());
 		_matchTextArea.setText(matchesToString());
 	}
 	

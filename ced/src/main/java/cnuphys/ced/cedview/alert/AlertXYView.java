@@ -1,6 +1,7 @@
 package cnuphys.ced.cedview.alert;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -14,6 +15,7 @@ import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.YouAreHereItem;
+import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
@@ -61,7 +63,8 @@ public class AlertXYView extends CedXYView {
 				true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + 
+				ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
 						+ DisplayBits.ADC_HITS,
 				3, 5);
@@ -95,10 +98,14 @@ public class AlertXYView extends CedXYView {
 
 				Rectangle screenRect = getActiveScreenRectangle(container);
 				drawAxes(g, container, screenRect, false);
+				
+				
+				g.setColor(Color.red);
+				g.setFont(Fonts.monsterFont);
+				
+				g.drawString("UNDER CONSTRUCTION", 100, 100);
 
 			}
-
-
 
 		};
 

@@ -1,6 +1,8 @@
 package cnuphys.ced.clasio;
 
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,8 +17,11 @@ import javax.swing.JPanel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
+import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.table.NodeTable;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
@@ -30,6 +35,9 @@ import cnuphys.ced.event.IAccumulationListener;
 @SuppressWarnings("serial")
 public class ClasIoPresentBankPanel extends JPanel
 		implements ActionListener, IClasIoEventListener, IAccumulationListener {
+	
+	//try to set a reasonable height
+	private int preferredHeight;
 
 	// the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
@@ -40,29 +48,63 @@ public class ClasIoPresentBankPanel extends JPanel
 	// the node table
 	private NodeTable _nodeTable;
 	
-	//a match list. If null, accept all
-	public String[] matchList;
-
+	
 	private Hashtable<String, ClasIoBankView> _dataBanks = new Hashtable<>(193);
+	
+	//if a cedview owns this
+	private CedView _view;
 
 	/**
 	 * This panel holds all the known banks in a grid of buttons. Banks present will
 	 * be clickable, and will cause the table to scroll to that name
-	 *
+	 * @param view the view owner
 	 * @param nodeTable the table
 	 */
-	public ClasIoPresentBankPanel(NodeTable nodeTable) {
-		this(nodeTable, 40, 4);
+	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable) {
+		this(view, nodeTable, 40, 4);
 	}
 	
-	public ClasIoPresentBankPanel(NodeTable nodeTable, int numRows, int numCols) {
+	/**
+     *This panel holds all the known banks in a grid of buttons. Banks present will
+	 * be clickable, and will cause the table to scroll to that name	 * @param nodeTable
+	 * @param view the view owner
+	 * @param nodeTable the table
+	 * @param numRows the number of rows for banks
+	 * @param numCols the number of columns for banks
+	 */
+	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows, int numCols) {
+		
+		_view = (view instanceof CedView) ? (CedView)view: null;
+		
 		_nodeTable = nodeTable;
 		_eventManager.addClasIoEventListener(this, 1);
 		setLayout(new GridLayout(numRows, numCols, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 		AccumulationManager.getInstance().addAccumulationListener(this);
+		
+		FontMetrics gm = getFontMetrics(ActionLabel.enabledFontLarge);
+		preferredHeight = numRows * (gm.getHeight() + 2);
+		
 	}
 
+	
+	@Override
+	public Dimension getMinimumSize() {
+		Dimension d = super.getMinimumSize();
+		d.height = 800;
+		return d;
+
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		Dimension d = super.getPreferredSize();
+		d.height = preferredHeight;
+		return d;
+
+	}
+
+	
 
 	//replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
@@ -79,25 +121,16 @@ public class ClasIoPresentBankPanel extends JPanel
 		}
 	}
 	
-	/**
-	 * Set the match list to reduce the number of banks displayed
-	 * @param ml the match list
-	 */
-	public void setMatchList(String[] ml) {
-		matchList = ml;
-	}
-	
-	/**
-	 * Get the match list to reduce the number of banks displayed
-	 * @return the match list
-	 */
-	public String[] getMatchList() {
-		return matchList;
-	}
 
 
 	// must match
 	private boolean match(String s) {
+		
+		if (_view == null) {
+			return true;
+		}
+		
+		String[] matchList = _view.getBanksMatches();
 		
 		
 		if (matchList == null) { //accept all
@@ -105,7 +138,7 @@ public class ClasIoPresentBankPanel extends JPanel
 		}
 		else {
 			for (String ms : matchList) {
-				if (s.contains(ms)) {
+					if (s.contains(ms)) {
 					return true;
 				}
 			}

@@ -29,6 +29,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -75,11 +76,15 @@ public class NodePanel extends JPanel
 
 	// present banks
 	private ClasIoPresentBankPanel _presentPanel;
+	
+	//view owner
+	private BaseView _view;
 
 	/**
 	 * Create a node panel for displaying events
 	 */
-	public NodePanel() {
+	public NodePanel(BaseView view) {
+		_view = view;
 		_eventManager.addClasIoEventListener(this, 1);
 
 		setLayout(new BorderLayout());
@@ -98,7 +103,7 @@ public class NodePanel extends JPanel
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		// shows which banks are present
-		_presentPanel = new ClasIoPresentBankPanel(_nodeTable);
+		_presentPanel = new ClasIoPresentBankPanel(_view, _nodeTable);
 
 		panel.add(_presentPanel);
 		panel.add(Box.createVerticalGlue());

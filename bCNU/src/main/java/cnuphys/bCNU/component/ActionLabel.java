@@ -17,7 +17,7 @@ public class ActionLabel extends JLabel {
 	private static Font enabledFontSmall = new Font("SansSerif", Font.ITALIC, 8);
 	private static Font disabledFontSmall = new Font("SansSerif", Font.BOLD, 8);
 	
-	private static Font enabledFontLarge = new Font("SansSerif", Font.ITALIC, 11);
+	public static Font enabledFontLarge = new Font("SansSerif", Font.ITALIC, 11);
 	private static Font disabledFontLarge = new Font("SansSerif", Font.BOLD, 11);
 
 	private Font _enabledFont;

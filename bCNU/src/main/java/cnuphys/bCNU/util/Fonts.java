@@ -24,6 +24,10 @@ public class Fonts {
 	private static String backupFamily = "SansSerif";
 
 	private static Hashtable<String, Font> fonts = new Hashtable<String, Font>(41);
+	
+	
+	//for huge warnings
+	public static Font monsterFont = commonFont(Font.BOLD, 44);
 
 	// common medium font used for components
 	public static Font hugeFont = commonFont(Font.PLAIN, 18);

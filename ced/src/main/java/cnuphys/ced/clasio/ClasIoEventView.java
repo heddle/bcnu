@@ -27,7 +27,7 @@ public class ClasIoEventView extends BaseView {
 
 		JPanel sPanel = new JPanel();
 		sPanel.setLayout(new BorderLayout(2, 2));
-		_nodePanel = new NodePanel();
+		_nodePanel = new NodePanel(this);
 
 		sPanel.add(_nodePanel, BorderLayout.CENTER);
 		add(sPanel);

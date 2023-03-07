@@ -12,6 +12,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.util.List;
+import java.util.Properties;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -33,6 +34,7 @@ import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
 import cnuphys.bCNU.graphics.toolbar.UserToolBarComponent;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.ping.IPing;
+import cnuphys.bCNU.util.TextUtilities;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
@@ -48,6 +50,7 @@ import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
+import cnuphys.ced.properties.PropertiesManager;
 import cnuphys.lund.SwimTrajectoryListener;
 import cnuphys.magfield.FieldProbe;
 import cnuphys.magfield.MagneticFieldChangeListener;
@@ -57,6 +60,9 @@ import cnuphys.swim.Swimming;
 @SuppressWarnings("serial")
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
 		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
+	
+	//for bank matching property
+	public static final String BANKMATCHPROP = "BANKMATCH";
 
 	// for accumulation drawing
 	private double _medianRelSetting = 0.25;
@@ -150,7 +156,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 	
 	//for no matches
-	protected static final String[] _noMatches = {"NOMATCHES"};
+	public static final String NOMATCHES = "NOMATCHES";
+	protected static final String[] _noMatches = {NOMATCHES};
 	protected String _matches[] = _noMatches;
 
 	/**
@@ -182,6 +189,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 			return;
 		}
+		
+		readCommonProperties();
 
 		_eventManager.addClasIoEventListener(this, 2);
 
@@ -279,10 +288,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			String s = matches[i];
 			_matches[i] = new String(s);
 		}
-		
-		
-		System.arraycopy(matches, 0, _matches, 0, matches.length);
-	}
+			}
 	
 	// called when heartbeat goes off.
 	protected void heartbeat() {
@@ -1494,7 +1500,51 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void dataSelected(String bankName, int index) {
 	}
-
+	
+	//read properties common to all views
+	private void readCommonProperties() {
+		//bank match
+		String propName = getTitle() + "_" + BANKMATCHPROP;
+		System.err.print("Search for [" + propName + "]");
+		
+		String matches = PropertiesManager.getInstance().get(propName);
+		if (matches != null) {
+			_matches = TextUtilities.cssToStringArray(matches);
+		}
+		System.err.println("found: " + (matches != null));
+		
+		if (matches != null) {
+			System.err.println("MATCHES: [" + matches + "]");
+		}
+		
+		
+	}
+	
+	/**
+	 * Check if the bank matching arra is the no matchers array
+	 * @return true if no matches
+	 */
+	public boolean hasNoBankMatches() {
+		return ((_matches != null) && (_matches.length == 1)
+				&& NOMATCHES.equals(_matches[0]));
+	}
+	
+	//write properties common to all views
+	public void writeCommonProperties() {
+		//bank match
+		String propName = getTitle() + "_" + BANKMATCHPROP;
+		String cssStr = TextUtilities.stringArrayToString(_matches);
+		
+		if (cssStr == null) {
+			cssStr = NOMATCHES;
+		}
+		
+		System.err.println("Writing common prop [" + propName + "] [" + cssStr + "]");
+		
+		PropertiesManager.getInstance().putAndWrite(propName, cssStr);
+ 
+	}
+	
 
 	/**
 	 * Clone the view.

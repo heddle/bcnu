@@ -98,6 +98,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draws hits
 	private CentralXYHitDrawer _hitDrawer;
+	
+	//bank matches
+	private static String _defMatches[] = {"BMT", "BST", "CVT"};
+
 
 	/**
 	 * Create a Central detector XY View
@@ -163,7 +167,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.DRAWLEGEND,
+						+ ControlPanel.DRAWLEGEND + ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
 						+ DisplayBits.ADC_HITS + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
@@ -175,6 +179,13 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		// add quick zooms
 		view.addQuickZoom("BST & BMT", -190, -190, 190, 190);
+		
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+
+		view._controlPanel.getMatchedBankPanel().update();
 		return view;
 	}
 

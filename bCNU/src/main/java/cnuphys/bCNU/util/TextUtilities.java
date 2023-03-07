@@ -216,5 +216,51 @@ public class TextUtilities {
 
 		return lines;
 	}
+	
+	/**
+	 * Convert a comma separated string to an array of strings,
+	 * removing white space
+	 * @param s the commas separated string
+	 * @return the array of strings, no white space
+	 */
+	public static String[] cssToStringArray(String s) {
+		
+		if (s == null) {
+			return null;
+		}
+		s = s.replaceAll("\\s", "");
+
+		if (s.length() == 0) {
+			return null;
+		}
+		
+		return tokens(s, ",");
+	}
+	
+	/**
+	 * Convert an array of strings to a single comma separated string
+	 * @param array the string array of matches
+	 * @return a comma separated string
+	 */
+	public static String stringArrayToString(String[] array) {
+		if (array == null) {
+			return "";
+		}
+		
+		int len = array.length;
+		if (len == 0) {
+			return "";
+		}
+		
+		StringBuffer sb = new StringBuffer(256);
+		
+		for (int i = 0; i < (len-1); i++) {
+			sb.append(array[i] + ", ");
+		}
+		sb.append(array[len-1]);
+		return sb.toString();
+
+	}
+
 
 }

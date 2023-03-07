@@ -38,7 +38,6 @@ import cnuphys.ced.item.HexSectorItem;
 
 public class UrWELLXYView extends HexView {
 
-	// for naming clones
 	private static int CLONE_COUNT = 0;
 
 	//layer colors
@@ -95,7 +94,10 @@ public class UrWELLXYView extends HexView {
 		setAfterDraw();
 		getContainer().getComponent().setBackground(Color.gray);
 
-		setBankMatches(_defMatches);
+		//i.e. if none were in the properties
+		if (hasNoBankMatches()) {
+			setBankMatches(_defMatches);
+		}
 		_controlPanel.getMatchedBankPanel().update();
 
 	}

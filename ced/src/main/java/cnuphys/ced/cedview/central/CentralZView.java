@@ -94,6 +94,10 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	// draws hits
 	private CentralZHitDrawer _hitDrawer;
+	
+	//bank matches
+	private static String _defMatches[] = {"BMT", "BST", "CVT"};
+
 
 	public CentralZView(Object... keyVals) {
 		super(keyVals);
@@ -106,6 +110,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawerZ(this);
+		
 	}
 
 	/**
@@ -142,7 +147,8 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
-						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND,
+						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND + 
+						ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
 						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS |
 						DisplayBits.CVTRECTRAJ | DisplayBits.CVTP1TRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
@@ -152,6 +158,14 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		view.pack();
 
 		view.phiFromSlider();
+		
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+
+		view._controlPanel.getMatchedBankPanel().update();
+
 		return view;
 	}
 
