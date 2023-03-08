@@ -162,7 +162,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.LEFTMARGIN, LMARGIN,
 				PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN, RMARGIN, PropertySupport.BOTTOMMARGIN,
 				BMARGIN, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
-				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS,
+				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CentralXY",
+				PropertySupport.STANDARDVIEWDECORATIONS,
 				true);
 
 		view._controlPanel = new ControlPanel(view,

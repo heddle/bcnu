@@ -124,6 +124,10 @@ public class AllDCView extends CedView implements IRollOverListener {
 	protected AllDCSuperLayer _superLayerItems[][];
 
 	protected static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(0.0, 0.0, 3.0, 2.0);
+	
+	//bank matches
+	private static String _defMatches[] = {"DC:", "HitBased", "TimeBased"};
+
 
 	/**
 	 * Create an allDCView
@@ -154,18 +158,27 @@ public class AllDCView extends CedView implements IRollOverListener {
 		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width,
 				PropertySupport.HEIGHT, d.height, // container height, not total view width
 				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
-				PropertySupport.VISIBLE, true, PropertySupport.TITLE,
-				_baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
+				PropertySupport.VISIBLE, true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
+				PropertySupport.PROPNAME, "ALLDC",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view, ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY
-				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
+				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL
 				+ ControlPanel.ALLDCDISPLAYPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
 		view.add(view._controlPanel, BorderLayout.EAST);
 
 		customize(view);
 
+		
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+		view._controlPanel.getMatchedBankPanel().update();
+
+
+		
 		view.pack();
 		return view;
 	}

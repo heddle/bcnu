@@ -23,7 +23,8 @@ public class ClasIoEventView extends BaseView {
 
 		super(PropertySupport.TITLE, "Current Event", PropertySupport.ICONIFIABLE, true, PropertySupport.MAXIMIZABLE,
 				true, PropertySupport.CLOSABLE, true, PropertySupport.RESIZABLE, true, PropertySupport.WIDTH, 1100,
-				PropertySupport.HEIGHT, 650, PropertySupport.VISIBLE, true, PropertySupport.TOOLBAR, false);
+				PropertySupport.HEIGHT, 650, PropertySupport.VISIBLE, true, PropertySupport.TOOLBAR, false,
+				PropertySupport.PROPNAME, "CUREVENT");
 
 		JPanel sPanel = new JPanel();
 		sPanel.setLayout(new BorderLayout(2, 2));

@@ -96,7 +96,7 @@ public class TOFView extends CedView implements ISector {
 				PropertySupport.LEFT, LEFT, PropertySupport.TOP, TOP, PropertySupport.WIDTH, width,
 				PropertySupport.HEIGHT, height, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS,
 				CedView.NORANGETOOLBARBITS, PropertySupport.VISIBLE, true, PropertySupport.BACKGROUND,
-				X11Colors.getX11Color("Antique White"), PropertySupport.TITLE, title,
+				X11Colors.getX11Color("Antique White"), PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CTOFFTOF",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY + ControlPanel.DRAWLEGEND

@@ -86,7 +86,8 @@ public class FTCalXYView extends CedXYView {
 				PropertySupport.HEIGHT, height, PropertySupport.LEFTMARGIN, LMARGIN, PropertySupport.TOPMARGIN, TMARGIN,
 				PropertySupport.RIGHTMARGIN, RMARGIN, PropertySupport.BOTTOMMARGIN, BMARGIN, PropertySupport.TOOLBAR,
 				true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true,
-				PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS, true);
+				PropertySupport.TITLE, title, PropertySupport.PROPNAME, "FTCalXY",
+				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,

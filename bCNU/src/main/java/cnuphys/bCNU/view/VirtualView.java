@@ -35,6 +35,8 @@ import cnuphys.bCNU.util.X11Colors;
 public class VirtualView extends BaseView
 		implements InternalFrameListener, IViewListener, MouseMotionListener, MouseListener {
 
+	private static final int _SLOP = 10;
+
 	private JFrame _parent;
 
 	private static final String VVTITLE = "Desktop";
@@ -247,7 +249,8 @@ public class VirtualView extends BaseView
 				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.TOOLBAR, false,
 				PropertySupport.VISIBLE, true, PropertySupport.BACKGROUND, Color.white, PropertySupport.TITLE, VVTITLE,
 				PropertySupport.STANDARDVIEWDECORATIONS, false, PropertySupport.ICONIFIABLE, false,
-				PropertySupport.RESIZABLE, true, PropertySupport.MAXIMIZABLE, false, PropertySupport.CLOSABLE, false);
+				PropertySupport.RESIZABLE, true, PropertySupport.MAXIMIZABLE, false, PropertySupport.PROPNAME, "VVView",
+				PropertySupport.CLOSABLE, false);
 
 		view._offsets = new Point[_numcol];
 		// view.pack();
@@ -626,6 +629,43 @@ public class VirtualView extends BaseView
 
 		view.offset(delx + dh, dely + dv);
 	}
+	
+	public int getViewColumn(BaseView view) {
+		
+		Rectangle2D.Double world = getContainer().getWorldSystem();
+		double dx = world.width / _numcol;
+		Rectangle bounds = view.getBounds();
+		double xc = bounds.getCenterX();
+		
+		int col = _currentCol + (int)(xc/dx);
+		
+		if (xc < 0) {
+			col -= 1;
+		}
+		
+		col = Math.max(0, Math.min(col, (_numcol - 1)));
+
+		return col;
+		
+	}
+	
+	public void moveToCurrentColumn(BaseView view) {
+		
+		int col = getViewColumn(view);
+		
+		if (col == _currentCol) {
+			return;
+		}
+		
+		Rectangle2D.Double world = getContainer().getWorldSystem();
+		double dx = world.width / _numcol;
+		
+		Rectangle bounds = view.getBounds();
+		double dh = bounds.x - (col-_currentCol)*dx - _SLOP;;
+		double dv = bounds.y - _SLOP;
+
+		moveTo(view, _currentCol, (int)dh, (int)dv, UPPERLEFT);
+	}
 
 	/**
 	 * Move a view to a specific virtual cell
@@ -685,7 +725,14 @@ public class VirtualView extends BaseView
 	 */
 	public void moveTo(BaseView view, int col, int constraint) {
 		moveTo(view, col, 0, 0, constraint);
-
+	}
+	
+	/**
+	 * Get the current column that is visible
+	 * @return the current column that is visible
+	 */
+	public int getCurrentColumn() {
+		return _currentCol;
 	}
 
 	/**
@@ -734,43 +781,42 @@ public class VirtualView extends BaseView
 		int dh = 0;
 		int dv = 0;
 
-		int slop = 10;
 
 		if (constraint == UPPERRIGHT) {
-			int xf = (int) (right - bounds.width - 2 * slop);
-			int yf = (int) (top + slop);
+			int xf = (int) (right - bounds.width - 2 * _SLOP);
+			int yf = (int) (top + _SLOP);
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == UPPERLEFT) {
-			int xf = (int) (left + slop);
-			int yf = (int) (top + slop);
+			int xf = (int) (left + _SLOP);
+			int yf = (int) (top + _SLOP);
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == BOTTOMLEFT) {
-			int xf = (int) (left + slop);
-			int yf = (int) (bottom - bounds.height - 7 * slop);
+			int xf = (int) (left + _SLOP);
+			int yf = (int) (bottom - bounds.height - 7 * _SLOP);
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == BOTTOMRIGHT) {
-			int xf = (int) (right - bounds.width - 2 * slop);
-			int yf = (int) (bottom - bounds.height - 7 * slop);
+			int xf = (int) (right - bounds.width - 2 * _SLOP);
+			int yf = (int) (bottom - bounds.height - 7 * _SLOP);
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == TOPCENTER) {
-			int xf = (int) (left + right - bounds.width - slop) / 2;
-			int yf = (int) (top + slop);
+			int xf = (int) (left + right - bounds.width - _SLOP) / 2;
+			int yf = (int) (top + _SLOP);
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == BOTTOMCENTER) {
-			int xf = (int) (left + right - bounds.width - slop) / 2;
-			int yf = (int) (bottom - bounds.height - 7 * slop);
+			int xf = (int) (left + right - bounds.width - _SLOP) / 2;
+			int yf = (int) (bottom - bounds.height - 7 * _SLOP);
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == CENTERLEFT) {
-			int xf = (int) (left + slop);
+			int xf = (int) (left + _SLOP);
 			dh = xf - x0;
 		} else if (constraint == CENTERRIGHT) {
-			int xf = (int) (right - bounds.width - 2 * slop);
+			int xf = (int) (right - bounds.width - 2 * _SLOP);
 			dh = xf - x0;
 		}
 

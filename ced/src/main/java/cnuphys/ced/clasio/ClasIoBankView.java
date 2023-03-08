@@ -68,6 +68,10 @@ public class ClasIoBankView extends BaseView implements ItemListener, ActionList
 
 
 
+	/**
+	 * View that shows a bank and all its columns
+	 * @param bankName the bank name
+	 */
 	public ClasIoBankView(String bankName) {
 
 		super(PropertySupport.TITLE, bankName,

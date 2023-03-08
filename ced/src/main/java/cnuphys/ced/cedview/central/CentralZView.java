@@ -141,8 +141,9 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 												// view width
 				PropertySupport.LEFTMARGIN, LMARGIN, PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN,
 				RMARGIN, PropertySupport.BOTTOMMARGIN, BMARGIN, PropertySupport.TOOLBAR, true,
-				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true, PropertySupport.TITLE,
-				title, PropertySupport.STANDARDVIEWDECORATIONS, true);
+				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true, 
+				PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CentralZ",
+				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND

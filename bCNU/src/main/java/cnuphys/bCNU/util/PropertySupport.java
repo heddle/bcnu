@@ -40,6 +40,7 @@ public class PropertySupport {
 	public static final String MAXIMIZE = "MAXIMIZE";
 	public static final String MAXIMIZABLE = "MAXIMIZABLE";
 	public static final String LOCKED = "LOCKED";
+	public static final String PROPNAME = "PROPNAME";
 	public static final String RESIZABLE = "RESIZABLE";
 	public static final String RIGHTMARGIN = "RIGHTMARGIN";
 	public static final String ROTATABLE = "ROTATABLE";
@@ -361,6 +362,17 @@ public class PropertySupport {
 	 */
 	public static String getTitle(Properties props) {
 		return getString(props, TITLE, unknownString);
+	}
+	
+	/**
+	 * Get the name for reading writing user pref properties
+	 * 
+	 * @param props the properties
+	 * @return a propname On error return unknownString.
+	 */
+	public static String getPropName(Properties props) {
+		String pname = getString(props, PROPNAME, unknownString);
+		return pname;
 	}
 
 	/**

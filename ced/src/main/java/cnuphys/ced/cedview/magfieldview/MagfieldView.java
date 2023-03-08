@@ -102,7 +102,7 @@ public class MagfieldView extends SliceView implements ChangeListener {
 				PropertySupport.LEFT, LEFT, PropertySupport.TOP, TOP,
 				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.TOOLBAR, true,
 				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true,
-				PropertySupport.BACKGROUND, Color.white, PropertySupport.TITLE, title,
+				PropertySupport.BACKGROUND, Color.white, PropertySupport.TITLE, title, PropertySupport.PROPNAME, "MAGVIEW",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY +

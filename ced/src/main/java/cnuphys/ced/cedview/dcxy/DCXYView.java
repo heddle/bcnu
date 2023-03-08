@@ -70,8 +70,12 @@ public class DCXYView extends HexView {
 
 	// for fmt
 	private FMTCrossDrawer _fmtCrossDrawer;
+	
+	//bank matches
+	private static String _defMatches[] = {"DC:"};
 
-	// exach superlayer in a different color
+
+	// each superlayer in a different color
 	private static Color _wireColors[] = { Color.red, X11Colors.getX11Color("dark red"),
 			X11Colors.getX11Color("cadet blue"), X11Colors.getX11Color("dark blue"), X11Colors.getX11Color("olive"),
 			X11Colors.getX11Color("dark green") };
@@ -164,7 +168,7 @@ public class DCXYView extends HexView {
 
 		_controlPanel = new ControlPanel(this,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.DRAWLEGEND,
+						+ ControlPanel.DRAWLEGEND + ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.FMTCROSSES + DisplayBits.RECPART
 						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
 						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS + DisplayBits.MCTRUTH
@@ -172,6 +176,14 @@ public class DCXYView extends HexView {
 				3, 5);
 
 		add(_controlPanel, BorderLayout.EAST);
+		
+		//i.e. if none were in the properties
+		if (hasNoBankMatches()) {
+			setBankMatches(_defMatches);
+		}
+		_controlPanel.getMatchedBankPanel().update();
+
+
 		pack();
 	}
 
@@ -382,6 +394,8 @@ public class DCXYView extends HexView {
 
 		Properties props = new Properties();
 		props.put(PropertySupport.TITLE, title);
+		
+		props.put(PropertySupport.PROPNAME, "DCXY");
 
 		// set to a fraction of screen
 		Dimension d = GraphicsUtilities.screenFraction(0.65);

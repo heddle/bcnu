@@ -111,7 +111,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 				PropertySupport.TOOLBAR, true,
 				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
 				PropertySupport.VISIBLE, true,
-				PropertySupport.TITLE, title,
+				PropertySupport.TITLE, title, PropertySupport.PROPNAME, "RTPC",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,

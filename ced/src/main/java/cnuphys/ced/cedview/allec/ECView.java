@@ -52,9 +52,13 @@ public class ECView extends HexView {
 
 	protected static Rectangle2D.Double _defaultWorld = new Rectangle2D.Double(_xsize, -_ysize, -2 * _xsize,
 			2 * _ysize);
+	
+	//bank matches
+	private static String _defMatches[] = {"ECAL"};
+
 
 	/**
-	 * Create an allDCView
+	 * Create an ECAL View
 	 *
 	 * @param keyVals variable set of arguments.
 	 */
@@ -73,6 +77,14 @@ public class ECView extends HexView {
 
 		// default properties
 		setBooleanProperty(DisplayArray.SHOWINNER_PROPERTY, true);
+		
+
+		//i.e. if none were in the properties
+		if (hasNoBankMatches()) {
+			setBankMatches(_defMatches);
+		}
+		_controlPanel.getMatchedBankPanel().update();
+
 	}
 
 	/**
@@ -90,7 +102,7 @@ public class ECView extends HexView {
 	protected void addControls() {
 
 		_controlPanel = new ControlPanel(this,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH+ DisplayBits.RECCAL + DisplayBits.INNEROUTER + DisplayBits.UVWSTRIPS, 3, 5);
 
 		add(_controlPanel, BorderLayout.EAST);
@@ -166,6 +178,8 @@ public class ECView extends HexView {
 
 		Properties props = new Properties();
 		props.put(PropertySupport.TITLE, title);
+		
+		props.put(PropertySupport.PROPNAME, "ECAL");
 
 		// set to a fraction of screen
 		Dimension d = GraphicsUtilities.screenFraction(0.7);

@@ -61,6 +61,11 @@ import cnuphys.swim.Swimming;
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
 		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
 	
+	
+	//name used for reading and writing properties
+	//can be different from title
+	protected String VIEWPROPNAME = "???";
+	
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
@@ -271,25 +276,24 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 	
 	/**
-	 * Get banks of interest for matching banks
-	 * panel on tabbed pane on control panel.
-	 * If null, all banks are of interest (not advisable);
-	 * Default does nothing
+	 * Get banks of interest for matching banks panel on tabbed pane on control
+	 * panel. If null, all banks are of interest (not advisable); Default does
+	 * nothing
 	 */
 	public void setBankMatches(String[] matches) {
-		
+
 		if ((matches == null) || (matches.length == 0)) {
 			_matches = _noMatches;
 		}
-		
+
 		_matches = new String[matches.length];
-		
+
 		for (int i = 0; i < matches.length; i++) {
 			String s = matches[i];
 			_matches[i] = new String(s);
 		}
-			}
-	
+	}
+
 	// called when heartbeat goes off.
 	protected void heartbeat() {
 		// check for hover
@@ -1504,20 +1508,13 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	//read properties common to all views
 	private void readCommonProperties() {
 		//bank match
-		String propName = getTitle() + "_" + BANKMATCHPROP;
-		System.err.print("Search for [" + propName + "]");
+		
+		String propName = getPropertyName() + "_" + BANKMATCHPROP;
 		
 		String matches = PropertiesManager.getInstance().get(propName);
 		if (matches != null) {
 			_matches = TextUtilities.cssToStringArray(matches);
 		}
-		System.err.println("found: " + (matches != null));
-		
-		if (matches != null) {
-			System.err.println("MATCHES: [" + matches + "]");
-		}
-		
-		
 	}
 	
 	/**
@@ -1532,9 +1529,11 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	//write properties common to all views
 	public void writeCommonProperties() {
 		//bank match
-		String propName = getTitle() + "_" + BANKMATCHPROP;
+		System.err.println("Writing common prop...");
+		String propName = getPropertyName() + "_" + BANKMATCHPROP;
 		String cssStr = TextUtilities.stringArrayToString(_matches);
 		
+		System.err.println();		
 		if (cssStr == null) {
 			cssStr = NOMATCHES;
 		}

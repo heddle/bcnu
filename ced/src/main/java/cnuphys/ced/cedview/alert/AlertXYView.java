@@ -59,7 +59,8 @@ public class AlertXYView extends CedXYView {
 				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.LEFTMARGIN, LMARGIN,
 				PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN, RMARGIN, PropertySupport.BOTTOMMARGIN,
 				BMARGIN, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
-				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS,
+				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.PROPNAME, "AlertXY",
+				PropertySupport.STANDARDVIEWDECORATIONS,
 				true);
 
 		view._controlPanel = new ControlPanel(view,

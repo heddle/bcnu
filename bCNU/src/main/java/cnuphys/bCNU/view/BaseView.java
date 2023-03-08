@@ -49,6 +49,11 @@ import cnuphys.bCNU.util.PropertySupport;
  */
 @SuppressWarnings("serial")
 public class BaseView extends JInternalFrame implements FocusListener, MouseListener, ComponentListener {
+	
+	//name used for reading and writing properties
+	//can be different from title
+	protected String VIEWPROPNAME = "?";
+	
 
 	// use to stack views as added
 	private static int LASTLEFT = 0;
@@ -130,6 +135,8 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 		setResizable(standardDecorations || resizable);
 		setClosable(standardDecorations || closable);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+		
+		VIEWPROPNAME = PropertySupport.getPropName(_properties);
 
 		int left = PropertySupport.getLeft(_properties);
 		int top = PropertySupport.getTop(_properties);
@@ -329,6 +336,14 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 		return getTitle();
 	}
 
+	/**
+	 * Get the property name for storing properties for this view
+	 * @return the property name
+	 */
+	public String getPropertyName() {
+		return VIEWPROPNAME;
+	}
+	
 	/**
 	 * Get the user panel for adding more widgets
 	 * 

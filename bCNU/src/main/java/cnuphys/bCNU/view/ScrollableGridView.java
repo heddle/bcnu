@@ -138,7 +138,7 @@ public class ScrollableGridView extends BaseView {
 
 		final ScrollableGridView view = new ScrollableGridView(numRow, numCol, cellWidth, cellHeight,
 				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.TOOLBAR, false,
-				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS,
+				PropertySupport.VISIBLE, true, PropertySupport.PROPNAME, "SCROLLGRID", PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS,
 				true);
 
 		screenFraction = Math.max(0.25, Math.min(1.0, screenFraction));

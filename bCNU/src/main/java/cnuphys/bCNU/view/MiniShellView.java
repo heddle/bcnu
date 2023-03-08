@@ -36,7 +36,7 @@ public class MiniShellView extends BaseView implements KeyListener {
 	private MiniShellView() {
 		super(PropertySupport.TITLE, "Mini Shell", PropertySupport.ICONIFIABLE, true, PropertySupport.MAXIMIZABLE, true,
 				PropertySupport.CLOSABLE, true, PropertySupport.RESIZABLE, true, PropertySupport.WIDTH, 700,
-				PropertySupport.HEIGHT, 450, PropertySupport.VISIBLE, false);
+				PropertySupport.HEIGHT, 450, PropertySupport.PROPNAME, "MINISHELL", PropertySupport.VISIBLE, false);
 		add(mainPanel());
 		setVisible(false);
 	}

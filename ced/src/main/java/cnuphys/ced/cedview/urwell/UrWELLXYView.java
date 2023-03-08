@@ -443,6 +443,7 @@ public class UrWELLXYView extends HexView {
 
 		Properties props = new Properties();
 		props.put(PropertySupport.TITLE, title);
+		props.put(PropertySupport.PROPNAME, "URWELLXY");
 
 		// set to a fraction of screen
 		Dimension d = GraphicsUtilities.screenFraction(0.65);

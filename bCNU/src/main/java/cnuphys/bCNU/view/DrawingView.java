@@ -58,7 +58,7 @@ public class DrawingView extends BaseView implements IFeedbackProvider {
 				PropertySupport.WIDTH, width, // container width, not total view width
 				PropertySupport.HEIGHT, height, // container height, not total view width
 				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, BaseToolBar.EVERYTHING,
-				PropertySupport.VISIBLE, true, PropertySupport.BACKGROUND, Color.white, PropertySupport.TITLE,
+				PropertySupport.VISIBLE, true, PropertySupport.PROPNAME, "DRAWING", PropertySupport.BACKGROUND, Color.white, PropertySupport.TITLE,
 				" Drawing View ", PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view.pack();

@@ -20,6 +20,7 @@ import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.table.NodeTable;
@@ -49,7 +50,8 @@ public class ClasIoPresentBankPanel extends JPanel
 	private NodeTable _nodeTable;
 	
 	
-	private Hashtable<String, ClasIoBankView> _dataBanks = new Hashtable<>(193);
+	//cache to allow only single creation
+	private static Hashtable<String, ClasIoBankView> _dataBanks = new Hashtable<>(193);
 	
 	//if a cedview owns this
 	private CedView _view;
@@ -206,10 +208,16 @@ public class ClasIoPresentBankPanel extends JPanel
 							_dataBanks.put(label, bankView);
 						}
 						bankView.update();
+						bankView.toFront();
+
 
 						if (!bankView.isVisible()) {
 							bankView.setVisible(true);
 						}
+						
+						//move to current virtual view?
+						VirtualView.getInstance().moveToCurrentColumn(bankView);
+
 					}
 				}
 			}

@@ -10,6 +10,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.TextUtilities;
@@ -36,13 +37,16 @@ public class MatchedBankPanel extends JPanel {
 		makeBankPanel();
 	}
 	
+	//create the text area for entering banks
 	private void makeTextArea() {
 		
-		_matchTextArea = new JTextArea(5, 20);
+		_matchTextArea = new JTextArea(6, 20);
 		_matchTextArea.setLineWrap(true);
 		_matchTextArea.setEditable(true);
 		_matchTextArea.setFont(Fonts.mediumFont);
 		_matchTextArea.setText(matchesToString());
+		
+		_matchTextArea.setBorder(new CommonBorder("Enter matches, comma separated, case sensitive"));
 		
 		add(_matchTextArea, BorderLayout.NORTH);
 		
@@ -73,7 +77,7 @@ public class MatchedBankPanel extends JPanel {
 
 	//create the bank panel
 	private void makeBankPanel() {
-		_presentBankPanel = new ClasIoPresentBankPanel(_view, null, 14, 3);
+		_presentBankPanel = new ClasIoPresentBankPanel(_view, null, 16, 3);
 		add(_presentBankPanel, BorderLayout.CENTER);
 	}
 	

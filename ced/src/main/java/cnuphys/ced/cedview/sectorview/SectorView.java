@@ -118,6 +118,9 @@ public class SectorView extends SliceView implements ChangeListener {
 	//redraw the segments?
 	private boolean segmentsOnTop = true;
 
+	//bank matches
+	private static String _defMatches[] = {"DC:", "HitBased", "TimeBased"};
+
 
 	private static Color plotColors[] = { X11Colors.getX11Color("Dark Red"), X11Colors.getX11Color("Dark Blue"),
 			X11Colors.getX11Color("Dark Green"), Color.black, Color.gray, X11Colors.getX11Color("wheat") };
@@ -173,15 +176,19 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		// give the view a title based on what sectors are displayed
 		String title = "Sectors ";
+		String propname = "SECT";
 		switch (displaySectors) {
 		case SECTORS14:
 			title += "1 and 4";
+			propname += "14";
 			break;
 		case SECTORS25:
 			title += "2 and 5";
+			propname += "25";
 			break;
 		case SECTORS36:
 			title += "3 and 6";
+			propname += "36";
 			break;
 		}
 
@@ -197,12 +204,12 @@ public class SectorView extends SliceView implements ChangeListener {
 				PropertySupport.HEIGHT, height, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS,
 				CedView.TOOLBARBITS, PropertySupport.VISIBLE, true, PropertySupport.BACKGROUND,
 				X11Colors.getX11Color("Alice Blue").darker(),
-				PropertySupport.TITLE, title, PropertySupport.STANDARDVIEWDECORATIONS, true);
+				PropertySupport.TITLE, title, PropertySupport.PROPNAME, propname, PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER + ControlPanel.DRAWLEGEND
 						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND + ControlPanel.TARGETSLIDER
-						+ ControlPanel.ACCUMULATIONLEGEND,
+						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
 						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_NN
 						+ DisplayBits.GLOBAL_AIHB + DisplayBits.GLOBAL_AITB
@@ -213,6 +220,14 @@ public class SectorView extends SliceView implements ChangeListener {
 		view.add(view._controlPanel, BorderLayout.EAST);
 
 		view._displaySectors = displaySectors;
+		
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+		view._controlPanel.getMatchedBankPanel().update();
+
+
 		view.pack();
 
 		LEFT += DELTAH;
