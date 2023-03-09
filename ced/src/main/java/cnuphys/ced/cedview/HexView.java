@@ -20,10 +20,10 @@ import cnuphys.bCNU.util.X11Colors;
 
 @SuppressWarnings("serial")
 public abstract class HexView extends CedView {
-	
+
 	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
 	private static final Color TRANS = new Color(192, 192, 192, 128);
-	
+
 	// font for sector numbee label text
 	private static final Color TRANSTEXT = new Color(64, 64, 192, 40);
 	private static final Font _font = Fonts.commonFont(Font.BOLD, 48);
@@ -132,7 +132,7 @@ public abstract class HexView extends CedView {
 		wp.y = pisect.y();
 		return pisect;
 	}
-	
+
 	/**
 	 * Draw an xy coordinate system  the graphics context
 	 * @param container the container
@@ -163,7 +163,7 @@ public abstract class HexView extends CedView {
 		g.drawString("x", left - fm.stringWidth("x") - 2, bottom + fm.getHeight() / 2);
 
 	}
-	
+
 	// draw the sector numbers
 	protected void drawSectorNumbers(Graphics g, IContainer container, double x) {
 		double r3over2 = Math.sqrt(3) / 2;

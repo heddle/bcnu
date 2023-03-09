@@ -7,9 +7,9 @@ import com.jogamp.opengl.GLAutoDrawable;
 import bCNU3D.Support3D;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.Cross;
-import cnuphys.ced.event.data.CrossList;
 import cnuphys.ced.event.data.HBCrosses;
 import cnuphys.ced.event.data.TBCrosses;
+import cnuphys.ced.event.data.lists.CrossList;
 import cnuphys.ced.frame.CedColors;
 import item3D.Item3D;
 

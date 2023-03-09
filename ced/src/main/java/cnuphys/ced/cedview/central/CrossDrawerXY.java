@@ -18,8 +18,8 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.CrossList2;
 import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.event.data.lists.CrossList2;
 
 public class CrossDrawerXY extends CentralXYViewDrawer {
 

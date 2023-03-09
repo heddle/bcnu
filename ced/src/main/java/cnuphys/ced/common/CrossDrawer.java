@@ -17,10 +17,10 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.AIHBCrosses;
 import cnuphys.ced.event.data.AITBCrosses;
 import cnuphys.ced.event.data.Cross;
-import cnuphys.ced.event.data.CrossList;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.HBCrosses;
 import cnuphys.ced.event.data.TBCrosses;
+import cnuphys.ced.event.data.lists.CrossList;
 
 public class CrossDrawer extends CedViewDrawer {
 

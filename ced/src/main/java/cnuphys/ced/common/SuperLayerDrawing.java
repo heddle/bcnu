@@ -30,12 +30,12 @@ import cnuphys.ced.event.data.AITBSegments;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.DCTdcHitList;
 import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.Segment;
-import cnuphys.ced.event.data.SegmentList;
 import cnuphys.ced.event.data.TBSegments;
+import cnuphys.ced.event.data.lists.DCTdcHitList;
+import cnuphys.ced.event.data.lists.SegmentList;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.frame.OrderColors;
@@ -381,12 +381,12 @@ public class SuperLayerDrawing {
 		if ((_view.showNoiseAnalysis()) && noise) {
 			highlightNoiseHit(g, container, !showTruth, hexagon);
 		} else {
-			
+
 			if (Ced.useOrderColoring()) {
 				hitFill = OrderColors.getOrderColor(order);
 				hitLine = CedColors.transLine;
 			}
-			
+
 			g.setColor(hitFill);
 			g.fillPolygon(hexagon);
 			g.setColor(hitLine);
@@ -437,7 +437,7 @@ public class SuperLayerDrawing {
 	 * @param pid       gemc particle id
 	 * @oaram order     from order column in tdc bank
 	 */
-	private void drawBasicDCHit(Graphics g, IContainer container, int layer, 
+	private void drawBasicDCHit(Graphics g, IContainer container, int layer,
 			int wire, boolean noise, int pid, int order) {
 
 		// abort if hiding noise and this is noise

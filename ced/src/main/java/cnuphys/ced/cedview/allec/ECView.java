@@ -52,7 +52,7 @@ public class ECView extends HexView {
 
 	protected static Rectangle2D.Double _defaultWorld = new Rectangle2D.Double(_xsize, -_ysize, -2 * _xsize,
 			2 * _ysize);
-	
+
 	//bank matches
 	private static String _defMatches[] = {"ECAL"};
 
@@ -77,7 +77,7 @@ public class ECView extends HexView {
 
 		// default properties
 		setBooleanProperty(DisplayArray.SHOWINNER_PROPERTY, true);
-		
+
 
 		//i.e. if none were in the properties
 		if (hasNoBankMatches()) {
@@ -178,7 +178,7 @@ public class ECView extends HexView {
 
 		Properties props = new Properties();
 		props.put(PropertySupport.TITLE, title);
-		
+
 		props.put(PropertySupport.PROPNAME, "ECAL");
 
 		// set to a fraction of screen

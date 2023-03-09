@@ -220,7 +220,7 @@ public class SectorView extends SliceView implements ChangeListener {
 		view.add(view._controlPanel, BorderLayout.EAST);
 
 		view._displaySectors = displaySectors;
-		
+
 		//i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);

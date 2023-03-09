@@ -10,13 +10,13 @@ import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.SwimTrajectory2D;
 
 public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
-	
+
 	private UrWELLXYView _view;
-	
+
 	public SwimTrajectoryDrawer(UrWELLXYView view) {
-		_view = view;		
+		_view = view;
 	}
-	
+
 	/**
 	 * Actual drawing method
 	 *

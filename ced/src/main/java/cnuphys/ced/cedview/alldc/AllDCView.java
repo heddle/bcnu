@@ -33,7 +33,6 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.clasio.datatable.SelectedDataManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.DC;
@@ -124,7 +123,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 	protected AllDCSuperLayer _superLayerItems[][];
 
 	protected static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(0.0, 0.0, 3.0, 2.0);
-	
+
 	//bank matches
 	private static String _defMatches[] = {"DC:", "HitBased", "TimeBased"};
 
@@ -170,7 +169,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 		customize(view);
 
-		
+
 		//i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);
@@ -178,7 +177,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 		view._controlPanel.getMatchedBankPanel().update();
 
 
-		
+
 		view.pack();
 		return view;
 	}
@@ -586,10 +585,10 @@ public class AllDCView extends CedView implements IRollOverListener {
 //
 //				System.err.println(String.format("In AllDCView highlight sect: %d  lay: %d  wire: %d with tdc: %d", sector, layer, wire, tdc));
 //			}
-			
+
 			refresh();
 		}
 	}
-	
+
 
 }

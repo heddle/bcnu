@@ -43,13 +43,13 @@ import cnuphys.ced.event.data.AdcHitList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
-import cnuphys.ced.event.data.BaseHit2List;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.CosmicList;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.BaseHit2List;
+import cnuphys.ced.event.data.lists.CosmicList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
@@ -98,7 +98,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draws hits
 	private CentralXYHitDrawer _hitDrawer;
-	
+
 	//bank matches
 	private static String _defMatches[] = {"BMT", "BST", "CVT"};
 
@@ -180,7 +180,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		// add quick zooms
 		view.addQuickZoom("BST & BMT", -190, -190, 190, 190);
-		
+
 		//i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);

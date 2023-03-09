@@ -19,9 +19,9 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.CrossList2;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.FMTCrosses;
+import cnuphys.ced.event.data.lists.CrossList2;
 import cnuphys.ced.geometry.GeometryManager;
 
 public class FMTCrossDrawer extends CedViewDrawer {

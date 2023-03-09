@@ -7,21 +7,21 @@ package cnuphys.ced.cedview.urwell;
  *
  */
 public class HighlightData {
-	
+
 	/** 0-based index of highlight hit, none if <0 */
 	public int hit = -1;
-	
+
 	/** 0-based index of highlight cluster, none if <0 */
 	public int cluster = -1;
-	
+
 	/** 0-based index of highlight cross, none if <0 */
 	public int cross = -1;
 
 
-	
+
 	public HighlightData() {
 	}
-	
+
 	/**
 	 * Reset to starting values (which indicate no highlight)
 	 */

@@ -10,7 +10,7 @@ import cnuphys.ced.event.data.AdcHitList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.CrossList2;
+import cnuphys.ced.event.data.lists.CrossList2;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.bmt.Constants;
 import cnuphys.lund.X11Colors;

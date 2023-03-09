@@ -2,9 +2,7 @@ package cnuphys.ced.cedview.urwell;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Shape;
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -16,13 +14,13 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 
 public class UrWELLChamberItem extends PolygonItem {
-	
+
 	//1-based sector
 	private int _sector;
-	
+
 	//1-based chamber
 	private int _chamber;
-	
+
 	//chamber colors
 	private static Color _fillColors[] = {
 			X11Colors.getX11Color("Dark Blue", 10),
@@ -36,7 +34,7 @@ public class UrWELLChamberItem extends PolygonItem {
 		_sector = sector;
 		_chamber = chamber;
 	}
-	
+
 	/**
 	 * Create a chamber outline
 	 * @param sector the sector [1..6]
@@ -45,13 +43,13 @@ public class UrWELLChamberItem extends PolygonItem {
 	 */
 	public static  UrWELLChamberItem createUrWELLChamberItem(LogicalLayer layer, int sector, int chamber) {
 		Point2D.Double points[] = new Point2D.Double[4];
-		
+
 		int cm1 = chamber-1;
 		points[0] = new Point2D.Double(UrWELLGeometry.minX[cm1], -UrWELLGeometry.minY[cm1]);
 		points[1] = new Point2D.Double(UrWELLGeometry.maxX[cm1], -UrWELLGeometry.maxY[cm1]);
 		points[2] = new Point2D.Double(UrWELLGeometry.maxX[cm1], UrWELLGeometry.maxY[cm1]);
 		points[3] = new Point2D.Double(UrWELLGeometry.minX[cm1], UrWELLGeometry.minY[cm1]);
-		
+
 		//rotate if not sector 1
 
 		if (sector > 1) {
@@ -61,12 +59,12 @@ public class UrWELLChamberItem extends PolygonItem {
 			}
 		}
 
-		
+
 		UrWELLChamberItem item = new UrWELLChamberItem(layer, points, sector, chamber);
 		item.getStyle().setFillColor(_fillColors[cm1]);
 		return item;
 	}
-	
+
 	/**
 	 * Rotate a point around the z axis
 	 *
@@ -81,7 +79,7 @@ public class UrWELLChamberItem extends PolygonItem {
 		wp.setLocation(x, y);
 	}
 
-	
+
 	/**
 	 * Custom drawer for the item.
 	 *

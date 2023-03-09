@@ -138,13 +138,13 @@ public class DefinitionManager implements ActionListener, XmlPrintStreamWritable
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
+
 		if (ClasIoEventManager.getInstance().getCurrentBanks() == null) {
 			System.err.println("no current event");
 			return;
 		}
-		
-		
+
+
 		Object o = e.getSource();
 		if (o == _histo) {
 			defineHistogram();

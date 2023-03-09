@@ -1,8 +1,9 @@
-package cnuphys.ced.event.data;
+package cnuphys.ced.event.data.lists;
 
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.event.data.BaseHit;
 
 public class BaseHitList<T extends BaseHit> extends Vector<T> {
 

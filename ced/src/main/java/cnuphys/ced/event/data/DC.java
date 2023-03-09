@@ -4,6 +4,9 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.SoundUtils;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.event.data.lists.DCClusterList;
+import cnuphys.ced.event.data.lists.DCReconHitList;
+import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.frame.Ced;
 
 public class DC extends DetectorData {

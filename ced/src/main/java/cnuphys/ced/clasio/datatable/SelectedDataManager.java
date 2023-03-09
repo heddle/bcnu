@@ -22,7 +22,7 @@ public class SelectedDataManager {
 	 *
 	 */
 	public static void notifyListeners(String bankName, int index) {
-		
+
 		if (_listeners != null) {
 
 			// Guaranteed to return a non-null array
@@ -37,7 +37,7 @@ public class SelectedDataManager {
 			}
 		}
 	}
-	
+
 
 
 	/**

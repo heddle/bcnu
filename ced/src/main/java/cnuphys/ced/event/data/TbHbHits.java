@@ -2,6 +2,8 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.TbHbHitList;
+
 public class TbHbHits extends DetectorData {
 
 	protected String _bankName;

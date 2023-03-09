@@ -8,7 +8,7 @@ import bCNU3D.Support3D;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.lund.X11Colors;
 

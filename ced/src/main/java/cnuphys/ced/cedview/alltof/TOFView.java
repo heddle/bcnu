@@ -30,7 +30,7 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.FTOFGeometry;
 
 public class TOFView extends CedView implements ISector {
@@ -61,6 +61,10 @@ public class TOFView extends CedView implements ISector {
 
 	// the shells
 	private TOFShellItem[] shells;
+
+	//bank matches
+	private static String _defMatches[] = {"CTOF", "FTOF"};
+
 
 	public TOFView(Object... keyVals) {
 		super(keyVals);
@@ -100,7 +104,7 @@ public class TOFView extends CedView implements ISector {
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY + ControlPanel.DRAWLEGEND
-				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,
+				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
@@ -108,6 +112,12 @@ public class TOFView extends CedView implements ISector {
 		// select which sector
 		SectorSelectorPanel ssp = new SectorSelectorPanel(view);
 		view._controlPanel.addSouth(ssp);
+
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(TOFView._defMatches);
+		}
+		view._controlPanel.getMatchedBankPanel().update();
 
 		view.pack();
 		return view;

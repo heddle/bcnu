@@ -48,7 +48,7 @@ public class PropertiesManager {
 			writeProperties();
 		}
 	}
-	
+
 	/**
 	 * Put in a property, don't write the preferences
 	 * @param key the key

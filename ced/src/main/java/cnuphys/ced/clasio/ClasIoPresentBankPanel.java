@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
-import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
@@ -36,7 +35,7 @@ import cnuphys.ced.event.IAccumulationListener;
 @SuppressWarnings("serial")
 public class ClasIoPresentBankPanel extends JPanel
 		implements ActionListener, IClasIoEventListener, IAccumulationListener {
-	
+
 	//try to set a reasonable height
 	private int preferredHeight;
 
@@ -48,11 +47,11 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	// the node table
 	private NodeTable _nodeTable;
-	
-	
+
+
 	//cache to allow only single creation
 	private static Hashtable<String, ClasIoBankView> _dataBanks = new Hashtable<>(193);
-	
+
 	//if a cedview owns this
 	private CedView _view;
 
@@ -65,7 +64,7 @@ public class ClasIoPresentBankPanel extends JPanel
 	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable) {
 		this(view, nodeTable, 40, 4);
 	}
-	
+
 	/**
      *This panel holds all the known banks in a grid of buttons. Banks present will
 	 * be clickable, and will cause the table to scroll to that name	 * @param nodeTable
@@ -75,21 +74,21 @@ public class ClasIoPresentBankPanel extends JPanel
 	 * @param numCols the number of columns for banks
 	 */
 	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows, int numCols) {
-		
+
 		_view = (view instanceof CedView) ? (CedView)view: null;
-		
+
 		_nodeTable = nodeTable;
 		_eventManager.addClasIoEventListener(this, 1);
 		setLayout(new GridLayout(numRows, numCols, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 		AccumulationManager.getInstance().addAccumulationListener(this);
-		
+
 		FontMetrics gm = getFontMetrics(ActionLabel.enabledFontLarge);
 		preferredHeight = numRows * (gm.getHeight() + 2);
-		
+
 	}
 
-	
+
 	@Override
 	public Dimension getMinimumSize() {
 		Dimension d = super.getMinimumSize();
@@ -97,7 +96,7 @@ public class ClasIoPresentBankPanel extends JPanel
 		return d;
 
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		Dimension d = super.getPreferredSize();
@@ -106,11 +105,11 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	}
 
-	
+
 
 	//replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
-		
+
 		removeAll();
 		String[] allBanks = event.getBankList();
 		Arrays.sort(allBanks);
@@ -122,19 +121,19 @@ public class ClasIoPresentBankPanel extends JPanel
 			}
 		}
 	}
-	
+
 
 
 	// must match
 	private boolean match(String s) {
-		
+
 		if (_view == null) {
 			return true;
 		}
-		
+
 		String[] matchList = _view.getBanksMatches();
-		
-		
+
+
 		if (matchList == null) { //accept all
 			return true;
 		}
@@ -145,7 +144,7 @@ public class ClasIoPresentBankPanel extends JPanel
 				}
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -214,7 +213,7 @@ public class ClasIoPresentBankPanel extends JPanel
 						if (!bankView.isVisible()) {
 							bankView.setVisible(true);
 						}
-						
+
 						//move to current virtual view?
 						VirtualView.getInstance().moveToCurrentColumn(bankView);
 

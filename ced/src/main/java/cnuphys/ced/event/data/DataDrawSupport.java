@@ -149,12 +149,12 @@ public class DataDrawSupport {
 	 */
 	public static void drawCross(Graphics g, int x, int y, int mode) {
 //		SymbolDraw.drawOval(g, x, y, CROSSHALF, CROSSHALF, Color.black, transColors[mode]);
-		
+
 		int opt = 2;
 		if ((mode == 0) || (mode == 4)) {
 			opt = 3;
 		}
-		
+
 		drawSphere(g, transColors[mode], x, y, CROSSHALF, opt);
 		SymbolDraw.drawCross(g, x, y, CROSSHALF, Color.black);
 	}
@@ -191,7 +191,7 @@ public class DataDrawSupport {
 		if ((mode == 0) || (mode == 4)) {
 			opt = 3;
 		}
-		
+
 		drawSphere(g, transColors[mode], x, y, CROSSHALF+3, opt);
 
 		SymbolDraw.drawCross(g, x, y, CROSSHALF+3, Color.black);

@@ -39,8 +39,6 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Jar;
 import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.view.HistoGridView;
-import cnuphys.bCNU.view.IPlotMaker;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
@@ -52,7 +50,6 @@ import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
-import cnuphys.ced.cedview.TimedRefreshManager;
 import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
@@ -98,11 +95,7 @@ import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.event.data.TBCrosses;
 import cnuphys.ced.event.data.TBSegments;
-import cnuphys.ced.geometry.BSTGeometry;
-import cnuphys.ced.geometry.ECGeometry;
-import cnuphys.ced.geometry.FTOFGeometry;
 import cnuphys.ced.geometry.GeometryManager;
-import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.ced.magfield.PlotFieldDialog;
 import cnuphys.ced.magfield.SwimAllMC;
 import cnuphys.ced.magfield.SwimAllRecon;
@@ -117,7 +110,6 @@ import cnuphys.magfield.MagneticFields;
 import cnuphys.simanneal.example.ising2D.Ising2DDialog;
 import cnuphys.simanneal.example.ts.TSDialog;
 import cnuphys.splot.example.MemoryUsageDialog;
-import cnuphys.splot.plot.PlotPanel;
 import cnuphys.swim.SwimMenu;
 import cnuphys.swim.Swimmer;
 
@@ -150,14 +142,14 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 	// the coat java clasdir
 	private static File _clasDir;
-	
+
 	// coat java version;
 	private static String _coatjavaVersion;
 
 
 	// event menu
 	private ClasIoEventMenu _eventMenu;
-	
+
 	// color menu
 	private ColorMenu _colorMenu;
 
@@ -190,9 +182,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private ClasIoEventView _eventView;
 	private CentralXYView _centralXYView;
 	private CentralZView _centralZView;
-	
+
 	private AlertXYView _alertXYView;
-	
+
 	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
@@ -322,10 +314,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_virtualView.moveToStart(_sectorView36, 0, VirtualView.UPPERLEFT);
 		_virtualView.moveTo(_plotView, 0, VirtualView.CENTER);  //for bdl plot
 
-		
+
 		_virtualView.moveTo(_monteCarloView, 1, VirtualView.TOPCENTER);
 		_virtualView.moveTo(_reconEventView, 1, VirtualView.BOTTOMCENTER);
-		
+
 		_virtualView.moveTo(_centralXYView, 2, VirtualView.BOTTOMLEFT);
 		_virtualView.moveTo(_centralZView, 2, VirtualView.UPPERRIGHT);
 
@@ -342,7 +334,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_virtualView.moveTo(_tofView, 10, VirtualView.CENTER);
 		_virtualView.moveTo(_ftcalXyView, 11, VirtualView.CENTER);
 		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
-		
+
 		_virtualView.moveTo(_alertXYView, 13, VirtualView.BOTTOMLEFT);
 
 
@@ -357,7 +349,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 //		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
 //		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
 
-		
+
 
 
 
@@ -375,12 +367,12 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		Log.getInstance().config("reset views on virtual dekstop");
 
 	}
-	
-	
+
+
 	//get a string that tells us what version of coatjava.
 	//uses the class path.
 	private static String getCoatJavaVersion() {
-		
+
 		if (_coatjavaVersion != null) {
 			return _coatjavaVersion;
 		}
@@ -393,7 +385,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		if (s.endsWith("ced.jar")) {
 
 			System.out.println("CP contains ced.jar");
-			
+
 			s = Jar.getManifestAttribute(s, "Class-Path");
 //			System.out.println("cp from jar manifest: [" + s + "]");
 		}
@@ -434,9 +426,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		AccumulationManager.getInstance();
 
 		// add a virtual view
-		
+
 		int numVVCell = 14 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
-		
+
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
@@ -458,28 +450,28 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
-		// add an alldc view 
+		// add an alldc view
 		_allDCView = AllDCView.createAllDCView();
-		
+
 		// add a DC XY View
 		_dcXyView = DCXYView.createDCXYView();
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
-		
+
 		// add a bstXYView
 		_centralXYView = CentralXYView.createCentralXYView();
 
 		// add a bstZView
 		_centralZView = CentralZView.createCentralZView();
-		
+
 		ViewManager.getInstance().getViewMenu().addSeparator();
-		
+
 		// add an ec view
 		_ecView = ECView.createECView();
 
 		// add an pcal view
 		_pcalView = PCALView.createPCALView();
-		
+
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		//add and ALERT XY view
@@ -492,14 +484,14 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_urwellXyView = UrWELLXYView.createUrWELLView();
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
-		
+
 		//FTOF and CTOF
 		_tofView = TOFView.createTOFView();
 
 		// add an RTPC vie
 		_rtpcView = RTPCView.createRTPCView();
 
-		
+
 
 
 		// 3D view?
@@ -712,7 +704,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// the options menu
 		addToOptionMenu(mmgr.getOptionMenu());
-		
+
 		//the color menu
 		_colorMenu = new ColorMenu();
 		getJMenuBar().add(_colorMenu);
@@ -741,10 +733,10 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		addToEventMenu();
 
 	}
-	
+
 	/**
 	 * Check whether we should use the DC TDC coloring based or the order column
-	 * @return true if we should use the DC TDC coloring 
+	 * @return true if we should use the DC TDC coloring
 	 */
 	public static boolean useOrderColoring() {
 		return getInstance()._colorMenu.useOrderColoring();
@@ -1208,7 +1200,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		}
 
 		title += "] [Swimmer " + Swimmer.getVersion() + "]";
-		
+
 		title += " [Coatjava " + getCoatJavaVersion() + "]";
 
 		title += ("  " + ClasIoEventManager.getInstance().getCurrentSourceDescription());
@@ -1380,7 +1372,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-		
+
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 
@@ -1397,7 +1389,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// initialize the filter manager
 		FilterManager.getInstance();
-		
+
 
 		// init the clas 12 dir wherev the json files are
 		try {
@@ -1479,7 +1471,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 				FilterManager.getInstance().setUpFilterMenu();
 				// initialize data columns
 //				DataManager.getInstance();
-								
+
 				System.out.println(String.format("ced %s us ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
 			}
 

@@ -18,7 +18,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.ECGeometry;
 
 public class SectorECItem extends PolygonItem {

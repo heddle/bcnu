@@ -40,8 +40,8 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.CosmicList;
 import cnuphys.ced.event.data.Cosmics;
+import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -94,7 +94,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	// draws hits
 	private CentralZHitDrawer _hitDrawer;
-	
+
 	//bank matches
 	private static String _defMatches[] = {"BMT", "BST", "CVT"};
 
@@ -110,7 +110,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawerZ(this);
-		
+
 	}
 
 	/**
@@ -141,14 +141,14 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 												// view width
 				PropertySupport.LEFTMARGIN, LMARGIN, PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN,
 				RMARGIN, PropertySupport.BOTTOMMARGIN, BMARGIN, PropertySupport.TOOLBAR, true,
-				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true, 
+				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true,
 				PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CentralZ",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
-						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND + 
+						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND +
 						ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
 						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS |
@@ -159,7 +159,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		view.pack();
 
 		view.phiFromSlider();
-		
+
 		//i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);

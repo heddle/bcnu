@@ -17,7 +17,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.FTOFGeometry;
 import cnuphys.ced.geometry.FTOFPanel;
 import cnuphys.ced.geometry.GeometryManager;

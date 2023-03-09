@@ -74,7 +74,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** all dc display panel */
 	public static final int ALLDCDISPLAYPANEL = 02000;
-	
+
 	/** filtered banks */
 	public static final int MATCHINGBANKSPANEL = 04000;
 
@@ -102,7 +102,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// noise display panel
 	private NoisePanel _noisePanel;
-	
+
 	// matched bank panel
 	private MatchedBankPanel _matchedBankPanel;
 
@@ -177,7 +177,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the tabbed pane for customization
-	 * 
+	 *
 	 * @return the tabbed pane
 	 */
 	public JTabbedPane getTabbedPane() {
@@ -244,7 +244,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 //		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
 //			// legend = DrawingLegend.getLegendPanel(_view);
 //		}
-		
+
 		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
 			_matchedBankPanel = new MatchedBankPanel(view);
 		}
@@ -260,7 +260,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		if (daPanel != null) {
 			tabbedPane.add(daPanel, "display");
 		}
-		
+
 		if (_matchedBankPanel != null) {
 			tabbedPane.add(_matchedBankPanel, "Banks");
 		}
@@ -448,7 +448,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	public JSlider getAdcThresholdSlider() {
 		return _adcThresholdSlider;
 	}
-	
+
 	/**
 	 * Get the matched bank panel (might be null)
 	 * @return the matched bank panel
@@ -459,7 +459,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the adc threshold border so we can adjust the title.
-	 * 
+	 *
 	 * @return the adc threshold border
 	 */
 	public CommonBorder getAdcThresholdBorder() {
@@ -553,7 +553,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/**
 	 * Get the display panel used by the all dc view
-	 * 
+	 *
 	 * @return the display panel used by the all dc view
 	 */
 	public AllDCDisplayPanel getAllDCDisplayPanel() {

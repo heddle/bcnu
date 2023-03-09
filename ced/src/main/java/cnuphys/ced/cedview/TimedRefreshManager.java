@@ -2,9 +2,6 @@ package cnuphys.ced.cedview;
 
 import java.util.ArrayList;
 import java.util.Timer;
-import java.util.TimerTask;
-
-import cnuphys.ced.clasio.datatable.SelectedDataManager;
 
 
 public class TimedRefreshManager {

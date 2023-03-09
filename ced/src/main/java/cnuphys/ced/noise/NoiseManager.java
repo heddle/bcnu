@@ -8,7 +8,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.DCTdcHitList;
+import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.snr.NoiseReductionParameters;
 import cnuphys.snr.SNRAnalysisLevel;
 import cnuphys.snr.clas12.Clas12NoiseAnalysis;

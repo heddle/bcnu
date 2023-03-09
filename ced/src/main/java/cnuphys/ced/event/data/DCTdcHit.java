@@ -25,7 +25,7 @@ public class DCTdcHit implements Comparable<DCTdcHit> {
 
 
 	public int tdc = -1;
-	
+
 	//order column now relevant
 	public int order;
 

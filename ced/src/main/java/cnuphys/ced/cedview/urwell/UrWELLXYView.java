@@ -68,7 +68,7 @@ public class UrWELLXYView extends HexView {
 
 	//for highlighting
 	private HighlightData _highlightData = new HighlightData();
-	
+
 	//bank matches
 	private static String _defMatches[] = {"URWELL"};
 
@@ -209,7 +209,7 @@ public class UrWELLXYView extends HexView {
 
 		getContainer().setAfterDraw(afterDraw);
 	}
-	
+
 
 
 	//draw the crosses

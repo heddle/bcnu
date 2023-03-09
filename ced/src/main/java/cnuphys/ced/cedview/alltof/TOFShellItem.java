@@ -15,7 +15,7 @@ import cnuphys.ced.common.ISector;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.lund.X11Colors;
 
 public class TOFShellItem extends PolygonItem {

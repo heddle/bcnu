@@ -21,7 +21,7 @@ public class ChamberData {
 
 	/**
 	 * Some useful chamber data
-	 * 
+	 *
 	 * @param sector  [1..6]
 	 * @param chamber [1..3]
 	 * @param layer   [1..2]
@@ -67,7 +67,7 @@ public class ChamberData {
 								sector, layer, strip));
 				System.exit(1);
 			}
-			
+
 
 		}
 

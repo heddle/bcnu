@@ -35,7 +35,7 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.RTPCHitList;
+import cnuphys.ced.event.data.lists.RTPCHitList;
 import cnuphys.lund.X11Colors;
 
 

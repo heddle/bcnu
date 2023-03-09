@@ -14,7 +14,7 @@ import cnuphys.ced.frame.Ced;
  *
  */
 public class UrWELLGeometry {
-	
+
 	//the name of the detector
 	public static String NAME = UnicodeSupport.SMALL_MU + "Rwell";
 
@@ -26,10 +26,10 @@ public class UrWELLGeometry {
 
 	//number of strips by chamber [0..2]
 	public static int numStripsByChamber[] = new int[3];
-	
+
 	//the maximun global strip ID (num strips per sector and layer)
 	public static int MAXSTRIP;
-	
+
 	//used to make outline polygons (taken from sector 1 and rotated as needed)
 	//the index corresponds to chamber
 	public static double minX[] = {Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
@@ -71,13 +71,13 @@ public class UrWELLGeometry {
 				}
 			}
 		}
-		
+
 		//get some limits to make outlines
 
 		double maxTheta = Double.NEGATIVE_INFINITY;
 		double theta;
 
-		
+
 		int sector = 1;
 		for (int chamber = 1; chamber <= URWellConstants.NCHAMBERS; chamber++) {
 			int cm1 = chamber-1;
@@ -91,7 +91,7 @@ public class UrWELLGeometry {
 					minX[cm1] = Math.min(minX[cm1], line3D.end().x());
 					maxX[cm1] = Math.max(maxX[cm1], line3D.origin().x());
 					maxX[cm1] = Math.max(maxX[cm1], line3D.end().x());
-					
+
 					theta = Math.atan2(line3D.origin().y(), line3D.origin().x());
 					maxTheta = Math.abs(Math.max(theta, maxTheta));
 					theta = Math.atan2(line3D.end().y(), line3D.end().x());
@@ -106,13 +106,13 @@ public class UrWELLGeometry {
 				}
 
 			}
-			
+
 			minY[cm1] = Math.abs(minX[cm1]*Math.tan(maxTheta));
 
-			
+
 		} //end chamber loop
 	}
-	
+
 	/**
 	 * Convert global strip to chamber and chamber strip
 	 * @param strip global strip 1..1884
@@ -120,7 +120,7 @@ public class UrWELLGeometry {
 	 */
 	public static void chamberStrip(int strip, int data[]) {
 		data[0] = factory.getChamberIndex(strip) + 1;
-		
+
 		if (data[0] == 1) {
 			data[1] = strip;
 		}
@@ -132,8 +132,8 @@ public class UrWELLGeometry {
 			data[1] = strip - numStripsByChamber[0] - numStripsByChamber[1];
 		}
 	}
-	
-	
+
+
 
 	/**
 	 * Convert a chamber and chamber strip to a "global" strip.
@@ -163,8 +163,8 @@ public class UrWELLGeometry {
 			return numStripsByChamber[0] + numStripsByChamber[1] + chamberStrip;
 		}
 	}
-	
-	
+
+
 	/**
 	 * Get a strip
 	 * @param sector the 1-based sector [1..6]
@@ -181,7 +181,7 @@ public class UrWELLGeometry {
 
 	//test the chamber to global numbering
 	private static void stripNumberTest() {
-		
+
 		int data[] = new int[2];
 
 		int strip = 1;
@@ -193,7 +193,7 @@ public class UrWELLGeometry {
 					System.err.println(String.format("chamber: %d   chamberStrip: %d  strip: %d   testStrip: %d", chamber, chamberStrip, strip, testStrip));
 					System.exit(0);
 				}
-				
+
 				chamberStrip(strip, data);
 				if (data[0] != chamber) {
 					System.err.println("FAILED stripNumberTest (B)");
@@ -206,7 +206,7 @@ public class UrWELLGeometry {
 					System.exit(0);
 				}
 
-				
+
 				strip++;
 			}
 		}
@@ -233,10 +233,10 @@ public class UrWELLGeometry {
 
 		double minLen = Double.POSITIVE_INFINITY;
 		double maxLen = Double.NEGATIVE_INFINITY;
-		
+
 		double minX = Double.POSITIVE_INFINITY;
 		double maxX = Double.NEGATIVE_INFINITY;
-		
+
 		double minY = Double.POSITIVE_INFINITY;
 		double maxY = Double.NEGATIVE_INFINITY;
 
@@ -254,12 +254,12 @@ public class UrWELLGeometry {
 								layer, strip));
 						System.exit(1);
 					}
-					
+
 					minX = Math.min(minX, line3D.origin().x());
 					minX = Math.min(minX, line3D.end().x());
 					maxX = Math.max(maxX, line3D.origin().x());
 					maxX = Math.max(maxX, line3D.end().x());
-					
+
 					minY = Math.min(minY, line3D.origin().y());
 					minY = Math.min(minY, line3D.end().y());
 					maxY = Math.max(maxY, line3D.origin().y());
@@ -274,7 +274,7 @@ public class UrWELLGeometry {
 				}
 			}
 		}
-		
+
 		System.err.println("Min X = " + minX);
 		System.err.println("Max X = " + maxX);
 
@@ -285,16 +285,16 @@ public class UrWELLGeometry {
 		System.err.println("Max strip length = " + maxLen);
 
 		System.err.println("Done");
-		
+
 		//get total strip count per sector:
 		int layer1Count = _chamberData[0][0][0].count + _chamberData[0][1][0].count + _chamberData[0][2][0].count;
 		int layer2Count = _chamberData[0][0][1].count + _chamberData[0][1][1].count + _chamberData[0][2][1].count;
-		
+
 		System.err.println("Number of strips each sector layer 1: " + layer1Count);
 		System.err.println("Number of strips each sector layer 2: " + layer2Count);
 		System.err.println("Total number of strips all sectors all layers: " + 6*(layer1Count+layer2Count));
 
-		
+
 
 	}
 

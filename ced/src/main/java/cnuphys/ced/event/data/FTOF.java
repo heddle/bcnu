@@ -2,6 +2,10 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.ClusterList;
+import cnuphys.ced.event.data.lists.Hit1List;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
+
 /**
  * static methods to centralize getting data arrays
  *
@@ -22,6 +26,10 @@ public class FTOF extends DetectorData {
 
 	// reconstructed hit list
 	private Hit1List _hits;
+	
+	// clusters
+	private ClusterList _clusters = new ClusterList("FTOF::clusters");
+
 
 	// singleton
 	private static FTOF _instance;
@@ -54,6 +62,8 @@ public class FTOF extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
+		
+		_clusters.update();
 		_tdcAdcHits = new TdcAdcHitList("FTOF::tdc", "FTOF::adc");
 		try {
 			_hits = new Hit1List("FTOF::hits");
@@ -134,5 +144,15 @@ public class FTOF extends DetectorData {
 	public Hit1List getHits() {
 		return _hits;
 	}
+	
+	/**
+	 * Get the reconstructed cluster list
+	 *
+	 * @return reconstructed list
+	 */
+	public ClusterList getClusters() {
+		return _clusters;
+	}
+
 
 }

@@ -1,8 +1,9 @@
-package cnuphys.ced.event.data;
+package cnuphys.ced.event.data.lists;
 
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.event.data.RTPCHit;
 
 public class RTPCHitList extends Vector<RTPCHit> {
 

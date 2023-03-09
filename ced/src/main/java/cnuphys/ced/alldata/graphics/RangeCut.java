@@ -122,11 +122,7 @@ public class RangeCut implements ICut {
 		if (_columnData != null) {
 			double vals[] = _columnData.getAsDoubleArray(event);
 
-			if ((vals == null) || (index < 0)) {
-				return false;
-			}
-
-			if (index >= vals.length) {
+			if ((vals == null) || (index < 0) || (index >= vals.length)) {
 				return false;
 			}
 

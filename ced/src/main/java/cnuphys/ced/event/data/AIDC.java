@@ -2,6 +2,9 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.DCClusterList;
+import cnuphys.ced.event.data.lists.DCReconHitList;
+
 
 public class AIDC extends DetectorData {
 

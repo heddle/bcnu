@@ -8,8 +8,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -20,20 +18,20 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.Cluster;
-import cnuphys.ced.event.data.ClusterList;
+import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCCluster;
-import cnuphys.ced.event.data.DCClusterList;
 import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCReconHitList;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.DCTdcHitList;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.Hit1;
-import cnuphys.ced.event.data.Hit1List;
 import cnuphys.ced.event.data.RECCalorimeter;
+import cnuphys.ced.event.data.lists.ClusterList;
+import cnuphys.ced.event.data.lists.DCClusterList;
+import cnuphys.ced.event.data.lists.DCReconHitList;
+import cnuphys.ced.event.data.lists.DCTdcHitList;
+import cnuphys.ced.event.data.lists.Hit1List;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.lund.LundId;
 
@@ -41,9 +39,6 @@ public class ReconDrawer extends SectorViewDrawer {
 
 	// the event manager
 	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-
-	//the current event
-	private DataEvent _currentEvent;
 
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
@@ -67,9 +62,6 @@ public class ReconDrawer extends SectorViewDrawer {
 		if (_eventManager.isAccumulating() || !_view.isSingleEventMode()) {
 			return;
 		}
-
-		_currentEvent = _eventManager.getCurrentEvent();
-
 
 		// DC HB and TB Hits
 		drawDCReconAndDOCA(g, container);
@@ -195,6 +187,8 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw reconstructed clusters
 	private void drawClusters(Graphics g, IContainer container) {
 		drawClusterList(g, container, AllEC.getInstance().getClusters());
+		drawClusterList(g, container, FTOF.getInstance().getClusters());
+		drawClusterList(g, container, CTOF.getInstance().getClusters());
 	}
 
 	// draw FTOF reconstructed hits
@@ -218,6 +212,18 @@ public class ReconDrawer extends SectorViewDrawer {
 		}
 	}
 
+	private boolean clusterListFeedback(String prefix, ClusterList clusters, Point screenPoint, List<String> feedbackStrings) {
+		for (int index = 0; index < clusters.length; index++) {
+			if (_view.containsSector(clusters.sector[index])) {
+				if (clusters.contains(index, screenPoint)) {
+					clusters.getFeedbackStrings(prefix, index, feedbackStrings);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	/**
 	 * Use what was drawn to generate feedback strings
 	 *
@@ -232,17 +238,14 @@ public class ReconDrawer extends SectorViewDrawer {
 			List<String> feedbackStrings, int option) {
 
 		if (_view.showClusters()) {
-			// EC
-			ClusterList clusters = AllEC.getInstance().getClusters();
-			if ((clusters != null) && !clusters.isEmpty()) {
-				for (Cluster cluster : clusters) {
-					if (_view.containsSector(cluster.sector)) {
-						if (cluster.contains(screenPoint)) {
-							cluster.getFeedbackStrings("EC", feedbackStrings);
-							return;
-						}
-					}
-				}
+			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings)) {
+				return;
+			}
+			if (clusterListFeedback("FTOF", FTOF.getInstance().getClusters(), screenPoint, feedbackStrings)) {
+				return;
+			}
+			if (clusterListFeedback("CTOF", CTOF.getInstance().getClusters(), screenPoint, feedbackStrings)) {
+				return;
 			}
 		}
 
@@ -434,18 +437,18 @@ public class ReconDrawer extends SectorViewDrawer {
 
 	// draw a reconstructed cluster list
 	private void drawClusterList(Graphics g, IContainer container, ClusterList clusters) {
-		if ((clusters == null) || clusters.isEmpty()) {
+		if ((clusters == null) || (clusters.length < 1)) {
 			return;
 		}
 
 		Point2D.Double wp = new Point2D.Double();
 		Point pp = new Point();
 
-		for (Cluster cluster : clusters) {
-			if (_view.containsSector(cluster.sector)) {
-				_view.projectClasToWorld(cluster.x, cluster.y, cluster.z, _view.getProjectionPlane(), wp);
+		for (int index = 0; index < clusters.length; index++) {
+			if (_view.containsSector(clusters.sector[index])) {
+				_view.projectClasToWorld(clusters.x[index], clusters.y[index], clusters.z[index], _view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
-				cluster.setLocation(pp);
+				clusters.setLocation(index, pp);
 				DataDrawSupport.drawReconCluster(g, pp);
 			}
 		}

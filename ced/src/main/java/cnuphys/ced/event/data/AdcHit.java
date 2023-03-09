@@ -50,11 +50,7 @@ public class AdcHit implements Comparable<AdcHit> {
 		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
 		AdcHit other = (AdcHit) obj;
-		if (sector != other.sector)
-			return false;
-		if (layer != other.layer)
-			return false;
-		if (component != other.component)
+		if ((sector != other.sector) || (layer != other.layer) || (component != other.component))
 			return false;
 		return true;
 	}

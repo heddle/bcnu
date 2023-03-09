@@ -12,7 +12,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.util.List;
-import java.util.Properties;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -60,12 +59,12 @@ import cnuphys.swim.Swimming;
 @SuppressWarnings("serial")
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
 		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
-	
-	
+
+
 	//name used for reading and writing properties
 	//can be different from title
 	protected String VIEWPROPNAME = "???";
-	
+
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
@@ -133,7 +132,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * Name for the detector layer.
 	 */
 	public static final String _detectorLayerName = "Detectors";
-	
+
 	/**
 	 * Name for the magnetic field layer.
 	 */
@@ -159,7 +158,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	// the clasIO event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//for no matches
 	public static final String NOMATCHES = "NOMATCHES";
 	protected static final String[] _noMatches = {NOMATCHES};
@@ -194,7 +193,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 			return;
 		}
-		
+
 		readCommonProperties();
 
 		_eventManager.addClasIoEventListener(this, 2);
@@ -274,7 +273,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public String[] getBanksMatches() {
 		return _matches;
 	}
-	
+
 	/**
 	 * Get banks of interest for matching banks panel on tabbed pane on control
 	 * panel. If null, all banks are of interest (not advisable); Default does
@@ -1504,19 +1503,19 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void dataSelected(String bankName, int index) {
 	}
-	
+
 	//read properties common to all views
 	private void readCommonProperties() {
 		//bank match
-		
+
 		String propName = getPropertyName() + "_" + BANKMATCHPROP;
-		
+
 		String matches = PropertiesManager.getInstance().get(propName);
 		if (matches != null) {
 			_matches = TextUtilities.cssToStringArray(matches);
 		}
 	}
-	
+
 	/**
 	 * Check if the bank matching arra is the no matchers array
 	 * @return true if no matches
@@ -1525,25 +1524,22 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return ((_matches != null) && (_matches.length == 1)
 				&& NOMATCHES.equals(_matches[0]));
 	}
-	
+
 	//write properties common to all views
 	public void writeCommonProperties() {
 		//bank match
-		System.err.println("Writing common prop...");
 		String propName = getPropertyName() + "_" + BANKMATCHPROP;
 		String cssStr = TextUtilities.stringArrayToString(_matches);
-		
-		System.err.println();		
+
+		System.err.println();
 		if (cssStr == null) {
 			cssStr = NOMATCHES;
 		}
-		
-		System.err.println("Writing common prop [" + propName + "] [" + cssStr + "]");
-		
+
 		PropertiesManager.getInstance().putAndWrite(propName, cssStr);
- 
+
 	}
-	
+
 
 	/**
 	 * Clone the view.

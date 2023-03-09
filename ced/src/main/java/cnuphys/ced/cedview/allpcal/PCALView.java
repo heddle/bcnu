@@ -54,7 +54,7 @@ public class PCALView extends HexView {
 
 	// public static final double _XMAX = 400; //cm
 	// public static final double _YMAX = _XMAX;
-	
+
 	//bank matches
 	private static String _defMatches[] = {"ECAL"};
 
@@ -78,7 +78,7 @@ public class PCALView extends HexView {
 
 		// default properties
 		setBooleanProperty(DisplayArray.SHOWINNER_PROPERTY, true);
-		
+
 
 		//i.e. if none were in the properties
 		if (hasNoBankMatches()) {
@@ -178,7 +178,7 @@ public class PCALView extends HexView {
 
 		Properties props = new Properties();
 		props.put(PropertySupport.TITLE, title);
-		
+
 		props.put(PropertySupport.PROPNAME, "PCAL");
 
 		// set to a fraction of screen

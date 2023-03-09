@@ -1,7 +1,6 @@
 package cnuphys.ced.frame;
 
 import cnuphys.bCNU.view.HistoGridView;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.ced.geometry.BSTGeometry;

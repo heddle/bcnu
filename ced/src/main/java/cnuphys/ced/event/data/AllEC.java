@@ -2,6 +2,9 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.ClusterList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
+
 public class AllEC extends DetectorData {
 
 	// EC "layer" constants
@@ -71,7 +74,7 @@ public class AllEC extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_clusters = new ClusterList("ECAL::clusters");
+		_clusters.update();
 		_tdcAdcHits = new TdcAdcHitList("ECAL::tdc", "ECAL::adc");
 		computeADCMax();
 	}

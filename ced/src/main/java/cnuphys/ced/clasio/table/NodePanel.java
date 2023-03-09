@@ -76,7 +76,7 @@ public class NodePanel extends JPanel
 
 	// present banks
 	private ClasIoPresentBankPanel _presentPanel;
-	
+
 	//view owner
 	private BaseView _view;
 

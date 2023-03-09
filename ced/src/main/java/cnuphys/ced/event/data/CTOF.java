@@ -2,9 +2,15 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.ClusterList;
+import cnuphys.ced.event.data.lists.TdcAdcHitList;
+
 public class CTOF extends DetectorData {
 
 	TdcAdcHitList _tdcAdcHits = new TdcAdcHitList("CTOF::tdc", "CTOF::adc");
+	
+	private ClusterList _clusters = new ClusterList("CTOF::clusters");
+
 
 	private static CTOF _instance;
 
@@ -22,6 +28,7 @@ public class CTOF extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
+		_clusters.update();
 		_tdcAdcHits = new TdcAdcHitList("CTOF::tdc", "CTOF::adc");
 	}
 
@@ -43,4 +50,14 @@ public class CTOF extends DetectorData {
 	public TdcAdcHitList getHits() {
 		return _tdcAdcHits;
 	}
+	
+	/**
+	 * Get the reconstructed cluster list
+	 *
+	 * @return reconstructed list
+	 */
+	public ClusterList getClusters() {
+		return _clusters;
+	}
+
 }

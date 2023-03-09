@@ -2,9 +2,7 @@ package cnuphys.ced.cedview.dcxy;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,7 +39,7 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.DCTdcHitList;
+import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.DCHexSectorItem;
@@ -70,7 +68,7 @@ public class DCXYView extends HexView {
 
 	// for fmt
 	private FMTCrossDrawer _fmtCrossDrawer;
-	
+
 	//bank matches
 	private static String _defMatches[] = {"DC:"};
 
@@ -176,7 +174,7 @@ public class DCXYView extends HexView {
 				3, 5);
 
 		add(_controlPanel, BorderLayout.EAST);
-		
+
 		//i.e. if none were in the properties
 		if (hasNoBankMatches()) {
 			setBankMatches(_defMatches);
@@ -394,7 +392,7 @@ public class DCXYView extends HexView {
 
 		Properties props = new Properties();
 		props.put(PropertySupport.TITLE, title);
-		
+
 		props.put(PropertySupport.PROPNAME, "DCXY");
 
 		// set to a fraction of screen

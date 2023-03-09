@@ -2,7 +2,6 @@ package cnuphys.ced.frame;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.MouseAdapter;
@@ -46,13 +45,13 @@ public class ColorOption extends JComponent {
 		_colorChangeListener = colorChangeListener;
 		_currentColor = intitialColor;
 		_prompt = prompt;
-		
+
 		final ColorOption cl = this;
 
 		MouseAdapter ma = new MouseAdapter() {
 			@Override
 			public void mousePressed(MouseEvent e) {
-				
+
 				if (e.isControlDown() || e.isMetaDown()) {
 					ColorDialog cd = new ColorDialog(_currentColor, false, false);
 
@@ -71,14 +70,14 @@ public class ColorOption extends JComponent {
 					cl.repaint();
 				}
 
-				
+
 				_colorChangeListener.colorChanged(cl, getColor());
 			}
 		};
 
 		addMouseListener(ma);
 	}
-	
+
 	/**
 	 * See if it is checked
 	 * @return if checked
@@ -86,7 +85,7 @@ public class ColorOption extends JComponent {
 	public boolean isChecked() {
 		return _checked;
 	}
-	
+
 	/**
 	 * Set the checked flag
 	 * @param checked
@@ -94,11 +93,11 @@ public class ColorOption extends JComponent {
 	public void setChecked(boolean checked) {
 		_checked = checked;
 	}
-	
+
 	public void setCurrentColor(Color color) {
 		_currentColor = color;
 	}
-	
+
 	public Color getCurrentColor() {
 		return _currentColor;
 	}
@@ -110,22 +109,22 @@ public class ColorOption extends JComponent {
 
 
 		if (_checked) {
-			
+
 			g.setColor(Color.lightGray);
 			g.fillRect(0, 0, _rectSize, _rectSize);
 
 			g.setColor(Color.white);
 			g.drawLine(1, 1, _rectSize, _rectSize);
 			g.drawLine(1, _rectSize, _rectSize, 1);
-			
+
 			g.setColor(Color.black);
 			g.drawLine(0, 1, _rectSize-1, _rectSize);
 			g.drawLine(0, _rectSize, _rectSize-1, 1);
 
-		} 
+		}
 		else {
 			g.setColor(_currentColor);
-			g.fillRect(0, 0, _rectSize, _rectSize);			
+			g.fillRect(0, 0, _rectSize, _rectSize);
 		}
 		g.setColor(Color.black);
 		g.drawRect(0, 0, _rectSize, _rectSize);

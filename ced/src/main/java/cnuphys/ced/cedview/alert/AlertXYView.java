@@ -8,6 +8,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.Collection;
 import java.util.List;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
@@ -23,6 +24,7 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
+import cnuphys.ced.geometry.alert.TOFLayer;
 
 public class AlertXYView extends CedXYView {
 
@@ -34,7 +36,7 @@ public class AlertXYView extends CedXYView {
 	private static final String _baseTitle = "ALERT XY";
 
 	// units are mm
-	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(100, -100, -200, 200);
+	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(120, -120, -240, 240);
 
 	/**
 	 * Create a Alert detector XY View
@@ -64,7 +66,7 @@ public class AlertXYView extends CedXYView {
 				true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + 
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
 				ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
 						+ DisplayBits.ADC_HITS,
@@ -83,6 +85,9 @@ public class AlertXYView extends CedXYView {
 			public void draw(Graphics g, IContainer container) {
 				drawLayerShells(g, container);
 				drawWires(g, container);
+				drawPaddles(g, container);
+				
+				AlertGeometry.drawTOFSectorOutlines(g, container);
 			}
 
 		};
@@ -99,13 +104,6 @@ public class AlertXYView extends CedXYView {
 
 				Rectangle screenRect = getActiveScreenRectangle(container);
 				drawAxes(g, container, screenRect, false);
-				
-				
-				g.setColor(Color.red);
-				g.setFont(Fonts.monsterFont);
-				
-				g.drawString("UNDER CONSTRUCTION", 100, 100);
-
 			}
 
 		};
@@ -119,38 +117,40 @@ public class AlertXYView extends CedXYView {
 
 	//draw the dc wires
 	private void drawWires(Graphics g, IContainer container) {
-		DCLayer[][][] dcLayers = AlertGeometry.dcLayers;
-
-		for (int sect = 0; sect < AlertGeometry.DC_NUM_SECT; sect++) {
-			for (int supl = 0; supl < AlertGeometry.DC_NUM_SUPL; supl++) {
-				for (int lay = 0; lay < AlertGeometry.DC_NUM_LAY; lay++) {
-					DCLayer dcl = dcLayers[sect][supl][lay];
-
-					if (dcl.numWires >  0) {
-						dcLayers[sect][supl][lay].drawXYWires(g, container);
-					}
-				}
+		
+		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
+		
+		for (DCLayer dcl : dcLayers) {
+			if (dcl.numWires >  0) {
+				dcl.drawXYWires(g, container);
 			}
 		}
 	}
 
 
+	//draw all the layers shells
 	private void drawLayerShells(Graphics g, IContainer container) {
-
-		DCLayer[][][] dcLayers = AlertGeometry.dcLayers;
-
-		for (int sect = 0; sect < AlertGeometry.DC_NUM_SECT; sect++) {
-			for (int supl = 0; supl < AlertGeometry.DC_NUM_SUPL; supl++) {
-				for (int lay = 0; lay < AlertGeometry.DC_NUM_LAY; lay++) {
-					DCLayer dcl = dcLayers[sect][supl][lay];
-
-					if (dcl.numWires >  0) {
-						dcLayers[sect][supl][lay].drawXYDonut(g, container);
-					}
-				}
+		
+		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
+		
+		for (DCLayer dcl : dcLayers) {
+			if (dcl.numWires >  0) {
+				dcl.drawXYDonut(g, container);
 			}
+			
 		}
-
+	}
+	
+	private void drawPaddles(Graphics g, IContainer container) {
+		Collection<TOFLayer> tofLayers = AlertGeometry.getAllTOFLayers();
+		
+		for (TOFLayer tof : tofLayers) {
+			if (tof.numPaddles >  0) {
+				tof.drawAllPaddles(g, container);
+			}
+			
+		}
+		
 	}
 
 	/**
@@ -167,21 +167,7 @@ public class AlertXYView extends CedXYView {
 
 		basicFeedback(container, pp, wp, "mm", feedbackStrings);
 
-		DCLayer[][][] dcLayers = AlertGeometry.dcLayers;
-
-		for (int sect = 0; sect < AlertGeometry.DC_NUM_SECT; sect++) {
-			for (int supl = 0; supl < AlertGeometry.DC_NUM_SUPL; supl++) {
-				for (int lay = 0; lay < AlertGeometry.DC_NUM_LAY; lay++) {
-					DCLayer dcl = dcLayers[sect][supl][lay];
-
-					if (dcl.containsXY(wp)) {
-						dcl.feedbackXYString(pp, wp, feedbackStrings);
-						break;
-					}
-				}
-			}
-		}
-
+		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
 
 		// anchor (urhere) feedback?
 		YouAreHereItem item = getContainer().getYouAreHereItem();
@@ -191,7 +177,21 @@ public class AlertXYView extends CedXYView {
 			feedbackStrings.add(dstr);
 		}
 
+		for (DCLayer dcl : dcLayers) {
+			if (dcl.containsXY(wp)) {
+				dcl.feedbackXYString(pp, wp, feedbackStrings);
+				return;
+			}
+		}
 
+		Collection<TOFLayer> tofLayers = AlertGeometry.getAllTOFLayers();
+
+		for (TOFLayer tof : tofLayers) {
+			if (tof.feedbackXYString(pp, wp, feedbackStrings)) {
+				return;
+			}
+
+		}
 	}
 
 }

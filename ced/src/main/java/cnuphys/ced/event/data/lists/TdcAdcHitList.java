@@ -1,11 +1,12 @@
-package cnuphys.ced.event.data;
+package cnuphys.ced.event.data.lists;
 
 import java.awt.Color;
 import java.util.Collections;
 import java.util.Vector;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.event.data.TdcAdcHit;
 
 public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
@@ -25,20 +26,15 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 		// step 1: basic list from left tdc
 		byte[] sector = ColumnData.getByteArray(tdcBankName + ".sector");
-		if ((sector != null) && (sector.length >= 1)) {
+		if (sector != null) {
 
-			int length = 0;
+			int length = sector.length;
 
 			byte[] layer = ColumnData.getByteArray(tdcBankName + ".layer");
 			short[] component = ColumnData.getShortArray(tdcBankName + ".component");
 			byte[] order = ColumnData.getByteArray(tdcBankName + ".order");
 			int[] TDC = ColumnData.getIntArray(tdcBankName + ".TDC");
 
-			length = checkArrays(sector, layer, component, order, TDC);
-			if (length < 0) {
-				Log.getInstance().warning("[" + tdcBankName + "] " + _error);
-				return;
-			}
 
 			// Step 1 build basic list
 			for (int index = 0; index < length; index++) {
@@ -63,59 +59,40 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 		} // end sector not null tdc
 
 		// on to the adcs
-		int[] ADC = null;
-		short[] ped = null;
-		float[] time = null;
-
 		sector = ColumnData.getByteArray(adcBankName + ".sector");
-		if ((sector == null) || (sector.length < 1)) {
-			return;
-		}
-		byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
-		short[] component = ColumnData.getShortArray(adcBankName + ".component");
-		byte[] order = ColumnData.getByteArray(adcBankName + ".order");
-		ADC = ColumnData.getIntArray(adcBankName + ".ADC");
-		ped = ColumnData.getShortArray(adcBankName + ".ped");
-		time = ColumnData.getFloatArray(adcBankName + ".time");
 
-		int length = checkArrays(sector, layer, component, order, ADC);
-		if (length < 0) {
-			Log.getInstance().warning("[" + adcBankName + "] " + _error);
-			return;
-		}
-		// check more
-		int clen = checkArrays(length, ped, time);
-		if (clen < 0) {
-			Log.getInstance().warning("[" + adcBankName + "] " + _error);
-			return;
-		}
+		if (sector != null) {
 
-		// Step 4 merge left adc, ped, and time
-		for (int index = 0; index < length; index++) {
-			if (order[index] == 0) { // left adc
-				modifyInsert(sector[index], layer[index], component[index], -1, -1, ADC[index], -1, ped[index], -1,
-						time[index], Float.NaN, order[index]);
+			int length = sector.length;
+			byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
+			short[] component = ColumnData.getShortArray(adcBankName + ".component");
+			byte[] order = ColumnData.getByteArray(adcBankName + ".order");
+			int[] ADC = ColumnData.getIntArray(adcBankName + ".ADC");
+			short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
+			float[] time = ColumnData.getFloatArray(adcBankName + ".time");
+
+			// Step 4 merge left adc, ped, and time
+			for (int index = 0; index < length; index++) {
+				if (order[index] == 0) { // left adc
+					modifyInsert(sector[index], layer[index], component[index], -1, -1, ADC[index], -1, ped[index], -1,
+							time[index], Float.NaN, order[index]);
+				}
+			}
+
+			// step 5 merge in right adc, ped, and time
+			for (int index = 0; index < length; index++) {
+				if (order[index] == 1) { // right
+					modifyInsert(sector[index], layer[index], component[index], -1, -1, -1, ADC[index], -1, ped[index],
+							Float.NaN, time[index], order[index]);
+				}
+			}
+
+			_maxADC = -1;
+			for (TdcAdcHit hit : this) {
+				_maxADC = Math.max(_maxADC, hit.averageADC());
 			}
 		}
 
-		// step 5 merge in right adc, ped, and time
-		for (int index = 0; index < length; index++) {
-			if (order[index] == 1) { // right
-				modifyInsert(sector[index], layer[index], component[index], -1, -1, -1, ADC[index], -1, ped[index],
-						Float.NaN, time[index], order[index]);
-			}
-		}
-
-		_maxADC = -1;
-		for (TdcAdcHit hit : this) {
-			_maxADC = Math.max(_maxADC, hit.averageADC());
-		}
-
-		// if (adcBankName.contains("ECAL")) {
-		// for (TdcAdcHit hit : this) {
-		// System.out.println(hit);
-		// }
-		// }
 
 	}
 
@@ -170,69 +147,6 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	}
 
-	// check arrays are not null and have same length
-	private int checkArrays(byte[] sector, byte[] layer, short[] component, byte[] order, int[] data) {
-		if ((sector == null) || (layer == null) || (component == null) || (order == null) || (data == null)) {
-			_error = "Unexpected null array when creating TdcAdcHitList: " + "sector = null: " + (sector == null)
-					+ " layer = null: " + (layer == null) + " component = null: " + (component == null)
-					+ " order = null: " + (order == null) + " data (tdc or adc) == null: " + (data == null);
-			return -1;
-		}
-
-		if (sector.length < 1) {
-			_error = "Sector array has 0 length when creating TdcAdcHitList";
-			return -1;
-		}
-
-		if (layer.length != sector.length) {
-			_error = "Sector length: " + sector.length + " does not match layer length: " + layer.length
-					+ " when creating TdcAdcHitList";
-			return -1;
-		}
-
-		if (component.length != sector.length) {
-			_error = "Sector length: " + sector.length + " does not match component length: " + component.length
-					+ " when creating TdcAdcHitList";
-			return -1;
-		}
-
-		if (order.length != sector.length) {
-			_error = "Sector length: " + sector.length + " does not match order length: " + order.length
-					+ " when creating TdcAdcHitList";
-			return -1;
-		}
-
-		if (data.length != sector.length) {
-			_error = "Sector length: " + sector.length + " does not match data (tdc or adc) length: " + data.length
-					+ " when creating TdcAdcHitList";
-			return -1;
-		}
-
-		return sector.length;
-	}
-
-	// check more arrays
-	private int checkArrays(int length, short[] ped, float[] time) {
-		if ((ped == null) || (time == null)) {
-			_error = "Unexpected null array when creating TdcAdcHitList: " + "ped = null: " + (ped == null)
-					+ " time = null: " + (time == null);
-			return -1;
-		}
-
-		if (ped.length != length) {
-			_error = "Expected length: " + length + " does not match ped length: " + ped.length
-					+ " when creating TdcAdcHitList";
-			return -1;
-		}
-
-		if (time.length != length) {
-			_error = "Expected length: " + length + " does not match time length: " + time.length
-					+ " when creating TdcAdcHitList";
-			return -1;
-		}
-
-		return length;
-	}
 
 	/**
 	 * Find the index of a hit

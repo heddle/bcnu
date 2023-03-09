@@ -1,6 +1,5 @@
 package cnuphys.ced.cedview.urwell;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -13,7 +12,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.item.HexSectorItem;
 
 public class UrWELLHexSectorItem extends HexSectorItem {
-	
+
 	private UrWELLXYView _view;
 
 	/**
@@ -26,7 +25,7 @@ public class UrWELLHexSectorItem extends HexSectorItem {
 		super(layer, view, sector);
 		_view = view;
 	}
-	
+
 	/**
 	 * Custom drawer for the item.
 	 *
@@ -40,7 +39,7 @@ public class UrWELLHexSectorItem extends HexSectorItem {
 		}
 
 		super.drawItem(g, container);
-		
+
 //		_view.drawStrips(g, container, _sector, 1, 1, Color.red);
 //		_view.drawStrips(g, container, _sector, 1, 2, Color.green);
 //		_view.drawStrips(g, container, _sector, 2, 1, Color.blue);

@@ -49,11 +49,7 @@ public class RecDrawer extends ECViewDrawer {
 		}
 
 		_currentEvent = _eventManager.getCurrentEvent();
-		if (_currentEvent == null) {
-			return true;
-		}
-
-		if (!_currentEvent.hasBank("REC::Calorimeter")) {
+		if ((_currentEvent == null) || !_currentEvent.hasBank("REC::Calorimeter")) {
 			return true;
 		}
 

@@ -24,6 +24,11 @@ import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")
 public class CNDXYPolygon extends Polygon {
+	
+	//work points
+	private Point2D.Double wp[] = new Point2D.Double[4];
+	private Point pp = new Point();
+
 
 	/**
 	 * The layer, 1..3
@@ -85,9 +90,6 @@ public class CNDXYPolygon extends Polygon {
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		reset();
-		Point pp = new Point();
-
-		Point2D.Double wp[] = new Point2D.Double[4];
 
 		for (int i = 0; i < 4; i++) {
 			// convert cm to mm

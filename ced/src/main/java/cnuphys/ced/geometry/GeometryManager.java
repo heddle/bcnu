@@ -69,7 +69,7 @@ public class GeometryManager {
 
 		// get the uRwell geometry
 		UrWELLGeometry.initialize();
-		
+
 		// get the alert geometry
 		AlertGeometry.initialize();
 

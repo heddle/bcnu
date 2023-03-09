@@ -1,10 +1,11 @@
-package cnuphys.ced.event.data;
+package cnuphys.ced.event.data.lists;
 
 import java.util.Collections;
 import java.util.Vector;
 
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.event.data.DCTdcHit;
 
 /**
  * This is the raw data for dc hits
