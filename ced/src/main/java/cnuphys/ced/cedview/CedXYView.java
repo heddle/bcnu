@@ -1,6 +1,7 @@
 package cnuphys.ced.cedview;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -225,6 +226,41 @@ public abstract class CedXYView extends CedView {
 				feedbackStrings);
 		double phi = Math.toDegrees(Math.atan2(worldPoint.y, worldPoint.x));
 		fbString("yellow", "phi " + DoubleFormat.doubleFormat(phi, 2) + UnicodeSupport.DEGREE, feedbackStrings);
+
+	}
+	
+	/**
+	 * Specialty method that draws text at the end of a line from the origin. Good for
+	 * labeling sectors in XY views
+	 * @param g the context
+	 * @param container the container
+	 * @param s the string
+	 * @param font the font
+	 * @param end the end point
+	 */
+	public static void drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Point2D.Double end) {
+		
+		double theta = Math.atan2(end.y, end.x);
+	
+		Point pend = new Point();
+		Point pext = new Point();
+		
+		container.worldToLocal(pend, end);
+		
+		g.setFont(font);
+		int fh = g.getFontMetrics().getHeight();
+		int sw = g.getFontMetrics().stringWidth(s);
+		
+		int dx = (int)(fh*Math.cos(theta));
+		int dy = (int)(fh*Math.sin(theta));
+		
+		pext.x = pend.x - dx - sw/2;
+		pext.y = pend.y - dy + fh/2;
+		
+		g.setColor(Color.white);
+		g.drawString(s, pext.x-1, pext.y-1);	
+		g.setColor(Color.black);
+		g.drawString(s, pext.x, pext.y);		
 
 	}
 

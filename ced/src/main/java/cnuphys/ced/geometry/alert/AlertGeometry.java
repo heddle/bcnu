@@ -1,6 +1,7 @@
 package cnuphys.ced.geometry.alert;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -18,8 +19,10 @@ import org.jlab.geom.detector.alert.ATOF.AlertTOFFactory;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.logging.DefaultLogger;
 
+import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.Fonts;
+import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.frame.Ced;
 
 public class AlertGeometry {
@@ -36,8 +39,6 @@ public class AlertGeometry {
 	//sector boundaries for XY view
 	//there are 1 sectors
 	public static Point2D.Double tofSectorXY[][] = new Point2D.Double[15][16];
-	public static Point2D.Double tofSectorLabelPoint[] = new Point2D.Double[15];
-	private static double sectorLabelOffsetXY[] = {4, 3, 3, 3, 3, 4, 6, 7, 8, 10, 10, 10, 10, 10, 9};
 	
 	private static Color[] sectFill = {new Color(255, 0, 0, 10), new Color(0, 255, 0, 10), new Color(0, 0, 255, 10)};
 
@@ -129,22 +130,15 @@ public class AlertGeometry {
 			tofSectorXY[sect][13] = getCorner(p6, 1);
 			tofSectorXY[sect][14] = getCorner(p7, 2);
 			tofSectorXY[sect][15] = getCorner(p7, 1);
-			
-			double x = tofSectorXY[sect][11].x;
-			double y = tofSectorXY[sect][11].y;
-			
-			double rad = Math.hypot(x, y);
-			double theta = Math.atan2(y, x);
-			
-			rad += sectorLabelOffsetXY[sect]; //mm
-			x = rad*Math.cos(theta);
-			y = rad*Math.sin(theta);
-			tofSectorLabelPoint[sect] = new Point2D.Double(x, y);
-
 		}
 
 	}
 	
+	/**
+	 * Draw the TOF sector outlines
+	 * @param g the graphics context
+	 * @param container the conyainer
+	 */
 	public static void drawTOFSectorOutlines(Graphics g, IContainer container) {
 		
 		Point pp =new Point();
@@ -163,14 +157,9 @@ public class AlertGeometry {
 			g.setColor(Color.black);
 			g.drawPolygon(poly);
 
-			
-			//draw a sect label
-			g.setColor(Color.gray);
-			String s = "" + (sect+1);
-			container.worldToLocal(pp, tofSectorLabelPoint[sect]);
-			FontMetrics fm = g.getFontMetrics(g.getFont());
-			int sw = fm.stringWidth(s);
-			g.drawString(s, pp.x - sw/2, pp.y - fm.getHeight()/2);
+			Point2D.Double anchor = tofSectorXY[sect][11];
+			//drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Color color, Point2D.Double end,  boolean rotateText)
+			CedXYView.drawTextAtLineEnd(g, container, "" + (sect+1), Fonts.hugeFont, anchor);
 		}
 		
 	}

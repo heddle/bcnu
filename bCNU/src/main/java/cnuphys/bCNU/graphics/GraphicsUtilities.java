@@ -1290,7 +1290,6 @@ public class GraphicsUtilities {
 	 * @param angleDegrees the angle of rotation in decimal degrees.
 	 */
 	public static void drawRotatedText(Graphics2D g, String s, Font font, int x, int y, double angleDegrees) {
-
 		drawRotatedText(g, s, font, x, y, 0, 0, angleDegrees);
 	}
 
