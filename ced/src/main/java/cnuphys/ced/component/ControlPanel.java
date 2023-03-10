@@ -240,10 +240,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 
 		// legend
-//		JPanel legend = null;
-//		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
-//			// legend = DrawingLegend.getLegendPanel(_view);
-//		}
+		JPanel legend = null;
+		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
+			legend = new DrawingLegend(_view);
+		}
 
 		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
 			_matchedBankPanel = new MatchedBankPanel(view);
@@ -269,9 +269,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			tabbedPane.add(phiSlider, "phi");
 		}
 
-//		if (legend != null) {
-//			tabbedPane.add(legend, "legend");
-//		}
+		if (legend != null) {
+			tabbedPane.add(legend, "legend");
+		}
 
 		if (magFieldPanel != null) {
 			tabbedPane.add(magFieldPanel, "field");

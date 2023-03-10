@@ -2,15 +2,19 @@ package cnuphys.ced.component;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.SymbolDraw;
@@ -30,177 +34,378 @@ import cnuphys.ced.frame.CedColors;
  * @author heddle
  *
  */
-public class DrawingLegend extends JComponent {
+public class DrawingLegend extends JPanel {
 
 	private static final int TRAJSIZE = 10;
 
 	private static final Font labelFont = new Font("SansSerif", Font.PLAIN, 9);
 
 	private static final Color bgColor = new Color(120, 120, 120);
+	
+	private static final int X = 10;
+	private static final int Y = 12;
 
 	// parent view
 	private BaseView _view;
-
-	/**
-	 * Set the parent view
-	 *
-	 * @param view the parent view
-	 */
-	public void setView(BaseView view) {
+	
+	public DrawingLegend(BaseView view) {
 		_view = view;
+		setLayout(new GridLayout(14, 2));
+		addLegendComponents();
 	}
-
-	/**
-	 * Get the parent view
-	 *
-	 * @return the parent view
-	 */
-	public BaseView getView() {
-		return _view;
-	}
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		Rectangle b = getBounds();
-		g.setColor(bgColor);
+		g.setColor(Color.black);
 		g.fillRect(0, 0, b.width, b.height);
+	}
 
-		Point pp = new Point();
-		// gemc hit
-		int yc = 8;
-		int x = 8;
-		pp.setLocation(x, yc);
-		DataDrawSupport.drawGemcHit(g, pp);
-		x += quickString(g, x + 6, yc, "GEMC Hit ") + 20;
-
-		// reconstructed hit
-		pp.setLocation(x, yc);
-		DataDrawSupport.drawReconHit(g, pp);
-		x = quickString(g, x + 6, yc, "Recon Hit ") + 20;
-		pp.setLocation(x, yc);
-		DataDrawSupport.drawReconCluster(g, pp);
-		x = quickString(g, x + 6, yc, "Recon Cluster ") + 20;
-
-		yc += 17;
-		x = 8;
-
-		// view dependent drawing
-		if (_view != null) {
-			if ((_view instanceof SectorView) || (_view instanceof DCXYView)) {
-				paintForwardViewLegend(g, x, yc);
+	
+	private void addLegendComponents() {
+		add(hitGEMC());
+		add(hitRecon());
+		add(clusterRecon());
+		add(crossHB());
+		add(crossTB());
+		add(crossHBAI());
+		add(crossTBAI());
+		add(crossFMT());
+		add(crossBST());
+		add(crossBMT());
+		add(docaTB());
+		add(trajPointRec());
+		add(p1PointRec());
+		add(hitStripMidpoint());
+		add(trackTB());
+		add(trackHB());
+		add(trackTBAI());
+		add(trackHBAI());
+		add(trackCVT());
+		add(segmentTB());
+		add(segmentHB());
+		add(segmentTBAI());
+		add(segmentHBAI());
+	}
+	
+	//GEMC hit
+	private LComp hitGEMC() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X, Y);
+				DataDrawSupport.drawGemcHit(g, pp);
+				quickString(g, X+6, Y, "GEMC Hit ");				
 			}
-
-			else if ((_view instanceof CentralXYView) || (_view instanceof CentralZView)) {
-				paintCentralViewLegend(g, x, yc);
+		};
+		return comp;
+	}
+	
+	//Recon hit
+	private LComp hitRecon() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X, Y);
+				DataDrawSupport.drawReconHit(g, pp);
+				quickString(g, X+6, Y, "Recon Hit ");				
 			}
-		}
+		};
+		return comp;
+	}
+	
+	//Recon cluster
+	private LComp clusterRecon() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X, Y);
+				DataDrawSupport.drawReconCluster(g, pp);
+				quickString(g, X+6, Y, "Recon Cluster ");				
+			}
+		};
+		return comp;
+	}
+	
+	//Hit based cross (regular)
+	private LComp crossHB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.HB_CROSS);
+			}
+		};
+		return comp;
+	}
+	
+	//Time based cross (regular)
+	private LComp crossTB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.TB_CROSS);
+			}
+		};
+		return comp;
+	}
+	
+	//Hit based cross (AI)
+	private LComp crossHBAI() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.AIHB_CROSS);
+			}
+		};
+		return comp;
+	}
+	
+	//Time based cross (AI)
+	private LComp crossTBAI() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.AITB_CROSS);
+			}
+		};
+		return comp;
+	}
+	
+	//FMT cross
+	private LComp crossFMT() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.FMT_CROSS);
+			}
+		};
+		return comp;
+	}
+	
+	private LComp crossBST() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.BST_CROSS);
+			}
+		};
+		return comp;
+	}
 
+	private LComp crossBMT() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCross(g, X, Y, DataDrawSupport.BMT_CROSS);
+			}
+		};
+		return comp;
+	}
+
+	
+	//Time based doca
+	private LComp docaTB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawCircle(g, X, Y, CedColors.docaTruthLine, "TB Doca");
+			}
+		};
+		return comp;
+	}
+
+	//Recon trajectory point
+	private LComp trajPointRec() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				paintRecTrajPoint(g, X, Y);
+			}
+		};
+		return comp;
 	}
 
 
-	private int paintRecTrajPoint(Graphics g, int x, int y) {
+	//p1 trajectory point
+	private LComp p1PointRec() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				paintP1TrajPoint(g, X, Y);
+			}
+		};
+		return comp;
+	}
+	
+	//hit strip midpoint
+	private LComp hitStripMidpoint() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				SymbolDraw.drawUpTriangle(g, X, Y, 4, X11Colors.getX11Color("Dark Green"),
+						X11Colors.getX11Color("Aquamarine"));
+
+				quickString(g, X + 12, Y, "Hit Strip Midpoint");
+			}
+		};
+		return comp;
+	}
+	
+	//hit based track
+	private LComp trackHB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawLine((Graphics2D)g, X, Y, CedColors.HB_COLOR, "Reg HB Track");
+			}
+		};
+		return comp;
+	}
+	
+	//time based track
+	private LComp trackTB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawLine((Graphics2D)g, X, Y, CedColors.TB_COLOR, "Reg TB Track");
+			}
+		};
+		return comp;
+	}
+	
+	//hit based AI track
+	private LComp trackHBAI() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawLine((Graphics2D)g, X, Y, CedColors.AIHB_COLOR, "AI HB Track");
+			}
+		};
+		return comp;
+	}
+	
+	//time based AI track
+	private LComp trackTBAI() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawLine((Graphics2D)g, X, Y, CedColors.AITB_COLOR, "AI TB Track");
+			}
+		};
+		return comp;
+	}
+
+
+	//cvt track
+	private LComp trackCVT() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawLine((Graphics2D)g, X, Y, CedColors.cvtTrackColor, "CVT Track");
+			}
+		};
+		return comp;
+	}
+	
+	//hit based segment
+	private LComp segmentHB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawSegLine((Graphics2D)g, X, Y, CedColors.hbSegmentLine, CedColors.HB_COLOR, "Reg HB Segment  ");
+			}
+		};
+		return comp;
+	}
+	
+	//time based segment
+	private LComp segmentTB() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawSegLine((Graphics2D)g, X, Y, CedColors.hbSegmentLine, CedColors.TB_COLOR, "Reg HB Segment  ");
+			}
+		};
+		return comp;
+	}
+	
+	//hit based AI segment
+	private LComp segmentHBAI() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawSegLine((Graphics2D)g, X, Y, CedColors.hbSegmentLine, CedColors.AIHB_COLOR, "Reg HB Segment  ");
+			}
+		};
+		return comp;
+	}
+	
+	//time based AI segment
+	private LComp segmentTBAI() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				drawSegLine((Graphics2D)g, X, Y, CedColors.hbSegmentLine, CedColors.AITB_COLOR, "Reg HB Segment  ");
+			}
+		};
+		return comp;
+	}
+
+
+	private void paintRecTrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.black);
-
 		x += (TRAJSIZE + 4);
-		return quickString(g, x, y, "Rec Traj Pnt");
+		quickString(g, x, y, "Rec Traj Pnt");
 	}
 
-	private int paintP1TrajPoint(Graphics g, int x, int y) {
+	private void paintP1TrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.green);
-
 		x += (TRAJSIZE + 4);
-		return quickString(g, x, y, "P1 Traj Pnt");
+		quickString(g, x, y, "P1 Traj Pnt");
 	}
 
-	// paint the legend for the central 2D views
-	private void paintCentralViewLegend(Graphics g, int x, int yc) {
-		int xo = x;
-		Graphics2D g2 = (Graphics2D) g;
-		x = drawCross(g, x, yc, DataDrawSupport.BST_CROSS);
-		x = drawCross(g, x, yc, DataDrawSupport.BMT_CROSS);
-		x = paintRecTrajPoint(g, x, yc);
 
-		yc += 17;
-		x = xo;
-		x = paintP1TrajPoint(g, x, yc) + 12;
-		SymbolDraw.drawUpTriangle(g, x, yc, 3, X11Colors.getX11Color("Dark Green"),
-				X11Colors.getX11Color("Aquamarine"));
-
-		quickString(g, x + 12, yc, "Hit Strip Midpoint");
-
-		// tracks
-		yc += 17;
-		x = xo;
-		x = quickString(g, xo, yc, "Tracks   ");
-		x = drawLine(g2, x, yc, CedColors.HB_COLOR, "HB ");
-		x = drawLine(g2, x, yc, CedColors.TB_COLOR, "TB ");
-		x = drawLine(g2, x, yc, CedColors.cvtTrackColor, "CVT ");
-
-	}
-
-	// paint the legend for sector views
-	private void paintForwardViewLegend(Graphics g, int x, int yc) {
-
-		int xo = x;
-		Graphics2D g2 = (Graphics2D) g;
-		x = drawCross(g, x, yc, DataDrawSupport.HB_CROSS);
-		x = drawCross(g, x, yc, DataDrawSupport.TB_CROSS);
-
-		yc += 17;
-		x = xo;
-
-		x = drawCross(g, x, yc, DataDrawSupport.AIHB_CROSS);
-		x = drawCross(g, x, yc, DataDrawSupport.AITB_CROSS);
-
-		yc += 17;
-		x = xo;
-		x = drawCross(g, x, yc, DataDrawSupport.FMT_CROSS);
-		x = drawCircle(g, x, yc, CedColors.docaTruthLine, "TB Doca");
-		yc += 17;
-
-		// segment lines
-		x = xo;
-		x = drawSegLine(g2, x, yc, CedColors.hbSegmentLine, CedColors.HB_COLOR, "Reg HB Segment  ");
-		x = drawSegLine(g2, x, yc, CedColors.tbSegmentLine, CedColors.TB_COLOR, "Reg TB Segment");
-		yc += 17;
-		x = xo;
-		x = drawSegLine(g2, x, yc, CedColors.aihbSegmentLine, CedColors.AIHB_COLOR, "AI HB Segment");
-		x = drawSegLine(g2, x, yc, CedColors.aitbSegmentLine, CedColors.AITB_COLOR, "AI TB Segment");
-
-		// tracks
-		yc += 17;
-		x = xo;
-		x = drawLine(g2, x, yc, CedColors.HB_COLOR, "Reg HB Track ");
-		x = drawLine(g2, x, yc, CedColors.TB_COLOR, "Reg TB Track ");
-
-		yc += 17;
-		x = xo;
-		x = drawLine(g2, x, yc, CedColors.AIHB_COLOR, "AI HB Track ");
-		x = drawLine(g2, x, yc, CedColors.AITB_COLOR, "AI TB Track ");
-
-		yc += 17;
-		x = xo;
-		x = drawLine(g2, x, yc, CedColors.cvtTrackColor, "CVT Track ");
-
-
-	}
-
-	private int drawLine(Graphics2D g2, int x, int yc, Color lineColor, String str) {
+	private void drawLine(Graphics2D g2, int x, int yc, Color lineColor, String str) {
 		g2.setColor(CedColors.docaTruthFill);
 		g2.setStroke(GraphicsUtilities.getStroke(6f, LineStyle.SOLID));
 		g2.drawLine(x, yc, x + 26, yc);
 		g2.setColor(lineColor);
 		g2.setStroke(GraphicsUtilities.getStroke(2f, LineStyle.SOLID));
 		g2.drawLine(x, yc, x + 26, yc);
-
 		x += 36;
-		return quickString(g2, x, yc - 2, str) + 17;
+		quickString(g2, x, yc - 2, str);
 	}
 
 	//draw a segment
-	private int drawSegLine(Graphics2D g2, int x, int yc, Color lineColor, Color endColor, String str) {
+	private void drawSegLine(Graphics2D g2, int x, int yc, Color lineColor, Color endColor, String str) {
 		g2.setColor(CedColors.docaTruthFill);
 		g2.setStroke(GraphicsUtilities.getStroke(6f, LineStyle.SOLID));
 		g2.drawLine(x, yc, x + 30, yc);
@@ -211,45 +416,47 @@ public class DrawingLegend extends JComponent {
 		SymbolDraw.drawOval(g2, x, yc, 2, 2, endColor, endColor);
 		SymbolDraw.drawOval(g2, x + 30, yc, 2, 2, endColor, endColor);
 		x += 40;
-		return quickString(g2, x, yc - 2, str) + 17;
+		quickString(g2, x, yc - 2, str);
 	}
 
-	private int drawCross(Graphics g, int x, int y, int mode) {
+	private void drawCross(Graphics g, int x, int y, int mode) {
 		DataDrawSupport.drawCross(g, x, y, mode);
 
 		x += (2 * DataDrawSupport.CROSSHALF);
 		String s = DataDrawSupport.prefix[mode] + "cross";
-		return quickString(g, x, y, s) + 14;
+		quickString(g, x, y, s);
 	}
 
-	private int drawCircle(Graphics g, int x, int y, Color color, String s) {
+	private void drawCircle(Graphics g, int x, int y, Color color, String s) {
 		SymbolDraw.drawOval(g, x, y, DataDrawSupport.CROSSHALF, DataDrawSupport.CROSSHALF, color, Color.black);
 		x += (2 * DataDrawSupport.CROSSHALF);
-		return quickString(g, x, y, s) + 16;
+		quickString(g, x, y, s);
 	}
 
-	// draw a string, returns the x position plus the string width
-	private int quickString(Graphics g, int x, int yc, String s) {
+	// draw a string
+	private void quickString(Graphics g, int x, int yc, String s) {
 		FontMetrics fm = getFontMetrics(labelFont);
 		g.setColor(Color.black);
 		g.setFont(labelFont);
 		g.setColor(Color.white);
 		g.drawString(s, x, yc + fm.getAscent() / 2);
-		return x + fm.stringWidth(s);
 	}
 
-//	@Override
-//	public Dimension getPreferredSize() {
-//		return new Dimension(width, height);
-//	}
 
-	public static JPanel getLegendPanel(BaseView view) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout(2, 2));
-		DrawingLegend dleg = new DrawingLegend();
-		dleg.setView(view);
-		panel.add(dleg, BorderLayout.CENTER);
-		panel.setBorder(new CommonBorder("Symbology"));
-		return panel;
+	
+	private class LComp extends JComponent {
+		
+		public LComp() {
+			setBackground(bgColor);
+			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
+			setOpaque(true);
+		}
+		
+		@Override
+		public void paintComponent(Graphics g) {
+			Rectangle b = getBounds();
+			g.setColor(bgColor);
+			g.fillRect(0, 0, b.width, b.height);
+		}
 	}
 }
