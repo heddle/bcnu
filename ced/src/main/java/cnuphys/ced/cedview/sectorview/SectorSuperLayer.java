@@ -1,4 +1,4 @@
-package cnuphys.ced.item;
+package cnuphys.ced.cedview.sectorview;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,7 +11,6 @@ import org.jlab.geom.prim.Plane3D;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.ISuperLayer;
 import cnuphys.ced.common.SuperLayerDrawing;

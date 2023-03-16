@@ -1,4 +1,4 @@
-package cnuphys.ced.item;
+package cnuphys.ced.cedview.alldc;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -21,7 +21,6 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 //import cnuphys.ced.dcnoise.NoiseEventListener;
 //import cnuphys.ced.dcnoise.NoiseReductionParameters;

@@ -167,6 +167,14 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 		Insets def = super.getInsets();
 		return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
 	}
+	
+	/**
+	 * Is monochrome selected
+	 * @return true of monochrome is selected
+	 */
+	public boolean isMonochrome() {
+		return (_monoRB != null) && _monoRB.isSelected() ;
+	}
 
 	/**
 	 * Main program for testing

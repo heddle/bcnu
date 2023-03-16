@@ -5,11 +5,17 @@ import java.util.Collections;
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.lund.X11Colors;
 
 public class AdcHitList extends Vector<AdcHit> {
 
 	// for color scaling
 	private int _maxADC;
+	
+	//for 0 adc values
+	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
+	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
+
 
 	public AdcHitList(String adcBankName) {
 		super();
@@ -148,6 +154,37 @@ public class AdcHitList extends Vector<AdcHit> {
 	public AdcHit get(int sector, int layer, int component) {
 		return get((byte) sector, (byte) layer, (short) component);
 	}
+	
+	/**
+	 * Get a monochrome color with alpha based of relative adc
+	 *
+	 * @param hit    the hit
+	 * @param maxAdc the max adc value
+	 * @return a fill color for adc hits
+	 */
+	public Color adcMonochromeColor(TdcAdcHit hit, int maxAdc) {
+		if (hit == null) {
+			return Color.white;
+		}
+
+		int avgADC = hit.averageADC();
+		
+		if(avgADC < 1) {
+			return ASDZERO2;
+		}
+
+
+		double maxadc = Math.max(1.0, maxAdc);
+
+		double fract = (avgADC) / maxadc;
+		fract = Math.max(0, Math.min(1.0, fract));
+
+		int alpha = 128 + (int) (127 * fract);
+		alpha = Math.min(255, alpha);
+
+		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
+	}
+
 
 	/**
 	 * Get a color with apha based of relative adc
@@ -161,20 +198,19 @@ public class AdcHitList extends Vector<AdcHit> {
 		}
 
 		int avgADC = hit.averageADC();
+		
+		if(avgADC < 1) {
+			return ASDZERO1;
+		}
 
 		double maxadc = Math.max(1.0, _maxADC);
 
 		double fract = (avgADC) / maxadc;
-//		fract = Math.max(0.5, Math.min(1.0, fract));
 		fract = Math.max(0, Math.min(1.0, fract));
 
 		int alpha = 128 + (int) (127 * fract);
 		alpha = Math.min(255, alpha);
 
-//		System.err.println("AVG ADC: " + avgADC + "   fract: " + fract + "   maxADC: "  + _maxADC);
 		return AdcColorScale.getInstance().getAlphaColor(fract, alpha);
-//		int alpha = (int)(254*fract);
-//
-//		return new Color(255, 0, 0, alpha);
 	}
 }

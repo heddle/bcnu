@@ -75,7 +75,7 @@ public class UrWELLXYView extends HexView {
 
 	static {
 		double _xsize = 160;
-		double _ysize = 160 * 1.154734;
+		double _ysize = _xsize * 1.154734;
 
 		_defaultWorld = new Rectangle2D.Double(_xsize, -_ysize, -2 * _xsize, 2 * _ysize);
 

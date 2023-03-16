@@ -254,7 +254,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	 * @param bits controls what flags are added
 	 */
 	public DisplayArray(CedView view, int bits, int nc, int hgap) {
-		super(nc, hgap, 0);
+		super(nc, hgap, -2);
 		_view = view;
 
 		// innerouter?

@@ -42,6 +42,14 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 		}
 		return c;
 	}
+	
+	/**
+	 * String used for hashing to look for duplicates
+	 * @return hash string
+	 */
+	public String hash() {
+		return String.format("%d|%d|%d", sector, layer, component);
+	}
 
 	@Override
 	public boolean equals(Object obj) {

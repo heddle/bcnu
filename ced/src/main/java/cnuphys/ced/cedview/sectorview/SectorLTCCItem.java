@@ -1,4 +1,4 @@
-package cnuphys.ced.item;
+package cnuphys.ced.cedview.sectorview;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,7 +10,6 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;

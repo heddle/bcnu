@@ -47,6 +47,8 @@ public class ColorScaleModel {
 	private int _numberOfRows = 1;
 
 	private Color HOTCOLOR = Color.red;
+	
+	private ColorScaleModel _monochromeModel;
 
 	/**
 	 * This creates a ColorScaleModel for converting a value into a color. The
@@ -127,7 +129,25 @@ public class ColorScaleModel {
 	public Color getColor(double value) {
 		return getColor(value, false);
 	}
+	
+	public Color getMonochromeColor(double value) {
+		return getMonochromeColor(value, false);
+	}
 
+
+	/**
+	 * Get a monochrome color via getColor but add an alpha value
+	 * 
+	 * @param value the value
+	 * @param alpha the alpha value [0..255]
+	 * @return the color corresponding to the value.
+	 */
+	public Color getMonochromeAlphaColor(double value, int alpha) {
+		Color c = getMonochromeColor(value);
+		Color color = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
+		return color;
+	}
+	
 	/**
 	 * Get a color via getColor but add an alpha value
 	 * 
@@ -140,6 +160,7 @@ public class ColorScaleModel {
 		Color color = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
 		return color;
 	}
+
 
 	/**
 	 * Given a value, returns the corresponding color. Example:
@@ -215,6 +236,35 @@ public class ColorScaleModel {
 			return colors[index];
 		}
 	}
+	
+	/**
+	 * Given a value, returns the corresponding color. Example:
+	 * <p>
+	 * values: {0, 2, 4, 6, 8}
+	 * <p>
+	 * colors: {R, G, B, Y}
+	 * <p>
+	 * then
+	 * <p>
+	 * value = 1.77 -> R
+	 * <p>
+	 * value = -1 -> tooSmallColor
+	 * <p>
+	 * value = 8.01 -> tooBigColor
+	 * <p>
+	 * value = 4 (exactly) -> G
+	 * 
+	 * @param value                 the for which we want the color.
+	 * @param useColorInterpolation if <code>true</code>, use color interpolation.
+	 * @return the color corresponding to the value.
+	 */
+	public Color getMonochromeColor(double value, boolean useColorInterpolation) {
+		if (_monochromeModel == null) {
+			_monochromeModel = getMonochromeModel(this);
+		}
+		return _monochromeModel.getColor(value, useColorInterpolation);
+	}
+	
 
 	/**
 	 * Compute the fraction difference between two points, normalized to the full

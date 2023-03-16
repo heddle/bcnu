@@ -42,7 +42,6 @@ import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeometryManager;
-import cnuphys.ced.item.DCHexSectorItem;
 import cnuphys.ced.item.HexSectorItem;
 
 @SuppressWarnings("serial")

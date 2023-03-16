@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D.Double;
+import java.util.List;
 import java.awt.geom.Rectangle2D;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
@@ -30,6 +31,7 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.FTOFGeometry;
 
@@ -130,14 +132,12 @@ public class TOFView extends CedView implements ISector {
 		_detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
 
 		shells = new TOFShellItem[4];
-//		public TOFShellItem(LogicalLayer layer,
-//				double x0, double y0, String name, double width, double[] length) {
 
-		shells[FTOF_1A] = new TOFShellItem(_detectorLayer, this, FTOF_1A, 10, 270, "Panel 1A", 15.22,
+		shells[FTOF_1A] = new TOFShellItem(this, _detectorLayer, this, FTOF_1A, 10, 270, "Panel 1A", 15.22,
 				FTOFGeometry.getLengths(FTOF_1A));
-		shells[FTOF_1B] = new TOFShellItem(_detectorLayer, this, FTOF_1B, 320, 10, "Panel 1B", 6.09,
+		shells[FTOF_1B] = new TOFShellItem(this, _detectorLayer, this, FTOF_1B, 320, 10, "Panel 1B", 6.09,
 				FTOFGeometry.getLengths(FTOF_1B));
-		shells[FTOF_2] = new TOFShellItem(_detectorLayer, this, FTOF_2, 320, 400, "Panel 2", 6.09,
+		shells[FTOF_2] = new TOFShellItem(this, _detectorLayer, this, FTOF_2, 320, 400, "Panel 2", 6.09,
 				FTOFGeometry.getLengths(FTOF_2));
 
 		double ctoflengths[] = new double[48];
@@ -145,7 +145,7 @@ public class TOFView extends CedView implements ISector {
 		for (int i = 0; i < 48; i++) {
 			ctoflengths[i] = 200;
 		}
-		shells[ALL_CTOF] = new TOFShellItem(_detectorLayer, this, ALL_CTOF, 90, 10, "CTOF", 5.0, ctoflengths);
+		shells[ALL_CTOF] = new TOFShellItem(this, _detectorLayer, this, ALL_CTOF, 90, 10, "CTOF", 5.0, ctoflengths);
 
 	}
 
@@ -197,6 +197,9 @@ public class TOFView extends CedView implements ISector {
 				if (ClasIoEventManager.getInstance().isAccumulating()) {
 					return;
 				}
+				
+				clearTextArea("Info on this event\n");
+
 
 				if (isSingleEventMode()) {
 					drawSingleEventData(g, container);
@@ -213,6 +216,17 @@ public class TOFView extends CedView implements ISector {
 		// FTOF
 		TdcAdcHitList hits = FTOF.getInstance().getTdcAdcHits();
 		if ((hits != null) && !hits.isEmpty()) {
+			
+			// message out about duplicates
+			List<VanillaHit> occurances = hits.occurances;
+			for (VanillaHit vh : occurances) {
+				if (vh.occurances > 1) {
+					String s = "FTOF::adc " + vh + "\n";
+					appendToTextArea(s);
+				}
+			}
+
+
 
 			Rectangle rr = new Rectangle();
 			for (TdcAdcHit hit : hits) {
@@ -220,8 +234,16 @@ public class TOFView extends CedView implements ISector {
 					int layer0 = hit.layer - 1;
 					if ((layer0 >= 0) && (layer0 < 3)) {
 						shells[layer0].getStripRectangle(container, hit.component - 1, rr);
-						Color color = hits.adcColor(hit);
-						g.setColor(color);
+						
+						Color color;
+						if (getControlPanel().isMonochrome()) {
+							color = hits.adcMonochromeColor(hit);
+						}
+						else {
+							color = hits.adcColor(hit);
+						}
+						
+							g.setColor(color);
 						g.fillRect(rr.x, rr.y, rr.width, rr.height);
 						g.setColor(Color.black);
 						g.drawRect(rr.x, rr.y, rr.width, rr.height);

@@ -19,6 +19,7 @@ import cnuphys.bCNU.graphics.colorscale.ColorModelLegend;
 import cnuphys.bCNU.graphics.colorscale.ColorModelPanel;
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.graphics.component.CommonBorder;
+import cnuphys.bCNU.graphics.component.SimpleScrollableTextArea;
 import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -89,6 +90,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// control the nominal target z
 	private JSlider _targetSlider;
+	
+	// a text area for some messages
+	private SimpleScrollableTextArea _cpTextArea;
 
 	// control the value of phi
 	private JSlider _phiSlider;
@@ -182,6 +186,14 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	 */
 	public JTabbedPane getTabbedPane() {
 		return _tabbedPane;
+	}
+	
+	/**
+	 * Is monochrome selected?
+	 * @return true if monochrome selected
+	 */
+	public boolean isMonochrome() {
+		return (_colorPanel != null) && _colorPanel.isMonochrome();
 	}
 
 	// use a tabbed pane to save space
@@ -283,6 +295,8 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		return tabbedPane;
 	}
+	
+	
 
 	//create the panel that holds the display array
 	//and possibly other components
@@ -297,13 +311,22 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			_allDCDisplayPanel = new AllDCDisplayPanel(_view);
 			sp.add(_allDCDisplayPanel);
 		}
+		
+		//text area
+		_cpTextArea = new SimpleScrollableTextArea(10, 28);
+		sp.add(_cpTextArea.getScrollPane());
+		_cpTextArea.setFont(Fonts.tweenFont);
+		clearTextArea();
 
 		// accumulation
+		
+		
 		if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
 			_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
 					"Relative Accumulation or ADC Value", 10, _view.getMedianSetting(), true, true);
 
 			sp.add(_colorPanel);
+			
 		}
 
 		// adc threshold
@@ -311,6 +334,37 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			sp.add(createAdcThresholdSlider());
 		}
 		return sp;
+	}
+	
+	
+	/**
+	 * Clear the text area
+	 */
+	public void clearTextArea() {
+		if (_cpTextArea != null) {
+			_cpTextArea.setText("Watch for messages here.\n");
+		}
+	}
+	
+	/**
+	 * Clear the text area
+	 * @param a string at the top
+	 */
+	public void clearTextArea(String s) {
+		if (_cpTextArea != null) {
+			_cpTextArea.setText((s == null) ? "" : s);
+		}
+	}
+
+	
+	/**
+	 * Append to the text area
+	 * @param s the text to append
+	 */
+	public void appendToTextArea(String s) {
+		if (_cpTextArea != null) {
+			_cpTextArea.append(s);
+		}		
 	}
 
 //	/**

@@ -17,7 +17,6 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.ced.cedview.AWireGroupDrawer;
-import cnuphys.ced.item.AllDCSuperLayer;
 
 public abstract class AllDCWireGroupDrawer extends AWireGroupDrawer {
 

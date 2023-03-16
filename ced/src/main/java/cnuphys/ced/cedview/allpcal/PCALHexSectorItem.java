@@ -1,4 +1,4 @@
-package cnuphys.ced.item;
+package cnuphys.ced.cedview.allpcal;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -13,14 +13,15 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.cedview.allpcal.PCALView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.PCALGeometry;
+import cnuphys.ced.item.HexSectorItem;
 import cnuphys.splot.plot.X11Colors;
 
 public class PCALHexSectorItem extends HexSectorItem {
@@ -56,6 +57,8 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 
 		super.drawItem(g, container);
+		_pcalView.clearTextArea("Info on this event\n");
+
 
 		for (int stripType = 0; stripType < 3; stripType++) {
 			if (_pcalView.showStrips(stripType)) {
@@ -117,14 +120,34 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 		TdcAdcHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
+			
+			// message out about duplicates
+			List<VanillaHit> occurances = hits.occurances;
+			for (VanillaHit vh : occurances) {
+				if (vh.occurances > 1) {
+					String s = "ECAL::adc " + vh + "\n";
+					_pcalView.appendToTextArea(s);
+				}
+			}
+
 			for (TdcAdcHit hit : hits) {
 				if (hit != null) {
+					
+
 					try {
 						if ((hit.sector == getSector()) && (hit.layer < 4)) {
 							int view0 = hit.layer - 1; // uvw
 							int strip0 = hit.component - 1;
 							Polygon poly = stripPolygon(container, view0, strip0);
-							g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxPCALAdc()));
+							
+							//handle monochrome
+							boolean isMono = _pcalView.getControlPanel().isMonochrome();
+							if (isMono) {
+								g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
+							}
+							else {
+								g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
+							}
 							g.fillPolygon(poly);
 							g.drawPolygon(poly);
 

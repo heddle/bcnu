@@ -37,7 +37,6 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.geometry.GeoConstants;
-import cnuphys.ced.item.AllDCSuperLayer;
 
 /**
  * The AllDC view is a non-faithful representation of all six sectors of

@@ -56,11 +56,6 @@ import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.BeamLineItem;
 import cnuphys.ced.item.FTOFPanelItem;
 import cnuphys.ced.item.MagFieldItem;
-import cnuphys.ced.item.SectorECItem;
-import cnuphys.ced.item.SectorHTCCItem;
-import cnuphys.ced.item.SectorLTCCItem;
-import cnuphys.ced.item.SectorPCALItem;
-import cnuphys.ced.item.SectorSuperLayer;
 import cnuphys.magfield.FieldProbe;
 import cnuphys.magfield.MagneticFields;
 import cnuphys.splot.fit.FitType;
@@ -349,8 +344,8 @@ public class SectorView extends SliceView implements ChangeListener {
 		case SECTORS14:
 			for (int planeIndex = 0; planeIndex < 2; planeIndex++) {
 				for (int stripIndex = 0; stripIndex < 3; stripIndex++) {
-					new SectorECItem(detectorLayer, planeIndex, stripIndex, 1);
-					new SectorECItem(detectorLayer, planeIndex, stripIndex, 4);
+					new SectorECALItem(detectorLayer, planeIndex, stripIndex, 1);
+					new SectorECALItem(detectorLayer, planeIndex, stripIndex, 4);
 				}
 			}
 			break;
@@ -358,8 +353,8 @@ public class SectorView extends SliceView implements ChangeListener {
 		case SECTORS25:
 			for (int planeIndex = 0; planeIndex < 2; planeIndex++) {
 				for (int stripIndex = 0; stripIndex < 3; stripIndex++) {
-					new SectorECItem(detectorLayer, planeIndex, stripIndex, 2);
-					new SectorECItem(detectorLayer, planeIndex, stripIndex, 5);
+					new SectorECALItem(detectorLayer, planeIndex, stripIndex, 2);
+					new SectorECALItem(detectorLayer, planeIndex, stripIndex, 5);
 				}
 			}
 			break;
@@ -367,8 +362,8 @@ public class SectorView extends SliceView implements ChangeListener {
 		case SECTORS36:
 			for (int planeIndex = 0; planeIndex < 2; planeIndex++) {
 				for (int stripIndex = 0; stripIndex < 3; stripIndex++) {
-					new SectorECItem(detectorLayer, planeIndex, stripIndex, 3);
-					new SectorECItem(detectorLayer, planeIndex, stripIndex, 6);
+					new SectorECALItem(detectorLayer, planeIndex, stripIndex, 3);
+					new SectorECALItem(detectorLayer, planeIndex, stripIndex, 6);
 				}
 			}
 			break;
@@ -433,6 +428,9 @@ public class SectorView extends SliceView implements ChangeListener {
 					_wiresDirty = false;
 
 				}
+				
+				clearTextArea("Info on this event\n");
+
 			}
 
 		};

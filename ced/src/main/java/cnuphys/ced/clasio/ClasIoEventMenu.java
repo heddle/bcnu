@@ -68,10 +68,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 	/** Last selected data file */
 	private static String dataFilePath;
 
-//	public static String evioExtensions[] = { "evio", "ev", "evio.*"};
-
-//	private static FileNameExtensionFilter _evioEventFileFilter = new FileNameExtensionFilter(
-//			"Event Files", evioExtensions);
 
 	private static FileFilter _hipoEventFileFilter;
 
@@ -175,64 +171,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		return item;
 	}
 
-//	/**
-//	 * Get the menu item to open a HIPO event file
-//	 * @return the menu item to open an event file
-//	 */
-//	public static JMenuItem getOpenHipoEventFileItem() {
-//		final JMenuItem item = new JMenuItem("Open Hipo File...");
-//
-//		ActionListener al = new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				openHipoEventFile();
-//			}
-//
-//		};
-//		item.addActionListener(al);
-//		return item;
-//	}
-//
-//	/**
-//	 * Get the menu item to open an evio event file
-//	 * @return the menu item to open an event file
-//	 */
-//	public static JMenuItem getOpenEvioEventFileItem() {
-//		final JMenuItem item = new JMenuItem("Open Evio File...");
-//
-//		ActionListener al = new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				openEvioEventFile();
-//			}
-//
-//		};
-//		item.addActionListener(al);
-//		return item;
-//	}
-
-	/**
-	 * Get the menu item to connect to any DAQ ring
-	 *
-	 * @return the menu item to open any DAQ ring
-	 */
-//	public static JMenuItem getConnectAnyRingItem() {
-//		final JMenuItem item = new JMenuItem("Connect to Hipo Ring...");
-//		item.setIcon(ImageManager.getInstance().loadImageIcon("images/hipo2.png"));
-//
-//		ActionListener al = new ActionListener() {
-//
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				ClasIoEventManager.getInstance().ConnectToHipoRing();
-//			}
-//
-//		};
-//		item.addActionListener(al);
-//		return item;
-//	}
 
 	public static JMenuItem getConnectETItem() {
 		final JMenuItem item = new JMenuItem("Connect to ET Ring...");
@@ -501,6 +439,50 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		return sp;
 	}
 
+	/**
+	 * Auto select the auto event every two seconds. This is 
+	 * called after successful connection to an ET ring so that
+	 * shift takers don't have to remember to do it.
+	 */
+	public void autoCheckAuto() {
+		System.err.println("AUTO CHECK AUTO");
+		_periodEvent.setSelected(true);
+		fixState();
+		autoAction();
+	}
+	
+	//action when selected the auto event radio
+	private void autoAction() {
+		if (_periodEvent.isSelected()) {
+			if (_nextEventTimer == null) {
+
+				float period = Float.parseFloat(_periodTF.getText());
+				_period = Math.max(0.001f, Math.min(60f, period));
+
+				ActionListener nextAl = new ActionListener() {
+
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						// System.err.println("NEXT EVENT period = " + _period);
+						_eventManager.getNextEvent();
+					}
+
+				};
+
+				int delay = (int) (1000 * _period);
+				_nextEventTimer = new Timer(delay, nextAl);
+
+			}
+			if (!_nextEventTimer.isRunning()) {
+				_nextEventTimer.restart();
+			}
+		} else {
+			if (_nextEventTimer != null) {
+				_nextEventTimer.stop();
+			}
+		}
+		
+	}
 
 	// create the event every so many seconds widget
 	private JPanel createEventPeriodPanel() {
@@ -514,34 +496,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (_periodEvent.isSelected()) {
-					if (_nextEventTimer == null) {
-
-						float period = Float.parseFloat(_periodTF.getText());
-						_period = Math.max(0.001f, Math.min(60f, period));
-
-						ActionListener nextAl = new ActionListener() {
-
-							@Override
-							public void actionPerformed(ActionEvent e) {
-								// System.err.println("NEXT EVENT period = " + _period);
-								_eventManager.getNextEvent();
-							}
-
-						};
-
-						int delay = (int) (1000 * _period);
-						_nextEventTimer = new Timer(delay, nextAl);
-
-					}
-					if (!_nextEventTimer.isRunning()) {
-						_nextEventTimer.restart();
-					}
-				} else {
-					if (_nextEventTimer != null) {
-						_nextEventTimer.stop();
-					}
-				}
+				autoAction();
 			}
 
 		};

@@ -37,6 +37,7 @@ import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.graphics.DefinitionManager;
 import cnuphys.ced.alldata.graphics.PlotDialog;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.clasio.et.ConnectETDialog;
 import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.ECAL;
@@ -327,12 +328,7 @@ public class ClasIoEventManager {
 		notifyEventListeners(_currentHipoFile);
 		setEventSourceType(EventSourceType.HIPOFILE);
 
-		_runData.reset();
-		_currentEvent = null;
-		_prevIndexedEvent.reset();
-		_currentEventIndex = 0;
-		_prevEventBuffer.clear();
-		resetIndexMap();
+		reset();
 
 		// TODO check if I need to skip the first event
 
@@ -341,6 +337,17 @@ public class ClasIoEventManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	
+	//partial reset for new event source
+	private void reset() {
+		_runData.reset();
+		_currentEvent = null;
+		_prevIndexedEvent.reset();
+		_currentEventIndex = 0;
+		_prevEventBuffer.clear();
+		resetIndexMap();
 	}
 
 	/**
@@ -374,12 +381,7 @@ public class ClasIoEventManager {
 		notifyEventListeners(_currentEvioFile);
 		setEventSourceType(EventSourceType.EVIOFILE);
 
-		_runData.reset();
-		_currentEvent = null;
-		_prevIndexedEvent.reset();
-		_currentEventIndex = 0;
-		_prevEventBuffer.clear();
-		resetIndexMap();
+		reset();
 
 		// TODO check if I need to skip the first event
 
@@ -401,12 +403,8 @@ public class ClasIoEventManager {
 		_etDialog.setVisible(true);
 
 		if (_etDialog.reason() == DialogUtilities.OK_RESPONSE) {
-			_runData.reset();
-			_currentEvent = null;
-			_prevIndexedEvent.reset();
-			_currentEventIndex = 0;
-			_prevEventBuffer.clear();
-			resetIndexMap();
+			
+			reset();
 
 			_dataSource = null;
 			_currentMachine = _etDialog.getMachine();
@@ -437,6 +435,9 @@ public class ClasIoEventManager {
 				setEventSourceType(EventSourceType.ET);
 				Log.getInstance().info("Attempting to open EvioETSource.");
 				_dataSource.open(_currentETFile);
+				
+				//auto select events every 2 sec
+				Ced.getCed().getEventMenu().autoCheckAuto();
 			} catch (Exception e) {
 				String message = "Could not connect to ET Ring [" + e.getMessage() + "]";
 				Log.getInstance().error(message);

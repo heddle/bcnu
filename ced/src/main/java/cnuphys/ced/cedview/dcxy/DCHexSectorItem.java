@@ -1,4 +1,4 @@
-package cnuphys.ced.item;
+package cnuphys.ced.cedview.dcxy;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -12,9 +12,9 @@ import org.jlab.geom.prim.Point3D;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.DCGeometry;
+import cnuphys.ced.item.HexSectorItem;
 
 public class DCHexSectorItem extends HexSectorItem {
 

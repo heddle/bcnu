@@ -1,5 +1,7 @@
 package cnuphys.ced.cedview;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -263,6 +265,45 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_activeProbe = FieldProbe.factory();
 		}
 	}
+	
+	/**
+	 * Accessor for the control panel
+	 * @return the control panel
+	 */
+	public ControlPanel getControlPanel() {
+		return _controlPanel;
+	}
+	
+	/**
+	 * Clear the text area
+	 */
+	public void clearTextArea() {
+		if (_controlPanel != null) {
+			_controlPanel.clearTextArea();
+		}
+	}
+	
+	/**
+	 * Clear the text area
+	 * @param s text to appear at top
+	 */
+	public void clearTextArea(String s) {
+		if (_controlPanel != null) {
+			_controlPanel.clearTextArea(s);
+		}
+	}
+
+	
+	/**
+	 * Append to the text area
+	 * @param s the text to append
+	 */
+	public void appendToTextArea(String s) {
+		if (_controlPanel != null) {
+			_controlPanel.appendToTextArea(s);
+		}		
+	}
+
 
 	/**
 	 * Get banks of interest for matching banks
@@ -1257,6 +1298,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void newClasIoEvent(final DataEvent event) {
 		if (!_eventManager.isAccumulating()) {
+			clearTextArea();
 			getUserComponent().repaint();
 			fixTitle(event);
 			getContainer().redoFeedback();
@@ -1309,6 +1351,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 */
 	@Override
 	public void openedNewEventFile(final String path) {
+		clearTextArea();
 	}
 
 	/**
@@ -1318,6 +1361,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 */
 	@Override
 	public void changedEventSource(ClasIoEventManager.EventSourceType source) {
+		clearTextArea();
 	}
 
 	public Shape clipView(Graphics g) {
@@ -1333,13 +1377,17 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public void accumulationEvent(int reason) {
 		switch (reason) {
 		case AccumulationManager.ACCUMULATION_STARTED:
+			clearTextArea();
+			appendToTextArea("Accumulating...");
 			break;
 
 		case AccumulationManager.ACCUMULATION_CANCELLED:
+			appendToTextArea("Accumulation cancelled");
 			fixTitle(_eventManager.getCurrentEvent());
 			break;
 
 		case AccumulationManager.ACCUMULATION_FINISHED:
+			appendToTextArea("Accumulation finished");
 			fixTitle(_eventManager.getCurrentEvent());
 			break;
 		}
@@ -1539,6 +1587,42 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		PropertiesManager.getInstance().putAndWrite(propName, cssStr);
 
 	}
+	
+	/**
+	 * Specialty method that draws text at the end of a line from the origin. Good for
+	 * labeling sectors in XY views
+	 * @param g the context
+	 * @param container the container
+	 * @param s the string
+	 * @param font the font
+	 * @param end the end point
+	 */
+	public static void drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Point2D.Double end) {
+		
+		double theta = Math.atan2(end.y, end.x);
+	
+		Point pend = new Point();
+		Point pext = new Point();
+		
+		container.worldToLocal(pend, end);
+		
+		g.setFont(font);
+		int fh = g.getFontMetrics().getHeight();
+		int sw = g.getFontMetrics().stringWidth(s);
+		
+		int dx = (int)(fh*Math.cos(theta));
+		int dy = (int)(fh*Math.sin(theta));
+		
+		pext.x = pend.x - dx - sw/2;
+		pext.y = pend.y - dy + fh/2;
+		
+		g.setColor(Color.white);
+		g.drawString(s, pext.x-1, pext.y-1);	
+		g.setColor(Color.black);
+		g.drawString(s, pext.x, pext.y);		
+
+	}
+
 
 
 	/**

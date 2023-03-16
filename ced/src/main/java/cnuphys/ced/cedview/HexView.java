@@ -24,9 +24,10 @@ public abstract class HexView extends CedView {
 	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
 	private static final Color TRANS = new Color(192, 192, 192, 128);
 
-	// font for sector numbee label text
-	private static final Color TRANSTEXT = new Color(64, 64, 192, 40);
-	private static final Font _font = Fonts.commonFont(Font.BOLD, 48);
+	// font for sector number label text
+	protected static final Color TRANSTEXT = new Color(64, 64, 192, 40);
+	protected static final Font _font = Fonts.commonFont(Font.BOLD, 48);
+	protected static final Color TRANSTEXT2 = new Color(0, 0, 0, 30);
 
 
 

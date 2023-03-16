@@ -11,6 +11,7 @@ import java.util.List;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.common.ISector;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.FTOF;
@@ -23,7 +24,8 @@ public class TOFShellItem extends PolygonItem {
 	private static double DX = 2; // x border margin (cm)
 	private static double DY = 2; // y border margin (cm)
 
-	private static final Color _fillColor[] = { Color.white, X11Colors.getX11Color("alice blue") };
+	private static final Color _fillColor1[] = { Color.white, X11Colors.getX11Color("alice blue") };
+	private static final Color _fillColor2[] = { X11Colors.getX11Color("Moccasin"), X11Colors.getX11Color("Navajo White") };
 	private static final String _fbcolor = "$cyan$";
 
 	// offsets
@@ -44,11 +46,14 @@ public class TOFShellItem extends PolygonItem {
 
 	// 0,1,2,3 1A, 1B, 2, CTOF
 	private int _panel;
+	
+	private CedView _view;
 
-	public TOFShellItem(LogicalLayer layer, ISector isect, int panel, double x0, double y0, String name, double width,
+	public TOFShellItem(CedView view, LogicalLayer layer, ISector isect, int panel, double x0, double y0, String name, double width,
 			double[] length) {
 		super(layer, getPoints(x0, y0, width, length));
 
+		_view = view;
 		_sector = isect;
 		_panel = panel;
 		_x0 = x0;
@@ -76,10 +81,19 @@ public class TOFShellItem extends PolygonItem {
 
 		for (int i = 0; i < _length.length; i++) {
 			getStripRectangle(container, i, rr);
-			g.setColor(_fillColor[i % 2]);
-			g.fillRect(rr.x, rr.y, rr.width, rr.height);
-			g.setColor(Color.black);
-			g.drawRect(rr.x, rr.y, rr.width, rr.height);
+			
+			if (_view.getControlPanel().isMonochrome()) {
+				g.setColor(_fillColor2[i % 2]);
+				g.fillRect(rr.x, rr.y, rr.width, rr.height);
+				g.setColor(Color.blue);
+				g.drawRect(rr.x, rr.y, rr.width, rr.height);
+			}
+			else {
+				g.setColor(_fillColor1[i % 2]);
+				g.fillRect(rr.x, rr.y, rr.width, rr.height);
+				g.setColor(Color.black);
+				g.drawRect(rr.x, rr.y, rr.width, rr.height);
+			}
 		}
 
 	}

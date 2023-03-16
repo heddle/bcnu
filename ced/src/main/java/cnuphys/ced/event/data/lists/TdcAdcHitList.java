@@ -1,23 +1,36 @@
 package cnuphys.ced.event.data.lists;
 
 import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.VanillaHit;
+import cnuphys.lund.X11Colors;
 
 public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
-	// used to log erors
-	private String _error;
-
 	// for color scaling
 	private int _maxADC;
+	
+	//for tracking duplicates
+	public Vector<VanillaHit> occurances = new Vector<>();
+	
+	//for 0 adc values
+	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
+	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
+
+	public String tdcBankName;
+	public String adcBankName;
 
 	public TdcAdcHitList(String tdcBankName, String adcBankName) {
 		super();
+		
+		this.tdcBankName = tdcBankName;
+		this.adcBankName = adcBankName;
 
 		/*
 		 * 1) create basic list from the tdc bank and left tdc 2) sort 3) merge in right
@@ -28,6 +41,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 		byte[] sector = ColumnData.getByteArray(tdcBankName + ".sector");
 		if (sector != null) {
 
+			
 			int length = sector.length;
 
 			byte[] layer = ColumnData.getByteArray(tdcBankName + ".layer");
@@ -60,7 +74,8 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 		// on to the adcs
 		sector = ColumnData.getByteArray(adcBankName + ".sector");
-
+		
+	
 		if (sector != null) {
 
 			int length = sector.length;
@@ -71,6 +86,20 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 			short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
 			float[] time = ColumnData.getFloatArray(adcBankName + ".time");
 
+			//uses adcs to track duplicates
+			occurances.clear();
+			for (int index = 0; index < length; index++) {
+				VanillaHit vh = new VanillaHit(sector[index], layer[index], component[index], order[index]);
+				int idx = Collections.binarySearch(occurances, vh);
+				if (idx >= 0) { //found
+					occurances.elementAt(idx).occurances += 1;
+				}
+				else { //not found
+					idx = -(idx + 1);
+					occurances.add(idx, vh);
+				}
+			}
+			
 			// Step 4 merge left adc, ped, and time
 			for (int index = 0; index < length; index++) {
 				if (order[index] == 0) { // left adc
@@ -92,9 +121,8 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 				_maxADC = Math.max(_maxADC, hit.averageADC());
 			}
 		}
-
-
 	}
+	
 
 	/**
 	 * Get the max average adc
@@ -110,6 +138,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 		TdcAdcHit hit = new TdcAdcHit(sector, layer, component);
 		int index = Collections.binarySearch(this, hit);
 		if (index >= 0) {
+			// duplicate!!
 			hit = this.elementAt(index);
 		} else {
 			index = -(index + 1); // now the insertion point.
@@ -193,6 +222,17 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	public TdcAdcHit get(int sector, int layer, int component) {
 		return get((byte) sector, (byte) layer, (short) component);
 	}
+	
+	/**
+	 * Get a gray scale with apha based of relative adc
+	 *
+	 * @param hit the hit
+	 * @return a fill color for adc hits
+	 */
+	public Color adcMonochromeColor(TdcAdcHit hit) {
+		return adcMonochromeColor(hit, _maxADC);
+	}
+
 
 	/**
 	 * Get a color with apha based of relative adc
@@ -203,9 +243,40 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	public Color adcColor(TdcAdcHit hit) {
 		return adcColor(hit, _maxADC);
 	}
+	
 
 	/**
-	 * Get a color with apha based of relative adc
+	 * Get a monochrome color with alpha based of relative adc
+	 *
+	 * @param hit    the hit
+	 * @param maxAdc the max adc value
+	 * @return a fill color for adc hits
+	 */
+	public Color adcMonochromeColor(TdcAdcHit hit, int maxAdc) {
+		if (hit == null) {
+			return Color.white;
+		}
+
+		int avgADC = hit.averageADC();
+		
+		if(avgADC < 1) {
+			return ASDZERO2;
+		}
+
+
+		double maxadc = Math.max(1.0, maxAdc);
+
+		double fract = (avgADC) / maxadc;
+		fract = Math.max(0, Math.min(1.0, fract));
+
+		int alpha = 128 + (int) (127 * fract);
+		alpha = Math.min(255, alpha);
+
+		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
+	}
+
+	/**
+	 * Get a color with alpha based of relative adc
 	 *
 	 * @param hit    the hit
 	 * @param maxAdc the max adc value
@@ -217,6 +288,10 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 		}
 
 		int avgADC = hit.averageADC();
+		
+		if(avgADC < 1) {
+			return ASDZERO1;
+		}
 
 		double maxadc = Math.max(1.0, maxAdc);
 

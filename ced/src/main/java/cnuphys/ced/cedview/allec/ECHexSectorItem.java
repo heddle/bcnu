@@ -1,10 +1,11 @@
-package cnuphys.ced.item;
+package cnuphys.ced.cedview.allec;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
+import java.util.Hashtable;
 import java.util.List;
 
 import org.jlab.geom.prim.Point3D;
@@ -13,14 +14,16 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.TdcAdcHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
+import cnuphys.ced.item.HexSectorItem;
 import cnuphys.splot.plot.X11Colors;
 
 /**
@@ -35,7 +38,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	private ECView _ecView;
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
-
+	
 	/**
 	 * Get a hex sector item
 	 *
@@ -61,6 +64,8 @@ public class ECHexSectorItem extends HexSectorItem {
 		}
 
 		super.drawItem(g, container);
+		_ecView.clearTextArea("Info on this event\n");
+
 
 		boolean inner = _ecView.displayInner();
 		int plane = inner ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
@@ -127,8 +132,20 @@ public class ECHexSectorItem extends HexSectorItem {
 
 		TdcAdcHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
+			
+			// message out about duplicates
+			List<VanillaHit> occurances = hits.occurances;
+			for (VanillaHit vh : occurances) {
+				if (vh.occurances > 1) {
+					String s = "ECAL::adc " + vh + "\n";
+					_ecView.appendToTextArea(s);
+				}
+			}
+
 			for (TdcAdcHit hit : hits) {
+				
 				if (hit != null) {
+															
 					try {
 						if ((hit.sector == getSector()) && (hit.layer > 3)) {
 							int layer = hit.layer - 4; // 0..5
@@ -136,9 +153,20 @@ public class ECHexSectorItem extends HexSectorItem {
 							if (stack0 == plane) {
 								int view0 = layer % 3; // 012012
 								int strip0 = hit.component - 1;
+								
+								
 
 								Polygon poly = stripPolygon(container, plane, view0, strip0);
-								g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
+								
+								//handle monochrome
+								boolean isMono = _ecView.getControlPanel().isMonochrome();
+								if (isMono) {
+										g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
+								}
+								else {
+									g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
+								}
+																
 								g.fillPolygon(poly);
 								g.drawPolygon(poly);
 

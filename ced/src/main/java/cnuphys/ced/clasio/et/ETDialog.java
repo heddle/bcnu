@@ -1,4 +1,4 @@
-package cnuphys.ced.clasio;
+package cnuphys.ced.clasio.et;
 
 import java.awt.Component;
 import java.awt.FlowLayout;

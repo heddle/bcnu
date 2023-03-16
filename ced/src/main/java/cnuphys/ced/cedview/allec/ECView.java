@@ -27,7 +27,6 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayArray;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.ECGeometry;
-import cnuphys.ced.item.ECHexSectorItem;
 
 public class ECView extends HexView {
 
@@ -166,8 +165,13 @@ public class ECView extends HexView {
 					_recDrawer.draw(g, container);
 
 				} // not acumulating
+				
+				g.setColor(TRANSTEXT2);
+				g.setFont(_font);
+				g.drawString("ECAL", 5, g.getFontMetrics().getAscent());
 			}
 
+			
 		};
 
 		getContainer().setAfterDraw(afterDraw);

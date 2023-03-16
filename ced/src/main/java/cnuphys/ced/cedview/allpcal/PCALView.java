@@ -27,7 +27,6 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayArray;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.PCALGeometry;
-import cnuphys.ced.item.PCALHexSectorItem;
 
 public class PCALView extends HexView {
 
@@ -166,6 +165,10 @@ public class PCALView extends HexView {
 					_recDrawer.draw(g, container);
 
 				} // not acumulating
+				
+				g.setColor(TRANSTEXT2);
+				g.setFont(_font);
+				g.drawString("PCAL", 5, g.getFontMetrics().getAscent());
 			}
 
 		};
