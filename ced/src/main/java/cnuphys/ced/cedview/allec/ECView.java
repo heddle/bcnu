@@ -43,7 +43,7 @@ public class ECView extends HexView {
 	private McHitDrawer _mcHitDrawer;
 
 	// for drawing REC::Calorimeter data
-    private RecDrawer _recDrawer;
+    private ECRecDrawer _recDrawer;
 
 //	private static final double _xsize = 420.0;
 	private static final double _xsize = 430.0;
@@ -53,7 +53,10 @@ public class ECView extends HexView {
 			2 * _ysize);
 
 	//bank matches
-	private static String _defMatches[] = {"ECAL"};
+	private static String _defMatches[] = {"ECAL", "REC::Calorimeter"};
+	
+	//for highlighting when 
+	private int _recBankHighlightIndex = -1;
 
 
 	/**
@@ -68,7 +71,7 @@ public class ECView extends HexView {
 		_mcHitDrawer = new McHitDrawer(this);
 
 		// REC::Calorimeter drawer
-		_recDrawer = new RecDrawer(this);
+		_recDrawer = new ECRecDrawer(this);
 
 		setBeforeDraw();
 		setAfterDraw();
@@ -141,7 +144,6 @@ public class ECView extends HexView {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-
 			}
 
 		};
@@ -163,6 +165,11 @@ public class ECView extends HexView {
 
 					//draw REC::Calorimeter data
 					_recDrawer.draw(g, container);
+					
+					//hightlight?
+					if (_recBankHighlightIndex >= 0) {
+						_recDrawer.drawRecCal(g, container, _recBankHighlightIndex, true);
+					}
 
 				} // not acumulating
 				
@@ -186,7 +193,7 @@ public class ECView extends HexView {
 		props.put(PropertySupport.PROPNAME, "ECAL");
 
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.7);
+		Dimension d = GraphicsUtilities.screenFraction(0.67);
 
 		props.put(PropertySupport.WORLDSYSTEM, _defaultWorld);
 		props.put(PropertySupport.WIDTH, (int) (0.866 * d.height));
@@ -314,5 +321,33 @@ public class ECView extends HexView {
 		return view;
 
 	}
+	
+	/**
+	 * In the BankDataTable a row was selected.
+	 * @param bankName the name of the bank
+	 * @param index the 0-based index into the bank
+	 */
+	@Override
+	public void dataSelected(String bankName, int index) {
+		
+		if ("REC::Calorimeter".equals(bankName)) {
+			_recBankHighlightIndex = index;
+		}
+		
+		refresh();
+
+	}
+	
+	/**
+	 * Opened a new event file
+	 *
+	 * @param path the path to the new file
+	 */
+	@Override
+	public void openedNewEventFile(final String path) {
+		super.openedNewEventFile(path);
+		_recBankHighlightIndex = -1;
+	}
+
 
 }

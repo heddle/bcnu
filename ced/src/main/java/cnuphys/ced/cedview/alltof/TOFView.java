@@ -30,9 +30,9 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.VanillaHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.FTOFGeometry;
 
 public class TOFView extends CedView implements ISector {
@@ -105,7 +105,7 @@ public class TOFView extends CedView implements ISector {
 				X11Colors.getX11Color("Antique White"), PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CTOFFTOF",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
-		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY + ControlPanel.DRAWLEGEND
+		view._controlPanel = new ControlPanel(view, ControlPanel.DISPLAYARRAY 
 				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
 
@@ -197,9 +197,6 @@ public class TOFView extends CedView implements ISector {
 				if (ClasIoEventManager.getInstance().isAccumulating()) {
 					return;
 				}
-				
-				clearTextArea("Info on this event\n");
-
 
 				if (isSingleEventMode()) {
 					drawSingleEventData(g, container);
@@ -214,7 +211,7 @@ public class TOFView extends CedView implements ISector {
 
 	private void drawSingleEventData(Graphics g, IContainer container) {
 		// FTOF
-		TdcAdcHitList hits = FTOF.getInstance().getTdcAdcHits();
+		TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			
 			// message out about duplicates
@@ -229,7 +226,7 @@ public class TOFView extends CedView implements ISector {
 
 
 			Rectangle rr = new Rectangle();
-			for (TdcAdcHit hit : hits) {
+			for (TdcAdcTOFHit hit : hits) {
 				if ((hit != null) && (hit.sector == _sector)) {
 					int layer0 = hit.layer - 1;
 					if ((layer0 >= 0) && (layer0 < 3)) {
@@ -257,7 +254,7 @@ public class TOFView extends CedView implements ISector {
 		if ((hits != null) && !hits.isEmpty()) {
 
 			Rectangle rr = new Rectangle();
-			for (TdcAdcHit hit : hits) {
+			for (TdcAdcTOFHit hit : hits) {
 				if (hit != null) {
 					shells[ALL_CTOF].getStripRectangle(container, hit.component - 1, rr);
 					Color color = hits.adcColor(hit);

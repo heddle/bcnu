@@ -351,27 +351,19 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	public void getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double wp,
 			List<String> feedbackStrings) {
 
-		boolean haveEvent = false;
+		boolean haveEvent = (_eventManager.getCurrentEvent() != null);
 
 		EventSourceType estype = ClasIoEventManager.getInstance().getEventSourceType();
 		switch (estype) {
 		case HIPOFILE:
-//		case HIPORING:
 		case ET:
 		case EVIOFILE:
-			haveEvent = (_eventManager.getCurrentEvent() != null);
 			break;
 		}
 
 		// add some information about the current event
 		if (!haveEvent) {
 			feedbackStrings.add("$orange red$No event");
-		} else {
-			feedbackStrings.add("$orange red$" + "sequential event " + _eventManager.getSequentialEventNumber());
-
-			int trueEventNum = _eventManager.getTrueEventNumber();
-			feedbackStrings.add("$orange red$" + "true event " + ((trueEventNum < 0) ? "n/a" : trueEventNum ));
-			feedbackStrings.add("$orange red$" + _eventManager.getCurrentSourceDescription());
 		}
 
 

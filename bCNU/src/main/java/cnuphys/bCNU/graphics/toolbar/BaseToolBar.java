@@ -46,7 +46,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	public static final int MAGNIFYBUTTON = 010000;
 
 	public static final int NOZOOM = 020000;
-//	public static final int CLONEBUTTON = 040000;
+	public static final int CLONEBUTTON = 040000;
 
 	public static final int PANBUTTON = 0100000;
 	public static final int UNDOZOOMBUTTON = 0100000;
@@ -62,7 +62,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 			+ RADARCBUTTON + POLYLINEBUTTON;
 
 	public static final int EVERYTHING = 07777777777 & ~NOCAMERABUTTON & ~NOPRINTERBUTTON & ~NOZOOM;
-	public static final int STANDARD = EVERYTHING & ~CONTROLPANELBUTTON & ~USERCOMPONENT; // & ~CLONEBUTTON;
+	public static final int STANDARD = EVERYTHING & ~CONTROLPANELBUTTON & ~USERCOMPONENT & ~CLONEBUTTON;
 
 	public static final int NODRAWING = EVERYTHING & ~DRAWING;
 
@@ -230,9 +230,9 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 				_panButton = new PanButton(_container);
 			}
 
-//			if (Bits.checkBit(bits, CLONEBUTTON)) {
-//				_cloneButton = new CloneButton(_container);
-//			}
+			if (Bits.checkBit(bits, CLONEBUTTON)) {
+				_cloneButton = new CloneButton(_container);
+			}
 		}
 
 		if (notNothing && Bits.checkBit(bits, RANGEBUTTON)) {

@@ -15,8 +15,8 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.common.ISector;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.lund.X11Colors;
 
 public class TOFShellItem extends PolygonItem {
@@ -145,9 +145,9 @@ public class TOFShellItem extends PolygonItem {
 
 		// hit?
 
-		TdcAdcHit hit = null;
+		TdcAdcTOFHit hit = null;
 		if (_panel == TOFView.ALL_CTOF) {
-			TdcAdcHitList hits = CTOF.getInstance().getHits();
+			TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
 			if ((hits != null) && !hits.isEmpty()) {
 				hit = hits.get(0, 0, paddleId);
 				if (hit != null) {
@@ -156,7 +156,7 @@ public class TOFShellItem extends PolygonItem {
 				}
 			}
 		} else {
-			TdcAdcHitList hits = FTOF.getInstance().getTdcAdcHits();
+			TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
 			byte sect = (byte) _sector.getSector();
 			byte layer = (byte) (_panel + 1);
 			short paddle = (short) (paddleId);

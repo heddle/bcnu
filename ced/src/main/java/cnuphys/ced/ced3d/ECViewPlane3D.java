@@ -6,9 +6,11 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.bCNU.log.Log;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -69,12 +71,12 @@ public class ECViewPlane3D extends DetectorItem3D {
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
 
-		TdcAdcHitList hits = AllEC.getInstance().getHits();
+		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 
 			float coords[] = new float[24];
 
-			for (TdcAdcHit hit : hits) {
+			for (AdcECALHit hit : hits) {
 				if (hit != null) {
 					try {
 						if (hit.layer > 3) {

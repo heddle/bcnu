@@ -15,10 +15,12 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.VanillaHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.ced.item.HexSectorItem;
@@ -30,6 +32,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 	private PCALView _pcalView;
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
+	public static final Color transYellow = new Color(255, 255, 0, 200);
 
 	private static int[] _stripCounts = PCALGeometry.PCAL_NUMSTRIP; // u,v,w
 
@@ -57,7 +60,6 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 
 		super.drawItem(g, container);
-		_pcalView.clearTextArea("Info on this event\n");
 
 
 		for (int stripType = 0; stripType < 3; stripType++) {
@@ -70,9 +72,11 @@ public class PCALHexSectorItem extends HexSectorItem {
 					g.fillPolygon(poly);
 
 					// extension
-					poly = extensionPolygon(container, stripType, stripIndex, 1.0);
-					g.setColor(X11Colors.getX11Color("Antique White", 128));
-					g.fillPolygon(poly);
+					if (_pcalView.isSingleEventMode()) {
+						poly = extensionPolygon(container, stripType, stripIndex, 1.0);
+						g.setColor(X11Colors.getX11Color("Antique White", 64));
+						g.fillPolygon(poly);
+					}
 
 				}
 			}
@@ -98,9 +102,11 @@ public class PCALHexSectorItem extends HexSectorItem {
 					g.drawPolygon(poly);
 
 					// extension
-					poly = extensionPolygon(container, stripType, stripIndex, 1.0);
-					g.setColor(X11Colors.getX11Color("coral", 128));
-					g.drawPolygon(poly);
+					if (_pcalView.isSingleEventMode()) {
+						poly = extensionPolygon(container, stripType, stripIndex, 1.0);
+						g.setColor(X11Colors.getX11Color("coral", 128));
+						g.drawPolygon(poly);
+					}
 				}
 			}
 		}
@@ -114,28 +120,24 @@ public class PCALHexSectorItem extends HexSectorItem {
 			drawAccumulatedHits(g, container);
 		}
 	}
+	
+	//is this for this sector and PCAL, not ECAL
+	private boolean isThisPC(byte sector, byte layer) {
+		return (sector == getSector()) && (layer < 4);
+	}
+
 
 	// draw single event hit
 	private void drawSingleEvent(Graphics g, IContainer container) {
 
-		TdcAdcHitList hits = AllEC.getInstance().getHits();
+		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			
-			// message out about duplicates
-			List<VanillaHit> occurances = hits.occurances;
-			for (VanillaHit vh : occurances) {
-				if (vh.occurances > 1) {
-					String s = "ECAL::adc " + vh + "\n";
-					_pcalView.appendToTextArea(s);
-				}
-			}
-
-			for (TdcAdcHit hit : hits) {
+			for (AdcECALHit hit : hits) {
 				if (hit != null) {
 					
-
 					try {
-						if ((hit.sector == getSector()) && (hit.layer < 4)) {
+						if (isThisPC(hit.sector, hit.layer)) {
 							int view0 = hit.layer - 1; // uvw
 							int strip0 = hit.component - 1;
 							Polygon poly = stripPolygon(container, view0, strip0);
@@ -157,7 +159,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 							// extension
 							poly = extensionPolygon(container, view0, strip0, fract);
-							g.setColor(Color.yellow);
+							g.setColor(transYellow);
 							g.fillPolygon(poly);
 							g.setColor(X11Colors.getX11Color("dark red"));
 							g.drawPolygon(poly);
@@ -298,7 +300,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 			double fract) {
 
 		double gap = 1.;
-		double len = fract * 17;
+		double len = fract * 32;
 		stripWorldPolygon(stripType, stripIndex, work);
 
 		double d1 = work[1].distance(work[2]);
@@ -308,18 +310,11 @@ public class PCALHexSectorItem extends HexSectorItem {
 		double d2 = work[0].distance(work[3]);
 		double t3 = (1 + gap / d2);
 		double t4 = (1 + (gap + len) / d2);
-
-		if (stripType == PCALGeometry.PCAL_W) {
-			extendLine(work[2], work[1], extension[0], t1);
-			extendLine(work[2], work[1], extension[1], t2);
-			extendLine(work[3], work[0], extension[2], t4);
-			extendLine(work[3], work[0], extension[3], t3);
-		} else {
-			extendLine(work[1], work[2], extension[0], t1);
-			extendLine(work[1], work[2], extension[1], t2);
-			extendLine(work[0], work[3], extension[2], t4);
-			extendLine(work[0], work[3], extension[3], t3);
-		}
+		
+		extendLine(work[2], work[1], extension[0], t1);
+		extendLine(work[2], work[1], extension[1], t2);
+		extendLine(work[3], work[0], extension[2], t4);
+		extendLine(work[3], work[0], extension[3], t3);
 	}
 
 	/**
@@ -413,7 +408,6 @@ public class PCALHexSectorItem extends HexSectorItem {
 			feedbackStrings.add(sectRhoPhi);
 
 			// now add the strings
-			// if ((uvw[0] > 0) && (uvw[1] > 0) && (uvw[2] > 0)) {
 
 			String locStr = "$lime green$loc xyz " + point3DString(lp) + " cm";
 			feedbackStrings.add(locStr);
@@ -424,12 +418,13 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 				// any hits?
 
-				TdcAdcHitList hits = AllEC.getInstance().getHits();
+				AdcECALHitList hits = AllEC.getInstance().getHits();
 				if ((hits != null) && !hits.isEmpty()) {
 					for (int stype = 0; stype < 3; stype++) {
-						TdcAdcHit hit = hits.get(getSector(), stype + 1, uvw[stype]);
+						int component = uvw[stype];
+						AdcECALHit hit = hits.get(getSector(), stype + 1, component);
 						if (hit != null) {
-							hit.tdcAdcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
+							hit.adcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
 						}
 					}
 				}

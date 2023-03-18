@@ -27,7 +27,7 @@ import cnuphys.lund.LundId;
  * @author davidheddle
  *
  */
-public class RecDrawer extends ECViewDrawer {
+public class ECRecDrawer extends ECViewDrawer {
 
 	// the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
@@ -38,13 +38,13 @@ public class RecDrawer extends ECViewDrawer {
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
 
-	public RecDrawer(ECView view) {
+	public ECRecDrawer(ECView view) {
 		super(view);
 	}
 
 	// ignore drawing or feedback
 	private boolean ignore() {
-		if (!_view.showRecCal() || ClasIoEventManager.getInstance().isAccumulating()) {
+		if (!_view.showRecCal() || ClasIoEventManager.getInstance().isAccumulating()|| !_view.isSingleEventMode()) {
 			return true;
 		}
 
@@ -69,58 +69,77 @@ public class RecDrawer extends ECViewDrawer {
 			return;
 		}
 
+		for (int index = 0; index < recCal.count; index++) {
+			drawRecCal(g, container, index, false);
+		} 
+
+	}
+
+	/**
+	 * Draw a single RecCal "cluster"
+	 * @param g
+	 * @param container
+	 * @param index
+	 * @param highlight
+	 */
+	public void drawRecCal(Graphics g, IContainer container, int index, boolean highlight) {
+		if (ignore()) {
+			return;
+		}
+
+		RECCalorimeter recCal = RECCalorimeter.getInstance();
+		if (recCal.isEmpty()) {
+			return;
+		}
+		
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();
 
-		for (int i = 0; i < recCal.count; i++) {
+		if (recCal.layer[index] < 4) { // is it pcal?
+			return;
+		}
 
-			if (recCal.layer[i] < 4) { // is it pcal?
-				continue;
-			}
+		int plane = (recCal.layer[index] < 7) ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
 
-			int plane = (recCal.layer[i] < 7) ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
+		if (((plane == ECGeometry.EC_INNER) && !_view.displayInner()) || ((plane == ECGeometry.EC_OUTER) && _view.displayInner())) {
+			return;
+		}
 
-			if (((plane == ECGeometry.EC_INNER) && !_view.displayInner()) || ((plane == ECGeometry.EC_OUTER) && _view.displayInner())) {
-				continue;
-			}
+		Point3D clasP = new Point3D(recCal.x[index], recCal.y[index], recCal.z[index]);
+		Point3D localP = new Point3D();
+		ECGeometry.getTransformations(plane).clasToLocal(localP, clasP);
 
-			Point3D clasP = new Point3D(recCal.x[i], recCal.y[i], recCal.z[i]);
-			Point3D localP = new Point3D();
-			ECGeometry.getTransformations(plane).clasToLocal(localP, clasP);
+		localP.setZ(0);
 
-			localP.setZ(0);
+		// get the right item
+		_view.getHexSectorItem(recCal.sector[index]).ijkToScreen(container, localP, pp);
 
-			// get the right item
-			_view.getHexSectorItem(recCal.sector[i]).ijkToScreen(container, localP, pp);
-
-			SymbolDraw.drawDavid(g, pp.x, pp.y, 4, Color.black, Color.red);
+		SymbolDraw.drawDavid(g, pp.x, pp.y, highlight ? 5 : 4, Color.black, highlight ? Color.yellow : Color.red);
 
 
-			float radius = recCal.getRadius(recCal.energy[i]);
-			if (radius > 0) {
-				container.localToWorld(pp, wp);
-				wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
+		float radius = recCal.getRadius(recCal.energy[index]);
+		if (radius > 0) {
+			container.localToWorld(pp, wp);
+			wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
 
-				LundId lid = recCal.getLundId(i);
-				Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-
-
-				WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
-			}
+			LundId lid = recCal.getLundId(index);
+			Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
 
 
-			_fbData.add(new FBData(pp,
-					String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", recCal.x[i], recCal.y[i],
-							recCal.z[i]),
-					String.format("$magenta$REC layer %d", recCal.layer[i]),
-					String.format("$magenta$%s", recCal.getPIDStr(i)),
-					String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[i])));
+			WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, highlight ? Color.red : null);
+		}
 
-		} //for i
+
+		_fbData.add(new FBData(pp,
+				String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", recCal.x[index], recCal.y[index],
+						recCal.z[index]),
+				String.format("$magenta$REC layer %d", recCal.layer[index]),
+				String.format("$magenta$%s", recCal.getPIDStr(index)),
+				String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[index])));
 
 	}
-
+	
 	/**
 	 * Use what was drawn to generate feedback strings
 	 *

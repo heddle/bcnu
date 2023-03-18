@@ -46,10 +46,10 @@ import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
@@ -168,7 +168,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.DRAWLEGEND + ControlPanel.MATCHINGBANKSPANEL,
+						+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
 						+ DisplayBits.ADC_HITS + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
@@ -539,8 +539,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				for (int index = 0; index < 48; index++) {
 					if (_ctofPoly[index].contains(screenPoint)) {
 						int paddle = index + 1;
-						TdcAdcHit hit = null;
-						TdcAdcHitList hits = CTOF.getInstance().getHits();
+						TdcAdcTOFHit hit = null;
+						TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
 						if ((hits != null) && !hits.isEmpty()) {
 							hit = hits.get(0, 0, paddle);
 						}

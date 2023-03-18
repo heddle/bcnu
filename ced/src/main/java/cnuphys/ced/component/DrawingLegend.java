@@ -1,6 +1,5 @@
 package cnuphys.ced.component;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,14 +17,8 @@ import javax.swing.border.BevelBorder;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.SymbolDraw;
-import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.cedview.central.CentralXYView;
-import cnuphys.ced.cedview.central.CentralZView;
-import cnuphys.ced.cedview.dcxy.DCXYView;
-import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.frame.CedColors;
 
@@ -41,27 +34,33 @@ public class DrawingLegend extends JPanel {
 	private static final Font labelFont = new Font("SansSerif", Font.PLAIN, 9);
 
 	private static final Color bgColor = new Color(120, 120, 120);
-	
+
 	private static final int X = 10;
 	private static final int Y = 12;
-
-	// parent view
-	private BaseView _view;
 	
-	public DrawingLegend(BaseView view) {
-		_view = view;
-		setLayout(new GridLayout(14, 2));
+	private static final int numRow = 14;
+	private static final int numCol = 2;
+	
+	Dimension size = new Dimension(numCol * 150, numRow * 30);
+
+	public DrawingLegend() {
+		setLayout(new GridLayout(numRow, numCol));
 		addLegendComponents();
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		Rectangle b = getBounds();
 		g.setColor(Color.black);
 		g.fillRect(0, 0, b.width, b.height);
 	}
-
 	
+	@Override
+	public Dimension getPreferredSize() {
+		return size;
+	}
+
+
 	private void addLegendComponents() {
 		add(hitGEMC());
 		add(hitRecon());
@@ -87,7 +86,7 @@ public class DrawingLegend extends JPanel {
 		add(segmentTBAI());
 		add(segmentHBAI());
 	}
-	
+
 	//GEMC hit
 	private LComp hitGEMC() {
 		LComp comp = new LComp() {
@@ -97,12 +96,12 @@ public class DrawingLegend extends JPanel {
 				Point pp = new Point();
 				pp.setLocation(X, Y);
 				DataDrawSupport.drawGemcHit(g, pp);
-				quickString(g, X+6, Y, "GEMC Hit ");				
+				quickString(g, X+6, Y, "GEMC Hit ");
 			}
 		};
 		return comp;
 	}
-	
+
 	//Recon hit
 	private LComp hitRecon() {
 		LComp comp = new LComp() {
@@ -112,12 +111,12 @@ public class DrawingLegend extends JPanel {
 				Point pp = new Point();
 				pp.setLocation(X, Y);
 				DataDrawSupport.drawReconHit(g, pp);
-				quickString(g, X+6, Y, "Recon Hit ");				
+				quickString(g, X+6, Y, "Recon Hit ");
 			}
 		};
 		return comp;
 	}
-	
+
 	//Recon cluster
 	private LComp clusterRecon() {
 		LComp comp = new LComp() {
@@ -127,12 +126,12 @@ public class DrawingLegend extends JPanel {
 				Point pp = new Point();
 				pp.setLocation(X, Y);
 				DataDrawSupport.drawReconCluster(g, pp);
-				quickString(g, X+6, Y, "Recon Cluster ");				
+				quickString(g, X+6, Y, "Recon Cluster ");
 			}
 		};
 		return comp;
 	}
-	
+
 	//Hit based cross (regular)
 	private LComp crossHB() {
 		LComp comp = new LComp() {
@@ -144,7 +143,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Time based cross (regular)
 	private LComp crossTB() {
 		LComp comp = new LComp() {
@@ -156,7 +155,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Hit based cross (AI)
 	private LComp crossHBAI() {
 		LComp comp = new LComp() {
@@ -168,7 +167,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Time based cross (AI)
 	private LComp crossTBAI() {
 		LComp comp = new LComp() {
@@ -180,7 +179,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//FMT cross
 	private LComp crossFMT() {
 		LComp comp = new LComp() {
@@ -192,7 +191,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	private LComp crossBST() {
 		LComp comp = new LComp() {
 			@Override
@@ -215,7 +214,7 @@ public class DrawingLegend extends JPanel {
 		return comp;
 	}
 
-	
+
 	//Time based doca
 	private LComp docaTB() {
 		LComp comp = new LComp() {
@@ -252,7 +251,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//hit strip midpoint
 	private LComp hitStripMidpoint() {
 		LComp comp = new LComp() {
@@ -267,7 +266,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//hit based track
 	private LComp trackHB() {
 		LComp comp = new LComp() {
@@ -279,7 +278,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//time based track
 	private LComp trackTB() {
 		LComp comp = new LComp() {
@@ -291,7 +290,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//hit based AI track
 	private LComp trackHBAI() {
 		LComp comp = new LComp() {
@@ -303,7 +302,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//time based AI track
 	private LComp trackTBAI() {
 		LComp comp = new LComp() {
@@ -328,7 +327,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//hit based segment
 	private LComp segmentHB() {
 		LComp comp = new LComp() {
@@ -340,7 +339,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//time based segment
 	private LComp segmentTB() {
 		LComp comp = new LComp() {
@@ -352,7 +351,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//hit based AI segment
 	private LComp segmentHBAI() {
 		LComp comp = new LComp() {
@@ -364,7 +363,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//time based AI segment
 	private LComp segmentTBAI() {
 		LComp comp = new LComp() {
@@ -443,15 +442,15 @@ public class DrawingLegend extends JPanel {
 	}
 
 
-	
+
 	private class LComp extends JComponent {
-		
+
 		public LComp() {
 			setBackground(bgColor);
 			setBorder(BorderFactory.createBevelBorder(BevelBorder.LOWERED));
 			setOpaque(true);
 		}
-		
+
 		@Override
 		public void paintComponent(Graphics g) {
 			Rectangle b = getBounds();

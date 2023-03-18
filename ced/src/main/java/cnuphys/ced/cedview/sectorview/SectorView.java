@@ -202,7 +202,7 @@ public class SectorView extends SliceView implements ChangeListener {
 				PropertySupport.TITLE, title, PropertySupport.PROPNAME, propname, PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER + ControlPanel.DRAWLEGEND
+				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER 
 						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND + ControlPanel.TARGETSLIDER
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
@@ -429,8 +429,6 @@ public class SectorView extends SliceView implements ChangeListener {
 
 				}
 				
-				clearTextArea("Info on this event\n");
-
 			}
 
 		};

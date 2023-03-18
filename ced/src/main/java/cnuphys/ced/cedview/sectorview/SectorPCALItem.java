@@ -15,9 +15,11 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -147,10 +149,11 @@ public class SectorPCALItem extends PolygonItem {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
-		TdcAdcHitList hits = AllEC.getInstance().getHits();
+		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
-			for (TdcAdcHit hit : hits) {
+			for (AdcECALHit hit : hits) {
 				if (hit != null) {
+					
 					try {
 						if ((hit.sector == _sector) && (hit.layer == (_stripType + 1))) {
 							int strip0 = hit.component - 1;
@@ -261,11 +264,11 @@ public class SectorPCALItem extends PolygonItem {
 					feedbackStrings.add("$white$type " + _stripNames[_stripType] + " strip " + (stripId + 1));
 
 					// on a hit?
-					TdcAdcHitList hits = AllEC.getInstance().getHits();
+					AdcECALHitList hits = AllEC.getInstance().getHits();
 					if ((hits != null) && !hits.isEmpty()) {
-						TdcAdcHit hit = hits.get(_sector, _stripType + 1, stripId + 1);
+						AdcECALHit hit = hits.get(_sector, _stripType + 1, stripId + 1);
 						if (hit != null) {
-							hit.tdcAdcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
+							hit.adcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
 						}
 
 					}

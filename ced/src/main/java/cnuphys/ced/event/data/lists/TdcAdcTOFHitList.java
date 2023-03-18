@@ -6,12 +6,13 @@ import java.util.Collections;
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.AdcColorScale;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.lund.X11Colors;
 
-public class TdcAdcHitList extends Vector<TdcAdcHit> {
+public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 
 	// for color scaling
 	private int _maxADC;
@@ -26,7 +27,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	public String tdcBankName;
 	public String adcBankName;
 
-	public TdcAdcHitList(String tdcBankName, String adcBankName) {
+	public TdcAdcTOFHitList(String tdcBankName, String adcBankName) {
 		super();
 		
 		this.tdcBankName = tdcBankName;
@@ -90,6 +91,13 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 			occurances.clear();
 			for (int index = 0; index < length; index++) {
 				VanillaHit vh = new VanillaHit(sector[index], layer[index], component[index], order[index]);
+				if ((sector[index] == 5) && (layer[index] == 4) && (component[index] == 11)) {
+					if (adcBankName.contains("ECAL")) {
+						int cnum = ClasIoEventManager.getInstance().getSequentialEventNumber();
+						System.err.println(String.format("[ev: %d]  sect: %d   lay: %d   comp: %d   adc: %d", cnum, sector[index], layer[index], component[index], ADC[index]));
+					}
+				}
+				
 				int idx = Collections.binarySearch(occurances, vh);
 				if (idx >= 0) { //found
 					occurances.elementAt(idx).occurances += 1;
@@ -117,7 +125,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 			}
 
 			_maxADC = -1;
-			for (TdcAdcHit hit : this) {
+			for (TdcAdcTOFHit hit : this) {
 				_maxADC = Math.max(_maxADC, hit.averageADC());
 			}
 		}
@@ -135,7 +143,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 
 	public void modifyInsert(byte sector, byte layer, short component, int tdcL, int tdcR, int adcL, int adcR, int pedL,
 			int pedR, float timeL, float timeR, byte order) {
-		TdcAdcHit hit = new TdcAdcHit(sector, layer, component);
+		TdcAdcTOFHit hit = new TdcAdcTOFHit(sector, layer, component);
 		int index = Collections.binarySearch(this, hit);
 		if (index >= 0) {
 			// duplicate!!
@@ -189,7 +197,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 		if (isEmpty()) {
 			return -1;
 		}
-		TdcAdcHit hit = new TdcAdcHit(sector, layer, component);
+		TdcAdcTOFHit hit = new TdcAdcTOFHit(sector, layer, component);
 		int index = Collections.binarySearch(this, hit);
 		if (index >= 0) {
 			return index;
@@ -206,7 +214,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	 * @param component the 1-based component
 	 * @return the hit, or null if not found
 	 */
-	public TdcAdcHit get(byte sector, byte layer, short component) {
+	public TdcAdcTOFHit get(byte sector, byte layer, short component) {
 		int index = getIndex(sector, layer, component);
 		return (index < 0) ? null : elementAt(index);
 	}
@@ -219,7 +227,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	 * @param component the 1-based component
 	 * @return the hit, or null if not found
 	 */
-	public TdcAdcHit get(int sector, int layer, int component) {
+	public TdcAdcTOFHit get(int sector, int layer, int component) {
 		return get((byte) sector, (byte) layer, (short) component);
 	}
 	
@@ -229,7 +237,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	 * @param hit the hit
 	 * @return a fill color for adc hits
 	 */
-	public Color adcMonochromeColor(TdcAdcHit hit) {
+	public Color adcMonochromeColor(TdcAdcTOFHit hit) {
 		return adcMonochromeColor(hit, _maxADC);
 	}
 
@@ -240,7 +248,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	 * @param hit the hit
 	 * @return a fill color for adc hits
 	 */
-	public Color adcColor(TdcAdcHit hit) {
+	public Color adcColor(TdcAdcTOFHit hit) {
 		return adcColor(hit, _maxADC);
 	}
 	
@@ -252,7 +260,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	 * @param maxAdc the max adc value
 	 * @return a fill color for adc hits
 	 */
-	public Color adcMonochromeColor(TdcAdcHit hit, int maxAdc) {
+	public Color adcMonochromeColor(TdcAdcTOFHit hit, int maxAdc) {
 		if (hit == null) {
 			return Color.white;
 		}
@@ -282,7 +290,7 @@ public class TdcAdcHitList extends Vector<TdcAdcHit> {
 	 * @param maxAdc the max adc value
 	 * @return a fill color for adc hits
 	 */
-	public Color adcColor(TdcAdcHit hit, int maxAdc) {
+	public Color adcColor(TdcAdcTOFHit hit, int maxAdc) {
 		if (hit == null) {
 			return Color.white;
 		}

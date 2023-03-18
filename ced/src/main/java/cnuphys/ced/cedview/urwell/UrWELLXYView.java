@@ -108,7 +108,7 @@ public class UrWELLXYView extends HexView {
 
 		_controlPanel = new ControlPanel(this,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.DRAWLEGEND + ControlPanel.MATCHINGBANKSPANEL,
+						+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CLUSTERS +  DisplayBits.CROSSES + DisplayBits.RECPART
 						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
 						+ DisplayBits.GLOBAL_AITB +

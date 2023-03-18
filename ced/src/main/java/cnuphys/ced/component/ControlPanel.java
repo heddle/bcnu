@@ -52,9 +52,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	/** Bit used to create a torus legend */
 	public static final int FIELDLEGEND = 04;
 
-	/** Bit used to create a Lund particle legend */
-	public static final int DRAWLEGEND = 010;
-
 	/** Bit used to create a target slider */
 	public static final int TARGETSLIDER = 020;
 
@@ -251,11 +248,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			phiSlider = createPhiSlider(isBig);
 		}
 
-		// legend
-		JPanel legend = null;
-		if (Bits.checkBit(controlPanelBits, DRAWLEGEND)) {
-			legend = new DrawingLegend(_view);
-		}
 
 		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
 			_matchedBankPanel = new MatchedBankPanel(view);
@@ -279,10 +271,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (phiSlider != null) {
 			tabbedPane.add(phiSlider, "phi");
-		}
-
-		if (legend != null) {
-			tabbedPane.add(legend, "legend");
 		}
 
 		if (magFieldPanel != null) {
@@ -342,7 +330,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	 */
 	public void clearTextArea() {
 		if (_cpTextArea != null) {
-			_cpTextArea.setText("Watch for messages here.\n");
+			_cpTextArea.setText("");
 		}
 	}
 	

@@ -3,8 +3,8 @@ package cnuphys.ced.ced3d;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.FTOFGeometry;
 
 public class FTOFPanel3D extends DetectorItem3D {
@@ -63,10 +63,10 @@ public class FTOFPanel3D extends DetectorItem3D {
 	public void drawData(GLAutoDrawable drawable) {
 
 		// draw tdc adc hits
-		TdcAdcHitList hits = FTOF.getInstance().getTdcAdcHits();
+		TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
 		if (!hits.isEmpty()) {
 			byte layer = (byte) (_panelId + 1);
-			for (TdcAdcHit hit : hits) {
+			for (TdcAdcTOFHit hit : hits) {
 				if ((hit.sector == _sector) && (hit.layer == layer)) {
 					getPaddle(hit.component).drawPaddle(drawable, hits.adcColor(hit));
 				}

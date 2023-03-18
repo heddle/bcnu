@@ -4,7 +4,7 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.event.data.lists.ClusterList;
 import cnuphys.ced.event.data.lists.Hit1List;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 
 /**
  * static methods to centralize getting data arrays
@@ -22,7 +22,7 @@ public class FTOF extends DetectorData {
 	private static final String briefPNames[] = { "1A", "1B", "2" };
 
 	// tdc adc hit list
-	private TdcAdcHitList _tdcAdcHits = new TdcAdcHitList("FTOF::tdc", "FTOF::adc");
+	private TdcAdcTOFHitList _tdcAdcHits = new TdcAdcTOFHitList("FTOF::tdc", "FTOF::adc");
 
 	// reconstructed hit list
 	private Hit1List _hits;
@@ -64,7 +64,7 @@ public class FTOF extends DetectorData {
 	public void newClasIoEvent(DataEvent event) {
 		
 		_clusters.update();
-		_tdcAdcHits = new TdcAdcHitList("FTOF::tdc", "FTOF::adc");
+		_tdcAdcHits = new TdcAdcTOFHitList("FTOF::tdc", "FTOF::adc");
 		try {
 			_hits = new Hit1List("FTOF::hits");
 		} catch (EventDataException e) {
@@ -78,8 +78,8 @@ public class FTOF extends DetectorData {
 	 *
 	 * @return the update list
 	 */
-	public TdcAdcHitList updateTdcAdcList() {
-		_tdcAdcHits = new TdcAdcHitList("FTOF::tdc", "FTOF::adc");
+	public TdcAdcTOFHitList updateTdcAdcList() {
+		_tdcAdcHits = new TdcAdcTOFHitList("FTOF::tdc", "FTOF::adc");
 		return _tdcAdcHits;
 	}
 
@@ -132,7 +132,7 @@ public class FTOF extends DetectorData {
 	 *
 	 * @return the tdc adc hit list
 	 */
-	public TdcAdcHitList getTdcAdcHits() {
+	public TdcAdcTOFHitList getTdcAdcHits() {
 		return _tdcAdcHits;
 	}
 

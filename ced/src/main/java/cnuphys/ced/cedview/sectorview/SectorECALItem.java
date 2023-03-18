@@ -15,10 +15,12 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.VanillaHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.ECGeometry;
 
 public class SectorECALItem extends PolygonItem {
@@ -150,21 +152,12 @@ public class SectorECALItem extends PolygonItem {
 
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
-		TdcAdcHitList hits = AllEC.getInstance().getHits();
+		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			
-			// message out about duplicates
-			List<VanillaHit> occurances = hits.occurances;
-			for (VanillaHit vh : occurances) {
-				
-				if ((vh.occurances > 1) && (vh.sector == _sector)) {
-					String s = "ECAL::adc " + vh + "\n";
-					_view.appendToTextArea(s);
-				}
-			}
-
-			for (TdcAdcHit hit : hits) {
+			for (AdcECALHit hit : hits) {
 				if (hit != null) {
+					
 					try {
 						if (hit.sector == _sector) {
 							int layer = hit.layer - 4; // 0..5
@@ -283,14 +276,14 @@ public class SectorECALItem extends PolygonItem {
 							+ " strip " + (stripId + 1));
 
 					// on a hit?
-					TdcAdcHitList hits = AllEC.getInstance().getHits();
+					AdcECALHitList hits = AllEC.getInstance().getHits();
 					if ((hits != null) && !hits.isEmpty()) {
 
 						int layer = 4 + 3 * _plane + _stripType;
 
-						TdcAdcHit hit = hits.get(_sector, layer, stripId + 1);
+						AdcECALHit hit = hits.get(_sector, layer, stripId + 1);
 						if (hit != null) {
-							hit.tdcAdcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
+							hit.adcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
 						}
 
 					}

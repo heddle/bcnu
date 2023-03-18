@@ -3,11 +3,11 @@ package cnuphys.ced.event.data;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.event.data.lists.ClusterList;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 
 public class CTOF extends DetectorData {
 
-	TdcAdcHitList _tdcAdcHits = new TdcAdcHitList("CTOF::tdc", "CTOF::adc");
+	TdcAdcTOFHitList _tdcAdcHits = new TdcAdcTOFHitList("CTOF::tdc", "CTOF::adc");
 	
 	private ClusterList _clusters = new ClusterList("CTOF::clusters");
 
@@ -29,7 +29,7 @@ public class CTOF extends DetectorData {
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		_clusters.update();
-		_tdcAdcHits = new TdcAdcHitList("CTOF::tdc", "CTOF::adc");
+		_tdcAdcHits = new TdcAdcTOFHitList("CTOF::tdc", "CTOF::adc");
 	}
 
 	/**
@@ -37,8 +37,8 @@ public class CTOF extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public TdcAdcHitList updateTdcAdcList() {
-		_tdcAdcHits = new TdcAdcHitList("CTOF::tdc", "CTOF::adc");
+	public TdcAdcTOFHitList updateTdcAdcList() {
+		_tdcAdcHits = new TdcAdcTOFHitList("CTOF::tdc", "CTOF::adc");
 		return _tdcAdcHits;
 	}
 
@@ -47,7 +47,7 @@ public class CTOF extends DetectorData {
 	 *
 	 * @return the tdc adc hit list
 	 */
-	public TdcAdcHitList getHits() {
+	public TdcAdcTOFHitList getHits() {
 		return _tdcAdcHits;
 	}
 	

@@ -18,6 +18,7 @@ import cnuphys.bCNU.view.FBData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.frame.CedColors;
+import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.LundId;
 
@@ -26,7 +27,7 @@ import cnuphys.lund.LundId;
  * @author davidheddle
  *
  */
-public class RecDrawer extends PCALViewDrawer {
+public class PCALRecDrawer extends PCALViewDrawer {
 
 	// the event manager
 	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
@@ -38,13 +39,13 @@ public class RecDrawer extends PCALViewDrawer {
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
 
-	public RecDrawer(PCALView view) {
+	public PCALRecDrawer(PCALView view) {
 		super(view);
 	}
 
 	//ignore drawing or feedback
 	private boolean ignore() {
-		if (!_view.showRecCal() || ClasIoEventManager.getInstance().isAccumulating()) {
+		if (!_view.showRecCal() || ClasIoEventManager.getInstance().isAccumulating() || !_view.isSingleEventMode()) {
 			return true;
 		}
 
@@ -69,50 +70,71 @@ public class RecDrawer extends PCALViewDrawer {
 			return;
 		}
 
+		for (int index = 0; index < recCal.count; index++) {
+			drawRecCal(g, container, index, false);
+		}
+
+
+	}
+	
+
+	/**
+	 * Draw a single RecCal "cluster"
+	 * @param g
+	 * @param container
+	 * @param index
+	 * @param highlight
+	 */
+	public void drawRecCal(Graphics g, IContainer container, int index, boolean highlight) {
+		if (ignore()) {
+			return;
+		}
+
+		RECCalorimeter recCal = RECCalorimeter.getInstance();
+		if (recCal.isEmpty()) {
+			return;
+		}
+		
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();
 
-		for (int i = 0; i < recCal.count; i++) {
-
-			if (recCal.layer[i] > 3) {  //is it ecal rather than pcal?
-				continue;
-			}
-
-			Point3D clasP = new Point3D(recCal.x[i], recCal.y[i], recCal.z[i]);
-			Point3D localP = new Point3D();
-			PCALGeometry.getTransformations().clasToLocal(localP, clasP);
-
-			localP.setZ(0);
-
-			// get the right item
-			_view.getHexSectorItem(recCal.sector[i]).ijkToScreen(container, localP, pp);
+		if (recCal.layer[index] > 3) {  //is it ecal rather than pcal?
+			return;
+		}
 
 
-			SymbolDraw.drawDavid(g, pp.x, pp.y, 4, Color.black, Color.red);
+		Point3D clasP = new Point3D(recCal.x[index], recCal.y[index], recCal.z[index]);
+		Point3D localP = new Point3D();
+		PCALGeometry.getTransformations().clasToLocal(localP, clasP);
+
+		localP.setZ(0);
+
+		// get the right item
+		_view.getHexSectorItem(recCal.sector[index]).ijkToScreen(container, localP, pp);
+
+		SymbolDraw.drawDavid(g, pp.x, pp.y, highlight ? 5 : 4, Color.black, highlight ? Color.yellow : Color.red);
 
 
-			float radius = recCal.getRadius(recCal.energy[i]);
-			if (radius > 0) {
-				container.localToWorld(pp, wp);
-				wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
+		float radius = recCal.getRadius(recCal.energy[index]);
+		if (radius > 0) {
+			container.localToWorld(pp, wp);
+			wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
 
-				LundId lid = recCal.getLundId(i);
-				Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-
-
-				WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
-			}
+			LundId lid = recCal.getLundId(index);
+			Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
 
 
-			_fbData.add(new FBData(pp,
-					String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", recCal.x[i], recCal.y[i],
-							recCal.z[i]),
-					String.format("$magenta$REC layer %d", recCal.layer[i]),
-					String.format("$magenta$%s", recCal.getPIDStr(i)),
-					String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[i])));
-		} //for i
+			WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
+		}
 
+
+		_fbData.add(new FBData(pp,
+				String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", recCal.x[index], recCal.y[index],
+						recCal.z[index]),
+				String.format("$magenta$REC layer %d", recCal.layer[index]),
+				String.format("$magenta$%s", recCal.getPIDStr(index)),
+				String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[index])));
 
 	}
 

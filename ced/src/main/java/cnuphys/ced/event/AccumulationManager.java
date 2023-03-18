@@ -14,6 +14,7 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcHitList;
 import cnuphys.ced.event.data.AllEC;
@@ -28,10 +29,11 @@ import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.event.data.lists.RTPCHitList;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.FTOFGeometry;
@@ -669,15 +671,15 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumDC(dclist);
 
 		// ctof data
-		TdcAdcHitList ctoflist = CTOF.getInstance().updateTdcAdcList();
+		TdcAdcTOFHitList ctoflist = CTOF.getInstance().updateTdcAdcList();
 		accumCTOF(ctoflist);
 
 		// ftof data
-		TdcAdcHitList ftoflist = FTOF.getInstance().updateTdcAdcList();
+		TdcAdcTOFHitList ftoflist = FTOF.getInstance().updateTdcAdcList();
 		accumFTOF(ftoflist);
 
 		// all ec
-		TdcAdcHitList allEClist = AllEC.getInstance().updateTdcAdcList();
+		AdcECALHitList allEClist = AllEC.getInstance().updateAdcList();
 		accumAllEC(allEClist);
 
 		// BST
@@ -814,12 +816,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate all ec
-	private void accumAllEC(TdcAdcHitList list) {
+	private void accumAllEC(AdcECALHitList list) {
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
 
-		for (TdcAdcHit hit : list) {
+		for (AdcECALHit hit : list) {
 			if (hit != null) {
 				try {
 					int sect0 = hit.sector - 1;
@@ -870,13 +872,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// for ctof accumulating
-	private void accumCTOF(TdcAdcHitList list) {
+	private void accumCTOF(TdcAdcTOFHitList list) {
 
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
 
-		for (TdcAdcHit hit : list) {
+		for (TdcAdcTOFHit hit : list) {
 			if (hit != null) {
 				try {
 					_CTOFAccumulatedData[hit.component - 1] += 1;
@@ -890,13 +892,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// for ftof accumulating
-	private void accumFTOF(TdcAdcHitList list) {
+	private void accumFTOF(TdcAdcTOFHitList list) {
 
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
 
-		for (TdcAdcHit hit : list) {
+		for (TdcAdcTOFHit hit : list) {
 			if (hit != null) {
 				try {
 					int sect0 = hit.sector - 1;

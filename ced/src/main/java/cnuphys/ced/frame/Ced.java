@@ -69,6 +69,7 @@ import cnuphys.ced.clasio.ClasIoEventView;
 import cnuphys.ced.clasio.ClasIoMonteCarloView;
 import cnuphys.ced.clasio.ClasIoReconEventView;
 import cnuphys.ced.clasio.filter.FilterManager;
+import cnuphys.ced.component.DrawingLegendDialog;
 import cnuphys.ced.dcnoise.edit.NoiseParameterDialog;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AIDC;
@@ -126,7 +127,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.5.09";
+	private static final String _release = "1.5.1";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -135,7 +136,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private JMenuItem _eventCountLabel;
 
 	// using 3D?
-	private static boolean _use3D = false;
+	private static boolean _use3D = true;
 
 	// experimental version?
 	private static boolean _experimental;
@@ -322,20 +323,20 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_virtualView.moveTo(_centralZView, 2, VirtualView.UPPERRIGHT);
 
 		_virtualView.moveTo(_allDCView, 3);
-		_virtualView.moveTo(_pcalView, 4);
-		_virtualView.moveTo(_ecView, 5);
-		_virtualView.moveTo(_eventView, 6, VirtualView.CENTER);
+		_virtualView.moveTo(_pcalView, 4, VirtualView.CENTERRIGHT);
+		_virtualView.moveTo(_ecView, 4, VirtualView.CENTERLEFT);
+		_virtualView.moveTo(_eventView, 5, VirtualView.CENTER);
 
 		// note no constraint means "center"
-		_virtualView.moveTo(_dcXyView, 7);
+		_virtualView.moveTo(_dcXyView, 6);
 
-		_virtualView.moveTo(_rtpcView, 8);
-		_virtualView.moveTo(_urwellXyView, 9, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_tofView, 10, VirtualView.CENTER);
-		_virtualView.moveTo(_ftcalXyView, 11, VirtualView.CENTER);
+		_virtualView.moveTo(_rtpcView, 7);
+		_virtualView.moveTo(_urwellXyView, 8, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_tofView, 9, VirtualView.CENTER);
+		_virtualView.moveTo(_ftcalXyView, 10, VirtualView.CENTER);
 		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
 
-		_virtualView.moveTo(_alertXYView, 13, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
 
 
 
@@ -350,17 +351,13 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 //		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
 
 
-
-
-
-
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 14, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 15, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 15, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 14, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 16, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
 			}
 		}
 
@@ -427,7 +424,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// add a virtual view
 
-		int numVVCell = 14 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -895,6 +892,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		final JMenuItem memPlot = new JMenuItem("Memory Usage...");
 		final JMenuItem environ = new JMenuItem("Environment...");
+		final JMenuItem drawLeg = new JMenuItem("Drawing Symbology...");
 		ActionListener al = new ActionListener() {
 
 			@Override
@@ -917,32 +915,25 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 					_envDisplay.setText(Environment.getInstance().toString());
 					_envDisplay.setVisible(true);
 				}
+				
+				else if (source == drawLeg) {
+					DrawingLegendDialog.showDialog();
+				}
 
 			}
 
 		};
 		environ.addActionListener(al);
 		memPlot.addActionListener(al);
+		drawLeg.addActionListener(al);
 		omenu.add(environ);
 		omenu.add(memPlot);
+		omenu.add(drawLeg);
 
 		// define menu
 		omenu.addSeparator();
 		omenu.add(DefinitionManager.getInstance().getMenu());
 
-//		omenu.addSeparator();
-//
-//		ActionListener al2 = new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e) {
-//				refresh();
-//			}
-//		};
-//
-//		_oldBSTGeometry = new JCheckBoxMenuItem("Use old (four-region) BST"
-//				+ " Geometry", false);
-//		_oldBSTGeometry.addActionListener(al2);
-//		omenu.add(_oldBSTGeometry);
 	}
 
 	/**
@@ -1203,7 +1194,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		title += " [Coatjava " + getCoatJavaVersion() + "]";
 
-		title += ("  " + ClasIoEventManager.getInstance().getCurrentSourceDescription());
 		setTitle(title);
 	}
 
@@ -1436,7 +1426,8 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 					}
 				} else if (arg[i].contains("YES3D")) {
 					_use3D = true;
-					System.out.println("Trying 3D. If you get errors rerun without 3D");
+				} else if (arg[i].contains("NO3D")) {
+					_use3D = false;
 				} else if (arg[i].contains("EXP")) {
 					_experimental = true;
 					System.out.println("Note: This is an experimental version");

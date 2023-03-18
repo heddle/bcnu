@@ -66,7 +66,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	//name used for reading and writing properties
 	//can be different from title
 	protected String VIEWPROPNAME = "???";
-
+	
+	//to speed up by suppressing refreshes
+	public static boolean SUPPRESSREFRESH = false;
+	
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
@@ -126,9 +129,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * A string that has rho-phi using unicode greek characters for hex views
 	 */
 	public static final String rhoPhi = UnicodeSupport.SMALL_RHO + UnicodeSupport.THINSPACE + UnicodeSupport.SMALL_PHI;
-
-	//for appending event number to the titile
-	private static final String evnumAppend = "  (Seq Event# ";
 
 	/**
 	 * Name for the detector layer.
@@ -265,6 +265,16 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_activeProbe = FieldProbe.factory();
 		}
 	}
+	
+	/**
+	 * Suppress refresh to avoid unnecessary drawing.
+	 * USE CAUTIOUSLY!!
+	 * @param suppress if true, refreshes will be suppressed until set back
+	 */
+	public static void suppressRefresh(boolean suppress) {
+		SUPPRESSREFRESH = suppress;
+	}
+
 	
 	/**
 	 * Accessor for the control panel
@@ -1070,6 +1080,18 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		refresh();
 //		TimedRefreshManager.getInstance().add(this);
 	}
+	
+	/**
+	 * Refresh the view. Base implementation works only for container views.
+	 */
+	@Override
+	public void refresh() {
+		
+		if (SUPPRESSREFRESH) {
+			return;
+		}
+		super.refresh();
+	}
 
 	// we are hovering
 	protected void hovering(MouseEvent me) {
@@ -1154,7 +1176,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void getFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 
-		boolean haveEvent = false;
+		boolean haveEvent = (ClasIoEventManager.getInstance().getCurrentEvent() != null);
 
 		EventSourceType estype = ClasIoEventManager.getInstance().getEventSourceType();
 		switch (estype) {
@@ -1162,25 +1184,13 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 //		case HIPORING:
 		case ET:
 		case EVIOFILE:
-			haveEvent = (_eventManager.getCurrentEvent() != null);
 			break;
 		}
 
 		// add some information about the current event
 		if (!haveEvent) {
 			feedbackStrings.add("$orange red$No event");
-		} else {
-			feedbackStrings.add("$orange red$" + "sequential event " + _eventManager.getSequentialEventNumber());
-			int trueEventNum = _eventManager.getTrueEventNumber();
-			feedbackStrings.add("$orange red$" + "true event " + ((trueEventNum < 0) ? "n/a" : trueEventNum ));
-
-			String source = _eventManager.getCurrentSourceDescription();
-
-			if ((source != null) && (source.length() > 31)) {
-				source = source.substring(0, 30) + "...";
-			}
-			feedbackStrings.add("$orange red$" + source);
-		}
+		} 
 
 		// get the sector
 		int sector = getSector(container, pp, wp);
@@ -1299,36 +1309,12 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public void newClasIoEvent(final DataEvent event) {
 		if (!_eventManager.isAccumulating()) {
 			clearTextArea();
+			appendToTextArea(ClasIoEventManager.getInstance().currentInfoString());
 			getUserComponent().repaint();
-			fixTitle(event);
 			getContainer().redoFeedback();
 		}
 	}
 
-	/**
-	 * Fix the title of the view after an event arrives. The default is to append
-	 * the event number.
-	 *
-	 * @param event the new event
-	 */
-	protected void fixTitle(DataEvent event) {
-		String title = getTitle();
-		int index = title.indexOf(evnumAppend);
-		if (index > 0) {
-			title = title.substring(0, index);
-		}
-
-		int seqNum = _eventManager.getSequentialEventNumber();
-		int trueNum = _eventManager.getTrueEventNumber();
-		if (seqNum > 0) {
-			if (trueNum > 0) {
-				setTitle(title + evnumAppend + seqNum + "  True event# " + trueNum + ")");
-			}
-			else {
-			    setTitle(title + evnumAppend + seqNum + ")");
-			}
-		}
-	}
 	/**
 	 * Override getName to return the title of the view.
 	 *
@@ -1336,12 +1322,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 */
 	@Override
 	public String getName() {
-		String title = getTitle();
-		int index = title.indexOf(evnumAppend);
-		if (index > 0) {
-			title = title.substring(0, index);
-		}
-		return title;
+		return getTitle();
 	}
 
 	/**
@@ -1383,12 +1364,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 		case AccumulationManager.ACCUMULATION_CANCELLED:
 			appendToTextArea("Accumulation cancelled");
-			fixTitle(_eventManager.getCurrentEvent());
 			break;
 
 		case AccumulationManager.ACCUMULATION_FINISHED:
 			appendToTextArea("Accumulation finished");
-			fixTitle(_eventManager.getCurrentEvent());
 			break;
 		}
 	}

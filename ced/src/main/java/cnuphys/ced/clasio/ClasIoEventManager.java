@@ -130,6 +130,7 @@ public class ClasIoEventManager {
 	// the current evio event file
 	private File _currentEvioFile;
 
+	//for ET
 	private String _currentMachine;
 	private String _currentStation;
 
@@ -168,27 +169,36 @@ public class ClasIoEventManager {
 	 * Set the displayed event to the current event
 	 */
 	private void setCurrentEvent() {
+		
+		CedView.suppressRefresh(true);
+		
+		try {
 
-		if (_currentEvent != null) {
+			if (_currentEvent != null) {
 
-			if (isAccumulating()) {
-				AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
-				notifyAllDefinedPlots(_currentEvent);
+				if (isAccumulating()) {
+					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
+					notifyAllDefinedPlots(_currentEvent);
 
-				// notify special listeners
-				// the get events even if we are accumulating
-				// e.g., AddDCAccumView
-				for (IClasIoEventListener listener : _specialListeners) {
-					listener.newClasIoEvent(_currentEvent);
+					// notify special listeners
+					// the get events even if we are accumulating
+					// e.g., AddDCAccumView
+					for (IClasIoEventListener listener : _specialListeners) {
+						listener.newClasIoEvent(_currentEvent);
+					}
+
+				} else {
+					_runData.set(_currentEvent);
+					notifyEventListeners();
+					// notifyAllDefinedPlots(event);
 				}
-
-			} else {
-				_runData.set(_currentEvent);
-				notifyEventListeners();
-				// notifyAllDefinedPlots(event);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
+		CedView.suppressRefresh(false);
+		Ced.refresh();
 	}
 
 	/**
@@ -247,6 +257,49 @@ public class ClasIoEventManager {
 			instance = new ClasIoEventManager();
 		}
 		return instance;
+	}
+	
+	/**
+	 * Get info about the current event
+	 * 
+	 * @return
+	 */
+	public String currentInfoString() {
+		StringBuffer sb = new StringBuffer(256);
+
+		try {
+			if (_currentEvent != null) {
+				int seqNum = getSequentialEventNumber();
+				int trueNum = getTrueEventNumber();
+
+				sb.append("Event source: " + _sourceType.name() + "\n");
+
+				switch (_sourceType) {
+				case HIPOFILE:
+					sb.append("File:  " + _currentHipoFile.getPath() + "\n");
+					sb.append("Sequential number: " + seqNum + "\n");
+					sb.append("True number: " + trueNum + "\n");
+					break;
+
+				case ET:
+					sb.append("ET Machine: " + _currentMachine + "\n");
+					sb.append("ET Station: " + _currentStation + "\n");
+					break;
+
+				case EVIOFILE:
+					sb.append("File:  " + _currentEvioFile.getPath() + "\n");
+					sb.append("Sequential number: " + seqNum + "\n");
+					sb.append("True number: " + trueNum + "\n");
+					break;
+				}
+			} else {
+				sb.append("No event loaded./n");
+			}
+		} catch (Exception e) {
+			sb.append("Exception in currentInfoString: " + e.getMessage() + "/n");
+		}
+
+		return sb.toString();
 	}
 
 	/**

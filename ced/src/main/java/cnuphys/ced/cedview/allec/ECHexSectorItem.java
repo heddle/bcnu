@@ -17,10 +17,12 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.VanillaHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.HexSectorItem;
@@ -64,7 +66,6 @@ public class ECHexSectorItem extends HexSectorItem {
 		}
 
 		super.drawItem(g, container);
-		_ecView.clearTextArea("Info on this event\n");
 
 
 		boolean inner = _ecView.displayInner();
@@ -80,9 +81,11 @@ public class ECHexSectorItem extends HexSectorItem {
 					g.fillPolygon(poly);
 
 					// extension
-					poly = extensionPolygon(container, plane, stripType, stripIndex, 1.0);
-					g.setColor(X11Colors.getX11Color("Antique White", 128));
-					g.fillPolygon(poly);
+					if (_ecView.isSingleEventMode()) {
+						poly = extensionPolygon(container, plane, stripType, stripIndex, 1.0);
+						g.setColor(X11Colors.getX11Color("Antique White", 64));
+						g.fillPolygon(poly);
+					}
 
 				}
 			}
@@ -109,9 +112,11 @@ public class ECHexSectorItem extends HexSectorItem {
 					g.drawPolygon(poly);
 
 					// extension
-					poly = extensionPolygon(container, plane, stripType, stripIndex, 1.0);
-					g.setColor(X11Colors.getX11Color("coral", 128));
-					g.drawPolygon(poly);
+					if (_ecView.isSingleEventMode()) {
+						poly = extensionPolygon(container, plane, stripType, stripIndex, 1.0);
+						g.setColor(X11Colors.getX11Color("coral", 128));
+						g.drawPolygon(poly);
+					}
 
 				}
 			}
@@ -126,47 +131,40 @@ public class ECHexSectorItem extends HexSectorItem {
 			drawAccumulatedHits(g, container, plane);
 		}
 	}
+	
+	//is this for this sector and ECAL, not PCAL
+	private boolean isThisEC(byte sector, byte layer) {
+		return (sector == getSector()) && (layer > 3);
+	}
 
 	// draw single event hit
 	private void drawSingleEvent(Graphics g, IContainer container, int plane) {
 
-		TdcAdcHitList hits = AllEC.getInstance().getHits();
+		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			
-			// message out about duplicates
-			List<VanillaHit> occurances = hits.occurances;
-			for (VanillaHit vh : occurances) {
-				if (vh.occurances > 1) {
-					String s = "ECAL::adc " + vh + "\n";
-					_ecView.appendToTextArea(s);
-				}
-			}
-
-			for (TdcAdcHit hit : hits) {
+			for (AdcECALHit hit : hits) {
 				
 				if (hit != null) {
-															
+																				
 					try {
-						if ((hit.sector == getSector()) && (hit.layer > 3)) {
+						if (isThisEC(hit.sector, hit.layer)) {
 							int layer = hit.layer - 4; // 0..5
 							int stack0 = layer / 3; // 000,111
 							if (stack0 == plane) {
 								int view0 = layer % 3; // 012012
 								int strip0 = hit.component - 1;
-								
-								
 
 								Polygon poly = stripPolygon(container, plane, view0, strip0);
-								
-								//handle monochrome
+
+								// handle monochrome
 								boolean isMono = _ecView.getControlPanel().isMonochrome();
 								if (isMono) {
-										g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
-								}
-								else {
+									g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
+								} else {
 									g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
 								}
-																
+
 								g.fillPolygon(poly);
 								g.drawPolygon(poly);
 
@@ -175,10 +173,6 @@ public class ECHexSectorItem extends HexSectorItem {
 								int adcmax = Math.max(1, AllEC.getInstance().getMaxECALAdc());
 								double fract = ((double) hit.averageADC() / (double) adcmax);
 								fract = Math.max(0.15, Math.min(1.0, fract));
-
-								// System.err.println("sector: " + hit.sector + " layer: " + hit.layer + " avg
-								// ADC: " + hit.averageADC() + " " + " MAX: " +
-								// AllEC.getInstance().getMaxECALAdc() + " fract: " + fract);
 
 								poly = extensionPolygon(container, plane, view0, strip0, fract);
 								g.setColor(Color.yellow);
@@ -327,8 +321,8 @@ public class ECHexSectorItem extends HexSectorItem {
 			Point2D.Double extension[], double fract) {
 
 		double gap = 1.;
-//		double len = fract*13;
-		double len = fract * 20;
+;
+		double len = fract * 32;
 		stripWorldPolygon(plane, stripType, stripIndex, work);
 
 		double d1 = work[1].distance(work[2]);
@@ -339,23 +333,10 @@ public class ECHexSectorItem extends HexSectorItem {
 		double t3 = (1 + gap / d2);
 		double t4 = (1 + (gap + len) / d2);
 
-		extendLine(work[1], work[2], extension[0], t1);
-		extendLine(work[1], work[2], extension[1], t2);
-		extendLine(work[0], work[3], extension[2], t4);
-		extendLine(work[0], work[3], extension[3], t3);
-
-//		if (stripType == ECGeometry.EC_W) {
-//			extendLine(work[2], work[1], extension[0], t1);
-//			extendLine(work[2], work[1], extension[1], t2);
-//			extendLine(work[3], work[0], extension[2], t4);
-//			extendLine(work[3], work[0], extension[3], t3);
-//		}
-//		else {
-//			extendLine(work[1], work[2], extension[0], t1);
-//			extendLine(work[1], work[2], extension[1], t2);
-//			extendLine(work[0], work[3], extension[2], t4);
-//			extendLine(work[0], work[3], extension[3], t3);
-//		}
+		extendLine(work[2], work[1], extension[0], t1);
+		extendLine(work[2], work[1], extension[1], t2);
+		extendLine(work[3], work[0], extension[2], t4);
+		extendLine(work[3], work[0], extension[3], t3);
 	}
 
 	/**
@@ -456,52 +437,34 @@ public class ECHexSectorItem extends HexSectorItem {
 					(Math.toDegrees(sectPhi)));
 			feedbackStrings.add(sectRhoPhi);
 
+			// System.err.println(String.format("[%d, %d, %d]", uvw[0], uvw[1], uvw[2]));
+
 			// now add the strings
 			if ((uvw[0] > 0) && (uvw[1] > 0) && (uvw[2] > 0)) {
 
 				String locStr = "$lime green$loc xyz " + point3DString(lp) + " cm";
 				feedbackStrings.add(locStr);
 
-				if ((uvw[0] > 0) && (uvw[1] > 0) && (uvw[2] > 0)) {
-					String uvwStr = "$lime green$U V W [" + uvw[0] + ", " + uvw[1] + ", " + uvw[2] + "]";
-					feedbackStrings.add(uvwStr);
+				String uvwStr = "$lime green$U V W [" + uvw[0] + ", " + uvw[1] + ", " + uvw[2] + "]";
+				feedbackStrings.add(uvwStr);
 
-					int pixel = ECGeometry.pixelFromUVW(uvw[0], uvw[1], uvw[2]);
-					feedbackStrings.add("$lime green$pixel " + pixel);
+				int pixel = ECGeometry.pixelFromUVW(uvw[0], uvw[1], uvw[2]);
+				feedbackStrings.add("$lime green$pixel " + pixel);
 
-					TdcAdcHitList hits = AllEC.getInstance().getHits();
-					if ((hits != null) && !hits.isEmpty()) {
-						for (int stype = 0; stype < 3; stype++) {
-							int layer = 4 + 3 * plane + stype;
-							TdcAdcHit hit = hits.get(getSector(), layer, uvw[stype]);
-							if (hit != null) {
-								hit.tdcAdcFeedback(AllEC.layerNames[layer], "strip", feedbackStrings);
-							}
+				AdcECALHitList hits = AllEC.getInstance().getHits();
+				if ((hits != null) && !hits.isEmpty()) {
+					for (int stype = 0; stype < 3; stype++) {
+						int layer = 4 + 3 * plane + stype;
+						int component = uvw[stype];
+						
+						AdcECALHit hit = hits.get(getSector(), layer, component);
+						if (hit != null) {
+							hit.adcFeedback(AllEC.layerNames[layer], "strip", feedbackStrings);
 						}
 					}
 
 				}
 
-//				// any hits?
-//				if ((uvw[0] > 0) && (uvw[1] > 0) && (uvw[2] > 0)) {
-//					for (int stripType = 0; stripType < 3; stripType++) {
-//						if (_ecView.showStrips(stripType)) {
-//							Vector<HitRecord> hits = EC.matchingHits(getSector(), plane + 1,
-//											stripType + 1, uvw[stripType]);
-//
-//							if (hits != null) {
-//								for (HitRecord hit : hits) {
-//									EC.preliminaryFeedback(
-//											hit.hitIndex,
-//											feedbackStrings);
-//									DataSupport.truePidFeedback(EC.pid(),
-//											hit.hitIndex, feedbackStrings);
-//									EC.dgtzFeedback(hit.hitIndex, feedbackStrings);
-//								}
-//							}
-//						}
-//					}
-//				}
 			}
 		} // end contains
 
@@ -520,7 +483,7 @@ public class ECHexSectorItem extends HexSectorItem {
 				Polygon poly = stripPolygon(container, plane, stripType, stripIndex);
 
 				if ((poly != null) && (poly.contains(pp))) {
-					uvw[stripType] = stripIndex + 1;
+					uvw[stripType] = stripIndex + 1;  //should be a component now 1..36
 					break;
 				}
 			}

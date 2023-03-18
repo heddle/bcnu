@@ -813,11 +813,12 @@ public class VirtualView extends BaseView
 			dh = xf - x0;
 			dv = yf - y0;
 		} else if (constraint == CENTERLEFT) {
-			int xf = (int) (left + _SLOP);
+			int xf = (int) (left);
 			dh = xf - x0;
 		} else if (constraint == CENTERRIGHT) {
-			int xf = (int) (right - bounds.width - 2 * _SLOP);
+			int xf = (int) (right - bounds.width - _SLOP);
 			dh = xf - x0;
+			dv = -20;
 		}
 
 		view.offset(dh + delh, dv + delv);

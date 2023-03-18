@@ -212,12 +212,16 @@ public class ReconDrawer extends SectorViewDrawer {
 		}
 	}
 
-	private boolean clusterListFeedback(String prefix, ClusterList clusters, Point screenPoint, List<String> feedbackStrings) {
-		for (int index = 0; index < clusters.length; index++) {
-			if (_view.containsSector(clusters.sector[index])) {
-				if (clusters.contains(index, screenPoint)) {
-					clusters.getFeedbackStrings(prefix, index, feedbackStrings);
-					return true;
+	private boolean clusterListFeedback(String prefix, ClusterList clusters, Point screenPoint,
+			List<String> feedbackStrings) {
+
+		if (clusters != null) {
+			for (int index = 0; index < clusters.length; index++) {
+				if (_view.containsSector(clusters.sector[index])) {
+					if (clusters.contains(index, screenPoint)) {
+						clusters.getFeedbackStrings(prefix, index, feedbackStrings);
+						return true;
+					}
 				}
 			}
 		}

@@ -2,8 +2,9 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.ClusterList;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.AdcECALHitList;
 
 public class AllEC extends DetectorData {
 
@@ -35,7 +36,7 @@ public class AllEC extends DetectorData {
 //	bank name: [ECAL::tdc] column name: [sector] full name: [ECAL::tdc.sector] data type: byte
 
 	// tdc adc data
-	private TdcAdcHitList _tdcAdcHits = new TdcAdcHitList("ECAL::tdc", "ECAL::adc");
+	private AdcECALHitList _adcHits = new AdcECALHitList("ECAL::adc");
 
 	// clusters
 	private ClusterList _clusters = new ClusterList("ECAL::clusters");
@@ -49,7 +50,7 @@ public class AllEC extends DetectorData {
 	/**
 	 * Public access to the singleton
 	 *
-	 * @return the FTOF singleton
+	 * @return the FECAL singleton
 	 */
 	public static AllEC getInstance() {
 		if (_instance == null) {
@@ -75,7 +76,7 @@ public class AllEC extends DetectorData {
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		_clusters.update();
-		_tdcAdcHits = new TdcAdcHitList("ECAL::tdc", "ECAL::adc");
+		_adcHits = new AdcECALHitList("ECAL::adc");
 		computeADCMax();
 	}
 
@@ -84,8 +85,8 @@ public class AllEC extends DetectorData {
 		_maxPCALAdc = 0;
 		_maxECALAdc = 0;
 
-		if ((_tdcAdcHits != null) && !_tdcAdcHits.isEmpty()) {
-			for (TdcAdcHit hit : _tdcAdcHits) {
+		if ((_adcHits != null) && !_adcHits.isEmpty()) {
+			for (AdcECALHit hit : _adcHits) {
 				if (hit != null) {
 					if (hit.layer < 4) {
 						_maxPCALAdc = Math.max(_maxPCALAdc, hit.averageADC());
@@ -102,9 +103,9 @@ public class AllEC extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public TdcAdcHitList updateTdcAdcList() {
-		_tdcAdcHits = new TdcAdcHitList("ECAL::tdc", "ECAL::adc");
-		return _tdcAdcHits;
+	public AdcECALHitList updateAdcList() {
+		_adcHits = new AdcECALHitList("ECAL::adc");
+		return _adcHits;
 	}
 
 	/**
@@ -130,8 +131,8 @@ public class AllEC extends DetectorData {
 	 *
 	 * @return the tdc adc hit list
 	 */
-	public TdcAdcHitList getHits() {
-		return _tdcAdcHits;
+	public AdcECALHitList getHits() {
+		return _adcHits;
 	}
 
 	/**

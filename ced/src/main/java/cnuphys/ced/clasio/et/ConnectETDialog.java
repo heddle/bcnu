@@ -52,10 +52,9 @@ public class ConnectETDialog extends SimpleDialog {
 	}
 
 	/**
-	 * Override to create the component that goes in the center. Usually this is the
-	 * "main" component.
+	 * Override to create the component that goes in the west. 
 	 *
-	 * @return the component that is placed in the center
+	 * @return the component that is placed in the west
 	 */
 	@Override
 	protected Component createWestComponent() {

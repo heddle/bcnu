@@ -16,8 +16,8 @@ import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.FTOFGeometry;
 import cnuphys.ced.geometry.FTOFPanel;
 import cnuphys.ced.geometry.GeometryManager;
@@ -148,11 +148,11 @@ public class FTOFPanelItem extends PolygonItem {
 	private void drawSingleModeHits(Graphics g, IContainer container) {
 
 		// draw tdc adc hits
-		TdcAdcHitList hits = FTOF.getInstance().getTdcAdcHits();
+		TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			byte sect = (byte) _sector;
 			byte layer = (byte) (_ftofPanel.getPanelType() + 1);
-			for (TdcAdcHit hit : hits) {
+			for (TdcAdcTOFHit hit : hits) {
 				if ((hit.sector == _sector) && (hit.layer == layer)) {
 					Point2D.Double wp[] = getPaddle(_view, hit.component - 1, _ftofPanel, _sector);
 
@@ -264,11 +264,11 @@ public class FTOFPanelItem extends PolygonItem {
 				if (path.contains(worldPoint)) {
 
 					// have a tdc adc hit?
-					TdcAdcHitList hits = FTOF.getInstance().getTdcAdcHits();
+					TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
 					byte sect = (byte) _sector;
 					byte layer = (byte) (_ftofPanel.getPanelType() + 1);
 					short paddle = (short) (index + 1);
-					TdcAdcHit hit = hits.get(sect, layer, paddle);
+					TdcAdcTOFHit hit = hits.get(sect, layer, paddle);
 					if (hit != null) {
 						hit.tdcAdcFeedback(getName(), "paddle", feedbackStrings);
 					} else {

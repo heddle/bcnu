@@ -17,9 +17,9 @@ import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.CND;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.TdcAdcHit;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.BaseHit2List;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -185,9 +185,9 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawCTOFSingleHitsMode(Graphics g, IContainer container) {
 
-		TdcAdcHitList hits = CTOF.getInstance().getHits();
+		TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
-			for (TdcAdcHit hit : hits) {
+			for (TdcAdcTOFHit hit : hits) {
 				if (hit != null) {
 					CTOFXYPolygon poly = _view.getCTOFPolygon(hit.component);
 					if (poly != null) {

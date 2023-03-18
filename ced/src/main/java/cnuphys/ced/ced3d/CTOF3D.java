@@ -5,8 +5,8 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import cnuphys.ced.event.data.CTOF;
-import cnuphys.ced.event.data.TdcAdcHit;
-import cnuphys.ced.event.data.lists.TdcAdcHitList;
+import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.lund.X11Colors;
 
 public class CTOF3D extends DetectorItem3D {
@@ -34,11 +34,11 @@ public class CTOF3D extends DetectorItem3D {
 
 		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
 		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
-		TdcAdcHitList hits = CTOF.getInstance().getHits();
+		TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
 
 		for (int paddleId = 1; paddleId <= 48; paddleId++) {
 
-			TdcAdcHit hit = null;
+			TdcAdcTOFHit hit = null;
 			if ((hits != null) && !hits.isEmpty()) {
 				hit = hits.get(0, 0, paddleId);
 			}

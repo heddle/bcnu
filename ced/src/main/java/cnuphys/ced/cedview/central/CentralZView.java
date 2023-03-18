@@ -148,7 +148,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
-						+ ControlPanel.FIELDLEGEND + ControlPanel.DRAWLEGEND +
+						+ ControlPanel.FIELDLEGEND +
 						ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
 						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS |

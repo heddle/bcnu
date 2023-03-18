@@ -4,7 +4,7 @@ import java.util.List;
 
 import cnuphys.lund.DoubleFormat;
 
-public class TdcAdcHit implements Comparable<TdcAdcHit> {
+public class TdcAdcTOFHit implements Comparable<TdcAdcTOFHit> {
 
 	// for feedback strings
 	private static final String _fbColor = "$Light Coral$";
@@ -24,7 +24,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 
 	public byte order = -1;
 
-	public TdcAdcHit(byte sector, byte layer, short component) {
+	public TdcAdcTOFHit(byte sector, byte layer, short component) {
 		super();
 		this.sector = sector;
 		this.layer = layer;
@@ -32,24 +32,20 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 	}
 
 	@Override
-	public int compareTo(TdcAdcHit hit) {
+	public int compareTo(TdcAdcTOFHit hit) {
 		int c = Integer.valueOf(sector).compareTo(Integer.valueOf(hit.sector));
 		if (c == 0) {
 			c = Integer.valueOf(layer).compareTo(Integer.valueOf(hit.layer));
 			if (c == 0) {
 				c = Integer.valueOf(component).compareTo(Integer.valueOf(hit.component));
+				if (c == 0) {
+					c = Byte.valueOf(order).compareTo(Byte.valueOf(hit.order));
+				}
 			}
 		}
 		return c;
 	}
 	
-	/**
-	 * String used for hashing to look for duplicates
-	 * @return hash string
-	 */
-	public String hash() {
-		return String.format("%d|%d|%d", sector, layer, component);
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -57,7 +53,7 @@ public class TdcAdcHit implements Comparable<TdcAdcHit> {
 			return true;
 		if ((obj == null) || (getClass() != obj.getClass()))
 			return false;
-		TdcAdcHit other = (TdcAdcHit) obj;
+		TdcAdcTOFHit other = (TdcAdcTOFHit) obj;
 		if ((sector != other.sector) || (layer != other.layer) || (component != other.component))
 			return false;
 		return true;
