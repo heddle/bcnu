@@ -33,39 +33,49 @@ public class SwimTrajectoryDrawerZ extends ASwimTrajectoryDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 		if (!ClasIoEventManager.getInstance().isAccumulating()) {
+			
+			Rectangle sr = container.getInsetRectangle();
+			Graphics2D g2 = (Graphics2D) g;
 
-			// mc
-			if (SwimMenu.getInstance().showMonteCarloTracks()) {
-				List<SwimTrajectory> trajectories = Swimming.getMCTrajectories();
-				if ((trajectories != null) && (trajectories.size() > 0)) {
+			Shape oldClip = g2.getClip();
 
-					Rectangle sr = container.getInsetRectangle();
-					Graphics2D g2 = (Graphics2D) g;
+			g2.clipRect(sr.x, sr.y, sr.width, sr.height);
+			super.draw(g, container);
+			g2.setClip(oldClip);
 
-					Shape oldClip = g2.getClip();
-
-					g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-					super.draw(g, container);
-					g2.setClip(oldClip);
-				}
-			}
-
-			// recon
-			if (SwimMenu.getInstance().showReconstructedTracks()) {
-				List<SwimTrajectory> trajectories = Swimming.getReconTrajectories();
-				if ((trajectories == null) || (trajectories.size() < 1)) {
-					return;
-				}
-
-				Rectangle sr = container.getInsetRectangle();
-				Graphics2D g2 = (Graphics2D) g;
-
-				Shape oldClip = g2.getClip();
-
-				g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-				super.draw(g, container);
-				g2.setClip(oldClip);
-			}
+//
+//			// mc
+//			if (SwimMenu.getInstance().showMonteCarloTracks()) {
+//				List<SwimTrajectory> trajectories = Swimming.getMCTrajectories();
+//				if ((trajectories != null) && (trajectories.size() > 0)) {
+//
+//					Rectangle sr = container.getInsetRectangle();
+//					Graphics2D g2 = (Graphics2D) g;
+//
+//					Shape oldClip = g2.getClip();
+//
+//					g2.clipRect(sr.x, sr.y, sr.width, sr.height);
+//					super.draw(g, container);
+//					g2.setClip(oldClip);
+//				}
+//			}
+//
+//			// recon
+//			if (SwimMenu.getInstance().showReconstructedTracks()) {
+//				List<SwimTrajectory> trajectories = Swimming.getReconTrajectories();
+//				if ((trajectories == null) || (trajectories.size() < 1)) {
+//					return;
+//				}
+//
+//				Rectangle sr = container.getInsetRectangle();
+//				Graphics2D g2 = (Graphics2D) g;
+//
+//				Shape oldClip = g2.getClip();
+//
+//				g2.clipRect(sr.x, sr.y, sr.width, sr.height);
+//				super.draw(g, container);
+//				g2.setClip(oldClip);
+//			}
 
 		}
 	}

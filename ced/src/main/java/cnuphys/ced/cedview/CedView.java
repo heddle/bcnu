@@ -1310,7 +1310,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		if (!_eventManager.isAccumulating()) {
 			clearTextArea();
 			appendToTextArea(ClasIoEventManager.getInstance().currentInfoString());
-			getUserComponent().repaint();
+	//		getUserComponent().repaint();
 			getContainer().redoFeedback();
 		}
 	}

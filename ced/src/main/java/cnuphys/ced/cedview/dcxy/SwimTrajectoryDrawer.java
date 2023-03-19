@@ -25,6 +25,8 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 */
 	@Override
 	public void draw(Graphics g, IContainer container) {
+		
+		System.err.println("DCXY ST DRAW");
 		if (!ClasIoEventManager.getInstance().isAccumulating() && _view.isSingleEventMode()) {
 			super.draw(g, container);
 		}
@@ -32,6 +34,9 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	@Override
 	public void drawTrajectories(Graphics g, IContainer container) {
+		
+		System.err.println("DCXY ST NUMTRAJ " + _trajectories2D.size());
+
 		for (SwimTrajectory2D trajectory2D : _trajectories2D) {
 
 			boolean show = true;

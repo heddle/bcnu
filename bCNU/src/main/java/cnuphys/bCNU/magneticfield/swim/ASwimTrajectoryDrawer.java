@@ -67,7 +67,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		// Draw Monte Carlo Tracks?
 		if (SwimMenu.getInstance().showMonteCarloTracks()) {
 			List<SwimTrajectory> trajectories = Swimming.getMCTrajectories();
-			
+	
 			if (trajectories != null) {
 
 				for (SwimTrajectory trajectory : trajectories) {
@@ -78,7 +78,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 					}
 				}
 				
-				drawTrajectories(g, container);
+//				drawTrajectories(g, container);
 			}
 		}
 
@@ -98,7 +98,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 					}
 				}
 
-				drawTrajectories(g, container);
+	//			drawTrajectories(g, container);
 			}
 		}
 		
@@ -114,9 +114,11 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 					}
 				}
 
-				drawTrajectories(g, container);
+//				drawTrajectories(g, container);
 			}
 		}
+		
+		drawTrajectories(g, container);
 
 		
 	}

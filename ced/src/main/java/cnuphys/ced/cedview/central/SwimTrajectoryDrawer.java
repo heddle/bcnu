@@ -33,43 +33,53 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	public void draw(Graphics g, IContainer container) {
 
 		if (!ClasIoEventManager.getInstance().isAccumulating()) {
+			
+			Rectangle sr = container.getInsetRectangle();
+			Graphics2D g2 = (Graphics2D) g;
 
-			// Draw Monte-Carlo tracks
-			if (SwimMenu.getInstance().showMonteCarloTracks()) {
-				List<SwimTrajectory> trajectories = Swimming.getMCTrajectories();
-				if ((trajectories != null) && (trajectories.size() > 0)) {
+			Shape oldClip = g2.getClip();
 
-					Rectangle sr = container.getInsetRectangle();
-					Graphics2D g2 = (Graphics2D) g;
-
-					Shape oldClip = g2.getClip();
-
-					g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-					super.draw(g, container);
-					g2.setClip(oldClip);
-				}
-			}
-
-			// Draw Reconstructed Tracks
-			if (SwimMenu.getInstance().showReconstructedTracks()) {
-
-				List<SwimTrajectory> trajectories = Swimming.getReconTrajectories();
-
-				int count = (trajectories == null) ? 0 : trajectories.size();
-
-				if (count < 1) {
-					return;
-				}
-
-				Rectangle sr = container.getInsetRectangle();
-				Graphics2D g2 = (Graphics2D) g;
-
-				Shape oldClip = g2.getClip();
-
-				g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-				super.draw(g, container);
-				g2.setClip(oldClip);
-			}
+			g2.clipRect(sr.x, sr.y, sr.width, sr.height);
+			super.draw(g, container);
+			g2.setClip(oldClip);
+//
+//
+//			// Draw Monte-Carlo tracks
+//			if (SwimMenu.getInstance().showMonteCarloTracks()) {
+//				List<SwimTrajectory> trajectories = Swimming.getMCTrajectories();
+//				if ((trajectories != null) && (trajectories.size() > 0)) {
+//
+//					Rectangle sr = container.getInsetRectangle();
+//					Graphics2D g2 = (Graphics2D) g;
+//
+//					Shape oldClip = g2.getClip();
+//
+//					g2.clipRect(sr.x, sr.y, sr.width, sr.height);
+//					super.draw(g, container);
+//					g2.setClip(oldClip);
+//				}
+//			}
+//
+//			// Draw Reconstructed Tracks
+//			if (SwimMenu.getInstance().showReconstructedTracks()) {
+//
+//				List<SwimTrajectory> trajectories = Swimming.getReconTrajectories();
+//
+//				int count = (trajectories == null) ? 0 : trajectories.size();
+//
+//				if (count < 1) {
+//					return;
+//				}
+//
+//				Rectangle sr = container.getInsetRectangle();
+//				Graphics2D g2 = (Graphics2D) g;
+//
+//				Shape oldClip = g2.getClip();
+//
+//				g2.clipRect(sr.x, sr.y, sr.width, sr.height);
+//				super.draw(g, container);
+//				g2.setClip(oldClip);
+//			}
 		}
 	}
 

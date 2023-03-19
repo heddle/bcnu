@@ -202,33 +202,6 @@ public final class Desktop extends JDesktopPane {
 		return frames[minIndex];
 	}
 
-	/**
-	 * Refresh all the views.
-	 */
-	public void refresh() {
-		refresh(ALL_VIEWS);
-	}
-
-	/**
-	 * Refresh all or just the top view.
-	 * 
-	 * @param opt one of the class constants such as ALL_VIEWS.
-	 */
-	public void refresh(int opt) {
-		if (opt == ALL_VIEWS) {
-			JInternalFrame frames[] = getAllFrames();
-			if (frames != null) {
-				for (JInternalFrame frame : frames) {
-					frame.repaint();
-				}
-			}
-		} else if (opt == TOP_VIEW) {
-			JInternalFrame frame = getTopFrame();
-			if (frame != null) {
-				frame.repaint();
-			}
-		}
-	}
 
 	/**
 	 * Load the configuration file that preserves the an arrangement of views.
@@ -341,7 +314,6 @@ public final class Desktop extends JDesktopPane {
 		File file = Environment.getInstance().getConfigurationFile();
 
 		if (file.exists()) {
-			ImageIcon icon = ImageManager.getInstance().loadImageIcon("images/cnuicon.png");
 			int answer = JOptionPane.showConfirmDialog(null, "Confim delete operation (this can not be undone).",
 					"Delete Configuration?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
 					ImageManager.cnuIcon);
@@ -377,11 +349,6 @@ public final class Desktop extends JDesktopPane {
 			System.err.println("No installed look and feels");
 			return;
 		}
-//		else {
-//			for (LookAndFeelInfo linfo : lnfinfo) {
-//				System.err.println(" ****** [" + linfo.getName() + "]");
-//			}
-//		}
 
 		for (String targetLnF : preferredLnF) {
 			for (int i = 0; i < lnfinfo.length; i++) {
@@ -421,15 +388,6 @@ public final class Desktop extends JDesktopPane {
 		}
 
 		return true;
-	}
-
-	/**
-	 * Singleton objects cannot be cloned, so we override clone to throw a
-	 * CloneNotSupportedException.
-	 */
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException();
 	}
 
 }
