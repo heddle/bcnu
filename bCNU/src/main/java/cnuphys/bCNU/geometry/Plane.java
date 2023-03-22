@@ -63,6 +63,20 @@ public class Plane {
 	public double distance(Point p) {
 		return distance(p.x, p.y, p.z);
 	}
+	
+	/**
+	 * Find the point on the plane closest to the given point
+	 * @param p the point in question
+	 * @param cp will hold the closest point
+	 */
+	public void closestPoint(Point p, Point cp) {
+		double ntn = a*a + b*b + c*c;
+		double ntp = a*p.x+ b*p.y + c*p.z;
+		double fact = (ntp - d)/ntn;
+		cp.x = p.x - fact*a;
+		cp.y = p.y - fact*b;
+		cp.z = p.z - fact*c;
+	}
 
 	/**
 	 * Distance from a point to the plane
@@ -384,6 +398,16 @@ public class Plane {
 		System.out.println(String.format("  coord check [%d] (%-9.5f, %-9.5f, %-9.5f) val = %-9.5f (should be 0)", 
 				index, x, y, z, val));
 	}
+	
+	/**
+	 * Check whether we have a point on the plane
+	 * @param p the point in question
+	 * @return true if the point is on the plane
+	 */
+	public boolean pointOnPlane(Point p) {
+		double val = a*p.x + b*p.y + c*p.z - d;
+		return Math.abs(val) < Constants.TINY;
+	}
 
 	public static void main(String arg[]) {
 //		Plane p = constantPhiPlane(30);
@@ -391,6 +415,22 @@ public class Plane {
 		Point zero = new Point(0, 0, 0);
 		Vector nn = new Vector(0, 0, 1);
 		Plane zp = new Plane(nn, zero);
+		
+		
+		Point ptest = new Point(2, 3, 5);;
+		Point cp = new Point();
+		zp.closestPoint(ptest, cp);
+		
+		System.out.println("Test point: " + ptest);
+		System.out.println("closest point: " + cp + "   [" +zp.pointOnPlane(cp) + "]");
+		
+		
+		if (true) {
+			System.out.println("exit");
+			System.exit(0);
+		}
+		
+		
 		
 		float coords[] = zp.planeQuadCoordinates(1000);
 		for (int i = 0; i < 4; i++) {

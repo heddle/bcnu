@@ -223,6 +223,8 @@ public class FTOFGeometry {
 		corners3D[2] = new Point3D(paddle.getVolumePoint(4));
 		corners3D[3] = new Point3D(paddle.getVolumePoint(5));
 		
+	
+		
 		for (int i = 0; i < 4; i++) {
 			GeometryManager.projectClasToWorld(corners3D[i], _projectionPlanes[sector-1][panel], wp[i]);
 		}
