@@ -1,7 +1,6 @@
 package cnuphys.ced.event.data.lists;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -16,22 +15,13 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 
 	// for color scaling
 	private int _maxADC;
-	
-	//for tracking duplicates
-	public Vector<VanillaHit> occurances = new Vector<>();
-	
+
 	//for 0 adc values
 	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
 	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
 
-	public String tdcBankName;
-	public String adcBankName;
-
 	public TdcAdcTOFHitList(String tdcBankName, String adcBankName) {
 		super();
-		
-		this.tdcBankName = tdcBankName;
-		this.adcBankName = adcBankName;
 
 		/*
 		 * 1) create basic list from the tdc bank and left tdc 2) sort 3) merge in right
@@ -42,7 +32,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 		byte[] sector = ColumnData.getByteArray(tdcBankName + ".sector");
 		if (sector != null) {
 
-			
+
 			int length = sector.length;
 
 			byte[] layer = ColumnData.getByteArray(tdcBankName + ".layer");
@@ -75,8 +65,8 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 
 		// on to the adcs
 		sector = ColumnData.getByteArray(adcBankName + ".sector");
-		
-	
+
+
 		if (sector != null) {
 
 			int length = sector.length;
@@ -87,8 +77,6 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 			short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
 			float[] time = ColumnData.getFloatArray(adcBankName + ".time");
 
-			//uses adcs to track duplicates
-			occurances.clear();
 			for (int index = 0; index < length; index++) {
 				VanillaHit vh = new VanillaHit(sector[index], layer[index], component[index], order[index]);
 				if ((sector[index] == 5) && (layer[index] == 4) && (component[index] == 11)) {
@@ -97,17 +85,9 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 						System.err.println(String.format("[ev: %d]  sect: %d   lay: %d   comp: %d   adc: %d", cnum, sector[index], layer[index], component[index], ADC[index]));
 					}
 				}
-				
-				int idx = Collections.binarySearch(occurances, vh);
-				if (idx >= 0) { //found
-					occurances.elementAt(idx).occurances += 1;
-				}
-				else { //not found
-					idx = -(idx + 1);
-					occurances.add(idx, vh);
-				}
+
 			}
-			
+
 			// Step 4 merge left adc, ped, and time
 			for (int index = 0; index < length; index++) {
 				if (order[index] == 0) { // left adc
@@ -130,7 +110,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * Get the max average adc
@@ -230,7 +210,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	public TdcAdcTOFHit get(int sector, int layer, int component) {
 		return get((byte) sector, (byte) layer, (short) component);
 	}
-	
+
 	/**
 	 * Get a gray scale with apha based of relative adc
 	 *
@@ -251,7 +231,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	public Color adcColor(TdcAdcTOFHit hit) {
 		return adcColor(hit, _maxADC);
 	}
-	
+
 
 	/**
 	 * Get a monochrome color with alpha based of relative adc
@@ -266,7 +246,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 		}
 
 		int avgADC = hit.averageADC();
-		
+
 		if(avgADC < 1) {
 			return ASDZERO2;
 		}
@@ -296,7 +276,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 		}
 
 		int avgADC = hit.averageADC();
-		
+
 		if(avgADC < 1) {
 			return ASDZERO1;
 		}

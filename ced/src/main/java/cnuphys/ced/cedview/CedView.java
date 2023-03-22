@@ -1437,10 +1437,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @param wp              the projected 2D world point.
 	 */
 	public void projectClasToWorld(double x, double y, double z, Plane3D projectionPlane, Point2D.Double wp) {
-
-		Point3D sectorP = new Point3D();
-		GeometryManager.clasToSector(x, y, z, sectorP);
-		projectedPoint(sectorP.x(), sectorP.y(), sectorP.z(), projectionPlane, wp);
+		GeometryManager.projectClasToWorld(x, y, z, projectionPlane, wp);
 	}
 
 	/**
@@ -1451,7 +1448,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @param wp              the projected 2D world point.
 	 */
 	public void projectClasToWorld(Point3D clasPoint, Plane3D projectionPlane, Point2D.Double wp) {
-		projectClasToWorld(clasPoint.x(), clasPoint.y(), clasPoint.z(), projectionPlane, wp);
+		GeometryManager.projectClasToWorld(clasPoint, projectionPlane, wp);
 	}
 
 	/**
@@ -1465,16 +1462,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @return the projected 3D space point
 	 */
 	public Point3D projectedPoint(double x, double y, double z, Plane3D projectionPlane, Point2D.Double wp) {
-		Point3D p1 = new Point3D(x, y, z);
-		Vector3D normal = projectionPlane.normal();
-		Point3D p2 = new Point3D(p1.x() + normal.x(), p1.y() + normal.y(), p1.z() + normal.z());
-		Line3D perp = new Line3D(p1, p2);
-		Point3D pisect = new Point3D();
-		projectionPlane.intersection(perp, pisect);
-
-		wp.x = pisect.z();
-		wp.y = Math.hypot(pisect.x(), pisect.y());
-		return pisect;
+		return GeometryManager.projectedPoint(x, y, z, projectionPlane, wp);
 	}
 
 	/**

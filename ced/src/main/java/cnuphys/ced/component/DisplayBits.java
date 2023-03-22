@@ -82,7 +82,11 @@ public class DisplayBits {
 
 	/** cvt pass 1 traj */
 	public static final int CVTP1TRAJ = 0400000000;
+	
+	/** cvt pass 1 traj */
+	public static final int TOFPANELS = 01000000000;
 
+//last one: 20000000000
 
 	/** Distance scale */
 	// public static final int SCALE = 04;

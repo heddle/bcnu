@@ -5,8 +5,8 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.ECGeometry;
-import cnuphys.ced.geometry.FTOFGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
+import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.splot.pdata.HistoData;
 import cnuphys.splot.plot.PlotPanel;
 

@@ -59,6 +59,7 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
+import cnuphys.ced.cedview.ftof.FTOFView;
 import cnuphys.ced.cedview.rtpc.RTPCView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
 import cnuphys.ced.cedview.sectorview.SectorView;
@@ -147,7 +148,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	// coat java version;
 	private static String _coatjavaVersion;
 
-
 	// event menu
 	private ClasIoEventMenu _eventMenu;
 
@@ -200,6 +200,8 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private CentralView3D _central3DView;
 	private FTCalView3D _ftCal3DView;
 	private TOFView _tofView;
+	
+	private FTOFView _ftofView;
 
 	// magfield testing views
 //	private MagfieldView _magfieldView14;
@@ -350,7 +352,11 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 //		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
 //		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
 
+		if (isExperimental()) {
+			_virtualView.moveTo(_ftofView, 12, VirtualView.CENTER);
+		}
 
+		
 		if (_use3D) {
 			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
 			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
@@ -489,6 +495,9 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		_rtpcView = RTPCView.createRTPCView();
 
 
+		if (isExperimental()) {
+			_ftofView = FTOFView.createFTOFView();
+		}
 
 
 		// 3D view?

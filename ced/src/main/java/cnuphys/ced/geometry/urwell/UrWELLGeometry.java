@@ -4,6 +4,7 @@ import org.jlab.detector.calib.utils.DatabaseConstantProvider;
 import org.jlab.detector.geant4.v2.URWELL.URWellConstants;
 import org.jlab.detector.geant4.v2.URWELL.URWellStripFactory;
 import org.jlab.geom.prim.Line3D;
+import org.jlab.logging.DefaultLogger;
 
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.frame.Ced;
@@ -216,6 +217,10 @@ public class UrWELLGeometry {
 
 	//main program for testing
 	public static void main(String[] arg) {
+		
+		// this is supposed to create less pounding of ccdb
+		DefaultLogger.initialize();
+
 		initialize();
 		System.err.println("uRwell num layers: " + URWellConstants.NLAYERS);
 		System.err.println("uRwell num sectors: " + URWellConstants.NSECTORS);

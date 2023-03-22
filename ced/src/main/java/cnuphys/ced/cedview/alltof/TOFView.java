@@ -33,7 +33,7 @@ import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
-import cnuphys.ced.geometry.FTOFGeometry;
+import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class TOFView extends CedView implements ISector {
 
@@ -214,17 +214,6 @@ public class TOFView extends CedView implements ISector {
 		TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			
-			// message out about duplicates
-			List<VanillaHit> occurances = hits.occurances;
-			for (VanillaHit vh : occurances) {
-				if (vh.occurances > 1) {
-					String s = "FTOF::adc " + vh + "\n";
-					appendToTextArea(s);
-				}
-			}
-
-
-
 			Rectangle rr = new Rectangle();
 			for (TdcAdcTOFHit hit : hits) {
 				if ((hit != null) && (hit.sector == _sector)) {

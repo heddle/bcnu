@@ -1,10 +1,11 @@
-package cnuphys.ced.geometry;
+package cnuphys.ced.geometry.ftof;
 
 import java.awt.geom.Point2D;
 
 import org.jlab.geom.prim.Plane3D;
 
 import cnuphys.ced.event.data.FTOF;
+import cnuphys.ced.geometry.GeometryManager;
 
 public class FTOFPanel {
 

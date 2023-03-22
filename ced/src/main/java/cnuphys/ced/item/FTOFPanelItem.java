@@ -18,9 +18,9 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
-import cnuphys.ced.geometry.FTOFGeometry;
-import cnuphys.ced.geometry.FTOFPanel;
 import cnuphys.ced.geometry.GeometryManager;
+import cnuphys.ced.geometry.ftof.FTOFGeometry;
+import cnuphys.ced.geometry.ftof.FTOFPanel;
 
 public class FTOFPanelItem extends PolygonItem {
 

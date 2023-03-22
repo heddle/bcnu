@@ -24,6 +24,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** property for inner outer */
 	public static final String SHOWINNER_PROPERTY = "DisplayInner";
+	
+	/** property for tof panel */
+	public static final String TOFPANEL_PROPERTY = "DisplayInner";
+
 
 	/** Label and access to the monte carlo truth checkbox */
 	public static final String MCTRUTH_LABEL = "Truth";
@@ -54,6 +58,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Tag and access to the inner/outer button group */
 	public static final String INNEROUTER_BUTTONGROUP = "InnerOuterButtonGroup";
+	
+	/** Tag and access to the tof panel button group */
+	public static final String TOFPANEL_BUTTONGROUP = "TOFPanelButtonGroup";
+
 
 	/** Tag and access to the BST ispoint/cross button group */
 	public static final String MIDPOINTCROSS_BUTTONGROUP = "MidpointCrossButtonGroup";
@@ -72,6 +80,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Label for w strips */
 	public static final String W_LABEL = "W";
+	
+	/** Label for TOF panel 1A strips */
+	public static final String PAN1A_LABEL = "Panel 1A";
+
+	/** Label for TOF pabel 1B strips */
+	public static final String PAN1B_LABEL = "Panel 1B";
+
+	/** Label for TOF Panel 2 strips */
+	public static final String PAN2_LABEL = "Panel 2";
+
 
 	/** Distance scale label */
 	// public static final String SCALE_LABEL = "Scale";
@@ -243,6 +261,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	// controls whether we draw w strips
 	private AbstractButton _wButton;
+	
+	// controls whether we draw panel 1A on TOF views
+	private AbstractButton _pan1aButton;
+
+	// controls whether we draw panel 1B on TOF views
+	private AbstractButton _pan1bButton;
+
+	// controls whether we draw panel 2 on TOF views
+	private AbstractButton _pan2Button;
+
 
 	// the parent view
 	private CedView _view;
@@ -256,13 +284,28 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	public DisplayArray(CedView view, int bits, int nc, int hgap) {
 		super(nc, hgap, -2);
 		_view = view;
+		
+		//tof panels?
+		
+		if (Bits.checkBit(bits, DisplayBits.TOFPANELS)) {
+			_pan1aButton = add(PAN1A_LABEL, true, true, TOFPANEL_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
+					.getCheckBox();
+
+			_pan1bButton = add(PAN1B_LABEL, false, true, TOFPANEL_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
+					.getCheckBox();
+			
+			_pan2Button = add(PAN2_LABEL, false, true, TOFPANEL_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
+					.getCheckBox();
+
+		}
+
 
 		// innerouter?
 		if (Bits.checkBit(bits, DisplayBits.INNEROUTER)) {
-			_innerButton = add(INNER_LABEL, true, true, INNEROUTER_BUTTONGROUP, this, X11Colors.getX11Color("teal"))
+			_innerButton = add(INNER_LABEL, true, true, INNEROUTER_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
 					.getCheckBox();
 
-			_outerButton = add(OUTER_LABEL, false, true, INNEROUTER_BUTTONGROUP, this, X11Colors.getX11Color("teal"))
+			_outerButton = add(OUTER_LABEL, false, true, INNEROUTER_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
 					.getCheckBox();
 		}
 
@@ -430,6 +473,12 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 			_view.setBooleanProperty(SHOWINNER_PROPERTY, true);
 		} else if (button == _outerButton) {
 			_view.setBooleanProperty(SHOWINNER_PROPERTY, false);
+		} else if (button == _pan1aButton) {
+			_view.setIntProperty(TOFPANEL_PROPERTY, 0);
+		} else if (button == _pan1bButton) {
+			_view.setIntProperty(TOFPANEL_PROPERTY, 1);
+		} else if (button == _pan2Button) {
+			_view.setIntProperty(TOFPANEL_PROPERTY, 2);
 		}
 
 		// repaint the view

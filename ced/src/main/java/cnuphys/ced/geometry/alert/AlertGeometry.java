@@ -1,8 +1,6 @@
 package cnuphys.ced.geometry.alert;
 
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -19,10 +17,9 @@ import org.jlab.geom.detector.alert.ATOF.AlertTOFFactory;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.logging.DefaultLogger;
 
-import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.ced.cedview.CedXYView;
+import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.frame.Ced;
 
 public class AlertGeometry {
@@ -32,17 +29,17 @@ public class AlertGeometry {
 
 	//the layer objects used for DC drawing
 	private static Hashtable<String, DCLayer> _dcLayers = new Hashtable<>();
-	
+
 	//the layer objects used for TOF drawing
 	private static Hashtable<String, TOFLayer> _tofLayers = new Hashtable<>();
-	
+
 	//sector boundaries for XY view
 	//there are 1 sectors
 	public static Point2D.Double tofSectorXY[][] = new Point2D.Double[15][16];
-	
+
 	private static Color[] sectFill = {new Color(255, 0, 0, 10), new Color(0, 255, 0, 10), new Color(0, 0, 255, 10)};
 
-	
+
 	/**
 	 * Init the uRwell geometry
 	 */
@@ -64,7 +61,7 @@ public class AlertGeometry {
 
 		AlertDCFactory dcFactory = new AlertDCFactory();
 		AlertDCDetector dcCLASDetector = dcFactory.createDetectorCLAS(cp);
-		
+
 		int numsect = dcCLASDetector.getNumSectors();
 		for (int sect = 0; sect < numsect; sect++) {
 			int numsupl = dcFactory.createSector(cp, sect).getNumSuperlayers();
@@ -76,8 +73,8 @@ public class AlertGeometry {
 				}
 			}
 		}
-		
-		
+
+
 	}
 
 	// init the time of flight
@@ -85,25 +82,25 @@ public class AlertGeometry {
 
 		AlertTOFFactory tofFactory = new AlertTOFFactory();
 		AlertTOFDetector tofCLASDetector = tofFactory.createDetectorCLAS(cp);
-		
+
 		int numsect = tofCLASDetector.getNumSectors();
 		for (int sect = 0; sect < numsect; sect++) {
 			int numsupl = tofFactory.createSector(cp, sect).getNumSuperlayers();
 			for (int superlayer = 0; superlayer < numsupl; superlayer++) {
 				int numlay = tofFactory.createSuperlayer(cp, sect, superlayer).getNumLayers();
-				
-				
-				
+
+
+
 				for (int layer = 0; layer < numlay; layer++) {
 					TOFLayer tofLayer = new TOFLayer(tofFactory.createLayer(cp, sect, superlayer, layer));
 					_tofLayers.put(hash(sect, superlayer, layer), tofLayer);
 				}
 			}
 		}
-		
+
 		//get the sector boundries
 		// and tofSectorLabelPoint
-		
+
 		for (int sect = 0; sect < 15; sect++) {
 			ScintillatorPaddle p0  = getPaddle(sect, 0, 0, 0);
 			ScintillatorPaddle p1  = getPaddle(sect, 0, 0, 1);
@@ -113,7 +110,7 @@ public class AlertGeometry {
 			ScintillatorPaddle p5  = getPaddle(sect, 1, 0, 2);
 			ScintillatorPaddle p6  = getPaddle(sect, 1, 0, 1);
 			ScintillatorPaddle p7  = getPaddle(sect, 1, 0, 0);
-			
+
 			tofSectorXY[sect][0] = getCorner(p0, 0);
 			tofSectorXY[sect][1] = getCorner(p0, 3);
 			tofSectorXY[sect][2] = getCorner(p1, 0);
@@ -133,14 +130,14 @@ public class AlertGeometry {
 		}
 
 	}
-	
+
 	/**
 	 * Draw the TOF sector outlines
 	 * @param g the graphics context
 	 * @param container the conyainer
 	 */
 	public static void drawTOFSectorOutlines(Graphics g, IContainer container) {
-		
+
 		Point pp =new Point();
 		Polygon poly = new Polygon();
 		g.setFont(Fonts.hugeFont);
@@ -151,7 +148,7 @@ public class AlertGeometry {
 				poly.addPoint(pp.x, pp.y);
 
 			}
-			
+
 			g.setColor(sectFill[sect%3]);
 			g.fillPolygon(poly);
 			g.setColor(Color.black);
@@ -159,17 +156,17 @@ public class AlertGeometry {
 
 			Point2D.Double anchor = tofSectorXY[sect][11];
 			//drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Color color, Point2D.Double end,  boolean rotateText)
-			CedXYView.drawTextAtLineEnd(g, container, "" + (sect+1), Fonts.hugeFont, anchor);
+			CedView.drawTextAtLineEnd(g, container, "" + (sect+1), Fonts.hugeFont, anchor);
 		}
-		
+
 	}
-	
+
 	public static Point2D.Double getCorner(ScintillatorPaddle paddle, int corner) {
 		Point3D p3d = paddle.getVolumePoint(corner);
 		return new Point2D.Double(p3d.x(), p3d.y());
 	}
 
-	
+
 	/**
 	 * Get all the DC layers
 	 * @return the collection of DC layers
@@ -177,7 +174,7 @@ public class AlertGeometry {
 	public static Collection<DCLayer> getAllDCLayers() {
 		return _dcLayers.values();
 	}
-	
+
 	/**
 	 * Get all the TOF layers
 	 * @return the collection of TOF layers
@@ -196,11 +193,11 @@ public class AlertGeometry {
 	 */
 	public static ScintillatorPaddle getPaddle(int sector, int superlayer, int layer, int paddle) {
 		TOFLayer tof = _tofLayers.get(hash(sector, superlayer, layer));
-		
+
 		if (tof == null) {
 			return null;
 		}
-		
+
 		return tof.getPaddle(paddle);
 	}
 

@@ -464,6 +464,27 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	public void setBooleanProperty(String key, boolean val) {
 		_properties.put(key, val ? "true" : "false");
 	}
+	
+	/**
+	 * Get an int property
+	 * 
+	 * @param key the key
+	 * @return the int value (-1 on error).
+	 */
+	public int getIntProperty(String key) {
+		return PropertySupport.getInt(_properties, key, -1);
+	}
+
+	/**
+	 * Set set an int property
+	 * 
+	 * @param key the key matched to the boolean we are setting
+	 * @param val the value to set
+	 */
+	public void setIntProperty(String key, int val) {
+		_properties.put(key, val);
+	}
+
 
 	/**
 	 * Obtain the properties of this view that can be used to save a configuration.

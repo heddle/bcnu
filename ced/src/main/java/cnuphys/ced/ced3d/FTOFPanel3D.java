@@ -5,7 +5,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
-import cnuphys.ced.geometry.FTOFGeometry;
+import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class FTOFPanel3D extends DetectorItem3D {
 

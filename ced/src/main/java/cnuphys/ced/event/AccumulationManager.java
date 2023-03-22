@@ -36,9 +36,9 @@ import cnuphys.ced.event.data.lists.RTPCHitList;
 import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
-import cnuphys.ced.geometry.FTOFGeometry;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.geometry.PCALGeometry;
+import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 /**
  * Manages the accumulation of data
