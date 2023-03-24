@@ -18,6 +18,7 @@ import cnuphys.bCNU.item.DonutItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.FeedbackRect;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BMTGeometry;
@@ -158,6 +159,11 @@ public class BMTSectorItem extends DonutItem {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
+		
+		if (ClasIoEventManager.getInstance().isAccumulating()) {
+			return;
+		}
+
 
 		Graphics2D g2 = (Graphics2D) g;
 		Shape oldClip = g2.getClip();

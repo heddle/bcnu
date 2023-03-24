@@ -1,4 +1,5 @@
-package cnuphys.ced.cedview.dcxy;
+package cnuphys.ced.cedview;
+
 
 import java.awt.Graphics;
 import java.awt.geom.Point2D;
@@ -9,11 +10,11 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.SwimTrajectory2D;
 
-public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
+public class SwimTrajectoryDrawerXY extends ASwimTrajectoryDrawer {
 
-	private DCXYView _view;
+	private CedView _view;
 
-	public SwimTrajectoryDrawer(DCXYView view) {
+	public SwimTrajectoryDrawerXY(CedView view) {
 		_view = view;
 	}
 
@@ -25,9 +26,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 */
 	@Override
 	public void draw(Graphics g, IContainer container) {
-		
-		System.err.println("DCXY ST DRAW");
-		if (!ClasIoEventManager.getInstance().isAccumulating() && _view.isSingleEventMode()) {
+			if (!ClasIoEventManager.getInstance().isAccumulating() && _view.isSingleEventMode()) {
 			super.draw(g, container);
 		}
 	}
@@ -35,8 +34,6 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	@Override
 	public void drawTrajectories(Graphics g, IContainer container) {
 		
-		System.err.println("DCXY ST NUMTRAJ " + _trajectories2D.size());
-
 		for (SwimTrajectory2D trajectory2D : _trajectories2D) {
 
 			boolean show = true;

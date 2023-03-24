@@ -33,6 +33,7 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
+import cnuphys.ced.cedview.SwimTrajectoryDrawerXY;
 import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
@@ -57,7 +58,7 @@ public class DCXYView extends HexView {
 	private DCHexSectorItem _hexItems[];
 
 	// used to draw swum trajectories (if any) in the after drawer
-	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
+	private SwimTrajectoryDrawerXY _swimTrajectoryDrawer;
 
 	// draws reconstructed crosses
 	private CrossDrawer _crossDrawer;
@@ -105,7 +106,7 @@ public class DCXYView extends HexView {
 		projectionPlane = GeometryManager.xyPlane(_zplane);
 
 		// draws any swum trajectories (in the after draw)
-		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
+		_swimTrajectoryDrawer = new SwimTrajectoryDrawerXY(this);
 		_crossDrawer = new CrossDrawer(this);
 		_mcHitDrawer = new McHitDrawer(this);
 
@@ -235,7 +236,7 @@ public class DCXYView extends HexView {
 
 				if (!_eventManager.isAccumulating()) {
 
-					// draw trajectories
+//					// draw trajectories
 					_swimTrajectoryDrawer.draw(g, container);
 
 					drawHits(g, container);
@@ -264,7 +265,7 @@ public class DCXYView extends HexView {
 					}
 
 					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container, 320);
+					drawSectorNumbers(g, container, 400);
 				} // not acumulating
 			}
 

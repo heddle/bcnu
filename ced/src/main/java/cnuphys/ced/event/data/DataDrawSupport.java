@@ -33,8 +33,9 @@ public class DataDrawSupport {
 
 	private static final Color TRANSYELLOW = new Color(255, 255, 0, 240);
 	private static final Color TRANSGREEN = X11Colors.getX11Color("lawn green", 250);
-	private static final Color TRANSBLUE = X11Colors.getX11Color("sky blue", 250);
 	private static final Color TRANSRED = X11Colors.getX11Color("red", 128);
+	private static final Color HIGHLIGHTFILL = X11Colors.getX11Color("bisque", 64);
+
 
 	public static Color transColors[] = { CedColors.HB_TRANS, CedColors.TB_TRANS, CedColors.AIHB_TRANS, CedColors.AITB_TRANS,
 			TRANSYELLOW, TRANSGREEN, TRANSRED};
@@ -65,7 +66,7 @@ public class DataDrawSupport {
 	private static final Color adc_hit_lineColor = Color.black;
 
 	// reconstructed cluster
-	private static final Color cluster_fillColor = X11Colors.getX11Color("dark red");
+	private static final Color cluster_fillColor = X11Colors.getX11Color("fuchsia");
 	private static final Color cluster_lineColor = Color.green;
 
 	public static final String[] EC_PLANE_NAMES = { "?", "Inner", "Outer" };
@@ -88,6 +89,84 @@ public class DataDrawSupport {
 //		g.drawLine(pp.x, pp.y - 3, pp.x, pp.y + 3);
 	}
 
+	
+	/**
+	 * Draw a hit based hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawHBHit(Graphics g, Point pp) {
+		g.setColor(Color.white);
+		g.drawLine(pp.x - 4, pp.y - 5, pp.x + 6, pp.y + 5);
+		g.drawLine(pp.x - 4, pp.y + 5, pp.x + 6, pp.y - 5);
+		
+		
+		g.setColor(rec_hit_lineColor);
+		g.drawLine(pp.x - 5, pp.y - 5, pp.x + 5, pp.y + 5);
+		g.drawLine(pp.x - 5, pp.y + 5, pp.x + 5, pp.y - 5);
+		g.setColor(CedColors.HB_COLOR);
+		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
+		g.setColor(rec_hit_lineColor);
+		g.drawRect(pp.x - 3, pp.y - 3, 6, 6);
+	}
+	
+	/**
+	 * Draw a highlighted HB hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawHBHitHighlight(Graphics g, Point pp) {
+		g.setColor(HIGHLIGHTFILL);
+		g.fillOval(pp.x - 8, pp.y - 8, 16, 16);
+		drawHBHit(g, pp);
+		g.setColor(Color.black);
+		g.drawOval(pp.x - 7, pp.y - 7, 16, 16);
+		g.setColor(Color.white);
+		g.drawOval(pp.x - 8, pp.y - 8, 16, 16);
+	}
+
+	
+	/**
+	 * Draw a time based hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawTBHit(Graphics g, Point pp) {
+		g.setColor(Color.white);
+		g.drawLine(pp.x - 4, pp.y - 5, pp.x + 6, pp.y + 5);
+		g.drawLine(pp.x - 4, pp.y + 5, pp.x + 6, pp.y - 5);
+
+		g.setColor(rec_hit_lineColor);
+		g.drawLine(pp.x - 5, pp.y - 5, pp.x + 5, pp.y + 5);
+		g.drawLine(pp.x - 5, pp.y + 5, pp.x + 5, pp.y - 5);
+		g.setColor(CedColors.TB_COLOR);
+		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
+		
+		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, true);	//	g.drawRect(pp.x - 3, pp.y - 3, 6, 6);
+	}
+	
+	/**
+	 * Draw a highlighted TB hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawTBHitHighlight(Graphics g, Point pp) {
+		g.setColor(HIGHLIGHTFILL);
+		g.fillOval(pp.x - 8, pp.y - 8, 16, 16);
+		drawTBHit(g, pp);
+		g.setColor(Color.black);
+		g.drawOval(pp.x - 7, pp.y - 7, 16, 16);
+		g.setColor(Color.white);
+		g.drawOval(pp.x - 8, pp.y - 8, 16, 16);
+	}
+
+
+
+	
 	/**
 	 * Draw a reconstructed hit at the given screen location
 	 *
@@ -95,15 +174,35 @@ public class DataDrawSupport {
 	 * @param pp the screen location
 	 */
 	public static void drawReconHit(Graphics g, Point pp) {
-		// now the cross
+		
+		g.setColor(Color.white);
+		g.drawLine(pp.x - 4, pp.y - 5, pp.x + 6, pp.y + 5);
+		g.drawLine(pp.x - 4, pp.y + 5, pp.x + 6, pp.y - 5);
+
 		g.setColor(rec_hit_lineColor);
-		g.drawLine(pp.x - 4, pp.y - 4, pp.x + 4, pp.y + 4);
-		g.drawLine(pp.x - 4, pp.y + 4, pp.x + 4, pp.y - 4);
+		g.drawLine(pp.x - 5, pp.y - 5, pp.x + 5, pp.y + 5);
+		g.drawLine(pp.x - 5, pp.y + 5, pp.x + 5, pp.y - 5);
 		g.setColor(rec_hit_fillColor);
 		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
-		g.setColor(rec_hit_lineColor);
-		g.drawRect(pp.x - 3, pp.y - 3, 6, 6);
+		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, true);
 	}
+	
+	/**
+	 * Draw a highlighted reconstructed hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawReconHitHighlight(Graphics g, Point pp) {
+		g.setColor(HIGHLIGHTFILL);
+		g.fillOval(pp.x - 8, pp.y - 8, 16, 16);
+		drawReconHit(g, pp);
+		g.setColor(Color.black);
+		g.drawOval(pp.x - 7, pp.y - 7, 16, 16);
+		g.setColor(Color.white);
+		g.drawOval(pp.x - 8, pp.y - 8, 16, 16);
+	}
+
 
 	/**
 	 * Draw a reconstructed hit at the given screen location
@@ -111,8 +210,7 @@ public class DataDrawSupport {
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
-	public static void drawAdcHit(Graphics g, Point pp, Color fcolor) {
-		// now the cross
+	public static void drawAdcHit(Graphics g, Point pp, Color fcolor) {		// now the cross
 		g.setColor(adc_hit_lineColor);
 		g.drawLine(pp.x - 4, pp.y - 4, pp.x + 4, pp.y + 4);
 		g.drawLine(pp.x - 4, pp.y + 4, pp.x + 4, pp.y - 4);
@@ -129,15 +227,30 @@ public class DataDrawSupport {
 	 * @param pp the screen location
 	 */
 	public static void drawReconCluster(Graphics g, Point pp) {
-		// now the cross
 		g.setColor(cluster_lineColor);
-		g.drawLine(pp.x - 4, pp.y - 4, pp.x + 4, pp.y + 4);
-		g.drawLine(pp.x - 4, pp.y + 4, pp.x + 4, pp.y - 4);
+		g.drawLine(pp.x, pp.y - 5, pp.x, pp.y + 5);
+		g.drawLine(pp.x - 5, pp.y, pp.x + 5, pp.y);
 		g.setColor(cluster_fillColor);
 		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
-		g.setColor(cluster_lineColor);
-		g.drawRect(pp.x - 3, pp.y - 3, 6, 6);
+		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, false);
 	}
+	
+	/**
+	 * Draw a reconstructed hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawReconClusterHighlight(Graphics g, Point pp) {
+		g.setColor(HIGHLIGHTFILL);
+		g.fillOval(pp.x - 8, pp.y - 8, 16, 16);
+		drawReconCluster(g, pp);
+		g.setColor(Color.white);
+		g.drawOval(pp.x - 7, pp.y - 7, 16, 16);
+		g.setColor(Color.black);
+		g.drawOval(pp.x - 8, pp.y - 8, 16, 16);
+	}
+
 
 	/**
 	 * Draw a reconstructed cross

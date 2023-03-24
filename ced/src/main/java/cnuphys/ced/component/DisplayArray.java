@@ -145,7 +145,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	private static final String GLOBAL_AITB_LABEL = "AI TB";
 
 	/** Global show ADC hits */
-	private static final String GLOBAL_ADC_HIT_LABEL = "ADC Hits";
+	private static final String GLOBAL_ADC_DATA_LABEL = "ADC Data";
 
 	/** Label for reconstructed CVT Rec Tracks */
 	private static final String CVTREC_TRACK_LABEL = "CVTRec Tracks";
@@ -429,8 +429,8 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		}
 
 		// ADC hits
-		if (Bits.checkBit(bits, DisplayBits.ADC_HITS)) {
-			_adcHitButton = add(GLOBAL_ADC_HIT_LABEL, true, true, this, _buttonColor).getCheckBox();
+		if (Bits.checkBit(bits, DisplayBits.ADCDATA)) {
+			_adcHitButton = add(GLOBAL_ADC_DATA_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
 		//sector change markers

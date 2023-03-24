@@ -48,11 +48,14 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.MagFieldDisplayArray;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
+import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.properties.PropertiesManager;
 import cnuphys.lund.SwimTrajectoryListener;
+import cnuphys.lund.X11Colors;
 import cnuphys.magfield.FieldProbe;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
@@ -75,6 +78,13 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	// for accumulation drawing
 	private double _medianRelSetting = 0.25;
+	
+	//for 0 adc values
+	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
+	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
+	private static final Color ASDZERO1T = new Color(0, 0, 0, 0);
+	private static final Color ASDZERO2T = X11Colors.getX11Color("Light Sky Blue", 0);
+
 
 	// are we showing single events or are we showing accumulated data
 	public enum Mode {
@@ -1190,7 +1200,13 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		// add some information about the current event
 		if (!haveEvent) {
 			feedbackStrings.add("$orange red$No event");
-		} 
+		}
+		else {
+			int seqNum = ClasIoEventManager.getInstance().getSequentialEventNumber();
+			int trueNum = ClasIoEventManager.getInstance().getTrueEventNumber();
+			feedbackStrings.add(String.format("$orange red$Event number  Sequential %d  True %d", seqNum, trueNum));
+			
+		}
 
 		// get the sector
 		int sector = getSector(container, pp, wp);
@@ -1437,7 +1453,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @param wp              the projected 2D world point.
 	 */
 	public void projectClasToWorld(double x, double y, double z, Plane3D projectionPlane, Point2D.Double wp) {
-		GeometryManager.projectClasToWorld(x, y, z, projectionPlane, wp);
+
+		Point3D sectorP = new Point3D();
+		GeometryManager.clasToSector(x, y, z, sectorP);
+		projectedPoint(sectorP.x(), sectorP.y(), sectorP.z(), projectionPlane, wp);
 	}
 
 	/**
@@ -1448,7 +1467,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @param wp              the projected 2D world point.
 	 */
 	public void projectClasToWorld(Point3D clasPoint, Plane3D projectionPlane, Point2D.Double wp) {
-		GeometryManager.projectClasToWorld(clasPoint, projectionPlane, wp);
+		projectClasToWorld(clasPoint.x(), clasPoint.y(), clasPoint.z(), projectionPlane, wp);
 	}
 
 	/**
@@ -1462,7 +1481,16 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @return the projected 3D space point
 	 */
 	public Point3D projectedPoint(double x, double y, double z, Plane3D projectionPlane, Point2D.Double wp) {
-		return GeometryManager.projectedPoint(x, y, z, projectionPlane, wp);
+		Point3D p1 = new Point3D(x, y, z);
+		Vector3D normal = projectionPlane.normal();
+		Point3D p2 = new Point3D(p1.x() + normal.x(), p1.y() + normal.y(), p1.z() + normal.z());
+		Line3D perp = new Line3D(p1, p2);
+		Point3D pisect = new Point3D();
+		projectionPlane.intersection(perp, pisect);
+
+		wp.x = pisect.z();
+		wp.y = Math.hypot(pisect.x(), pisect.y());
+		return pisect;
 	}
 
 	/**
@@ -1592,6 +1620,53 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 
 
+	/**
+	 * Get a monochrome color with alpha based of relative adc
+	 *
+	 * @param hit    the hit
+	 * @param maxAdc the max adc value
+	 * @return a fill color for adc hits
+	 */
+	public Color adcMonochromeColor(int adc, int maxAdc) {
+		if(adc < 1) {
+			return (adc == 0) ? ASDZERO2 : ASDZERO2T;
+		}
+
+
+		double maxadc = Math.max(1, maxAdc);
+
+		double fract = adc / maxadc;
+		fract = Math.max(0, Math.min(1.0, fract));
+
+		int alpha = 128 + (int) (127 * fract);
+		alpha = Math.min(255, alpha);
+
+		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
+	}
+
+	/**
+	 * Get a color with alpha based of relative adc
+	 *
+	 * @param hit    the hit
+	 * @param maxAdc the max adc value
+	 * @return a fill color for adc hits
+	 */
+	public Color adcColor(int adc, int maxAdc) {
+
+		if(adc < 1) {
+			return (adc == 0) ? ASDZERO1 : ASDZERO1T;
+		}
+
+		double maxadc = Math.max(1, maxAdc);
+
+		double fract = adc / maxadc;
+		fract = Math.max(0, Math.min(1.0, fract));
+
+		int alpha = 128 + (int) (127 * fract);
+		alpha = Math.min(255, alpha);
+
+		return AdcColorScale.getInstance().getAlphaColor(fract, alpha);
+	}
 	/**
 	 * Clone the view.
 	 *

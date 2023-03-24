@@ -13,9 +13,11 @@ import org.jlab.geom.detector.ftof.FTOFSuperlayer;
 import org.jlab.geom.prim.Line3D;
 import org.jlab.geom.prim.Plane3D;
 import org.jlab.geom.prim.Point3D;
-import org.jlab.geom.prim.Vector3D;
 import org.jlab.logging.DefaultLogger;
 
+import cnuphys.bCNU.geometry.Plane;
+import cnuphys.bCNU.geometry.Point;
+import cnuphys.bCNU.geometry.Vector;
 import cnuphys.ced.geometry.GeometryManager;
 
 public class FTOFGeometry {
@@ -30,9 +32,10 @@ public class FTOFGeometry {
 	// first index -s sector 0..5
 	// 2nd index = panel type (superlayer) 0..2 for 1A, 1B, 2
 	private static FTOFSuperlayer[][] _ftofSuperlayers = new FTOFSuperlayer[6][3];
-	
-	//the projection planes
-	private static Plane3D[][] _projectionPlanes = new Plane3D[6][3];
+
+
+	//planes for the face of the panels
+	private static Plane _facePlanes[][] = new Plane[6][3];
 
 	//there is only one layer per superlayer for FTOF so don't need third index
 	private static FTOFLayer[][] _ftofLayers = new FTOFLayer[6][3];
@@ -95,63 +98,62 @@ public class FTOFGeometry {
 
 			_ftofPanel[superLayer] = new FTOFPanel(ftofNames[superLayer], numPaddles[superLayer]);
 		}
-		
-		createProjectionPlanes();
+
+		createFacePlanes();
 
 	}
-	
-	//create the projection planes, one for each panel in each sector
-	private static void createProjectionPlanes() {
+
+	//create the face planes, one for each panel in each sector
+	private static void createFacePlanes() {
 		for (int sect = 0; sect < 6; sect++) {
 			for (int panel = 0; panel < 3; panel++) {
-				_projectionPlanes[sect][panel] = createPlane(sect+1, panel);
+				_facePlanes[sect][panel] = createFacePlane(sect+1, panel);
 			}
 		}
 	}
-	
+
 	//sect: 1 based plane: PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
-	private static Plane3D createPlane(int sect, int panel) {
+	private static Plane createFacePlane(int sect, int panel) {
 		//corners of front face
 		Point3D corners[] = new Point3D[4];
-		
+
 		Point3D p0;
 		Point3D p1;
 		Point3D p2;
 		Point3D p3;
-		
+
 		int numPaddle = _ftofLayers[sect-1][panel].getNumComponents();
 		frontFace(sect, panel, 1, corners);
 		Line3D line = new Line3D(corners[0], corners[3]);
 		p0 = new Point3D(line.midpoint());
-		
+
 		frontFace(sect, panel, numPaddle/2, corners);
 		line = new Line3D(corners[0], corners[3]);
 		p1 = new Point3D(line.midpoint());
-		
+
 		frontFace(sect, panel, numPaddle, corners);
 		p2 = corners[1];
 		p3 = corners[2];
-		
-		Vector3D u = new Vector3D(p2.x() - p0.x(), p2.y() - p0.y(), p2.z() - p0.z());
-		Vector3D v = new Vector3D(p3.x() - p0.x(), p3.y() - p0.y(), p3.z() - p0.z());
-		Vector3D norm = GeometryManager.normal(u, v);
-		
-		return new Plane3D(p1, norm);
 
+		Vector u = new Vector(p2.x() - p0.x(), p2.y() - p0.y(), p2.z() - p0.z());
+		Vector v = new Vector(p3.x() - p0.x(), p3.y() - p0.y(), p3.z() - p0.z());
+		Vector norm = Vector.cross(u, v); //doesn't have to be unit vector
+
+		return new Plane(norm, p1.x(), p1.y(), p1.z());
 
 	}
-	
+
 	/**
-	 * Get the projection plane used for drawing
+	 * Get the face plane used for drawing
 	 * @param sector the 1-based sector
 	 * @param panel the panel PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
 	 * @return the projection plane used for drawing
 	 */
-	public static Plane3D getProjectionPlane(int sector, int panel) {
-		return _projectionPlanes[sector-1][panel];
+	public static Plane getFacePlane(int sector, int panel) {
+		return _facePlanes[sector-1][panel];
 	}
 
-	
+
 	/**
 	 * Get the paddle
 	 * @param sect the 1-based sector
@@ -164,7 +166,7 @@ public class FTOFGeometry {
 		return paddle;
 	}
 
-	
+
 
 	/**
 	 * Used by the 3D drawing
@@ -190,7 +192,7 @@ public class FTOFGeometry {
 			coords[j + 2] = (float) v[i].z();
 		}
 	}
-	
+
 	/**
 	 * Get the 4 corners of the front face
 	 * @param sector     the 1-based sector
@@ -202,32 +204,71 @@ public class FTOFGeometry {
 		ScintillatorPaddle paddle = getPaddle(sector, panel, paddleId);
 		corners[0] = new Point3D(paddle.getVolumePoint(0));
 		corners[1] = new Point3D(paddle.getVolumePoint(1));
-		corners[2] = new Point3D(paddle.getVolumePoint(4));
-		corners[3] = new Point3D(paddle.getVolumePoint(5));
-		
+		corners[2] = new Point3D(paddle.getVolumePoint(5));
+		corners[3] = new Point3D(paddle.getVolumePoint(4));
+
 	}
 	
 	/**
-	 * Get the 4 corners of the front face projected onto the plane
+	 * Get the z that points the point on the face plane
 	 * @param sector     the 1-based sector
 	 * @param panel PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
-	 * @param paddleId   the 1-based paddle ID
-	 * @param corners will contain the 4 corners of the front face
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the value of z that uts the point on the plane
 	 */
-	public static void projectedFrontFace(int sector, int panel, int paddleId, Point2D.Double wp[]) {
-		ScintillatorPaddle paddle = getPaddle(sector, panel, paddleId);
-		
-		Point3D corners3D[] = new Point3D[4];
-		corners3D[0] = new Point3D(paddle.getVolumePoint(0));
-		corners3D[1] = new Point3D(paddle.getVolumePoint(1));
-		corners3D[2] = new Point3D(paddle.getVolumePoint(4));
-		corners3D[3] = new Point3D(paddle.getVolumePoint(5));
-		
+	public static double getZ(int sector, int panel, double x, double y) {
+		return _facePlanes[sector-1][panel].getZ(x, y);
+	}
 	
-		
+	/**
+	 * Convert from clas3D to local coordinates
+	 * @param sector the 1-based sector
+	 * @param panel  PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
+	 * @param x the x  clas coordinate
+	 * @param y the y  clas coordinate
+	 * @param z the z  clas coordinate
+	 * @param pp the screen point
+	 */
+	public static void clasToWorld(int sector, int panel, double x, double y, double z, Point2D.Double wp) {
+		Point cp = new Point();
+		_facePlanes[sector-1][panel].closestPoint(x, y, z, cp);
+		wp.setLocation(cp.x, cp.y);
+	}
+	
+	/**
+	 * Get the polygon for a paddle
+	 * @param sector the 1-based sector
+	 * @param panel PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
+	 * @param paddleId   the 1-based paddle ID
+	 * @param wp will hold the four corners in world coordinates
+	 */
+	public static void paddlePolygon(int sector, int panel, int paddleId, Point2D.Double wp[]) {
+		Point3D corners[] = new Point3D[4];
+		frontFace(sector, panel, paddleId, corners);
 		for (int i = 0; i < 4; i++) {
-			GeometryManager.projectClasToWorld(corners3D[i], _projectionPlanes[sector-1][panel], wp[i]);
+			wp[i].x = corners[i].x();
+			wp[i].y = corners[i].y();
 		}
+	}
+	
+	/**
+	 * Get the name of the panel
+	 * @param panel PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
+	 * @return the name of the panel
+	 */
+	public static String getPanelName(int panel) {
+		return ftofNames[panel];
+	}
+	
+	/**
+	 * Get the number of paddles
+	 * @param sector the 1-based sector
+	 * @param panel PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
+	 * @return the number of paddles
+	 */
+	public static int getNumPaddles(int sector, int panel) {
+		return _ftofLayers[sector-1][panel].getNumComponents();
 	}
 
 
@@ -305,34 +346,25 @@ public class FTOFGeometry {
 		int sect = 1;
 		int panel = PANEL_1B;
 		int paddleId = 43;
-		
+
 		Point3D corners[] = new Point3D[4];
 		frontFace(sect, panel, paddleId, corners);
-		
+
+		System.out.println(String.format("\nsect: %d    panel: %d    paddle: %d", sect, panel, paddleId));
+		for (int i = 0; i < 4; i++) {
+			System.out.println("[" + i + "]    " + corners[i]);
+		}
+
+		sect = 5;
+		panel = PANEL_2;
+		paddleId = 3;
+		frontFace(sect, panel, paddleId, corners);
+
 		System.out.println(String.format("\nsect: %d    panel: %d    paddle: %d", sect, panel, paddleId));
 		for (int i = 0; i < 4; i++) {
 			System.out.println("[" + i + "]    " + corners[i]);
 		}
 		
-		Point2D.Double wp[] = new Point2D.Double[4];
-		projectedFrontFace(sect, panel, paddleId, wp);
-		for (int i = 0; i < 4; i++) {
-			System.out.println("[" + i + "]    " + wp[i]);
-		}
-
-
-		
-//		sect = 5;
-//		panel = PANEL_2;
-//		paddleId = 3;
-//		frontFace(sect, panel, paddleId, corners);
-//		
-//		System.out.println(String.format("\nsect: %d    panel: %d    paddle: %d", sect, panel, paddleId));
-//		for (int i = 0; i < 4; i++) {
-//			System.out.println("[" + i + "]    " + corners[i]);
-//		}
-//
-
 		System.out.println("FTOF geo done");
 	}
 }

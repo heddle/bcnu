@@ -41,8 +41,8 @@ public class DisplayBits {
 	/** global display of hb data */
 	public static final int GLOBAL_TB = 010000;
 
-	/** adc hits */
-	public static final int ADC_HITS = 020000;
+	/** adc data */
+	public static final int ADCDATA = 020000;
 
 	/** cvt recon tracks */
 	public static final int CVTRECTRACKS = 040000;
@@ -83,7 +83,7 @@ public class DisplayBits {
 	/** cvt pass 1 traj */
 	public static final int CVTP1TRAJ = 0400000000;
 	
-	/** cvt pass 1 traj */
+	/** FTOF panels */
 	public static final int TOFPANELS = 01000000000;
 
 //last one: 20000000000

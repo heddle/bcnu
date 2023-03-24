@@ -54,7 +54,6 @@ import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
-import cnuphys.ced.cedview.alltof.TOFView;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
@@ -199,7 +198,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 	private SwimmimgPlayground3D _swimming3DView;
 	private CentralView3D _central3DView;
 	private FTCalView3D _ftCal3DView;
-	private TOFView _tofView;
 	
 	private FTOFView _ftofView;
 
@@ -334,7 +332,7 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		_virtualView.moveTo(_rtpcView, 7);
 		_virtualView.moveTo(_urwellXyView, 8, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_tofView, 9, VirtualView.CENTER);
+		_virtualView.moveTo(_ftofView, 9, VirtualView.UPPERRIGHT);
 		_virtualView.moveTo(_ftcalXyView, 10, VirtualView.CENTER);
 		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
 
@@ -351,10 +349,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 //		_virtualView.moveToStart(_magfieldView14, 18, VirtualView.UPPERLEFT);
 //		_virtualView.moveToStart(_magfieldView25, 18, VirtualView.UPPERLEFT);
 //		_virtualView.moveToStart(_magfieldView36, 18, VirtualView.UPPERLEFT);
-
-		if (isExperimental()) {
-			_virtualView.moveTo(_ftofView, 12, VirtualView.CENTER);
-		}
 
 		
 		if (_use3D) {
@@ -488,17 +482,11 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
-		//FTOF and CTOF
-		_tofView = TOFView.createTOFView();
-
 		// add an RTPC vie
 		_rtpcView = RTPCView.createRTPCView();
 
-
-		if (isExperimental()) {
-			_ftofView = FTOFView.createFTOFView();
-		}
-
+        //FTOF
+		_ftofView = FTOFView.createFTOFView();
 
 		// 3D view?
 		if (_use3D) {

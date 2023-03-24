@@ -2,6 +2,8 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.clasio.ClasIoEventManager;
+
 public class HTCC2 extends DetectorData {
 
 	AdcHitList _adcHits = new AdcHitList("HTCC::adc");
@@ -31,8 +33,13 @@ public class HTCC2 extends DetectorData {
 	 * @return the updated list
 	 */
 	public AdcHitList updateAdcList() {
-		_adcHits = new AdcHitList("HTCC::adc");
-		return _adcHits;
+		try {
+			_adcHits = new AdcHitList("HTCC::adc");
+			return _adcHits;
+		} catch (Exception e) {
+			System.err.println("HTCC2 data error for event: " + ClasIoEventManager.getInstance().getSequentialEventNumber());
+			return null;
+		}
 	}
 
 	/**

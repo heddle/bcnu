@@ -685,7 +685,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		// BST
 		AdcHitList bstList = BST.getInstance().updateAdcList();
 		accumBST(bstList);
-
+		
+	
 	}
 
 	// accumulate bst

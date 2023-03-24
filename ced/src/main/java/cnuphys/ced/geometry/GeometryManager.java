@@ -595,57 +595,6 @@ public class GeometryManager {
 	
 
 	/**
-	 * From detector xyz get the projected world point.
-	 *
-	 * @param x               the detector x coordinate
-	 * @param y               the detector y coordinate
-	 * @param z               the detector z coordinate
-	 * @param projectionPlane the projection plane
-	 * @param wp              the projected 2D world point.
-	 */
-	public static void projectClasToWorld(double x, double y, double z, Plane3D projectionPlane, Point2D.Double wp) {
-
-		Point3D sectorP = new Point3D();
-		GeometryManager.clasToSector(x, y, z, sectorP);
-		projectedPoint(sectorP.x(), sectorP.y(), sectorP.z(), projectionPlane, wp);
-	}
-
-	/**
-	 * From detector xyz get the projected world point.
-	 *
-	 * @param clasPoint       the point in lab (clas) coordinates
-	 * @param projectionPlane the projection plane
-	 * @param wp              the projected 2D world point.
-	 */
-	public static void projectClasToWorld(Point3D clasPoint, Plane3D projectionPlane, Point2D.Double wp) {
-		projectClasToWorld(clasPoint.x(), clasPoint.y(), clasPoint.z(), projectionPlane, wp);
-	}
-
-	/**
-	 * Project a space point. Projected by finding the closest point on the plane.
-	 *
-	 * @param x               the x coordinate
-	 * @param y               the y coordinate
-	 * @param z               the z coordinate
-	 * @param projectionPlane the projection plane
-	 * @param wp              will hold the projected 2D world point
-	 * @return the projected 3D space point
-	 */
-	public static Point3D projectedPoint(double x, double y, double z, Plane3D projectionPlane, Point2D.Double wp) {
-		Point3D p1 = new Point3D(x, y, z);
-		Vector3D normal = projectionPlane.normal();
-		Point3D p2 = new Point3D(p1.x() + normal.x(), p1.y() + normal.y(), p1.z() + normal.z());
-		Line3D perp = new Line3D(p1, p2);
-		Point3D pisect = new Point3D();
-		projectionPlane.intersection(perp, pisect);
-
-		wp.x = pisect.z();
-		wp.y = Math.hypot(pisect.x(), pisect.y());
-		return pisect;
-	}
-
-
-	/**
 	 * allocate an array of allocated points
 	 *
 	 * @param n the number of points

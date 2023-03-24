@@ -24,6 +24,7 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.MathUtilities;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBSegments;
@@ -94,6 +95,11 @@ public class SuperLayerDrawing {
 	}
 
 	public void drawItem(Graphics g, IContainer container, Polygon lastDrawnPolygon, boolean segmentsOnly) {
+		
+		if (ClasIoEventManager.getInstance().isAccumulating()) {
+			return;
+		}
+
 
 		Graphics2D g2 = (Graphics2D) g;
 

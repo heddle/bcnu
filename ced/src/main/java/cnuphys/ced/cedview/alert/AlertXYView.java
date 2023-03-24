@@ -69,7 +69,7 @@ public class AlertXYView extends CedXYView {
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
 				ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
-						+ DisplayBits.ADC_HITS,
+						+ DisplayBits.ADCDATA,
 				3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
@@ -83,11 +83,15 @@ public class AlertXYView extends CedXYView {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				drawLayerShells(g, container);
-				drawWires(g, container);
-				drawPaddles(g, container);
-				
-				AlertGeometry.drawTOFSectorOutlines(g, container);
+
+				if (!_eventManager.isAccumulating()) {
+
+					drawLayerShells(g, container);
+					drawWires(g, container);
+					drawPaddles(g, container);
+
+					AlertGeometry.drawTOFSectorOutlines(g, container);
+				}
 			}
 
 		};
@@ -102,8 +106,11 @@ public class AlertXYView extends CedXYView {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 
-				Rectangle screenRect = getActiveScreenRectangle(container);
-				drawAxes(g, container, screenRect, false);
+				if (!_eventManager.isAccumulating()) {
+
+					Rectangle screenRect = getActiveScreenRectangle(container);
+					drawAxes(g, container, screenRect, false);
+				}
 			}
 
 		};

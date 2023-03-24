@@ -56,8 +56,6 @@ public class ClasIoEventManager {
 	// Unique lund ids in the event (if any)
 	private Vector<LundId> _uniqueLundIds = new Vector<>();
 
-	// listen for events even in accumulation mode
-	private Vector<IClasIoEventListener> _specialListeners = new Vector<>();
 	// A sorted list of banks present in the current event
 	private String _currentBanks[];
 
@@ -170,7 +168,6 @@ public class ClasIoEventManager {
 	 */
 	private void setCurrentEvent() {
 		
-		CedView.suppressRefresh(true);
 		
 		try {
 
@@ -179,26 +176,18 @@ public class ClasIoEventManager {
 				if (isAccumulating()) {
 					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
 					notifyAllDefinedPlots(_currentEvent);
-
-					// notify special listeners
-					// the get events even if we are accumulating
-					// e.g., AddDCAccumView
-					for (IClasIoEventListener listener : _specialListeners) {
-						listener.newClasIoEvent(_currentEvent);
-					}
-
 				} else {
+					CedView.suppressRefresh(true);
 					_runData.set(_currentEvent);
 					notifyEventListeners();
-					// notifyAllDefinedPlots(event);
+					CedView.suppressRefresh(false);
+					Ced.refresh();
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		CedView.suppressRefresh(false);
-		Ced.refresh();
 	}
 
 	/**
@@ -1278,18 +1267,6 @@ public class ClasIoEventManager {
 		}
 		int index = Arrays.binarySearch(allBanks, bankName);
 		return index >= 0;
-	}
-
-
-	/**
-	 * Add a special listener that gets events even if we are accumulating. Example:
-	 * AllDCAccumView
-	 *
-	 * @param listener the event listener
-	 */
-	public void addSpecialEventListener(IClasIoEventListener listener) {
-		_specialListeners.remove(listener);
-		_specialListeners.add(listener);
 	}
 
 

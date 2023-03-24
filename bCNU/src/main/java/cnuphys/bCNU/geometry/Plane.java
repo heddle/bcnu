@@ -43,6 +43,18 @@ public class Plane {
 	}
 	
 	/**
+	 * Create a plane from a normal vector and a point on the plane
+	 * @param norm the normal vector
+	 * @param px the x coordinate of the point on the plane
+	 * @param py the y coordinate of the point on the plane
+	 * @param pz the z coordinate of the point on the plane
+	 */
+	public Plane(Vector anorm, double px, double py, double pz) {
+		this(anorm, new Point(px, py, pz));
+	}
+
+	
+	/**
 	 * Create a plane from the normal vector in an array of doubles and
 	 * a point in the plane in an array, both (x, y, z)
 	 * @param norm the normal
@@ -70,13 +82,25 @@ public class Plane {
 	 * @param cp will hold the closest point
 	 */
 	public void closestPoint(Point p, Point cp) {
-		double ntn = a*a + b*b + c*c;
-		double ntp = a*p.x+ b*p.y + c*p.z;
-		double fact = (ntp - d)/ntn;
-		cp.x = p.x - fact*a;
-		cp.y = p.y - fact*b;
-		cp.z = p.z - fact*c;
+		closestPoint(p.x, p.y, p.z, cp);
 	}
+	
+	/**
+	 * Find the point on the plane closest to the given point
+	 * @param x the x coordinate of the point in question
+	 * @param y the y coordinate of the point in question
+	 * @param z the z coordinate of the point in question
+	 * @param cp will hold the closest point
+	 */
+	public void closestPoint(double x, double y, double z, Point cp) {
+		double ntn = a*a + b*b + c*c;
+		double ntp = a*x+ b*y + c*z;
+		double fact = (ntp - d)/ntn;
+		cp.x = x - fact*a;
+		cp.y = y - fact*b;
+		cp.z = z - fact*c;
+	}
+
 
 	/**
 	 * Distance from a point to the plane
@@ -408,12 +432,26 @@ public class Plane {
 		double val = a*p.x + b*p.y + c*p.z - d;
 		return Math.abs(val) < Constants.TINY;
 	}
+	
+	/**
+	 * Given x and y, find the z that puts the point on the plane
+	 * @param x the x coordinate
+	 * @param y the y coordinate
+	 * @return the z coordinate that puts the point on the plane, or NaN if not possible.
+	 */
+	public double getZ(double x, double y) {
+		if (Math.abs(c) < Constants.TINY) {
+			return Double.NaN;
+		}
+		
+		return (d - a*x - b*y)/c;
+	}
 
 	public static void main(String arg[]) {
 //		Plane p = constantPhiPlane(30);
 
 		Point zero = new Point(0, 0, 0);
-		Vector nn = new Vector(0, 0, 1);
+		Vector nn = new Vector(0, 1, 1);
 		Plane zp = new Plane(nn, zero);
 		
 		

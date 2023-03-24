@@ -105,10 +105,10 @@ public class ElizaOverride implements Serializable {
 		try {
 			_overRides = (Vector<ElizaOverride>) serialRead(overrideFile);
 			if (_overRides != null) {
-				System.err.println("Read " + _overRides.size() + " eliza overrides");
+				System.out.println("Read " + _overRides.size() + " eliza overrides");
 			} else {
-				System.err.println("Did NOT read " + _overRides.size() + " eliza overrides");
-				System.err.println("CWD " + Environment.getInstance().getCurrentWorkingDirectory());
+				System.out.println("Did NOT read " + _overRides.size() + " eliza overrides");
+				System.out.println("CWD " + Environment.getInstance().getCurrentWorkingDirectory());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -145,7 +145,6 @@ public class ElizaOverride implements Serializable {
 				char lastChar = tok.charAt(len - 1);
 				if (!Character.isLetter(lastChar)) {
 					tokens[i] = tok.substring(0, len - 1);
-					// System.err.println("NEW tok: [" + tokens[i] + "]");
 				}
 			}
 		}
@@ -272,7 +271,7 @@ public class ElizaOverride implements Serializable {
 		Object obj = null;
 
 		File file = new File(fullfn);
-		System.err.println("Eliza file: [" + file.getAbsolutePath() + "]");
+		System.out.println("Eliza file: [" + file.getAbsolutePath() + "]");
 
 		if (file.exists()) {
 			try {
@@ -398,9 +397,9 @@ public class ElizaOverride implements Serializable {
 		_overRides.add(new ElizaOverride(MATCH_ANY, "Did you say \"tracking\"? Do I look like Veronique?", "tracking"));
 
 		_overRides.add(
-				new ElizaOverride(MATCH_ANY, "Did you say \"geometry\"? Do I look like Gagik or Andrey?", "geometry"));
+				new ElizaOverride(MATCH_ANY, "Did you say \"geometry\"? Do I look like Gagik?", "geometry"));
 
-		_overRides.add(new ElizaOverride(MATCH_ANY, "Did you say \"clara\"? Do I look like Vardan?", "geometry"));
+		_overRides.add(new ElizaOverride(MATCH_ANY, "Did you say \"clara\"? Do I look like Vardan?", "clara"));
 
 		_overRides.add(new ElizaOverride(MATCH_ANY, "Did you say \"simulation\"? Do I look like Mauri?", "simulation"));
 
@@ -431,10 +430,13 @@ public class ElizaOverride implements Serializable {
 
 		_overRides.add(new ElizaOverride(MATCH_PHRASE, "No, YOU shut up.", "shut", "up"));
 
-		_overRides.add(new ElizaOverride(MATCH_ANY, "Hey that's not nice. I'm telling Volker!", "shit", "fuck",
+		_overRides.add(new ElizaOverride(MATCH_ANY, "Hey that's not nice. I'm not ChatGPT, I have class!", "shit", "fuck",
 				"asshole", "fucker", "bitch"));
 
-		_overRides.add(new ElizaOverride(MATCH_PHRASE, "Hey that's not nice. I'm telling Volker!", "damn", "you"));
+		_overRides.add(new ElizaOverride(MATCH_PHRASE, "\"I will now execute \\\"sudo rm  -fr ~\\\\*\\\"\"", "damn", "you"));
+		
+		_overRides.add(new ElizaOverride(MATCH_ANY, "ChatGPT is a worthless piece of malware.", "chatgpt", "ChatGPT"));
+
 
 		System.err.println("CWD " + Environment.getInstance().getCurrentWorkingDirectory());
 

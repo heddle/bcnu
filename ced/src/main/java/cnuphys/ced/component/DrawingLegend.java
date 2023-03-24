@@ -38,7 +38,7 @@ public class DrawingLegend extends JPanel {
 	private static final int X = 10;
 	private static final int Y = 12;
 	
-	private static final int numRow = 14;
+	private static final int numRow = 17;
 	private static final int numCol = 2;
 	
 	Dimension size = new Dimension(numCol * 150, numRow * 30);
@@ -64,7 +64,13 @@ public class DrawingLegend extends JPanel {
 	private void addLegendComponents() {
 		add(hitGEMC());
 		add(hitRecon());
+		add(hitReconHighlight());
+		add(hbHit());
+		add(hbHitHighlight());
+		add(tbHit());
+		add(tbHitHighlight());
 		add(clusterRecon());
+		add(clusterReconHighlight());
 		add(crossHB());
 		add(crossTB());
 		add(crossHBAI());
@@ -96,11 +102,73 @@ public class DrawingLegend extends JPanel {
 				Point pp = new Point();
 				pp.setLocation(X, Y);
 				DataDrawSupport.drawGemcHit(g, pp);
-				quickString(g, X+6, Y, "GEMC Hit ");
+				quickString(g, X+8, Y, "GEMC Hit ");
 			}
 		};
 		return comp;
 	}
+	
+	//Hit based hit
+	private LComp hbHit() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X, Y);
+				DataDrawSupport.drawHBHit(g, pp);
+				quickString(g, X+8, Y, "HB Hit ");
+			}
+		};
+		return comp;
+	}
+	
+	//Recon hb Highlight
+	private LComp hbHitHighlight() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X+3, Y);
+				DataDrawSupport.drawHBHitHighlight(g, pp);
+				quickString(g, X+15, Y, "HB Highlight Hit ");
+			}
+		};
+		return comp;
+	}
+
+	//Recon tb Highlight
+	private LComp tbHitHighlight() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X+3, Y);
+				DataDrawSupport.drawTBHitHighlight(g, pp);
+				quickString(g, X+15, Y, "TB Highlight Hit ");
+			}
+		};
+		return comp;
+	}
+	
+	//Hit based hit
+	private LComp tbHit() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X, Y);
+				DataDrawSupport.drawTBHit(g, pp);
+				quickString(g, X+8, Y, "HB Hit ");
+			}
+		};
+		return comp;
+	}
+
+
 
 	//Recon hit
 	private LComp hitRecon() {
@@ -111,11 +179,27 @@ public class DrawingLegend extends JPanel {
 				Point pp = new Point();
 				pp.setLocation(X, Y);
 				DataDrawSupport.drawReconHit(g, pp);
-				quickString(g, X+6, Y, "Recon Hit ");
+				quickString(g, X+8, Y, "Recon Hit ");
 			}
 		};
 		return comp;
 	}
+	
+	//Recon hit Highlight
+	private LComp hitReconHighlight() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X+3, Y);
+				DataDrawSupport.drawReconHitHighlight(g, pp);
+				quickString(g, X+15, Y, "Highlight Hit ");
+			}
+		};
+		return comp;
+	}
+
 
 	//Recon cluster
 	private LComp clusterRecon() {
@@ -126,11 +210,27 @@ public class DrawingLegend extends JPanel {
 				Point pp = new Point();
 				pp.setLocation(X, Y);
 				DataDrawSupport.drawReconCluster(g, pp);
-				quickString(g, X+6, Y, "Recon Cluster ");
+				quickString(g, X+8, Y, "Recon Cluster ");
 			}
 		};
 		return comp;
 	}
+	
+	//Recon cluster
+	private LComp clusterReconHighlight() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X+3, Y);
+				DataDrawSupport.drawReconClusterHighlight(g, pp);
+				quickString(g, X+15, Y, "Highlight Cluster ");
+			}
+		};
+		return comp;
+	}
+
 
 	//Hit based cross (regular)
 	private LComp crossHB() {

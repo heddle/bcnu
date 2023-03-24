@@ -40,6 +40,7 @@ import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
 import cnuphys.ced.cedview.central.CentralSupport;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.CrossDrawer;
 import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.common.SuperLayerDrawing;
@@ -415,6 +416,12 @@ public class SectorView extends SliceView implements ChangeListener {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 
+				if (ClasIoEventManager.getInstance().isAccumulating()) {
+					System.err.println("SD Before");
+					return;
+				}
+				
+				
 				drawTiltedAxis(g, container, UPPER_SECTOR);
 				drawTiltedAxis(g, container, LOWER_SECTOR);
 
@@ -443,6 +450,12 @@ public class SectorView extends SliceView implements ChangeListener {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
+				
+				if (ClasIoEventManager.getInstance().isAccumulating()) {
+					System.err.println("SD AFTER");
+					return;
+				}
+
 
 				// draw trajectories
 				_swimTrajectoryDrawer.draw(g, container);

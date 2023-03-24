@@ -2,13 +2,12 @@ package cnuphys.ced.event.data.lists;
 
 import java.awt.Color;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.lund.X11Colors;
 
 public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
@@ -22,95 +21,89 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 
 	public TdcAdcTOFHitList(String tdcBankName, String adcBankName) {
 		super();
-
-		/*
-		 * 1) create basic list from the tdc bank and left tdc 2) sort 3) merge in right
-		 * tdc 4) merge in left adc 5) merge in right adc
-		 */
-
-		// step 1: basic list from left tdc
+		
+		Hashtable<String, TdcAdcTOFHit> hitHash = new Hashtable<>();;
+		
+		//TDC
 		byte[] sector = ColumnData.getByteArray(tdcBankName + ".sector");
-		if (sector != null) {
-
-
-			int length = sector.length;
-
+		int count = (sector == null) ? 0 : sector.length;
+		
+		if (count > 0) {
 			byte[] layer = ColumnData.getByteArray(tdcBankName + ".layer");
 			short[] component = ColumnData.getShortArray(tdcBankName + ".component");
 			byte[] order = ColumnData.getByteArray(tdcBankName + ".order");
-			int[] TDC = ColumnData.getIntArray(tdcBankName + ".TDC");
+			int[] tdc = ColumnData.getIntArray(tdcBankName + ".TDC");
 
-
-			// Step 1 build basic list
-			for (int index = 0; index < length; index++) {
-				if (order[index] != 3) { // left tdc
-					modifyInsert(sector[index], layer[index], component[index], TDC[index], -1, -1, -1, -1, -1,
-							Float.NaN, Float.NaN, order[index]);
+			
+			for (int i = 0; i < count; i++) {
+				String hash = hash(sector[i], layer[i], component[i]);
+				TdcAdcTOFHit hit = hitHash.get(hash);
+				
+				if (hit == null) {
+					hit = new TdcAdcTOFHit(sector[i], layer[i], component[i]);
+					hitHash.put(hash, hit);
+					add(hit);
+				}
+				
+				if (order[i] == 2) {
+					hit.tdcL = tdc[i];
+				}
+				else {
+					hit.tdcR = tdc[i];
 				}
 			}
-
-			// step 2: sort
-			if (size() > 1) {
-				Collections.sort(this);
-			}
-
-			// step 3 merge in right tdc
-			for (int index = 0; index < length; index++) {
-				if (order[index] == 3) { // right
-					modifyInsert(sector[index], layer[index], component[index], -1, TDC[index], -1, -1, -1, -1,
-							Float.NaN, Float.NaN, order[index]);
-				}
-			}
-		} // end sector not null tdc
-
-		// on to the adcs
+				
+		}
+		
+		//ADC
 		sector = ColumnData.getByteArray(adcBankName + ".sector");
-
-
-		if (sector != null) {
-
-			int length = sector.length;
+		count = (sector == null) ? 0 : sector.length;
+		
+		if (count > 0) {
 			byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
 			short[] component = ColumnData.getShortArray(adcBankName + ".component");
 			byte[] order = ColumnData.getByteArray(adcBankName + ".order");
-			int[] ADC = ColumnData.getIntArray(adcBankName + ".ADC");
+			int[] adc = ColumnData.getIntArray(adcBankName + ".ADC");
 			short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
 			float[] time = ColumnData.getFloatArray(adcBankName + ".time");
 
-			for (int index = 0; index < length; index++) {
-				VanillaHit vh = new VanillaHit(sector[index], layer[index], component[index], order[index]);
-				if ((sector[index] == 5) && (layer[index] == 4) && (component[index] == 11)) {
-					if (adcBankName.contains("ECAL")) {
-						int cnum = ClasIoEventManager.getInstance().getSequentialEventNumber();
-						System.err.println(String.format("[ev: %d]  sect: %d   lay: %d   comp: %d   adc: %d", cnum, sector[index], layer[index], component[index], ADC[index]));
-					}
+			
+			for (int i = 0; i < count; i++) {
+				String hash = hash(sector[i], layer[i], component[i]);
+				TdcAdcTOFHit hit = hitHash.get(hash);
+				
+				if (hit == null) {
+					System.err.println("This should not have happened in TdcAdcTOFHitList");
+					hit = new TdcAdcTOFHit(sector[i], layer[i], component[i]);
+					hitHash.put(hash, hit);
+					add(hit);
 				}
-
-			}
-
-			// Step 4 merge left adc, ped, and time
-			for (int index = 0; index < length; index++) {
-				if (order[index] == 0) { // left adc
-					modifyInsert(sector[index], layer[index], component[index], -1, -1, ADC[index], -1, ped[index], -1,
-							time[index], Float.NaN, order[index]);
+				
+				if (order[i] == 0) {
+					hit.adcL = adc[i];
+					hit.pedL = ped[i];
+					hit.timeL = time[i];
 				}
-			}
-
-			// step 5 merge in right adc, ped, and time
-			for (int index = 0; index < length; index++) {
-				if (order[index] == 1) { // right
-					modifyInsert(sector[index], layer[index], component[index], -1, -1, -1, ADC[index], -1, ped[index],
-							Float.NaN, time[index], order[index]);
+				else {
+					hit.adcR = adc[i];
+					hit.pedR = ped[i];
+					hit.timeR = time[i];
 				}
-			}
-
-			_maxADC = -1;
-			for (TdcAdcTOFHit hit : this) {
-				_maxADC = Math.max(_maxADC, hit.averageADC());
-			}
+			}	
+		}
+		
+		Collections.sort(this);
+		_maxADC = -1;
+		for (TdcAdcTOFHit hit : this) {
+			_maxADC = Math.max(_maxADC, hit.averageADC());
 		}
 	}
 
+
+//string for hashtable
+	private String hash(byte sector, byte layer, short component) {
+		return "" + sector + "|" + layer + component;
+	}
 
 	/**
 	 * Get the max average adc
@@ -119,49 +112,6 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	 */
 	public int maxADC() {
 		return _maxADC;
-	}
-
-	public void modifyInsert(byte sector, byte layer, short component, int tdcL, int tdcR, int adcL, int adcR, int pedL,
-			int pedR, float timeL, float timeR, byte order) {
-		TdcAdcTOFHit hit = new TdcAdcTOFHit(sector, layer, component);
-		int index = Collections.binarySearch(this, hit);
-		if (index >= 0) {
-			// duplicate!!
-			hit = this.elementAt(index);
-		} else {
-			index = -(index + 1); // now the insertion point.
-			add(index, hit);
-		}
-
-		if (tdcL >= 0) {
-			hit.tdcL = tdcL;
-		}
-		if (tdcR >= 0) {
-			hit.tdcR = tdcR;
-		}
-		if (adcL >= 0) {
-			hit.adcL = adcL;
-		}
-		if (adcR >= 0) {
-			hit.adcR = adcR;
-		}
-		if (pedL >= 0) {
-			hit.pedL = (short) pedL;
-		}
-		if (pedR >= 0) {
-			hit.pedR = (short) pedR;
-		}
-		if (!Float.isNaN(timeL)) {
-			hit.timeL = timeL;
-		}
-		if (!Float.isNaN(timeR)) {
-			hit.timeR = timeR;
-		}
-
-		if (order >= 0) {
-			hit.order = order;
-		}
-
 	}
 
 
@@ -190,7 +140,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	 * Find the hit
 	 *
 	 * @param sector    the 1-based sector
-	 * @param layer     the 1-based layer 1..36
+	 * @param layer     the 1-based layer
 	 * @param component the 1-based component
 	 * @return the hit, or null if not found
 	 */
@@ -203,7 +153,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	 * Find the hit
 	 *
 	 * @param sector    the 1-based sector
-	 * @param layer     the 1-based layer 1..36
+	 * @param layer     the 1-based layer
 	 * @param component the 1-based component
 	 * @return the hit, or null if not found
 	 */

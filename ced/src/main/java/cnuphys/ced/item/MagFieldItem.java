@@ -91,6 +91,11 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
+		
+		if (ClasIoEventManager.getInstance().isAccumulating()) {
+			return;
+		}
+
 
 		if (_failedToLoad) {
 			return;

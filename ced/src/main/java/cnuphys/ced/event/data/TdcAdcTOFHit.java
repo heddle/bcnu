@@ -24,6 +24,12 @@ public class TdcAdcTOFHit implements Comparable<TdcAdcTOFHit> {
 
 	public byte order = -1;
 
+	/**
+	 * 
+	 * @param sector 1-based
+	 * @param layer 1-based
+	 * @param component 1-based
+	 */
 	public TdcAdcTOFHit(byte sector, byte layer, short component) {
 		super();
 		this.sector = sector;
