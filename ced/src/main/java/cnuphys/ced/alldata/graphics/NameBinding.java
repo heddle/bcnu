@@ -8,8 +8,8 @@ import cnuphys.bCNU.xml.XmlPrintStreamWritable;
 import cnuphys.bCNU.xml.XmlPrintStreamWriter;
 
 /**
- * A simple class that binds a name like "x" or "theta" to abank.column, like
- * DC::dgtz.sector
+ * A simple class that binds a name like "x" or "theta" to a bank.column, like
+ * FTOF::hits.sector
  *
  * @author heddle
  *

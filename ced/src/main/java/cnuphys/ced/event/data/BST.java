@@ -8,7 +8,7 @@ import org.jlab.io.base.DataEvent;
 
 public class BST extends DetectorData {
 
-	AdcHitList _adcHits = new AdcHitList("BST::adc");
+	AdcList _adcHits = new AdcList("BST::adc");
 
 	private static BST _instance;
 
@@ -26,7 +26,7 @@ public class BST extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_adcHits = new AdcHitList("BST::adc");
+		_adcHits = new AdcList("BST::adc");
 	}
 
 	/**
@@ -34,8 +34,8 @@ public class BST extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public AdcHitList updateAdcList() {
-		_adcHits = new AdcHitList("BST::adc");
+	public AdcList updateAdcList() {
+		_adcHits = new AdcList("BST::adc");
 		return _adcHits;
 	}
 
@@ -44,7 +44,7 @@ public class BST extends DetectorData {
 	 *
 	 * @return the adc hit list
 	 */
-	public AdcHitList getHits() {
+	public AdcList getHits() {
 		return _adcHits;
 	}
 
@@ -60,11 +60,11 @@ public class BST extends DetectorData {
 	public Vector<int[]> allStripsForSectorAndLayer(int sector, int layer) {
 		Vector<int[]> strips = new Vector<>();
 
-		AdcHitList hits = getHits();
+		AdcList hits = getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcHit hit : hits) {
 				if ((hit.sector == sector) && (hit.layer == layer)) {
-					int data[] = { hit.component, hit.averageADC() };
+					int data[] = { hit.component, hit.adc };
 					strips.add(data);
 				}
 			}

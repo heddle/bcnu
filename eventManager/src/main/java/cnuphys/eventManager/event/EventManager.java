@@ -453,7 +453,7 @@ public class EventManager {
 	}
 
 	/**
-	 * Checks if a bank, identified by a string such as "FTOF1B::dgtz", is in the
+	 * Checks if a bank, identified by a string such as "FTOF::hits", is in the
 	 * current event.
 	 *
 	 * @param bankName the bank name

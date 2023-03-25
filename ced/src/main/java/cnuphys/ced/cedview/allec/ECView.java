@@ -39,9 +39,6 @@ public class ECView extends HexView {
 	// base title
 	private static final String _baseTitle = "ECAL";
 
-	// for drawing MC hits
-	private McHitDrawer _mcHitDrawer;
-
 	// for drawing REC::Calorimeter data
     private ECRecDrawer _recDrawer;
 
@@ -66,9 +63,6 @@ public class ECView extends HexView {
 	 */
 	private ECView(String title) {
 		super(getAttributes(title));
-
-		// MC hit drawer
-		_mcHitDrawer = new McHitDrawer(this);
 
 		// REC::Calorimeter drawer
 		_recDrawer = new ECRecDrawer(this);
@@ -160,9 +154,6 @@ public class ECView extends HexView {
 
 				if (!_eventManager.isAccumulating()) {
 
-					// draw MC Hits
-					_mcHitDrawer.draw(g, container);
-
 					//draw REC::Calorimeter data
 					_recDrawer.draw(g, container);
 					
@@ -218,10 +209,6 @@ public class ECView extends HexView {
 		}
 
 		super.getFeedbackStrings(container, pp, wp, feedbackStrings);
-
-		if (showMcTruth()) {
-			_mcHitDrawer.feedback(container, pp, wp, feedbackStrings);
-		}
 
 		_recDrawer.feedback(container, pp, wp, feedbackStrings);
 

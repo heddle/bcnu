@@ -96,7 +96,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	private CentralZHitDrawer _hitDrawer;
 
 	//bank matches
-	private static String _defMatches[] = {"BMT", "BST", "CVT"};
+	private static String _defMatches[] = {"BMT", "BST", "CVT", "CTOF"};
 
 
 	public CentralZView(Object... keyVals) {

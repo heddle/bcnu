@@ -52,16 +52,6 @@ public class NoiseManager implements IClasIoEventListener {
 		return instance;
 	}
 
-//	/**
-//	 * Get the noise array which is parallel to the other dc_dgtz arrays such as
-//	 * dgtz_sector etc.
-//	 *
-//	 * @return the noise array
-//	 */
-//	public boolean[] getNoise() {
-//		return _noiseResults.noise;
-//	}
-
 	/**
 	 * Get the parameters for a given 0-based superlayer
 	 *

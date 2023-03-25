@@ -10,7 +10,7 @@ import java.awt.geom.Point2D;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
@@ -207,7 +207,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		Point pp = new Point();
 		Point2D.Double wp = new Point2D.Double();
 
-		AdcHitList hits = BMT.getInstance().getADCHits();
+		AdcList hits = BMT.getInstance().getADCHits();
 		if ((hits != null) && !hits.isEmpty()) {
 
 //			Shape oldClip = g.getClip();
@@ -284,7 +284,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
 
-		AdcHitList hits = BST.getInstance().getHits();
+		AdcList hits = BST.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 
 //			Shape oldClip = g.getClip();

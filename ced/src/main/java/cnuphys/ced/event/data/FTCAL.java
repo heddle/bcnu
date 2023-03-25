@@ -4,7 +4,7 @@ import org.jlab.io.base.DataEvent;
 
 public class FTCAL extends DetectorData {
 
-	AdcHitList _adcHits = new AdcHitList("FTCAL::adc");
+	AdcLRHitList _adcHits = new AdcLRHitList("FTCAL::adc");
 
 	private static FTCAL _instance;
 
@@ -22,7 +22,7 @@ public class FTCAL extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_adcHits = new AdcHitList("FTCAL::adc");
+		_adcHits = new AdcLRHitList("FTCAL::adc");
 	}
 
 	/**
@@ -30,8 +30,8 @@ public class FTCAL extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public AdcHitList updateAdcList() {
-		_adcHits = new AdcHitList("FTCAL::adc");
+	public AdcLRHitList updateAdcList() {
+		_adcHits = new AdcLRHitList("FTCAL::adc");
 		return _adcHits;
 	}
 
@@ -40,7 +40,7 @@ public class FTCAL extends DetectorData {
 	 *
 	 * @return the adc hit list
 	 */
-	public AdcHitList getHits() {
+	public AdcLRHitList getHits() {
 		return _adcHits;
 	}
 }

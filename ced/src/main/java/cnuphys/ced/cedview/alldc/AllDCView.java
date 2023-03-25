@@ -163,7 +163,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 		view._controlPanel = new ControlPanel(view, ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY
 				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL
 				+ ControlPanel.ALLDCDISPLAYPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
+				DisplayBits.ACCUMULATION, 3, 5);
 		view.add(view._controlPanel, BorderLayout.EAST);
 
 		customize(view);

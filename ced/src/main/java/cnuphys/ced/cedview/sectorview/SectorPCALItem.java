@@ -273,19 +273,6 @@ public class SectorPCALItem extends PolygonItem {
 
 					}
 
-//					// on a hit?
-//					// the data container
-//					Vector<HitRecord> hits = PCAL.matchingHits(_sector,
-//							_stripType + 1, stripId + 1);
-//
-//					if (hits != null) {
-//						for (HitRecord hit : hits) {
-//							PCAL.preliminaryFeedback(hit.hitIndex, feedbackStrings);
-//							DataSupport.truePidFeedback(PCAL.pid(), hit.hitIndex, feedbackStrings);
-//							PCAL.dgtzFeedback(hit.hitIndex, feedbackStrings);
-//						}
-//					}
-
 					return;
 				}
 			} // wp != null

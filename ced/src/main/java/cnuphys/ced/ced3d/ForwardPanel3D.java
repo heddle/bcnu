@@ -43,10 +43,6 @@ public class ForwardPanel3D extends CedPanel3D {
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
 
-//		 mc hit drawer
-		MCHitDrawer3D mchd = new MCHitDrawer3D(this);
-		addItem(mchd);
-
 		//recon drawer
 		RecDrawer3D rd = new RecDrawer3D(this);
 		addItem(rd);

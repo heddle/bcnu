@@ -15,8 +15,10 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.event.data.AdcECALHit;
+import cnuphys.ced.event.data.AdcLRHit;
+import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.CND;
@@ -158,8 +160,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			int supl0 = lay0 / 2;
 			_BSTAccumulatedData[lay0] = new int[BSTGeometry.sectorsPerSuperlayer[supl0]];
 		}
-
-		// _bstDgtzAccumulatedData = new int[8][24];
 
 		// down to strip
 		_BSTFullAccumulatedData = new int[8][][];
@@ -647,7 +647,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_eventCount++;
 
 		// FTCal Data
-		AdcHitList ftcalList = FTCAL.getInstance().updateAdcList();
+		AdcLRHitList ftcalList = FTCAL.getInstance().updateAdcList();
 		accumFTCAL(ftcalList);
 
 		//RTPCData
@@ -659,11 +659,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumCND();
 
 		// htcc data
-		AdcHitList htccList = HTCC2.getInstance().updateAdcList();
+		AdcList htccList = HTCC2.getInstance().updateAdcList();
 		accumHTCC(htccList);
 
 		// ltcc data
-		AdcHitList ltccList = LTCC.getInstance().updateAdcList();
+		AdcLRHitList ltccList = LTCC.getInstance().updateAdcList();
 		accumLTCC(ltccList);
 
 		// dc data
@@ -683,14 +683,14 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumAllEC(allEClist);
 
 		// BST
-		AdcHitList bstList = BST.getInstance().updateAdcList();
+		AdcList bstList = BST.getInstance().updateAdcList();
 		accumBST(bstList);
 		
 	
 	}
 
 	// accumulate bst
-	private void accumBST(AdcHitList list) {
+	private void accumBST(AdcList list) {
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
@@ -719,12 +719,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate ftcal
-	private void accumFTCAL(AdcHitList list) {
+	private void accumFTCAL(AdcLRHitList list) {
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
 
-		for (AdcHit hit : list) {
+		for (AdcLRHit hit : list) {
 			_FTCALAccumulatedData[hit.component] += 1;
 		}
 	}
@@ -764,7 +764,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate htcc
-	private void accumHTCC(AdcHitList list) {
+	private void accumHTCC(AdcList list) {
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
@@ -790,12 +790,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate ltcc
-	private void accumLTCC(AdcHitList list) {
+	private void accumLTCC(AdcLRHitList list) {
 		if ((list == null) || list.isEmpty()) {
 			return;
 		}
 
-		for (AdcHit hit : list) {
+		for (AdcLRHit hit : list) {
 			if (hit != null) {
 				int sect0 = hit.sector - 1; // make 0 based
 

@@ -288,19 +288,6 @@ public class SectorECALItem extends PolygonItem {
 
 					}
 
-//					// on a hit?
-//					// the data container
-//					Vector<HitRecord> hits = EC.matchingHits(_sector,
-//							_plane + 1, _stripType + 1, stripId + 1);
-//
-//					if (hits != null) {
-//						for (HitRecord hit : hits) {
-//							EC.preliminaryFeedback(hit.hitIndex, feedbackStrings);
-//							DataSupport.truePidFeedback(EC.pid(), hit.hitIndex, feedbackStrings);
-//							EC.dgtzFeedback(hit.hitIndex, feedbackStrings);
-//						}
-//					}
-
 					return;
 				}
 			} // wp != null

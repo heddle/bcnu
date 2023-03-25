@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -58,7 +58,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
 
-		AdcHitList hits = BST.getInstance().getHits();
+		AdcList hits = BST.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 
 //			Shape oldClip = g.getClip();

@@ -16,7 +16,6 @@ public class DataSupport {
 	// for uniform feedback colors
 	public static final String prelimColor = "$orange$";
 	public static final String trueColor = "$Alice Blue$";
-	public static final String dgtzColor = "$Moccasin$";
 	public static final String reconColor = "$coral$";
 
 	// ec/pcal constants

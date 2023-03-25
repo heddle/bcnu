@@ -12,7 +12,7 @@ import item3D.Item3D;
 
 public abstract class DetectorItem3D extends Item3D {
 
-	protected static final Color dgtzColor = new Color(255, 0, 0);
+	protected static final Color hitColor = new Color(255, 0, 0);
 	protected static final float MC_POINTSIZE = 3f;
 	protected static final float CROSS_POINTSIZE = 5f;
 	protected static final Color cosmicColor = Color.lightGray;
@@ -88,7 +88,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 		LundId lid = LundSupport.getInstance().get(pid[index]);
 		if (lid == null) {
-			return dgtzColor;
+			return hitColor;
 		}
 
 		return lid.getStyle().getFillColor();
@@ -104,7 +104,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 		LundId lid = LundSupport.getInstance().get(lundId);
 		if (lid == null) {
-			return dgtzColor;
+			return hitColor;
 		}
 
 		return lid.getStyle().getFillColor();

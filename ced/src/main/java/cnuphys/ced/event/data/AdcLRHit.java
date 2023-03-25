@@ -5,7 +5,7 @@ import java.util.List;
 
 import cnuphys.lund.DoubleFormat;
 
-public class AdcHit implements Comparable<AdcHit> {
+public class AdcLRHit implements Comparable<AdcLRHit> {
 
 	// used for mouse over feedback
 	private Point _screenLocation = new Point();
@@ -16,13 +16,15 @@ public class AdcHit implements Comparable<AdcHit> {
 	public final byte sector;
 	public final byte layer;
 	public final short component;
-	public byte order;
-	public int adc = -1;
+	public int adcL = -1;
+	public int adcR = -1;
 
-	public short ped = -1;
-	public float time = Float.NaN;
+	public short pedL = -1;
+	public short pedR = -1;
+	public float timeL = Float.NaN;
+	public float timeR = Float.NaN;
 
-	public AdcHit(byte sector, byte layer, short component) {
+	public AdcLRHit(byte sector, byte layer, short component) {
 		super();
 		this.sector = sector;
 		this.layer = layer;
@@ -30,7 +32,7 @@ public class AdcHit implements Comparable<AdcHit> {
 	}
 
 	@Override
-	public int compareTo(AdcHit hit) {
+	public int compareTo(AdcLRHit hit) {
 		int c = Integer.valueOf(sector).compareTo(Integer.valueOf(hit.sector));
 		if (c == 0) {
 			c = Integer.valueOf(layer).compareTo(Integer.valueOf(hit.layer));
@@ -53,14 +55,43 @@ public class AdcHit implements Comparable<AdcHit> {
 		return true;
 	}
 
+	/**
+	 * Get the average ADC value
+	 *
+	 * @return the average of left and right
+	 */
+	public int averageADC() {
+		int count = 0;
+		int sum = 0;
+		if (adcL >= 0) {
+			count++;
+			sum += adcL;
+		}
+		if (adcR >= 0) {
+			count++;
+			sum += adcR;
+		}
+		if (count == 0) {
+			return -1;
+		}
+
+		return sum / count;
+	}
 
 	// make a sensible doca string
 	private String timeString() {
-		if (Float.isNaN(time)) {
+		if (Float.isNaN(timeL) && Float.isNaN(timeR)) {
 			return "";
 		}
 
-		return "time " + DoubleFormat.doubleFormat(time, 3);
+		if (Float.isNaN(timeL)) {
+			return "time " + DoubleFormat.doubleFormat(timeR, 3);
+		} else if (Float.isNaN(timeR)) {
+			return "time " + DoubleFormat.doubleFormat(timeL, 3);
+		} else {
+			return "time [" + DoubleFormat.doubleFormat(timeL, 3) + ", " + DoubleFormat.doubleFormat(timeL, 3) + "]";
+		}
+
 	}
 
 	/**
@@ -68,11 +99,15 @@ public class AdcHit implements Comparable<AdcHit> {
 	 *
 	 * @return a string for just the tdc data
 	 */
-	private String valString(int val, String name) {
-		if (val < 0) {
+	private String valString(int valL, int valR, String name) {
+		if ((valL < 0) && (valR < 0)) {
 			return "";
+		} else if ((valL >= 0) && (valR >= 0)) {
+			return name + " [" + valL + ", " + valR + "]";
+		} else if (valL >= 0) {
+			return name + " " + valL;
 		} else {
-			return name + " " + val;
+			return name + " " + valR;
 		}
 	}
 
@@ -82,7 +117,7 @@ public class AdcHit implements Comparable<AdcHit> {
 	 * @return a string for just the ped data
 	 */
 	public String pedString() {
-		return valString(ped, "ped");
+		return valString(pedL, pedR, "ped");
 	}
 
 	/**
@@ -91,7 +126,7 @@ public class AdcHit implements Comparable<AdcHit> {
 	 * @return a string for just the tdc data
 	 */
 	public String adcString() {
-		return valString(adc, "adc");
+		return valString(adcL, adcR, "adc");
 	}
 
 	@Override
@@ -105,8 +140,8 @@ public class AdcHit implements Comparable<AdcHit> {
 	 *
 	 * @param feedbackStrings the list of strings
 	 */
-	public void adcFeedback(List<String> feedbackStrings) {
-		adcFeedback("layer " + layer, "component", feedbackStrings);
+	public void tdcAdcFeedback(List<String> feedbackStrings) {
+		tdcAdcFeedback("layer " + layer, "component", feedbackStrings);
 	}
 
 	/**
@@ -116,7 +151,7 @@ public class AdcHit implements Comparable<AdcHit> {
 	 * @param componentName   a nice name for the component
 	 * @param feedbackStrings
 	 */
-	public void adcFeedback(String layerName, String componentName, List<String> feedbackStrings) {
+	public void tdcAdcFeedback(String layerName, String componentName, List<String> feedbackStrings) {
 
 		feedbackStrings.add(_fbColor + "sector " + sector + " " + layerName + "  " + componentName + " " + component);
 

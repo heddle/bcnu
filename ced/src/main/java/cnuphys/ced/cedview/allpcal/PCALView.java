@@ -39,9 +39,6 @@ public class PCALView extends HexView {
 	// sector items
 	private PCALHexSectorItem _hexItems[];
 
-	// for drawing MC hits
-	private McHitDrawer _mcHitDrawer;
-
 	// for drawing REC::Calorimeter data
     private PCALRecDrawer _recDrawer;
 
@@ -68,9 +65,6 @@ public class PCALView extends HexView {
 	 */
 	private PCALView(String title) {
 		super(getAttributes(title));
-
-		// MC hit drawer
-		_mcHitDrawer = new McHitDrawer(this);
 
 		// REC::Calorimeter drawer
 		_recDrawer = new PCALRecDrawer(this);
@@ -107,7 +101,7 @@ public class PCALView extends HexView {
 
 		_controlPanel = new ControlPanel(this,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH+ DisplayBits.RECCAL + DisplayBits.UVWSTRIPS, 3, 5);
+				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH + DisplayBits.RECCAL + DisplayBits.UVWSTRIPS, 3, 5);
 
 		add(_controlPanel, BorderLayout.EAST);
 		pack();
@@ -162,8 +156,6 @@ public class PCALView extends HexView {
 				if (!_eventManager.isAccumulating()) {
 
 					// draw MC Hits
-					_mcHitDrawer.draw(g, container);
-
 					//draw REC::Calorimeter data
 					_recDrawer.draw(g, container);
 					
@@ -213,10 +205,6 @@ public class PCALView extends HexView {
 	public void getFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 
 		super.getFeedbackStrings(container, pp, wp, feedbackStrings);
-
-		if (showMcTruth()) {
-			_mcHitDrawer.feedback(container, pp, wp, feedbackStrings);
-		}
 
 		_recDrawer.feedback(container, pp, wp, feedbackStrings);
 

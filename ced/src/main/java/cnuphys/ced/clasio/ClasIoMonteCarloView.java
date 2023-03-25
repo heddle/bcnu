@@ -107,7 +107,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 					double p = Math.sqrt(pxo * pxo + pyo * pyo + pzo * pzo); // GeV/c
 
 					if (p < 1.0e-3) {
-						System.err.println(String.format("Skipping extremely low momentum track %-7.3f GeV/c for %s",
+						System.err.println(String.format("Skipping extremely low momentum track %-5.3f GeV/c for %s",
 								p, lid.getName()));
 						continue;
 					}

@@ -2,7 +2,7 @@ package cnuphys.eventManager.graphics;
 
 /**
  * A simple class that binds a name like "x" or "theta" to abank.column, like
- * DC::dgtz.sector
+ * FTOF::hits.sector
  *
  * @author heddle
  *

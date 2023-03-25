@@ -13,7 +13,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.geometry.GeometryManager;
@@ -93,7 +93,7 @@ public class SectorHTCCItem extends PolygonItem {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
-		AdcHitList hits = HTCC2.getInstance().getHits();
+		AdcList hits = HTCC2.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcHit hit : hits) {
 				if ((hit != null) && (hit.sector == _sector) && (hit.layer == _half) && (hit.component == _ring)) {
@@ -188,7 +188,7 @@ public class SectorHTCCItem extends PolygonItem {
 			List<String> feedbackStrings) {
 		if (contains(container, screenPoint)) {
 
-			AdcHitList hits = HTCC2.getInstance().getHits();
+			AdcList hits = HTCC2.getInstance().getHits();
 			AdcHit hit = null;
 
 			if ((hits != null) && !hits.isEmpty()) {
@@ -199,21 +199,8 @@ public class SectorHTCCItem extends PolygonItem {
 				feedbackStrings.add(DataSupport.prelimColor + "HTCC sect " + _sector + " half (layer) " + _half
 						+ " ring (component) " + _ring);
 			} else {
-				hit.tdcAdcFeedback("half " + _half, "ring", feedbackStrings);
+				hit.adcFeedback("half " + _half, "ring", feedbackStrings);
 			}
-
-//			// on a hit?
-//			// the data container
-//			Vector<HitRecord> hits = HTCC.matchingHits(_sector,
-//					_ring, _half);
-//
-//			if (hits != null) {
-//				for (HitRecord hit : hits) {
-//					HTCC.preliminaryFeedback(hit.hitIndex, feedbackStrings);
-//					DataSupport.truePidFeedback(EC.pid(), hit.hitIndex, feedbackStrings);
-//					HTCC.dgtzFeedback(hit.hitIndex, feedbackStrings);
-//				}
-//			}
 
 		}
 

@@ -62,7 +62,6 @@ public class DrawingLegend extends JPanel {
 
 
 	private void addLegendComponents() {
-		add(hitGEMC());
 		add(hitRecon());
 		add(hitReconHighlight());
 		add(hbHit());
@@ -71,6 +70,9 @@ public class DrawingLegend extends JPanel {
 		add(tbHitHighlight());
 		add(clusterRecon());
 		add(clusterReconHighlight());
+		add(ecalRec());
+		add(ecalRecHighlight());
+		
 		add(crossHB());
 		add(crossTB());
 		add(crossHBAI());
@@ -92,21 +94,37 @@ public class DrawingLegend extends JPanel {
 		add(segmentTBAI());
 		add(segmentHBAI());
 	}
-
-	//GEMC hit
-	private LComp hitGEMC() {
+	
+	//PCAL/ECAL recon normal
+	private LComp ecalRec() {
 		LComp comp = new LComp() {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
 				Point pp = new Point();
 				pp.setLocation(X, Y);
-				DataDrawSupport.drawGemcHit(g, pp);
-				quickString(g, X+8, Y, "GEMC Hit ");
+				DataDrawSupport.drawECALRec(g, pp, false);
+				quickString(g, X+8, Y, "ECAL Recon");
 			}
 		};
 		return comp;
 	}
+
+	//PCAL/ECAL recon highlight
+	private LComp ecalRecHighlight() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Point pp = new Point();
+				pp.setLocation(X, Y);
+				DataDrawSupport.drawECALRec(g, pp, true);
+				quickString(g, X+8, Y, "ECAL Recon Highlight ");
+			}
+		};
+		return comp;
+	}
+
 	
 	//Hit based hit
 	private LComp hbHit() {

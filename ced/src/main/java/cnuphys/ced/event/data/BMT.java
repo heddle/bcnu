@@ -14,7 +14,7 @@ import cnuphys.ced.event.data.lists.BaseHit2List;
 public class BMT extends DetectorData {
 
 	// list of adc hits
-	AdcHitList _adcHits = new AdcHitList("BMT::adc");
+	AdcList _adcHits = new AdcList("BMT::adc");
 
 	// list of BMT reconstructed hits
 	BaseHit2List _bmtRecHits;
@@ -35,7 +35,7 @@ public class BMT extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_adcHits = new AdcHitList("BMT::adc");
+		_adcHits = new AdcList("BMT::adc");
 		_bmtRecHits = new BaseHit2List("BMTRec::Hits", "strip");
 	}
 
@@ -44,8 +44,8 @@ public class BMT extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public AdcHitList updateAdcList() {
-		_adcHits = new AdcHitList("BMT::adc");
+	public AdcList updateAdcList() {
+		_adcHits = new AdcList("BMT::adc");
 		return _adcHits;
 	}
 
@@ -54,7 +54,7 @@ public class BMT extends DetectorData {
 	 *
 	 * @return the adc hit list
 	 */
-	public AdcHitList getADCHits() {
+	public AdcList getADCHits() {
 		return _adcHits;
 	}
 

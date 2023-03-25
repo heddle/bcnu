@@ -8,9 +8,7 @@ import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
-import java.util.Hashtable;
 
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 
@@ -41,11 +39,6 @@ public class DataDrawSupport {
 			TRANSYELLOW, TRANSGREEN, TRANSRED};
 
 
-	//spheres
-	private static Hashtable<String, ImageIcon> _spheres;
-	private static String _sphereColors[] = {"red", "blue"};
-
-
 
 	public static String prefix[] = { "Reg HB ", "Reg TB ", "AI HB ", "AI TB ", "BST ", "BMT ", "FMT " };
 
@@ -72,23 +65,18 @@ public class DataDrawSupport {
 	public static final String[] EC_PLANE_NAMES = { "?", "Inner", "Outer" };
 	public static final String[] EC_VIEW_NAMES = { "?", "U", "V", "W" };
 
+	
 	/**
-	 * Draw a GEMC truth hit at the given screen location
+	 * Draw the ECAL reconstruction
 	 *
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
-	public static void drawGemcHit(Graphics g, Point pp) {
-		SymbolDraw.drawDavid(g, pp.x, pp.y, 4, gemc_hit_lineColor, gemc_hit_fillColor);
-//		g.setColor(gemc_hit_fillColor);
-//		g.fillOval(pp.x - 3, pp.y - 3, 6, 6);
-//		// now the cross
-//		g.setColor(gemc_hit_lineColor);
-//		g.drawOval(pp.x - 3, pp.y - 3, 6, 6);
-//		g.drawLine(pp.x - 3, pp.y, pp.x + 3, pp.y);
-//		g.drawLine(pp.x, pp.y - 3, pp.x, pp.y + 3);
+	public static void drawECALRec(Graphics g, Point pp, boolean highlight) {
+		SymbolDraw.drawDavid(g, pp.x, pp.y, highlight ? 5 : 4, Color.black, highlight ? Color.yellow : Color.red);
 	}
-
+	
+	
 	
 	/**
 	 * Draw a hit based hit at the given screen location

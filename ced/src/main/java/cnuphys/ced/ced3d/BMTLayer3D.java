@@ -6,7 +6,9 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcLRHit;
+import cnuphys.ced.event.data.AdcLRHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.Cross2;
@@ -60,7 +62,7 @@ public class BMTLayer3D extends DetectorItem3D {
 //		float coords36[] = new float[36];
 //		boolean drawOutline = false;
 
-		AdcHitList hits = BMT.getInstance().getADCHits();
+		AdcList hits = BMT.getInstance().getADCHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcHit hit : hits) {
 				if (hit != null) {
@@ -75,7 +77,7 @@ public class BMTLayer3D extends DetectorItem3D {
 								BMTGeometry.getGeometry().getCRZEndPoints(sector, layer, strip, coords6);
 
 								if (!Float.isNaN(coords6[0])) {
-									Support3D.drawLine(drawable, coords6, dgtzColor, STRIPLINEWIDTH);
+									Support3D.drawLine(drawable, coords6, hitColor, STRIPLINEWIDTH);
 								}
 							}
 						}

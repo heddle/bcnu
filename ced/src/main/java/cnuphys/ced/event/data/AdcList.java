@@ -2,68 +2,74 @@ package cnuphys.ced.event.data;
 
 import java.awt.Color;
 import java.util.Collections;
+import java.util.Hashtable;
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.lund.X11Colors;
 
-public class AdcHitList extends Vector<AdcHit> {
-
+public class AdcList extends Vector<AdcHit> {
 	// for color scaling
 	private int _maxADC;
-	
-	//for 0 adc values
+
+	// for 0 adc values
 	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
 	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
-
-
-	public AdcHitList(String adcBankName) {
-		super();
+	
+	public AdcList(String adcBankName) {
+		
+		Hashtable<String, AdcHit> hitHash = new Hashtable<>();
 
 		byte[] sector = ColumnData.getByteArray(adcBankName + ".sector");
-		int length = (sector == null) ? 0 : sector.length;
+		int count = (sector == null) ? 0 : sector.length;
 
-		if (length < 1) {
-			return;
-		}
+		if (count > 0) {
+			byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
+			short[] component = ColumnData.getShortArray(adcBankName + ".component");
+			byte[] order = ColumnData.getByteArray(adcBankName + ".order");
+			int[] ADC = ColumnData.getIntArray(adcBankName + ".ADC");
+			short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
+			float[] time = ColumnData.getFloatArray(adcBankName + ".time");
 
+			for (int i = 0; i < count; i++) {
+				String hash = hash(sector[i], layer[i], component[i]);
+				AdcHit hit = hitHash.get(hash);
 
-		byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
-		short[] component = ColumnData.getShortArray(adcBankName + ".component");
-		byte[] order = ColumnData.getByteArray(adcBankName + ".order");
-		int[] ADC = ColumnData.getIntArray(adcBankName + ".ADC");
-		short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
-		float[] time = ColumnData.getFloatArray(adcBankName + ".time");
+				if (hit == null) {
+					hit = new AdcHit(sector[i], layer[i], component[i]);
+					
+					hit.adc = ADC[i];
+					hit.ped = ped[i];
+					hit.time = time[i];
+					hit.order = order[i];
 
-	//	String tstamp = adcBankName + ".timestamp";
-	//	long[] timestamp = ColumnData.getLongArray(tstamp);
-
-		// Step 1 build basic list
-		for (int index = 0; index < length; index++) {
-			if (order[index] != 3) { // left tdc
-				modifyInsert(sector[index], layer[index], component[index], ADC[index], -1, ped[index], -1, time[index],
-						Float.NaN);
+					hitHash.put(hash, hit);
+					add(hit);
+				}
+				else {
+					String s1 = String.format("duplicate [%s] event num %d ", adcBankName, ClasIoEventManager.getInstance().getSequentialEventNumber());
+					String s2 = String.format(" [sector: %d, layer: %d, component: %d]", hit.sector, hit.layer, hit.component);
+					System.err.println(s1 + s2);
+				}
 			}
-		}
 
-		// step 2: sort
-		if (size() > 1) {
-			Collections.sort(this);
-		}
-
-		// step 3 merge in right adc, ped, time
-		for (int index = 0; index < length; index++) {
-			if (order[index] == 3) { // right
-				modifyInsert(sector[index], layer[index], component[index], -1, ADC[index], -1, ped[index], Float.NaN,
-						time[index]);
+			if (size() > 1) {
+				Collections.sort(this);
 			}
+
 		}
 
 		_maxADC = -1;
 		for (AdcHit hit : this) {
-			_maxADC = Math.max(_maxADC, hit.averageADC());
+			_maxADC = Math.max(_maxADC, hit.adc);
 		}
 
+	}
+	
+	// string for hashtable
+	private String hash(byte sector, byte layer, short component) {
+		return "" + sector + "|" + layer + component;
 	}
 
 	/**
@@ -74,40 +80,6 @@ public class AdcHitList extends Vector<AdcHit> {
 	public int maxADC() {
 		return _maxADC;
 	}
-
-	public void modifyInsert(byte sector, byte layer, short component, int adcL, int adcR, int pedL, int pedR,
-			float timeL, float timeR) {
-		AdcHit hit = new AdcHit(sector, layer, component);
-		int index = Collections.binarySearch(this, hit);
-		if (index >= 0) {
-			hit = this.elementAt(index);
-		} else {
-			index = -(index + 1); // now the insertion point.
-			add(index, hit);
-		}
-
-		if (adcL >= 0) {
-			hit.adcL = adcL;
-		}
-		if (adcR >= 0) {
-			hit.adcR = adcR;
-		}
-		if (pedL >= 0) {
-			hit.pedL = (short) pedL;
-		}
-		if (pedR >= 0) {
-			hit.pedR = (short) pedR;
-		}
-		if (!Float.isNaN(timeL)) {
-			hit.timeL = timeL;
-		}
-		if (!Float.isNaN(timeR)) {
-			hit.timeR = timeR;
-		}
-
-	}
-
-
 
 	/**
 	 * Find the index of a hit
@@ -154,7 +126,7 @@ public class AdcHitList extends Vector<AdcHit> {
 	public AdcHit get(int sector, int layer, int component) {
 		return get((byte) sector, (byte) layer, (short) component);
 	}
-	
+
 	/**
 	 * Get a monochrome color with alpha based of relative adc
 	 *
@@ -168,11 +140,10 @@ public class AdcHitList extends Vector<AdcHit> {
 		}
 
 		int avgADC = hit.averageADC();
-		
-		if(avgADC < 1) {
+
+		if (avgADC < 1) {
 			return ASDZERO2;
 		}
-
 
 		double maxadc = Math.max(1.0, maxAdc);
 
@@ -185,9 +156,8 @@ public class AdcHitList extends Vector<AdcHit> {
 		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
 	}
 
-
 	/**
-	 * Get a color with apha based of relative adc
+	 * Get a color with alpha based of relative adc
 	 *
 	 * @param hit the hit
 	 * @return a fill color for adc hits
@@ -197,15 +167,14 @@ public class AdcHitList extends Vector<AdcHit> {
 			return Color.white;
 		}
 
-		int avgADC = hit.averageADC();
-		
-		if(avgADC < 1) {
+
+		if (hit.adc < 1) {
 			return ASDZERO1;
 		}
 
 		double maxadc = Math.max(1.0, _maxADC);
 
-		double fract = (avgADC) / maxadc;
+		double fract = (hit.adc) / maxadc;
 		fract = Math.max(0, Math.min(1.0, fract));
 
 		int alpha = 128 + (int) (127 * fract);
@@ -213,4 +182,5 @@ public class AdcHitList extends Vector<AdcHit> {
 
 		return AdcColorScale.getInstance().getAlphaColor(fract, alpha);
 	}
+
 }

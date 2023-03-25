@@ -16,6 +16,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.geometry.ECGeometry;
@@ -115,8 +116,7 @@ public class ECRecDrawer extends ECViewDrawer {
 		// get the right item
 		_view.getHexSectorItem(recCal.sector[index]).ijkToScreen(container, localP, pp);
 
-		SymbolDraw.drawDavid(g, pp.x, pp.y, highlight ? 5 : 4, Color.black, highlight ? Color.yellow : Color.red);
-
+		DataDrawSupport.drawECALRec(g, pp, highlight);
 
 		float radius = recCal.getRadius(recCal.energy[index]);
 		if (radius > 0) {

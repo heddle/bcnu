@@ -115,7 +115,7 @@ import cnuphys.swim.SwimMenu;
 import cnuphys.swim.Swimmer;
 
 @SuppressWarnings("serial")
-public class Ced extends BaseMDIApplication implements PropertyChangeListener, MagneticFieldChangeListener {
+public class Ced extends BaseMDIApplication implements MagneticFieldChangeListener {
 
 	// a shared ping
 	private Ping _ping;
@@ -712,7 +712,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 
 		// the swimmer menu
 		mmgr.addMenu(SwimMenu.getInstance());
-		SwimMenu.getInstance().addPropertyChangeListener(this);
 
 		// remove the option menu until I need it
 		// mmgr.removeMenu(mmgr.getOptionMenu());
@@ -1104,23 +1103,6 @@ public class Ced extends BaseMDIApplication implements PropertyChangeListener, M
 		return _release + (_experimental ? " (Experimental)" : "");
 	}
 
-	@Override
-	public void propertyChange(PropertyChangeEvent pev) {
-		String pname = pev.getPropertyName();
-
-		if (pname.equals(ClasIoEventManager.SWIM_ALL_MC_PROP)) {
-			ISwimAll allSwimmer = ClasIoEventManager.getInstance().getMCSwimmer();
-			if (allSwimmer != null) {
-				allSwimmer.swimAll();
-			}
-		} else if (pname.equals(ClasIoEventManager.SWIM_ALL_RECON_PROP)) {
-			ISwimAll allSwimmer = ClasIoEventManager.getInstance().getReconSwimmer();
-			if (allSwimmer != null) {
-				allSwimmer.swimAll();
-			}
-		}
-
-	}
 
 	private void createTriggerPanel() {
 		getJMenuBar().add(Box.createHorizontalStrut(20));

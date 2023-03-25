@@ -381,7 +381,7 @@ public class DefinitionManager implements ActionListener {
 	 * Add a binding
 	 *
 	 * @param vname  the variable name, like "x" or "theta". Case sensitive.
-	 * @param bcname the bank column name, like "DC::dgtz.sector"
+	 * @param bcname the bank column name, like "FTOF::hits.sector"
 	 */
 	public boolean addBinding(String vname, String bcname) {
 		if (isNameBound(vname)) {

@@ -13,8 +13,8 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcLRHit;
+import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.geometry.GeometryManager;
@@ -95,9 +95,9 @@ public class SectorLTCCItem extends PolygonItem {
 
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
-		AdcHitList hits = LTCC.getInstance().getHits();
+		AdcLRHitList hits = LTCC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcHit hit : hits) {
+			for (AdcLRHit hit : hits) {
 				if ((hit != null) && (hit.sector == _sector) && (hit.layer == _half) && (hit.component == _ring)) {
 					g.setColor(hits.adcColor(hit));
 					g.fillPolygon(_lastDrawnPolygon);
@@ -140,8 +140,8 @@ public class SectorLTCCItem extends PolygonItem {
 			List<String> feedbackStrings) {
 		if (contains(container, screenPoint)) {
 
-			AdcHitList hits = LTCC.getInstance().getHits();
-			AdcHit hit = null;
+			AdcLRHitList hits = LTCC.getInstance().getHits();
+			AdcLRHit hit = null;
 
 			if ((hits != null) && !hits.isEmpty()) {
 				// arggh opposite of htcc

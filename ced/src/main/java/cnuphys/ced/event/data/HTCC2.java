@@ -6,7 +6,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 
 public class HTCC2 extends DetectorData {
 
-	AdcHitList _adcHits = new AdcHitList("HTCC::adc");
+	AdcList _adcHits = new AdcList("HTCC::adc");
 
 	private static HTCC2 _instance;
 
@@ -24,7 +24,7 @@ public class HTCC2 extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_adcHits = new AdcHitList("HTCC::adc");
+		_adcHits = new AdcList("HTCC::adc");
 	}
 
 	/**
@@ -32,9 +32,9 @@ public class HTCC2 extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public AdcHitList updateAdcList() {
+	public AdcList updateAdcList() {
 		try {
-			_adcHits = new AdcHitList("HTCC::adc");
+			_adcHits = new AdcList("HTCC::adc");
 			return _adcHits;
 		} catch (Exception e) {
 			System.err.println("HTCC2 data error for event: " + ClasIoEventManager.getInstance().getSequentialEventNumber());
@@ -47,7 +47,7 @@ public class HTCC2 extends DetectorData {
 	 *
 	 * @return the adc hit list
 	 */
-	public AdcHitList getHits() {
+	public AdcList getHits() {
 		return _adcHits;
 	}
 }

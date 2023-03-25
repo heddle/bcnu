@@ -88,37 +88,6 @@ public class PCALViewPlane3D extends DetectorItem3D {
 			} // hit loop
 		} // have hits
 
-//		int hitCount = PCAL.hitCount();
-//
-//		if (hitCount > 0) {
-//			int sector[] = PCAL.sector();
-//			int view[] = PCAL.view();
-//			int strip[] = PCAL.strip();
-//			int pid[] = PCAL.pid();
-//			double avgX[] = PCAL.avgX();
-//			double avgY[] = PCAL.avgY();
-//			double avgZ[] = PCAL.avgZ();
-//
-//			float coords[] = new float[24];
-//			for (int i = 0; i < hitCount; i++) {
-//				if ((_sector == sector[i]) && (_view == view[i])) {
-//					PCALGeometry.getStrip(_sector, _view, strip[i],
-//							coords);
-//					if (_cedPanel3D.showMCTruth() && (pid != null)) {
-//						Color color = truthColor(pid, i);
-//						drawStrip(drawable, color, coords);
-//						double xcm = avgX[i] / 10;
-//						double ycm = avgY[i] / 10;
-//						double zcm = avgZ[i] / 10;
-//						drawMCPoint(drawable, xcm, ycm, zcm, color);
-//
-//					} else {
-//						drawStrip(drawable, dgtzColor, coords);
-//					}
-//				}
-//			} //end for loop
-//
-//		} //hitCount > 0
 	}
 
 	// show PCALs?

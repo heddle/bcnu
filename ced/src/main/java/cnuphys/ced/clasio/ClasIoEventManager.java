@@ -40,8 +40,6 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
 import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.ECAL;
-import cnuphys.ced.event.data.PCAL;
 import cnuphys.ced.frame.Ced;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -211,8 +209,7 @@ public class ClasIoEventManager {
 			String[] cbanks = _currentEvent.getBankList();
 			if (cbanks != null) {
 				for (String bankName : cbanks) {
-					if (bankName.contains("::true") || bankName.contains("::Particle")
-							|| bankName.contains("::Lund")) {
+					if (bankName.contains("::Particle") || bankName.contains("::Lund")) {
 
 						ColumnData cd = DataManager.getInstance().getColumnData(bankName, "pid");
 
@@ -653,30 +650,12 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Get the object that can swim all MonteCarlo particles
-	 *
-	 * @return the object that can swim all MonteCarlo particles
-	 */
-	public ISwimAll getMCSwimmer() {
-		return _allMCSwimmer;
-	}
-
-	/**
 	 * Set the object that can swim all MonteCarlo particles
 	 *
 	 * @param allSwimmer the object that can swim all MonteCarlo particles
 	 */
 	public void setAllMCSwimmer(ISwimAll allSwimmer) {
 		_allMCSwimmer = allSwimmer;
-	}
-
-	/**
-	 * Get the object that can swim all reconstructed particles
-	 *
-	 * @return the object that can swim all reconstructed particles
-	 */
-	public ISwimAll getReconSwimmer() {
-		return _allReconSwimmer;
 	}
 
 	/**
@@ -1134,12 +1113,9 @@ public class ClasIoEventManager {
 			return;
 		}
 
-		// some scaling factors for gradient displays
-		computeSomeScalingFactors();
 
-		SwimMenu.getInstance().firePropertyChange(SWIM_ALL_MC_PROP, 0, 1);
-		SwimMenu.getInstance().firePropertyChange(SWIM_ALL_RECON_PROP, 0, 1);
-
+		swimAllMC();
+		swimAllRecon();
 		Ced.setEventNumberLabel(getSequentialEventNumber());
 
 		for (JInternalFrame jif : Desktop.getInstance().getAllFrames()) {
@@ -1150,30 +1126,19 @@ public class ClasIoEventManager {
 
 	}
 
-	// compute some factors used in gradient displays
-	private void computeSomeScalingFactors() {
-
-		double[] pcalEdep = PCAL.totEdep();
-		double[] ecEdep = ECAL.totEdep();
-		int stack[] = ECAL.stack();
-		// pcal (plane = 0)
-		if (pcalEdep != null) {
-			maxEDepCal[0] = 0;
-			for (double e : pcalEdep) {
-				maxEDepCal[0] = Math.max(e, maxEDepCal[0]);
-			}
-		}
-
-		// ec
-		if ((ecEdep != null) && (stack != null)) {
-			maxEDepCal[1] = 0;
-			maxEDepCal[2] = 0;
-			for (int i = 0; i < ecEdep.length; i++) {
-				int plane = stack[i];
-				maxEDepCal[plane] = Math.max(ecEdep[i], maxEDepCal[plane]);
-			}
+	private void swimAllMC() {
+		if (_allMCSwimmer != null) {
+			_allMCSwimmer.swimAll();
 		}
 	}
+	
+	private void swimAllRecon() {
+		if (_allReconSwimmer != null) {
+			_allReconSwimmer.swimAll();
+		}
+	}
+
+
 
 	/**
 	 * Get the maximum energy deposited in the cal for the current event. Might be
@@ -1239,7 +1204,7 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Checks if a bank, identified by a string such as "FTOF1B::dgtz", is in the
+	 * Checks if a bank, identified by a string such as "FTOF::hits", is in the
 	 * current event.
 	 *
 	 * @param bankName the bank name

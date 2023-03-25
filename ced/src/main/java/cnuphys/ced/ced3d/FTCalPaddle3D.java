@@ -5,8 +5,8 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcLRHit;
+import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.FTCAL;
 import cnuphys.ced.geometry.FTCALGeometry;
 import cnuphys.lund.X11Colors;
@@ -34,8 +34,8 @@ public class FTCalPaddle3D extends DetectorItem3D {
 		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
 		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
 
-		AdcHitList hits = FTCAL.getInstance().getHits();
-		AdcHit hit = null;
+		AdcLRHitList hits = FTCAL.getInstance().getHits();
+		AdcLRHit hit = null;
 		if ((hits != null) && !hits.isEmpty()) {
 			hit = hits.get(1, 0, _id);
 		}

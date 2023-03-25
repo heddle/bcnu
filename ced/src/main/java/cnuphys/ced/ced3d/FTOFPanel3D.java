@@ -73,43 +73,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 			}
 		}
 
-//
-//
-//		int pid[] = FTOF.getInstance().pid(_superLayer);
-//		int sector[] = FTOF.getInstance().sector(_superLayer);
-//		int paddleId[] = FTOF.getInstance().paddle(_superLayer);;
-//		double x[] = FTOF.getInstance().avgX(_superLayer);
-//		double y[] = FTOF.getInstance().avgY(_superLayer);
-//		double z[] = FTOF.getInstance().avgZ(_superLayer);
-//
-//		if (paddleId == null) {
-//			Log.getInstance().warning("null paddleId array in FTOFPanel3D");
-//			return;
-//		}
-//
-//		for (int i = 0; i < hitCount; i++) {
-//			if (sector[i] == _sector) {
-//				try {
-//					if (showMCTruth() && (pid != null)) {
-//						Color color = truthColor(pid, i);
-//						getPaddle(paddleId[i]).drawPaddle(drawable, color);
-//						// convert mm to cm
-//						double xcm = x[i] / 10;
-//						double ycm = y[i] / 10;
-//						double zcm = z[i] / 10;
-//						drawMCPoint(drawable, xcm, ycm, zcm, color);
-//
-//					} else {
-//						getPaddle(paddleId[i]).drawPaddle(drawable, dgtzColor);
-//					}
-//				} catch (ArrayIndexOutOfBoundsException oob) {
-//					System.err.println("sector: " + _sector);
-//					System.err.println("superLayer: " + _superLayer);
-//					System.err.println("paddleId: " + paddleId[i]);
-//					oob.printStackTrace();
-//				}
-//			}
-//		}
+
 	}
 
 	/**

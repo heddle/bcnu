@@ -4,7 +4,7 @@ import org.jlab.io.base.DataEvent;
 
 public class LTCC extends DetectorData {
 
-	AdcHitList _adcHits = new AdcHitList("LTCC::adc");
+	AdcLRHitList _adcHits = new AdcLRHitList("LTCC::adc");
 
 	private static LTCC _instance;
 
@@ -22,7 +22,7 @@ public class LTCC extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_adcHits = new AdcHitList("LTCC::adc");
+		_adcHits = new AdcLRHitList("LTCC::adc");
 	}
 
 	/**
@@ -30,8 +30,8 @@ public class LTCC extends DetectorData {
 	 *
 	 * @return the updated list
 	 */
-	public AdcHitList updateAdcList() {
-		_adcHits = new AdcHitList("LTCC::adc");
+	public AdcLRHitList updateAdcList() {
+		_adcHits = new AdcLRHitList("LTCC::adc");
 		return _adcHits;
 	}
 
@@ -40,7 +40,7 @@ public class LTCC extends DetectorData {
 	 *
 	 * @return the adc hit list
 	 */
-	public AdcHitList getHits() {
+	public AdcLRHitList getHits() {
 		return _adcHits;
 	}
 }

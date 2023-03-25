@@ -98,9 +98,6 @@ public class SectorView extends SliceView implements ChangeListener {
 	// used to draw swum trajectories (if any) in the after drawer
 	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
 
-	// for drawing MC hits
-	private McHitDrawer _mcHitDrawer;
-
 	// drawing reconstructed data
 	private ReconDrawer _reconDrawer;
 
@@ -138,9 +135,6 @@ public class SectorView extends SliceView implements ChangeListener {
 		// fmt cross drawer
 		_fmtCrossDrawer = new FMTCrossDrawer(this);
 
-		// MC hit drawer
-		_mcHitDrawer = new McHitDrawer(this);
-
 		// Recon drawer
 		_reconDrawer = new ReconDrawer(this);
 
@@ -164,7 +158,7 @@ public class SectorView extends SliceView implements ChangeListener {
 		double wheight = -2 * xo;
 		double wwidth = 840;
 
-		Dimension d = GraphicsUtilities.screenFraction(0.65);
+		Dimension d = GraphicsUtilities.screenFraction(0.7);
 
 		// give container same aspect ratio
 		int height = d.height;
@@ -417,7 +411,6 @@ public class SectorView extends SliceView implements ChangeListener {
 			public void draw(Graphics g, IContainer container) {
 
 				if (ClasIoEventManager.getInstance().isAccumulating()) {
-					System.err.println("SD Before");
 					return;
 				}
 				
@@ -459,9 +452,6 @@ public class SectorView extends SliceView implements ChangeListener {
 
 				// draw trajectories
 				_swimTrajectoryDrawer.draw(g, container);
-
-				// draw MC Hits
-				_mcHitDrawer.draw(g, container);
 
 				// draw reconstructed data
 				_reconDrawer.draw(g, container);
@@ -631,10 +621,6 @@ public class SectorView extends SliceView implements ChangeListener {
 		// Other (not DC) Crosses
 		if (showCrosses()) {
 			_fmtCrossDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
-		}
-
-		if (showMcTruth()) {
-			_mcHitDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
 		}
 
 		//draws HB hits and segs, TB hits and segs, and nn overlays

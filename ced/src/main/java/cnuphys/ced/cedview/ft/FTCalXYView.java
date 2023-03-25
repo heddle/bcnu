@@ -22,8 +22,8 @@ import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcLRHit;
+import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.FTCAL;
 import cnuphys.ced.geometry.FTCALGeometry;
 
@@ -201,10 +201,10 @@ public class FTCalXYView extends CedXYView {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
-		AdcHitList hits = FTCAL.getInstance().getHits();
+		AdcLRHitList hits = FTCAL.getInstance().getHits();
 
 		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcHit hit : hits) {
+			for (AdcLRHit hit : hits) {
 				if (hit != null) {
 					short id = hit.component;
 					short index = indices[id];
@@ -285,10 +285,10 @@ public class FTCalXYView extends CedXYView {
 
 					if (found) {
 
-						AdcHitList hits = FTCAL.getInstance().getHits();
+						AdcLRHitList hits = FTCAL.getInstance().getHits();
 						if ((hits != null) && !hits.isEmpty()) {
 							short component = FTCALGeometry.getGoodId(index);
-							AdcHit hit = hits.get(1, 1, component);
+							AdcLRHit hit = hits.get(1, 1, component);
 
 							// hack
 							if (hit == null) {

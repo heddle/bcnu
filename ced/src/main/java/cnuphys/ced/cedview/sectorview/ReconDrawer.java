@@ -130,7 +130,7 @@ public class ReconDrawer extends SectorViewDrawer {
 
 				_view.projectClasToWorld(recCal.x[i], recCal.y[i], recCal.z[i], _view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
-				SymbolDraw.drawDavid(g, pp.x, pp.y, 4, Color.black, Color.red);
+				DataDrawSupport.drawECALRec(g, pp, false);
 
 				double r = Math.sqrt(recCal.x[i]*recCal.x[i] + recCal.y[i]*recCal.y[i] + recCal.z[i]*recCal.z[i]);
 				double theta = Math.toDegrees(Math.acos(recCal.z[i]/r));

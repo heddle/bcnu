@@ -39,7 +39,7 @@ import cnuphys.ced.cedview.ILabCoordinates;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
@@ -100,7 +100,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private CentralXYHitDrawer _hitDrawer;
 
 	//bank matches
-	private static String _defMatches[] = {"BMT", "BST", "CVT"};
+	private static String _defMatches[] = {"BMT", "BST", "CVT", "CTOF"};
 
 
 	/**
@@ -562,7 +562,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		// hits data
 
 		if (_closestPanel != null) {
-			AdcHitList hits = BST.getInstance().getHits();
+			AdcList hits = BST.getInstance().getHits();
 			if ((hits != null) && !hits.isEmpty()) {
 				Vector<int[]> stripADCData = BST.getInstance().allStripsForSectorAndLayer(_closestPanel.getSector(),
 						_closestPanel.getLayer());
@@ -575,11 +575,11 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		// BMT?
 
 		if (showADCHits()) {
-			AdcHitList adcHits = BMT.getInstance().getADCHits();
+			AdcList adcHits = BMT.getInstance().getADCHits();
 			if ((adcHits != null) && !adcHits.isEmpty()) {
 				for (AdcHit adcHit : adcHits) {
 					if (adcHit.contains(screenPoint)) {
-						adcHit.tdcAdcFeedback("layer", "strip", feedbackStrings);
+						adcHit.adcFeedback("layer", "strip", feedbackStrings);
 						break;
 					}
 				}

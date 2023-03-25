@@ -101,41 +101,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 			} // hit loop
 		} // have hits
 
-//
-//		int hitCount = ECAL.hitCount();
-//
-//		if (hitCount > 0) {
-//			int sector[] = ECAL.sector();
-//			int stack[] = ECAL.stack();
-//			int view[] = ECAL.view();
-//			int strip[] = ECAL.strip();
-//			int pid[] = ECAL.pid();
-//			double avgX[] = ECAL.avgX();
-//			double avgY[] = ECAL.avgY();
-//			double avgZ[] = ECAL.avgZ();
-//
-//			float coords[] = new float[24];
-//			for (int i = 0; i < hitCount; i++) {
-//				if ((_sector == sector[i]) && (_stack == stack[i])
-//						&& (_view == view[i])) {
-//					ECGeometry.getStrip(_sector, _stack, _view, strip[i],
-//							coords);
-//					if (_cedPanel3D.showMCTruth() && (pid != null)) {
-//						Color color = truthColor(pid, i);
-//						drawStrip(drawable, color, coords);
-//						double xcm = avgX[i] / 10;
-//						double ycm = avgY[i] / 10;
-//						double zcm = avgZ[i] / 10;
-//						drawMCPoint(drawable, xcm, ycm, zcm, color);
-//
-//					} else {
-//						drawStrip(drawable, dgtzColor, coords);
-//					}
-//				}
-//			} //end for loop
-//
-//		} //hitCount > 0
-//
+
 
 	}
 

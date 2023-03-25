@@ -6,7 +6,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcHitList;
+import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.Cosmic;
@@ -54,7 +54,7 @@ public class BSTPanel3D extends DetectorItem3D {
 		float coords36[] = new float[36];
 		boolean drawOutline = false;
 
-		AdcHitList hits = BST.getInstance().getHits();
+		AdcList hits = BST.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcHit hit : hits) {
 				if (hit != null) {
@@ -66,7 +66,7 @@ public class BSTPanel3D extends DetectorItem3D {
 						BSTGeometry.getStrip(sector, layer, strip, coords6);
 
 						if (showHits()) {
-							Support3D.drawLine(drawable, coords6, dgtzColor, STRIPLINEWIDTH);
+							Support3D.drawLine(drawable, coords6, hitColor, STRIPLINEWIDTH);
 						}
 
 					} // match sector and layer
