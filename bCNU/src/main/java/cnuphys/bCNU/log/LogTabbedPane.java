@@ -21,8 +21,17 @@ public class LogTabbedPane extends JTabbedPane implements ChangeListener {
 	private TextPaneScrollPane info = new TextPaneScrollPane();
 	private TextPaneScrollPane config = new TextPaneScrollPane();
 	private TextPaneScrollPane exception = new TextPaneScrollPane();
-
+	
+	//auto new line?
+	private boolean _autoNewline;
+	
 	public LogTabbedPane() {
+		this(true);
+	}
+
+	public LogTabbedPane(boolean autonewline) {
+		
+		_autoNewline = autonewline;
 
 		add("error", error);
 		add("warning", warning);
@@ -89,7 +98,7 @@ public class LogTabbedPane extends JTabbedPane implements ChangeListener {
 			return "";
 		}
 
-		if (!(message.endsWith("\n"))) {
+		if (_autoNewline && !(message.endsWith("\n"))) {
 			return message + "\n";
 		}
 		return message;

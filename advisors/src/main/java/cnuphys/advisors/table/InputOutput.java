@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.PrintStream;
 
 import cnuphys.bCNU.util.Environment;
-import cnuphys.advisors.AdvisorAssign;
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.DataManager;
 
 public class InputOutput {

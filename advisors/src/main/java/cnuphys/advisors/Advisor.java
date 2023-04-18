@@ -6,6 +6,7 @@ import java.util.Comparator;
 
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.Course;
 
 public class Advisor implements ITabled {
 	
@@ -69,10 +70,9 @@ public class Advisor implements ITabled {
 		} else {
 			index = -(index + 1); // now the insertion point.
 		}
-		
-
 	}
 	
+
 	/**
 	 * Remove an advisee from the list of advisees
 	 * @param student the student to remove
@@ -103,6 +103,9 @@ public class Advisor implements ITabled {
 		}
 		else if (col == 2) {
 			return department.name();
+		}
+		else if (col == 3) {
+			return "" + _advisees.size();
 		}
 		else {
 			System.err.println("Bad column in Advisor getValueAt [" + col + "]");

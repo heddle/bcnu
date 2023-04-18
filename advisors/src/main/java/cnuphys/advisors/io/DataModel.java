@@ -50,7 +50,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	
 	//the table
 	protected DataTable _dataTable;
-
+	
 	/**
 	 * A CSV Data object
 	 * @param baseName

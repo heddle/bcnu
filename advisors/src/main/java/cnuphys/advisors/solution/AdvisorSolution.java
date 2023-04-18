@@ -1,4 +1,4 @@
-package cnuphys.advisors;
+package cnuphys.advisors.solution;
 
 import cnuphys.simanneal.Solution;
 import cnuphys.advisors.table.InputOutput;

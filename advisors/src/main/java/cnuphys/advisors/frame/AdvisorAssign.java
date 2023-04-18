@@ -1,4 +1,4 @@
-package cnuphys.advisors;
+package cnuphys.advisors.frame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,6 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 
 import cnuphys.simanneal.Simulation;
@@ -19,8 +20,10 @@ import cnuphys.simanneal.SimulationAttributes;
 import cnuphys.simanneal.Solution;
 import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorPanel;
+import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
+import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.advisors.table.InputOutput;
 
 /**
@@ -28,18 +31,8 @@ import cnuphys.advisors.table.InputOutput;
  * @author heddle
  *
  */
-public class AdvisorAssign extends Simulation {
+public class AdvisorAssign extends JFrame {
 	
-	/**
-	 * A custom attribute for the number of advisors
-	 */
-	public static final String NUMADVISOR = "advisor count";
-	
-	/**
-	 * A custom attribute for the number of students
-	 */
-	public static final String NUMSTUDENT = "student count";
-
 	/**
 	 * The screen size
 	 */
@@ -53,20 +46,54 @@ public class AdvisorAssign extends Simulation {
 	//the singleton
 	private static AdvisorAssign _instance;
 	
-	//the display frame
-	private static JFrame _frame;
-	
 	//what semester are we dealing with
 	private static Semester _semester = Semester.Fall2022;
 	
 	//a label on the menu bar for the semester
 	private static JLabel _semesterLabel;
 	
+	//the simulation object
+	private AdvisorSimulation _advisorSim;
+	
+	//the main menu bar
+	private JMenuBar _menuBar;
+	
+	
 	//private constructor for singleton
 	private AdvisorAssign() {
-		super();
-		_frame = new JFrame("CNU Core Advisor Assignments");
+		super("CNU Core Advisor Assignments");
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		
+		// set up what to do if the window is closed
+		WindowAdapter windowAdapter = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent event) {
+				System.exit(1);
+			}
+		};
+		addWindowListener(windowAdapter);
+
+
+		_advisorSim = new AdvisorSimulation();
+		setup();
+
+		pack();
+	}
+	
+	public void setup() {
+		
+		_menuBar = new JMenuBar();
+		setJMenuBar(_menuBar);
+		
+		setLayout(new BorderLayout());
+
+		MenuManager.getInstance().init(_menuBar);
+		AdvisorPanel panel = new AdvisorPanel(_advisorSim);
+
+		add(panel, BorderLayout.CENTER);
+		
+		createSemesterLabel();
+		
 	}
 	
 	/**
@@ -77,19 +104,12 @@ public class AdvisorAssign extends Simulation {
 		return _semester;
 	}
 	
-	/**
-	 * public accessor to the main frame
-	 * @return the main frame
-	 */
-	public static JFrame getFrame() {
-		return _frame;
-	}
 	
 	/**
 	 * public accessor to the singleton
 	 * @return the singleton AdvisorAssign
 	 */
-	public static AdvisorAssign getInstance() {
+	private static AdvisorAssign getInstance() {
 		if (_instance == null) {
 			_instance = new AdvisorAssign();
 		}
@@ -106,9 +126,9 @@ public class AdvisorAssign extends Simulation {
 		_semesterLabel.setBorder(BorderFactory.createLineBorder(Color.cyan, 1));
 		fixSemesterLabel();
 
-		_frame.getJMenuBar().add(Box.createHorizontalGlue());
-		_frame.getJMenuBar().add(_semesterLabel);
-		_frame.getJMenuBar().add(Box.createHorizontalStrut(5));
+		getJMenuBar().add(Box.createHorizontalGlue());
+		getJMenuBar().add(_semesterLabel);
+		getJMenuBar().add(Box.createHorizontalStrut(5));
 	}
 
 	public void fixSemesterLabel() {
@@ -116,66 +136,24 @@ public class AdvisorAssign extends Simulation {
 	}
 	
 
-	@Override
-	protected void setInitialAttributes() {
-		_attributes.add(NUMADVISOR, 0, false, false);
-		_attributes.add(NUMSTUDENT, 0, false, false);
-		_attributes.removeAttribute(SimulationAttributes.USELOGTEMP);
-		_attributes.setPlotTitle("Assignment Quality");
-		_attributes.setYAxisLabel("1/Quality");
-
-	}
-
-	@Override
-	protected Solution setInitialSolution() {
-		InputOutput.init();
-		DataManager.init();
-		return AdvisorSolution.initialSolution();
-	}
-	
-	//last minute preparation
-	private void finalPrep() {
-		_attributes.setValue(NUMADVISOR, DataManager.getAdvisorData().count());		
-		_attributes.setValue(NUMSTUDENT, DataManager.getStudentData().count());		
-	}
 	
 	/**
 	 * The main program
+	 * 
 	 * @param arg command line arguments
 	 */
 	public static void main(String arg[]) {
-		getInstance();
 		
-
-		// set up what to do if the window is closed
-		WindowAdapter windowAdapter = new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				System.exit(1);
-			}
-		};
-
-		_frame.addWindowListener(windowAdapter);
-		_frame.setLayout(new BorderLayout());
+		//create the log manager
+		LogManager.getInstance();
 		
-		//setup menus
-		MenuManager.getInstance().init();
-
-		AdvisorPanel panel = new AdvisorPanel(_instance);
-
-		_frame.add(panel, BorderLayout.CENTER);
-		
-		getInstance().createSemesterLabel();
-		
-		//final preparations
-		_instance.finalPrep();
+		JFrame frame = getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				_frame.pack();
-				_frame.setVisible(true);
-				_frame.setLocationRelativeTo(null);
+				frame.setVisible(true);
+				frame.setLocationRelativeTo(null);
 			}
 		});
 	}

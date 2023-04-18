@@ -73,7 +73,8 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 				TdcAdcTOFHit hit = hitHash.get(hash);
 				
 				if (hit == null) {
-					System.err.println("This should not have happened in TdcAdcTOFHitList");
+//					String errMsg = String.format("This should not have happened [%s][%s] sect: %d  lay: %d  comp: %d. ", tdcBankName, adcBankName, sector[i], layer[i], component[i]);
+//					System.err.println(errMsg);
 					hit = new TdcAdcTOFHit(sector[i], layer[i], component[i]);
 					hitHash.put(hash, hit);
 					add(hit);

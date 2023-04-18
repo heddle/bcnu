@@ -76,10 +76,10 @@ public class Panel3D extends JPanel implements GLEventListener {
 	private float _view_rotz;
 
 	// maintenance timer
-	private Timer _timer;
-	boolean _enableMaintenance;
-	boolean _doingMaintenance;
-	public boolean refreshPending;
+//	private Timer _timer;
+//	boolean _enableMaintenance;
+//	boolean _doingMaintenance;
+//	public boolean refreshPending;
 
 	// distance in front of the screen
 	private float _zdist;
@@ -184,32 +184,32 @@ public class Panel3D extends JPanel implements GLEventListener {
 		gljpanel.addMouseWheelListener(_mouseAdapter);
 
 		createInitialItems();
-		setupMaintenanceTimer();
+//		setupMaintenanceTimer();
 
 	}
 
 	// calls refresh at a slow rate to get rid of ghosts
-	private void setupMaintenanceTimer() {
-		TimerTask task = new TimerTask() {
-
-			
-			@Override
-			public void run() {
-				if (refreshPending) {
-					refreshPending = false;
-					refresh();
-				}
-				if (_enableMaintenance) {
-					_doingMaintenance = true;
-					refresh();
-				}
-			}
-
-		};
-		_timer = new Timer();
-		_timer.scheduleAtFixedRate(task, 10000, 1000);
-
-	}
+//	private void setupMaintenanceTimer() {
+//		TimerTask task = new TimerTask() {
+//
+//			
+//			@Override
+//			public void run() {
+//				if (refreshPending) {
+//					refreshPending = false;
+//					refresh();
+//				}
+//				if (_enableMaintenance) {
+//					_doingMaintenance = true;
+//					refresh();
+//				}
+//			}
+//
+//		};
+//		_timer = new Timer();
+//		_timer.scheduleAtFixedRate(task, 10000, 1000);
+//
+//	}
 
 	// the openGL version and renderer strings
 	protected String _versionStr;
@@ -316,12 +316,12 @@ public class Panel3D extends JPanel implements GLEventListener {
 		}
 		gl.glPopMatrix();
 
-		if (_doingMaintenance) {
-			_doingMaintenance = false;
-			_enableMaintenance = false;
-		} else {
-			_enableMaintenance = true;
-		}
+//		if (_doingMaintenance) {
+//			_doingMaintenance = false;
+//			_enableMaintenance = false;
+//		} else {
+//			_enableMaintenance = true;
+//		}
 	}
 
 	@Override
@@ -499,7 +499,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * Refresh the drawing
 	 */
 	public void refreshQueued() {
-		refreshPending = true;
+//		refreshPending = true;
 	}
 	
 

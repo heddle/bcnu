@@ -1,10 +1,14 @@
 package cnuphys.advisors.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
+import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.InputOutput;
 
 public class StudentData extends DataModel {
@@ -51,6 +55,22 @@ public class StudentData extends DataModel {
 		deleteRawData();
 
 	}
+	
+	/**
+	 * Get all the students in a list
+	 * @return all the students
+	 */
+    public List<Student> getStudents() {
+    	
+    	ArrayList<Student> list = new ArrayList<>();
+		for (ITabled itabled : _tableData) {
+			Student student = (Student) itabled;
+			list.add(student);
+		}
+
+		return list;
+    }
+
 	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

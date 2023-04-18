@@ -135,8 +135,6 @@ public class Fonts {
 			if (commonFamily == null) {
 				commonFamily = backupFamily;
 			}
-			Log.getInstance().config("Common font family: " + commonFamily);
-			System.out.println("Common font family: " + commonFamily);
 		}
 
 		String key = commonFamily + "$" + size + "$" + style;

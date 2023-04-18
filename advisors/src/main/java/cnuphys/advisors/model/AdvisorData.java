@@ -2,11 +2,12 @@ package cnuphys.advisors.model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.AdvisorAssign;
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.InputOutput;
@@ -20,7 +21,7 @@ public class AdvisorData extends DataModel {
 	
 	//attributes for advisor data
 	private static final DataAttribute advisorAttributes[] = {DataManager.lastNameAtt, 
-			DataManager.firstNameAtt, DataManager.departmentNameAtt};
+			DataManager.firstNameAtt, DataManager.departmentNameAtt, DataManager.numAdviseeAtt};
 	
 	public AdvisorData(String baseName) {
 		super(baseName, advisorAttributes);
@@ -60,6 +61,22 @@ public class AdvisorData extends DataModel {
 			}
 		}
 	}
+	
+	/**
+	 * Get all the advisors in a list
+	 * @return all the advisors
+	 */
+    public List<Advisor> getAdvisors() {
+    	
+    	ArrayList<Advisor> list = new ArrayList<>();
+		for (ITabled itabled : _tableData) {
+			Advisor advisor = (Advisor) itabled;
+			list.add(advisor);
+		}
+
+		return list;
+    }
+  
 
 
 	@Override

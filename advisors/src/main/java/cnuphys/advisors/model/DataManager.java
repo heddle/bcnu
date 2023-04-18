@@ -1,5 +1,11 @@
 package cnuphys.advisors.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import cnuphys.advisors.Advisor;
+import cnuphys.advisors.io.ITabled;
+
 public class DataManager {
 	
 	//base file name for advisors csv file in data dir
@@ -21,6 +27,8 @@ public class DataManager {
 	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 160, "last name", "lastname", "last_name");
 	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 110, "first name", "firstname", "lfirst_name");
 	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 100, "department");
+	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 60, "");
+	
 
 	public static final DataAttribute crnAtt = new DataAttribute("CRN", 40, "");
 	public static final DataAttribute courseAtt = new DataAttribute("COURSE", 60, "");
@@ -48,7 +56,17 @@ public class DataManager {
 		_advisorData = new AdvisorData(_advisorBaseName);
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
+		
+		//now extract the courses taught by FCAs
+		
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			for (Course course : _schedule.getCourses()) {
+				
+			}
+		}
 	}
+	
+
 	
 	/**
 	 * Get the data for all core advisors
@@ -73,5 +91,14 @@ public class DataManager {
 		return _studentData;
 	}
 	
+	/**
+	 * Get the target cohort size
+	 * @return the target cohort size
+	 */
+	public static double targetCohort() {
+		double na = getAdvisorData().count();
+		double ns = getStudentData().count();
+		return ns/na;
+	}
 
 }

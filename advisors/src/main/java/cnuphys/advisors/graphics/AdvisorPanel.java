@@ -6,8 +6,9 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
+import cnuphys.advisors.frame.AdvisorAssign;
+import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.simanneal.SimulationPanel;
-import cnuphys.advisors.AdvisorAssign;
 
 public class AdvisorPanel extends JPanel {
 	
@@ -26,9 +27,9 @@ public class AdvisorPanel extends JPanel {
 	private SimulationPanel _simPanel;
 
 	// the simulation
-	private AdvisorAssign _simulation;
+	private AdvisorSimulation _simulation;
 
-	public AdvisorPanel(AdvisorAssign simulation) {
+	public AdvisorPanel(AdvisorSimulation simulation) {
 		_simulation = simulation;
 
 		AdvisorDisplay.getInstance().setPreferredSize(new Dimension(width, height));

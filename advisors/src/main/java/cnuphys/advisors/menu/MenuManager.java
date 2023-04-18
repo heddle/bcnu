@@ -11,7 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import cnuphys.advisors.AdvisorAssign;
+import cnuphys.advisors.frame.AdvisorAssign;
 
 public class MenuManager {
 
@@ -25,9 +25,8 @@ public class MenuManager {
 	private MenuManager() {
 	}
 
-	public void init() {
-		_menuBar = new JMenuBar();
-		AdvisorAssign.getFrame().setJMenuBar(_menuBar);
+	public void init(JMenuBar menuBar) {
+		_menuBar = menuBar;
 		new FileMenu();
 		new PlotMenu();
 
