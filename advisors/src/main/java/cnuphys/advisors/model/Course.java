@@ -3,82 +3,77 @@ package cnuphys.advisors.model;
 import cnuphys.advisors.io.ITabled;
 
 public class Course implements ITabled {
-	
-	
+
+
+	/** course CRN */
 	public String crn;
+	
+	/** subject e.g. BIOL */
+	public String subject;
+
+	/** course, e.g. 109L */
 	public String course;
+	
+	/** course section */
 	public String section;
+	
+	/** course title */
 	public String title;
-	public String hours;
-	public String llc;
-	public String type;
-	public String days;
-	public String time;
-	public String location;
+	
+	/** full name of instructor */
 	public String instructor;
 
+	/** the instructor ID */
+	public String id;
+
+	/** is it an ILC? */
+	public boolean isILC;
 	
-	
-	public Course(String crn, String course, String section, String title, String hours, String llc, String type,
-			String days, String time, String location, String instructor) {
+	public Course(String crn, String subject, String course, String section, String title, String instructor, String id) {
 		super();
-		this.crn = crn.replace("\"", "");;
-		this.course = course.replace("\"", "");;
-		this.section = section.replace("\"", "");;
-		this.title = title.replace("\"", "");;
-		this.hours = hours.replace("\"", "");;
-		this.llc = llc.replace("\"", "");;
-		this.type = type.replace("\"", "");;
-		this.days = days.replace("\"", "");;
-		this.time = time.replace("\"", "");;
-		this.location = location.replace("\"", "");;
-		this.instructor = instructor.replace("\"", "");;
+		this.crn = crn.replace("\"", "").trim();
+		this.subject = subject.replace("\"", "").trim();
+		this.course = course.replace("\"", "").trim();
+		this.section = section.replace("\"", "").trim();
+		this.title = title.replace("\"", "").trim();
+		this.instructor = instructor.replace("\"", "").trim();
+		this.id = id.replace("\"", "").trim();
+		
+		//add leading 0's
+		while (this.id.length() < 8) {
+			this.id = "0" + this.id;
+		}
+
 	}
 
-	
+
 	/**
-	 * Get the value at a given colun, considering this as a row
+	 * Get the value at a given column, considering this as a row
 	 */
 	@Override
 	public String getValueAt(int col) {
-		if (col == 0) {
+		
+		switch (col) {
+		case 0:
 			return crn;
-		}
-		else if (col == 1) {
+		case 1:
+			return subject;
+		case 2:
 			return course;
-		}
-		else if (col == 2) {
+		case 3:
 			return section;
-		}
-		else if (col == 3) {
+		case 4:
 			return title;
-		}
-		else if (col == 4) {
-			return hours;
-		}
-		else if (col == 5) {
-			return llc;
-		}
-		else if (col == 6) {
-			return type;
-		}
-		else if (col == 7) {
-			return days;
-		}
-		else if (col == 8) {
-			return time;
-		}
-		else if (col == 9) {
-			return location;
-		}
-		else if (col == 10) {
+		case 5:
 			return instructor;
-		}
-		else {
+		case 6:
+			return id;
+		default:
 			System.err.println("Bad column in Course getValueAt [" + col + "]");
 			System.exit(0);
+
 		}
-		
+
 		return null;
 	}
 }

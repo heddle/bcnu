@@ -3,19 +3,18 @@ package cnuphys.advisors.table;
 import java.io.File;
 import java.io.PrintStream;
 
-import cnuphys.bCNU.util.Environment;
 import cnuphys.advisors.frame.AdvisorAssign;
-import cnuphys.advisors.model.DataManager;
+import cnuphys.bCNU.util.Environment;
 
 public class InputOutput {
 
 	//the data dir
 	private static File _dataDir;
-	
+
 
 	//the relative path from the CWD
 	private static final String _relativePath = "/cnuphys/advisors/data";
-	
+
 	/**
 	 * General initialization
 	 */

@@ -1,7 +1,7 @@
 package cnuphys.advisors.solution;
 
-import cnuphys.simanneal.Solution;
 import cnuphys.advisors.table.InputOutput;
+import cnuphys.simanneal.Solution;
 
 public class AdvisorSolution extends Solution {
 
@@ -28,16 +28,16 @@ public class AdvisorSolution extends Solution {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	/**
 	 * Create the initial solution
 	 * @return the initial solution
 	 */
 	public static AdvisorSolution initialSolution() {
-		
+
 		InputOutput.debugPrintln("Creating the initial solution");
 		AdvisorSolution solution = new AdvisorSolution();
-		
+
 		return solution;
 	}
 

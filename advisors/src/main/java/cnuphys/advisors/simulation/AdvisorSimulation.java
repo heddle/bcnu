@@ -8,17 +8,17 @@ import cnuphys.simanneal.SimulationAttributes;
 import cnuphys.simanneal.Solution;
 
 public class AdvisorSimulation extends Simulation {
-	
+
 	/**
 	 * A custom attribute for the number of advisors
 	 */
 	public static final String NUMADVISOR = "advisor count";
-	
+
 	/**
 	 * A custom attribute for the number of students
 	 */
 	public static final String NUMSTUDENT = "student count";
-	
+
 	/**
 	 * A custom attribute for the avg number of advisees
 	 */
@@ -29,7 +29,7 @@ public class AdvisorSimulation extends Simulation {
 	 * Create an advisor simulation
 	 */
 	public AdvisorSimulation() {
-		
+
 	}
 
 	@Override
@@ -48,15 +48,15 @@ public class AdvisorSimulation extends Simulation {
 		finalPrep();
 		return AdvisorSolution.initialSolution();
 	}
-	
+
 	//last minute preparation
 	private void finalPrep() {
 		DataManager.init();
 		InputOutput.init();
-		
-		_attributes.setValue(NUMADVISOR, DataManager.getAdvisorData().count());		
-		_attributes.setValue(NUMSTUDENT, DataManager.getStudentData().count());	
-		_attributes.setValue(AVGCOHORT, String.format("%4.1f", DataManager.targetCohort()));	
+
+		_attributes.setValue(NUMADVISOR, DataManager.getAdvisorData().count());
+		_attributes.setValue(NUMSTUDENT, DataManager.getStudentData().count());
+		_attributes.setValue(AVGCOHORT, String.format("%4.1f", DataManager.targetCohort()));
 	}
 
 

@@ -165,56 +165,14 @@ public class Ising2DSolution extends Solution {
 		return getAbsMagnetization();
 	}
 
-//	@Override
-//	public Solution getRearrangement() {
-//		int neighbors[] = new int[4];
-//		Ising2DSolution neighbor = (Ising2DSolution) copy();
-//
-//		int row = _rand.nextInt(_numRow);
-//		int col = _rand.nextInt(_numColumn);
-//
-//		getNeighborsWrap(row, col, neighbors);
-//		int nsum = 0;
-//		for (int i = 0; i < 4; i++) {
-//			nsum += neighbors[i];
-//		}
-//		
-//		if (((nsum > 0) && (_spins[row][col] < 0))  || ((nsum < 0) && (_spins[row][col] > 0))) {
-//			if (_rand.nextDouble() < 0.5) {
-//				if (_rand.nextDouble() < 0.75) {
-//					neighbor.flipSpin(row, col);
-//				} else {
-//					neighbor.flipNeighbors(row, col);
-//				}
-//			}
-//		} 
-//		else {
-//			if (_rand.nextDouble() < 0.5) {
-//				neighbor.flipSpin(row, col);
-//			} else {
-//				neighbor.flipNeighbors(row, col);
-//			}
-//
-//		}
-//		return neighbor;
-//	}
 
 	@Override
 	public Solution getRearrangement() {
 		Ising2DSolution neighbor = (Ising2DSolution) copy();
-
-		int numTimes = 1 + _rand.nextInt(3);
-		for (int i = 0; i < numTimes; i++) {
-			int ranRow = _rand.nextInt(_numRow);
-			int ranCol = _rand.nextInt(_numColumn);
-
-			if (_rand.nextDouble() < 0.5) {
-				neighbor.flipSpin(ranRow, ranCol);
-			} else {
-				neighbor.flipNeighbors(ranRow, ranCol);
-			}
-
-		}
+		
+		int ranRow = _rand.nextInt(_numRow);
+		int ranCol = _rand.nextInt(_numColumn);
+		neighbor.flipSpin(ranRow, ranCol);
 
 		return neighbor;
 	}
@@ -227,16 +185,6 @@ public class Ising2DSolution extends Solution {
 		}
 	}
 
-	private void flipNeighbors(int row, int col) {
-		int rowm1 = (row == 0) ? (_numRow - 1) : row - 1;
-		int rowp1 = (row == (_numRow - 1)) ? 0 : row + 1;
-		int colm1 = (col == 0) ? (_numColumn - 1) : col - 1;
-		int colp1 = (col == (_numColumn - 1)) ? 0 : col + 1;
-		flipSpin(rowm1, col);
-		flipSpin(rowp1, col);
-		flipSpin(row, colm1);
-		flipSpin(row, colp1);
-	}
 
 	@Override
 	public Solution copy() {

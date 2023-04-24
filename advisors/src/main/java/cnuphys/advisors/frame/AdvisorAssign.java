@@ -15,16 +15,12 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 
-import cnuphys.simanneal.Simulation;
-import cnuphys.simanneal.SimulationAttributes;
-import cnuphys.simanneal.Solution;
+import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorPanel;
 import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.menu.MenuManager;
-import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
-import cnuphys.advisors.table.InputOutput;
 
 /**
  * The main object for assigning core advisors
@@ -32,38 +28,41 @@ import cnuphys.advisors.table.InputOutput;
  *
  */
 public class AdvisorAssign extends JFrame {
-	
+
 	/**
 	 * The screen size
 	 */
 	public static Dimension screenSize;
-	
+
 	/**
 	 * flag specifying if we are in debug mode
 	 */
 	public static boolean DEBUG = true;
-	
+
 	//the singleton
 	private static AdvisorAssign _instance;
-	
+
 	//what semester are we dealing with
 	private static Semester _semester = Semester.Fall2022;
-	
+
 	//a label on the menu bar for the semester
 	private static JLabel _semesterLabel;
-	
+
 	//the simulation object
 	private AdvisorSimulation _advisorSim;
 	
+	//the check list
+	private CheckList _checklist;
+
 	//the main menu bar
 	private JMenuBar _menuBar;
-	
-	
+
+
 	//private constructor for singleton
 	private AdvisorAssign() {
 		super("CNU Core Advisor Assignments");
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
+
 		// set up what to do if the window is closed
 		WindowAdapter windowAdapter = new WindowAdapter() {
 			@Override
@@ -79,12 +78,15 @@ public class AdvisorAssign extends JFrame {
 
 		pack();
 	}
-	
+
+	/**
+	 * Set uo the GUI
+	 */
 	public void setup() {
-		
+
 		_menuBar = new JMenuBar();
 		setJMenuBar(_menuBar);
-		
+
 		setLayout(new BorderLayout());
 
 		MenuManager.getInstance().init(_menuBar);
@@ -92,10 +94,15 @@ public class AdvisorAssign extends JFrame {
 
 		add(panel, BorderLayout.CENTER);
 		
-		createSemesterLabel();
+		//add the check list
+		_checklist = new CheckList(_advisorSim);
+		add(_checklist, BorderLayout.WEST);
 		
+
+		createSemesterLabel();
+
 	}
-	
+
 	/**
 	 * Get the semester we are examining
 	 * @return the semester we are examining
@@ -103,8 +110,8 @@ public class AdvisorAssign extends JFrame {
 	public static Semester getSemester() {
 		return _semester;
 	}
-	
-	
+
+
 	/**
 	 * public accessor to the singleton
 	 * @return the singleton AdvisorAssign
@@ -115,7 +122,7 @@ public class AdvisorAssign extends JFrame {
 		}
 		return _instance;
 	}
-	
+
 	// create the event number label
 	private void createSemesterLabel() {
 		_semesterLabel = new JLabel("  SEMESTER: XXXXXXXXX");
@@ -131,22 +138,25 @@ public class AdvisorAssign extends JFrame {
 		getJMenuBar().add(Box.createHorizontalStrut(5));
 	}
 
+	/**
+	 * Fix the semester label
+	 */
 	public void fixSemesterLabel() {
 		_semesterLabel.setText("  SEMESTER: " + getSemester());
 	}
-	
 
-	
+
+
 	/**
 	 * The main program
-	 * 
+	 *
 	 * @param arg command line arguments
 	 */
 	public static void main(String arg[]) {
-		
+
 		//create the log manager
 		LogManager.getInstance();
-		
+
 		JFrame frame = getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {

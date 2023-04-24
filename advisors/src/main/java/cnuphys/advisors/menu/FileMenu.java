@@ -10,11 +10,11 @@ import javax.swing.JMenuItem;
 import cnuphys.advisors.log.LogManager;
 
 public class FileMenu extends JMenu implements ActionListener {
-	
+
 	//the menu items
 	private JMenuItem _quitItem; //quit
 	private JMenuItem _logItem;  //log
-	
+
 	public FileMenu() {
 		super("File");
 		MenuManager.getInstance().addMenu(this);
@@ -32,12 +32,12 @@ public class FileMenu extends JMenu implements ActionListener {
 			handleQuit();
 		}
 	}
-	
+
 	//handle quit selection
 	private void handleQuit() {
 		System.exit(0);
 	}
-	
+
 	//handle the log selection
 	private void handleLog() {
 		LogManager.getInstance().setVisible(true);

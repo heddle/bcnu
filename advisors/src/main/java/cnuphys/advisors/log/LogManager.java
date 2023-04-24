@@ -12,25 +12,25 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.log.TabbedLogDialog;
 
 public class LogManager {
-	
+
 	//singleton
 	private static LogManager _instance;
-	
+
 	//the tabbed dialog
 	private TabbedLogDialog _dialog;
-	
+
 	private LogManager() {
 		_dialog = new TabbedLogDialog();
 		_dialog.setSize(800, 800);
-		
+
 		DialogUtilities.centerDialog(_dialog);
 
 //		captureStreamsToLog();
 	}
-	
+
 	//capture stdout and stderr to log
 	private void captureStreamsToLog() {
-		
+
 		//stdout
 		OutputStream stdOS = new OutputStream() {
 
@@ -40,9 +40,9 @@ public class LogManager {
 			}
 
 		};
-		
+
 		System.setOut(new PrintStream(stdOS));
-		
+
 		//stderr
 		OutputStream errOS = new OutputStream() {
 
@@ -52,7 +52,7 @@ public class LogManager {
 			}
 
 		};
-		
+
 		System.setErr(new PrintStream(errOS));
 
 	}
@@ -93,9 +93,9 @@ public class LogManager {
 				e.printStackTrace();
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 *  Access to the singleton
 	 * @return the LogManager
@@ -106,7 +106,7 @@ public class LogManager {
 		}
 		return _instance;
 	}
-	
+
 	/**
 	 * Log an error message
 	 * @param string the error message
@@ -114,7 +114,7 @@ public class LogManager {
 	public static void error(String string) {
 		Log.getInstance().error(string);
 	}
-	
+
 	/**
 	 * Log a config message
 	 * @param string the config message
@@ -122,7 +122,7 @@ public class LogManager {
 	public static void config(String string) {
 		Log.getInstance().config(string);
 	}
-	
+
 	/**
 	 * Log a warning message
 	 * @param string the warning message
@@ -138,7 +138,7 @@ public class LogManager {
 	public static void info(String string) {
 		Log.getInstance().info(string);
 	}
-	
+
 	/**
 	 * Log an exception
 	 * @param e the exception
@@ -147,7 +147,7 @@ public class LogManager {
 		Log.getInstance().exception(e);
 	}
 
-	
+
 	/**
 	 * Set whether the dialog is visible or not.
 	 * @param vis the visibility flag.

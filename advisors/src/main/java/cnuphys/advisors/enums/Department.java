@@ -5,15 +5,15 @@ import java.util.EnumMap;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Department {
-COMM, ECON, ENGL, FAAH, HIST, LAMS, LUTR, MATH, MBCH, MCLL, 
-MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
-	
-	
-	
+COMM, ECON, ENGL, FAAH, HIST, LDSP, LUTR, MATH, MBCH, MCLL,
+OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL;
+
+
+
 	/**
-	 * A map for the base names of the student classes
+	 * A map for the base names of the departments
 	 */
-	public static EnumMap<Department, String> baseNames = new EnumMap<Department, String>(Department.class);
+	public static EnumMap<Department, String> baseNames = new EnumMap<>(Department.class);
 	static {
 		for (Department dept : values()) {
 			baseNames.put(dept, dept.name());
@@ -23,12 +23,12 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 	/**
 	 * A map for the names and synonyms of the student classes
 	 */
-	public static EnumMap<Department, String[]> names = new EnumMap<Department, String[]>(Department.class);
-	
+	public static EnumMap<Department, String[]> names = new EnumMap<>(Department.class);
+
 	/**
 	 * A map of counts for making bar plots
 	 */
-	public static EnumMap<Department, Integer> counts = new EnumMap<Department, Integer>(Department.class);
+	public static EnumMap<Department, Integer> counts = new EnumMap<>(Department.class);
 
 	static {
 		names.put(COMM, new String[] {"comm", "communication"});
@@ -36,26 +36,25 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 		names.put(ENGL, new String[] {"english"});
 		names.put(FAAH, new String[] {"fine art & art hist", "fine art & art history"});
 		names.put(HIST, new String[] {"history"});
-		names.put(LAMS, new String[] {"leadership & as", "leadership & american studies"});
+		names.put(LDSP, new String[] {"leadership & as", "leadership & american studies"});
 		names.put(LUTR, new String[] {"luter"});
 		names.put(MATH, new String[] {"math", "mathematics"});
 		names.put(MBCH, new String[] {"mbch", "molecular biology and chemistry"});
 		names.put(MCLL, new String[] {"mod & class lang", "modern & classical languages & literatures"});
-		names.put(MUSC, new String[] {"music"});
 		names.put(OENB, new String[] {"o&e bio", "organismal and environmental biology"});
 		names.put(PCSE, new String[] {"pcse", "physics, computer science & engineering"});
 		names.put(PHIL, new String[] {"phil & religion", "philosophy & religion"});
+		names.put(PFAR, new String[] {"musc, music", "thea", "theater & dance"});
 		names.put(POLS, new String[] {"polysci", "political science"});
 		names.put(PSYC, new String[] {"psychology", "psych"});
 		names.put(SOCL, new String[] {"soc, soc & anth", "sociology, social work & anthropology"});
-		names.put(THEA, new String[] {"theater & dance"});
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>StudentClass</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -65,7 +64,7 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 		if (name == null) {
 			return null;
 		}
-		
+
 		name = name.toLowerCase();
 
 		for (Department val : values()) {
@@ -73,7 +72,7 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 			if (name.equalsIgnoreCase(val.name())) {
 				return val;
 			}
-			
+
 			String[] syn = names.get(val);
 			for (String s : syn) {
 				if (name.equals(s.toLowerCase())) {
@@ -83,7 +82,7 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Zero all the counts
 	 */
@@ -92,7 +91,7 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 			counts.put(dept, 0);
 		}
 	}
-	
+
 	/**
 	 * Increment a count
 	 * @param dept the enum value whose count will be incremented
@@ -101,44 +100,44 @@ MUSC, OENB, PCSE, PHIL, POLS, PSYC, SOCL, THEA;
 		int val = counts.get(dept) + 1;
 		counts.put(dept,val);
 	}
-	
+
 	/**
 	 * Obtain a combo box of choices.
-	 * 
+	 *
 	 * @param defaultChoice the default selection
 	 * @return a comboBox selector
 	 */
 	public static EnumComboBox getComboBox(Department defaultChoice) {
 		return new EnumComboBox(baseNames, defaultChoice);
 	}
-	
+
 	/**
-	 * Get all the basenames in an array 
+	 * Get all the basenames in an array
 	 * @return the basenames
 	 */
 	public static String[] getBaseNames() {
 		int len = values().length;
 		String bn[] = new String[len];
-		
+
 		for (int i = 0; i < len; i++) {
 			bn[i] = values()[i].name();
 		}
-		
+
 		return bn;
 	}
-	
+
 	/**
-	 * Get all the counts in an array 
+	 * Get all the counts in an array
 	 * @return the counts
 	 */
 	public static int[] getCounts() {
 		int len = values().length;
 		int count[] = new int[len];
-		
+
 		for (int i = 0; i < len; i++) {
 			count[i] = counts.get(values()[i]);
 		}
-		
+
 		return count;
 	}
 }

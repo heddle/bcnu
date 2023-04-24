@@ -10,25 +10,27 @@ import javax.swing.JPanel;
 import cnuphys.advisors.model.DataManager;
 
 public class AdvisorButtonPanel extends JPanel implements ActionListener {
-	
+
 
 	private JButton _advisorButton;
 	private JButton _studentButton;
 	private JButton _saveButton;
 	private JButton _assignmentsButton;
+	private JButton _ilcsButton;
 	private JButton _classesButton;
 
-	
+
 	public AdvisorButtonPanel() {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 10, 4));
 		_advisorButton = createButton("Advisors", true);
 		_studentButton = createButton("Students", true);
 		_assignmentsButton = createButton("Assignments", false);
 		_saveButton = createButton("Save", false);
+		_ilcsButton = createButton("ILCs", true);
 		_classesButton = createButton("Classes", true);
 
 	}
-	
+
 	private JButton createButton(String text, boolean enabled) {
 		JButton button = new JButton(text);
 		button.addActionListener(this);
@@ -37,37 +39,42 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		add(button);
 		return button;
 	}
-	
+
 	//handle click on advisor button
 	private void handleAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getAdvisorData().getScrollPane());		
+		AdvisorDisplay.getInstance().setContent(DataManager.getAdvisorData().getScrollPane());
 	}
-	
+
 	//handle click on students button
 	private void handleStudents() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getStudentData().getScrollPane());		
+		AdvisorDisplay.getInstance().setContent(DataManager.getStudentData().getScrollPane());
 	}
-	
+
 	//handle click on save button
 	private void handleSave() {
-		
+
 	}
-	
+
 	//handle click on assignments button
 	private void handleAssignments() {
 	}
-	
+
 	//handle click on classes button
 	private void handleClasses() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getSchedule().getScrollPane());		
+		AdvisorDisplay.getInstance().setContent(DataManager.getSchedule().getScrollPane());
 	}
-	
-	
+
+	//handle click on ILCs button
+	private void handleILCs() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getILCData().getScrollPane());
+	}
+
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		
+
 		if (o == _advisorButton) {
 			handleAdvisors();
 		}
@@ -82,6 +89,9 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		}
 		else if (o == _classesButton) {
 			handleClasses();
+		}
+		else if (o == _ilcsButton) {
+			handleILCs();
 		}
 
 

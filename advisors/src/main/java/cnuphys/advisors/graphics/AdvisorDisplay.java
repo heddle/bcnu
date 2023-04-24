@@ -25,7 +25,7 @@ public class AdvisorDisplay extends JPanel {
 
 	//tiled background image
 	private String _bgImageFile = "images/cnu.png";
-	
+
 	//singleton
 	private static AdvisorDisplay _instance;
 
@@ -59,7 +59,7 @@ public class AdvisorDisplay extends JPanel {
 		}
 		_content = content;
 	 	add(_content, BorderLayout.WEST);
-	 	
+
 	 	Dimension cd = _content.getPreferredSize();
 	 	Dimension size = getPreferredSize();
 	 	size.width = cd.width+40;

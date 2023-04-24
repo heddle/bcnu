@@ -1,6 +1,8 @@
 package cnuphys.advisors.io;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,8 +18,10 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
 import cnuphys.advisors.model.DataAttribute;
+import cnuphys.advisors.table.CustomRenderer;
 import cnuphys.advisors.table.DataTable;
 import cnuphys.advisors.table.InputOutput;
+import cnuphys.bCNU.util.Fonts;
 
 /**
  * This holds the data for a table
@@ -27,29 +31,37 @@ import cnuphys.advisors.table.InputOutput;
 
 public abstract class DataModel extends DefaultTableModel implements ListSelectionListener, MouseListener {
 	
+	// sort direction
+	private boolean _ascendingSort = true;
+
 	//one synonym per table column
 	protected DataAttribute[] _columnAttributes;
-	
+
 	//the column names for the display table
 	public String[] columnNames;
-	
+
 	//the column widths for the display table
 	public int[] columnWidths;
 
 	//the header of the csv file discarded and NOT used in table
 	protected transient String[] _header;
-	
+
 	//the rest of the csv file discarded and NOT used in table
 	protected transient ArrayList<String[]> _data;
 
 	//the base name. The folder is the application dataDir
 	protected String _baseName;
-	
-	//the table data 
+
+	//the table data
 	protected ArrayList<ITabled> _tableData = new ArrayList<>();
-	
+
 	//the table
 	protected DataTable _dataTable;
+	
+
+	//the custom renderer for highlighting
+	public CustomRenderer renderer;
+	
 	
 	/**
 	 * A CSV Data object
@@ -60,11 +72,11 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		_baseName = baseName;
 		_columnAttributes = atts;
 		setColumnParameters();
-				
+
 		File file = InputOutput.openDataFile(baseName);
-		
+
 		InputOutput.debugPrint(baseName);
-		
+
 		try {
 			_data = new ArrayList<>();
 			new CSVReader(file, this);
@@ -74,8 +86,10 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			e.printStackTrace();
 			System.exit(1);
 		}
+		
+		createDataTable();
 	}
-	
+
 	/**
 	 * get the collection of objects used as data
 	 * @return the collection of objects used as data
@@ -83,7 +97,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	public ArrayList<ITabled> getData() {
 		return _tableData;
 	}
-	
+
 	//used to send the column headers
 	private static String[] colNamesFromAttributes(DataAttribute[] atts) {
 		int len = atts.length;
@@ -91,46 +105,48 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		for (int i = 0; i < len; i++) {
 			names[i] = atts[i].name;
 		}
-		
+
 		return names;
 	}
 	
+	private void createDataTable() {
+		_dataTable = new DataTable(this);
+
+		Dimension d = _dataTable.getScrollPane().getPreferredSize();
+		d.width = getPreferredWidth();
+		_dataTable.getScrollPane().setPreferredSize(d);
+		
+	}
+
 	/**
 	 * Get the scroll pane containing the data table
 	 * @return the scroll pane
 	 */
 	public JScrollPane getScrollPane() {
-		if (_dataTable == null) {
-			_dataTable = new DataTable(this);	
-			
-			Dimension d = _dataTable.getScrollPane().getPreferredSize();
-			d.width = getPreferredWidth();
-			_dataTable.getScrollPane().setPreferredSize(d);
-		}
 		return _dataTable.getScrollPane();
 	}
-	
+
 	/**
 	 * Assign the column names and widths for the display table
 	 */
 	private String[] setColumnParameters() {
 		int len = _columnAttributes.length;
-		
+
 		columnNames = new String[len];
 		columnWidths = new int[len];
-		
+
 		for (int i = 0; i < len; i++) {
 			columnNames[i] = _columnAttributes[i].name;
 			columnWidths[i] = _columnAttributes[i].width;
 		}
-		
+
 		return columnNames;
 	}
-	
+
 	//check the columns count of the csv file
 	private void checkColumnCount() {
 		int colCount = _header.length;
-		
+
 		for (String[] row : _data) {
 			if (row.length != colCount) {
 				System.err.println("Mismatch column count in " + _baseName);
@@ -140,7 +156,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			}
 		}
 	}
-	
+
 	//print a row
 	protected void printRow(PrintStream ps, String[] row) {
 		if (row != null) {
@@ -153,7 +169,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			}
 		}
 	}
-	
+
 	/**
 	 * Add a row of data
 	 * @param row the row to add
@@ -161,10 +177,10 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	public void addRow(String row[]) {
 		_data.add(row);
 	}
-	
+
 	//process the raw csv data
 	protected abstract void processData();
-	
+
 	/**
 	 * Get the data count
 	 * @return the data count
@@ -172,7 +188,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	public int count() {
 		return (_tableData == null) ? 0 : _tableData.size();
 	}
-	
+
 	//try to get a column index
 	protected int getColumnIndex(DataAttribute dataAtt) {
 		int index = DataAttribute.getColumnIndex(_header, dataAtt);
@@ -182,24 +198,23 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		}
 		return index;
 	}
-	
+
 	//after processing, raw csv data is probably not needed
 	protected void deleteRawData() {
 		_header = null;
 		_data = null;
 	}
-	
+
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
 	public int getColumnCount() {
 		return columnWidths.length;
 	}
-	
-	
+
 	/**
 	 * Get the preferred width of the display table
 	 * @return the preferred width of the display table
@@ -212,20 +227,20 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		}
 		return w;
 	}
-	
+
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
 	public int getRowCount() {
 		return (_tableData == null) ? 0 : _tableData.size();
 	}
-	
+
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -233,7 +248,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		ITabled rowObject = _tableData.get(row);
 		return rowObject.getValueAt(col);
 	}
-	
+
 	/**
 	 * Forces the cell to not be editable.
 	 */
@@ -250,7 +265,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	protected int[] getSelectedRows() {
 		return _dataTable.getSelectedRows();
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if (e.getClickCount() == 1) {
@@ -278,34 +293,79 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	@Override
 	public void mouseEntered(MouseEvent e) {
 	}
-	
+
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
-	
+
 	/**
 	 * Sort the data based on the colum that was clicked
 	 * @param column the column index
 	 * @param name the name of the column
 	 */
 	protected void sort(final int column, String name) {
-		InputOutput.debugPrintln("Clicked on header: [" + name + "] at index = " + column);
-		
+	//	InputOutput.debugPrintln("Clicked on header: [" + name + "] at index = " + column);
+
 		Comparator<ITabled> comp = new Comparator<>() {
 
 			@Override
 			public int compare(ITabled o1, ITabled o2) {
 				String s1 = o1.getValueAt(column);
 				String s2 = o2.getValueAt(column);
-				return s1.compareTo(s2);
+				if (_ascendingSort) {
+					return s1.compareTo(s2);
+				} else {
+					return s2.compareTo(s1);
+				}
 			}
-			
+
 		};
-		
+
 		Collections.sort(_tableData, comp);
+		_ascendingSort = !_ascendingSort;
 		fireTableDataChanged();
 
 	}
 	
+	/**
+	 * Get the data at the given 0-based row
+	 * @param row the row
+	 * @return the data at the given row
+	 */
+	public ITabled getFromRow(int row) {
+		return _tableData.get(row);
+	}
+	
+	/**
+	 * Get a highlight text color for a given row and column
+	 * @param row the 0-based row
+	 * @param column the 0-based column
+	 * @return the hightlight color, if null use default (black)
+	 */
+	public Color getHighlightTextColor(int row, int column) {
+		return Color.black;
+	}
+
+	/**
+	 * Get a highlight background color for a given row and column
+	 * @param row the 0-based row
+	 * @param column the 0-based column
+	 * @return the highlight background  color, if null use default (white)
+	 */
+	public Color getHighlightBackgroundColor(int row, int column) {
+		return Color.white;
+	}
+	
+	/**
+	 * Get a highlight font for a given row and column
+	 * @param row the 0-based row
+	 * @param column the 0-based column
+	 * @return the highlight color, if null use medium font
+	 */
+	public Font getHighlightFont(int row, int column) {
+		return Fonts.mediumFont;
+	}
+
+
 
 }

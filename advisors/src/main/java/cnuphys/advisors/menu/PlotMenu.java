@@ -25,7 +25,7 @@ public class PlotMenu extends JMenu implements ActionListener {
 	private JMenuItem _fcaByDeptItem;
 	private JMenuItem _studentByMajorItem;
 
-	
+
 	public PlotMenu() {
 		super("Plots");
 		MenuManager.getInstance().addMenu(this);
@@ -33,7 +33,7 @@ public class PlotMenu extends JMenu implements ActionListener {
 		_studentByMajorItem = MenuManager.addMenuItem("Students by Major", KeyEvent.VK_2, this, this);
 	}
 
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource() == _fcaByDeptItem) {
@@ -44,47 +44,47 @@ public class PlotMenu extends JMenu implements ActionListener {
 		}
 
 	}
-	
+
 	//handle FCA by department selection
 	private void handleFCAByDept() {
 		String title = "FCAs by Department";
-		
+
 		Department.clearCounts();
-		
+
 		AdvisorData advisorData = DataManager.getAdvisorData();
 
 		ArrayList<ITabled> data = advisorData.getData();
-		
+
 		for (ITabled itabled : data) {
 			Advisor advisor = (Advisor)itabled;
 			Department.incrementCount(advisor.department);
 		}
-		
+
 		String categories[] = Department.getBaseNames();
 		int counts[] = Department.getCounts();
-		
+
 		BarPlot barPlot = new BarPlot(title, categories, counts);
 		AdvisorDisplay.getInstance().setContent(barPlot);
 	}
-	
+
 	//handle FCA by department selection
 	private void handleStudentsByMajor() {
 		String title = "Students by Department";
-		
+
 		Major.clearCounts();
-		
+
 		StudentData studentData = DataManager.getStudentData();
 
 		ArrayList<ITabled> data = studentData.getData();
-		
+
 		for (ITabled itabled : data) {
 			Student student = (Student)itabled;
 			Major.incrementCount(student.major);
 		}
-		
+
 		String categories[] = Major.getBaseNames();
 		int counts[] = Major.getCounts();
-		
+
 		BarPlot barPlot = new BarPlot(title, categories, counts);
 		AdvisorDisplay.getInstance().setContent(barPlot);
 	}

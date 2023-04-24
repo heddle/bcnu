@@ -11,8 +11,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
-import cnuphys.advisors.frame.AdvisorAssign;
-
 public class MenuManager {
 
 	//the menu bar

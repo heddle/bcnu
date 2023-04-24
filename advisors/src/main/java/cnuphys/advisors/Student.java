@@ -4,37 +4,37 @@ import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
 
 public class Student implements ITabled{
-	
+
 	private String _id;
-	
+
 	private String _lastName;
-	
+
 	private String _firstName;
-	
+
 	private String _plp;
-	
+
 	private String _honr;
-	
+
 	private String _psp;
-	
+
 	private String _prelaw;
-	
+
 	public Major major;
-	
-	
-	
+
+
+
 	public Student(String id, String lastName, String firstName, String plp, String honr, String psp,
 			String prelaw, String maj) {
 		super();
-		this._id = id.replace("\"", "");
-		this._lastName = lastName.replace("\"", "");
-		this._firstName = firstName.replace("\"", "");
-		this._plp = plp.replace("\"", "");
-		this._honr = honr.replace("\"", "");
-		this._psp = psp.replace("\"", "");
-		this._prelaw = prelaw.replace("\"", "");
-		String majorstr = maj.replace("\"", "");
-		
+		this._id = id.replace("\"", "").trim();
+		this._lastName = lastName.replace("\"", "").trim();
+		this._firstName = firstName.replace("\"", "").trim();
+		this._plp = plp.replace("\"", "").trim().toUpperCase();
+		this._honr = honr.replace("\"", "").trim().toUpperCase();
+		this._psp = psp.replace("\"", "").trim().toUpperCase();
+		this._prelaw = prelaw.replace("\"", "").trim().toUpperCase();
+		String majorstr = maj.replace("\"", "").trim();
+
 		major = Major.getValue(majorstr);
 		if (major == null) {
 			System.err.println("COULD not match major [" + majorstr + "]");
@@ -121,6 +121,22 @@ public class Student implements ITabled{
 	 */
 	public String getHonr() {
 		return _honr;
+	}
+
+	/**
+	 * Is this an honor student?
+	 * @return true if an honor student
+	 */
+	public boolean isHonor() {
+		return((_honr != null) && _honr.contains("HO"));
+	}
+	
+	/**
+	 * Is this an plp student?
+	 * @return true if a plp student
+	 */
+	public boolean isPLP() {
+		return((_plp != null) && _plp.contains("PLP"));
 	}
 
 
@@ -229,7 +245,7 @@ public class Student implements ITabled{
 			System.err.println("Bad column in Student getValueAt [" + col + "]");
 			System.exit(0);
 		}
-		
+
 		return null;
 	}
 

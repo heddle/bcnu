@@ -6,19 +6,18 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
-import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.simanneal.SimulationPanel;
 
 public class AdvisorPanel extends JPanel {
-	
+
 
 	/** width of the active layout bounds */
 	public static final int width = 1000;
-	
+
 	/** height of the active layout bounds */
 	public static final int height = 800;
-	
+
 	/** the size of the layout bounds */
 	public static final Rectangle bounds = new Rectangle(width, height);
 
