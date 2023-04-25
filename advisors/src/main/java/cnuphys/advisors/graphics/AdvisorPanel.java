@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 
 import javax.swing.JPanel;
 
+import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.simanneal.SimulationPanel;
 
@@ -28,11 +29,11 @@ public class AdvisorPanel extends JPanel {
 	// the simulation
 	private AdvisorSimulation _simulation;
 
-	public AdvisorPanel(AdvisorSimulation simulation) {
+	public AdvisorPanel(AdvisorSimulation simulation, CheckList checklist) {
 		_simulation = simulation;
 
 		AdvisorDisplay.getInstance().setPreferredSize(new Dimension(width, height));
-		_simPanel = new SimulationPanel(_simulation, AdvisorDisplay.getInstance());
+		_simPanel = new SimulationPanel(_simulation, AdvisorDisplay.getInstance(), checklist);
 		add(_simPanel);
 	}
 

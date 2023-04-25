@@ -6,6 +6,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
@@ -28,6 +29,9 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 
 	// the content (display_ component
 	private JComponent _content;
+	
+	//some more (optional) content
+	private JComponent _content2;
 
 	// the attribute panel
 	private AttributePanel _attributePanel;
@@ -42,7 +46,8 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	private JButton pauseButton;
 	private JButton resumeButton;
 	private JButton resetButton;
-
+	
+	
 	/**
 	 * Create a panel to hold all the optics for the simulation
 	 *
@@ -51,11 +56,28 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	 *                   salesperson problem
 	 */
 	public SimulationPanel(Simulation simulation, JComponent content) {
+		this(simulation, content, null);
+	}
+
+	/**
+	 * Create a panel to hold all the optics for the simulation
+	 *
+	 * @param simulation the simulation
+	 * @param content    the custom content, e.g. a map for the traveling
+	 *                   salesperson problem
+	 */
+	public SimulationPanel(Simulation simulation, JComponent content, JComponent content2) {
 		setLayout(new BorderLayout(4, 4));
 		_simulation = simulation;
 		_simulation.addUpdateListener(this);
 		_content = content;
-		add(_content, BorderLayout.WEST);
+		_content2 = content2;
+		
+		JPanel leftP = insetPanel();
+		leftP.add(_content, BorderLayout.CENTER);
+		
+		leftP.add(Box.createHorizontalStrut(80), BorderLayout.WEST);
+		add(leftP, BorderLayout.WEST);
 
 		addEast();
 		addCenter();
@@ -107,7 +129,14 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		// attributes in center of east panel
 		_attributePanel = new AttributePanel(_simulation.getAttributes());
 
-		panel.add(_attributePanel, BorderLayout.CENTER);
+		JPanel cp = insetPanel();
+		cp.add(_attributePanel, BorderLayout.CENTER);
+		
+		if (_content2 != null) {
+			cp.add(_content2, BorderLayout.SOUTH);
+		}
+		
+		panel.add(cp, BorderLayout.CENTER);
 
 		// buttons in south of east panel
 		JPanel bPanel = new JPanel();

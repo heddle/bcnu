@@ -90,15 +90,14 @@ public class AdvisorAssign extends JFrame {
 		setLayout(new BorderLayout());
 
 		MenuManager.getInstance().init(_menuBar);
-		AdvisorPanel panel = new AdvisorPanel(_advisorSim);
-
-		add(panel, BorderLayout.CENTER);
 		
 		//add the check list
 		_checklist = new CheckList(_advisorSim);
-		add(_checklist, BorderLayout.WEST);
+
+		AdvisorPanel panel = new AdvisorPanel(_advisorSim, _checklist);
 		
 
+		add(panel, BorderLayout.CENTER);
 		createSemesterLabel();
 
 	}

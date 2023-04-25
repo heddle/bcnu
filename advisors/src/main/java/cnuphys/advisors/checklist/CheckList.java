@@ -9,7 +9,7 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
 
 public class CheckList extends JPanel {
 	
-	private static int WIDTH = 400;
+	private static int HEIGHT = 300;
 	
 	private AdvisorSimulation _simulation;
 	
@@ -21,7 +21,7 @@ public class CheckList extends JPanel {
 	@Override
 	public Dimension getPreferredSize() {
 		Dimension d = super.getPreferredSize();
-		d.width = WIDTH;
+		d.height = HEIGHT;
 		return d;
 	}
 
