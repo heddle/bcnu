@@ -1,6 +1,12 @@
 package cnuphys.advisors.model;
 
+import java.io.File;
+
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.StudentFilter;
+import cnuphys.advisors.io.CSVReader;
+import cnuphys.advisors.io.DataModel;
+import cnuphys.advisors.table.InputOutput;
 
 public class DataManager {
 
@@ -9,6 +15,7 @@ public class DataManager {
     private static final String _scheduleBaseName = "scheduleofclasses.csv";
     private static final String _studentsBaseName = "students.csv";
     private static final String _ilcsBaseName = "ilcs.csv";
+    private static final String _ccBaseName = "communitycaptains.csv";
 
     //the advisor data
 	private static AdvisorData _advisorData;
@@ -62,9 +69,26 @@ public class DataManager {
 
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
+		
+		new CommunityCaptains(_ccBaseName);
 	}
+	
+	/**
+	 * Standardize an is to include leading 0's
+	 * @param id the id to standardize
+	 * @return the fixed id
+	 */
+	public static String fixId(String id) {
+		String fixedId = id.replace("\"", "").trim();
+		
+		//add leading 0's
+		while (fixedId.length() < 8) {
+			fixedId = "0" + fixedId;
+		}
 
-
+		return fixedId;
+	}
+	
 	/**
 	 * Get the data for all core advisors
 	 * @return the advisor data
@@ -95,6 +119,10 @@ public class DataManager {
 	 */
 	public static StudentData getStudentData() {
 		return _studentData;
+	}
+	
+	public static StudentData getFilteredStudentData(StudentFilter filter) {
+		return _studentData.subModel(filter);
 	}
 
 	/**

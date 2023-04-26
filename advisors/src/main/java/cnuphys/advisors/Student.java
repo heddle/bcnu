@@ -2,37 +2,51 @@ package cnuphys.advisors;
 
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.DataManager;
 
 public class Student implements ITabled{
 
-	private String _id;
+	public String id;
 
-	private String _lastName;
+	public String lastName;
 
-	private String _firstName;
+	public String _firstName;
 
-	private String _plp;
+	public String plp;
 
-	private String _honr;
+	public String honr;
 
-	private String _psp;
+	public String psp;
 
-	private String _prelaw;
+	public String prelaw;
 
 	public Major major;
+	
+	/** is this a community captain? */
+	public boolean communityCaptain;
 
 
-
+/**
+ * A student 
+ * @param id
+ * @param lastName
+ * @param firstName
+ * @param plp
+ * @param honr
+ * @param psp
+ * @param prelaw
+ * @param maj
+ */
 	public Student(String id, String lastName, String firstName, String plp, String honr, String psp,
 			String prelaw, String maj) {
 		super();
-		this._id = id.replace("\"", "").trim();
-		this._lastName = lastName.replace("\"", "").trim();
+		this.id = DataManager.fixId(id);
+		this.lastName = lastName.replace("\"", "").trim();
 		this._firstName = firstName.replace("\"", "").trim();
-		this._plp = plp.replace("\"", "").trim().toUpperCase();
-		this._honr = honr.replace("\"", "").trim().toUpperCase();
-		this._psp = psp.replace("\"", "").trim().toUpperCase();
-		this._prelaw = prelaw.replace("\"", "").trim().toUpperCase();
+		this.plp = plp.replace("\"", "").trim().toUpperCase();
+		this.honr = honr.replace("\"", "").trim().toUpperCase();
+		this.psp = psp.replace("\"", "").trim().toUpperCase();
+		this.prelaw = prelaw.replace("\"", "").trim().toUpperCase();
 		String majorstr = maj.replace("\"", "").trim();
 
 		major = Major.getValue(majorstr);
@@ -48,79 +62,7 @@ public class Student implements ITabled{
 	 * @return the _id
 	 */
 	public String getID() {
-		return _id;
-	}
-
-
-
-	/**
-	 * @param _id the _id to set
-	 */
-	public void setID(String _id) {
-		this._id = _id;
-	}
-
-
-
-	/**
-	 * @return the _lastName
-	 */
-	public String getLastName() {
-		return _lastName;
-	}
-
-
-
-	/**
-	 * @param _lastName the _lastName to set
-	 */
-	public void setLastName(String _lastName) {
-		this._lastName = _lastName;
-	}
-
-
-
-	/**
-	 * @return the _firstName
-	 */
-	public String getFirstName() {
-		return _firstName;
-	}
-
-
-
-	/**
-	 * @param _firstName the _firstName to set
-	 */
-	public void setFirstName(String _firstName) {
-		this._firstName = _firstName;
-	}
-
-
-
-	/**
-	 * @return the _plp
-	 */
-	public String getPlp() {
-		return _plp;
-	}
-
-
-
-	/**
-	 * @param _plp the _plp to set
-	 */
-	public void setPlp(String _plp) {
-		this._plp = _plp;
-	}
-
-
-
-	/**
-	 * @return the _honr
-	 */
-	public String getHonr() {
-		return _honr;
+		return id;
 	}
 
 	/**
@@ -128,80 +70,24 @@ public class Student implements ITabled{
 	 * @return true if an honor student
 	 */
 	public boolean isHonor() {
-		return((_honr != null) && _honr.contains("HO"));
+		return((honr != null) && honr.contains("HO"));
 	}
 	
 	/**
-	 * Is this an plp student?
+	 * Is this a plp student?
 	 * @return true if a plp student
 	 */
 	public boolean isPLP() {
-		return((_plp != null) && _plp.contains("PLP"));
+		return((plp != null) && plp.contains("PLP"));
 	}
-
-
-
+	
 	/**
-	 * @param _honr the _honr to set
+	 * Is this a prelaw student?
+	 * @return true if a prelaw student
 	 */
-	public void setHonr(String _honr) {
-		this._honr = _honr;
+	public boolean isPrelaw() {
+		return((prelaw != null) && prelaw.contains("LW"));
 	}
-
-
-
-	/**
-	 * @return the _psp
-	 */
-	public String getPsp() {
-		return _psp;
-	}
-
-
-
-	/**
-	 * @param _psp the _psp to set
-	 */
-	public void setPsp(String _psp) {
-		this._psp = _psp;
-	}
-
-
-
-	/**
-	 * @return the _prelaw
-	 */
-	public String getPrelaw() {
-		return _prelaw;
-	}
-
-
-
-	/**
-	 * @param _prelaw the _prelaw to set
-	 */
-	public void setPrelaw(String _prelaw) {
-		this._prelaw = _prelaw;
-	}
-
-
-
-	/**
-	 * @return the _major
-	 */
-	public Major getMajor() {
-		return major;
-	}
-
-
-
-	/**
-	 * @param _major the _major to set
-	 */
-	public void setMajor(Major _major) {
-		this.major = _major;
-	}
-
 
 
 	/**
@@ -210,7 +96,7 @@ public class Student implements ITabled{
 	 * @return the name and ID of the student
 	 */
 	public String fullNameAndID() {
-		return String.format("%s, %s [%s]", _lastName, _firstName, _id);
+		return String.format("%s, %s [%s]", lastName, _firstName, id);
 	}
 
 
@@ -218,25 +104,25 @@ public class Student implements ITabled{
 	@Override
 	public String getValueAt(int col) {
 		if (col == 0) {
-			return _id;
+			return id;
 		}
 		else if (col == 1) {
-			return _lastName;
+			return lastName;
 		}
 		else if (col == 2) {
 			return _firstName;
 		}
 		else if (col == 3) {
-			return _plp;
+			return plp;
 		}
 		else if (col == 4) {
-			return _honr;
+			return honr;
 		}
 		else if (col == 5) {
-			return _psp;
+			return psp;
 		}
 		else if (col == 6) {
-			return _prelaw;
+			return prelaw;
 		}
 		else if (col == 7) {
 			return major.name();

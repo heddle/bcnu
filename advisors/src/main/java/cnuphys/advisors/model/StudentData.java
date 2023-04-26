@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
+import cnuphys.advisors.IFilter;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -15,6 +16,11 @@ import cnuphys.advisors.table.InputOutput;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 
+/**
+ * All the students
+ * @author heddle
+ *
+ */
 public class StudentData extends DataModel {
 
 	//attributes for student data
@@ -31,8 +37,24 @@ public class StudentData extends DataModel {
 		for (int i = 0; i < getColumnCount(); i++) {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
-
 	}
+	
+	/**
+	 * private constructor used to make a submodel
+	 * @param baseModel
+	 * @param filter
+	 */
+	private StudentData(StudentData baseModel, IFilter filter) {
+		super(baseModel, filter);
+	}
+	
+	/**
+	 * Create a submodel using a filter
+	 */
+	public StudentData subModel(IFilter filter) {
+		return new StudentData(this, filter);
+	}
+
 
 
 	@Override
@@ -89,7 +111,6 @@ public class StudentData extends DataModel {
 		return (student.isPLP()) ? Fonts.mediumBoldFont : Fonts.mediumFont;
 	}
 
-
     
  	/**
  	 * Get the student at the given 0-based row
@@ -98,7 +119,23 @@ public class StudentData extends DataModel {
  	 */   
      public Student getStudentFromRow(int row) {
      	return (Student)getFromRow(row);
-     }
+	}
+
+	/**
+	 * Get the student with matching Id
+	 * 
+	 * @param id the id to match
+	 * @return the student with matching id or null
+	 */
+	public Student getStudentFromId(String id) {
+
+		for (Student student : getStudents()) {
+			if (student.id.equals(id)) {
+				return student;
+			}
+		}
+		return null;
+	}
      
 
 	/**

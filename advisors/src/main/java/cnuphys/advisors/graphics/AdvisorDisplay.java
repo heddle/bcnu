@@ -32,6 +32,7 @@ public class AdvisorDisplay extends JPanel {
 	private AdvisorDisplay() {
 		setLayout(new BorderLayout());
 		add(new AdvisorButtonPanel(), BorderLayout.SOUTH);
+		add(AdvisorInfoLabel.getInstance(), BorderLayout.NORTH);
 		_icon = ImageManager.getInstance().loadImageIcon(_bgImageFile);
 		_tileSize = new Dimension(_icon.getIconWidth(), _icon.getIconHeight());
 	}

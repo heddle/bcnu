@@ -37,7 +37,7 @@ public class Course implements ITabled {
 		this.section = section.replace("\"", "").trim();
 		this.title = title.replace("\"", "").trim();
 		this.instructor = instructor.replace("\"", "").trim();
-		this.id = id.replace("\"", "").trim();
+		this.id = DataManager.fixId(id);
 		
 		//add leading 0's
 		while (this.id.length() < 8) {

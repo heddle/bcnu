@@ -7,6 +7,7 @@ import java.util.Comparator;
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.DataManager;
 
 public class Advisor implements ITabled {
 
@@ -50,12 +51,7 @@ public class Advisor implements ITabled {
 	 */
 	public Advisor(String name, String id, String dept) {
 		this.name = name.replace("\"", "");
-		this.id = id.replace("\"", "");
-		
-		//add leading 0's
-		while (this.id.length() < 8) {
-			this.id = "0" + this.id;
-		}
+		this.id = DataManager.fixId(id);
 
 		String deptstr = dept.replace("\"", "");
 

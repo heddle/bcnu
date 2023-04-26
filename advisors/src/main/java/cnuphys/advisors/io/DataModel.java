@@ -17,6 +17,7 @@ import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
+import cnuphys.advisors.IFilter;
 import cnuphys.advisors.model.DataAttribute;
 import cnuphys.advisors.table.CustomRenderer;
 import cnuphys.advisors.table.DataTable;
@@ -85,6 +86,28 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);
+		}
+		
+		
+		createDataTable();
+	}
+	
+	/**
+	 * Create a submodel using a filter
+	 * @param baseModel the base mode (e.g. all students)
+	 * @param filter the filter to select students
+	 */
+	public DataModel(DataModel baseModel, IFilter filter) {
+		_baseName = baseModel._baseName;
+		_columnAttributes = baseModel._columnAttributes;
+		_header = baseModel._header;
+		columnNames = baseModel.columnNames;
+		columnWidths = baseModel.columnWidths;
+		
+		for (ITabled itabled : baseModel._tableData) {
+			if (filter.pass(itabled)) {
+				_tableData.add(itabled);
+			}
 		}
 		
 		createDataTable();
