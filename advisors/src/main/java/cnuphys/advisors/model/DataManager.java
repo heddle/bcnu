@@ -3,6 +3,7 @@ package cnuphys.advisors.model;
 import java.io.File;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.AdvisorFilter;
 import cnuphys.advisors.StudentFilter;
 import cnuphys.advisors.io.CSVReader;
 import cnuphys.advisors.io.DataModel;
@@ -15,7 +16,9 @@ public class DataManager {
     private static final String _scheduleBaseName = "scheduleofclasses.csv";
     private static final String _studentsBaseName = "students.csv";
     private static final String _ilcsBaseName = "ilcs.csv";
-    private static final String _ccBaseName = "communitycaptains.csv";
+    private static final String _honAdvBaseName = "honorsadvisors.csv";
+    private static final String _presScholarAdvBaseName = "presscholaradvisors.csv";
+    private static final String _studentSchedulesBaseName = "studentschedules.csv";
 
     //the advisor data
 	private static AdvisorData _advisorData;
@@ -30,16 +33,16 @@ public class DataManager {
 	private static ILCData _ilcData;
 
 	//synonym lists
-	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 100, "id");
-	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 260);
-	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 160, "last name", "lastname", "last_name");
-	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 110, "first name", "firstname", "lfirst_name");
-	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 100, "department", "adv1_dept");
-	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 60);
+	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 74, "id", "cnuid");
+	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 200);
+	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 140, "last name", "lastname", "last_name", "lname");
+	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 90, "first name", "firstname", "lfirst_name", "fname");
+	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 70, "department", "adv1_dept");
+	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 50);
 
 
 	public static final DataAttribute crnAtt = new DataAttribute("CRN", 40);
-	public static final DataAttribute subjectAtt = new DataAttribute("SUBJ", 60, "subject");
+	public static final DataAttribute subjectAtt = new DataAttribute("SUBJ", 70, "subject");
 	public static final DataAttribute courseAtt = new DataAttribute("CRSE", 60, "course", "course #");
 	public static final DataAttribute sectionAtt = new DataAttribute("SECT", 30, "section");
 	public static final DataAttribute titleAtt = new DataAttribute("TITLE", 170);
@@ -53,11 +56,15 @@ public class DataManager {
 	public static final DataAttribute locationAtt = new DataAttribute("LOC", 70, "location");
 	public static final DataAttribute instructorAtt = new DataAttribute("INSTRUCTOR", 150);
 
+	public static final DataAttribute ilcAtt = new DataAttribute("ILC", 40);
+	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 40);
+	public static final DataAttribute windAtt = new DataAttribute("WIND", 40);
+	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 40);
 	public static final DataAttribute plpAtt = new DataAttribute("PLP", 40);
 	public static final DataAttribute honrAtt = new DataAttribute("HONR", 40);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
-	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 40);
-	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 120, "Major_1st");
+	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46);
+	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 90, "Major_1st");
 
 
 	/**
@@ -70,7 +77,9 @@ public class DataManager {
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
 		
-		new CommunityCaptains(_ccBaseName);
+		new HonorsAdvisors(_honAdvBaseName);
+		new PresScholarAdvisors(_presScholarAdvBaseName);
+		new StudentSchedules(_studentSchedulesBaseName);
 	}
 	
 	/**
@@ -105,6 +114,15 @@ public class DataManager {
 	public static AdvisorData getAdvisorData() {
 		return _advisorData;
 	}
+	
+	public static AdvisorData getFilteredAdvisorData(AdvisorFilter filter) {
+		return _advisorData.subModel(filter);
+	}
+	
+	public static void fileDataChange() {
+		
+	}
+
 
 	/**
 	 * Get the schedule of classes data

@@ -12,7 +12,8 @@ public class ILCData extends DataModel {
 
 	// attributes for student data
 	private static final DataAttribute ilcAttributes[] = { DataManager.lcAtt, DataManager.crnAtt,
-			DataManager.subjectAtt, DataManager.courseAtt, DataManager.llcAtt, DataManager.notesAtt };
+			DataManager.subjectAtt, DataManager.courseAtt, DataManager.llcAtt, DataManager.notesAtt,
+			DataManager.instructorAtt};
 
 	public ILCData(String baseName) {
 		super(baseName, ilcAttributes);
@@ -55,11 +56,40 @@ public class ILCData extends DataModel {
 
 		ArrayList<ILCCourse> list = new ArrayList<>();
 		for (ITabled itabled : _tableData) {
-			ILCCourse student = (ILCCourse) itabled;
-			list.add(student);
+			ILCCourse course = (ILCCourse) itabled;
+			list.add(course);
 		}
 
 		return list;
+	}
+	
+	/**
+	 * Is the given crn an ILC course?
+	 * @param crn
+	 * @return ILC course or nll
+	 */
+	public boolean isILC(String crn) {
+		for (ILCCourse ilc : getILCs()) {
+			if (ilc.crn.equals(crn)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Get the ilc course from the crn
+	 * @param crn the crn
+	 * @return the ILC course, or null.
+	 */
+	public ILCCourse getILCCourse(String crn) {
+		for (ILCCourse ilc : getILCs()) {
+			if (ilc.crn.equals(crn)) {
+				return ilc;
+			}
+		}
+
+		return null;
 	}
 	
 	@Override

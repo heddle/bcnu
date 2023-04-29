@@ -2,6 +2,7 @@ package cnuphys.advisors.model;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
@@ -37,7 +38,6 @@ public class Schedule extends DataModel {
 
 	}
 
-	
 
 
 	@Override
@@ -90,7 +90,7 @@ public class Schedule extends DataModel {
 						new Course(crn, subject, course, section, title, instructor, id));
 			}			
 		}
-		
+				
 		
 		//mark the ILCs including instructors
 		List<ILCCourse> ilcs = DataManager.getILCData().getILCs();
@@ -110,6 +110,8 @@ public class Schedule extends DataModel {
 				System.err.println("Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
 				System.exit(1);
 			}
+			
+			ilc.instructor  = advisor;
 			advisor.hasILC = true;
 		}
 

@@ -20,6 +20,7 @@ import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorPanel;
 import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.menu.MenuManager;
+import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 
 /**
@@ -46,7 +47,7 @@ public class AdvisorAssign extends JFrame {
 	private static Semester _semester = Semester.Fall2022;
 
 	//a label on the menu bar for the semester
-	private static JLabel _semesterLabel;
+	private static JLabel _infoLabel;
 
 	//the simulation object
 	private AdvisorSimulation _advisorSim;
@@ -92,13 +93,13 @@ public class AdvisorAssign extends JFrame {
 		MenuManager.getInstance().init(_menuBar);
 		
 		//add the check list
-		_checklist = new CheckList(_advisorSim);
+		_checklist = CheckList.getInstance();
 
 		AdvisorPanel panel = new AdvisorPanel(_advisorSim, _checklist);
 		
 
 		add(panel, BorderLayout.CENTER);
-		createSemesterLabel();
+		createInfoLabel();
 
 	}
 
@@ -123,25 +124,36 @@ public class AdvisorAssign extends JFrame {
 	}
 
 	// create the event number label
-	private void createSemesterLabel() {
-		_semesterLabel = new JLabel("  SEMESTER: XXXXXXXXX");
-		_semesterLabel.setOpaque(true);
-		_semesterLabel.setBackground(Color.black);
-		_semesterLabel.setForeground(Color.yellow);
-		_semesterLabel.setFont(new Font("Dialog", Font.BOLD, 12));
-		_semesterLabel.setBorder(BorderFactory.createLineBorder(Color.cyan, 1));
-		fixSemesterLabel();
+	private void createInfoLabel() {
+		_infoLabel = new JLabel(" ");
+		_infoLabel.setOpaque(true);
+		_infoLabel.setBackground(Color.black);
+		_infoLabel.setForeground(Color.yellow);
+		_infoLabel.setFont(new Font("Dialog", Font.BOLD, 12));
+		_infoLabel.setBorder(BorderFactory.createLineBorder(Color.cyan, 1));
+		updateInfoLabel();
 
 		getJMenuBar().add(Box.createHorizontalGlue());
-		getJMenuBar().add(_semesterLabel);
+		getJMenuBar().add(_infoLabel);
 		getJMenuBar().add(Box.createHorizontalStrut(5));
 	}
 
 	/**
-	 * Fix the semester label
+	 * Fix the info label
 	 */
-	public void fixSemesterLabel() {
-		_semesterLabel.setText("  SEMESTER: " + getSemester());
+	public static void updateInfoLabel() {
+		
+		
+		int advisorCount = DataManager.getAdvisorData().count();
+		int studentCount = DataManager.getStudentData().count();
+		int assignedCount = DataManager.getAdvisorData().getAssignedStudentCount();
+		
+		double avgReq = ((double)studentCount)/advisorCount;
+		
+		String s = String.format("%s      FCA Count: %d     Student Count: %d     Num Assigned: %d   Required Avg: %4.1f  ",
+				getSemester().name(), advisorCount, studentCount, assignedCount, avgReq);
+		
+		_infoLabel.setText(s);
 	}
 
 

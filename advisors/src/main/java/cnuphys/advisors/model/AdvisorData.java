@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.IFilter;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -27,6 +28,10 @@ public class AdvisorData extends DataModel {
 			DataManager.subjectAtt,
 			DataManager.idAtt, DataManager.numAdviseeAtt };
 
+	/**
+	 * 
+	 * @param baseName
+	 */
 	public AdvisorData(String baseName) {
 		super(baseName, advisorAttributes);
 		
@@ -36,6 +41,52 @@ public class AdvisorData extends DataModel {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
 
+	}
+	
+	/**
+	 * private constructor used to make a submodel
+	 * @param baseModel
+	 * @param filter
+	 */
+	private AdvisorData(AdvisorData baseModel, IFilter filter) {
+		super(baseModel, filter);
+	}
+	
+	/**
+	 * Create a submodel using a filter
+	 */
+	public AdvisorData subModel(IFilter filter) {
+		return new AdvisorData(this, filter);
+	}
+
+	
+	@Override
+	public int count() {
+		int count = super.count();
+		
+		//subtract for advisors not accepting cohort
+		for (Advisor advisor : getAdvisors()) {
+			if (!advisor.acceptingCohort) {
+				count--;
+			}
+		}
+		
+		return count;
+	}
+	
+	/**
+	 * Get the number of assigned students from advisor lists
+	 * @return the number of assigned students
+	 */
+	public int getAssignedStudentCount() {
+		int count = 0;
+		for (Advisor advisor : getAdvisors()) {
+			if (advisor.acceptingCohort) {
+				count += advisor.advisees.size();
+			}
+		}
+		
+		return count;
 	}
 
 	@Override

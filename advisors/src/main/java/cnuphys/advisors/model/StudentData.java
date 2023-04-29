@@ -24,10 +24,10 @@ import cnuphys.bCNU.util.X11Colors;
 public class StudentData extends DataModel {
 
 	//attributes for student data
-	private static final DataAttribute studentAttributes[] = {DataManager.idAtt, DataManager.lastNameAtt,
-			DataManager.firstNameAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.pspAtt,
-			DataManager.prelawAtt, DataManager.majorAtt};
-
+	private static final DataAttribute studentAttributes[] = { DataManager.idAtt, DataManager.lastNameAtt,
+			DataManager.firstNameAtt, DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
+			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt, DataManager.majorAtt,
+			DataManager.advisorAtt };
 
 	public StudentData(String baseName) {
 		super(baseName, studentAttributes);
@@ -64,6 +64,11 @@ public class StudentData extends DataModel {
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
+		int prscIndex = getColumnIndex(DataManager.prscAtt);
+		int windIndex = getColumnIndex(DataManager.windAtt);
+		int ccapIndex = getColumnIndex(DataManager.ccapAtt);
+		
+		
 		int plpIndex = getColumnIndex(DataManager.plpAtt);
 		int honrIndex = getColumnIndex(DataManager.honrAtt);
 		int pspIndex = getColumnIndex(DataManager.pspAtt);
@@ -74,13 +79,19 @@ public class StudentData extends DataModel {
 			String id = s[idIndex];
     		String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
+			
+			String prsc = s[prscIndex];
+			String wind = s[windIndex];
+			String ccap = s[ccapIndex];
+
+			
 			String plp = s[plpIndex];
 			String honr = s[honrIndex];
 			String psp = s[pspIndex];
 			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
 
-			_tableData.add(new Student(id, lastName, firstName, plp, honr, psp, prelaw, major));
+			_tableData.add(new Student(id, lastName, firstName, plp, honr, prsc, psp, prelaw, wind, ccap, major));
 		}
 
 		//raw data not needed
@@ -97,7 +108,7 @@ public class StudentData extends DataModel {
     @Override
 	public Color getHighlightBackgroundColor(int row, int column) {
 		Student student = getStudentFromRow(row);
-		return (student.isHonor()) ? X11Colors.getX11Color("alice blue") : Color.white;
+		return (student.honor) ? X11Colors.getX11Color("alice blue") : Color.white;
 	}
     
 	/**
@@ -108,7 +119,7 @@ public class StudentData extends DataModel {
 	 */
 	public Font getHighlightFont(int row, int column) {
 		Student student = getStudentFromRow(row);
-		return (student.isPLP()) ? Fonts.mediumBoldFont : Fonts.mediumFont;
+		return (student.plp) ? Fonts.mediumBoldFont : Fonts.mediumFont;
 	}
 
     

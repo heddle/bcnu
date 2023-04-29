@@ -10,8 +10,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.event.ListSelectionListener;
@@ -63,7 +65,6 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	//the custom renderer for highlighting
 	public CustomRenderer renderer;
 	
-	
 	/**
 	 * A CSV Data object
 	 * @param baseName
@@ -98,6 +99,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	 * @param filter the filter to select students
 	 */
 	public DataModel(DataModel baseModel, IFilter filter) {
+		super(colNamesFromAttributes(baseModel._columnAttributes), 2);
 		_baseName = baseModel._baseName;
 		_columnAttributes = baseModel._columnAttributes;
 		_header = baseModel._header;

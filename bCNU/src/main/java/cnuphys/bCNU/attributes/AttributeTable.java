@@ -190,6 +190,7 @@ public class AttributeTable extends JTable {
 				public Dimension getPreferredSize() {
 					Dimension d = super.getPreferredSize();
 					d.width = _nameWidth + _valueWidth + 20;
+					d.height = getData().size() * 27;
 					return d;
 				}
 			};

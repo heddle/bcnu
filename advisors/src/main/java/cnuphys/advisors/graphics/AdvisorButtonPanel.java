@@ -1,5 +1,6 @@
 package cnuphys.advisors.graphics;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +9,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import cnuphys.advisors.AdvisorFilter;
 import cnuphys.advisors.StudentFilter;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.bCNU.util.Fonts;
@@ -16,6 +18,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 
 	private JButton _allAdvisorsButton;
+	private JButton _honAdvisorsButton;
 	private JButton _allStudentButton;
 	private JButton _assignedStudentButton;
 	private JButton _unassignedStudentButton;
@@ -26,39 +29,50 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _classesButton;
 	private JButton _commCaptButton;
 	private JButton _prelawButton;
+	private JButton _premedScholarButton;
 	private JButton _presScholarButton;
+	private JButton _presScholarAdvisorsButton;
 
 
-	private JButton _honAdvCaptButton;
 
-	JPanel rows[] = new JPanel[2];
+	private JPanel _rows[] = new JPanel[3];
+	
+	private JButton _lastButton;
 
 
 	public AdvisorButtonPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		rows[0] = createRowPanel();
-		rows[1] = createRowPanel();
+		
+		for (int i = 0; i < _rows.length; i++) {
+			_rows[i] = createRowPanel();
+		}
 
-		_allStudentButton = createButton("All Students", true, rows[0]);
-		_assignedStudentButton = createButton("Assigned Students", true, rows[0]);
-		_unassignedStudentButton = createButton("Unassigned Students", true, rows[0]);
-		_commCaptButton = createButton("Community Cptns", true, rows[0]);
-		_prelawButton = createButton("Pre-Law", true, rows[0]);
-		_presScholarButton = createButton("Pres Scholars", true, rows[0]);
+		_allStudentButton = createButton("All Students", true, _rows[0]);
+		_assignedStudentButton = createButton("Assigned Students", true, _rows[0]);
+		_unassignedStudentButton = createButton("Unassigned Students", true, _rows[0]);
+		
+	    _allAdvisorsButton = createButton("All FCAs", true, _rows[1]);
+	    _honAdvisorsButton = createButton("Honors FCAs", true, _rows[1]);
+	    _presScholarAdvisorsButton = createButton("Pres Scholar FCAs", true, _rows[1]);
+		_ilcsButton = createButton("ILCs", true, _rows[1]);
+		_classesButton = createButton("Classes", true, _rows[1]);
+		_assignmentsButton = createButton("Assignments", false, _rows[1]);
+		_saveButton = createButton("Save", false, _rows[1]);
+		
+		_commCaptButton = createButton("Community Cptns", true, _rows[2]);
+		_prelawButton = createButton("Pre-Law", true, _rows[2]);
+		_premedScholarButton = createButton("Pre-Med Scholars", true, _rows[2]);
+		_presScholarButton = createButton("Pres Scholars", true, _rows[2]);
 
-	    _allAdvisorsButton = createButton("All FCAs", true, rows[1]);
-	    _honAdvCaptButton = createButton("Honors FCAs", true, rows[1]);
-		_ilcsButton = createButton("ILCs", true, rows[1]);
-		_classesButton = createButton("Classes", true, rows[1]);
-		_assignmentsButton = createButton("Assignments", false, rows[1]);
-		_saveButton = createButton("Save", false, rows[1]);
-
+		
 	}
+	
 
 	private JPanel createRowPanel() {
 		JPanel rp = new JPanel();
 		rp.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 4));
 
+		rp.setBackground(Color.gray);
 		add(rp);
 		return rp;
 	}
@@ -73,16 +87,28 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		return button;
 	}
 
-	//handle click on assigned students button
-	private void handleAssignedStudents() {
-	}
-
 	//handle click on honors advisors button
 	private void handleHonorsAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.honorsAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
+	}
+
+	//handle click on pres scholar advisors button
+	private void handlePresScholarAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.presScholarAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
+	}
+
+	//handle click on assigned students button
+	private void handleAssignedStudents() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.assignedStudents).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Assigned Students");
 	}
 
 	//handle click on unassigned students button
 	private void handleUnassignedStudents() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.unassignedStudents).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Unassigned Students");
 	}
 
 	//handle click on community captains button
@@ -97,11 +123,17 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("Prelaw Students");
 	}
 
-	//handle click on presidential scholars button
-	private void handlePresScholars() {
-		AdvisorInfoLabel.getInstance().setText("Presidenial Scholars");
+	//handle click on premed scholars button
+	private void handlePremedScholars() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.preMedScholars).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Pre-Med Scholars");
 	}
 
+	//handle click on presidential scholars button
+	private void handlePresScholars() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.presScholars).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Presidential Scholars");
+	}
 
 	//handle click on advisor button
 	private void handleAllAdvisors() {
@@ -136,54 +168,70 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getILCData().getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("All ILCs");
 	}
+	
+	public void redoLastButton() {
+		if (_lastButton != null) {
+			handleButton(_lastButton);
+		}
+	}
 
+	private void handleButton(JButton button) {
+		if (button == _allAdvisorsButton) {
+			handleAllAdvisors();
+		}
+		else if (button == _allStudentButton) {
+			handleAllStudents();
+		}
+		else if (button == _honAdvisorsButton) {
+			handleHonorsAdvisors();
+		}
+		else if (button == _presScholarAdvisorsButton) {
+			handlePresScholarAdvisors();
+		}
+		else if (button == _commCaptButton) {
+			handleCommunityCaptains();
+		}
+		else if (button == _prelawButton) {
+			handlePrelaw();
+		}
+		else if (button == _premedScholarButton) {
+			handlePremedScholars();
+		}
+		else if (button == _presScholarButton) {
+			handlePresScholars();
+		}
+		else if (button == _saveButton) {
+			handleSave();
+		}
+		else if (button == _assignmentsButton) {
+			handleAssignments();
+		}
+		else if (button == _classesButton) {
+			handleClasses();
+		}
+		else if (button == _ilcsButton) {
+			handleILCs();
+		}
+		else if (button == _ilcsButton) {
+			handleILCs();
+		}
+		else if (button == _assignedStudentButton) {
+			handleAssignedStudents();
+		}
+		else if (button == _unassignedStudentButton) {
+			handleUnassignedStudents();
+		}	
+		
+		_lastButton = button;
+	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-
-		if (o == _allAdvisorsButton) {
-			handleAllAdvisors();
+		
+		if (o instanceof JButton) {
+			handleButton((JButton)o);
 		}
-		else if (o == _allStudentButton) {
-			handleAllStudents();
-		}
-		else if (o == _honAdvCaptButton) {
-			handleHonorsAdvisors();
-		}
-		else if (o == _commCaptButton) {
-			handleCommunityCaptains();
-		}
-		else if (o == _prelawButton) {
-			handlePrelaw();
-		}
-		else if (o == _presScholarButton) {
-			handlePresScholars();
-		}
-		else if (o == _saveButton) {
-			handleSave();
-		}
-		else if (o == _assignmentsButton) {
-			handleAssignments();
-		}
-		else if (o == _classesButton) {
-			handleClasses();
-		}
-		else if (o == _ilcsButton) {
-			handleILCs();
-		}
-		else if (o == _ilcsButton) {
-			handleILCs();
-		}
-		else if (o == _assignedStudentButton) {
-			handleAssignedStudents();
-		}
-		else if (o == _unassignedStudentButton) {
-			handleUnassignedStudents();
-		}
-
-
-
 	}
 }

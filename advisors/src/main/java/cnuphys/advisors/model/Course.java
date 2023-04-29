@@ -5,7 +5,7 @@ import cnuphys.advisors.io.ITabled;
 public class Course implements ITabled {
 
 
-	/** course CRN */
+	/** course CRN as a string */
 	public String crn;
 	
 	/** subject e.g. BIOL */

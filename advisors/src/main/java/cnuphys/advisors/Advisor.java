@@ -10,8 +10,12 @@ import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.DataManager;
 
 public class Advisor implements ITabled {
+	
+	/** can accept more advisees?? */
+	public boolean locked;
 
-	private ArrayList<Student> _advisees;
+	/** list of students */
+	public ArrayList<Student> advisees;
 
 	/** the full name: last, first */
 	public String name;
@@ -28,20 +32,15 @@ public class Advisor implements ITabled {
 	
 	/** does the instructor have an ILC */
 	public boolean hasILC;
-
-	//used for sorting students
-	private static Comparator<Student> _comparator;
-
-	static {
-		_comparator = new Comparator<>() {
-
-			@Override
-			public int compare(Student o1, Student o2) {
-				return o1.fullNameAndID().compareTo(o2.fullNameAndID());
-			}
-
-		};
-	}
+	
+	/** in case we want to disable an advisor */
+	public boolean acceptingCohort = true;
+	
+	/** honors advisor? */
+	public boolean honors;
+	
+	/** pres scholar advisor? */
+	public boolean presscholar;
 
 	/**
 	 * Create an advisor
@@ -71,24 +70,40 @@ public class Advisor implements ITabled {
 			System.exit(1);
 		}
 		
-		_advisees = new ArrayList<>();
+		advisees = new ArrayList<>();
 	}
-
+	
 	/**
 	 * Add an advisee to this advisor's collection
 	 * @param student
+	 * @param lockStudentWhenDone if true lock down student so can't be reassigned by algorithm
 	 */
-	public void addAdvisee(Student student) {
-		int index = Collections.binarySearch(_advisees, student, _comparator);
-
-		if (index >= 0) { // duplicate
-			System.err.println("[WARNING]");
+	public void addAdvisee(Student student, boolean lockStudentWhenDone) {
+		
+		//is the advisor locked?
+		if (locked) {
+			String s = String.format("Trying to assign to locked advisor. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
+			System.err.println(s);
 			return;
-		} else {
-			index = -(index + 1); // now the insertion point.
 		}
+		
+		//is the student locked?
+		if (student.locked) {
+			String s = String.format("Trying to assign a locked student. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
+			System.err.println(s);
+			return;
+		}
+		
+		advisees.remove(student);
+		advisees.add(student);
+		
+		student.locked = lockStudentWhenDone;
+		student.advisor = this;
+		
+		String s = String.format("Assignment made. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
+		System.err.println(s);
+		
 	}
-
 
 	/**
 	 * Remove an advisee from the list of advisees
@@ -96,7 +111,7 @@ public class Advisor implements ITabled {
 	 * @return true if it found the student in the list and removed the student
 	 */
 	public boolean removeAdvisee(Student student) {
-		return _advisees.remove(student);
+		return advisees.remove(student);
 	}
 
 	/**
@@ -124,7 +139,7 @@ public class Advisor implements ITabled {
 		case 3:
 			return id;
 		case 4:
-			return "" + _advisees.size();
+			return "" + advisees.size();
 		default:
 			System.err.println("Bad column in Advisor getValueAt [" + col + "]");
 			System.exit(0);

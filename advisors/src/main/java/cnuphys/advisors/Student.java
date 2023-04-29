@@ -1,52 +1,78 @@
 package cnuphys.advisors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 
-public class Student implements ITabled{
+public class Student implements ITabled {
+	
+	/** student locked down and can't be reassigned by algorithm?? */
+	public boolean locked;
 
+
+	/** the student's id */
 	public String id;
 
+	/** the student's last name */
 	public String lastName;
 
-	public String _firstName;
+	/** the student's first name */
+	public String firstName;
 
-	public String plp;
+	/** is a plp student */
+	public boolean plp;
 
-	public String honr;
+	/** is an honors student */
+	public boolean honor;
 
-	public String psp;
+	/** is a pre med scholar? */
+	public boolean preMedScholar;
 
-	public String prelaw;
+	/** is a student*/
+	public boolean prelaw;
+	
+	/** is an ilc student*/
+	public boolean ilc;
 
+	/** is a presidential scholar*/
+	public boolean presidentialScholar;
+
+	/** is a wind scholar*/
+	public boolean windScholar;
+
+	/** the student's major */
 	public Major major;
 	
 	/** is this a community captain? */
 	public boolean communityCaptain;
+	
+	/** the assigned advisor */
+	public Advisor advisor;
+	
+	/** Student schedule only of classes taught by an FCA */
+	public List<Course> schedule = new ArrayList<Course>();
 
 
-/**
- * A student 
- * @param id
- * @param lastName
- * @param firstName
- * @param plp
- * @param honr
- * @param psp
- * @param prelaw
- * @param maj
- */
-	public Student(String id, String lastName, String firstName, String plp, String honr, String psp,
-			String prelaw, String maj) {
+	public Student(String id, String lastName, String firstName, String plp, String honr, String prsc,
+			String psp, String prelaw, String wind, String ccap, String maj) {
 		super();
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
-		this._firstName = firstName.replace("\"", "").trim();
-		this.plp = plp.replace("\"", "").trim().toUpperCase();
-		this.honr = honr.replace("\"", "").trim().toUpperCase();
-		this.psp = psp.replace("\"", "").trim().toUpperCase();
-		this.prelaw = prelaw.replace("\"", "").trim().toUpperCase();
+		this.firstName = firstName.replace("\"", "").trim();
+		this.ilc = false;   //will be assigned in ILC step
+		this.plp = checkString(plp, "PLP");
+		this.honor = checkString(honr, "HO");
+		this.presidentialScholar = checkString(prsc, "PRS");
+		this.preMedScholar = checkString(psp, "PSP");
+		this.prelaw = checkString(prelaw, "LW");
+		this.windScholar = checkString(wind, "WIN");
+		this.communityCaptain = checkString(ccap, "CCAP");
+		
+		
 		String majorstr = maj.replace("\"", "").trim();
 
 		major = Major.getValue(majorstr);
@@ -55,7 +81,21 @@ public class Student implements ITabled{
 			System.exit(1);
 		}
 	}
+	
+	//check a string for a pattern
+	private boolean checkString(String s, String patt) {
+		return s.replace("\"", "").trim().toUpperCase().contains(patt.toUpperCase());
+	}
 
+	
+	/**
+	 * Add a course to the student's schedule
+	 * @param course the course to add
+	 */
+	public void addCourse(Course course) {
+		schedule.remove(course);
+		schedule.add(course);
+	}
 
 
 	/**
@@ -64,29 +104,13 @@ public class Student implements ITabled{
 	public String getID() {
 		return id;
 	}
-
-	/**
-	 * Is this an honor student?
-	 * @return true if an honor student
-	 */
-	public boolean isHonor() {
-		return((honr != null) && honr.contains("HO"));
-	}
 	
 	/**
-	 * Is this a plp student?
-	 * @return true if a plp student
+	 * Is this student assigned an advisor?
+	 * @return true if student has an advisor
 	 */
-	public boolean isPLP() {
-		return((plp != null) && plp.contains("PLP"));
-	}
-	
-	/**
-	 * Is this a prelaw student?
-	 * @return true if a prelaw student
-	 */
-	public boolean isPrelaw() {
-		return((prelaw != null) && prelaw.contains("LW"));
+	public boolean assigned() {
+		return (advisor != null);
 	}
 
 
@@ -96,7 +120,7 @@ public class Student implements ITabled{
 	 * @return the name and ID of the student
 	 */
 	public String fullNameAndID() {
-		return String.format("%s, %s [%s]", lastName, _firstName, id);
+		return String.format("%s, %s [%s]", lastName, firstName, id);
 	}
 
 
@@ -110,23 +134,39 @@ public class Student implements ITabled{
 			return lastName;
 		}
 		else if (col == 2) {
-			return _firstName;
+			return firstName;
 		}
 		else if (col == 3) {
-			return plp;
+			return ilc ? "ILC" : "";
 		}
 		else if (col == 4) {
-			return honr;
+			return plp ? "PLP" : "";
 		}
 		else if (col == 5) {
-			return psp;
+			return honor ? "HON": "";
 		}
 		else if (col == 6) {
-			return prelaw;
+			return presidentialScholar ? "PRSC": "";
 		}
 		else if (col == 7) {
+			return preMedScholar ? "PSP" : "";
+		}
+		else if (col == 8) {
+			return prelaw ? "PLW" : "";
+		}
+		else if (col == 9) {
+			return windScholar ? "WIND" : "";
+		}
+		else if (col == 10) {
+			return communityCaptain ? "CCAP" : "";
+		}
+		else if (col == 11) {
 			return major.name();
 		}
+		else if (col == 12) {
+			return advisor == null ? "---" : advisor.name;
+		}
+
 		else {
 			System.err.println("Bad column in Student getValueAt [" + col + "]");
 			System.exit(0);

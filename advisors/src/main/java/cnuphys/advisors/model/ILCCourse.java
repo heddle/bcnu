@@ -1,5 +1,6 @@
 package cnuphys.advisors.model;
 
+import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.ITabled;
 
 public class ILCCourse implements ITabled {
@@ -21,6 +22,10 @@ public class ILCCourse implements ITabled {
 	
 	/** notes */
 	public String notes;
+	
+	/** the isntructor */
+	public Advisor instructor;
+	
 
 	public ILCCourse(String learningCommunity, String crn, String subject, String course, String llc, String notes) {
 		super();
@@ -51,6 +56,8 @@ public class ILCCourse implements ITabled {
 			return llc;
 		case 5:
 			return notes;
+		case 6:
+			return (instructor == null) ? "---" : instructor.name;
 		default:
 			System.err.println("Bad column in Course getValueAt [" + col + "]");
 			System.exit(0);

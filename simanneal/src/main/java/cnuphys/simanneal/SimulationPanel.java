@@ -130,7 +130,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		_attributePanel = new AttributePanel(_simulation.getAttributes());
 
 		JPanel cp = insetPanel();
-		cp.add(_attributePanel, BorderLayout.CENTER);
+		cp.add(_attributePanel, BorderLayout.NORTH);
 		
 		if (_content2 != null) {
 			cp.add(_content2, BorderLayout.SOUTH);
