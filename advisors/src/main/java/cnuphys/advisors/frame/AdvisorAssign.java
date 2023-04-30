@@ -156,6 +156,17 @@ public class AdvisorAssign extends JFrame {
 		_infoLabel.setText(s);
 	}
 
+	/**
+	 * The target number of assignments per advisor
+	 * @return target number of assignments per advisor
+	 */
+	public static int targetAverage() {
+		int advisorCount = DataManager.getAdvisorData().count();
+		int studentCount = DataManager.getStudentData().count();
+		
+		double avgReq = ((double)studentCount)/advisorCount;
+		return (int)Math.ceil(avgReq);
+	}
 
 
 	/**

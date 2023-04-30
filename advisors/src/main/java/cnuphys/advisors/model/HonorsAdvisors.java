@@ -9,7 +9,7 @@ import cnuphys.advisors.table.InputOutput;
 public class HonorsAdvisors extends DataModel {
 	
 	//attributes for honors advisors data
-	private static final DataAttribute honAdvAttributes[] = {DataManager.idAtt, DataManager.lastNameAtt,
+	private static final DataAttribute honAdvAttributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt};
 
 

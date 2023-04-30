@@ -9,7 +9,7 @@ import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 
 public class Student implements ITabled {
-	
+
 	/** student locked down and can't be reassigned by algorithm?? */
 	public boolean locked;
 
@@ -34,7 +34,7 @@ public class Student implements ITabled {
 
 	/** is a student*/
 	public boolean prelaw;
-	
+
 	/** is an ilc student*/
 	public boolean ilc;
 
@@ -46,15 +46,15 @@ public class Student implements ITabled {
 
 	/** the student's major */
 	public Major major;
-	
+
 	/** is this a community captain? */
 	public boolean communityCaptain;
-	
+
 	/** the assigned advisor */
 	public Advisor advisor;
-	
+
 	/** Student schedule only of classes taught by an FCA */
-	public List<Course> schedule = new ArrayList<Course>();
+	public List<Course> schedule = new ArrayList<>();
 
 
 	public Student(String id, String lastName, String firstName, String plp, String honr, String prsc,
@@ -71,8 +71,8 @@ public class Student implements ITabled {
 		this.prelaw = checkString(prelaw, "LW");
 		this.windScholar = checkString(wind, "WIN");
 		this.communityCaptain = checkString(ccap, "CCAP");
-		
-		
+
+
 		String majorstr = maj.replace("\"", "").trim();
 
 		major = Major.getValue(majorstr);
@@ -81,13 +81,13 @@ public class Student implements ITabled {
 			System.exit(1);
 		}
 	}
-	
+
 	//check a string for a pattern
 	private boolean checkString(String s, String patt) {
 		return s.replace("\"", "").trim().toUpperCase().contains(patt.toUpperCase());
 	}
 
-	
+
 	/**
 	 * Add a course to the student's schedule
 	 * @param course the course to add
@@ -104,7 +104,7 @@ public class Student implements ITabled {
 	public String getID() {
 		return id;
 	}
-	
+
 	/**
 	 * Is this student assigned an advisor?
 	 * @return true if student has an advisor
@@ -127,43 +127,43 @@ public class Student implements ITabled {
 
 	@Override
 	public String getValueAt(int col) {
-		if (col == 0) {
+		if (col == 1) {
 			return id;
 		}
-		else if (col == 1) {
+		else if (col == 2) {
 			return lastName;
 		}
-		else if (col == 2) {
+		else if (col == 3) {
 			return firstName;
 		}
-		else if (col == 3) {
+		else if (col == 4) {
 			return ilc ? "ILC" : "";
 		}
-		else if (col == 4) {
+		else if (col == 5) {
 			return plp ? "PLP" : "";
 		}
-		else if (col == 5) {
+		else if (col == 6) {
 			return honor ? "HON": "";
 		}
-		else if (col == 6) {
+		else if (col == 7) {
 			return presidentialScholar ? "PRSC": "";
 		}
-		else if (col == 7) {
+		else if (col == 8) {
 			return preMedScholar ? "PSP" : "";
 		}
-		else if (col == 8) {
+		else if (col == 9) {
 			return prelaw ? "PLW" : "";
 		}
-		else if (col == 9) {
+		else if (col == 10) {
 			return windScholar ? "WIND" : "";
 		}
-		else if (col == 10) {
+		else if (col == 11) {
 			return communityCaptain ? "CCAP" : "";
 		}
-		else if (col == 11) {
+		else if (col == 12) {
 			return major.name();
 		}
-		else if (col == 12) {
+		else if (col == 13) {
 			return advisor == null ? "---" : advisor.name;
 		}
 

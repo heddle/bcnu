@@ -19,11 +19,12 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 	private JButton _allAdvisorsButton;
 	private JButton _honAdvisorsButton;
+	private JButton _musTheaAdvisorsButton;
 	private JButton _allStudentButton;
 	private JButton _assignedStudentButton;
 	private JButton _unassignedStudentButton;
 
-	private JButton _saveButton;
+	private JButton _musicTheaterButton;
 	private JButton _assignmentsButton;
 	private JButton _ilcsButton;
 	private JButton _classesButton;
@@ -53,12 +54,13 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		
 	    _allAdvisorsButton = createButton("All FCAs", true, _rows[1]);
 	    _honAdvisorsButton = createButton("Honors FCAs", true, _rows[1]);
+	    _musTheaAdvisorsButton = createButton("Music/Theater FCAs", true, _rows[1]);
 	    _presScholarAdvisorsButton = createButton("Pres Scholar FCAs", true, _rows[1]);
 		_ilcsButton = createButton("ILCs", true, _rows[1]);
 		_classesButton = createButton("Classes", true, _rows[1]);
 		_assignmentsButton = createButton("Assignments", false, _rows[1]);
-		_saveButton = createButton("Save", false, _rows[1]);
 		
+		_musicTheaterButton = createButton("Music/Theater Students", true, _rows[2]);
 		_commCaptButton = createButton("Community Cptns", true, _rows[2]);
 		_prelawButton = createButton("Pre-Law", true, _rows[2]);
 		_premedScholarButton = createButton("Pre-Med Scholars", true, _rows[2]);
@@ -92,6 +94,13 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.honorsAdvisors).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
 	}
+	
+	//handle click on musics theater advisors button
+	private void handleMusTheaAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.musTheaAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Active Music and Theater Advisors");
+	}
+
 
 	//handle click on pres scholar advisors button
 	private void handlePresScholarAdvisors() {
@@ -148,7 +157,9 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	}
 
 	//handle click on save button
-	private void handleSave() {
+	private void handleMusicTheaterStudents() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.musicTheaterStudents).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Music and Theater Majors");
 
 	}
 
@@ -185,6 +196,9 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _honAdvisorsButton) {
 			handleHonorsAdvisors();
 		}
+		else if (button == _musTheaAdvisorsButton) {
+			handleMusTheaAdvisors();
+		}
 		else if (button == _presScholarAdvisorsButton) {
 			handlePresScholarAdvisors();
 		}
@@ -200,8 +214,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _presScholarButton) {
 			handlePresScholars();
 		}
-		else if (button == _saveButton) {
-			handleSave();
+		else if (button == _musicTheaterButton) {
+			handleMusicTheaterStudents();
 		}
 		else if (button == _assignmentsButton) {
 			handleAssignments();

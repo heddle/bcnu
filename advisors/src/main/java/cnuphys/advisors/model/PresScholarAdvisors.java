@@ -10,7 +10,7 @@ public class PresScholarAdvisors extends DataModel {
 
 	
 	//attributes for honors advisors data
-	private static final DataAttribute Attributes[] = {DataManager.idAtt, DataManager.lastNameAtt,
+	private static final DataAttribute Attributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt};
 
 

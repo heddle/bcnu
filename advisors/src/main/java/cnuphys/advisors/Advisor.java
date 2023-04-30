@@ -1,8 +1,6 @@
 package cnuphys.advisors;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
@@ -10,7 +8,7 @@ import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.DataManager;
 
 public class Advisor implements ITabled {
-	
+
 	/** can accept more advisees?? */
 	public boolean locked;
 
@@ -22,23 +20,23 @@ public class Advisor implements ITabled {
 
 	/** the department */
 	public Department department;
-	
+
 	/** the advisor's primary subject. might be same as depart. Or in come cases a major like music
 	 * ASSIGNED FROM SCHEDULE! */
 	public Major subject;
-	
+
 	/** faculty ID */
 	public String id;
-	
+
 	/** does the instructor have an ILC */
 	public boolean hasILC;
-	
+
 	/** in case we want to disable an advisor */
 	public boolean acceptingCohort = true;
-	
+
 	/** honors advisor? */
 	public boolean honors;
-	
+
 	/** pres scholar advisor? */
 	public boolean presscholar;
 
@@ -61,48 +59,48 @@ public class Advisor implements ITabled {
 			System.err.println("COULD not match department [" + deptstr + "]");
 			System.exit(1);
 		}
-		
+
 		//default the subject nased of department name
 		subject = Major.getValue(department.name());
-		
+
 		if (subject == null) {
 			System.err.println("COULD not subject to department [" + department.name() + "]");
 			System.exit(1);
 		}
-		
+
 		advisees = new ArrayList<>();
 	}
-	
+
 	/**
 	 * Add an advisee to this advisor's collection
 	 * @param student
 	 * @param lockStudentWhenDone if true lock down student so can't be reassigned by algorithm
 	 */
 	public void addAdvisee(Student student, boolean lockStudentWhenDone) {
-		
+
 		//is the advisor locked?
 		if (locked) {
 			String s = String.format("Trying to assign to locked advisor. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
 			System.err.println(s);
 			return;
 		}
-		
+
 		//is the student locked?
 		if (student.locked) {
 			String s = String.format("Trying to assign a locked student. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
 			System.err.println(s);
 			return;
 		}
-		
+
 		advisees.remove(student);
 		advisees.add(student);
-		
+
 		student.locked = lockStudentWhenDone;
 		student.advisor = this;
-		
+
 		String s = String.format("Assignment made. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
 		System.err.println(s);
-		
+
 	}
 
 	/**
@@ -121,31 +119,39 @@ public class Advisor implements ITabled {
 	public String nameAndDepartment() {
 		return String.format("%s  [%s]", name, department);
 	}
+	
+	/**
+	 * The number of assigned advisees
+	 * @return the number of assigned advisees
+	 */
+	public int adviseeCount() {
+		return advisees.size();
+	}
 
 	/**
 	 * Get the value at a given column, considering this as a row
 	 */
 	@Override
 	public String getValueAt(int col) {
-		
-		
+
+
 		switch (col) {
-		case 0:
-			return name;
 		case 1:
-			return department.name();
+			return name;
 		case 2:
-			return subject.name();
+			return department.name();
 		case 3:
-			return id;
+			return subject.name();
 		case 4:
+			return id;
+		case 5:
 			return "" + advisees.size();
 		default:
 			System.err.println("Bad column in Advisor getValueAt [" + col + "]");
 			System.exit(0);
 
 		}
-		
+
 		return null;
 	}
 

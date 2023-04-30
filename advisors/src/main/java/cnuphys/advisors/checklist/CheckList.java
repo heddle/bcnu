@@ -6,6 +6,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JPanel;
 
 import cnuphys.advisors.checklist.steps.ILCStep;
+import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PresScholarStep;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
@@ -19,6 +20,9 @@ public class CheckList extends JPanel {
 
 	//assign ILC advisors
 	private CheckListComponent ilcStep;
+
+	//assign music and theater
+	private CheckListComponent musTheaStep;
 
 	//singleton
 	private static CheckList _instance;
@@ -44,9 +48,11 @@ public class CheckList extends JPanel {
 		
 		presScholarStep = new CheckListComponent("Assign pres. scholars to advisors", new PresScholarStep(), true);
 		ilcStep = new CheckListComponent("Assign ILC students to advisors", new ILCStep(), false);
+		musTheaStep = new CheckListComponent("Assign Music and Theater students to advisors", new MusTheaStep(), false);
 		
 		add(presScholarStep);
 		add(ilcStep);
+		add(musTheaStep);
 	}
 	
 	@Override
@@ -62,8 +68,11 @@ public class CheckList extends JPanel {
 	public void checkState() {
 		boolean presScholarStepDone = presScholarStep.done;
 		boolean ilcStepDone = ilcStep.done;
+		boolean musTheaStepDone = musTheaStep.done;
 		
 		presScholarStep.setEnabled(!presScholarStepDone);
 		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
+		musTheaStep.setEnabled(ilcStepDone && !musTheaStepDone);
+
 	}
 }

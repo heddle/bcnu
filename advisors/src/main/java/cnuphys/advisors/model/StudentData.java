@@ -24,7 +24,7 @@ import cnuphys.bCNU.util.X11Colors;
 public class StudentData extends DataModel {
 
 	//attributes for student data
-	private static final DataAttribute studentAttributes[] = { DataManager.idAtt, DataManager.lastNameAtt,
+	private static final DataAttribute studentAttributes[] = { DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt, DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt, DataManager.majorAtt,
 			DataManager.advisorAtt };

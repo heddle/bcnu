@@ -1,27 +1,23 @@
 package cnuphys.advisors.model;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import javax.swing.event.ListSelectionEvent;
 
-import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.table.InputOutput;
 
 public class StudentSchedules extends DataModel {
-	
-	
+
+
 	//attributes for student schedules data
-	private static final DataAttribute studentScheduleAtts[] = {DataManager.idAtt, DataManager.crnAtt,
+	private static final DataAttribute studentScheduleAtts[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.crnAtt,
 			DataManager.firstNameAtt};
 
 
 	public StudentSchedules(String baseName) {
 		super(baseName, studentScheduleAtts);
 	}
-	
+
 	@Override
 	protected void processData() {
 		InputOutput.debugPrintln("STUDENT SCHEDULE row count: " + _data.size());
@@ -52,7 +48,7 @@ public class StudentSchedules extends DataModel {
 
 	}
 
-	
+
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 	}

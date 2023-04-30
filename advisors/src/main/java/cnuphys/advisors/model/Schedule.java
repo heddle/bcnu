@@ -23,7 +23,7 @@ import cnuphys.advisors.table.InputOutput;
 public class Schedule extends DataModel {
 
 	//attributes for schedule data
-	private static final DataAttribute scheduleAttributes[] = {DataManager.crnAtt,
+	private static final DataAttribute scheduleAttributes[] = {DataManager.rowAtt, DataManager.crnAtt,
 			DataManager.subjectAtt, DataManager.courseAtt, DataManager.sectionAtt,
 			DataManager.titleAtt, DataManager.instructorAtt, DataManager.idAtt};
 

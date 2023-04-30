@@ -270,7 +270,11 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	 */
 	@Override
 	public Object getValueAt(int row, int col) {
-		ITabled rowObject = _tableData.get(row);
+		if (col == 0) {
+			return "" + (row+1);
+		}
+
+		ITabled rowObject = _tableData.get(row);		
 		return rowObject.getValueAt(col);
 	}
 

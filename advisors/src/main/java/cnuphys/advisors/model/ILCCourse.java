@@ -44,19 +44,19 @@ public class ILCCourse implements ITabled {
 	public String getValueAt(int col) {
 		
 		switch (col) {
-		case 0:
-			return learningCommunity;
 		case 1:
-			return crn;
+			return learningCommunity;
 		case 2:
-			return subject;
+			return crn;
 		case 3:
-			return course;
+			return subject;
 		case 4:
-			return llc;
+			return course;
 		case 5:
-			return notes;
+			return llc;
 		case 6:
+			return notes;
+		case 7:
 			return (instructor == null) ? "---" : instructor.name;
 		default:
 			System.err.println("Bad column in Course getValueAt [" + col + "]");

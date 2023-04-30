@@ -11,7 +11,7 @@ import cnuphys.advisors.io.ITabled;
 public class ILCData extends DataModel {
 
 	// attributes for student data
-	private static final DataAttribute ilcAttributes[] = { DataManager.lcAtt, DataManager.crnAtt,
+	private static final DataAttribute ilcAttributes[] = { DataManager.rowAtt, DataManager.lcAtt, DataManager.crnAtt,
 			DataManager.subjectAtt, DataManager.courseAtt, DataManager.llcAtt, DataManager.notesAtt,
 			DataManager.instructorAtt};
 

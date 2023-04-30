@@ -1,13 +1,13 @@
 package cnuphys.advisors.model;
 
-import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.AdvisorFilter;
+import cnuphys.advisors.Student;
 import cnuphys.advisors.StudentFilter;
-import cnuphys.advisors.io.CSVReader;
-import cnuphys.advisors.io.DataModel;
-import cnuphys.advisors.table.InputOutput;
+import cnuphys.advisors.enums.Major;
 
 public class DataManager {
 
@@ -28,14 +28,18 @@ public class DataManager {
 
 	//the student data
 	private static StudentData _studentData;
-	
+
 	//ILCs
 	private static ILCData _ilcData;
 
 	//synonym lists
+
+	public static final DataAttribute rowAtt = new DataAttribute(" ", 40);
+
+
 	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 74, "id", "cnuid");
 	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 200);
-	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 140, "last name", "lastname", "last_name", "lname");
+	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 110, "last name", "lastname", "last_name", "lname");
 	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 90, "first name", "firstname", "lfirst_name", "fname");
 	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 70, "department", "adv1_dept");
 	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 50);
@@ -64,7 +68,7 @@ public class DataManager {
 	public static final DataAttribute honrAtt = new DataAttribute("HONR", 40);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
 	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46);
-	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 90, "Major_1st");
+	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 70, "Major_1st");
 
 
 	/**
@@ -76,12 +80,12 @@ public class DataManager {
 
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
-		
+
 		new HonorsAdvisors(_honAdvBaseName);
 		new PresScholarAdvisors(_presScholarAdvBaseName);
 		new StudentSchedules(_studentSchedulesBaseName);
 	}
-	
+
 	/**
 	 * Standardize an is to include leading 0's
 	 * @param id the id to standardize
@@ -89,7 +93,7 @@ public class DataManager {
 	 */
 	public static String fixId(String id) {
 		String fixedId = id.replace("\"", "").trim();
-		
+
 		//add leading 0's
 		while (fixedId.length() < 8) {
 			fixedId = "0" + fixedId;
@@ -97,7 +101,7 @@ public class DataManager {
 
 		return fixedId;
 	}
-	
+
 	/**
 	 * Get the data for all core advisors
 	 * @return the advisor data
@@ -114,13 +118,48 @@ public class DataManager {
 	public static AdvisorData getAdvisorData() {
 		return _advisorData;
 	}
-	
+
 	public static AdvisorData getFilteredAdvisorData(AdvisorFilter filter) {
 		return _advisorData.subModel(filter);
 	}
+
+	/**
+	 * Get a list of advisors whose subject matches a major
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForMajor(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (major == advisor.subject) {
+				advisors.add(advisor);
+			}
+		}
+
+		return advisors;
+	}
 	
+	/**
+	 * Get a list of students whose major matches a given major
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Student> getStudentsForMajor(Major major) {
+		ArrayList<Student> students = new ArrayList<>();
+
+		for (Student student : _studentData.getStudents()) {
+			if (major == student.major) {
+				students.add(student);
+			}
+		}
+
+		return students;
+	}
+
+
 	public static void fileDataChange() {
-		
+
 	}
 
 
@@ -138,7 +177,7 @@ public class DataManager {
 	public static StudentData getStudentData() {
 		return _studentData;
 	}
-	
+
 	public static StudentData getFilteredStudentData(StudentFilter filter) {
 		return _studentData.subModel(filter);
 	}
