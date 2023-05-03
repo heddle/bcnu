@@ -7,7 +7,10 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.AdvisorFilter;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.StudentFilter;
+import cnuphys.advisors.checklist.CheckList;
+import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.frame.AdvisorAssign;
 
 public class DataManager {
 
@@ -19,6 +22,10 @@ public class DataManager {
     private static final String _honAdvBaseName = "honorsadvisors.csv";
     private static final String _presScholarAdvBaseName = "presscholaradvisors.csv";
     private static final String _studentSchedulesBaseName = "studentschedules.csv";
+    private static final String _ccptAdvBaseName = "ccptadvisors.csv";
+    private static final String _btmgAdvBaseName = "btmgadvisors.csv";
+    private static final String _lcBaseName = "learningcommunities.csv";
+    private static final String _prelawAdvBaseName = "prelawadvisors.csv";
 
     //the advisor data
 	private static AdvisorData _advisorData;
@@ -31,6 +38,9 @@ public class DataManager {
 
 	//ILCs
 	private static ILCData _ilcData;
+	
+	//Learning Communities
+	private static LearningCommunityData _learningCommunityData;
 
 	//synonym lists
 
@@ -38,11 +48,15 @@ public class DataManager {
 
 
 	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 74, "id", "cnuid");
-	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 200);
-	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 110, "last name", "lastname", "last_name", "lname");
-	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 90, "first name", "firstname", "lfirst_name", "fname");
+	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 170);
+	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 105, "last name", "lastname", "last_name", "lname");
+	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 80, "first name", "firstname", "lfirst_name", "fname");
 	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 70, "department", "adv1_dept");
-	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 50);
+	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 45);
+	public static final DataAttribute enrollmentAtt = new DataAttribute("Count", 45);
+
+	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");
+	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
 
 
 	public static final DataAttribute crnAtt = new DataAttribute("CRN", 40);
@@ -52,7 +66,6 @@ public class DataManager {
 	public static final DataAttribute titleAtt = new DataAttribute("TITLE", 170);
 	public static final DataAttribute hoursAtt = new DataAttribute("HOURS", 38);
 	public static final DataAttribute llcAtt= new DataAttribute("LLC", 40, "Area of LLC", "Liberal Learning Attribute");
-	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");
 	public static final DataAttribute notesAtt = new DataAttribute("NOTES", 140);
 	public static final DataAttribute typeAtt = new DataAttribute("TYPE", 30);
 	public static final DataAttribute daysAtt = new DataAttribute("DAYS", 34);
@@ -60,15 +73,16 @@ public class DataManager {
 	public static final DataAttribute locationAtt = new DataAttribute("LOC", 70, "location");
 	public static final DataAttribute instructorAtt = new DataAttribute("INSTRUCTOR", 150);
 
-	public static final DataAttribute ilcAtt = new DataAttribute("ILC", 40);
+	public static final DataAttribute ilcAtt = new DataAttribute("ILC", 35);
 	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 40);
 	public static final DataAttribute windAtt = new DataAttribute("WIND", 40);
 	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 40);
-	public static final DataAttribute plpAtt = new DataAttribute("PLP", 40);
+	public static final DataAttribute btmgAtt = new DataAttribute("BTMG", 40);
+	public static final DataAttribute plpAtt = new DataAttribute("PLP", 35);
 	public static final DataAttribute honrAtt = new DataAttribute("HONR", 40);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
 	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46);
-	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 70, "Major_1st");
+	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 60, "Major_1st");
 
 
 	/**
@@ -80,10 +94,18 @@ public class DataManager {
 
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
-
+		_learningCommunityData = new LearningCommunityData(_lcBaseName);
+		
 		new HonorsAdvisors(_honAdvBaseName);
-		new PresScholarAdvisors(_presScholarAdvBaseName);
+		
 		new StudentSchedules(_studentSchedulesBaseName);
+		new PresScholarAdvisors(_presScholarAdvBaseName);
+		new CCPTAdvisors(_ccptAdvBaseName);
+		new BTMGAdvisors(_btmgAdvBaseName);
+		new PrelawAdvisors(_prelawAdvBaseName);
+		
+		//run the initial steps
+		CheckList.getInstance().initRun();
 	}
 
 	/**
@@ -109,7 +131,14 @@ public class DataManager {
 	public static ILCData getILCData() {
 		return _ilcData;
 	}
-
+	
+	/**
+	 * Get the data for learning communities
+	 * @return the advisor data
+	 */
+	public static LearningCommunityData getLearningCommunityData() {
+		return _learningCommunityData;
+	}
 
 	/**
 	 * Get the data for all core advisors
@@ -140,6 +169,24 @@ public class DataManager {
 		return advisors;
 	}
 	
+	/**
+	 * Get a list of advisors whose subject matches a department
+	 * @param department the department to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForDepartment(Department department) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (department == advisor.department) {
+				advisors.add(advisor);
+			}
+		}
+
+		return advisors;
+	}
+
+
 	/**
 	 * Get a list of students whose major matches a given major
 	 * @param major the major to match
@@ -191,5 +238,61 @@ public class DataManager {
 		double ns = getStudentData().count();
 		return ns/na;
 	}
+
+	/**
+	 * Assign a group of students to a group of advisors who can take them. The students
+	 * are assigned to the advisors equally but if any advisor reached the target limit they do
+	 * not get more students. It is possible than not all students get assign.When the students
+	 * are assigned they are locked. I.e., this makes immutable assignments.
+	 * @param advisors the (sub)list of advisors.
+	 * @param students the (sub)list of students
+	 * @param errPrompt used in a error message if all advisors max out
+	 */
+	public static  void roundRobinAssign(List<Advisor> advisors, List<Student> students, String errPrompt) {
+
+		int numAdvisor = advisors.size();
+		int numStudent = students.size();
+		if ((numAdvisor == 0) || (numStudent == 0)) {
+			return;
+		}
+
+		//the max to assign to any one advisor
+		int target = AdvisorAssign.targetAverage();
+
+		int advisorIndex = 0;
+
+		for (Student student : students) {
+
+			if (student.locked) {
+				continue;
+			}
+
+			//get the next advisor with room
+
+			int nTry = 0;
+			boolean found = false;
+
+			while (!found && (nTry < numAdvisor)) {
+				Advisor advisor = advisors.get(advisorIndex);
+				if (!advisor.locked && (advisor.adviseeCount() < target)) {
+					advisor.addAdvisee(student, true);
+					found = true;
+				}
+				else {
+					nTry++;
+					if (nTry == numAdvisor) {
+						System.err.println(errPrompt + "  (Target max reached) RoundRobin failed to assign student: " + student.fullNameAndID());
+					}
+				}
+
+				advisorIndex  = (advisorIndex + 1) % numAdvisor;
+
+			}
+
+
+		}
+
+	}
+
 
 }

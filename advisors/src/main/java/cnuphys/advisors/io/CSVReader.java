@@ -31,12 +31,12 @@ public class CSVReader {
 				line = line.replace("  ", " ");
 
 				String[] tokens = line.split(",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)", -1);
-				
-				
+
+
 				if (_csvData._header == null) {
 
 					InputOutput.debugPrintln("header row: [" + line + "]");
-					
+
 					for(String token : tokens) {
 						token = token.trim();
 					}

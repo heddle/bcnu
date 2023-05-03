@@ -9,7 +9,7 @@ import javax.swing.JPanel;
 import cnuphys.bCNU.util.Fonts;
 
 public class AdvisorInfoLabel extends JPanel {
-	
+
 	private JLabel _label;
 
 	//singleton
@@ -19,7 +19,7 @@ public class AdvisorInfoLabel extends JPanel {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 4, 4));
 		setBackground(Color.black);
 
-		
+
 		_label = new JLabel();
 		_label.setBackground(Color.black);
 		_label.setForeground(Color.cyan);
@@ -39,11 +39,11 @@ public class AdvisorInfoLabel extends JPanel {
 		}
 		return _instance;
 	}
-	
+
 	public void clear() {
 		_label.setText("Advisor Assigner");
 	}
-	
+
 	public void setText(String text) {
 		_label.setText(text);
 	}

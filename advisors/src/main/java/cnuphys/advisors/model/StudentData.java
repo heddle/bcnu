@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
+import cnuphys.advisors.Advisor;
 import cnuphys.advisors.IFilter;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
@@ -25,20 +26,21 @@ public class StudentData extends DataModel {
 
 	//attributes for student data
 	private static final DataAttribute studentAttributes[] = { DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
-			DataManager.firstNameAtt, DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
-			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt, DataManager.majorAtt,
-			DataManager.advisorAtt };
+			DataManager.firstNameAtt, DataManager.lcNumAtt,
+			DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
+			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
+			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt };
 
 	public StudentData(String baseName) {
 		super(baseName, studentAttributes);
-		
+
 		renderer = new CustomRenderer(this);
-		
+
 		for (int i = 0; i < getColumnCount(); i++) {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
 	}
-	
+
 	/**
 	 * private constructor used to make a submodel
 	 * @param baseModel
@@ -47,7 +49,7 @@ public class StudentData extends DataModel {
 	private StudentData(StudentData baseModel, IFilter filter) {
 		super(baseModel, filter);
 	}
-	
+
 	/**
 	 * Create a submodel using a filter
 	 */
@@ -62,13 +64,15 @@ public class StudentData extends DataModel {
 		InputOutput.debugPrintln("STUDENT row count: " + _data.size());
 
 		int idIndex = getColumnIndex(DataManager.idAtt);
+		int lcNumIndex = getColumnIndex(DataManager.lcNumAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
 		int prscIndex = getColumnIndex(DataManager.prscAtt);
 		int windIndex = getColumnIndex(DataManager.windAtt);
 		int ccapIndex = getColumnIndex(DataManager.ccapAtt);
-		
-		
+		int btmgIndex = getColumnIndex(DataManager.btmgAtt);
+
+
 		int plpIndex = getColumnIndex(DataManager.plpAtt);
 		int honrIndex = getColumnIndex(DataManager.honrAtt);
 		int pspIndex = getColumnIndex(DataManager.pspAtt);
@@ -80,25 +84,28 @@ public class StudentData extends DataModel {
     		String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
 			
+			String lcNum = s[lcNumIndex];
+			
 			String prsc = s[prscIndex];
 			String wind = s[windIndex];
 			String ccap = s[ccapIndex];
+			String btmg = s[btmgIndex];
 
-			
+
 			String plp = s[plpIndex];
 			String honr = s[honrIndex];
 			String psp = s[pspIndex];
 			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
 
-			_tableData.add(new Student(id, lastName, firstName, plp, honr, prsc, psp, prelaw, wind, ccap, major));
+			_tableData.add(new Student(id, lastName, firstName, lcNum, plp, honr, prsc, psp, prelaw, wind, ccap, btmg, major));
 		}
 
 		//raw data not needed
 		deleteRawData();
 
 	}
-	
+
 	/**
 	 * Get a highlight background color for a given row and column
 	 * @param row the 0-based row
@@ -110,31 +117,32 @@ public class StudentData extends DataModel {
 		Student student = getStudentFromRow(row);
 		return (student.honor) ? X11Colors.getX11Color("alice blue") : Color.white;
 	}
-    
+
 	/**
 	 * Get a highlight font for a given row and column
 	 * @param row the 0-based row
 	 * @param column the 0-based column
 	 * @return the highlight color, if null use medium font
 	 */
+	@Override
 	public Font getHighlightFont(int row, int column) {
 		Student student = getStudentFromRow(row);
 		return (student.plp) ? Fonts.mediumBoldFont : Fonts.mediumFont;
 	}
 
-    
+
  	/**
  	 * Get the student at the given 0-based row
  	 * @param row the row
  	 * @return the student at the given row
- 	 */   
+ 	 */
      public Student getStudentFromRow(int row) {
      	return (Student)getFromRow(row);
 	}
 
 	/**
 	 * Get the student with matching Id
-	 * 
+	 *
 	 * @param id the id to match
 	 * @return the student with matching id or null
 	 */
@@ -147,7 +155,21 @@ public class StudentData extends DataModel {
 		}
 		return null;
 	}
-     
+	
+	/**
+	 * Get the number of assigned students from student
+	 * @return the number of assigned students
+	 */
+	public int getAssignedStudentCount() {
+		int count = 0;
+		for (Student student : getStudents()) {
+			if (student.assigned()) {
+				count ++;
+			}
+		}
+		return count;
+	}
+
 
 	/**
 	 * Get all the students in a list
@@ -170,5 +192,15 @@ public class StudentData extends DataModel {
 	}
 
 
+	/**
+	 * Double clicked on a row
+	 * @param row the 0-based row
+	 * @param o the object at that location
+	 */
+	@Override
+	protected void doubleClicked(int row, ITabled o) {
+		Student student = (Student)o;
+		System.err.println("Double clicked on student: " + student.fullNameAndID());
+	}
 
 }

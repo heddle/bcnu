@@ -4,10 +4,10 @@ import java.util.StringTokenizer;
 
 public class Utilities {
 
-	
+
 	/**
 	 * This method breaks a string into an array of tokens.
-	 * 
+	 *
 	 * @param str   the string to decompose.
 	 * @param token the token
 	 * @return an array of tokens

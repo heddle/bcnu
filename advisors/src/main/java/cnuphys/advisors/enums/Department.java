@@ -1,12 +1,16 @@
 package cnuphys.advisors.enums;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 
+import cnuphys.advisors.Advisor;
+import cnuphys.advisors.model.DataManager;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Department {
 COMM, ECON, ENGL, FAAH, HIST, LDSP, LUTR, MATH, MBCH, MCLL,
-OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL;
+OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 
 
 
@@ -48,9 +52,38 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL;
 		names.put(POLS, new String[] {"polysci", "political science"});
 		names.put(PSYC, new String[] {"psychology", "psych"});
 		names.put(SOCL, new String[] {"soc, soc & anth", "sociology, social work & anthropology"});
+		names.put(INTERDIS, new String[] {"neuroscience"});
+		names.put(NONE, new String[] {"undeclared"});
 	}
 
+	/**
+	 * Get a list of majors for this department
+	 * @return a list of majors
+	 */
+	public List<Major> getMajors() {
+		List<Major> majors = new ArrayList<>();
+		
+		for (Major major : Major.values()) {
+			if (major.getDepartment() == this) {
+				majors.add(major);
+			}
+		}
+		
+		return majors;
+	}
 
+	/**
+	 * Get the number of catalogs needed by this department
+	 * @return the number of catalogs needed
+	 */
+	public int catalogsNeeded() {
+	    List<Advisor> advisors = DataManager.getAdvisorsForDepartment(this);
+	    int count = 0;
+	    for (Advisor advisor : advisors) {
+	    	count += advisor.adviseeCount();
+	    }
+	    return count;
+	}
 
 	/**
 	 * Returns the enum value from the name.

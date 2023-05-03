@@ -23,26 +23,26 @@ import cnuphys.advisors.table.InputOutput;
 public class AdvisorData extends DataModel {
 
 	// attributes for advisor data
-	private static final DataAttribute advisorAttributes[] = { 
+	private static final DataAttribute advisorAttributes[] = {
 			DataManager.rowAtt, DataManager.advisorAtt, DataManager.departmentNameAtt,
 			DataManager.subjectAtt,
 			DataManager.idAtt, DataManager.numAdviseeAtt };
 
 	/**
-	 * 
+	 *
 	 * @param baseName
 	 */
 	public AdvisorData(String baseName) {
 		super(baseName, advisorAttributes);
-		
+
 		renderer = new CustomRenderer(this);
-		
+
 		for (int i = 0; i < getColumnCount(); i++) {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
 
 	}
-	
+
 	/**
 	 * private constructor used to make a submodel
 	 * @param baseModel
@@ -51,7 +51,7 @@ public class AdvisorData extends DataModel {
 	private AdvisorData(AdvisorData baseModel, IFilter filter) {
 		super(baseModel, filter);
 	}
-	
+
 	/**
 	 * Create a submodel using a filter
 	 */
@@ -59,21 +59,21 @@ public class AdvisorData extends DataModel {
 		return new AdvisorData(this, filter);
 	}
 
-	
+
 	@Override
 	public int count() {
 		int count = super.count();
-		
+
 		//subtract for advisors not accepting cohort
 		for (Advisor advisor : getAdvisors()) {
 			if (!advisor.acceptingCohort) {
 				count--;
 			}
 		}
-		
+
 		return count;
 	}
-	
+
 	/**
 	 * Get the number of assigned students from advisor lists
 	 * @return the number of assigned students
@@ -85,7 +85,6 @@ public class AdvisorData extends DataModel {
 				count += advisor.advisees.size();
 			}
 		}
-		
 		return count;
 	}
 
@@ -122,24 +121,24 @@ public class AdvisorData extends DataModel {
 			}
 		}
 	}
-	
+
 	/**
 	 * Check whether full name corresponds to a core advisor
 	 * @param Id the Id  to match
 	 * @return the matching Advisor object, or null
 	 */
 	public Advisor isCoreAdvisor(String id)  {
-		
+
 		List<Advisor> advisors = getAdvisors();
-		
+
 
 		for (Advisor advisor : advisors) {
 			if (advisor.id.equals(id)) {
 				return advisor;
 			}
 		}
-		
-		
+
+
 		return null;
 	}
 
@@ -158,7 +157,7 @@ public class AdvisorData extends DataModel {
 
 		return list;
     }
-    
+
 	/**
 	 * Get a highlight text color for a given row and column
 	 * @param row the 0-based row
@@ -171,16 +170,16 @@ public class AdvisorData extends DataModel {
 		return (advisor.hasILC) ? Color.red : Color.black;
 	}
 
-    
+
 	/**
 	 * Get the advisor at the given 0-based row
 	 * @param row the row
 	 * @return the advisor at the given row
-	 */   
+	 */
     public Advisor getAdvisorFromRow(int row) {
     	return (Advisor)getFromRow(row);
     }
-    
+
     /**
      * Get and advisor from a faculty Id
      * @param if the faculty id
@@ -192,29 +191,34 @@ public class AdvisorData extends DataModel {
     		return null;
     	}
     	id = id.trim();
-    	
+
     	 List<Advisor> advisors = getAdvisors();
     	 for (Advisor advisor : advisors) {
     		 if (id.equals(advisor.id)) {
     			 return advisor;
     		 }
     	 }
-    	
+
     	return null;
     }
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 		if (!e.getValueIsAdjusting()) {
-			System.err.println("Selected Rows: ");
-
-			for (int row : getSelectedRows()) {
-				System.err.println("  " + row);
-			}
-
-			System.err.println();
 		}
 	}
+
+	/**
+	 * Double clicked on a row
+	 * @param row the 0-based row
+	 * @param o the object at that location
+	 */
+	@Override
+	protected void doubleClicked(int row, ITabled o) {
+		Advisor advisor = (Advisor)o;
+		System.err.println("Double clicked on advisor: " + advisor.name);
+	}
+
 
 
 }

@@ -1,7 +1,6 @@
 package cnuphys.advisors.graphics;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -10,10 +9,7 @@ import java.awt.Rectangle;
 import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.table.DefaultTableModel;
 
-import cnuphys.advisors.table.DataTable;
 import cnuphys.bCNU.graphics.ImageManager;
 
 public class AdvisorDisplay extends JPanel {
@@ -32,14 +28,14 @@ public class AdvisorDisplay extends JPanel {
 
 	//singleton
 	private static AdvisorDisplay _instance;
-	
-	
+
+
 	//button panel
 	private AdvisorButtonPanel _buttonPanel;
 
 	private AdvisorDisplay() {
 		setLayout(new BorderLayout());
-		
+
 		_buttonPanel = new AdvisorButtonPanel();
 		add(_buttonPanel, BorderLayout.SOUTH);
 		add(AdvisorInfoLabel.getInstance(), BorderLayout.NORTH);
@@ -79,7 +75,7 @@ public class AdvisorDisplay extends JPanel {
 	 	validate();
 		repaint();
 	}
-	
+
 	public void dataChange() {
 		_buttonPanel.redoLastButton();
 //		if (_content != null) {
@@ -90,7 +86,7 @@ public class AdvisorDisplay extends JPanel {
 //				if (comp != null) {
 //					if (comp instanceof DataTable) {
 //						DataTable dtab = (DataTable) comp;
-//						
+//
 //						if (dtab.getModel() instanceof DefaultTableModel) {
 //							((DefaultTableModel) dtab.getModel()).fireTableDataChanged();
 //							dtab.repaint();

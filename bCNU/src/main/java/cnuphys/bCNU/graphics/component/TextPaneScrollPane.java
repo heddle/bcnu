@@ -28,21 +28,30 @@ public class TextPaneScrollPane extends JScrollPane {
 	// red terminal
 	public static SimpleAttributeSet RED_TERMINAL = createStyle(Color.red, transparent, "monospaced", 11, false, true);
 
-	// red terminal
+	// yellow terminal
 	public static SimpleAttributeSet YELLOW_TERMINAL = createStyle(Color.yellow, transparent, "monospaced", 11, false,
 			true);
 
-	// blue terminal
+	// cyan terminal
 	public static SimpleAttributeSet CYAN_TERMINAL = createStyle(Color.cyan, transparent, "monospaced", 11, false,
 			true);
 
+	// blue terminal
+	public static SimpleAttributeSet BLUE_TERMINAL = createStyle(Color.blue, "monospaced", 12, false,
+			true);
+
+
 	// green terminal
-	public static SimpleAttributeSet GREEN_TERMINAL = createStyle(X11Colors.getX11Color("Light Green"), transparent,
+	public static SimpleAttributeSet GREEN_TERMINAL = createStyle(X11Colors.getX11Color("Dark Green"), transparent,
 			"monospaced", 11, false, true);
 
-	// blue sans serif
+	// blue bold sans serif
 	public static SimpleAttributeSet BLUE_SS_12_B = createStyle(Color.blue, X11Colors.getX11Color("Alice Blue"),
 			"sansserif", 12, false, true);
+	
+	// blue plain sans serif
+	public static SimpleAttributeSet BLUE_SS_12_P = createStyle(Color.blue,"sansserif", 12, false, false);
+
 
 	// green sans serif
 	public static SimpleAttributeSet GREEN_SS_12_B = createStyle(X11Colors.getX11Color("Dark Green"),

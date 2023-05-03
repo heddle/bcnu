@@ -40,6 +40,15 @@ public class Advisor implements ITabled {
 	/** pres scholar advisor? */
 	public boolean presscholar;
 
+	/** community captain advisor? */
+	public boolean ccpt;
+
+	/** biotech mgmt advisor? */
+	public boolean btmg;
+	
+	/** prelaw advisor? */
+	public boolean prelaw;
+
 	/**
 	 * Create an advisor
 	 * @param name full name: last, first
@@ -91,6 +100,11 @@ public class Advisor implements ITabled {
 			System.err.println(s);
 			return;
 		}
+		
+		//are we replacing an advisor?
+		if (student.assigned()) {
+			student.advisor.removeAdvisee(student);
+		}
 
 		advisees.remove(student);
 		advisees.add(student);
@@ -98,7 +112,7 @@ public class Advisor implements ITabled {
 		student.locked = lockStudentWhenDone;
 		student.advisor = this;
 
-		String s = String.format("Assignment made. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
+		String s = String.format("Assignment made. Advisor: [%s] (%d) Student: [%s]", name, adviseeCount(), student.fullNameAndID());
 		System.err.println(s);
 
 	}
@@ -119,7 +133,7 @@ public class Advisor implements ITabled {
 	public String nameAndDepartment() {
 		return String.format("%s  [%s]", name, department);
 	}
-	
+
 	/**
 	 * The number of assigned advisees
 	 * @return the number of assigned advisees

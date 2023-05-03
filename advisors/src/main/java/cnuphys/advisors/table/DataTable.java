@@ -39,7 +39,7 @@ public class DataTable extends JTable {
 		showVerticalLines = true;
 		setRowSelectionAllowed(true);
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
+
 		getSelectionModel().addListSelectionListener(model);
 
 		JTableHeader header = getTableHeader();

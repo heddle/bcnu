@@ -7,12 +7,18 @@ import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
+import cnuphys.advisors.model.LearningCommunityCourse;
 
 public class Student implements ITabled {
 
 	/** student locked down and can't be reassigned by algorithm?? */
 	public boolean locked;
-
+	
+	/** learning community as a string */
+	public String lc;
+	
+	/** learning community as a number */
+	public int lcNum;
 
 	/** the student's id */
 	public String id;
@@ -50,6 +56,10 @@ public class Student implements ITabled {
 	/** is this a community captain? */
 	public boolean communityCaptain;
 
+	/** in the BTMG program? */
+	public boolean btmg;
+
+
 	/** the assigned advisor */
 	public Advisor advisor;
 
@@ -57,9 +67,13 @@ public class Student implements ITabled {
 	public List<Course> schedule = new ArrayList<>();
 
 
-	public Student(String id, String lastName, String firstName, String plp, String honr, String prsc,
-			String psp, String prelaw, String wind, String ccap, String maj) {
+	public Student(String id, String lastName, String firstName, String lc, String plp, String honr, String prsc,
+			String psp, String prelaw, String wind, String ccap, String btmg, String maj) {
 		super();
+		this.lc = lc;
+		
+		lcNum = Integer.parseInt(lc.replaceAll("[^\\d.]", ""));
+		
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
 		this.firstName = firstName.replace("\"", "").trim();
@@ -71,6 +85,7 @@ public class Student implements ITabled {
 		this.prelaw = checkString(prelaw, "LW");
 		this.windScholar = checkString(wind, "WIN");
 		this.communityCaptain = checkString(ccap, "CCAP");
+		this.btmg = checkString(btmg, "BTM");
 
 
 		String majorstr = maj.replace("\"", "").trim();
@@ -123,6 +138,21 @@ public class Student implements ITabled {
 		return String.format("%s, %s [%s]", lastName, firstName, id);
 	}
 
+	/**
+	 * Is a course in the student's Learning community?
+	 * @param crn the crn
+	 * @return true if the course is in the students LC
+	 */
+	public boolean courseInLC(String crn) {
+		
+		for (LearningCommunityCourse lc : DataManager.getLearningCommunityData().getLearningCommunityCourses()) {
+			if (crn.equals(lc.crn)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 
 	@Override
@@ -137,33 +167,39 @@ public class Student implements ITabled {
 			return firstName;
 		}
 		else if (col == 4) {
-			return ilc ? "ILC" : "";
+			return "L" + lcNum;
 		}
 		else if (col == 5) {
-			return plp ? "PLP" : "";
+			return ilc ? "ILC" : "";
 		}
 		else if (col == 6) {
-			return honor ? "HON": "";
+			return plp ? "PLP" : "";
 		}
 		else if (col == 7) {
-			return presidentialScholar ? "PRSC": "";
+			return honor ? "HON": "";
 		}
 		else if (col == 8) {
-			return preMedScholar ? "PSP" : "";
+			return presidentialScholar ? "PRSC": "";
 		}
 		else if (col == 9) {
-			return prelaw ? "PLW" : "";
+			return preMedScholar ? "PSP" : "";
 		}
 		else if (col == 10) {
-			return windScholar ? "WIND" : "";
+			return prelaw ? "PLW" : "";
 		}
 		else if (col == 11) {
-			return communityCaptain ? "CCAP" : "";
+			return windScholar ? "WIND" : "";
 		}
 		else if (col == 12) {
-			return major.name();
+			return communityCaptain ? "CCAP" : "";
 		}
 		else if (col == 13) {
+			return btmg ? "BTMG" : "";
+		}
+		else if (col == 14) {
+			return major.name();
+		}
+		else if (col == 15) {
 			return advisor == null ? "---" : advisor.name;
 		}
 

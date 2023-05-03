@@ -13,6 +13,9 @@ public class StudentFilter implements IFilter {
 	public static final int ASSIGNED       = 020;
 	public static final int UNASSIGNED     = 040;
 	public static final int MUSICTHEATER   = 0100;
+	public static final int BTMG           = 0200;
+	public static final int HONORS           = 0400;
+
 
 	public static final int ANY = 07777777777;
 
@@ -24,6 +27,12 @@ public class StudentFilter implements IFilter {
 
 	/** filter that picks out community captain students */
 	public static final StudentFilter communityCaptains = new StudentFilter(COMMCAPT);
+
+	/** filter that picks out bio tech and management students */
+	public static final StudentFilter btmg = new StudentFilter(BTMG);
+	
+	/** filter that picks out honorst students */
+	public static final StudentFilter honors = new StudentFilter(HONORS);
 
 	/** filter that picks out premed scholars students */
 	public static final StudentFilter preMedScholars = new StudentFilter(PREMEDSCHOLAR);
@@ -58,6 +67,10 @@ public class StudentFilter implements IFilter {
 			return true;
 		} else if (Bits.checkBit(_bits, COMMCAPT) && student.communityCaptain) {
 			return true;
+		} else if (Bits.checkBit(_bits, HONORS) && student.honor) {
+			return true;
+		} else if (Bits.checkBit(_bits, BTMG) && student.btmg) {
+			return true;
 		} else if (Bits.checkBit(_bits, PREMEDSCHOLAR) && student.preMedScholar) {
 			return true;
 		} else if (Bits.checkBit(_bits, PRESSCHOLAR) && student.presidentialScholar) {
@@ -66,7 +79,7 @@ public class StudentFilter implements IFilter {
 			return true;
 		} else if (Bits.checkBit(_bits, UNASSIGNED) && !student.assigned()) {
 			return true;
-		}else if (Bits.checkBit(_bits, MUSICTHEATER) && ((student.major == Major.MUSIC)
+		} else if (Bits.checkBit(_bits, MUSICTHEATER) && ((student.major == Major.MUSIC)
 				|| (student.major == Major.THEA))) {
 			return true;
 		}

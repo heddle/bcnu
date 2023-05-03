@@ -7,26 +7,27 @@ import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.InputOutput;
 
-public class HonorsAdvisors extends DataModel {
+public class PrelawAdvisors extends DataModel  {
+
 
 	//attributes for honors advisors data
-	private static final DataAttribute honAdvAttributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
+	private static final DataAttribute Attributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt};
 
 
-	public HonorsAdvisors(String baseName) {
-		super(baseName, honAdvAttributes);
+	public PrelawAdvisors(String baseName) {
+		super(baseName, Attributes);
 	}
 
 	@Override
 	protected void processData() {
-		InputOutput.debugPrintln("HONR ADV row count: " + _data.size());
+		InputOutput.debugPrintln("PRELAW ADV row count: " + _data.size());
 
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
 
-		//dont create an actual model, just mark the corresponding advisor  as an honors advisor
+		//don't create an actual model, just mark the corresponding advisor as a prelaw advisor
 		for (String s[] : _data) {
 			String id = DataManager.fixId(s[idIndex]);
 			String lastName = s[lastIndex];
@@ -34,10 +35,10 @@ public class HonorsAdvisors extends DataModel {
 
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(id);
 			if (advisor == null) {
-				System.err.println(String.format("Did not match honors advisor [%s] %s, %s to any current advisor", id,
+				System.err.println(String.format("Did not match prelaw advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
 			} else {
-				advisor.honors = true;
+				advisor.prelaw = true;
 			}
 		}
 
@@ -50,11 +51,7 @@ public class HonorsAdvisors extends DataModel {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		if (!e.getValueIsAdjusting()) {
-		}
 	}
-
-
 
 	/**
 	 * Double clicked on a row
@@ -65,5 +62,4 @@ public class HonorsAdvisors extends DataModel {
 	protected void doubleClicked(int row, ITabled o) {
 
 	}
-
 }

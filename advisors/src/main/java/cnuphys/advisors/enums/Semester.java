@@ -6,7 +6,7 @@ import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Semester {
 	None, Fall2022, Fall2023, Fall2024, Fall2025;
-	
+
 	/**
 	 * A map for the base names of the student classes
 	 */
@@ -17,7 +17,7 @@ public enum Semester {
 		}
 	}
 
-	
+
 	/**
 	 * Obtain a combo box of choices.
 	 *

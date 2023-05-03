@@ -2,7 +2,6 @@ package cnuphys.advisors.model;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
@@ -31,7 +30,7 @@ public class Schedule extends DataModel {
 	public Schedule(String baseName) {
 		super(baseName, scheduleAttributes);
 		renderer = new CustomRenderer(this);
-		
+
 		for (int i = 0; i < getColumnCount(); i++) {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
@@ -53,19 +52,19 @@ public class Schedule extends DataModel {
 		int titleIndex = getColumnIndex(DataManager.titleAtt);
 		int instructorIndex = getColumnIndex(DataManager.instructorAtt);
 		int idIndex = getColumnIndex(DataManager.idAtt);
-		
+
 
 		for (String s[] : _data) {
 
 			String id = s[idIndex];
 			id = id.replace("\"", "");
-			
+
 			//add leading 0's
 			while (id.length() < 8) {
 				id = "0" + id;
 			}
 
-				
+
 			//only keep courses taught by core advisors
 			Advisor advisor = DataManager.getAdvisorData().isCoreAdvisor(id);
 			if (advisor != null) {
@@ -75,9 +74,9 @@ public class Schedule extends DataModel {
 				String course = s[courseIndex];
 				String section = s[sectionIndex];
 				String title = s[titleIndex];
-				
+
 				//try to set instructor subject (major) bases on course taught
-				
+
 				Major major = Major.getValue(subject);
 				if (major == null) {
 					System.err.println("Could not match major to course subject [" + subject + "]");
@@ -88,29 +87,29 @@ public class Schedule extends DataModel {
 
 				_tableData.add(
 						new Course(crn, subject, course, section, title, instructor, id));
-			}			
+			}
 		}
-				
-		
+
+
 		//mark the ILCs including instructors
 		List<ILCCourse> ilcs = DataManager.getILCData().getILCs();
 		for (ILCCourse ilc : ilcs) {
 			Course course = getCourseFromCRN(ilc.crn);
-			
+
 			if (course == null) {
 				System.err.println("Did not find course corresponding to ILC with crn: [" + ilc.crn + "]");
 				System.exit(1);
 			}
-			
+
 			course.isILC = true;
-			
+
 			//mark advisor as an ILC instructor
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
 			if (advisor == null) {
 				System.err.println("Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
 				System.exit(1);
 			}
-			
+
 			ilc.instructor  = advisor;
 			advisor.hasILC = true;
 		}
@@ -137,7 +136,7 @@ public class Schedule extends DataModel {
 
 		return list;
     }
-    
+
 	/**
 	 * Get a highlight text color for a given row and column
 	 * @param row the 0-based row
@@ -150,16 +149,16 @@ public class Schedule extends DataModel {
 		return (course.isILC) ? Color.red : Color.black;
 	}
 
-    
+
 	/**
 	 * Get the course at the given 0-based row
 	 * @param row the row
 	 * @return the course at the given row
-	 */   
+	 */
     public Course getCourseFromRow(int row) {
     	return (Course)getFromRow(row);
     }
-    
+
     /**
      * Get a course from a crn
      * @param crn the crn
@@ -171,19 +170,29 @@ public class Schedule extends DataModel {
     		return null;
     	}
     	crn = crn.trim();
-    	
+
     	 List<Course> courses = getCourses();
     	 for (Course course : courses) {
     		 if (crn.equals(course.crn)) {
     			 return course;
     		 }
     	 }
-    	
+
     	return null;
     }
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
+	}
+
+	/**
+	 * Double clicked on a row
+	 * @param row the 0-based row
+	 * @param o the object at that location
+	 */
+	@Override
+	protected void doubleClicked(int row, ITabled o) {
+
 	}
 
 }

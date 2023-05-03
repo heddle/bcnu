@@ -4,18 +4,18 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Point;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
@@ -33,7 +33,7 @@ import cnuphys.bCNU.util.Fonts;
  */
 
 public abstract class DataModel extends DefaultTableModel implements ListSelectionListener, MouseListener {
-	
+
 	// sort direction
 	private boolean _ascendingSort = true;
 
@@ -60,11 +60,11 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 
 	//the table
 	protected DataTable _dataTable;
-	
+
 
 	//the custom renderer for highlighting
 	public CustomRenderer renderer;
-	
+
 	/**
 	 * A CSV Data object
 	 * @param baseName
@@ -88,11 +88,11 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			e.printStackTrace();
 			System.exit(1);
 		}
-		
-		
+
+
 		createDataTable();
 	}
-	
+
 	/**
 	 * Create a submodel using a filter
 	 * @param baseModel the base mode (e.g. all students)
@@ -105,13 +105,13 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		_header = baseModel._header;
 		columnNames = baseModel.columnNames;
 		columnWidths = baseModel.columnWidths;
-		
+
 		for (ITabled itabled : baseModel._tableData) {
 			if (filter.pass(itabled)) {
 				_tableData.add(itabled);
 			}
 		}
-		
+
 		createDataTable();
 	}
 
@@ -133,15 +133,35 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 
 		return names;
 	}
-	
+
+	//create the data table
 	private void createDataTable() {
 		_dataTable = new DataTable(this);
 
 		Dimension d = _dataTable.getScrollPane().getPreferredSize();
 		d.width = getPreferredWidth();
 		_dataTable.getScrollPane().setPreferredSize(d);
-		
+
+		_dataTable.addMouseListener(new MouseAdapter() {
+		    @Override
+			public void mousePressed(MouseEvent mouseEvent) {
+		        JTable table =(JTable) mouseEvent.getSource();
+		        Point point = mouseEvent.getPoint();
+		        int row = table.rowAtPoint(point);
+		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+		            doubleClicked(row, _tableData.get(row));
+		        }
+		    }
+		});
+
 	}
+
+	/**
+	 * Double clicked on a row
+	 * @param row the 0-based row
+	 * @param o the object at that location
+	 */
+	protected abstract void doubleClicked(int row, ITabled o);
 
 	/**
 	 * Get the scroll pane containing the data table
@@ -274,7 +294,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			return "" + (row+1);
 		}
 
-		ITabled rowObject = _tableData.get(row);		
+		ITabled rowObject = _tableData.get(row);
 		return rowObject.getValueAt(col);
 	}
 
@@ -355,7 +375,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		fireTableDataChanged();
 
 	}
-	
+
 	/**
 	 * Get the data at the given 0-based row
 	 * @param row the row
@@ -364,7 +384,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	public ITabled getFromRow(int row) {
 		return _tableData.get(row);
 	}
-	
+
 	/**
 	 * Get a highlight text color for a given row and column
 	 * @param row the 0-based row
@@ -384,7 +404,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	public Color getHighlightBackgroundColor(int row, int column) {
 		return Color.white;
 	}
-	
+
 	/**
 	 * Get a highlight font for a given row and column
 	 * @param row the 0-based row

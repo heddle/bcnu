@@ -27,6 +27,11 @@ public enum Major {
 	 * A map of counts for making bar plots
 	 */
 	public static EnumMap<Major, Integer> counts = new EnumMap<>(Major.class);
+	
+	/**
+	 * Map major to department
+	 */
+	public static EnumMap<Major, Department> departments = new EnumMap<>(Major.class);
 
 	static {
 		names.put(ACCT, new String[] {"accounting"});
@@ -71,7 +76,59 @@ public enum Major {
 		names.put(STDART, new String[] {"studio art"});
 		names.put(THEA, new String[] {"theater", "pfar"});
 		names.put(UNDEC, new String[] {"undeclared"});
+		
+		
+		departments.put(ACCT, Department.LUTR);
+		departments.put(AMSTD, Department.LDSP);
+		departments.put(BIOCHM, Department.MBCH);
+		departments.put(BIOL, Department.OENB);
+		departments.put(BUSN, Department.LUTR);
+		departments.put(CAM, Department.MATH);
+		departments.put(CELLMB, Department.MBCH);
+		departments.put(CHEM, Department.MBCH);
+		departments.put(CLST, Department.MCLL);
+		departments.put(COMM, Department.COMM);
+		departments.put(COMENG, Department.PCSE);
+		departments.put(COMSCI, Department.PCSE);
+		departments.put(CRIM, Department.SOCL);
+		departments.put(CYBER, Department.PCSE);
+		departments.put(ECON, Department.ECON);
+		departments.put(EE, Department.PCSE);
+		departments.put(ENGL, Department.ENGL);
+		departments.put(ENVSTD, Department.OENB);
+		departments.put(FIN, Department.LUTR);
+		departments.put(FINART, Department.FAAH);
 
+		departments.put(FRENCH, Department.MCLL);
+		departments.put(GERMAN, Department.MCLL);
+		departments.put(HIST, Department.HIST);
+		departments.put(INFSCI, Department.PCSE);
+		departments.put(KINES, Department.MBCH);
+		departments.put(MARKT, Department.LUTR);
+		departments.put(MATH, Department.MATH);
+		departments.put(MGMT, Department.LUTR);
+		departments.put(MUSIC, Department.PFAR);
+		departments.put(NEURO, Department.INTERDIS);
+		departments.put(OEBIO, Department.OENB);
+		departments.put(PHILO, Department.PHIL);
+		departments.put(PHYS, Department.PCSE);
+		departments.put(POLSCI, Department.POLS);
+		departments.put(PSYCH, Department.PSYC);
+		departments.put(SOCIOL, Department.SOCL);
+		departments.put(SOWK, Department.SOCL);
+		departments.put(SPAN, Department.MCLL);
+		departments.put(STDART, Department.FAAH);
+		departments.put(THEA, Department.PFAR);
+		departments.put(UNDEC, Department.NONE);
+
+	}
+	
+	/**
+	 * Get the department from the major
+	 * @return the department from the major
+	 */
+	public Department getDepartment() {
+		return departments.get(this);
 	}
 
 

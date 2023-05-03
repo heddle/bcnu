@@ -1,12 +1,16 @@
 package cnuphys.advisors.graphics;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cnuphys.advisors.AdvisorFilter;
@@ -19,62 +23,100 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 	private JButton _allAdvisorsButton;
 	private JButton _honAdvisorsButton;
+	private JButton _ilcAdvisorsButton;
 	private JButton _musTheaAdvisorsButton;
 	private JButton _allStudentButton;
 	private JButton _assignedStudentButton;
 	private JButton _unassignedStudentButton;
+	private JButton _btmgAdvisorsButton;
+	private JButton _prelawAdvisorsButton;
 
 	private JButton _musicTheaterButton;
 	private JButton _assignmentsButton;
 	private JButton _ilcsButton;
+	private JButton _lcsButton;
 	private JButton _classesButton;
 	private JButton _commCaptButton;
+	private JButton _honorsButton;
+
+	private JButton _btmgButton;
 	private JButton _prelawButton;
 	private JButton _premedScholarButton;
 	private JButton _presScholarButton;
 	private JButton _presScholarAdvisorsButton;
+	private JButton _ccptAdvisorsButton;
+
+	private JButton _departMajorButton;
+	private JButton _catalogButton;
 
 
+	private String rowLabels[] = {"  STUDENTS ", "  ADVISORS  ", " "};
+	private JPanel _rows[] = new JPanel[rowLabels.length];
 
-	private JPanel _rows[] = new JPanel[3];
-	
 	private JButton _lastButton;
+
+	private static final Font _font = Fonts.smallFont;
 
 
 	public AdvisorButtonPanel() {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		
+
 		for (int i = 0; i < _rows.length; i++) {
-			_rows[i] = createRowPanel();
+			_rows[i] = createRowPanel(rowLabels[i]);
 		}
 
-		_allStudentButton = createButton("All Students", true, _rows[0]);
-		_assignedStudentButton = createButton("Assigned Students", true, _rows[0]);
-		_unassignedStudentButton = createButton("Unassigned Students", true, _rows[0]);
-		
-	    _allAdvisorsButton = createButton("All FCAs", true, _rows[1]);
-	    _honAdvisorsButton = createButton("Honors FCAs", true, _rows[1]);
-	    _musTheaAdvisorsButton = createButton("Music/Theater FCAs", true, _rows[1]);
-	    _presScholarAdvisorsButton = createButton("Pres Scholar FCAs", true, _rows[1]);
-		_ilcsButton = createButton("ILCs", true, _rows[1]);
-		_classesButton = createButton("Classes", true, _rows[1]);
-		_assignmentsButton = createButton("Assignments", false, _rows[1]);
-		
-		_musicTheaterButton = createButton("Music/Theater Students", true, _rows[2]);
-		_commCaptButton = createButton("Community Cptns", true, _rows[2]);
-		_prelawButton = createButton("Pre-Law", true, _rows[2]);
-		_premedScholarButton = createButton("Pre-Med Scholars", true, _rows[2]);
-		_presScholarButton = createButton("Pres Scholars", true, _rows[2]);
+		_allStudentButton = createButton("All", true, _rows[0]);
+		_assignedStudentButton = createButton("Assigned", true, _rows[0]);
+		_unassignedStudentButton = createButton("Unassigned", true, _rows[0]);
+		_honorsButton = createButton("Honors", true, _rows[0]);
+		_musicTheaterButton = createButton("Musc/Thea", true, _rows[0]);
+		_commCaptButton = createButton("Comm Cptns", true, _rows[0]);
+		_btmgButton = createButton("BTMG", true, _rows[0]);
+		_prelawButton = createButton("PreLaw", true, _rows[0]);
+		_premedScholarButton = createButton("PreMed Sch", true, _rows[0]);
+		_presScholarButton = createButton("Pres Sch", true, _rows[0]);
 
-		
+
+	    _allAdvisorsButton = createButton("All", true, _rows[1]);
+		_ilcAdvisorsButton = createButton("ILC", true, _rows[1]);
+		_honAdvisorsButton = createButton("Honors", true, _rows[1]);
+		_musTheaAdvisorsButton = createButton("Musc/Thea", true, _rows[1]);
+		_ccptAdvisorsButton = createButton("Comm Cptns", true, _rows[1]);
+		_btmgAdvisorsButton = createButton("BTMG", true, _rows[1]);
+		_prelawAdvisorsButton = createButton("PreLaw", true, _rows[1]);
+		_presScholarAdvisorsButton = createButton("Pres Sch", true, _rows[1]);
+
+		_ilcsButton = createButton("ILCs", true, _rows[2]);
+		_lcsButton = createButton("LCs", true, _rows[2]);
+		_classesButton = createButton("Classes", true, _rows[2]);
+		_departMajorButton = createButton("Dept/Maj", true, _rows[2]);
+		_catalogButton = createButton("Catalogs", true, _rows[2]);
+		_assignmentsButton = createButton("Assignments", false, _rows[2]);
+
 	}
-	
 
-	private JPanel createRowPanel() {
-		JPanel rp = new JPanel();
-		rp.setLayout(new FlowLayout(FlowLayout.CENTER, 4, 4));
+
+	private JPanel createRowPanel(String text) {
+		final JPanel rp = new JPanel();
+		rp.setFont(_font);
+
+		rp.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		rp.setBorder(BorderFactory.createEtchedBorder());
+
+		JLabel label = new JLabel(text) {
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension d = super.getPreferredSize();
+				d.width = rp.getFontMetrics(_font).stringWidth(" ADVISORS   ");
+				return d;
+			}
+		};
+		label.setFont(_font);
+		label.setForeground(Color.white);
 
 		rp.setBackground(Color.gray);
+
+		rp.add(label);
 		add(rp);
 		return rp;
 	}
@@ -84,7 +126,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		button.addActionListener(this);
 		button.setEnabled(enabled);
 		button.addActionListener (this);
-		button.setFont(Fonts.smallFont);
+		button.setFont(_font);
 		panel.add(button);
 		return button;
 	}
@@ -95,10 +137,35 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
 	}
 	
+	//handle click on honors advisors button
+	private void handleILCAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.ilcAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("ILC Advisors");
+	}
+
+
 	//handle click on musics theater advisors button
 	private void handleMusTheaAdvisors() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.musTheaAdvisors).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Music and Theater Advisors");
+	}
+
+	//handle click on CCPT advisors button
+	private void handleCCPTAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.ccptAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Community Captain Advisors");
+	}
+
+	//handle click on BGMT advisors button
+	private void handleBGMTAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.btmgAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Bio Tech and Management Advisors");
+	}
+	
+	//handle click on PreLat advisors button
+	private void handlePreLawAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.prelawAdvisors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Pre-Law Advisors");
 	}
 
 
@@ -126,10 +193,22 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("Community Captains");
 	}
 
+	//handle click on honors students button
+	private void handleHonorsStudents() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.honors).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Honors Students");
+	}
+
+	//handle click on biotech mgmt button
+	private void handleBTMG() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.btmg).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Bio Tech and Management Students");
+	}
+
 	//handle click on prelaw button
 	private void handlePrelaw() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.prelawStudents).getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("Prelaw Students");
+		AdvisorInfoLabel.getInstance().setText("Pre-Law Students");
 	}
 
 	//handle click on premed scholars button
@@ -173,13 +252,32 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getSchedule().getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("All Classes taught by FCAs");
 	}
+	
+	//handle click department and major button
+	private void handleDepartmentMajor() {
+		AdvisorDisplay.getInstance().setContent(new DepartmentMajorPane());
+		AdvisorInfoLabel.getInstance().setText("Departments and Majors");
+	}
+
+	//handle click catalog button
+	private void handleCatalog() {
+		AdvisorDisplay.getInstance().setContent(new CatalogPane());
+		AdvisorInfoLabel.getInstance().setText("Catalogs Needed");
+	}
 
 	//handle click on ILCs button
 	private void handleILCs() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getILCData().getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("All ILCs");
 	}
-	
+
+	//handle click on LCs button
+	private void handleLearningCommunities() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getLearningCommunityData().getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("All Learning Communities");
+	}
+
+	//used to refresh tables
 	public void redoLastButton() {
 		if (_lastButton != null) {
 			handleButton(_lastButton);
@@ -196,14 +294,29 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _honAdvisorsButton) {
 			handleHonorsAdvisors();
 		}
+		else if (button == _ilcAdvisorsButton) {
+			handleILCAdvisors();
+		}
 		else if (button == _musTheaAdvisorsButton) {
 			handleMusTheaAdvisors();
+		}
+		else if (button == _ccptAdvisorsButton) {
+			handleCCPTAdvisors();
+		}
+		else if (button == _btmgAdvisorsButton) {
+			handleBGMTAdvisors();
+		}
+		else if (button == _prelawAdvisorsButton) {
+			handlePreLawAdvisors();
 		}
 		else if (button == _presScholarAdvisorsButton) {
 			handlePresScholarAdvisors();
 		}
 		else if (button == _commCaptButton) {
 			handleCommunityCaptains();
+		}
+		else if (button == _btmgButton) {
+			handleBTMG();
 		}
 		else if (button == _prelawButton) {
 			handlePrelaw();
@@ -217,14 +330,26 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _musicTheaterButton) {
 			handleMusicTheaterStudents();
 		}
+		else if (button == _honorsButton) {
+			handleHonorsStudents();
+		}
 		else if (button == _assignmentsButton) {
 			handleAssignments();
 		}
 		else if (button == _classesButton) {
 			handleClasses();
 		}
+		else if (button == _departMajorButton) {
+			handleDepartmentMajor();
+		}
+		else if (button == _catalogButton) {
+			handleCatalog();
+		}
 		else if (button == _ilcsButton) {
 			handleILCs();
+		}
+		else if (button == _lcsButton) {
+			handleLearningCommunities();
 		}
 		else if (button == _ilcsButton) {
 			handleILCs();
@@ -234,8 +359,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		}
 		else if (button == _unassignedStudentButton) {
 			handleUnassignedStudents();
-		}	
-		
+		}
+
 		_lastButton = button;
 	}
 
@@ -243,7 +368,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object o = e.getSource();
-		
+
 		if (o instanceof JButton) {
 			handleButton((JButton)o);
 		}

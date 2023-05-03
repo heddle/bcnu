@@ -2,8 +2,10 @@ package cnuphys.advisors.model;
 
 import javax.swing.event.ListSelectionEvent;
 
+import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
+import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.InputOutput;
 
 public class StudentSchedules extends DataModel {
@@ -38,6 +40,7 @@ public class StudentSchedules extends DataModel {
 					System.err.println("Did not find student with ID: [" + id + "] in StudentSchedule");
 				} else {
 					student.addCourse(course);
+					//assignCourse(student, course);
 				}
 			}
 
@@ -47,10 +50,50 @@ public class StudentSchedules extends DataModel {
 		deleteRawData();
 
 	}
-
+	
+	
+//	private void assignCourse(Student student, Course course) {
+//		student.addCourse(course);
+//		
+//		if (course.isILC) {
+//			ILCCourse ilcCourse= DataManager.getILCData().getILCCourse(course.crn);
+//			Advisor advisor = ilcCourse.instructor;
+//			
+//			if (student.advisor != null) { //already have an advisor?
+//				
+//				//override if this is in student's LC
+//				if (student.courseInLC(course.crn)) {
+//	//				System.err.println("Before overwrite advisor " + student.advisor.name + "  count: " + student.advisor.adviseeCount());
+//					student.advisor.removeAdvisee(student);
+//	//				System.err.println("STUDENT: " + student.fullNameAndID()+ "   Overwrite with LC course " + advisor.name + "  replaces: " + student.advisor.name);
+//					student.locked = false;
+//				}
+//				else {  //no need to override
+//					return;
+//				}
+//			}
+//			
+//			student.ilc = true;
+//			advisor.addAdvisee(student, true);
+//			ilcCourse.count += 1;
+//		
+//		}
+//	}
+//
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 	}
+
+	/**
+	 * Double clicked on a row
+	 * @param row the 0-based row
+	 * @param o the object at that location
+	 */
+	@Override
+	protected void doubleClicked(int row, ITabled o) {
+
+	}
+
 
 }

@@ -51,7 +51,7 @@ public class AdvisorAssign extends JFrame {
 
 	//the simulation object
 	private AdvisorSimulation _advisorSim;
-	
+
 	//the check list
 	private CheckList _checklist;
 
@@ -91,12 +91,12 @@ public class AdvisorAssign extends JFrame {
 		setLayout(new BorderLayout());
 
 		MenuManager.getInstance().init(_menuBar);
-		
+
 		//add the check list
 		_checklist = CheckList.getInstance();
 
 		AdvisorPanel panel = new AdvisorPanel(_advisorSim, _checklist);
-		
+
 
 		add(panel, BorderLayout.CENTER);
 		createInfoLabel();
@@ -143,16 +143,28 @@ public class AdvisorAssign extends JFrame {
 	 */
 	public static void updateInfoLabel() {
 		
-		
+		if (_infoLabel == null) {
+			return;
+		}
+
 		int advisorCount = DataManager.getAdvisorData().count();
 		int studentCount = DataManager.getStudentData().count();
-		int assignedCount = DataManager.getAdvisorData().getAssignedStudentCount();
-		
-		double avgReq = ((double)studentCount)/advisorCount;
-		
-		String s = String.format("%s      FCA Count: %d     Student Count: %d     Num Assigned: %d   Required Avg: %4.1f  ",
-				getSemester().name(), advisorCount, studentCount, assignedCount, avgReq);
-		
+		int assignedCount1 = DataManager.getAdvisorData().getAssignedStudentCount();
+		int assignedCount2 = DataManager.getStudentData().getAssignedStudentCount();
+
+		String s;
+		if (assignedCount1 != assignedCount2) {
+			s = String.format(" ERROR! Assigned student counts disagree! From adv: %d From students: %d", assignedCount1, assignedCount2);
+		}
+
+		else {
+			int unassignedCount = studentCount - assignedCount1;
+			double avgReq = ((double) studentCount) / advisorCount;
+
+			s = String.format(" %s    FCA Count: %d    Student Count: %d    Assigned: %d    Unassigned: %d    Required Avg: %4.1f  ",
+					getSemester().name(), advisorCount, studentCount, assignedCount1, unassignedCount, avgReq);
+		}
+
 		_infoLabel.setText(s);
 	}
 
@@ -163,7 +175,7 @@ public class AdvisorAssign extends JFrame {
 	public static int targetAverage() {
 		int advisorCount = DataManager.getAdvisorData().count();
 		int studentCount = DataManager.getStudentData().count();
-		
+
 		double avgReq = ((double)studentCount)/advisorCount;
 		return (int)Math.ceil(avgReq);
 	}
