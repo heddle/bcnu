@@ -8,6 +8,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.IFilter;
+import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -21,6 +22,17 @@ import cnuphys.advisors.table.InputOutput;
  *
  */
 public class AdvisorData extends DataModel {
+	
+	public static final int HONOR        = 01000;
+	public static final int PRESSCHOLAR  = 02000;
+	public static final int MUSTHEA      = 04000;
+	public static final int CCPT         = 010000;
+	public static final int BTMG         = 020000;
+	public static final int ILC          = 040000;
+	public static final int PRELAW       = 0100000;
+	public static final int UNLOCKED     = 0200000;
+	public static final int ANY = 07777777777;
+
 
 	// attributes for advisor data
 	private static final DataAttribute advisorAttributes[] = {
@@ -201,6 +213,62 @@ public class AdvisorData extends DataModel {
 
     	return null;
     }
+    
+	/**
+	 * Get a list of advisors filtered by the given bits
+	 * @param bits
+	 * @return a filtered list of advisors
+	 */
+	public static List<Advisor> getAdvisors(int... bits) {
+		ArrayList<Advisor> filteredList = new ArrayList<>();
+		
+		List<Advisor> allAdvisors = DataManager.getAdvisorData().getAdvisors();
+		if ((bits == null) || (bits.length < 1)) {
+			return allAdvisors;
+		}
+		
+		for (Advisor advisor : allAdvisors) {
+			if (pass(advisor, bits)) {
+				filteredList.add(advisor);
+			}
+		}
+		
+		return filteredList;
+	}
+	
+	//used in filtering
+	private static boolean pass(Advisor advisor, int... bits) {
+		for (int bit : bits) {
+			if (!check(advisor, bit)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	//used in filtering
+	private static boolean check(Advisor advisor, int bit) {
+		switch (bit) {
+		case HONOR:
+			return advisor.locked;
+		case ILC:
+			return advisor.hasILC;
+		case MUSTHEA:
+			return (advisor.subject == Major.MUSIC) || (advisor.subject == Major.THEA);
+		case PRESSCHOLAR:
+			return advisor.presscholar;
+		case CCPT:
+			return advisor.ccpt;
+		case BTMG:
+			return advisor.btmg;
+		case PRELAW:
+			return advisor.prelaw;
+		case UNLOCKED:
+			return !advisor.locked;
+		default:
+			return false;
+		}
+	}
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

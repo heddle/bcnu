@@ -170,6 +170,27 @@ public class DataManager {
 	}
 	
 	/**
+	 * Get a list of honors advisors whose subject matches a major
+	 * 
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getHonorsAdvisorsForMajor(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (advisor.honors) {
+				if (major == advisor.subject) {
+					advisors.add(advisor);
+				}
+			}
+		}
+
+		return advisors;
+	}
+
+	
+	/**
 	 * Get a list of advisors whose subject matches a department
 	 * @param department the department to match
 	 * @return the list
@@ -203,10 +224,45 @@ public class DataManager {
 
 		return students;
 	}
+	
+	/**
+	 * Get a list of students whose major matches a given major and are unassigned
+	 * 
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedStudentsForMajor(Major major) {
+		ArrayList<Student> students = new ArrayList<>();
 
+		for (Student student : _studentData.getStudents()) {
+			if (!student.assigned()) {
+				if (major == student.major) {
+					students.add(student);
+				}
+			}
+		}
 
-	public static void fileDataChange() {
+		return students;
+	}
+	
+	/**
+	 * Get a list of honors students whose major matches a given major and are unassigned
+	 * 
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedHonorsStudentsForMajor(Major major) {
+		ArrayList<Student> students = new ArrayList<>();
 
+		for (Student student : _studentData.getStudents()) {
+			if (!student.assigned() && student.honor) {
+				if (major == student.major) {
+					students.add(student);
+				}
+			}
+		}
+
+		return students;
 	}
 
 

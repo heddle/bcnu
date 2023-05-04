@@ -14,8 +14,8 @@ public class StudentFilter implements IFilter {
 	public static final int UNASSIGNED     = 040;
 	public static final int MUSICTHEATER   = 0100;
 	public static final int BTMG           = 0200;
-	public static final int HONORS           = 0400;
-
+	public static final int HONORS         = 0400;
+	public static final int UNASSIGNEDHONORS = 01000;
 
 	public static final int ANY = 07777777777;
 
@@ -46,6 +46,9 @@ public class StudentFilter implements IFilter {
 	/** filter that picks out unassigned students */
 	public static final StudentFilter unassignedStudents = new StudentFilter(UNASSIGNED);
 
+	/** filter that picks out unassigned honors students */
+	public static final StudentFilter unassignedHonorsStudents = new StudentFilter(UNASSIGNEDHONORS);
+
 	/** filter that picks out music or theater majors */
 	public static final StudentFilter musicTheaterStudents = new StudentFilter(MUSICTHEATER);
 
@@ -63,6 +66,9 @@ public class StudentFilter implements IFilter {
 
 		if (_bits == 0) {
 			return true; // any student
+		} 
+		else if (Bits.checkBit(_bits, UNASSIGNEDHONORS) && student.honor && !student.assigned()) {
+			return true;
 		} else if (Bits.checkBit(_bits, PRELAW) && student.prelaw) {
 			return true;
 		} else if (Bits.checkBit(_bits, COMMCAPT) && student.communityCaptain) {

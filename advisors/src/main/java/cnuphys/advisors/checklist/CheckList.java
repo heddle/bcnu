@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import cnuphys.advisors.checklist.steps.BTMGStep;
 import cnuphys.advisors.checklist.steps.CommunityCaptainStep;
+import cnuphys.advisors.checklist.steps.HonorsStep;
 import cnuphys.advisors.checklist.steps.ILCStep;
 import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PrelawStep;
@@ -34,6 +35,10 @@ public class CheckList extends JPanel {
 
 	//assign prelaw students
 	private CheckListComponent prelawStep;
+	
+	//assign honors students
+	private CheckListComponent honorsStep;
+
 
 
 	//singleton
@@ -64,6 +69,7 @@ public class CheckList extends JPanel {
 		musTheaStep = new CheckListComponent("Assign Music & Theater students to advisors", new MusTheaStep(), false);
 		btmgStep = new CheckListComponent("Assign Bio Tech & Management to advisors", new BTMGStep(), false);
 		prelawStep = new CheckListComponent("Assign Prelaw students to advisors", new PrelawStep(), false);
+		honorsStep = new CheckListComponent("Assign Honors students to advisors", new HonorsStep(), false);
 
 		add(presScholarStep);
 		add(ilcStep);
@@ -71,6 +77,8 @@ public class CheckList extends JPanel {
 		add(musTheaStep);
 		add(btmgStep);
 		add(prelawStep);
+		add(honorsStep);
+
 	}
 
 	@Override
@@ -99,12 +107,16 @@ public class CheckList extends JPanel {
 		boolean musTheaStepDone = musTheaStep.done;
 		boolean ccptStepDone = ccptStep.done;
 		boolean btmgStepDone = btmgStep.done;
+		boolean prelawStepDone = prelawStep.done;
+		boolean honorsStepDone = honorsStep.done;
 
 		presScholarStep.setEnabled(!presScholarStepDone);
 		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
 		musTheaStep.setEnabled(ilcStepDone && !musTheaStepDone);
 		ccptStep.setEnabled(musTheaStepDone && !ccptStepDone);
 		btmgStep.setEnabled(ccptStepDone && !btmgStepDone);
+		prelawStep.setEnabled(btmgStepDone && !prelawStepDone);
+		honorsStep.setEnabled(prelawStepDone && !honorsStepDone);
 
 	}
 }

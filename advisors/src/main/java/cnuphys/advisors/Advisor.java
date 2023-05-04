@@ -48,7 +48,7 @@ public class Advisor implements ITabled {
 	
 	/** prelaw advisor? */
 	public boolean prelaw;
-
+	
 	/**
 	 * Create an advisor
 	 * @param name full name: last, first
@@ -116,7 +116,7 @@ public class Advisor implements ITabled {
 		System.err.println(s);
 
 	}
-
+	
 	/**
 	 * Remove an advisee from the list of advisees
 	 * @param student the student to remove

@@ -1,7 +1,11 @@
 package cnuphys.advisors;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.DataManager;
 import cnuphys.bCNU.util.Bits;
 
 public class AdvisorFilter implements IFilter {
@@ -13,6 +17,7 @@ public class AdvisorFilter implements IFilter {
 	public static final int BTMG         = 020000;
 	public static final int ILC          = 040000;
 	public static final int PRELAW       = 0100000;
+	public static final int UNLOCKED     = 0200000;
 	public static final int ANY = 07777777777;
 
 	/** filter that accepts  any student */
@@ -78,5 +83,8 @@ public class AdvisorFilter implements IFilter {
 
 		return false;
 	}
+	
+
+	
 
 }

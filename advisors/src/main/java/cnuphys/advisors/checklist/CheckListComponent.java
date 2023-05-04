@@ -39,10 +39,6 @@ public class CheckListComponent extends JPanel {
 	//LED
 	public JComponent _led;
 
-	private static int count = 0;
-	
-	private JLabel _label;
-
 	/**
 	 * Create a component backing a step of the algorithm
 	 * @param leftLab
@@ -53,12 +49,9 @@ public class CheckListComponent extends JPanel {
 	 */
 	public CheckListComponent(String info, IAlgorithmStep step, boolean enabled) {
 		_step = step;
-		this.done = done;
 		setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
 
 		if (!done) {
-			_label = makeLabel("" + ++count);
-			add(_label);
 			add(makeDoItButton());
 		}
 		add(led());
@@ -86,10 +79,6 @@ public class CheckListComponent extends JPanel {
 		if (_step != null) {
 			done = _step.run();
 
-			if (done && (_label != null)) {
-				remove(_label);
-				_label = null;
-			}
 			if (done && (_doitButton != null)) {
 					remove(_doitButton);
 				_doitButton = null;
