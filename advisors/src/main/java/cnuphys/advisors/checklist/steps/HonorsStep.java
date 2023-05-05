@@ -28,7 +28,12 @@ public class HonorsStep implements IAlgorithmStep {
 
 			//get unassigned honors students and honors advisor
 			List<Student> students = DataManager.getUnassignedHonorsStudentsForMajor(major);
-			List<Advisor> advisors = DataManager.getHonorsAdvisorsForMajor(major, true);
+			List<Advisor> advisors = DataManager.getHonorsAdvisorsForMajor(major);
+
+			//remove locked students and advisors
+			students.removeIf(x -> x.locked());
+			advisors.removeIf(x -> x.locked());
+			
 			DataManager.roundRobinAssign(advisors, students, "Honors by Major");
 
 		}

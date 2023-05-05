@@ -141,7 +141,42 @@ public class StudentData extends DataModel {
 	@Override
 	public Font getHighlightFont(int row, int column) {
 		Student student = getStudentFromRow(row);
-		return (student.check(Person.PLP)) ? Fonts.mediumBoldFont : Fonts.mediumFont;
+		boolean locked = student.locked();
+		boolean plp = student.check(Person.PLP);
+		
+		Font font;
+		if (locked && plp) {
+			font = Fonts.mediumItalicBoldFont;
+		}
+		else if (locked) {
+			font = Fonts.mediumItalicFont;	
+		}
+		else if (plp) {
+			font = Fonts.mediumBoldFont;
+		}
+		else {
+			font = Fonts.mediumFont;
+		}
+		
+		return font;
+	}
+	
+	/**
+	 * Get a highlight text color for a given row and column
+	 * 
+	 * @param row    the 0-based row
+	 * @param column the 0-based column
+	 * @return the hightlight color, if null use default (black)
+	 */
+	@Override
+	public Color getHighlightTextColor(int row, int column) {
+		Student student = getStudentFromRow(row);
+		if ((column == 2) || (column == 3)) {
+			return student.locked() ? Color.gray : Color.black;
+		}
+		else {
+			return Color.black;
+		}
 	}
 
 

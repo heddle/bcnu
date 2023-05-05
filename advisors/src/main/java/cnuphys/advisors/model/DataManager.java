@@ -178,13 +178,11 @@ public class DataManager {
 	 * @param major the major to match
 	 * @return the list
 	 */
-	public static List<Advisor> getHonorsAdvisorsForMajor(Major major, boolean unlockedOnly) {
+	public static List<Advisor> getHonorsAdvisorsForMajor(Major major) {
 		ArrayList<Advisor> advisors = new ArrayList<>();
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
-			if (unlockCheck(advisor, unlockedOnly) && advisor.honors()) {
-				
-				
+			if (advisor.honors()) {
 				if (major == advisor.subject) {
 					advisors.add(advisor);
 				}
@@ -192,11 +190,6 @@ public class DataManager {
 		}
 
 		return advisors;
-	}
-
-	//false only if unlockedOnly and advisor is locked
-	private static boolean unlockCheck(Advisor advisor, boolean unlockedOnly) {
-		return unlockedOnly ? !advisor.locked(): false;
 	}
 	
 	/**

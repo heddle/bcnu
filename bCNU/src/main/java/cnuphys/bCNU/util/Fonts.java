@@ -55,6 +55,10 @@ public class Fonts {
 
 	// common medium font used for components
 	public static Font mediumItalicFont = commonFont(Font.ITALIC, 11);
+	
+	// common medium font used for components
+	public static Font mediumItalicBoldFont = commonFont(Font.ITALIC + Font.BOLD, 11);
+
 
 	// common small font used for components
 	public static Font tweenFont = commonFont(Font.PLAIN, 10);
