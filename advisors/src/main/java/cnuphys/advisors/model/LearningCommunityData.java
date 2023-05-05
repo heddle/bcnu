@@ -6,13 +6,12 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
-import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.CustomRenderer;
 
 public class LearningCommunityData extends DataModel {
-	
+
 
 	// attributes for student data
 	private static final DataAttribute attributes[] = { DataManager.rowAtt, DataManager.lcNumAtt,
@@ -22,7 +21,7 @@ public class LearningCommunityData extends DataModel {
 
 	public LearningCommunityData(String baseName) {
 		super(baseName, attributes);
-		
+
 		renderer = new CustomRenderer(this);
 
 		for (int i = 0; i < getColumnCount(); i++) {
@@ -30,7 +29,7 @@ public class LearningCommunityData extends DataModel {
 		}
 
 	}
-	
+
 	/**
 	 * Get a highlight text color for a given row and column
 	 * @param row the 0-based row
@@ -81,11 +80,11 @@ public class LearningCommunityData extends DataModel {
 
 		for (String s[] : _data) {
 			String lcStr = s[lcIndex].trim();
-			
+
 			if (lcStr.length() < 1) {
 				continue;
 			}
-			
+
 			int lcNum = Integer.parseInt(lcStr);
 			String lcTitle = s[titleIndex];
 			lcTitle = lcTitle.replace("(ILC)", "");
@@ -99,7 +98,7 @@ public class LearningCommunityData extends DataModel {
 			}
 
 			String notes = s[notesIndex];
-	
+
 			_tableData.add(new LearningCommunityCourse(lcNum, lcTitle, crn, subject, course, llc, notes));
 		}
 	}

@@ -9,19 +9,13 @@ import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.LearningCommunityCourse;
 
-public class Student implements ITabled {
+public class Student extends Person implements ITabled {
 
-	/** student locked down and can't be reassigned by algorithm?? */
-	public boolean locked;
-	
 	/** learning community as a string */
 	public String lc;
-	
+
 	/** learning community as a number */
 	public int lcNum;
-
-	/** the student's id */
-	public String id;
 
 	/** the student's last name */
 	public String lastName;
@@ -29,36 +23,8 @@ public class Student implements ITabled {
 	/** the student's first name */
 	public String firstName;
 
-	/** is a plp student */
-	public boolean plp;
-
-	/** is an honors student */
-	public boolean honor;
-
-	/** is a pre med scholar? */
-	public boolean preMedScholar;
-
-	/** is a student*/
-	public boolean prelaw;
-
-	/** is an ilc student*/
-	public boolean ilc;
-
-	/** is a presidential scholar*/
-	public boolean presidentialScholar;
-
-	/** is a wind scholar*/
-	public boolean windScholar;
-
 	/** the student's major */
 	public Major major;
-
-	/** is this a community captain? */
-	public boolean communityCaptain;
-
-	/** in the BTMG program? */
-	public boolean btmg;
-
 
 	/** the assigned advisor */
 	public Advisor advisor;
@@ -71,21 +37,21 @@ public class Student implements ITabled {
 			String psp, String prelaw, String wind, String ccap, String btmg, String maj) {
 		super();
 		this.lc = lc;
-		
+
 		lcNum = Integer.parseInt(lc.replaceAll("[^\\d.]", ""));
-		
+
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
 		this.firstName = firstName.replace("\"", "").trim();
-		this.ilc = false;   //will be assigned in ILC step
-		this.plp = checkString(plp, "PLP");
-		this.honor = checkString(honr, "HO");
-		this.presidentialScholar = checkString(prsc, "PRS");
-		this.preMedScholar = checkString(psp, "PSP");
-		this.prelaw = checkString(prelaw, "LW");
-		this.windScholar = checkString(wind, "WIN");
-		this.communityCaptain = checkString(ccap, "CCAP");
-		this.btmg = checkString(btmg, "BTM");
+		this.setILC(false);   //will be assigned in ILC step
+		this.set(Person.PLP, checkString(plp, "PLP"));
+		this.setHonors(checkString(honr, "HO"));
+		this.set(Person.PRESSCHOLAR, checkString(prsc, "PRS"));
+		this.set(Person.PREMEDSCHOLAR, checkString(psp, "PSP"));
+		this.set(Person.PRELAW, checkString(prelaw, "LW"));
+		this.set(Person.WIND, checkString(wind, "WIN"));
+		this.set(Person.CCPT, checkString(ccap, "CCAP"));
+		this.set(Person.BTMG, checkString(btmg, "BTM"));
 
 
 		String majorstr = maj.replace("\"", "").trim();
@@ -144,13 +110,13 @@ public class Student implements ITabled {
 	 * @return true if the course is in the students LC
 	 */
 	public boolean courseInLC(String crn) {
-		
+
 		for (LearningCommunityCourse lc : DataManager.getLearningCommunityData().getLearningCommunityCourses()) {
 			if (crn.equals(lc.crn)) {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 
@@ -170,31 +136,31 @@ public class Student implements ITabled {
 			return "L" + lcNum;
 		}
 		else if (col == 5) {
-			return ilc ? "ILC" : "";
+			return ilc() ? "ILC" : "";
 		}
 		else if (col == 6) {
-			return plp ? "PLP" : "";
+			return check(Person.PLP) ? "PLP" : "";
 		}
 		else if (col == 7) {
-			return honor ? "HON": "";
+			return honors() ? "HON": "";
 		}
 		else if (col == 8) {
-			return presidentialScholar ? "PRSC": "";
+			return check(Person.PRESSCHOLAR) ? "PRSC": "";
 		}
 		else if (col == 9) {
-			return preMedScholar ? "PSP" : "";
+			return check(Person.PREMEDSCHOLAR) ? "PSP" : "";
 		}
 		else if (col == 10) {
-			return prelaw ? "PLW" : "";
+			return check(Person.PRELAW) ? "PLW" : "";
 		}
 		else if (col == 11) {
-			return windScholar ? "WIND" : "";
+			return check(Person.WIND) ? "WIND" : "";
 		}
 		else if (col == 12) {
-			return communityCaptain ? "CCAP" : "";
+			return check(Person.CCPT) ? "CCAP" : "";
 		}
 		else if (col == 13) {
-			return btmg ? "BTMG" : "";
+			return check(Person.BTMG) ? "BTMG" : "";
 		}
 		else if (col == 14) {
 			return major.name();

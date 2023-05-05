@@ -4,17 +4,17 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.ITabled;
 
 public class LearningCommunityCourse implements ITabled {
-	
-	
+
+
 	/** the learning community number */
 	public int lcNum;
 
 	/** the learning community title */
 	public String learningCommunity;
-	
+
 	/** course CRN */
 	public String crn;
-	
+
 	/** subject e.g. BIOL */
 	public String subject;
 
@@ -23,21 +23,21 @@ public class LearningCommunityCourse implements ITabled {
 
 	/** llc if any */
 	public String llc;
-	
+
 	/** notes */
 	public String notes;
 
 	/** the instructor */
 	public Advisor instructor;
-	
+
 	/** number of students enrolled */
 	public int count;
-	
+
 	/** is an ilc */
 	public boolean ilc;
-	
+
 	//LearningCommunityCourse(lcNum, lcTitle, crn, subject, course, llc, notes)
-	
+
 	/**
 	 * @param lcNum
 	 * @param learningCommunity
@@ -56,14 +56,14 @@ public class LearningCommunityCourse implements ITabled {
 		this.course = course.replace("\"", "").trim();
 		this.llc = llc.replace("\"", "").trim();
 		this.notes = notes.replace("\"", "").trim();
-		
+
 		ILCCourse  ilcCourse =  DataManager.getILCData().getILCCourse(this.crn);
 		if (ilcCourse != null) {
 			ilc = true;
 			instructor = ilcCourse.instructor;
 		}
 	}
-	
+
 	/**
 	 * Get the value at a given column, considering this as a row
 	 */
@@ -98,6 +98,10 @@ public class LearningCommunityCourse implements ITabled {
 		return null;
 	}
 
+	@Override
+	public boolean check(int bit) {
+		return false;
+	}
 
-	
+
 }

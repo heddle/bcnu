@@ -111,7 +111,7 @@ public class Schedule extends DataModel {
 			}
 
 			ilc.instructor  = advisor;
-			advisor.hasILC = true;
+			advisor.setILC();
 		}
 
 

@@ -1,13 +1,9 @@
 package cnuphys.advisors.model;
 
-import java.util.List;
-
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.AdvisorFilter;
-import cnuphys.advisors.Student;
-import cnuphys.advisors.StudentFilter;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.InputOutput;
@@ -43,16 +39,16 @@ public class PresScholarAdvisors extends DataModel {
 				System.err.println(String.format("Did not match pres scholar advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
 			} else {
-				advisor.presscholar = true;
+				advisor.set(Person.PRESSCHOLAR);
 			}
 		}
-		
+
 		//raw data not needed
 		deleteRawData();
 
 	}
 
-	
+
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

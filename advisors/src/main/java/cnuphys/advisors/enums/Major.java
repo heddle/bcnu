@@ -27,7 +27,7 @@ public enum Major {
 	 * A map of counts for making bar plots
 	 */
 	public static EnumMap<Major, Integer> counts = new EnumMap<>(Major.class);
-	
+
 	/**
 	 * Map major to department
 	 */
@@ -76,8 +76,8 @@ public enum Major {
 		names.put(STDART, new String[] {"studio art"});
 		names.put(THEA, new String[] {"theater", "pfar"});
 		names.put(UNDEC, new String[] {"undeclared"});
-		
-		
+
+
 		departments.put(ACCT, Department.LUTR);
 		departments.put(AMSTD, Department.LDSP);
 		departments.put(BIOCHM, Department.MBCH);
@@ -122,7 +122,7 @@ public enum Major {
 		departments.put(UNDEC, Department.NONE);
 
 	}
-	
+
 	/**
 	 * Get the department from the major
 	 * @return the department from the major

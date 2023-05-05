@@ -76,4 +76,10 @@ public class Course implements ITabled {
 
 		return null;
 	}
+
+
+	@Override
+	public boolean check(int bit) {
+		return false;
+	}
 }

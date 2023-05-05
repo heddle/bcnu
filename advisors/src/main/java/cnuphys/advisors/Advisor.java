@@ -7,10 +7,7 @@ import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.DataManager;
 
-public class Advisor implements ITabled {
-
-	/** can accept more advisees?? */
-	public boolean locked;
+public class Advisor extends Person implements ITabled {
 
 	/** list of students */
 	public ArrayList<Student> advisees;
@@ -25,30 +22,9 @@ public class Advisor implements ITabled {
 	 * ASSIGNED FROM SCHEDULE! */
 	public Major subject;
 
-	/** faculty ID */
-	public String id;
-
-	/** does the instructor have an ILC */
-	public boolean hasILC;
-
 	/** in case we want to disable an advisor */
 	public boolean acceptingCohort = true;
 
-	/** honors advisor? */
-	public boolean honors;
-
-	/** pres scholar advisor? */
-	public boolean presscholar;
-
-	/** community captain advisor? */
-	public boolean ccpt;
-
-	/** biotech mgmt advisor? */
-	public boolean btmg;
-	
-	/** prelaw advisor? */
-	public boolean prelaw;
-	
 	/**
 	 * Create an advisor
 	 * @param name full name: last, first
@@ -88,19 +64,19 @@ public class Advisor implements ITabled {
 	public void addAdvisee(Student student, boolean lockStudentWhenDone) {
 
 		//is the advisor locked?
-		if (locked) {
+		if (locked()) {
 			String s = String.format("Trying to assign to locked advisor. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
 			System.err.println(s);
 			return;
 		}
 
 		//is the student locked?
-		if (student.locked) {
+		if (student.locked()) {
 			String s = String.format("Trying to assign a locked student. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
 			System.err.println(s);
 			return;
 		}
-		
+
 		//are we replacing an advisor?
 		if (student.assigned()) {
 			student.advisor.removeAdvisee(student);
@@ -109,14 +85,14 @@ public class Advisor implements ITabled {
 		advisees.remove(student);
 		advisees.add(student);
 
-		student.locked = lockStudentWhenDone;
+		student.setLocked(lockStudentWhenDone);
 		student.advisor = this;
 
 		String s = String.format("Assignment made. Advisor: [%s] (%d) Student: [%s]", name, adviseeCount(), student.fullNameAndID());
 		System.err.println(s);
 
 	}
-	
+
 	/**
 	 * Remove an advisee from the list of advisees
 	 * @param student the student to remove

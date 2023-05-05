@@ -7,8 +7,7 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
-import cnuphys.advisors.Advisor;
-import cnuphys.advisors.IFilter;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -44,19 +43,34 @@ public class StudentData extends DataModel {
 	/**
 	 * private constructor used to make a submodel
 	 * @param baseModel
-	 * @param filter
+	 * @param bits
 	 */
-	private StudentData(StudentData baseModel, IFilter filter) {
-		super(baseModel, filter);
+	private StudentData(StudentData baseModel, int bits) {
+		super(baseModel, bits);
 	}
 
 	/**
-	 * Create a submodel using a filter
+	 * Create a submodel using bit matching
 	 */
-	public StudentData subModel(IFilter filter) {
-		return new StudentData(this, filter);
+	public StudentData subModel(int bits) {
+		return new StudentData(this, bits);
 	}
 
+	/**
+	 * private constructor used to make a submodel
+	 * @param baseModel
+	 * @param list
+	 */
+	private StudentData(StudentData baseModel, List<Student> list) {
+		super(baseModel, list);
+	}
+
+	/**
+	 * Create a submodel using a list
+	 */
+	public StudentData subModel(List<Student> list) {
+		return new StudentData(this, list);
+	}
 
 
 	@Override
@@ -83,9 +97,9 @@ public class StudentData extends DataModel {
 			String id = s[idIndex];
     		String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
-			
+
 			String lcNum = s[lcNumIndex];
-			
+
 			String prsc = s[prscIndex];
 			String wind = s[windIndex];
 			String ccap = s[ccapIndex];
@@ -115,7 +129,7 @@ public class StudentData extends DataModel {
     @Override
 	public Color getHighlightBackgroundColor(int row, int column) {
 		Student student = getStudentFromRow(row);
-		return (student.honor) ? X11Colors.getX11Color("alice blue") : Color.white;
+		return (student.honors()) ? X11Colors.getX11Color("alice blue") : Color.white;
 	}
 
 	/**
@@ -127,7 +141,7 @@ public class StudentData extends DataModel {
 	@Override
 	public Font getHighlightFont(int row, int column) {
 		Student student = getStudentFromRow(row);
-		return (student.plp) ? Fonts.mediumBoldFont : Fonts.mediumFont;
+		return (student.check(Person.PLP)) ? Fonts.mediumBoldFont : Fonts.mediumFont;
 	}
 
 
@@ -155,7 +169,7 @@ public class StudentData extends DataModel {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Get the number of assigned students from student
 	 * @return the number of assigned students

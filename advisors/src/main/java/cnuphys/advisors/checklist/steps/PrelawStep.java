@@ -1,7 +1,6 @@
 package cnuphys.advisors.checklist.steps;
 
-import cnuphys.advisors.AdvisorFilter;
-import cnuphys.advisors.StudentFilter;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
@@ -16,8 +15,8 @@ public class PrelawStep implements IAlgorithmStep {
 	public boolean run() {
 
 		//get the community advisors and students
-		AdvisorData advisorData = DataManager.getFilteredAdvisorData(AdvisorFilter.prelawAdvisors);
-		StudentData studentData = DataManager.getFilteredStudentData(StudentFilter.prelawStudents);
+		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.PRELAW);
+		StudentData studentData = DataManager.getFilteredStudentData(Person.PRELAW);
 		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), "In Prelaw assign");
 
 		return true;

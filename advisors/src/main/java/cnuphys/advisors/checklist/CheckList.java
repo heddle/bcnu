@@ -35,7 +35,7 @@ public class CheckList extends JPanel {
 
 	//assign prelaw students
 	private CheckListComponent prelawStep;
-	
+
 	//assign honors students
 	private CheckListComponent honorsStep;
 
@@ -87,7 +87,7 @@ public class CheckList extends JPanel {
 		d.height = HEIGHT;
 		return d;
 	}
-	
+
 	public void initRun() {
 		presScholarStep.run();
 		ilcStep.run();

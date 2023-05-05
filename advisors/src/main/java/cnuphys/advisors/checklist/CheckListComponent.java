@@ -71,7 +71,7 @@ public class CheckListComponent extends JPanel {
 			_doitButton.setEnabled(enabled);
 		}
 	}
-	
+
 	/**
 	 * run the step
 	 */

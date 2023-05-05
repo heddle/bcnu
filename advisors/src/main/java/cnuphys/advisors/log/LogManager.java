@@ -25,7 +25,7 @@ public class LogManager {
 
 		DialogUtilities.centerDialog(_dialog);
 
-//		captureStreamsToLog();
+	//	captureStreamsToLog();
 	}
 
 	//capture stdout and stderr to log

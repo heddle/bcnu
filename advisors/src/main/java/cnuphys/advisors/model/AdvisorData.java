@@ -1,20 +1,22 @@
 package cnuphys.advisors.model;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.IFilter;
-import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.Person;
+import cnuphys.advisors.Student;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.table.CustomRenderer;
 import cnuphys.advisors.table.InputOutput;
+import cnuphys.bCNU.util.Fonts;
 
 /**
  * Contains all the advisor data
@@ -22,16 +24,6 @@ import cnuphys.advisors.table.InputOutput;
  *
  */
 public class AdvisorData extends DataModel {
-	
-	public static final int HONOR        = 01000;
-	public static final int PRESSCHOLAR  = 02000;
-	public static final int MUSTHEA      = 04000;
-	public static final int CCPT         = 010000;
-	public static final int BTMG         = 020000;
-	public static final int ILC          = 040000;
-	public static final int PRELAW       = 0100000;
-	public static final int UNLOCKED     = 0200000;
-	public static final int ANY = 07777777777;
 
 
 	// attributes for advisor data
@@ -58,19 +50,18 @@ public class AdvisorData extends DataModel {
 	/**
 	 * private constructor used to make a submodel
 	 * @param baseModel
-	 * @param filter
+	 * @param bits
 	 */
-	private AdvisorData(AdvisorData baseModel, IFilter filter) {
-		super(baseModel, filter);
+	private AdvisorData(AdvisorData baseModel, int bits) {
+		super(baseModel, bits);
 	}
 
 	/**
 	 * Create a submodel using a filter
 	 */
-	public AdvisorData subModel(IFilter filter) {
-		return new AdvisorData(this, filter);
+	public AdvisorData subModel(int bits) {
+		return new AdvisorData(this, bits);
 	}
-
 
 	@Override
 	public int count() {
@@ -169,17 +160,36 @@ public class AdvisorData extends DataModel {
 
 		return list;
     }
+    
+	/**
+	 * Get a highlight font for a given row and column
+	 * @param row the 0-based row
+	 * @param column the 0-based column
+	 * @return the highlight color, if null use medium font
+	 */
+	@Override
+	public Font getHighlightFont(int row, int column) {
+		Advisor advisor = getAdvisorFromRow(row);
+		return (advisor.locked()) ? Fonts.mediumItalicFont : Fonts.mediumFont;
+	}
+
 
 	/**
 	 * Get a highlight text color for a given row and column
-	 * @param row the 0-based row
+	 * 
+	 * @param row    the 0-based row
 	 * @param column the 0-based column
 	 * @return the hightlight color, if null use default (black)
 	 */
-    @Override
+	@Override
 	public Color getHighlightTextColor(int row, int column) {
 		Advisor advisor = getAdvisorFromRow(row);
-		return (advisor.hasILC) ? Color.red : Color.black;
+
+		if ((column == 1) && advisor.locked()) {
+			return Color.gray;
+		} else {
+			return (advisor.ilc()) ? Color.red : Color.black;
+		}
 	}
 
 
@@ -213,62 +223,7 @@ public class AdvisorData extends DataModel {
 
     	return null;
     }
-    
-	/**
-	 * Get a list of advisors filtered by the given bits
-	 * @param bits
-	 * @return a filtered list of advisors
-	 */
-	public static List<Advisor> getAdvisors(int... bits) {
-		ArrayList<Advisor> filteredList = new ArrayList<>();
-		
-		List<Advisor> allAdvisors = DataManager.getAdvisorData().getAdvisors();
-		if ((bits == null) || (bits.length < 1)) {
-			return allAdvisors;
-		}
-		
-		for (Advisor advisor : allAdvisors) {
-			if (pass(advisor, bits)) {
-				filteredList.add(advisor);
-			}
-		}
-		
-		return filteredList;
-	}
-	
-	//used in filtering
-	private static boolean pass(Advisor advisor, int... bits) {
-		for (int bit : bits) {
-			if (!check(advisor, bit)) {
-				return false;
-			}
-		}
-		return true;
-	}
-	
-	//used in filtering
-	private static boolean check(Advisor advisor, int bit) {
-		switch (bit) {
-		case HONOR:
-			return advisor.locked;
-		case ILC:
-			return advisor.hasILC;
-		case MUSTHEA:
-			return (advisor.subject == Major.MUSIC) || (advisor.subject == Major.THEA);
-		case PRESSCHOLAR:
-			return advisor.presscholar;
-		case CCPT:
-			return advisor.ccpt;
-		case BTMG:
-			return advisor.btmg;
-		case PRELAW:
-			return advisor.prelaw;
-		case UNLOCKED:
-			return !advisor.locked;
-		default:
-			return false;
-		}
-	}
+
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

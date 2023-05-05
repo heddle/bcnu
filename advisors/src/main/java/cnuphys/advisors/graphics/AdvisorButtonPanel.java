@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -13,8 +14,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import cnuphys.advisors.AdvisorFilter;
-import cnuphys.advisors.StudentFilter;
+import cnuphys.advisors.Person;
+import cnuphys.advisors.Student;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.bCNU.util.Fonts;
 
@@ -133,93 +134,95 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 	//handle click on honors advisors button
 	private void handleHonorsAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.honorsAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.HONOR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
 	}
-	
+
 	//handle click on honors advisors button
 	private void handleILCAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.ilcAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.ILC).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("ILC Advisors");
 	}
 
 
 	//handle click on musics theater advisors button
 	private void handleMusTheaAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.musTheaAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.MUSICTHEATER).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Music and Theater Advisors");
 	}
 
 	//handle click on CCPT advisors button
 	private void handleCCPTAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.ccptAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.CCPT).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Community Captain Advisors");
 	}
 
 	//handle click on BGMT advisors button
 	private void handleBGMTAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.btmgAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.BTMG).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Bio Tech and Management Advisors");
 	}
-	
+
 	//handle click on PreLat advisors button
 	private void handlePreLawAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.prelawAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PRELAW).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Pre-Law Advisors");
 	}
 
 
 	//handle click on pres scholar advisors button
 	private void handlePresScholarAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(AdvisorFilter.presScholarAdvisors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PRESSCHOLAR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
 	}
 
 	//handle click on assigned students button
 	private void handleAssignedStudents() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.assignedStudents).getScrollPane());
+		List<Student> students = DataManager.getAssignedStudents();
+		AdvisorDisplay.getInstance().setContent(DataManager.getStudentData(students).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Assigned Students");
 	}
 
 	//handle click on unassigned students button
 	private void handleUnassignedStudents() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.unassignedStudents).getScrollPane());
+		List<Student> students = DataManager.getUnassignedStudents();
+		AdvisorDisplay.getInstance().setContent(DataManager.getStudentData(students).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Unassigned Students");
 	}
 
 	//handle click on community captains button
 	private void handleCommunityCaptains() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.communityCaptains).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.CCPT).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Community Captains");
 	}
 
 	//handle click on honors students button
 	private void handleHonorsStudents() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.honors).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.HONOR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Honors Students");
 	}
 
 	//handle click on biotech mgmt button
 	private void handleBTMG() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.btmg).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.BTMG).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Bio Tech and Management Students");
 	}
 
 	//handle click on prelaw button
 	private void handlePrelaw() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.prelawStudents).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.PRELAW).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Pre-Law Students");
 	}
 
 	//handle click on premed scholars button
 	private void handlePremedScholars() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.preMedScholars).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.PREMEDSCHOLAR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Pre-Med Scholars");
 	}
 
 	//handle click on presidential scholars button
 	private void handlePresScholars() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.presScholars).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.PRESSCHOLAR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Presidential Scholars");
 	}
 
@@ -237,7 +240,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 	//handle click on save button
 	private void handleMusicTheaterStudents() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(StudentFilter.musicTheaterStudents).getScrollPane());
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.MUSICTHEATER).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Music and Theater Majors");
 
 	}
@@ -252,7 +255,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getSchedule().getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("All Classes taught by FCAs");
 	}
-	
+
 	//handle click department and major button
 	private void handleDepartmentMajor() {
 		AdvisorDisplay.getInstance().setContent(new DepartmentMajorPane());

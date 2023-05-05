@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.AdvisorFilter;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.StudentFilter;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
@@ -38,7 +36,7 @@ public class DataManager {
 
 	//ILCs
 	private static ILCData _ilcData;
-	
+
 	//Learning Communities
 	private static LearningCommunityData _learningCommunityData;
 
@@ -95,15 +93,15 @@ public class DataManager {
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
 		_learningCommunityData = new LearningCommunityData(_lcBaseName);
-		
+
 		new HonorsAdvisors(_honAdvBaseName);
-		
+
 		new StudentSchedules(_studentSchedulesBaseName);
 		new PresScholarAdvisors(_presScholarAdvBaseName);
 		new CCPTAdvisors(_ccptAdvBaseName);
 		new BTMGAdvisors(_btmgAdvBaseName);
 		new PrelawAdvisors(_prelawAdvBaseName);
-		
+
 		//run the initial steps
 		CheckList.getInstance().initRun();
 	}
@@ -131,7 +129,7 @@ public class DataManager {
 	public static ILCData getILCData() {
 		return _ilcData;
 	}
-	
+
 	/**
 	 * Get the data for learning communities
 	 * @return the advisor data
@@ -148,8 +146,13 @@ public class DataManager {
 		return _advisorData;
 	}
 
-	public static AdvisorData getFilteredAdvisorData(AdvisorFilter filter) {
-		return _advisorData.subModel(filter);
+	/**
+	 * Get filtered advisor data
+	 * @param bits to match
+	 * @return filtered advisor data
+	 */
+	public static AdvisorData getFilteredAdvisorData(int bits) {
+		return _advisorData.subModel(bits);
 	}
 
 	/**
@@ -168,18 +171,20 @@ public class DataManager {
 
 		return advisors;
 	}
-	
+
 	/**
 	 * Get a list of honors advisors whose subject matches a major
-	 * 
+	 *
 	 * @param major the major to match
 	 * @return the list
 	 */
-	public static List<Advisor> getHonorsAdvisorsForMajor(Major major) {
+	public static List<Advisor> getHonorsAdvisorsForMajor(Major major, boolean unlockedOnly) {
 		ArrayList<Advisor> advisors = new ArrayList<>();
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
-			if (advisor.honors) {
+			if (unlockCheck(advisor, unlockedOnly) && advisor.honors()) {
+				
+				
 				if (major == advisor.subject) {
 					advisors.add(advisor);
 				}
@@ -189,6 +194,10 @@ public class DataManager {
 		return advisors;
 	}
 
+	//false only if unlockedOnly and advisor is locked
+	private static boolean unlockCheck(Advisor advisor, boolean unlockedOnly) {
+		return unlockedOnly ? !advisor.locked(): false;
+	}
 	
 	/**
 	 * Get a list of advisors whose subject matches a department
@@ -226,8 +235,41 @@ public class DataManager {
 	}
 	
 	/**
+	 * Get a list of of all unassigned students
+	 * @return the list of unassigned students
+	 */
+	public static List<Student> getUnassignedStudents() {
+		ArrayList<Student> students = new ArrayList<>();
+
+		for (Student student : _studentData.getStudents()) {
+			if (!student.assigned()) {
+				students.add(student);
+			}
+		}
+
+		return students;
+	}
+
+	/**
+	 * Get a list of of all assigned students
+	 * @return the list of assigned students
+	 */
+	public static List<Student> getAssignedStudents() {
+		ArrayList<Student> students = new ArrayList<>();
+
+		for (Student student : _studentData.getStudents()) {
+			if (student.assigned()) {
+				students.add(student);
+			}
+		}
+
+		return students;
+	}
+
+
+	/**
 	 * Get a list of students whose major matches a given major and are unassigned
-	 * 
+	 *
 	 * @param major the major to match
 	 * @return the list
 	 */
@@ -244,10 +286,10 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of honors students whose major matches a given major and are unassigned
-	 * 
+	 *
 	 * @param major the major to match
 	 * @return the list
 	 */
@@ -255,7 +297,7 @@ public class DataManager {
 		ArrayList<Student> students = new ArrayList<>();
 
 		for (Student student : _studentData.getStudents()) {
-			if (!student.assigned() && student.honor) {
+			if (!student.assigned() && student.honors()) {
 				if (major == student.major) {
 					students.add(student);
 				}
@@ -280,9 +322,13 @@ public class DataManager {
 	public static StudentData getStudentData() {
 		return _studentData;
 	}
+	
+	public static StudentData getStudentData(List<Student> students) {
+		return _studentData.subModel(students);
+	}
 
-	public static StudentData getFilteredStudentData(StudentFilter filter) {
-		return _studentData.subModel(filter);
+	public static StudentData getFilteredStudentData(int bits) {
+		return _studentData.subModel(bits);
 	}
 
 	/**
@@ -319,7 +365,7 @@ public class DataManager {
 
 		for (Student student : students) {
 
-			if (student.locked) {
+			if (student.locked()) {
 				continue;
 			}
 
@@ -330,7 +376,7 @@ public class DataManager {
 
 			while (!found && (nTry < numAdvisor)) {
 				Advisor advisor = advisors.get(advisorIndex);
-				if (!advisor.locked && (advisor.adviseeCount() < target)) {
+				if (!advisor.locked() && (advisor.adviseeCount() < target)) {
 					advisor.addAdvisee(student, true);
 					found = true;
 				}

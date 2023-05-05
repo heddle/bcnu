@@ -142,7 +142,7 @@ public class AdvisorAssign extends JFrame {
 	 * Fix the info label
 	 */
 	public static void updateInfoLabel() {
-		
+
 		if (_infoLabel == null) {
 			return;
 		}

@@ -13,13 +13,13 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 
-import cnuphys.advisors.IFilter;
 import cnuphys.advisors.model.DataAttribute;
 import cnuphys.advisors.table.CustomRenderer;
 import cnuphys.advisors.table.DataTable;
@@ -56,7 +56,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	protected String _baseName;
 
 	//the table data
-	protected ArrayList<ITabled> _tableData = new ArrayList<>();
+	protected List<ITabled> _tableData = new ArrayList<>();
 
 	//the table
 	protected DataTable _dataTable;
@@ -98,28 +98,48 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	 * @param baseModel the base mode (e.g. all students)
 	 * @param filter the filter to select students
 	 */
-	public DataModel(DataModel baseModel, IFilter filter) {
+	public DataModel(DataModel baseModel, int bits) {
 		super(colNamesFromAttributes(baseModel._columnAttributes), 2);
 		_baseName = baseModel._baseName;
 		_columnAttributes = baseModel._columnAttributes;
 		_header = baseModel._header;
 		columnNames = baseModel.columnNames;
 		columnWidths = baseModel.columnWidths;
+		
+		
 
 		for (ITabled itabled : baseModel._tableData) {
-			if (filter.pass(itabled)) {
+			if (itabled.check(bits)) {
 				_tableData.add(itabled);
 			}
 		}
 
 		createDataTable();
 	}
+	
+
+	/**
+	 * Create a submodel using a filter
+	 * @param baseModel the base mode (e.g. all students)
+	 * @param data the model data
+	 */
+	public DataModel(DataModel baseModel, List data) {
+		super(colNamesFromAttributes(baseModel._columnAttributes), 2);
+		_baseName = baseModel._baseName;
+		_columnAttributes = baseModel._columnAttributes;
+		_header = baseModel._header;
+		columnNames = baseModel.columnNames;
+		columnWidths = baseModel.columnWidths;
+		_tableData = data;
+		createDataTable();
+	}
+
 
 	/**
 	 * get the collection of objects used as data
 	 * @return the collection of objects used as data
 	 */
-	public ArrayList<ITabled> getData() {
+	public List<ITabled> getData() {
 		return _tableData;
 	}
 

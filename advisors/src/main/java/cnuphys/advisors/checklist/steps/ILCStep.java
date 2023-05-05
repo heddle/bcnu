@@ -3,9 +3,10 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.StudentFilter;
 import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.ILCCourse;
@@ -20,10 +21,10 @@ public class ILCStep implements IAlgorithmStep {
 	public boolean run() {
 		ILCData ilcData = DataManager.getILCData();
 
-		List<Student> students = DataManager.getFilteredStudentData(StudentFilter.unassignedStudents).getStudents();
+		List<Student> students = DataManager.getUnassignedStudents();;
 
 		for (Student student : students) {
-			if (student.locked) {
+			if (student.locked()) {
 				System.err.println("locked student in ilcStep should not have happened.");
 				continue;
 			}
@@ -37,17 +38,15 @@ public class ILCStep implements IAlgorithmStep {
 
 				if (ilc != null) {
 					Advisor advisor = ilc.instructor;
-					
+
 					boolean assign = true;
-					
+
 					if (student.advisor != null) { //already have an advisor?
-						
+
 						//override if this is in student's LC
 						if (student.courseInLC(course.crn)) {
-			//				System.err.println("Before overwrite advisor " + student.advisor.name + "  count: " + student.advisor.adviseeCount());
 							student.advisor.removeAdvisee(student);
-			//				System.err.println("STUDENT: " + student.fullNameAndID()+ "   Overwrite with LC course " + advisor.name + "  replaces: " + student.advisor.name);
-							student.locked = false;
+							student.setLocked(false);
 						}
 						else {  //no need to override
 							assign = false;
@@ -55,11 +54,21 @@ public class ILCStep implements IAlgorithmStep {
 					}
 
 					if (assign) {
-						student.ilc = true;
+						student.setILC();
 						advisor.addAdvisee(student, true);
 						ilc.count += 1;
 					}
 				}
+			}
+		}
+		
+		//lock advisors that have reached or exceeded target
+		
+		int target = AdvisorAssign.targetAverage();
+		List<Advisor> ilcAdvisors = DataManager.getFilteredAdvisorData(Person.ILC).getAdvisors();
+		for (Advisor advisor : ilcAdvisors) {
+			if (advisor.adviseeCount() >= target) {
+				advisor.setLocked();
 			}
 		}
 

@@ -62,13 +62,13 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 	 */
 	public List<Major> getMajors() {
 		List<Major> majors = new ArrayList<>();
-		
+
 		for (Major major : Major.values()) {
 			if (major.getDepartment() == this) {
 				majors.add(major);
 			}
 		}
-		
+
 		return majors;
 	}
 

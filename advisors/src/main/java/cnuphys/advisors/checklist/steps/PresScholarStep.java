@@ -3,9 +3,8 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.AdvisorFilter;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.StudentFilter;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
@@ -16,9 +15,9 @@ public class PresScholarStep implements IAlgorithmStep {
 	@Override
 	public boolean run() {
 		//get the pres scholar advisors and students
-		AdvisorData advisorData = DataManager.getFilteredAdvisorData(AdvisorFilter.presScholarAdvisors);
+		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.PRESSCHOLAR);
 
-		StudentData studentData = DataManager.getFilteredStudentData(StudentFilter.presScholars);
+		StudentData studentData = DataManager.getFilteredStudentData(Person.PRESSCHOLAR);
 
 		System.err.println("Assigning pres scholars. Advisor count = " + advisorData.count() + "  student count = " + studentData.count());
 
@@ -30,16 +29,16 @@ public class PresScholarStep implements IAlgorithmStep {
 
 		for (Student student : students) {
 			int index = i % advCount;
-			
-			student.locked = false;
-			
+
+			student.setLocked(false);
+
 			advisors.get(index).addAdvisee(student, true);
 			i++;
 		}
 
 		//lock down the pres scholar advisors
 		for (Advisor advisor : advisorData.getAdvisors()) {
-			advisor.locked = true;
+			advisor.setLocked();;
 		}
 
 		return true;

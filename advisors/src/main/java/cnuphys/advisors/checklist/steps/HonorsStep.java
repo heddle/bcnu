@@ -3,9 +3,8 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.AdvisorFilter;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.StudentFilter;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.model.AdvisorData;
@@ -29,15 +28,15 @@ public class HonorsStep implements IAlgorithmStep {
 
 			//get unassigned honors students and honors advisor
 			List<Student> students = DataManager.getUnassignedHonorsStudentsForMajor(major);
-			List<Advisor> advisors = DataManager.getHonorsAdvisorsForMajor(major);
+			List<Advisor> advisors = DataManager.getHonorsAdvisorsForMajor(major, true);
 			DataManager.roundRobinAssign(advisors, students, "Honors by Major");
 
 		}
-		
+
 		//now run the algorithm
-		AdvisorData advisorData = DataManager.getFilteredAdvisorData(AdvisorFilter.honorsAdvisors);
-		StudentData studentData = DataManager.getFilteredStudentData(StudentFilter.unassignedHonorsStudents);
-		
+		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);
+		StudentData studentData = DataManager.getFilteredStudentData(Person.HONOR);
+
 		Algorithm.runAlgorithm(studentData.getStudents(), advisorData.getAdvisors());
 		return true;
 	}

@@ -47,6 +47,9 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	private JButton resumeButton;
 	private JButton resetButton;
 	
+	//holds the buttons
+	private JPanel _buttonPanel;
+	
 	
 	/**
 	 * Create a panel to hold all the optics for the simulation
@@ -139,23 +142,32 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		panel.add(cp, BorderLayout.CENTER);
 
 		// buttons in south of east panel
-		JPanel bPanel = new JPanel();
-		bPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 6, 2));
+		_buttonPanel = new JPanel();
+		_buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 6, 2));
 		runButton = makeButton("Run");
 		stopButton = makeButton("Stop");
 		pauseButton = makeButton("Pause");
 		resumeButton = makeButton("Resume");
 		resetButton = makeButton("Reset");
 
-		bPanel.add(runButton);
-		bPanel.add(pauseButton);
-		bPanel.add(resumeButton);
-		bPanel.add(resetButton);
-		bPanel.add(stopButton);
-		panel.add(bPanel, BorderLayout.SOUTH);
+		_buttonPanel.add(runButton);
+		_buttonPanel.add(pauseButton);
+		_buttonPanel.add(resumeButton);
+		_buttonPanel.add(resetButton);
+		_buttonPanel.add(stopButton);
+		panel.add(_buttonPanel, BorderLayout.SOUTH);
 
 		add(panel, BorderLayout.EAST);
 		fixPanelState();
+	}
+	
+	/**
+	 * Show or hide the button panel
+	 * @param vis the visibility flag
+	 */
+	public void buttonPanelSetVisible(boolean vis) {
+		_buttonPanel.setVisible(vis);
+		revalidate();
 	}
 
 	// create a buttom
@@ -210,18 +222,54 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		Object source = e.getSource();
 
 		if (source == runButton) {
-			_simulation.setSimulationState(SimulationState.RUNNING);
-			_simulation.startSimulation();
+			doRun();
 		} else if (source == pauseButton) {
-			_simulation.setSimulationState(SimulationState.PAUSED);
+			doPause();
 		} else if (source == resumeButton) {
-			_simulation.setSimulationState(SimulationState.RUNNING);
+			doResume();
 		} else if (source == resetButton) {
-			_simulation.reset();
+			doReset();
 		} else if (source == stopButton) {
-			_simulation.setSimulationState(SimulationState.STOPPED);
+			doStop();
 		}
 	}
+	
+	/**
+	 * Same as hitting the run button
+	 */
+	public void doRun() {
+		_simulation.setSimulationState(SimulationState.RUNNING);
+		_simulation.startSimulation();
+	}
+
+	/**
+	 * Same as hitting the pause button
+	 */
+	public void doPause() {
+		_simulation.setSimulationState(SimulationState.PAUSED);
+	}
+	
+	/**
+	 * Same as hitting the resume button
+	 */
+	public void doResume() {
+		_simulation.setSimulationState(SimulationState.RUNNING);
+	}
+
+	/**
+	 * Same as hitting the reset button
+	 */
+	public void doReset() {
+		_simulation.reset();
+	}
+
+	/**
+	 * Same as hitting the stop button
+	 */
+	public void doStop() {
+		_simulation.setSimulationState(SimulationState.STOPPED);
+	}
+
 
 	@Override
 	public void updateSolution(Simulation simulation, Solution newSolution, Solution oldSolution) {

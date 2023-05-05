@@ -2,7 +2,6 @@ package cnuphys.advisors.model;
 
 import javax.swing.event.ListSelectionEvent;
 
-import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -50,17 +49,17 @@ public class StudentSchedules extends DataModel {
 		deleteRawData();
 
 	}
-	
-	
+
+
 //	private void assignCourse(Student student, Course course) {
 //		student.addCourse(course);
-//		
+//
 //		if (course.isILC) {
 //			ILCCourse ilcCourse= DataManager.getILCData().getILCCourse(course.crn);
 //			Advisor advisor = ilcCourse.instructor;
-//			
+//
 //			if (student.advisor != null) { //already have an advisor?
-//				
+//
 //				//override if this is in student's LC
 //				if (student.courseInLC(course.crn)) {
 //	//				System.err.println("Before overwrite advisor " + student.advisor.name + "  count: " + student.advisor.adviseeCount());
@@ -72,11 +71,11 @@ public class StudentSchedules extends DataModel {
 //					return;
 //				}
 //			}
-//			
+//
 //			student.ilc = true;
 //			advisor.addAdvisee(student, true);
 //			ilcCourse.count += 1;
-//		
+//
 //		}
 //	}
 //

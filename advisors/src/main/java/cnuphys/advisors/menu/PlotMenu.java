@@ -3,7 +3,7 @@ package cnuphys.advisors.menu;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -53,7 +53,7 @@ public class PlotMenu extends JMenu implements ActionListener {
 
 		AdvisorData advisorData = DataManager.getAdvisorData();
 
-		ArrayList<ITabled> data = advisorData.getData();
+		List<ITabled> data = advisorData.getData();
 
 		for (ITabled itabled : data) {
 			Advisor advisor = (Advisor)itabled;
@@ -75,7 +75,7 @@ public class PlotMenu extends JMenu implements ActionListener {
 
 		StudentData studentData = DataManager.getStudentData();
 
-		ArrayList<ITabled> data = studentData.getData();
+		List<ITabled> data = studentData.getData();
 
 		for (ITabled itabled : data) {
 			Student student = (Student)itabled;

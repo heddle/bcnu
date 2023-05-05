@@ -37,7 +37,7 @@ public class HonorsAdvisors extends DataModel {
 				System.err.println(String.format("Did not match honors advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
 			} else {
-				advisor.honors = true;
+				advisor.setHonors();
 			}
 		}
 

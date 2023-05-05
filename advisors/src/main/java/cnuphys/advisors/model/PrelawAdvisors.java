@@ -3,6 +3,7 @@ package cnuphys.advisors.model;
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.InputOutput;
@@ -38,7 +39,7 @@ public class PrelawAdvisors extends DataModel  {
 				System.err.println(String.format("Did not match prelaw advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
 			} else {
-				advisor.prelaw = true;
+				advisor.set(Person.PRELAW);
 			}
 		}
 
