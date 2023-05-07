@@ -21,7 +21,7 @@ public class ILCStep implements IAlgorithmStep {
 	public boolean run() {
 		ILCData ilcData = DataManager.getILCData();
 
-		List<Student> students = DataManager.getUnassignedStudents();;
+		List<Student> students = DataManager.getUnassignedStudents();
 
 		for (Student student : students) {
 			if (student.locked()) {
@@ -61,9 +61,9 @@ public class ILCStep implements IAlgorithmStep {
 				}
 			}
 		}
-		
+
 		//lock advisors that have reached or exceeded target
-		
+
 		int target = AdvisorAssign.targetAverage();
 		List<Advisor> ilcAdvisors = DataManager.getFilteredAdvisorData(Person.ILC).getAdvisors();
 		for (Advisor advisor : ilcAdvisors) {

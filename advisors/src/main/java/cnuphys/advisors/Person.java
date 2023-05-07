@@ -20,12 +20,12 @@ public abstract class Person implements ITabled {
 	public static final int WIND           = 01000;
 	public static final int LOCKED         = 02000;
 	public static final int ILC            = 04000;
-	
+
 	protected int bits;
-	
+
 	/** faculty or student ID */
 	public String id;
-	
+
 	/**
 	 * Convenience method to check whether person is locked
 	 * @return true if person is locked
@@ -33,21 +33,21 @@ public abstract class Person implements ITabled {
 	public boolean locked() {
 		return check(LOCKED);
 	}
-	
+
 	/**
 	 * Convenience method to lock the person
 	 */
 	public void setLocked() {
 		set(LOCKED);
 	}
-	
+
 	/**
 	 * Convenience method to lock or unlock the person
 	 */
 	public void setLocked(boolean locked) {
 		set(LOCKED, locked);
 	}
-	
+
 	/**
 	 * Convenience method to check whether person has ilc status
 	 * @return true if person has ilc status
@@ -55,14 +55,14 @@ public abstract class Person implements ITabled {
 	public boolean ilc() {
 		return check(ILC);
 	}
-	
+
 	/**
 	 * Convenience method to lset the ilc status
 	 */
 	public void setILC() {
 		set(ILC);
 	}
-	
+
 	/**
 	 * Convenience method to set or unset the ilc status
 	 */
@@ -77,14 +77,14 @@ public abstract class Person implements ITabled {
 	public boolean honors() {
 		return check(HONOR);
 	}
-	
+
 	/**
 	 * Convenience method to set the honors status
 	 */
 	public void setHonors() {
 		set(HONOR);
 	}
-	
+
 	/**
 	 * Convenience method to set or unset the honors status
 	 */
@@ -92,7 +92,7 @@ public abstract class Person implements ITabled {
 		set(HONOR, honors);
 	}
 
-	
+
 	/**
 	 * Check if a bit is set
 	 * @param bit one of the bits from the class constants
@@ -102,7 +102,7 @@ public abstract class Person implements ITabled {
 	public boolean check(int bit) {
 		return Bits.checkBit(bits, bit);
 	}
-	
+
 	/**
 	 * Set a bit on or off
 	 * @param bit the bit in question
@@ -124,7 +124,7 @@ public abstract class Person implements ITabled {
 	public void set(int bit) {
 		bits = Bits.setBit(bits, bit);
 	}
-	
+
 	/**
 	 * Clear a bit
 	 * @param bit one of the bits from the class constants
@@ -132,7 +132,7 @@ public abstract class Person implements ITabled {
 	public void clear(int bit) {
 		bits = Bits.clearBit(bits, bit);
 	}
-	
+
 	/**
 	 * Toggle a bit
 	 * @param bit one of the bits from the class constants
@@ -140,7 +140,7 @@ public abstract class Person implements ITabled {
 	public void toggle(int bit) {
 		bits = Bits.toggleBit(bits, bit);
 	}
-	
+
 	/**
 	 * Get a filtered list
 	 * @param persons a base set of persons
@@ -149,15 +149,15 @@ public abstract class Person implements ITabled {
 	 */
 	public static List<Person> filteredList(List<Person> persons, int bits) {
 		List<Person> filteredList = new ArrayList<>();
-		
+
 		for (Person person : persons) {
 			if (person.check(bits)) {
 				filteredList.add(person);
 			}
 		}
-		
+
 		return filteredList;
 	}
-	
+
 
 }

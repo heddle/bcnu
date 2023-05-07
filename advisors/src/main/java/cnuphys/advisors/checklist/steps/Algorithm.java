@@ -5,7 +5,6 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.frame.AdvisorAssign;
-import cnuphys.advisors.log.LogManager;
 
 public class Algorithm {
 
@@ -15,11 +14,11 @@ public class Algorithm {
 	 * @param advisor a list of advisors
 	 */
 	public static boolean runAlgorithm(List<Student> students, List<Advisor> advisors) {
-		
+
 		//remove locked students and advisors
 		students.removeIf(x -> x.locked());
 		advisors.removeIf(x -> x.locked());
-		
+
 		if (!check(students, advisors)) {
 			return false;
 		}
@@ -28,16 +27,16 @@ public class Algorithm {
 	}
 
 	private static boolean check(List<Student> students, List<Advisor> advisors) {
-		LogManager.info("Algorithm start check");
+		System.out.println("Algorithm start check");
 
 		for (Student student : students) {
 			if (student.locked()) {
-				
+
 				String message = "LOCKED student passed to Algorithm "
 						+ student.fullNameAndID() + "  advisor: " + student.advisor.name;
-				
-				LogManager.error(message);
-				
+
+				System.err.println(message);
+
 				return false;
 			}
 		}
@@ -56,7 +55,7 @@ public class Algorithm {
 		}
 
 		String s = String.format("Num students: %d   space: %d   target: %d", students.size(), space, target);
-		LogManager.info(s);
+		System.out.println(s);
 		return true;
 	}
 }

@@ -38,7 +38,7 @@ public class PresScholarStep implements IAlgorithmStep {
 
 		//lock down the pres scholar advisors
 		for (Advisor advisor : advisorData.getAdvisors()) {
-			advisor.setLocked();;
+			advisor.setLocked();
 		}
 
 		return true;

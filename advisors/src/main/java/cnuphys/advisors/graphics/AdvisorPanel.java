@@ -34,7 +34,7 @@ public class AdvisorPanel extends JPanel {
 
 		AdvisorDisplay.getInstance().setPreferredSize(new Dimension(width, height));
 		_simPanel = new SimulationPanel(_simulation, AdvisorDisplay.getInstance(), checklist);
-		
+
 		_simPanel.buttonPanelSetVisible(false);
 		add(_simPanel);
 	}

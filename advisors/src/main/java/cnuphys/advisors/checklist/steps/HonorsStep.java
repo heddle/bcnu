@@ -33,7 +33,7 @@ public class HonorsStep implements IAlgorithmStep {
 			//remove locked students and advisors
 			students.removeIf(x -> x.locked());
 			advisors.removeIf(x -> x.locked());
-			
+
 			DataManager.roundRobinAssign(advisors, students, "Honors by Major");
 
 		}

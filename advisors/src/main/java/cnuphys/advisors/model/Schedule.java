@@ -10,7 +10,6 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
-import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.table.CustomRenderer;
 import cnuphys.advisors.table.InputOutput;
 
@@ -166,7 +165,7 @@ public class Schedule extends DataModel {
      */
     public Course getCourseFromCRN(String crn) {
     	if (crn == null) {
-    		LogManager.error("null crn passed to getCourseFromCRN");
+    		System.err.println("null crn passed to getCourseFromCRN");
     		return null;
     	}
     	crn = crn.trim();

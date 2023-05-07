@@ -6,7 +6,6 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
-import cnuphys.advisors.table.InputOutput;
 
 public class CCPTAdvisors extends DataModel  {
 
@@ -22,8 +21,6 @@ public class CCPTAdvisors extends DataModel  {
 
 	@Override
 	protected void processData() {
-		InputOutput.debugPrintln("CCPT ADV row count: " + _data.size());
-
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);

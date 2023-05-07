@@ -3,7 +3,6 @@ package cnuphys.advisors.io;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import cnuphys.advisors.table.InputOutput;
 import cnuphys.bCNU.util.AsciiReader;
 
 public class CSVReader {
@@ -15,7 +14,6 @@ public class CSVReader {
 	private boolean _dirty;
 
 	public CSVReader(final File file, DataModel csvData) throws FileNotFoundException {
-		InputOutput.debugPrintln("Input File [" + file.getPath() + "] exists: " + file.exists());
 
 		if (!file.exists()) {
 			throw new FileNotFoundException("File not found [" + file.getPath() + "]");
@@ -35,8 +33,6 @@ public class CSVReader {
 
 				if (_csvData._header == null) {
 
-					InputOutput.debugPrintln("header row: [" + line + "]");
-
 					for(String token : tokens) {
 						token = token.trim();
 					}
@@ -49,7 +45,6 @@ public class CSVReader {
 
 			@Override
 			public void done() {
-				InputOutput.debugPrintln("Done reading " + file.getPath());
 			}
 
 		};

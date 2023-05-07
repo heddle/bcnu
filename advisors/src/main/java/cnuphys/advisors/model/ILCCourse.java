@@ -72,7 +72,7 @@ public class ILCCourse implements ITabled {
 		return null;
 	}
 
-	
+
 	@Override
 	public boolean check(int bit) {
 		return false;

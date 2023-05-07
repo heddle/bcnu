@@ -18,7 +18,6 @@ import javax.swing.SwingUtilities;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorPanel;
-import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
@@ -187,9 +186,6 @@ public class AdvisorAssign extends JFrame {
 	 * @param arg command line arguments
 	 */
 	public static void main(String arg[]) {
-
-		//create the log manager
-		LogManager.getInstance();
 
 		JFrame frame = getInstance();
 

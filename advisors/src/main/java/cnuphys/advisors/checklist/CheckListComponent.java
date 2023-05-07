@@ -22,7 +22,7 @@ import cnuphys.bCNU.util.X11Colors;
 
 public class CheckListComponent extends JPanel {
 
-	public static final Dimension ledSize = new Dimension(18, 18);
+	public static final Dimension ledSize = new Dimension(14, 14);
 
 	//is the step completed?
 	public boolean done;

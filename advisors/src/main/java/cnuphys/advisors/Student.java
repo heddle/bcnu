@@ -61,6 +61,8 @@ public class Student extends Person implements ITabled {
 			System.err.println("COULD not match major [" + majorstr + "]");
 			System.exit(1);
 		}
+
+		this.set(Person.MUSICTHEATER, (major == Major.MUSIC) || (major == Major.THEA));
 	}
 
 	//check a string for a pattern

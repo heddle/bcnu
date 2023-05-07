@@ -53,6 +53,9 @@ public class Advisor extends Person implements ITabled {
 			System.exit(1);
 		}
 
+		this.set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
+
+
 		advisees = new ArrayList<>();
 	}
 
@@ -81,15 +84,13 @@ public class Advisor extends Person implements ITabled {
 		if (student.assigned()) {
 			student.advisor.removeAdvisee(student);
 		}
-
 		advisees.remove(student);
 		advisees.add(student);
-
 		student.setLocked(lockStudentWhenDone);
 		student.advisor = this;
 
 		String s = String.format("Assignment made. Advisor: [%s] (%d) Student: [%s]", name, adviseeCount(), student.fullNameAndID());
-		System.err.println(s);
+		System.out.println(s);
 
 	}
 

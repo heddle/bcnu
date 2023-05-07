@@ -19,7 +19,7 @@ public class InputOutput {
 	 * General initialization
 	 */
 	public static void init() {
-		debugPrintln("Data Directory [" + getDataDir().getPath() + "] exists: " + getDataDir().exists());
+		System.out.println("Data Directory [" + getDataDir().getPath() + "] exists: " + getDataDir().exists());
 	}
 
 	/**
@@ -45,28 +45,6 @@ public class InputOutput {
 
 	/**
 	 * print a string to a PrintStream if we are in debug mode
-	 * @param os the PrintStream (e.g., System.out)
-	 * @param message the text to print
-	 */
-	public static void debugPrint(PrintStream os, String message) {
-		if (AdvisorAssign.DEBUG) {
-			os.print(message);
-		}
-	}
-
-	/**
-	 * print a string and a newline to a PrintStream if we are in debug mode
-	 * @param os the PrintStream (e.g., System.out)
-	 * @param message the text to print
-	 */
-	public static void debugPrintln(PrintStream os, String message) {
-		if (AdvisorAssign.DEBUG) {
-			os.println(message);
-		}
-	}
-
-	/**
-	 * print a string to System.out if we are in debug mode
 	 * @param message the text to print
 	 */
 	public static void debugPrint(String message) {
@@ -76,7 +54,7 @@ public class InputOutput {
 	}
 
 	/**
-	 * print a string and a newline to System.out if we are in debug mode
+	 * print a string and a newline to a PrintStream if we are in debug mode
 	 * @param message the text to print
 	 */
 	public static void debugPrintln(String message) {
@@ -84,5 +62,6 @@ public class InputOutput {
 			System.out.println(message);
 		}
 	}
+
 
 }

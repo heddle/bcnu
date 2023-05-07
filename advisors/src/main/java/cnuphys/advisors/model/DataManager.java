@@ -191,7 +191,7 @@ public class DataManager {
 
 		return advisors;
 	}
-	
+
 	/**
 	 * Get a list of advisors whose subject matches a department
 	 * @param department the department to match
@@ -226,7 +226,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of of all unassigned students
 	 * @return the list of unassigned students
@@ -315,7 +315,7 @@ public class DataManager {
 	public static StudentData getStudentData() {
 		return _studentData;
 	}
-	
+
 	public static StudentData getStudentData(List<Student> students) {
 		return _studentData.subModel(students);
 	}

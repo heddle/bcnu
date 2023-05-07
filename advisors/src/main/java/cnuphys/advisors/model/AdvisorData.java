@@ -8,14 +8,10 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.Person;
-import cnuphys.advisors.Student;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
-import cnuphys.advisors.log.LogManager;
 import cnuphys.advisors.table.CustomRenderer;
-import cnuphys.advisors.table.InputOutput;
 import cnuphys.bCNU.util.Fonts;
 
 /**
@@ -38,13 +34,7 @@ public class AdvisorData extends DataModel {
 	 */
 	public AdvisorData(String baseName) {
 		super(baseName, advisorAttributes);
-
-		renderer = new CustomRenderer(this);
-
-		for (int i = 0; i < getColumnCount(); i++) {
-			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
-		}
-
+		createCustomRenderer();
 	}
 
 	/**
@@ -54,6 +44,16 @@ public class AdvisorData extends DataModel {
 	 */
 	private AdvisorData(AdvisorData baseModel, int bits) {
 		super(baseModel, bits);
+		createCustomRenderer();
+	}
+
+	//create a custom renderer
+	private void createCustomRenderer() {
+		renderer = new CustomRenderer(this);
+
+		for (int i = 0; i < getColumnCount(); i++) {
+			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
 	}
 
 	/**
@@ -94,15 +94,11 @@ public class AdvisorData extends DataModel {
 	@Override
 	protected void processData() {
 		int colCount = _header.length;
-		InputOutput.debugPrintln("ADVISOR row count: " + _data.size());
-		InputOutput.debugPrintln("ADVISOR col count: " + colCount);
 
 		int nameIndex = getColumnIndex(DataManager.advisorAtt);
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int deptIndex = getColumnIndex(DataManager.departmentNameAtt);
 
-
-		InputOutput.debugPrintln(String.format("Column Indices (name, depart) = (%d, %d)", nameIndex, deptIndex));
 
 		for (String s[] : _data) {
 			String name = s[nameIndex];
@@ -160,7 +156,7 @@ public class AdvisorData extends DataModel {
 
 		return list;
     }
-    
+
 	/**
 	 * Get a highlight font for a given row and column
 	 * @param row the 0-based row
@@ -176,7 +172,7 @@ public class AdvisorData extends DataModel {
 
 	/**
 	 * Get a highlight text color for a given row and column
-	 * 
+	 *
 	 * @param row    the 0-based row
 	 * @param column the 0-based column
 	 * @return the hightlight color, if null use default (black)
@@ -209,7 +205,7 @@ public class AdvisorData extends DataModel {
      */
     public Advisor getAdvisorFromId(String id) {
     	if (id == null) {
-    		LogManager.error("null id passed to getAdvisorFromId");
+    		System.err.println("null id passed to getAdvisorFromId");
     		return null;
     	}
     	id = id.trim();

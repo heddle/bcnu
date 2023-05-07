@@ -12,7 +12,6 @@ import cnuphys.advisors.Student;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.CustomRenderer;
-import cnuphys.advisors.table.InputOutput;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 
@@ -32,12 +31,7 @@ public class StudentData extends DataModel {
 
 	public StudentData(String baseName) {
 		super(baseName, studentAttributes);
-
-		renderer = new CustomRenderer(this);
-
-		for (int i = 0; i < getColumnCount(); i++) {
-			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
-		}
+		setCustomRenderer();
 	}
 
 	/**
@@ -47,13 +41,7 @@ public class StudentData extends DataModel {
 	 */
 	private StudentData(StudentData baseModel, int bits) {
 		super(baseModel, bits);
-	}
-
-	/**
-	 * Create a submodel using bit matching
-	 */
-	public StudentData subModel(int bits) {
-		return new StudentData(this, bits);
+		setCustomRenderer();
 	}
 
 	/**
@@ -63,7 +51,16 @@ public class StudentData extends DataModel {
 	 */
 	private StudentData(StudentData baseModel, List<Student> list) {
 		super(baseModel, list);
+		setCustomRenderer();
 	}
+
+	/**
+	 * Create a submodel using bit matching
+	 */
+	public StudentData subModel(int bits) {
+		return new StudentData(this, bits);
+	}
+
 
 	/**
 	 * Create a submodel using a list
@@ -72,11 +69,18 @@ public class StudentData extends DataModel {
 		return new StudentData(this, list);
 	}
 
+	//set the custom renderer
+	private void setCustomRenderer() {
+
+		renderer = new CustomRenderer(this);
+
+		for (int i = 0; i < getColumnCount(); i++) {
+			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
+	}
 
 	@Override
 	protected void processData() {
-		InputOutput.debugPrintln("STUDENT row count: " + _data.size());
-
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lcNumIndex = getColumnIndex(DataManager.lcNumAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
@@ -140,16 +144,17 @@ public class StudentData extends DataModel {
 	 */
 	@Override
 	public Font getHighlightFont(int row, int column) {
+
 		Student student = getStudentFromRow(row);
 		boolean locked = student.locked();
 		boolean plp = student.check(Person.PLP);
-		
+
 		Font font;
 		if (locked && plp) {
 			font = Fonts.mediumItalicBoldFont;
 		}
 		else if (locked) {
-			font = Fonts.mediumItalicFont;	
+			font = Fonts.mediumItalicFont;
 		}
 		else if (plp) {
 			font = Fonts.mediumBoldFont;
@@ -157,13 +162,13 @@ public class StudentData extends DataModel {
 		else {
 			font = Fonts.mediumFont;
 		}
-		
+
 		return font;
 	}
-	
+
 	/**
 	 * Get a highlight text color for a given row and column
-	 * 
+	 *
 	 * @param row    the 0-based row
 	 * @param column the 0-based column
 	 * @return the hightlight color, if null use default (black)

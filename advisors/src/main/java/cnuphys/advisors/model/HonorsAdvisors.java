@@ -5,7 +5,6 @@ import javax.swing.event.ListSelectionEvent;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
-import cnuphys.advisors.table.InputOutput;
 
 public class HonorsAdvisors extends DataModel {
 
@@ -20,7 +19,6 @@ public class HonorsAdvisors extends DataModel {
 
 	@Override
 	protected void processData() {
-		InputOutput.debugPrintln("HONR ADV row count: " + _data.size());
 
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);

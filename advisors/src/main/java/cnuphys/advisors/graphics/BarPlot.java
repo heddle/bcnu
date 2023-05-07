@@ -74,7 +74,6 @@ public class BarPlot extends JComponent {
 		bounds.grow(0, -20);
 
 
-		System.out.println("BOUNDS: " + bounds);
 		Rectangle plotBox = new Rectangle(bounds);
 		plotBox.grow(-10, -60);
 
