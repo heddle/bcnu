@@ -281,7 +281,24 @@ public class DataManager {
 	}
 
 	/**
-	 * Get a list of honors students whose major matches a given major and are unassigned
+	 * Get a list of unassigned honors students
+	 *
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedHonorsStudents() {
+		ArrayList<Student> students = new ArrayList<>();
+
+		for (Student student : _studentData.getStudents()) {
+			if (!student.assigned() && student.honors()) {
+				students.add(student);
+			}
+		}
+
+		return students;
+	}
+
+	/**
+	 * Get a list of unassigned honors students whose major matches a given major 
 	 *
 	 * @param major the major to match
 	 * @return the list
@@ -299,7 +316,6 @@ public class DataManager {
 
 		return students;
 	}
-
 
 	/**
 	 * Get the schedule of classes data

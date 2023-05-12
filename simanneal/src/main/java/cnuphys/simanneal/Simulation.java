@@ -7,7 +7,7 @@ import javax.swing.event.EventListenerList;
 public abstract class Simulation implements Runnable {
 
 	// current state of the simulation
-	private SimulationState _simState = SimulationState.STOPPED;
+	protected SimulationState _simState = SimulationState.STOPPED;
 
 	// current solution
 	protected Solution _currentSolution;
@@ -57,6 +57,14 @@ public abstract class Simulation implements Runnable {
 	 */
 	public SimulationState getSimulationState() {
 		return _simState;
+	}
+	
+	/**
+	 * Get the random number generator
+	 * @return the random number generator
+	 */
+	public Random getRandom() {
+		return _rand;
 	}
 
 	/**
@@ -230,7 +238,7 @@ public abstract class Simulation implements Runnable {
 	}
 
 	// the Metropolis test
-	private boolean metrop(double ebest, double etest) {
+	protected boolean metrop(double ebest, double etest) {
 		if (etest < ebest) {
 			return true;
 		}

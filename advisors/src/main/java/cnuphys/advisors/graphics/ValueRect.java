@@ -4,7 +4,7 @@ import java.awt.Rectangle;
 
 public class ValueRect extends Rectangle {
 
-	public int value;
+	public double value;
 
 	public String label;
 
@@ -14,7 +14,7 @@ public class ValueRect extends Rectangle {
 	 * @param value value of the bar
 	 * @param label label on the bar
 	 */
-	public ValueRect(int value, String label) {
+	public ValueRect(double value, String label) {
 		super();
 		this.value = value;
 		this.label = label;

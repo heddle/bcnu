@@ -24,6 +24,8 @@ public class PlotMenu extends JMenu implements ActionListener {
 	//the menu items
 	private JMenuItem _fcaByDeptItem;
 	private JMenuItem _studentByMajorItem;
+	private JMenuItem _studentByDepartmentItem;
+	private JMenuItem _fcaPerMajorsItem;
 
 
 	public PlotMenu() {
@@ -31,6 +33,8 @@ public class PlotMenu extends JMenu implements ActionListener {
 		MenuManager.getInstance().addMenu(this);
 		_fcaByDeptItem = MenuManager.addMenuItem("FCAs by Department", KeyEvent.VK_1, this, this);
 		_studentByMajorItem = MenuManager.addMenuItem("Students by Major", KeyEvent.VK_2, this, this);
+		_studentByDepartmentItem = MenuManager.addMenuItem("Students by Department", KeyEvent.VK_3, this, this);
+		_fcaPerMajorsItem = MenuManager.addMenuItem("FCAs per Majors", KeyEvent.VK_4, this, this);
 	}
 
 
@@ -42,34 +46,99 @@ public class PlotMenu extends JMenu implements ActionListener {
 		else if (e.getSource() == _studentByMajorItem) {
 			handleStudentsByMajor();
 		}
+		else if (e.getSource() == _studentByMajorItem) {
+			handleStudentsByMajor();
+		}
+		else if (e.getSource() == _studentByDepartmentItem) {
+			handleStudentsByDepartment();
+		}
+		else if (e.getSource() == _fcaPerMajorsItem) {
+			handleFCAsPerMajors();
+		}
 
+	}
+	
+	//number of advers per number of majors
+	private void handleFCAsPerMajors() {
+		String title = "FCAs per Major in Department";
+		Department.clearFcaCounts();
+		Department.clearMajorCounts();
+		
+		AdvisorData advisorData = DataManager.getAdvisorData();
+		
+		for (Advisor fca : advisorData.getAdvisors()) {
+			Department.incrementFcaCount(fca.department);
+		}
+
+		StudentData studentData = DataManager.getStudentData();
+		
+		for (Student student : studentData.getStudents()) {
+			Department department = student.major.getDepartment();
+			Department.incrementMajorCount(department);
+		}
+		
+		String categories[] = Department.getBaseNames();
+		int majorCounts[] = Department.getMajorCounts();
+		int fcaCounts[] = Department.getFcaCounts();
+		
+		double ratio[] = new double[majorCounts.length];
+		
+		for (int i = 0; i < ratio.length; i++) {
+			
+			if ((majorCounts[i] == 0) || (fcaCounts[i] == 0)) {
+				ratio[i] = 0;
+				continue;
+			}
+			
+			ratio[i] = ((double)fcaCounts[i]/(double)majorCounts[i]);
+		}
+
+
+		BarPlot barPlot = new BarPlot(title, categories, ratio);
+		AdvisorDisplay.getInstance().setContent(barPlot);
+		
 	}
 
 	//handle FCA by department selection
 	private void handleFCAByDept() {
 		String title = "FCAs by Department";
 
-		Department.clearCounts();
+		Department.clearFcaCounts();
 
 		AdvisorData advisorData = DataManager.getAdvisorData();
-
-		List<ITabled> data = advisorData.getData();
-
-		for (ITabled itabled : data) {
-			Advisor advisor = (Advisor)itabled;
-			Department.incrementCount(advisor.department);
+		
+		for (Advisor fca : advisorData.getAdvisors()) {
+			Department.incrementFcaCount(fca.department);
 		}
 
 		String categories[] = Department.getBaseNames();
-		int counts[] = Department.getCounts();
+		int counts[] = Department.getFcaCounts();
+
+		BarPlot barPlot = new BarPlot(title, categories, counts);
+		AdvisorDisplay.getInstance().setContent(barPlot);
+	}
+	
+	//handle students by department selection
+	private void handleStudentsByDepartment() {
+		String title = "Students by Department";
+		Department.clearMajorCounts();
+		
+		StudentData studentData = DataManager.getStudentData();
+		
+		for (Student student : studentData.getStudents()) {
+			Department department = student.major.getDepartment();
+			Department.incrementMajorCount(department);
+		}
+		String categories[] = Department.getBaseNames();
+		int counts[] = Department.getMajorCounts();
 
 		BarPlot barPlot = new BarPlot(title, categories, counts);
 		AdvisorDisplay.getInstance().setContent(barPlot);
 	}
 
-	//handle FCA by department selection
+	//handle students by major selection
 	private void handleStudentsByMajor() {
-		String title = "Students by Department";
+		String title = "Students by Major";
 
 		Major.clearCounts();
 

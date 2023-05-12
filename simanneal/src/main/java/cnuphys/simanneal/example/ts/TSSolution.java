@@ -53,7 +53,7 @@ public class TSSolution extends Solution {
 	}
 
 	/**
-	 * Initialize the colution
+	 * Initialize the solution
 	 */
 	public void init() {
 

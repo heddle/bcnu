@@ -30,13 +30,13 @@ public class BarPlot extends JComponent {
 	private String[] _categories;
 
 	//data values
-	private int[] _values;
+	private double[] _values;
 
 	//horizontal evenly spaces offsets
 	private int[] _offsets;
 
 	//the max value
-	private int _maxVal;
+	private double _maxVal;
 
 	//the value rects
 	private ValueRect[] _valueRects;
@@ -47,14 +47,14 @@ public class BarPlot extends JComponent {
 	 * @param categories the categories (labels)
 	 * @param values the values
 	 */
-	public BarPlot(String title, String[] categories, int[] values) {
+	public BarPlot(String title, String[] categories, double[] values) {
 
 		_title = title;
 		_categories = categories;
 		_values = values;
 
 		//get the max value;
-		for (int val : values) {
+		for (double val : values) {
 			_maxVal = Math.max(_maxVal,  val);
 		}
 
@@ -65,6 +65,24 @@ public class BarPlot extends JComponent {
 	   }
 
 	   setPreferredSize(new Dimension(width, height));
+	}
+	
+	/**
+	 * A simple bar plot
+	 * @param title the title of the plot
+	 * @param categories the categories (labels)
+	 * @param values the values
+	 */
+	public BarPlot(String title, String[] categories, int[] values) {
+		this(title, categories,toDouble(values));
+	}
+
+	private static double[] toDouble(int[] vals) {
+		double dvals[] = new double[vals.length];
+		for (int i = 0; i < vals.length; i++) {
+			dvals[i] = vals[i];
+		}
+		return dvals;
 	}
 
 	@Override
@@ -126,11 +144,24 @@ public class BarPlot extends JComponent {
 			fillAndFrame(g, r, barFill, Color.black);
 
 			g.setColor(Color.black);
-			String s = "" + r.value;
-			int sw = fm.stringWidth(s);
+			
+			
+			String valStr;
+			if ((r.value % 1) < 0.01) {
+				valStr = "" + (int)r.value;
+			}
+			else if ((r.value % 1) > 0.99) {
+				valStr = "" + (int)(r.value + 1);
+			}
+			else {
+				valStr = String.format("%-4.2f", r.value);
+			}
+			
+			
+			int sw = fm.stringWidth(valStr);
 			int x = r.x + (r.width - sw)/2;
 			int y = r.y - 4;
-			g.drawString(s, x, y);
+			g.drawString(valStr, x, y);
 		}
 	}
 

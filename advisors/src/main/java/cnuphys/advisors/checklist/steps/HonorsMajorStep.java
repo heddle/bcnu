@@ -16,7 +16,7 @@ import cnuphys.advisors.model.StudentData;
  * @author heddle
  *
  */
-public class HonorsStep implements IAlgorithmStep {
+public class HonorsMajorStep implements IAlgorithmStep {
 
 	@Override
 	public boolean run() {
@@ -38,11 +38,6 @@ public class HonorsStep implements IAlgorithmStep {
 
 		}
 
-		//now run the algorithm
-		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);
-		StudentData studentData = DataManager.getFilteredStudentData(Person.HONOR);
-
-		Algorithm.runAlgorithm(studentData.getStudents(), advisorData.getAdvisors());
 		return true;
 	}
 

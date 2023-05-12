@@ -94,8 +94,8 @@ public class CheckListComponent extends JPanel {
 
 	// make the button that launches the algorithm step
 	private JButton makeDoItButton() {
-		_doitButton = new JButton("Do It");
-		_doitButton.setFont(Fonts.defaultFont);
+		_doitButton = new JButton("Run");
+		_doitButton.setFont(Fonts.mediumFont);
 
 		ActionListener al = new ActionListener() {
 
@@ -113,7 +113,7 @@ public class CheckListComponent extends JPanel {
 
 	private JLabel makeLabel(String text) {
 		JLabel lab = new JLabel(text);
-		lab.setFont(Fonts.defaultFont);
+		lab.setFont(Fonts.mediumFont);
 		return lab;
 	}
 

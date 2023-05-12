@@ -6,7 +6,8 @@ import javax.swing.JPanel;
 
 import cnuphys.advisors.checklist.steps.BTMGStep;
 import cnuphys.advisors.checklist.steps.CommunityCaptainStep;
-import cnuphys.advisors.checklist.steps.HonorsStep;
+import cnuphys.advisors.checklist.steps.HonorsAlgorithmStep;
+import cnuphys.advisors.checklist.steps.HonorsMajorStep;
 import cnuphys.advisors.checklist.steps.ILCStep;
 import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PrelawStep;
@@ -36,9 +37,11 @@ public class CheckList extends JPanel {
 	//assign prelaw students
 	private CheckListComponent prelawStep;
 
-	//assign honors students
-	private CheckListComponent honorsStep;
+	//assign honors students by major
+	private CheckListComponent honorsMajorStep;
 
+	//assign honors students by algorithm
+	private CheckListComponent honorsAlgorithmStep;
 
 
 	//singleton
@@ -63,13 +66,14 @@ public class CheckList extends JPanel {
 
 	private void addComponents() {
 
-		presScholarStep = new CheckListComponent("Assign pres. scholars to advisors", new PresScholarStep(), true);
-		ilcStep = new CheckListComponent("Assign ILC students to advisors", new ILCStep(), false);
-		ccptStep = new CheckListComponent("Assign Community Captains to advisors", new CommunityCaptainStep(), false);
-		musTheaStep = new CheckListComponent("Assign Music & Theater students to advisors", new MusTheaStep(), false);
-		btmgStep = new CheckListComponent("Assign Bio Tech & Management to advisors", new BTMGStep(), false);
-		prelawStep = new CheckListComponent("Assign Prelaw students to advisors", new PrelawStep(), false);
-		honorsStep = new CheckListComponent("Assign Honors students to advisors", new HonorsStep(), false);
+		presScholarStep = new CheckListComponent("Presidential scholars", new PresScholarStep(), true);
+		ilcStep = new CheckListComponent("ILC students", new ILCStep(), false);
+		ccptStep = new CheckListComponent("Community Captains", new CommunityCaptainStep(), false);
+		musTheaStep = new CheckListComponent("Music & Theater majors", new MusTheaStep(), false);
+		btmgStep = new CheckListComponent("Bio Tech & Management students", new BTMGStep(), false);
+		prelawStep = new CheckListComponent("Prelaw students", new PrelawStep(), false);
+		honorsMajorStep = new CheckListComponent("Honors students by major", new HonorsMajorStep(), false);
+		honorsAlgorithmStep = new CheckListComponent("Honors students by algorithm", new HonorsAlgorithmStep(), false);
 
 		add(presScholarStep);
 		add(ilcStep);
@@ -77,7 +81,8 @@ public class CheckList extends JPanel {
 		add(musTheaStep);
 		add(btmgStep);
 		add(prelawStep);
-		add(honorsStep);
+		add(honorsMajorStep);
+		add(honorsAlgorithmStep);
 
 	}
 
@@ -108,7 +113,8 @@ public class CheckList extends JPanel {
 		boolean ccptStepDone = ccptStep.done;
 		boolean btmgStepDone = btmgStep.done;
 		boolean prelawStepDone = prelawStep.done;
-		boolean honorsStepDone = honorsStep.done;
+		boolean honorsMajorStepDone = honorsMajorStep.done;
+		boolean honorsAlgorithmStepDone = honorsAlgorithmStep.done;
 
 		presScholarStep.setEnabled(!presScholarStepDone);
 		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
@@ -116,7 +122,8 @@ public class CheckList extends JPanel {
 		ccptStep.setEnabled(musTheaStepDone && !ccptStepDone);
 		btmgStep.setEnabled(ccptStepDone && !btmgStepDone);
 		prelawStep.setEnabled(btmgStepDone && !prelawStepDone);
-		honorsStep.setEnabled(prelawStepDone && !honorsStepDone);
+		honorsMajorStep.setEnabled(prelawStepDone && !honorsMajorStepDone);
+		honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
 
 	}
 }

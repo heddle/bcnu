@@ -30,9 +30,14 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 	public static EnumMap<Department, String[]> names = new EnumMap<>(Department.class);
 
 	/**
-	 * A map of counts for making bar plots
+	 * A map of fca counts for making bar plots
 	 */
-	public static EnumMap<Department, Integer> counts = new EnumMap<>(Department.class);
+	public static EnumMap<Department, Integer> fcaCounts = new EnumMap<>(Department.class);
+
+	/**
+	 * A map of major counts for making bar plots
+	 */
+	public static EnumMap<Department, Integer> majorCounts = new EnumMap<>(Department.class);
 
 	static {
 		names.put(COMM, new String[] {"comm", "communication"});
@@ -71,6 +76,7 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 
 		return majors;
 	}
+	
 
 	/**
 	 * Get the number of catalogs needed by this department
@@ -117,21 +123,40 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 	}
 
 	/**
-	 * Zero all the counts
+	 * Zero all the fca counts
 	 */
-	public static void clearCounts() {
+	public static void clearFcaCounts() {
 		for (Department dept : values()) {
-			counts.put(dept, 0);
+			fcaCounts.put(dept, 0);
+		}
+	}
+	
+	/**
+	 * Zero all the major counts
+	 */
+	public static void clearMajorCounts() {
+		for (Department dept : values()) {
+			majorCounts.put(dept, 0);
 		}
 	}
 
+
 	/**
-	 * Increment a count
+	 * Increment the fca count
 	 * @param dept the enum value whose count will be incremented
 	 */
-	public static void incrementCount(Department dept) {
-		int val = counts.get(dept) + 1;
-		counts.put(dept,val);
+	public static void incrementFcaCount(Department dept) {
+		int val = fcaCounts.get(dept) + 1;
+		fcaCounts.put(dept,val);
+	}
+
+	/**
+	 * Increment the major count
+	 * @param dept the enum value whose count will be incremented
+	 */
+	public static void incrementMajorCount(Department dept) {
+		int val = majorCounts.get(dept) + 1;
+		majorCounts.put(dept,val);
 	}
 
 	/**
@@ -160,15 +185,30 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 	}
 
 	/**
-	 * Get all the counts in an array
-	 * @return the counts
+	 * Get all the fca counts in an array
+	 * @return the fca counts
 	 */
-	public static int[] getCounts() {
+	public static int[] getFcaCounts() {
 		int len = values().length;
 		int count[] = new int[len];
 
 		for (int i = 0; i < len; i++) {
-			count[i] = counts.get(values()[i]);
+			count[i] = fcaCounts.get(values()[i]);
+		}
+
+		return count;
+	}
+	
+	/**
+	 * Get all the major counts in an array
+	 * @return the major counts
+	 */
+	public static int[] getMajorCounts() {
+		int len = values().length;
+		int count[] = new int[len];
+
+		for (int i = 0; i < len; i++) {
+			count[i] = majorCounts.get(values()[i]);
 		}
 
 		return count;

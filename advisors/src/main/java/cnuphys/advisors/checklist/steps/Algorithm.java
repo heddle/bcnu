@@ -5,6 +5,7 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.frame.AdvisorAssign;
+import cnuphys.advisors.simulation.AdvisorSimulation;
 
 public class Algorithm {
 
@@ -22,10 +23,13 @@ public class Algorithm {
 		if (!check(students, advisors)) {
 			return false;
 		}
+		
+		AdvisorSimulation sim = AdvisorAssign.
 
 		return true;
 	}
 
+	//check that the initial lists are valid
 	private static boolean check(List<Student> students, List<Advisor> advisors) {
 		System.out.println("Algorithm start check");
 
