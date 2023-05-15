@@ -17,7 +17,7 @@ public class CommunityCaptainStep implements IAlgorithmStep   {
 		//get the community advisors and students
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.CCPT);
 		StudentData studentData = DataManager.getFilteredStudentData(Person.CCPT);
-		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), "In Community Captain assign");
+		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), true, "In Community Captain assign");
 
 		return true;
 	}

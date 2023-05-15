@@ -17,7 +17,7 @@ public class PrelawStep implements IAlgorithmStep {
 		//get the community advisors and students
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.PRELAW);
 		StudentData studentData = DataManager.getFilteredStudentData(Person.PRELAW);
-		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), "In Prelaw assign");
+		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), true, "In Prelaw assign");
 
 		return true;
 	}

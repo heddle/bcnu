@@ -21,8 +21,8 @@ public class MusTheaStep implements IAlgorithmStep  {
 		List<Advisor> musicAdvisors = DataManager.getAdvisorsForMajor(Major.MUSIC);
 		List<Advisor> theaterAdvisors = DataManager.getAdvisorsForMajor(Major.THEA);
 
-		DataManager.roundRobinAssign(musicAdvisors, musicStudents, "In Music assign");
-		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, "In Theater assign");
+		DataManager.roundRobinAssign(musicAdvisors, musicStudents, true, "In Music assign");
+		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, true, "In Theater assign");
 
 		return true;
 	}

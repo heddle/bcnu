@@ -48,9 +48,6 @@ public class AdvisorAssign extends JFrame {
 	//a label on the menu bar for the semester
 	private static JLabel _infoLabel;
 
-	//the simulation object
-	private AdvisorSimulation _advisorSim;
-
 	//the check list
 	private CheckList _checklist;
 
@@ -72,8 +69,6 @@ public class AdvisorAssign extends JFrame {
 		};
 		addWindowListener(windowAdapter);
 
-
-		_advisorSim = new AdvisorSimulation();
 		setup();
 
 		pack();
@@ -94,7 +89,7 @@ public class AdvisorAssign extends JFrame {
 		//add the check list
 		_checklist = CheckList.getInstance();
 
-		AdvisorPanel panel = new AdvisorPanel(_advisorSim, _checklist);
+		AdvisorPanel panel = new AdvisorPanel(AdvisorSimulation.getInstance(), _checklist);
 
 
 		add(panel, BorderLayout.CENTER);

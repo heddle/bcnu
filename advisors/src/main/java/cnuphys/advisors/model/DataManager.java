@@ -357,9 +357,10 @@ public class DataManager {
 	 * are assigned they are locked. I.e., this makes immutable assignments.
 	 * @param advisors the (sub)list of advisors.
 	 * @param students the (sub)list of students
+	 * @param lockWhenDone if true, lock the students down
 	 * @param errPrompt used in a error message if all advisors max out
 	 */
-	public static  void roundRobinAssign(List<Advisor> advisors, List<Student> students, String errPrompt) {
+	public static  void roundRobinAssign(List<Advisor> advisors, List<Student> students, boolean lockWhenDone, String errPrompt) {
 
 		int numAdvisor = advisors.size();
 		int numStudent = students.size();
@@ -368,7 +369,25 @@ public class DataManager {
 		}
 
 		//the max to assign to any one advisor
-		int target = AdvisorAssign.targetAverage();
+	//	int target = AdvisorAssign.targetAverage();
+		
+		int target = 1;
+		boolean done = false;
+		while (!done) {
+			int totalSlots = 0;
+			for (Advisor advisor : advisors) {
+				totalSlots += advisor.slots(target);
+			}
+			
+			if (totalSlots >= numStudent) {
+				done = true;
+			}
+			else {
+				target += 1;
+			}
+		}
+		
+		System.out.println("Round Robin Target: " + target);
 
 		int advisorIndex = 0;
 
@@ -386,7 +405,7 @@ public class DataManager {
 			while (!found && (nTry < numAdvisor)) {
 				Advisor advisor = advisors.get(advisorIndex);
 				if (!advisor.locked() && (advisor.adviseeCount() < target)) {
-					advisor.addAdvisee(student, true);
+					advisor.addAdvisee(student, lockWhenDone);
 					found = true;
 				}
 				else {

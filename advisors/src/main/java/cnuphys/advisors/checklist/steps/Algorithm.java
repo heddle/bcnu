@@ -5,6 +5,7 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.frame.AdvisorAssign;
+import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 
 public class Algorithm {
@@ -24,7 +25,12 @@ public class Algorithm {
 			return false;
 		}
 		
-		AdvisorSimulation sim = AdvisorAssign.
+		//assign the students round robin style to acheive equitability in numbers
+		DataManager.roundRobinAssign(advisors, students, false, "In algorthm for honors");
+		
+		//now the annealing
+		
+		AdvisorSimulation.getInstance().reset(advisors, students);
 
 		return true;
 	}

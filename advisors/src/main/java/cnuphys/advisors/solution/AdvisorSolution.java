@@ -2,11 +2,19 @@ package cnuphys.advisors.solution;
 
 import java.util.Random;
 
+import cnuphys.advisors.Student;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.advisors.table.InputOutput;
 import cnuphys.simanneal.Solution;
 
 public class AdvisorSolution extends Solution {
+	
+	/** one student exchanged for this solution */
+	public Student studentA;
+	
+	/** another student exchanged for this solution */
+	public Student studentB;
+
 	
 	//the simulation owner
 	private AdvisorSimulation _simulation;

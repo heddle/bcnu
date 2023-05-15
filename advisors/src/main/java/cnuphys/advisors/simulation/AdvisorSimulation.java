@@ -22,15 +22,29 @@ public class AdvisorSimulation extends Simulation {
 	public List<Advisor> advisors;
 	
 	/**
-	 * The list of students who need an asignment
+	 * The list of students who need an assignment
 	 */
 	public List<Student> students;
+	
+	//singleton
+	private static AdvisorSimulation _instance;
 
 
 	/**
 	 * Create an advisor simulation
 	 */
-	public AdvisorSimulation() {
+	private AdvisorSimulation() {
+	}
+	
+	/**
+	 * public access to the singleton
+	 * @return the simulation object
+	 */
+	public static AdvisorSimulation getInstance() {
+		if (_instance == null) {
+			_instance = new AdvisorSimulation();
+		}
+		return _instance;
 	}
 
 	@Override
@@ -63,6 +77,8 @@ public class AdvisorSimulation extends Simulation {
 	 * @param students the list of available students
 	 */
 	public void reset(List<Advisor> advisors, List<Student> students) {
+		
+		System.out.println("resetting the simulation");
 		this.advisors = advisors;
 		this.students = students;
 		super.reset();

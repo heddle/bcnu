@@ -58,6 +58,15 @@ public class Advisor extends Person implements ITabled {
 
 		advisees = new ArrayList<>();
 	}
+	
+	/**
+	 * For a given target, this tells us how many slots are available.
+	 * @param target the target number of advisees
+	 * @return the number of slots, or 0 if negative
+	 */
+	public int slots(int target) {
+		return Math.max(0, target - adviseeCount());
+	}
 
 	/**
 	 * Add an advisee to this advisor's collection

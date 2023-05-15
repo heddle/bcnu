@@ -17,7 +17,7 @@ public class BTMGStep implements IAlgorithmStep   {
 		//get the community advisors and students
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.BTMG);
 		StudentData studentData = DataManager.getFilteredStudentData(Person.BTMG);
-		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), "In BTMG assign");
+		DataManager.roundRobinAssign(advisorData.getAdvisors(), studentData.getStudents(), true, "In BTMG assign");
 
 		return true;
 	}
