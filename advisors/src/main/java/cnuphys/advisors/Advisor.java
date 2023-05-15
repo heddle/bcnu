@@ -1,6 +1,7 @@
 package cnuphys.advisors;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
@@ -127,6 +128,21 @@ public class Advisor extends Person implements ITabled {
 	public int adviseeCount() {
 		return advisees.size();
 	}
+	
+	/**
+	 * Count the number of different majors this advisor is advising
+	 * @return the number of different majors this advisor is advising
+	 */
+	public int numMajorsAdvising() {
+		List<Major> majors = new ArrayList<>();
+		
+		for (Student student : advisees) {
+			majors.remove(student.major);
+			majors.add(student.major);
+		}
+		
+		return majors.size();
+	}
 
 	/**
 	 * Get the value at a given column, considering this as a row
@@ -146,6 +162,8 @@ public class Advisor extends Person implements ITabled {
 			return id;
 		case 5:
 			return "" + advisees.size();
+		case 6:
+			return "" + numMajorsAdvising();
 		default:
 			System.err.println("Bad column in Advisor getValueAt [" + col + "]");
 			System.exit(0);

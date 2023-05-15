@@ -77,12 +77,10 @@ public class AdvisorSimulation extends Simulation {
 	 * @param students the list of available students
 	 */
 	public void reset(List<Advisor> advisors, List<Student> students) {
-		
 		System.out.println("resetting the simulation");
 		this.advisors = advisors;
 		this.students = students;
 		super.reset();
-
 	}
 	
 	//override the run method so we can customize the rearranhement
@@ -137,5 +135,23 @@ public class AdvisorSimulation extends Simulation {
 		setSimulationState(SimulationState.STOPPED);
 	}
 
+	/**
+	 * Exchange two students
+	 * @param studentA one student
+	 * @param studentB other student
+	 */
+	public void exchangeStudents(Student studentA, Student studentB) {
+		Advisor advisorA = studentA.advisor;
+		Advisor advisorB = studentB.advisor;
+		
+		advisorA.removeAdvisee(studentA);
+		advisorB.removeAdvisee(studentB);
+		
+		advisorA.addAdvisee(studentB, false);
+		advisorB.addAdvisee(studentA, false);
+		
+		studentA.advisor = advisorB;
+		studentB.advisor = advisorA;
+	}
 
 }

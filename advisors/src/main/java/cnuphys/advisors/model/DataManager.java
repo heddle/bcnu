@@ -51,6 +51,7 @@ public class DataManager {
 	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 80, "first name", "firstname", "lfirst_name", "fname");
 	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 70, "department", "adv1_dept");
 	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 45);
+	public static final DataAttribute numMajorAtt = new DataAttribute("#MAJ", 45);
 	public static final DataAttribute enrollmentAtt = new DataAttribute("Count", 45);
 
 	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");

@@ -29,7 +29,6 @@ public class Algorithm {
 		DataManager.roundRobinAssign(advisors, students, false, "In algorthm for honors");
 		
 		//now the annealing
-		
 		AdvisorSimulation.getInstance().reset(advisors, students);
 
 		return true;
