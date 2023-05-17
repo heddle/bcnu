@@ -6,6 +6,7 @@ import java.util.List;
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 
 public class Advisor extends Person implements ITabled {
@@ -22,9 +23,20 @@ public class Advisor extends Person implements ITabled {
 	/** the advisor's primary subject. might be same as depart. Or in come cases a major like music
 	 * ASSIGNED FROM SCHEDULE! */
 	public Major subject;
+	
+	/** If this is diff from the advisor's subject, is is the prefeered "other" major of advisoors,
+	 * e.g. Ryan Fisher and psych"
+	 */
+	public Major preferred2ndMajor;
 
 	/** in case we want to disable an advisor */
 	public boolean acceptingCohort = true;
+	
+	/** email address */
+	public String email;
+	
+	/** advisor's schedule */
+	public List<Course> schedule = new ArrayList<>();
 
 	/**
 	 * Create an advisor
@@ -32,9 +44,10 @@ public class Advisor extends Person implements ITabled {
 	 * @param id faculty id
 	 * @param dept academic department
 	 */
-	public Advisor(String name, String id, String dept) {
+	public Advisor(String name, String id, String dept, String email) {
 		this.name = name.replace("\"", "");
 		this.id = DataManager.fixId(id);
+		this.email = email;
 
 		String deptstr = dept.replace("\"", "");
 
@@ -53,12 +66,13 @@ public class Advisor extends Person implements ITabled {
 			System.err.println("COULD not subject to department [" + department.name() + "]");
 			System.exit(1);
 		}
-
+		
 		this.set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
 
 
 		advisees = new ArrayList<>();
 	}
+	
 	
 	/**
 	 * For a given target, this tells us how many slots are available.
@@ -159,10 +173,12 @@ public class Advisor extends Person implements ITabled {
 		case 3:
 			return subject.name();
 		case 4:
-			return id;
+			return email;
 		case 5:
-			return "" + advisees.size();
+			return id;
 		case 6:
+			return "" + advisees.size();
+		case 7:
 			return "" + numMajorsAdvising();
 		default:
 			System.err.println("Bad column in Advisor getValueAt [" + col + "]");

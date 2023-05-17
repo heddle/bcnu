@@ -45,6 +45,14 @@ public class Course implements ITabled {
 		}
 
 	}
+	
+	/**
+	 * An info string for this course
+	 * @return an info string
+	 */
+	public String infoString() {
+		return String.format("%s %s%s %s", crn, subject, course, title);
+	}
 
 
 	/**

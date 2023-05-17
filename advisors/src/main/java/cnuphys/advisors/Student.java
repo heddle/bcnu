@@ -69,6 +69,16 @@ public class Student extends Person implements ITabled {
 	private boolean checkString(String s, String patt) {
 		return s.replace("\"", "").trim().toUpperCase().contains(patt.toUpperCase());
 	}
+	
+	
+	public Course courseWithThisAdvisor(Advisor advisor) {
+		for (Course course : schedule) {
+			if (advisor.id.equals(course.id)) {
+				return course;
+			}
+		}
+		return null;
+	}
 
 
 	/**

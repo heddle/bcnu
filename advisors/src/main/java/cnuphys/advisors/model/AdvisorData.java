@@ -2,12 +2,14 @@ package cnuphys.advisors.model;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.dialogs.AdvisorDialog;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -20,12 +22,18 @@ import cnuphys.bCNU.util.Fonts;
  *
  */
 public class AdvisorData extends DataModel {
+	
+	private AdvisorDialog _dialog;
+	
+	
+	/* the director of the honors program, if also a core advisor */
+	public Advisor honorsDirector;
 
 
 	// attributes for advisor data
 	private static final DataAttribute advisorAttributes[] = {
 			DataManager.rowAtt, DataManager.advisorAtt, DataManager.departmentNameAtt,
-			DataManager.subjectAtt,
+			DataManager.subjectAtt, DataManager.emailAtt,
 			DataManager.idAtt, DataManager.numAdviseeAtt, DataManager.numMajorAtt };
 
 	/**
@@ -98,14 +106,16 @@ public class AdvisorData extends DataModel {
 		int nameIndex = getColumnIndex(DataManager.advisorAtt);
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int deptIndex = getColumnIndex(DataManager.departmentNameAtt);
+		int emailIndex = getColumnIndex(DataManager.emailAtt);
 
 
 		for (String s[] : _data) {
 			String name = s[nameIndex];
 			String id = s[idIndex];
 			String dept = s[deptIndex];
+			String email = s[emailIndex];
 
-			_tableData.add(new Advisor(name, id, dept));
+			_tableData.add(new Advisor(name, id, dept, email));
 		}
 
 		//raw data not needed
@@ -236,6 +246,21 @@ public class AdvisorData extends DataModel {
 	protected void doubleClicked(int row, ITabled o) {
 		Advisor advisor = (Advisor)o;
 		System.err.println("Double clicked on advisor: " + advisor.name);
+		
+		Rectangle bounds = null;
+		
+		if (_dialog != null) {
+			bounds = _dialog.getBounds();
+			_dialog.setVisible(false);
+		}
+		
+		_dialog = new AdvisorDialog(advisor);
+		
+		if (bounds != null) {
+			_dialog.setBounds(bounds);
+		}
+		
+		_dialog.setVisible(true);
 	}
 
 

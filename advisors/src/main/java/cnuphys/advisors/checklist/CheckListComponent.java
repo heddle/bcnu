@@ -22,7 +22,7 @@ import cnuphys.bCNU.util.X11Colors;
 
 public class CheckListComponent extends JPanel {
 
-	public static final Dimension ledSize = new Dimension(14, 14);
+	public static final Dimension ledSize = new Dimension(13, 13);
 
 	//is the step completed?
 	public boolean done;
@@ -95,7 +95,7 @@ public class CheckListComponent extends JPanel {
 	// make the button that launches the algorithm step
 	private JButton makeDoItButton() {
 		_doitButton = new JButton("Run");
-		_doitButton.setFont(Fonts.mediumFont);
+		_doitButton.setFont(Fonts.tweenFont);
 
 		ActionListener al = new ActionListener() {
 
@@ -113,7 +113,7 @@ public class CheckListComponent extends JPanel {
 
 	private JLabel makeLabel(String text) {
 		JLabel lab = new JLabel(text);
-		lab.setFont(Fonts.mediumFont);
+		lab.setFont(Fonts.tweenFont);
 		return lab;
 	}
 

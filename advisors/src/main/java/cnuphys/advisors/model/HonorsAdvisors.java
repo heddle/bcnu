@@ -10,7 +10,7 @@ public class HonorsAdvisors extends DataModel {
 
 	//attributes for honors advisors data
 	private static final DataAttribute honAdvAttributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
-			DataManager.firstNameAtt};
+			DataManager.firstNameAtt, DataManager.directorAtt};
 
 
 	public HonorsAdvisors(String baseName) {
@@ -23,19 +23,27 @@ public class HonorsAdvisors extends DataModel {
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
+		int directorIndex = getColumnIndex(DataManager.directorAtt);
 
 		//dont create an actual model, just mark the corresponding advisor  as an honors advisor
 		for (String s[] : _data) {
 			String id = DataManager.fixId(s[idIndex]);
 			String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
+			String dirString = s[directorIndex];
 
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(id);
 			if (advisor == null) {
 				System.err.println(String.format("Did not match honors advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
+				continue;
 			} else {
 				advisor.setHonors();
+			}
+			
+			
+			if (dirString.contains("Y")) {
+				DataManager.getAdvisorData().honorsDirector = advisor;
 			}
 		}
 

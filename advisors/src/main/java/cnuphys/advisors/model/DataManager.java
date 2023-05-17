@@ -82,6 +82,8 @@ public class DataManager {
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
 	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46);
 	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 60, "Major_1st");
+	public static final DataAttribute emailAtt = new DataAttribute("ADVISOR_EMAIL", 170, "email", "student_email");
+	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);
 
 
 	/**
@@ -192,6 +194,28 @@ public class DataManager {
 
 		return advisors;
 	}
+	
+	/**
+	 * Get a list of honors advisors whose subject matches a secondary major
+	 *
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getHonorsAdvisorsForSecondaryMajor(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (advisor.honors()) {
+				if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject))
+				if (major == advisor.preferred2ndMajor) {
+					advisors.add(advisor);
+				}
+			}
+		}
+
+		return advisors;
+	}
+
 
 	/**
 	 * Get a list of advisors whose subject matches a department

@@ -23,7 +23,8 @@ public class HonorsMajorStep implements IAlgorithmStep {
 		// first, assign by major
 		// this does not reassign students so only used unassigned
 
-
+		
+		//first for the advisors "subject")
 		for (Major major : Major.values()) {
 
 			//get unassigned honors students and honors advisor
@@ -37,6 +38,22 @@ public class HonorsMajorStep implements IAlgorithmStep {
 			DataManager.roundRobinAssign(advisors, students, true, "Honors by Major");
 
 		}
+		
+		//then for secondary major 
+		for (Major major : Major.values()) {
+
+			//get unassigned honors students and honors advisor
+			List<Student> students = DataManager.getUnassignedHonorsStudentsForMajor(major);
+			List<Advisor> advisors = DataManager.getHonorsAdvisorsForSecondaryMajor(major);
+
+			//remove locked students and advisors
+			students.removeIf(x -> x.locked());
+			advisors.removeIf(x -> x.locked());
+
+			DataManager.roundRobinAssign(advisors, students, true, "Honors by Secondary Major");
+
+		}
+
 
 		return true;
 	}

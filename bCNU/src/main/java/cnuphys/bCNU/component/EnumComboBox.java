@@ -90,12 +90,13 @@ public class EnumComboBox extends JComboBox {
 		Dimension d = getPreferredSize();
 		for (int i = 0; i < count; i++) {
 			String s = (String) getItemAt(i);
+			int sw = fm.stringWidth(s);
 			maxSW = Math.max(maxSW, fm.stringWidth(s));
 		}
 
-		d.width = maxSW + 40;
+		d.width = maxSW + 80;
 		setPreferredSize(d);
-		setMaximumSize(d);
+		setMinimumSize(d);
 	}
 
 }

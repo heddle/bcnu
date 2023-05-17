@@ -26,12 +26,29 @@ public class Schedule extends DataModel {
 			DataManager.titleAtt, DataManager.instructorAtt, DataManager.idAtt};
 
 
+	/**
+	 * The course schedule
+	 * @param baseName
+	 */
 	public Schedule(String baseName) {
 		super(baseName, scheduleAttributes);
 		renderer = new CustomRenderer(this);
 
 		for (int i = 0; i < getColumnCount(); i++) {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
+		}
+		
+		//get the advisor schedules
+		
+		for (Course course : getCourses()) {
+			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
+			
+			if (advisor == null) {
+				System.err.println("Null advisor encountered when setting advisor schedule");
+				System.exit(1);
+			}
+			
+			advisor.schedule.add(course);
 		}
 
 	}
@@ -192,6 +209,22 @@ public class Schedule extends DataModel {
 	@Override
 	protected void doubleClicked(int row, ITabled o) {
 
+	}
+	
+	/**
+	 * Get the list of courses (in CRNs) for an advisor
+	 * @return he list of courses (in CRNs) for an advisor
+	 */
+	public List<String> getAdvisorSchedule(Advisor advisor) {
+		List<String> crns = new ArrayList<>();
+		
+		for (Course course : getCourses()) {
+			if (advisor.id.equals(course.id)) {
+				crns.add(course.crn);
+			}
+		}
+		
+		return crns;
 	}
 
 }

@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenuBar;
 import javax.swing.SwingUtilities;
 
+import cnuphys.advisors.Advisor;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorPanel;
@@ -158,6 +159,10 @@ public class AdvisorAssign extends JFrame {
 			s = String.format(" %s    FCA Count: %d    Student Count: %d    Assigned: %d    Unassigned: %d    Required Avg: %4.1f  ",
 					getSemester().name(), advisorCount, studentCount, assignedCount1, unassignedCount, avgReq);
 		}
+		
+		Advisor honorsDirector = DataManager.getAdvisorData().honorsDirector;
+		
+		s += " Honors Director: " + honorsDirector.name + "  ";
 
 		_infoLabel.setText(s);
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
+import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 
@@ -85,6 +86,21 @@ public class ILCData extends DataModel {
 	public ILCCourse getILCCourse(String crn) {
 		for (ILCCourse ilc : getILCs()) {
 			if (ilc.crn.equals(crn)) {
+				return ilc;
+			}
+		}
+
+		return null;
+	}
+	
+	/**
+	 * Get the ilc course from the advisor
+	 * @param advisor the advisor
+	 * @return the ILC course, or null.
+	 */
+	public ILCCourse getILCCourse(Advisor advisor) {
+		for (ILCCourse ilc : getILCs()) {
+			if (ilc.instructor == advisor) {
 				return ilc;
 			}
 		}

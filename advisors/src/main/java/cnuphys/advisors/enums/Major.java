@@ -2,6 +2,8 @@ package cnuphys.advisors.enums;
 
 import java.util.EnumMap;
 
+import cnuphys.bCNU.component.EnumComboBox;
+
 public enum Major {
 	ACCT, AMSTD, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
 	ENGL, ENVSTD, FIN, FINART, FRENCH, GERMAN, HIST, INFSCI, KINES, MARKT, MATH, MGMT, MUSIC, NEURO,
@@ -10,10 +12,10 @@ public enum Major {
 	/**
 	 * A map for the base names of the student classes
 	 */
-	public static EnumMap<Major, String> baseNames = new EnumMap<>(Major.class);
+	private static EnumMap<Major, String> comboNames = new EnumMap<>(Major.class);
 	static {
 		for (Major major : values()) {
-			baseNames.put(major, major.name());
+			comboNames.put(major, major.name());
 		}
 	}
 
@@ -145,7 +147,7 @@ public enum Major {
 			return null;
 		}
 
-		name = name.toLowerCase();
+		name = name.toLowerCase().trim();
 
 		for (Major val : values()) {
 			// check the nice name
@@ -210,4 +212,15 @@ public enum Major {
 
 		return count;
 	}
+	
+	/**
+	 * Obtain a combo box of choices.
+	 *
+	 * @param defaultChoice the default selection
+	 * @return a comboBox selector
+	 */
+	public static EnumComboBox getComboBox(Major defaultChoice) {
+		return new EnumComboBox(comboNames, defaultChoice);
+	}
+
 }
