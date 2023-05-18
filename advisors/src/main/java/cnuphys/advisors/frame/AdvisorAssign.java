@@ -160,7 +160,7 @@ public class AdvisorAssign extends JFrame {
 					getSemester().name(), advisorCount, studentCount, assignedCount1, unassignedCount, avgReq);
 		}
 		
-		Advisor honorsDirector = DataManager.getAdvisorData().honorsDirector;
+		Advisor honorsDirector = DataManager.honorsDirector;
 		
 		s += " Honors Director: " + honorsDirector.name + "  ";
 

@@ -113,8 +113,8 @@ public class Advisor extends Person implements ITabled {
 		student.setLocked(lockStudentWhenDone);
 		student.advisor = this;
 
-		String s = String.format("Assignment made. Advisor: [%s] (%d) Student: [%s]", name, adviseeCount(), student.fullNameAndID());
-		System.out.println(s);
+//		String s = String.format("Assignment made. Advisor: [%s] (%d) Student: [%s]", name, adviseeCount(), student.fullNameAndID());
+//		System.out.println(s);
 
 	}
 
@@ -144,17 +144,20 @@ public class Advisor extends Person implements ITabled {
 	}
 	
 	/**
-	 * Count the number of different majors this advisor is advising
+	 * Count the number of different majors this advisor is advising outside of their own
 	 * @return the number of different majors this advisor is advising
 	 */
-	public int numMajorsAdvising() {
+	public int numOtherMajorsAdvising() {
 		List<Major> majors = new ArrayList<>();
 		
 		for (Student student : advisees) {
-			majors.remove(student.major);
-			majors.add(student.major);
+
+			if (student.major != subject) {
+				majors.remove(student.major);
+				majors.add(student.major);
+			}
 		}
-		
+
 		return majors.size();
 	}
 
@@ -179,7 +182,7 @@ public class Advisor extends Person implements ITabled {
 		case 6:
 			return "" + advisees.size();
 		case 7:
-			return "" + numMajorsAdvising();
+			return "" + numOtherMajorsAdvising();
 		default:
 			System.err.println("Bad column in Advisor getValueAt [" + col + "]");
 			System.exit(0);

@@ -145,7 +145,7 @@ public class AdvisorDialog extends SimpleDialog {
 		p.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 4));
 		p.add(makeLabel("Preferred Secondary Major"));
 		
-		_preferredMajorCombo = Major.getComboBox(_advisor.preferred2ndMajor != null ? _advisor.preferred2ndMajor : _advisor.subject);
+		_preferredMajorCombo = Major.getComboBox(_advisor.preferred2ndMajor != null ? _advisor.preferred2ndMajor : Major.NONE);
 		
 		_preferredMajorCombo.setFont(Fonts.defaultFont);
 		_preferredMajorCombo.addActionListener (new ActionListener () {

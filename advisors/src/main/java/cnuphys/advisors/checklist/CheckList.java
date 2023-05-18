@@ -13,6 +13,8 @@ import cnuphys.advisors.checklist.steps.ILCStep;
 import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PrelawStep;
 import cnuphys.advisors.checklist.steps.PresScholarStep;
+import cnuphys.advisors.checklist.steps.StudentInClassStep;
+import cnuphys.advisors.checklist.steps.StudentsMajorStep;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 
@@ -47,6 +49,12 @@ public class CheckList extends JPanel {
 	//assign honors students by algorithm
 	private CheckListComponent honorsAlgorithmStep;
 
+	//assign  students in FCA's class
+	private CheckListComponent studentInClassStep;
+	
+	//assign honors students by major and 2ndary major
+	private CheckListComponent studentsMajorStep;
+
 
 	//singleton
 	private static CheckList _instance;
@@ -76,9 +84,11 @@ public class CheckList extends JPanel {
 		musTheaStep = new CheckListComponent("Music & Theater majors", new MusTheaStep(), false);
 		btmgStep = new CheckListComponent("Bio Tech & Management students", new BTMGStep(), false);
 		prelawStep = new CheckListComponent("Prelaw students", new PrelawStep(), false);
-		honorsStudentInClassStep = new CheckListComponent("Honors in Honors Advisor Class", new HonorsStudentInClassStep(), false);
+		honorsStudentInClassStep = new CheckListComponent("Honors in Honors FCA Class", new HonorsStudentInClassStep(), false);
 		honorsMajorStep = new CheckListComponent("Honors students by major", new HonorsMajorStep(), false);
 		honorsAlgorithmStep = new CheckListComponent("Honors students by algorithm", new HonorsAlgorithmStep(), false);
+		studentInClassStep = new CheckListComponent("Student in FCA Class", new StudentInClassStep(), false);
+		studentsMajorStep = new CheckListComponent("Students by major", new StudentsMajorStep(), false);
 
 		add(presScholarStep);
 		add(ilcStep);
@@ -89,6 +99,8 @@ public class CheckList extends JPanel {
 		add(honorsStudentInClassStep);
 		add(honorsMajorStep);
 		add(honorsAlgorithmStep);
+		add(studentInClassStep);
+		add(studentsMajorStep);
 
 	}
 
@@ -122,6 +134,8 @@ public class CheckList extends JPanel {
 		boolean honorsStudentInClassStepDone = honorsStudentInClassStep.done;
 		boolean honorsMajorStepDone = honorsMajorStep.done;
 		boolean honorsAlgorithmStepDone = honorsAlgorithmStep.done;
+		boolean studentInClassStepDone = studentInClassStep.done;
+		boolean studentsMajorStepDone = studentsMajorStep.done;
 
 		presScholarStep.setEnabled(!presScholarStepDone);
 		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
@@ -132,6 +146,8 @@ public class CheckList extends JPanel {
 		honorsStudentInClassStep.setEnabled(prelawStepDone && !honorsStudentInClassStepDone);
 		honorsMajorStep.setEnabled(honorsStudentInClassStepDone && !honorsMajorStepDone);
 		honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
+		studentInClassStep.setEnabled(honorsAlgorithmStepDone && !studentInClassStepDone);
+		studentsMajorStep.setEnabled(studentInClassStepDone && !studentsMajorStepDone);
 
 	}
 }

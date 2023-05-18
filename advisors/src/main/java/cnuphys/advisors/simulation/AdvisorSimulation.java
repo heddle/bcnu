@@ -7,12 +7,13 @@ import cnuphys.advisors.Student;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.solution.AdvisorSolution;
 import cnuphys.advisors.table.InputOutput;
+import cnuphys.simanneal.IUpdateListener;
 import cnuphys.simanneal.Simulation;
 import cnuphys.simanneal.SimulationAttributes;
 import cnuphys.simanneal.SimulationState;
 import cnuphys.simanneal.Solution;
 
-public class AdvisorSimulation extends Simulation {
+public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	
 	private boolean _inited;
 	
@@ -34,6 +35,7 @@ public class AdvisorSimulation extends Simulation {
 	 * Create an advisor simulation
 	 */
 	private AdvisorSimulation() {
+		addUpdateListener(this);
 	}
 	
 	/**
@@ -50,9 +52,12 @@ public class AdvisorSimulation extends Simulation {
 	@Override
 	protected void setInitialAttributes() {
 		_attributes.removeAttribute(SimulationAttributes.USELOGTEMP);
-		_attributes.setPlotTitle("Assignment Quality");
-		_attributes.setYAxisLabel("1/Quality");
-
+		_attributes.setPlotTitle("Assignment Energy");
+		_attributes.setYAxisLabel("Energy");
+		_attributes.setMinTemp(0.01);
+		_attributes.setCoolRate(0.003);
+		_attributes.setMaxSteps(2000);
+		_attributes.setThermalizationCount(400);
 	}
 
 	@Override
@@ -112,13 +117,16 @@ public class AdvisorSimulation extends Simulation {
 					Solution rearrangement = _currentSolution.getRearrangement();
 					double eTest = rearrangement.getEnergy();
 
-					if (metrop(eCurrent, eTest)) {
+					if (metrop(eCurrent, eTest)) {  //accept rearrangement
 						_currentSolution = rearrangement;
 						eCurrent = eTest;
 						succ++;
 						if (succ > _attributes.getSuccessCount()) {
 							break;
 						}
+					} else {
+						AdvisorSolution advSol = (AdvisorSolution)_currentSolution;
+						exchangeStudents(advSol.studentA, advSol.studentB);
 					}
 
 				}
@@ -152,6 +160,25 @@ public class AdvisorSimulation extends Simulation {
 		
 		studentA.advisor = advisorB;
 		studentB.advisor = advisorA;
+	}
+
+	@Override
+	public void updateSolution(Simulation simulation, Solution newSolution, Solution oldSolution) {
+		String s = String.format("SOLUTION UPDATE. Temp = %12.8f  Energy = %7.3f", simulation.getTemperature(), newSolution.getEnergy());
+		System.err.println(s);
+	}
+
+	@Override
+	public void reset(Simulation simulation) {
+		System.err.println("SIMULATION RESET");
+	}
+
+	@Override
+	public void stateChange(Simulation simulation, SimulationState oldState, SimulationState newState) {
+		System.err.println("SIMULATION STATE CHANGE TO " + newState.name());
+		
+		
+		
 	}
 
 }

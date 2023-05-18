@@ -182,6 +182,10 @@ public abstract class Simulation implements Runnable {
 		_simState = SimulationState.RUNNING;
 		_thread.start();
 	}
+	
+	public Thread getSimThread() {
+		return _thread;
+	}
 
 	/**
 	 * run the simulation

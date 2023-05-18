@@ -4,6 +4,7 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
+import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.advisors.table.InputOutput;
 import cnuphys.advisors.util.Utilities;
@@ -54,7 +55,9 @@ public class AdvisorSolution extends Solution {
 		
 		sum += manyMajorsEnergy(advisors);
 		
-		return -sum;
+		sum = -sum;
+		
+		return sum;
 	}
 	
 	private final int manyMajorsStrength = 2;
@@ -62,16 +65,22 @@ public class AdvisorSolution extends Solution {
 	/**
 	 * Compute the negative energy (penalty) associated with having to many majors.
 	 * @param advisors
-	 * @return
+	 * @return the positive (bad) energy associate with multiple majors
 	 */
 	private double manyMajorsEnergy(List<Advisor> advisors) {
 		int sum = 0;
 		
 		for (Advisor advisor : advisors) {
-			sum += advisor.numMajorsAdvising();
+			int numOther = advisor.numOtherMajorsAdvising();
+//			System.out.println("num other = " + numOther);
+			if (numOther > 0) {
+				//penalty is num different majors raised to the 1.5 power
+				double penalty = Math.pow(numOther, 1.5);
+				sum += penalty;
+			}
 		}
 		
-		return -manyMajorsStrength * sum;
+		return -sum;
 	}
 
 	@Override
@@ -87,7 +96,7 @@ public class AdvisorSolution extends Solution {
 		studentA = students.get(ranNum);
 		studentB = studentA;
 		
-		while (studentB.advisor == studentB.advisor) {
+		while (studentA.advisor == studentB.advisor) {
 			ranNum = Utilities.randomInt(0, students.size()-1);
 			studentB = students.get(ranNum);
 		}
@@ -113,9 +122,21 @@ public class AdvisorSolution extends Solution {
 	 * @return the initial solution
 	 */
 	public static AdvisorSolution initialSolution(AdvisorSimulation simulation) {
-
-		InputOutput.debugPrintln("Creating the initial solution");
+		
+		
+		InputOutput.debugPrintln("Creating the initial solution.");
 		AdvisorSolution solution = new AdvisorSolution(simulation);
+
+		// assign the students round robin style to acheive equitability in numbers
+		if ((simulation.advisors != null) && (simulation.students != null)) {
+			String s = String.format("Num Advisors: %d  Num Students: %d", 
+					simulation.advisors.size(), simulation.students.size());
+			InputOutput.debugPrintln(s);
+			DataManager.roundRobinAssign(simulation.advisors, simulation.students, false,
+					"Error in Solution initalSolution");
+			
+			InputOutput.debugPrintln("Initial solution energy: " + solution.getEnergy());
+		}
 
 		return solution;
 	}

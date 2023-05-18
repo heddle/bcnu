@@ -18,7 +18,7 @@ public class BarPlot extends JComponent {
 	private static final Color barFill = X11Colors.getX11Color("light blue");
 
 	/** width of the plot area */
-	public static final int width = 700;
+	public static final int width = 750;
 
 	/** height of the plot area */
 	public static final int height = 600;

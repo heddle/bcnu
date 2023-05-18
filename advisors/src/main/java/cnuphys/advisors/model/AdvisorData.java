@@ -25,11 +25,6 @@ public class AdvisorData extends DataModel {
 	
 	private AdvisorDialog _dialog;
 	
-	
-	/* the director of the honors program, if also a core advisor */
-	public Advisor honorsDirector;
-
-
 	// attributes for advisor data
 	private static final DataAttribute advisorAttributes[] = {
 			DataManager.rowAtt, DataManager.advisorAtt, DataManager.departmentNameAtt,

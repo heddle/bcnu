@@ -25,11 +25,10 @@ public class Algorithm {
 			return false;
 		}
 		
-		//assign the students round robin style to acheive equitability in numbers
-		DataManager.roundRobinAssign(advisors, students, false, "In algorthm for honors");
 		
 		//now the annealing
 		AdvisorSimulation.getInstance().reset(advisors, students);
+		AdvisorSimulation.getInstance().startSimulation();
 
 		return true;
 	}

@@ -85,6 +85,10 @@ public class DataManager {
 	public static final DataAttribute emailAtt = new DataAttribute("ADVISOR_EMAIL", 170, "email", "student_email");
 	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);
 
+	
+	/* the director of the honors program, if also a core advisor */
+	public static Advisor honorsDirector;
+
 
 	/**
 	 * Initialize all the data
@@ -216,6 +220,25 @@ public class DataManager {
 		return advisors;
 	}
 
+	/**
+	 * Get a list advisors whose subject matches a secondary major
+	 *
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForSecondaryMajor(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject))
+				if (major == advisor.preferred2ndMajor) {
+					advisors.add(advisor);
+				}
+
+		}
+
+		return advisors;
+	}
 
 	/**
 	 * Get a list of advisors whose subject matches a department
@@ -394,25 +417,27 @@ public class DataManager {
 		}
 
 		//the max to assign to any one advisor
-	//	int target = AdvisorAssign.targetAverage();
+		int globalTarget = AdvisorAssign.targetAverage();
 		
-		int target = 1;
+		int rrTarget = 1;
 		boolean done = false;
 		while (!done) {
 			int totalSlots = 0;
 			for (Advisor advisor : advisors) {
-				totalSlots += advisor.slots(target);
+				totalSlots += advisor.slots(rrTarget);
 			}
 			
 			if (totalSlots >= numStudent) {
 				done = true;
 			}
 			else {
-				target += 1;
+				rrTarget += 1;
 			}
 		}
 		
-		System.out.println("Round Robin Target: " + target);
+		rrTarget = Math.min(rrTarget, globalTarget);
+		
+		System.out.println("Round Robin Target: " + rrTarget + "   (" + errPrompt + ")");
 
 		int advisorIndex = 0;
 
@@ -429,14 +454,19 @@ public class DataManager {
 
 			while (!found && (nTry < numAdvisor)) {
 				Advisor advisor = advisors.get(advisorIndex);
-				if (!advisor.locked() && (advisor.adviseeCount() < target)) {
+				if (!advisor.locked() && (advisor.adviseeCount() < rrTarget)) {
 					advisor.addAdvisee(student, lockWhenDone);
+					
+					if (advisor.adviseeCount() >= globalTarget) {
+						advisor.setLocked();
+					}
+					
 					found = true;
 				}
 				else {
 					nTry++;
 					if (nTry == numAdvisor) {
-						System.err.println(errPrompt + "  (Target max reached) RoundRobin failed to assign student: " + student.fullNameAndID());
+						System.out.println(errPrompt + "  (Target max reached) RoundRobin failed to assign student: " + student.fullNameAndID());
 					}
 				}
 

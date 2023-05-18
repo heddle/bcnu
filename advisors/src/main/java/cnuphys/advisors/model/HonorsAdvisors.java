@@ -43,7 +43,7 @@ public class HonorsAdvisors extends DataModel {
 			
 			
 			if (dirString.contains("Y")) {
-				DataManager.getAdvisorData().honorsDirector = advisor;
+				DataManager.honorsDirector = advisor;
 			}
 		}
 

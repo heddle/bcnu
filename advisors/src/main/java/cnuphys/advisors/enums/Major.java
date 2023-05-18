@@ -5,7 +5,7 @@ import java.util.EnumMap;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Major {
-	ACCT, AMSTD, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
+	NONE, ACCT, AMSTD, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
 	ENGL, ENVSTD, FIN, FINART, FRENCH, GERMAN, HIST, INFSCI, KINES, MARKT, MATH, MGMT, MUSIC, NEURO,
 	OEBIO, PHILO, PHYS, POLSCI, PSYCH, SOCIOL, SOWK, SPAN, STDART, THEA, UNDEC;
 
@@ -36,6 +36,8 @@ public enum Major {
 	public static EnumMap<Major, Department> departments = new EnumMap<>(Major.class);
 
 	static {
+		names.put(NONE, new String[] {"none"});
+
 		names.put(ACCT, new String[] {"accounting"});
 		names.put(AMSTD, new String[] {"american studies", "amst", "ldsp"});
 		names.put(BIOCHM, new String[] {"biochemistry", "mbch", "bchm"});
@@ -79,7 +81,7 @@ public enum Major {
 		names.put(THEA, new String[] {"theater", "pfar"});
 		names.put(UNDEC, new String[] {"undeclared"});
 
-
+		departments.put(NONE, Department.NONE);
 		departments.put(ACCT, Department.LUTR);
 		departments.put(AMSTD, Department.LDSP);
 		departments.put(BIOCHM, Department.MBCH);

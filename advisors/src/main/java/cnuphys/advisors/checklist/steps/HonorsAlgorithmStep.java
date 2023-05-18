@@ -6,8 +6,10 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
+import cnuphys.advisors.simulation.AdvisorSimulation;
 
 public class HonorsAlgorithmStep implements IAlgorithmStep {
 
@@ -21,7 +23,33 @@ public class HonorsAlgorithmStep implements IAlgorithmStep {
 		
 		List<Student> students = DataManager.getUnassignedHonorsStudents();
 	
+		System.err.println("Run Honors algorithm");
 		Algorithm.runAlgorithm(students, advisors);
+		
+		try {
+			AdvisorSimulation.getInstance().getSimThread().join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		
+		System.err.println("Honors algorithm complete");
+		
+		//lock students
+		for (Student student : students) {
+			student.setLocked();
+		}
+		
+		//lock down any advisors at target and lock down honors director
+		int target = AdvisorAssign.targetAverage();
+		for (Advisor advisor : advisors) {
+			if ((advisor.adviseeCount() >= target) || (advisor == DataManager.honorsDirector)) {
+				advisor.setLocked();
+			}
+		}
+		
+		
+		
 		return true;
 	}
 
