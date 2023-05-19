@@ -2,16 +2,10 @@ package cnuphys.advisors.simulation;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
-
-import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.frame.AdvisorAssign;
-import cnuphys.advisors.graphics.AdvisorDisplay;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.solution.AdvisorSolution;
 import cnuphys.advisors.table.InputOutput;
@@ -22,19 +16,22 @@ import cnuphys.simanneal.SimulationState;
 import cnuphys.simanneal.Solution;
 
 public class AdvisorSimulation extends Simulation implements IUpdateListener {
-	
+
 	private boolean _inited;
-	
-	/** 
+
+	private int _step;
+
+
+	/**
 	 * The list of available advisors
 	 */
 	public List<Advisor> advisors;
-	
+
 	/**
 	 * The list of students who need an assignment
 	 */
 	public List<Student> students;
-	
+
 	//singleton
 	private static AdvisorSimulation _instance;
 
@@ -44,21 +41,21 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	 */
 	private AdvisorSimulation() {
 		addUpdateListener(this);
-		
+
 		//create the swing timer
-		
+
 		ActionListener al = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.err.println("DUDE!");
 			}
-			
+
 		};
-		
+
 
 	}
-	
+
 	/**
 	 * public access to the singleton
 	 * @return the simulation object
@@ -110,9 +107,9 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		this.students = students;
 		super.reset();
 	}
-	
-	
-	private int step;
+
+
+
 	//override the run method so we can customize the rearrangement
 	@Override
 	public void run() {
@@ -120,12 +117,12 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		double factor = 1. - _attributes.getCoolRate();
 		Solution oldSolution = _currentSolution.copy();
 
-		step = 0;
-		
+		_step = 0;
+
 		//compute max steps
 		int maxSteps = -(int) (Math.log(_temperature/_attributes.getMinTemp())/Math.log(factor));
 
-		while ((_simState != SimulationState.STOPPED) && (step < maxSteps)) {
+		while ((_simState != SimulationState.STOPPED) && (_step < maxSteps)) {
 
 			if (_simState == SimulationState.PAUSED) {
 				// sleep for a second
@@ -163,12 +160,12 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 				_temperature *= factor;
 
 				// System.err.println("Current temp: " + _temperature);
-				step++;
+				_step++;
 				notifyListeners(_currentSolution, oldSolution);
 			} // running
 		} // while
 
-		System.err.println("Cooldown steps taken: " + step);
+		System.err.println("Cooldown steps taken: " + _step);
 		setSimulationState(SimulationState.STOPPED);
 	}
 
@@ -180,13 +177,13 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	public void exchangeStudents(Student studentA, Student studentB) {
 		Advisor advisorA = studentA.advisor;
 		Advisor advisorB = studentB.advisor;
-		
+
 		advisorA.removeAdvisee(studentA);
 		advisorB.removeAdvisee(studentB);
-		
+
 		advisorA.addAdvisee(studentB, false);
 		advisorB.addAdvisee(studentA, false);
-		
+
 		studentA.advisor = advisorB;
 		studentB.advisor = advisorA;
 	}
@@ -194,14 +191,14 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	@Override
 	public void updateSolution(Simulation simulation, Solution newSolution, Solution oldSolution) {
 
-		if ((step % 50) == 0) {
-			String s = String.format("SOLUTION UPDATE. Step = %d  Temp = %12.8f  Energy = %7.3f", step, simulation.getTemperature(),
+		if ((_step % 50) == 0) {
+			String s = String.format("SOLUTION UPDATE. Step = %d  Temp = %12.8f  Energy = %7.3f", _step, simulation.getTemperature(),
 					newSolution.getEnergy());
 			System.err.println(s);
-			
+
 //			AdvisorAssign.getInstance().getSimulationPlot().refresh();
-			
-			
+
+
 		}
 	}
 
@@ -213,14 +210,14 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	@Override
 	public void stateChange(Simulation simulation, SimulationState oldState, SimulationState newState) {
 		System.err.println("SIMULATION STATE CHANGE TO " + newState.name());
-		
+
 		if (newState == SimulationState.RUNNING) {
-			
+
 		}
 		else if (newState == SimulationState.STOPPED) {
-			
+
 		}
-		
+
 	}
 
 }
