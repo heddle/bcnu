@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.simanneal.SimulationPanel;
+import cnuphys.simanneal.SimulationPlot;
 
 public class AdvisorPanel extends JPanel {
 
@@ -44,5 +45,10 @@ public class AdvisorPanel extends JPanel {
 		Insets def = super.getInsets();
 		return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
 	}
+	
+	public SimulationPlot getSimulationPlot() {
+		return _simPanel.getSimulationPlot();
+	}
+
 
 }

@@ -14,6 +14,7 @@ import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PrelawStep;
 import cnuphys.advisors.checklist.steps.PresScholarStep;
 import cnuphys.advisors.checklist.steps.StudentInClassStep;
+import cnuphys.advisors.checklist.steps.StudentsAlgorithmStep;
 import cnuphys.advisors.checklist.steps.StudentsMajorStep;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
@@ -55,6 +56,9 @@ public class CheckList extends JPanel {
 	//assign honors students by major and 2ndary major
 	private CheckListComponent studentsMajorStep;
 
+	//assign remaining students by algorithm
+	private CheckListComponent studentsAlgorithmStep;
+
 
 	//singleton
 	private static CheckList _instance;
@@ -89,6 +93,7 @@ public class CheckList extends JPanel {
 		honorsAlgorithmStep = new CheckListComponent("Honors students by algorithm", new HonorsAlgorithmStep(), false);
 		studentInClassStep = new CheckListComponent("Student in FCA Class", new StudentInClassStep(), false);
 		studentsMajorStep = new CheckListComponent("Students by major", new StudentsMajorStep(), false);
+		studentsAlgorithmStep = new CheckListComponent("Remaining students by algorithm", new StudentsAlgorithmStep(), false);
 
 		add(presScholarStep);
 		add(ilcStep);
@@ -101,6 +106,7 @@ public class CheckList extends JPanel {
 		add(honorsAlgorithmStep);
 		add(studentInClassStep);
 		add(studentsMajorStep);
+		add(studentsAlgorithmStep);
 
 	}
 
@@ -136,6 +142,7 @@ public class CheckList extends JPanel {
 		boolean honorsAlgorithmStepDone = honorsAlgorithmStep.done;
 		boolean studentInClassStepDone = studentInClassStep.done;
 		boolean studentsMajorStepDone = studentsMajorStep.done;
+		boolean studentsAlgorithmStepDone = studentsAlgorithmStep.done;
 
 		presScholarStep.setEnabled(!presScholarStepDone);
 		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
@@ -148,6 +155,7 @@ public class CheckList extends JPanel {
 		honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
 		studentInClassStep.setEnabled(honorsAlgorithmStepDone && !studentInClassStepDone);
 		studentsMajorStep.setEnabled(studentInClassStepDone && !studentsMajorStepDone);
+		studentsAlgorithmStep.setEnabled(studentsMajorStepDone && !studentsAlgorithmStepDone);
 
 	}
 }

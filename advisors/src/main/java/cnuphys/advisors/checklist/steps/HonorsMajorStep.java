@@ -3,13 +3,10 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.enums.Major;
-import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
-import cnuphys.advisors.model.StudentData;
 
 /**
  * Assign the honors students
@@ -23,7 +20,7 @@ public class HonorsMajorStep implements IAlgorithmStep {
 		// first, assign by major
 		// this does not reassign students so only used unassigned
 
-		
+
 		//first for the advisors "subject")
 		for (Major major : Major.values()) {
 
@@ -38,8 +35,8 @@ public class HonorsMajorStep implements IAlgorithmStep {
 			DataManager.roundRobinAssign(advisors, students, true, "Honors by Major");
 
 		}
-		
-		//then for secondary major 
+
+		//then for secondary major
 		for (Major major : Major.values()) {
 
 			//get unassigned honors students and honors advisor

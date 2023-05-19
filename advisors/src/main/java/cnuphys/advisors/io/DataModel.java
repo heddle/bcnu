@@ -381,10 +381,22 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			public int compare(ITabled o1, ITabled o2) {
 				String s1 = o1.getValueAt(column);
 				String s2 = o2.getValueAt(column);
-				if (_ascendingSort) {
-					return s1.compareTo(s2);
-				} else {
-					return s2.compareTo(s1);
+				
+				if (name.contains("#ADV") || name.contains("#MAJ")) {
+					Integer i1 = Integer.parseInt(s1);
+					Integer i2 = Integer.parseInt(s2);
+					if (_ascendingSort) {
+						return i1.compareTo(i2);
+					} else {
+						return i2.compareTo(i1);
+					}
+				}
+				else {
+					if (_ascendingSort) {
+						return s1.compareTo(s2);
+					} else {
+						return s2.compareTo(s1);
+					}
 				}
 			}
 

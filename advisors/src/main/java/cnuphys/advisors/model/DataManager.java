@@ -397,6 +397,22 @@ public class DataManager {
 		double ns = getStudentData().count();
 		return ns/na;
 	}
+	
+	private static Advisor hasLeastAdvisees(List<Advisor> advisors) {
+		int min = Integer.MAX_VALUE;
+		Advisor minAdvisor = null;
+
+		for (Advisor advisor : advisors) {
+			if (!advisor.locked()) {
+				if (advisor.adviseeCount() < min) {
+					min = advisor.adviseeCount();
+					minAdvisor = advisor;
+				}
+			}
+		}
+
+		return minAdvisor;
+	}
 
 	/**
 	 * Assign a group of students to a group of advisors who can take them. The students
@@ -409,6 +425,51 @@ public class DataManager {
 	 * @param errPrompt used in a error message if all advisors max out
 	 */
 	public static  void roundRobinAssign(List<Advisor> advisors, List<Student> students, boolean lockWhenDone, String errPrompt) {
+
+		int numAdvisor = advisors.size();
+		int numStudent = students.size();
+		if ((numAdvisor == 0) || (numStudent == 0)) {
+			return;
+		}
+
+		//the max to assign to any one advisor
+		int globalTarget = AdvisorAssign.targetAverage();
+		
+		
+		for (Student student : students) {
+
+			if (student.locked()) {
+				continue;
+			}
+			
+			Advisor advisor = hasLeastAdvisees(advisors);
+			
+			if ((advisor == null) || (advisor.adviseeCount() >= globalTarget)) {
+				System.out.println(errPrompt + "  (Target max reached) RoundRobin failed to assign student: " + student.fullNameAndID());
+				continue;
+			}
+			
+			advisor.addAdvisee(student, lockWhenDone);
+			
+			if (advisor.adviseeCount() >= globalTarget) {
+				advisor.setLocked();
+			}
+
+		}
+		
+	}
+	
+	/**
+	 * Assign a group of students to a group of advisors who can take them. The students
+	 * are assigned to the advisors equally but if any advisor reached the target limit they do
+	 * not get more students. It is possible than not all students get assign.When the students
+	 * are assigned they are locked. I.e., this makes immutable assignments.
+	 * @param advisors the (sub)list of advisors.
+	 * @param students the (sub)list of students
+	 * @param lockWhenDone if true, lock the students down
+	 * @param errPrompt used in a error message if all advisors max out
+	 */
+	public static  void XroundRobinAssign(List<Advisor> advisors, List<Student> students, boolean lockWhenDone, String errPrompt) {
 
 		int numAdvisor = advisors.size();
 		int numStudent = students.size();

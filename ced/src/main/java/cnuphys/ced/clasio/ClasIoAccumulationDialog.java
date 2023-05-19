@@ -265,34 +265,6 @@ public class ClasIoAccumulationDialog extends JDialog {
 								}
 							}
 
-//							try {
-//								EventSourceType estype = _eventManager.getEventSourceType();
-//								switch (estype) {
-//								case HIPORING:
-//									if (_eventManager.hasEvent()) {
-//										DataEvent event = _eventManager.getNextEvent();
-//										if (event == null) {
-////											Log.getInstance().warning(
-////													"A \"should not have happened\" null event in the accumulator.");
-//											Thread.sleep(50);
-//										} else {
-//											count++;
-//										}
-//									} else {
-//										Thread.sleep(50);
-//									}
-//									break;
-//								default:
-//									_eventManager.getNextEvent();
-//									count++;
-//									break;
-//								}
-//
-//
-//							} catch (Exception e) {
-//								e.printStackTrace();
-//								break;
-//							}
 
 							if (((count + 1) % modCount) == 0) {
 								int value = (int) ((100.0 * count) / fcount);

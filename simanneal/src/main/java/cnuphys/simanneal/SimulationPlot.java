@@ -128,6 +128,10 @@ public class SimulationPlot extends PlotPanel implements IUpdateListener {
 			e1.printStackTrace();
 		}
 	}
+	
+	public void refresh() {
+		_plotCanvas.needsRedraw(true);
+	}
 
 	@Override
 	public void reset(Simulation simulation) {

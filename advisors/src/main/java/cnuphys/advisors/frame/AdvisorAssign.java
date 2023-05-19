@@ -22,6 +22,7 @@ import cnuphys.advisors.graphics.AdvisorPanel;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
+import cnuphys.simanneal.SimulationPlot;
 
 /**
  * The main object for assigning core advisors
@@ -54,6 +55,9 @@ public class AdvisorAssign extends JFrame {
 
 	//the main menu bar
 	private JMenuBar _menuBar;
+	
+	//the advisor panel
+	private AdvisorPanel _advisorPanel;
 
 
 	//private constructor for singleton
@@ -74,7 +78,7 @@ public class AdvisorAssign extends JFrame {
 
 		pack();
 	}
-
+	
 	/**
 	 * Set uo the GUI
 	 */
@@ -90,14 +94,18 @@ public class AdvisorAssign extends JFrame {
 		//add the check list
 		_checklist = CheckList.getInstance();
 
-		AdvisorPanel panel = new AdvisorPanel(AdvisorSimulation.getInstance(), _checklist);
+		_advisorPanel = new AdvisorPanel(AdvisorSimulation.getInstance(), _checklist);
 
 
-		add(panel, BorderLayout.CENTER);
+		add(_advisorPanel, BorderLayout.CENTER);
 		createInfoLabel();
 
 	}
 
+	public SimulationPlot getSimulationPlot() {
+		return _advisorPanel.getSimulationPlot();
+	}
+	
 	/**
 	 * Get the semester we are examining
 	 * @return the semester we are examining
@@ -111,7 +119,7 @@ public class AdvisorAssign extends JFrame {
 	 * public accessor to the singleton
 	 * @return the singleton AdvisorAssign
 	 */
-	private static AdvisorAssign getInstance() {
+	public static AdvisorAssign getInstance() {
 		if (_instance == null) {
 			_instance = new AdvisorAssign();
 		}

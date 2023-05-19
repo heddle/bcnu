@@ -1,9 +1,17 @@
 package cnuphys.advisors.simulation;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
+import cnuphys.advisors.frame.AdvisorAssign;
+import cnuphys.advisors.graphics.AdvisorDisplay;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.solution.AdvisorSolution;
 import cnuphys.advisors.table.InputOutput;
@@ -36,6 +44,19 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	 */
 	private AdvisorSimulation() {
 		addUpdateListener(this);
+		
+		//create the swing timer
+		
+		ActionListener al = new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.err.println("DUDE!");
+			}
+			
+		};
+		
+
 	}
 	
 	/**
@@ -52,12 +73,14 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	@Override
 	protected void setInitialAttributes() {
 		_attributes.removeAttribute(SimulationAttributes.USELOGTEMP);
+		_attributes.removeAttribute(SimulationAttributes.MAXSTEPS);
 		_attributes.setPlotTitle("Assignment Energy");
 		_attributes.setYAxisLabel("Energy");
 		_attributes.setMinTemp(0.01);
-		_attributes.setCoolRate(0.003);
-		_attributes.setMaxSteps(2000);
-		_attributes.setThermalizationCount(400);
+		_attributes.setCoolRate(0.002);
+	//	_attributes.setMaxSteps(20000);
+		_attributes.setThermalizationCount(1000);
+		_attributes.setSuccessCount(200);
 	}
 
 	@Override
@@ -88,17 +111,21 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		super.reset();
 	}
 	
-	//override the run method so we can customize the rearranhement
+	
+	private int step;
+	//override the run method so we can customize the rearrangement
 	@Override
 	public void run() {
 
 		double factor = 1. - _attributes.getCoolRate();
 		Solution oldSolution = _currentSolution.copy();
 
-		int step = 0;
+		step = 0;
+		
+		//compute max steps
+		int maxSteps = -(int) (Math.log(_temperature/_attributes.getMinTemp())/Math.log(factor));
 
-		while ((_simState != SimulationState.STOPPED) && (step < _attributes.getMaxSteps())
-				&& (_temperature > _attributes.getMinTemp())) {
+		while ((_simState != SimulationState.STOPPED) && (step < maxSteps)) {
 
 			if (_simState == SimulationState.PAUSED) {
 				// sleep for a second
@@ -121,9 +148,10 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 						_currentSolution = rearrangement;
 						eCurrent = eTest;
 						succ++;
-						if (succ > _attributes.getSuccessCount()) {
-							break;
-						}
+//						if (succ > _attributes.getSuccessCount()) {
+//							System.err.println("Breaking on success count");
+//							break;
+//						}
 					} else {
 						AdvisorSolution advSol = (AdvisorSolution)_currentSolution;
 						exchangeStudents(advSol.studentA, advSol.studentB);
@@ -140,6 +168,7 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 			} // running
 		} // while
 
+		System.err.println("Cooldown steps taken: " + step);
 		setSimulationState(SimulationState.STOPPED);
 	}
 
@@ -164,8 +193,16 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 
 	@Override
 	public void updateSolution(Simulation simulation, Solution newSolution, Solution oldSolution) {
-		String s = String.format("SOLUTION UPDATE. Temp = %12.8f  Energy = %7.3f", simulation.getTemperature(), newSolution.getEnergy());
-		System.err.println(s);
+
+		if ((step % 50) == 0) {
+			String s = String.format("SOLUTION UPDATE. Step = %d  Temp = %12.8f  Energy = %7.3f", step, simulation.getTemperature(),
+					newSolution.getEnergy());
+			System.err.println(s);
+			
+//			AdvisorAssign.getInstance().getSimulationPlot().refresh();
+			
+			
+		}
 	}
 
 	@Override
@@ -177,7 +214,12 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	public void stateChange(Simulation simulation, SimulationState oldState, SimulationState newState) {
 		System.err.println("SIMULATION STATE CHANGE TO " + newState.name());
 		
-		
+		if (newState == SimulationState.RUNNING) {
+			
+		}
+		else if (newState == SimulationState.STOPPED) {
+			
+		}
 		
 	}
 

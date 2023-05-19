@@ -40,6 +40,12 @@ public class HonorsStudentInClassStep implements IAlgorithmStep {
 					
 					if (advisor.adviseeCount() <= target) {
 						advisor.addAdvisee(student, true);
+						
+						if (advisor.adviseeCount() >= target) {
+							advisor.setLocked();
+							System.out.println("Honors Advisor " + advisor.name + " is now locked.");
+						}
+
 						break;
 					}
 
