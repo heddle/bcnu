@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.SimpleAttributeSet;
@@ -21,12 +20,13 @@ import cnuphys.advisors.model.ILCCourse;
 import cnuphys.bCNU.component.EnumComboBox;
 import cnuphys.bCNU.dialog.SimpleDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
+import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.graphics.component.TextPaneScrollPane;
 import cnuphys.bCNU.util.Fonts;
 
 public class AdvisorDialog extends SimpleDialog {
-	
+
 	private static SimpleAttributeSet RED_PLAIN = TextPaneScrollPane.createStyle(Color.red, "sansserif", 11, false, false);
 	private static SimpleAttributeSet BLACK_PLAIN = TextPaneScrollPane.createStyle(Color.black, "sansserif", 11, false, false);
 	private static SimpleAttributeSet BLACK_BOLD = TextPaneScrollPane.createStyle(Color.black, "sansserif", 11, false, true);
@@ -36,7 +36,7 @@ public class AdvisorDialog extends SimpleDialog {
 
 	//advisor being displayed
 	private Advisor _advisor;
-	
+
 	//choose prefrerred major (other than own)
 	private EnumComboBox _preferredMajorCombo;
 
@@ -71,32 +71,32 @@ public class AdvisorDialog extends SimpleDialog {
 
 		np.add(makeLabel(ynString("HONORS", _advisor.honors())));
 		np.add(makeLabel(ilcString() ));
-		
+
 		np.add(preferred2ndMajor());
 
 		np.setBorder(new CommonBorder("Basic advisor information"));
 		add(np, BorderLayout.NORTH);
 	}
-	
+
 	private JPanel addListPanels() {
 		JPanel lp = new JPanel();
-		
+
 		lp.setLayout(new BorderLayout(6, 6));
-		
+
 		lp.add(createAdviseesPane(), BorderLayout.EAST);
 		lp.add(createSchedulePane(), BorderLayout.WEST);
-		
+
 		add(lp, BorderLayout.CENTER);
 		return lp;
 	}
-	
+
 	//the advisors's schedule
 	private TextPaneScrollPane createSchedulePane() {
 		TextPaneScrollPane sp = new TextPaneScrollPane("Schedule");
-		
+
 
 		for (Course course : _advisor.schedule) {
-			
+
 			String info = course.infoString() + "    \n";
 			if (course.isILC) {
 				sp.append(info, RED_PLAIN);
@@ -105,24 +105,24 @@ public class AdvisorDialog extends SimpleDialog {
 				sp.append(info, BLACK_PLAIN);
 			}
 		}
-		
+
 		return sp;
 	}
-	
-	
 
-	
+
+
+
 	private TextPaneScrollPane createAdviseesPane() {
 		TextPaneScrollPane sp = new TextPaneScrollPane("Advisees");
-		
-		
-	
+
+
+
 		for (Student student : _advisor.advisees) {
 			boolean locked = student.locked();
 			boolean plp = student.check(Person.PLP);
-			
+
 			String info = String.format("%s (%s)   \n", student.fullNameAndID(), student.major.name());
-			
+
 			if (locked && plp) {
 				sp.append(info, GRAY_ITALIC_BOLD);
 			} else if (locked) {
@@ -134,7 +134,7 @@ public class AdvisorDialog extends SimpleDialog {
 			}
 
 		}
-		
+
 		return sp;
 	}
 
@@ -144,12 +144,13 @@ public class AdvisorDialog extends SimpleDialog {
 		JPanel p = new JPanel();
 		p.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 4));
 		p.add(makeLabel("Preferred Secondary Major"));
-		
+
 		_preferredMajorCombo = Major.getComboBox(_advisor.preferred2ndMajor != null ? _advisor.preferred2ndMajor : Major.NONE);
-		
+
 		_preferredMajorCombo.setFont(Fonts.defaultFont);
 		_preferredMajorCombo.addActionListener (new ActionListener () {
-		    public void actionPerformed(ActionEvent e) {
+		    @Override
+			public void actionPerformed(ActionEvent e) {
 		    	 Enum en = _preferredMajorCombo.getSelectedEnum();
 				Major major = (Major) en;
 				System.err.println("SELECTED MAJOR: " + major);
@@ -164,7 +165,7 @@ public class AdvisorDialog extends SimpleDialog {
 		p.add(_preferredMajorCombo);
 		return p;
 	}
-	
+
 
 	//create a label
 	private JLabel makeLabel(String text) {
@@ -172,7 +173,7 @@ public class AdvisorDialog extends SimpleDialog {
 		label.setFont(Fonts.defaultFont);
 		return label;
 	}
-	
+
 	private String ilcString() {
 		if (_advisor.ilc()) {
 			ILCCourse course = DataManager.getILCData().getILCCourse(_advisor);

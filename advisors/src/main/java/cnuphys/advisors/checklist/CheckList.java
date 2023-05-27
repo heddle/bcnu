@@ -1,6 +1,7 @@
 package cnuphys.advisors.checklist;
 
 import java.awt.Dimension;
+import java.awt.Font;
 
 import javax.swing.JPanel;
 
@@ -16,8 +17,10 @@ import cnuphys.advisors.checklist.steps.PresScholarStep;
 import cnuphys.advisors.checklist.steps.StudentInClassStep;
 import cnuphys.advisors.checklist.steps.StudentsAlgorithmStep;
 import cnuphys.advisors.checklist.steps.StudentsMajorStep;
+import cnuphys.advisors.dialogs.MessageDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
+import cnuphys.bCNU.util.Fonts;
 
 public class CheckList extends JPanel {
 
@@ -124,7 +127,6 @@ public class CheckList extends JPanel {
 		musTheaStep.run();
 		btmgStep.run();
 		prelawStep.run();
-
 	}
 
 	/**

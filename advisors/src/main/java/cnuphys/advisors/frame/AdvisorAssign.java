@@ -17,11 +17,13 @@ import javax.swing.SwingUtilities;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.checklist.CheckList;
+import cnuphys.advisors.dialogs.MessageDialog;
 import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorPanel;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
+import cnuphys.bCNU.util.Fonts;
 import cnuphys.simanneal.SimulationPlot;
 
 /**
@@ -187,6 +189,11 @@ public class AdvisorAssign extends JFrame {
 		return (int)Math.ceil(avgReq);
 	}
 
+	public static void showMessage(String text) {
+
+		MessageDialog messageDialog = new MessageDialog("Secondary Majors", true, text, Fonts.hugeFont);
+		messageDialog.setVisible(true);
+	}
 
 	/**
 	 * The main program
@@ -202,6 +209,12 @@ public class AdvisorAssign extends JFrame {
 			public void run() {
 				frame.setVisible(true);
 				frame.setLocationRelativeTo(null);
+				
+				String text = "This would be a good time to bring up the list of advisors" +
+						" and assign any \"secondary majors.\"";
+				
+				showMessage(text);
+
 			}
 		});
 	}
