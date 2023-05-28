@@ -171,7 +171,8 @@ public class DataManager {
 		ArrayList<Advisor> advisors = new ArrayList<>();
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
-			if (major == advisor.subject) {
+			if (major.isInMajorFamily(advisor.subject)) {
+//			if (major == advisor.subject) {
 				advisors.add(advisor);
 			}
 		}
@@ -190,7 +191,8 @@ public class DataManager {
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
 			if (advisor.honors()) {
-				if (major == advisor.subject) {
+				if (major.isInMajorFamily(advisor.subject)) {
+//					if (major == advisor.subject) {
 					advisors.add(advisor);
 				}
 			}
@@ -211,7 +213,8 @@ public class DataManager {
 		for (Advisor advisor : _advisorData.getAdvisors()) {
 			if (advisor.honors()) {
 				if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject))
-				if (major == advisor.preferred2ndMajor) {
+				if (major.isInMajorFamily(advisor.preferred2ndMajor)) {
+			//	if (major == advisor.preferred2ndMajor) {
 					advisors.add(advisor);
 				}
 			}
@@ -231,7 +234,8 @@ public class DataManager {
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
 			if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject))
-				if (major == advisor.preferred2ndMajor) {
+				if (major.isInMajorFamily(advisor.preferred2ndMajor)) {
+			//	if (major == advisor.preferred2ndMajor) {
 					advisors.add(advisor);
 				}
 

@@ -2,6 +2,7 @@ package cnuphys.advisors.enums;
 
 import java.util.EnumMap;
 
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Major {
@@ -125,6 +126,47 @@ public enum Major {
 		departments.put(THEA, Department.PFAR);
 		departments.put(UNDEC, Department.NONE);
 
+	}
+	
+	public boolean isInMajorFamily(Major major) {
+		if (this == major) {
+			return true;
+		}
+
+		switch (this) {
+
+		case ACCT:
+		case BUSN:
+		case FIN:
+		case MARKT:
+		case MGMT:
+			if (AdvisorAssign.useBusinessFamily()) {
+				return ((major == ACCT) || (major == BUSN) || (major == FIN) || (major == MARKT) || (major == MGMT));
+			}
+			break;
+
+		case BIOCHM:
+		case CHEM:
+			if (AdvisorAssign.useChemFamily()) {
+				return ((major == BIOCHM) || (major == CHEM));
+			}
+			break;
+			
+		case BIOL:
+		case CELLMB:
+		case KINES:
+		case OEBIO:
+			if (AdvisorAssign.useBioFamily()) {
+				return ((major == BIOL) || (major == CELLMB) || (major == KINES) || (major == OEBIO));
+			}
+			break;
+
+
+		default:
+			return false;
+		}
+
+		return false;
 	}
 
 	/**

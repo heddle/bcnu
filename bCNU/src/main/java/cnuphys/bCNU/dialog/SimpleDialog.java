@@ -136,7 +136,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 	}
 
 	/**
-	 * This can be overriden to provde the size of the dialog. The default
+	 * This can be overridden to provide the size of the dialog. The default
 	 * implementation is to call pack.
 	 */
 	protected void sizeDialog() {

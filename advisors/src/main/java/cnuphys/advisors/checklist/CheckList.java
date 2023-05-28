@@ -18,6 +18,7 @@ import cnuphys.advisors.checklist.steps.StudentInClassStep;
 import cnuphys.advisors.checklist.steps.StudentsAlgorithmStep;
 import cnuphys.advisors.checklist.steps.StudentsMajorStep;
 import cnuphys.advisors.dialogs.MessageDialog;
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
@@ -158,6 +159,10 @@ public class CheckList extends JPanel {
 		studentInClassStep.setEnabled(honorsAlgorithmStepDone && !studentInClassStepDone);
 		studentsMajorStep.setEnabled(studentInClassStepDone && !studentsMajorStepDone);
 		studentsAlgorithmStep.setEnabled(studentsMajorStepDone && !studentsAlgorithmStepDone);
+		
+		if (studentsAlgorithmStepDone) {
+			AdvisorAssign.allDone();
+		}
 
 	}
 }

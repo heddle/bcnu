@@ -91,9 +91,15 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_lcsButton = createButton("LCs", true, _rows[2]);
 		_classesButton = createButton("Classes", true, _rows[2]);
 		_departMajorButton = createButton("Dept/Maj", true, _rows[2]);
-		_catalogButton = createButton("Catalogs", true, _rows[2]);
-		_assignmentsButton = createButton("Assignments", false, _rows[2]);
+		_catalogButton = createButton("Catalogs", false, _rows[2]);
 
+	}
+	
+	/**
+	 * Add done. Set certain buttons enabled.
+	 */
+	public void done() {
+		_catalogButton.setEnabled(true);
 	}
 
 
@@ -122,6 +128,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		return rp;
 	}
 
+	//convenience method to create a button
 	private JButton createButton(String text, boolean enabled, JPanel panel) {
 		JButton button = new JButton(text);
 		button.addActionListener(this);

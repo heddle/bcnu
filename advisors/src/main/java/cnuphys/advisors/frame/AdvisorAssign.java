@@ -18,7 +18,9 @@ import javax.swing.SwingUtilities;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.dialogs.MessageDialog;
+import cnuphys.advisors.dialogs.OptionsDialog;
 import cnuphys.advisors.enums.Semester;
+import cnuphys.advisors.graphics.AdvisorDisplay;
 import cnuphys.advisors.graphics.AdvisorPanel;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
@@ -60,6 +62,8 @@ public class AdvisorAssign extends JFrame {
 	
 	//the advisor panel
 	private AdvisorPanel _advisorPanel;
+	
+	private static OptionsDialog _optionsDialog = new OptionsDialog();
 
 
 	//private constructor for singleton
@@ -194,6 +198,26 @@ public class AdvisorAssign extends JFrame {
 		MessageDialog messageDialog = new MessageDialog("Secondary Majors", true, text, Fonts.hugeFont);
 		messageDialog.setVisible(true);
 	}
+	
+	public static boolean useBusinessFamily() {
+		return _optionsDialog.useBusinessFamily();
+	}
+	
+	public static boolean useBioFamily() {
+		return _optionsDialog.useBioFamily();
+	}
+	
+	public static boolean useChemFamily() {
+		return _optionsDialog.useChemFamily();
+	}
+	
+	/**
+	 * Called when all done!
+	 */
+	public static void allDone() {
+		System.out.println("Assignments are complete.");
+		AdvisorDisplay.getInstance().done();
+	}
 
 	/**
 	 * The main program
@@ -202,11 +226,15 @@ public class AdvisorAssign extends JFrame {
 	 */
 	public static void main(String arg[]) {
 
-		JFrame frame = getInstance();
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				
+				_optionsDialog.setVisible(true);
+				
+				JFrame frame = getInstance();
+
 				frame.setVisible(true);
 				frame.setLocationRelativeTo(null);
 				
