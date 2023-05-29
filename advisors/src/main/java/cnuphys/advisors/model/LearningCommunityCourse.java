@@ -90,7 +90,7 @@ public class LearningCommunityCourse implements ITabled {
 		case 9:
 			return (instructor == null) ? "---" : instructor.name;
 		default:
-			System.err.println("Bad column in LC Course getValueAt [" + col + "]");
+			System.err.println("\nERROR: Bad column in LC Course getValueAt [" + col + "]");
 			System.exit(0);
 
 		}

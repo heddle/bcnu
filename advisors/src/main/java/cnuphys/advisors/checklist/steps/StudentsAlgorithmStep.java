@@ -23,7 +23,6 @@ public class StudentsAlgorithmStep implements IAlgorithmStep {
 
 		List<Student> students = DataManager.getUnassignedStudents();
 		
-		System.err.println("Run Student algorithm");
 		Algorithm.runAlgorithm(students, advisors);
 		
 		try {
@@ -33,7 +32,7 @@ public class StudentsAlgorithmStep implements IAlgorithmStep {
 		}
 
 		
-		System.err.println("Student algorithm complete");
+		System.out.println("Student algorithm complete");
 		
 		//lock students
 		for (Student student : students) {

@@ -254,7 +254,6 @@ public class StudentData extends DataModel {
 	@Override
 	protected void doubleClicked(int row, ITabled o) {
 		Student student = (Student)o;
-		System.err.println("Double clicked on student: " + student.fullNameAndID());
 	}
 
 }

@@ -1,6 +1,8 @@
 package cnuphys.advisors.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
@@ -449,7 +451,8 @@ public class DataManager {
 			Advisor advisor = hasLeastAdvisees(advisors);
 			
 			if ((advisor == null) || (advisor.adviseeCount() >= globalTarget)) {
-				System.out.println(errPrompt + "  (Target max reached) RoundRobin failed to assign student: " + student.fullNameAndID());
+//				System.out.println(errPrompt + "  (Target reached) RoundRobin failed to assign student: " + student.fullNameAndID() 
+//				+ " (" + student.major.name() + ")");
 				continue;
 			}
 			
@@ -463,86 +466,6 @@ public class DataManager {
 		
 	}
 	
-	/**
-	 * Assign a group of students to a group of advisors who can take them. The students
-	 * are assigned to the advisors equally but if any advisor reached the target limit they do
-	 * not get more students. It is possible than not all students get assign.When the students
-	 * are assigned they are locked. I.e., this makes immutable assignments.
-	 * @param advisors the (sub)list of advisors.
-	 * @param students the (sub)list of students
-	 * @param lockWhenDone if true, lock the students down
-	 * @param errPrompt used in a error message if all advisors max out
-	 */
-	public static  void XroundRobinAssign(List<Advisor> advisors, List<Student> students, boolean lockWhenDone, String errPrompt) {
-
-		int numAdvisor = advisors.size();
-		int numStudent = students.size();
-		if ((numAdvisor == 0) || (numStudent == 0)) {
-			return;
-		}
-
-		//the max to assign to any one advisor
-		int globalTarget = AdvisorAssign.targetAverage();
-		
-		int rrTarget = 1;
-		boolean done = false;
-		while (!done) {
-			int totalSlots = 0;
-			for (Advisor advisor : advisors) {
-				totalSlots += advisor.slots(rrTarget);
-			}
-			
-			if (totalSlots >= numStudent) {
-				done = true;
-			}
-			else {
-				rrTarget += 1;
-			}
-		}
-		
-		rrTarget = Math.min(rrTarget, globalTarget);
-		
-		System.out.println("Round Robin Target: " + rrTarget + "   (" + errPrompt + ")");
-
-		int advisorIndex = 0;
-
-		for (Student student : students) {
-
-			if (student.locked()) {
-				continue;
-			}
-
-			//get the next advisor with room
-
-			int nTry = 0;
-			boolean found = false;
-
-			while (!found && (nTry < numAdvisor)) {
-				Advisor advisor = advisors.get(advisorIndex);
-				if (!advisor.locked() && (advisor.adviseeCount() < rrTarget)) {
-					advisor.addAdvisee(student, lockWhenDone);
-					
-					if (advisor.adviseeCount() >= globalTarget) {
-						advisor.setLocked();
-					}
-					
-					found = true;
-				}
-				else {
-					nTry++;
-					if (nTry == numAdvisor) {
-						System.out.println(errPrompt + "  (Target max reached) RoundRobin failed to assign student: " + student.fullNameAndID());
-					}
-				}
-
-				advisorIndex  = (advisorIndex + 1) % numAdvisor;
-
-			}
-
-
-		}
-
-	}
-
+	
 
 }

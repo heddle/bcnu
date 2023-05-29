@@ -55,7 +55,7 @@ public class Advisor extends Person implements ITabled {
 		department = Department.getValue(deptstr);
 
 		if (department == null) {
-			System.err.println("COULD not match department [" + deptstr + "]");
+			System.err.println("\nCOULD not match department [" + deptstr + "]");
 			System.exit(1);
 		}
 
@@ -63,7 +63,7 @@ public class Advisor extends Person implements ITabled {
 		subject = Major.getValue(department.name());
 
 		if (subject == null) {
-			System.err.println("COULD not subject to department [" + department.name() + "]");
+			System.err.println("\nCOULD not subject to department [" + department.name() + "]");
 			System.exit(1);
 		}
 		
@@ -93,14 +93,14 @@ public class Advisor extends Person implements ITabled {
 		//is the advisor locked?
 		if (locked()) {
 			String s = String.format("Trying to assign to locked advisor. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
-			System.err.println(s);
+			System.out.println(s);
 			return;
 		}
 
 		//is the student locked?
 		if (student.locked()) {
 			String s = String.format("Trying to assign a locked student. Advisor: [%s] Student: [%s]", name, student.fullNameAndID());
-			System.err.println(s);
+			System.out.println(s);
 			return;
 		}
 
@@ -184,7 +184,7 @@ public class Advisor extends Person implements ITabled {
 		case 7:
 			return "" + numOtherMajorsAdvising();
 		default:
-			System.err.println("Bad column in Advisor getValueAt [" + col + "]");
+			System.out.println("Bad column in Advisor getValueAt [" + col + "]");
 			System.exit(0);
 
 		}

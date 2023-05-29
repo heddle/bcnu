@@ -210,7 +210,7 @@ public class AdvisorData extends DataModel {
      */
     public Advisor getAdvisorFromId(String id) {
     	if (id == null) {
-    		System.err.println("null id passed to getAdvisorFromId");
+    		System.err.println("\nERROR: null id passed to getAdvisorFromId");
     		return null;
     	}
     	id = id.trim();
@@ -240,7 +240,6 @@ public class AdvisorData extends DataModel {
 	@Override
 	protected void doubleClicked(int row, ITabled o) {
 		Advisor advisor = (Advisor)o;
-		System.err.println("Double clicked on advisor: " + advisor.name);
 		
 		Rectangle bounds = null;
 		

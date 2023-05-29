@@ -33,7 +33,7 @@ public class PrelawAdvisors extends DataModel  {
 
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(id);
 			if (advisor == null) {
-				System.err.println(String.format("Did not match prelaw advisor [%s] %s, %s to any current advisor", id,
+				System.out.println(String.format("Did not match prelaw advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
 			} else {
 				advisor.set(Person.PRELAW);

@@ -41,19 +41,6 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	 */
 	private AdvisorSimulation() {
 		addUpdateListener(this);
-
-		//create the swing timer
-
-		ActionListener al = new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.err.println("DUDE!");
-			}
-
-		};
-
-
 	}
 
 	/**
@@ -146,7 +133,7 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 						eCurrent = eTest;
 						succ++;
 //						if (succ > _attributes.getSuccessCount()) {
-//							System.err.println("Breaking on success count");
+//							System.out.println("Breaking on success count");
 //							break;
 //						}
 					} else {
@@ -159,13 +146,13 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 				// reduce the temperature
 				_temperature *= factor;
 
-				// System.err.println("Current temp: " + _temperature);
+				// System.out.println("Current temp: " + _temperature);
 				_step++;
 				notifyListeners(_currentSolution, oldSolution);
 			} // running
 		} // while
 
-		System.err.println("Cooldown steps taken: " + _step);
+		System.out.println("Cooldown steps taken: " + _step);
 		setSimulationState(SimulationState.STOPPED);
 	}
 
@@ -194,22 +181,18 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		if ((_step % 50) == 0) {
 			String s = String.format("SOLUTION UPDATE. Step = %d  Temp = %12.8f  Energy = %7.3f", _step, simulation.getTemperature(),
 					newSolution.getEnergy());
-			System.err.println(s);
-
-//			AdvisorAssign.getInstance().getSimulationPlot().refresh();
-
+			System.out.println(s);
 
 		}
 	}
 
 	@Override
 	public void reset(Simulation simulation) {
-		System.err.println("SIMULATION RESET");
+		System.out.println("SIMULATION RESET");
 	}
 
 	@Override
 	public void stateChange(Simulation simulation, SimulationState oldState, SimulationState newState) {
-		System.err.println("SIMULATION STATE CHANGE TO " + newState.name());
 
 		if (newState == SimulationState.RUNNING) {
 

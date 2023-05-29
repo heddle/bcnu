@@ -44,7 +44,7 @@ public class Schedule extends DataModel {
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
 			
 			if (advisor == null) {
-				System.err.println("Null advisor encountered when setting advisor schedule");
+				System.err.println("\nERROR: Null advisor encountered when setting advisor schedule");
 				System.exit(1);
 			}
 			
@@ -95,7 +95,9 @@ public class Schedule extends DataModel {
 
 				Major major = Major.getValue(subject);
 				if (major == null) {
-					System.err.println("Could not match major to course subject [" + subject + "]");
+					if (!subject.trim().toLowerCase().contains("honr")) {
+						System.out.println("Could not match major to course subject [" + subject + "]");
+					}
 				}
 				else {
 					advisor.subject = major;
@@ -113,7 +115,7 @@ public class Schedule extends DataModel {
 			Course course = getCourseFromCRN(ilc.crn);
 
 			if (course == null) {
-				System.err.println("Did not find course corresponding to ILC with crn: [" + ilc.crn + "]");
+				System.err.println("\nERROR: Did not find course corresponding to ILC with crn: [" + ilc.crn + "]");
 				System.exit(1);
 			}
 
@@ -122,7 +124,7 @@ public class Schedule extends DataModel {
 			//mark advisor as an ILC instructor
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
 			if (advisor == null) {
-				System.err.println("Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
+				System.err.println("\n ERROR Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
 				System.exit(1);
 			}
 
@@ -182,7 +184,7 @@ public class Schedule extends DataModel {
      */
     public Course getCourseFromCRN(String crn) {
     	if (crn == null) {
-    		System.err.println("null crn passed to getCourseFromCRN");
+    		System.err.println("\nERROR: null crn passed to getCourseFromCRN");
     		return null;
     	}
     	crn = crn.trim();

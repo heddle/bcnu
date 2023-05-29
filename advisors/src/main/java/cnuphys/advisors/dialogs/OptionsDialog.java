@@ -2,6 +2,7 @@ package cnuphys.advisors.dialogs;
 
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -35,7 +36,14 @@ public class OptionsDialog extends SimpleDialog {
 	 * @return the panel that holds the checkboxes for bold and italic.
 	 */
 	private JPanel createCheckBoxPanel() {
-		JPanel checkBoxPanel = new JPanel();
+		JPanel checkBoxPanel = new JPanel() {
+			@Override
+			public Insets getInsets() {
+				Insets def = super.getInsets();
+				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
+			}
+
+		};
 
 		_busnFamilyCB = new JCheckBox("Group ACCT, BUSN, FIN, MARKT, and MGMT together", true);
 		_bioFamilyCB = new JCheckBox("Group BIOL, CELLMB, KINES, and OEBIO together", true);
@@ -63,5 +71,12 @@ public class OptionsDialog extends SimpleDialog {
 	public boolean useChemFamily() {
 		return _chemFamilyCB.isSelected();
 	}
+	
+	@Override
+	public Insets getInsets() {
+		Insets def = super.getInsets();
+		return new Insets(def.top + 4, def.left + 4, def.bottom + 4, def.right + 4);
+	}
+
 
 }

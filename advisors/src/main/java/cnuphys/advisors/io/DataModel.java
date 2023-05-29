@@ -258,7 +258,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 	protected int getColumnIndex(DataAttribute dataAtt) {
 		int index = DataAttribute.getColumnIndex(_header, dataAtt);
 		if (index < 0) {
-			System.err.println(String.format("Unrecoverable error could not find column index for %s", dataAtt.name));
+			System.err.println(String.format("\nERROR: Unrecoverable error could not find column index for %s", dataAtt.name));
 			System.exit(1);
 		}
 		return index;

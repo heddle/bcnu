@@ -20,12 +20,20 @@ import cnuphys.advisors.model.ILCCourse;
 import cnuphys.bCNU.component.EnumComboBox;
 import cnuphys.bCNU.dialog.SimpleDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
-import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.graphics.component.TextPaneScrollPane;
 import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.util.X11Colors;
 
 public class AdvisorDialog extends SimpleDialog {
+	
+	private static Color _honBG = X11Colors.getX11Color("alice blue");
+	
+	private static SimpleAttributeSet BLACK_PLAIN_HON = TextPaneScrollPane.createStyle(Color.black, _honBG, "sansserif", 11, false, false);
+	private static SimpleAttributeSet BLACK_BOLD_HON = TextPaneScrollPane.createStyle(Color.black, _honBG, "sansserif", 11, false, true);
+	private static SimpleAttributeSet GRAY_ITALIC_HON = TextPaneScrollPane.createStyle(Color.gray, _honBG, "sansserif", 11, true, false);
+	private static SimpleAttributeSet GRAY_ITALIC_BOLD_HON = TextPaneScrollPane.createStyle(Color.gray, _honBG, "sansserif", 11, true, true);
+
 
 	private static SimpleAttributeSet RED_PLAIN = TextPaneScrollPane.createStyle(Color.red, "sansserif", 11, false, false);
 	private static SimpleAttributeSet BLACK_PLAIN = TextPaneScrollPane.createStyle(Color.black, "sansserif", 11, false, false);
@@ -109,12 +117,9 @@ public class AdvisorDialog extends SimpleDialog {
 		return sp;
 	}
 
-
-
-
+//show the advisees
 	private TextPaneScrollPane createAdviseesPane() {
 		TextPaneScrollPane sp = new TextPaneScrollPane("Advisees");
-
 
 
 		for (Student student : _advisor.advisees) {
@@ -123,14 +128,26 @@ public class AdvisorDialog extends SimpleDialog {
 
 			String info = String.format("%s (%s)   \n", student.fullNameAndID(), student.major.name());
 
-			if (locked && plp) {
-				sp.append(info, GRAY_ITALIC_BOLD);
-			} else if (locked) {
-				sp.append(info, GRAY_ITALIC);
-			} else if (plp) {
-				sp.append(info, BLACK_BOLD);
+			if (student.honors()) {
+				if (locked && plp) {
+					sp.append(info, GRAY_ITALIC_BOLD_HON);
+				} else if (locked) {
+					sp.append(info, GRAY_ITALIC_HON);
+				} else if (plp) {
+					sp.append(info, BLACK_BOLD_HON);
+				} else {
+					sp.append(info, BLACK_PLAIN_HON);
+				}
 			} else {
-				sp.append(info, BLACK_PLAIN);
+				if (locked && plp) {
+					sp.append(info, GRAY_ITALIC_BOLD);
+				} else if (locked) {
+					sp.append(info, GRAY_ITALIC);
+				} else if (plp) {
+					sp.append(info, BLACK_BOLD);
+				} else {
+					sp.append(info, BLACK_PLAIN);
+				}
 			}
 
 		}
@@ -153,7 +170,7 @@ public class AdvisorDialog extends SimpleDialog {
 			public void actionPerformed(ActionEvent e) {
 		    	 Enum en = _preferredMajorCombo.getSelectedEnum();
 				Major major = (Major) en;
-				System.err.println("SELECTED MAJOR: " + major);
+				System.out.println("SELECTED MAJOR: " + major);
 
 				if (major == _advisor.subject) {
 					_advisor.preferred2ndMajor = null;
@@ -178,7 +195,7 @@ public class AdvisorDialog extends SimpleDialog {
 		if (_advisor.ilc()) {
 			ILCCourse course = DataManager.getILCData().getILCCourse(_advisor);
 			if (course == null) {
-				System.err.println("Unexpected null ILC course in AdvisorDialog");
+				System.err.println("\nERROR: Unexpected null ILC course in AdvisorDialog");
 				System.exit(1);
 			}
 			return String.format("ILC: %s %s%s LC: %s", course.crn, course.subject, course.course, course.learningCommunity);

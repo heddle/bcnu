@@ -22,6 +22,7 @@ import cnuphys.advisors.dialogs.OptionsDialog;
 import cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorDisplay;
 import cnuphys.advisors.graphics.AdvisorPanel;
+import cnuphys.advisors.io.OutputManager;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
@@ -203,10 +204,18 @@ public class AdvisorAssign extends JFrame {
 		return _optionsDialog.useBusinessFamily();
 	}
 	
+	/**
+	 * Are we grouping bio related majors?
+	 * @return true if we are grouping bio related majors
+	 */
 	public static boolean useBioFamily() {
 		return _optionsDialog.useBioFamily();
 	}
 	
+	/**
+	 * Are we grouping chem related majors?
+	 * @return true if we are grouping chem related majors
+	 */
 	public static boolean useChemFamily() {
 		return _optionsDialog.useChemFamily();
 	}
@@ -215,8 +224,9 @@ public class AdvisorAssign extends JFrame {
 	 * Called when all done!
 	 */
 	public static void allDone() {
-		System.out.println("Assignments are complete.");
+		System.out.println("Assignments are complete!");
 		AdvisorDisplay.getInstance().done();
+		OutputManager.outputResults();
 	}
 
 	/**

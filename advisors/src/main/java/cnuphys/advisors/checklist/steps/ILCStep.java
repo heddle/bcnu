@@ -25,7 +25,7 @@ public class ILCStep implements IAlgorithmStep {
 
 		for (Student student : students) {
 			if (student.locked()) {
-				System.err.println("locked student in ilcStep should not have happened.");
+				System.err.println("\nERROR: Locked student in ilcStep should not have happened.\n");
 				continue;
 			}
 

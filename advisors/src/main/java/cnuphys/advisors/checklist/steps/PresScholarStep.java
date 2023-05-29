@@ -19,7 +19,7 @@ public class PresScholarStep implements IAlgorithmStep {
 
 		StudentData studentData = DataManager.getFilteredStudentData(Person.PRESSCHOLAR);
 
-		System.err.println("Assigning pres scholars. Advisor count = " + advisorData.count() + "  student count = " + studentData.count());
+		System.out.println("Assigning pres scholars. Advisor count = " + advisorData.count() + "  student count = " + studentData.count());
 
 		List<Advisor> advisors = advisorData.getAdvisors();
 		List<Student> students = studentData.getStudents();

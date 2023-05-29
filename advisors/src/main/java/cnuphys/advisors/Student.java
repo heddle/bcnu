@@ -58,7 +58,7 @@ public class Student extends Person implements ITabled {
 
 		major = Major.getValue(majorstr);
 		if (major == null) {
-			System.err.println("COULD not match major [" + majorstr + "]");
+			System.out.println("COULD not match major [" + majorstr + "]");
 			System.exit(1);
 		}
 
@@ -132,6 +132,62 @@ public class Student extends Person implements ITabled {
 		return false;
 	}
 
+	/**
+	 * Is the student a presidential scholar?
+	 * @return true if the student a presidential scholar
+	 */
+	public boolean prsc() {
+		return check(Person.PRESSCHOLAR);
+	}
+	
+	/**
+	 * Is the student in PLP?
+	 * @return true if the student is in plp
+	 */
+	public boolean plp() {
+		return check(Person.PLP);
+	}
+	
+	/**
+	 * Is the student a premed scholar?
+	 * @return true if the student is a premed scholar
+	 */
+	public boolean psp() {
+		return check(Person.PREMEDSCHOLAR);
+	}
+	
+	/**
+	 * Is the student prelaw?
+	 * @return true if the student is prelaw
+	 */
+	public boolean prelaw() {
+		return check(Person.PRELAW);
+	}
+	
+	/**
+	 * Is the student a wind ensemble scholar?
+	 * @return true if the student is a wind ensemble scholar
+	 */
+	public boolean wind() {
+		return check(Person.WIND);
+	}
+	
+	/**
+	 * Is the student a community captain?
+	 * @return true if the student is a community captain
+	 */
+	public boolean ccpt() {
+		return check(Person.CCPT);
+	}
+	
+	/**
+	 * Is the student in biotech management?
+	 * @return true if the student is in biotech management
+	 */
+	public boolean btmg() {
+		return check(Person.BTMG);
+	}
+	
 
 	@Override
 	public String getValueAt(int col) {
@@ -151,28 +207,28 @@ public class Student extends Person implements ITabled {
 			return ilc() ? "ILC" : "";
 		}
 		else if (col == 6) {
-			return check(Person.PLP) ? "PLP" : "";
+			return plp() ? "PLP" : "";
 		}
 		else if (col == 7) {
 			return honors() ? "HON": "";
 		}
 		else if (col == 8) {
-			return check(Person.PRESSCHOLAR) ? "PRSC": "";
+			return prsc() ? "PRSC": "";
 		}
 		else if (col == 9) {
-			return check(Person.PREMEDSCHOLAR) ? "PSP" : "";
+			return psp() ? "PSP" : "";
 		}
 		else if (col == 10) {
-			return check(Person.PRELAW) ? "PLW" : "";
+			return prelaw() ? "PLW" : "";
 		}
 		else if (col == 11) {
-			return check(Person.WIND) ? "WIND" : "";
+			return wind() ? "WIND" : "";
 		}
 		else if (col == 12) {
-			return check(Person.CCPT) ? "CCAP" : "";
+			return ccpt() ? "CCAP" : "";
 		}
 		else if (col == 13) {
-			return check(Person.BTMG) ? "BTMG" : "";
+			return btmg() ? "BTMG" : "";
 		}
 		else if (col == 14) {
 			return major.name();
@@ -182,7 +238,7 @@ public class Student extends Person implements ITabled {
 		}
 
 		else {
-			System.err.println("Bad column in Student getValueAt [" + col + "]");
+			System.out.println("Bad column in Student getValueAt [" + col + "]");
 			System.exit(0);
 		}
 

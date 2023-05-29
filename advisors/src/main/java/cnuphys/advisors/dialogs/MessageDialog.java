@@ -4,6 +4,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.Insets;
 import java.util.ArrayList;
 
 import javax.swing.JTextArea;
@@ -61,6 +62,13 @@ public class MessageDialog extends SimpleDialog {
 			public Dimension getPreferredSize() {
 				return d;
 			}
+			
+			@Override
+			public Insets getInsets() {
+				Insets def = super.getInsets();
+				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
+			}
+
 		};
 
 		

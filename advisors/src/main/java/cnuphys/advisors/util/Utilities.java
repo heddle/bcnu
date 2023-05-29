@@ -48,11 +48,11 @@ public class Utilities {
 			int rannum = randomInt(min, max);
 			
 			if (rannum < min) {
-				System.err.println("generated a num < min " + rannum);
+				System.out.println("generated a num < min " + rannum);
 				System.exit(1);
 			}
 			else if (rannum > max) {
-				System.err.println("generated a num > max " + rannum);
+				System.out.println("generated a num > max " + rannum);
 				System.exit(1);
 			}
 			else if (rannum == min) {
@@ -66,8 +66,8 @@ public class Utilities {
 		}
 		
 		int expectedCount = (int)((double)n)/(max-min+1);
-		System.err.println("num min = " + minCount + "   expected: " + expectedCount);
-		System.err.println("num max = " + maxCount + "   expected: " + expectedCount);
+		System.out.println("num min = " + minCount + "   expected: " + expectedCount);
+		System.out.println("num max = " + maxCount + "   expected: " + expectedCount);
 	}
 
 }

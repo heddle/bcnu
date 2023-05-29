@@ -77,7 +77,7 @@ public class Course implements ITabled {
 		case 7:
 			return id;
 		default:
-			System.err.println("Bad column in Course getValueAt [" + col + "]");
+			System.err.println("\nERROR: Bad column in Course getValueAt [" + col + "]");
 			System.exit(0);
 
 		}

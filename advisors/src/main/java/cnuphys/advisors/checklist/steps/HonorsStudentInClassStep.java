@@ -1,5 +1,6 @@
 package cnuphys.advisors.checklist.steps;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
@@ -16,39 +17,19 @@ public class HonorsStudentInClassStep implements IAlgorithmStep {
 	@Override
 	public boolean run() {
 		
-		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);
-		List<Advisor> advisors = advisorData.getAdvisors();
-
 		List<Student> students = DataManager.getUnassignedHonorsStudents();
 		
 		int target = AdvisorAssign.targetAverage();
 
 		for (Student student : students) {
-			advisors.removeIf(x -> x.locked());
+			Advisor adv = bestInClassAdvisor(student);
+			if (adv != null) {
+				System.out.println("  ** HONR BEST MATCH " + adv.name);
+				adv.addAdvisee(student, true);
 
-			for (Advisor advisor : advisors) {
-
-				// do not assign to j paul because all have a class with him
-				if (advisor == DataManager.honorsDirector) {
-					continue;
-				}
-				Course course = student.courseWithThisAdvisor(advisor);
-
-				if (course != null) {
-					System.out
-							.println("STUDENT " + student.fullNameAndID() + " has class with advisor " + advisor.name);
-					
-					if (advisor.adviseeCount() <= target) {
-						advisor.addAdvisee(student, true);
-						
-						if (advisor.adviseeCount() >= target) {
-							advisor.setLocked();
-							System.out.println("Honors Advisor " + advisor.name + " is now locked.");
-						}
-
-						break;
-					}
-
+				if (adv.adviseeCount() >= target) {
+					adv.setLocked();
+					System.out.println("Honors Advisor " + adv.name + " is now locked.");
 				}
 			}
 		}
@@ -57,5 +38,71 @@ public class HonorsStudentInClassStep implements IAlgorithmStep {
 		return true;
 	}
 	
+	private Advisor bestInClassAdvisor(Student student) {
+		
+		int target = AdvisorAssign.targetAverage();
+
+		
+		ArrayList<Advisor> potAdvisors = new ArrayList<>(); 
+		List<Course> schedule = student.schedule;
+		
+		for (Course course : schedule) {
+			Advisor adv = DataManager.getAdvisorData().getAdvisorFromId(course.id);
+			if ((adv != null) && (adv != DataManager.honorsDirector) && adv.honors() && !adv.locked() && (adv.adviseeCount() <= target)) {
+				potAdvisors.add(adv);
+			}
+		}
+		
+		if (potAdvisors.isEmpty()) {
+			return null;
+		}
+		
+		else if (potAdvisors.size() == 1) {
+			return potAdvisors.get(0);
+		}
+
+		else {
+			for (Advisor adv : potAdvisors) {
+				System.out.println(
+						"  ** HONR POTENTIAL IN CLASS MATCH STUDENT: " + student.fullNameAndID() + "  ADV: " + adv.name);
+			}
+			
+			for (Advisor adv : potAdvisors) {
+				if (student.major == adv.subject) {
+					System.out.println("  ** HONR MAJOR MATCH");
+					return adv;
+				}
+			}
+			
+			for (Advisor adv : potAdvisors) {
+				if (student.major == adv.preferred2ndMajor) {
+					System.out.println("  ** HONR PREF 2ND MAJOR MATCH");
+					return adv;
+				}
+			}
+			
+			for (Advisor adv : potAdvisors) {
+				if (student.major.isInMajorFamily(adv.subject)) {
+					System.out.println("  ** HONR FAMILY MATCH");
+					return adv;
+				}
+			}
+			
+			//give to least num advisees
+			
+			int min = 10000;
+			Advisor minAdv = null;
+			for (Advisor adv : potAdvisors) {
+				if (adv.adviseeCount() < min) {
+					min = adv.adviseeCount();
+					minAdv = adv;
+				}
+			}
+			return minAdv;
+
+
+		}
+
+	}	
 
 }

@@ -72,7 +72,6 @@ public class AdvisorSolution extends Solution {
 		
 		for (Advisor advisor : advisors) {
 			int numOther = advisor.numOtherMajorsAdvising();
-//			System.out.println("num other = " + numOther);
 			if (numOther > 0) {
 				//penalty is num different majors raised to the 1.5 power
 				double penalty = Math.pow(numOther, 1.5);

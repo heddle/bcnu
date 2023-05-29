@@ -35,7 +35,6 @@ public class Algorithm {
 
 	//check that the initial lists are valid
 	private static boolean check(List<Student> students, List<Advisor> advisors) {
-		System.out.println("Algorithm start check");
 
 		for (Student student : students) {
 			if (student.locked()) {
@@ -43,7 +42,7 @@ public class Algorithm {
 				String message = "LOCKED student passed to Algorithm "
 						+ student.fullNameAndID() + "  advisor: " + student.advisor.name;
 
-				System.err.println(message);
+				System.out.println(message);
 
 				return false;
 			}

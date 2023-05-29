@@ -76,7 +76,7 @@ public class CSVWriter {
 			boolean last = (i == (len-1));
 			sb.append(DoubleFormat.doubleFormat(vals[i], 6, 3));
 			if (!last) {
-				sb.append(", ");
+				sb.append(",");
 			}
 			else {
 				sb.append("\n");
@@ -107,7 +107,7 @@ public class CSVWriter {
 		
 		for (int i = 0; i < len; i++) {
 			sb.append(DoubleFormat.doubleFormat(vals[i], 6, 3));
-			sb.append(", ");
+			sb.append(",");
 		}
 		
 		try {
@@ -138,7 +138,7 @@ public class CSVWriter {
 			boolean last = (i == (len-1));
 			sb.append(strings[i]);
 			if (!last) {
-				sb.append(", ");
+				sb.append(",");
 			}
 			else {
 				sb.append("\n");
@@ -170,7 +170,7 @@ public class CSVWriter {
 		
 		for (int i = 0; i < len; i++) {
 			sb.append(strings[i]);
-			sb.append(", ");
+			sb.append(",");
 		}
 		
 		try {

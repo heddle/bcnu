@@ -64,7 +64,7 @@ public class ILCCourse implements ITabled {
 		case 8:
 			return "" + count;
 		default:
-			System.err.println("Bad column in ILC Course getValueAt [" + col + "]");
+			System.err.println("\nERROR: Bad column in ILC Course getValueAt [" + col + "]");
 			System.exit(0);
 
 		}
