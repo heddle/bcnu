@@ -22,23 +22,23 @@ public class StudentsAlgorithmStep implements IAlgorithmStep {
 		advisors.removeIf(x -> x.locked());
 
 		List<Student> students = DataManager.getUnassignedStudents();
-		
+
 		Algorithm.runAlgorithm(students, advisors);
-		
+
 		try {
 			AdvisorSimulation.getInstance().getSimThread().join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
-		
+
 		System.out.println("Student algorithm complete");
-		
+
 		//lock students
 		for (Student student : students) {
 			student.setLocked();
 		}
-		
+
 		//lock down any advisors at target
 		int target = AdvisorAssign.targetAverage();
 		for (Advisor advisor : advisors) {

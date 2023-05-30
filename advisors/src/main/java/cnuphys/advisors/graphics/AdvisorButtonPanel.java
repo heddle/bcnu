@@ -24,6 +24,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 	private JButton _allAdvisorsButton;
 	private JButton _honAdvisorsButton;
+	private JButton _pspAdvisorsButton;
 	private JButton _ilcAdvisorsButton;
 	private JButton _musTheaAdvisorsButton;
 	private JButton _allStudentButton;
@@ -81,6 +82,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	    _allAdvisorsButton = createButton("All", true, _rows[1]);
 		_ilcAdvisorsButton = createButton("ILC", true, _rows[1]);
 		_honAdvisorsButton = createButton("Honors", true, _rows[1]);
+		_pspAdvisorsButton = createButton("PreMed Sch", true, _rows[1]);
 		_musTheaAdvisorsButton = createButton("Musc/Thea", true, _rows[1]);
 		_ccptAdvisorsButton = createButton("Comm Cptns", true, _rows[1]);
 		_btmgAdvisorsButton = createButton("BTMG", true, _rows[1]);
@@ -94,7 +96,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_catalogButton = createButton("Catalogs", false, _rows[2]);
 
 	}
-	
+
 	/**
 	 * Add done. Set certain buttons enabled.
 	 */
@@ -144,6 +146,13 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.HONOR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
 	}
+	
+	//handle click on psp advisors button
+	private void handlePSPAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PREMEDSCHOLAR).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Active Premed Scholar Advisors");
+	}
+
 
 	//handle click on honors advisors button
 	private void handleILCAdvisors() {
@@ -303,6 +312,9 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		}
 		else if (button == _honAdvisorsButton) {
 			handleHonorsAdvisors();
+		}
+		else if (button == _pspAdvisorsButton) {
+			handlePSPAdvisors();
 		}
 		else if (button == _ilcAdvisorsButton) {
 			handleILCAdvisors();

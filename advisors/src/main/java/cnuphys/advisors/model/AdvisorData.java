@@ -22,9 +22,9 @@ import cnuphys.bCNU.util.Fonts;
  *
  */
 public class AdvisorData extends DataModel {
-	
+
 	private AdvisorDialog _dialog;
-	
+
 	// attributes for advisor data
 	private static final DataAttribute advisorAttributes[] = {
 			DataManager.rowAtt, DataManager.advisorAtt, DataManager.departmentNameAtt,
@@ -240,20 +240,20 @@ public class AdvisorData extends DataModel {
 	@Override
 	protected void doubleClicked(int row, ITabled o) {
 		Advisor advisor = (Advisor)o;
-		
+
 		Rectangle bounds = null;
-		
+
 		if (_dialog != null) {
 			bounds = _dialog.getBounds();
 			_dialog.setVisible(false);
 		}
-		
+
 		_dialog = new AdvisorDialog(advisor);
-		
+
 		if (bounds != null) {
 			_dialog.setBounds(bounds);
 		}
-		
+
 		_dialog.setVisible(true);
 	}
 

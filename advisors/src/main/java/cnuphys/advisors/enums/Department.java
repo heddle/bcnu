@@ -76,7 +76,7 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 
 		return majors;
 	}
-	
+
 
 	/**
 	 * Get the number of catalogs needed by this department
@@ -130,7 +130,7 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 			fcaCounts.put(dept, 0);
 		}
 	}
-	
+
 	/**
 	 * Zero all the major counts
 	 */
@@ -198,7 +198,7 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 
 		return count;
 	}
-	
+
 	/**
 	 * Get all the major counts in an array
 	 * @return the major counts

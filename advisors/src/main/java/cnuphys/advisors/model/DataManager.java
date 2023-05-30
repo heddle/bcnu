@@ -1,8 +1,6 @@
 package cnuphys.advisors.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
@@ -11,6 +9,7 @@ import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.frame.AdvisorAssign;
+import cnuphys.bCNU.util.UnicodeSupport;
 
 public class DataManager {
 
@@ -20,6 +19,7 @@ public class DataManager {
     private static final String _studentsBaseName = "students.csv";
     private static final String _ilcsBaseName = "ilcs.csv";
     private static final String _honAdvBaseName = "honorsadvisors.csv";
+    private static final String _pspAdvBaseName = "pspadvisors.csv";  //pre health scholars
     private static final String _presScholarAdvBaseName = "presscholaradvisors.csv";
     private static final String _studentSchedulesBaseName = "studentschedules.csv";
     private static final String _ccptAdvBaseName = "ccptadvisors.csv";
@@ -47,8 +47,9 @@ public class DataManager {
 	public static final DataAttribute rowAtt = new DataAttribute(" ", 40);
 
 
-	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 74, "id", "cnuid");
-	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 170);
+	public static final DataAttribute inClassAtt = new DataAttribute(UnicodeSupport.SMILEYFACE, 20);
+	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 72, "id", "cnuid");
+	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 160);
 	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 105, "last name", "lastname", "last_name", "lname");
 	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 80, "first name", "firstname", "lfirst_name", "fname");
 	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 70, "department", "adv1_dept");
@@ -75,19 +76,19 @@ public class DataManager {
 	public static final DataAttribute instructorAtt = new DataAttribute("INSTRUCTOR", 150);
 
 	public static final DataAttribute ilcAtt = new DataAttribute("ILC", 35);
-	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 40);
-	public static final DataAttribute windAtt = new DataAttribute("WIND", 40);
-	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 40);
-	public static final DataAttribute btmgAtt = new DataAttribute("BTMG", 40);
+	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 38);
+	public static final DataAttribute windAtt = new DataAttribute("WIND", 38);
+	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 38);
+	public static final DataAttribute btmgAtt = new DataAttribute("BTMG", 38);
 	public static final DataAttribute plpAtt = new DataAttribute("PLP", 35);
-	public static final DataAttribute honrAtt = new DataAttribute("HONR", 40);
+	public static final DataAttribute honrAtt = new DataAttribute("HONR", 38);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
 	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46);
 	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 60, "Major_1st");
 	public static final DataAttribute emailAtt = new DataAttribute("ADVISOR_EMAIL", 170, "email", "student_email");
 	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);
 
-	
+
 	/* the director of the honors program, if also a core advisor */
 	public static Advisor honorsDirector;
 
@@ -104,6 +105,7 @@ public class DataManager {
 		_learningCommunityData = new LearningCommunityData(_lcBaseName);
 
 		new HonorsAdvisors(_honAdvBaseName);
+		new PSPAdvisors(_pspAdvBaseName);
 
 		new StudentSchedules(_studentSchedulesBaseName);
 		new PresScholarAdvisors(_presScholarAdvBaseName);
@@ -202,7 +204,7 @@ public class DataManager {
 
 		return advisors;
 	}
-	
+
 	/**
 	 * Get a list of honors advisors whose subject matches a secondary major
 	 *
@@ -350,9 +352,27 @@ public class DataManager {
 
 		return students;
 	}
+	
+	/**
+	 * Get a list of unassigned psp students
+	 *
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedPSPStudents() {
+		ArrayList<Student> students = new ArrayList<>();
+
+		for (Student student : _studentData.getStudents()) {
+			if (!student.assigned() && student.psp()) {
+				students.add(student);
+			}
+		}
+
+		return students;
+	}
+
 
 	/**
-	 * Get a list of unassigned honors students whose major matches a given major 
+	 * Get a list of unassigned honors students whose major matches a given major
 	 *
 	 * @param major the major to match
 	 * @return the list
@@ -403,7 +423,7 @@ public class DataManager {
 		double ns = getStudentData().count();
 		return ns/na;
 	}
-	
+
 	private static Advisor hasLeastAdvisees(List<Advisor> advisors) {
 		int min = Integer.MAX_VALUE;
 		Advisor minAdvisor = null;
@@ -418,6 +438,17 @@ public class DataManager {
 		}
 
 		return minAdvisor;
+	}
+
+	public static int studentsHavingAdvisorAsInstructorCount() {
+		int count = 0;
+		for (Student student : getStudentData().getStudents()) {
+
+			if (student.hasCourseWithAdvisor()) {
+				count++;
+			}
+		}
+		return count;
 	}
 
 	/**
@@ -440,32 +471,32 @@ public class DataManager {
 
 		//the max to assign to any one advisor
 		int globalTarget = AdvisorAssign.targetAverage();
-		
-		
+
+
 		for (Student student : students) {
 
 			if (student.locked()) {
 				continue;
 			}
-			
+
 			Advisor advisor = hasLeastAdvisees(advisors);
-			
+
 			if ((advisor == null) || (advisor.adviseeCount() >= globalTarget)) {
-//				System.out.println(errPrompt + "  (Target reached) RoundRobin failed to assign student: " + student.fullNameAndID() 
+//				System.out.println(errPrompt + "  (Target reached) RoundRobin failed to assign student: " + student.fullNameAndID()
 //				+ " (" + student.major.name() + ")");
 				continue;
 			}
-			
+
 			advisor.addAdvisee(student, lockWhenDone);
-			
+
 			if (advisor.adviseeCount() >= globalTarget) {
 				advisor.setLocked();
 			}
 
 		}
-		
+
 	}
-	
-	
+
+
 
 }

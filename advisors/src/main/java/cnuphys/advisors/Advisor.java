@@ -23,7 +23,7 @@ public class Advisor extends Person implements ITabled {
 	/** the advisor's primary subject. might be same as depart. Or in come cases a major like music
 	 * ASSIGNED FROM SCHEDULE! */
 	public Major subject;
-	
+
 	/** If this is diff from the advisor's subject, is is the prefeered "other" major of advisoors,
 	 * e.g. Ryan Fisher and psych"
 	 */
@@ -31,10 +31,10 @@ public class Advisor extends Person implements ITabled {
 
 	/** in case we want to disable an advisor */
 	public boolean acceptingCohort = true;
-	
+
 	/** email address */
 	public String email;
-	
+
 	/** advisor's schedule */
 	public List<Course> schedule = new ArrayList<>();
 
@@ -66,14 +66,14 @@ public class Advisor extends Person implements ITabled {
 			System.err.println("\nCOULD not subject to department [" + department.name() + "]");
 			System.exit(1);
 		}
-		
+
 		this.set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
 
 
 		advisees = new ArrayList<>();
 	}
-	
-	
+
+
 	/**
 	 * For a given target, this tells us how many slots are available.
 	 * @param target the target number of advisees
@@ -142,23 +142,37 @@ public class Advisor extends Person implements ITabled {
 	public int adviseeCount() {
 		return advisees.size();
 	}
-	
-	/**
-	 * Count the number of different majors this advisor is advising outside of their own
-	 * @return the number of different majors this advisor is advising
-	 */
-	public int numOtherMajorsAdvising() {
-		List<Major> majors = new ArrayList<>();
-		
-		for (Student student : advisees) {
 
-			if (student.major != subject) {
-				majors.remove(student.major);
+
+	//takes families into account if those flags set
+	private boolean listContainsMajor(List<Major> majors , Major testMajor) {
+
+		for (Major major : majors) {
+			if (testMajor.isInMajorFamily(major)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Compute the number of differentmajors taking families into account
+	 * if those options are set.
+	 *
+	 * @return the number of majors
+	 */
+	public int numDiffMajorsAdvising() {
+		List<Major> majors = new ArrayList<>();
+
+		for (Student student : advisees) {
+			if (!listContainsMajor(majors, student.major)) {
 				majors.add(student.major);
 			}
 		}
 
 		return majors.size();
+
 	}
 
 	/**
@@ -182,7 +196,7 @@ public class Advisor extends Person implements ITabled {
 		case 6:
 			return "" + advisees.size();
 		case 7:
-			return "" + numOtherMajorsAdvising();
+			return "" + numDiffMajorsAdvising();
 		default:
 			System.out.println("Bad column in Advisor getValueAt [" + col + "]");
 			System.exit(0);

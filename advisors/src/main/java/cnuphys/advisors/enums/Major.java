@@ -127,7 +127,7 @@ public enum Major {
 		departments.put(UNDEC, Department.NONE);
 
 	}
-	
+
 	public boolean isInMajorFamily(Major major) {
 		if (this == major) {
 			return true;
@@ -151,7 +151,7 @@ public enum Major {
 				return ((major == BIOCHM) || (major == CHEM));
 			}
 			break;
-			
+
 		case BIOL:
 		case CELLMB:
 		case KINES:
@@ -256,7 +256,7 @@ public enum Major {
 
 		return count;
 	}
-	
+
 	/**
 	 * Obtain a combo box of choices.
 	 *

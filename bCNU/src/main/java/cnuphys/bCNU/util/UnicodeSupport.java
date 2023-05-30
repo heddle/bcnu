@@ -2,6 +2,7 @@ package cnuphys.bCNU.util;
 
 public class UnicodeSupport {
 
+	public static final String SMILEYFACE = "\u263A";
 	public static final String OVERLINE = "\u0305";
 
 	public static final String THINSPACE = "\u2009";

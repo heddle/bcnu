@@ -12,6 +12,7 @@ import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.CustomRenderer;
 import cnuphys.advisors.table.InputOutput;
+import cnuphys.bCNU.util.X11Colors;
 
 /**
  * Holds all the courses taught by core advisors
@@ -37,17 +38,17 @@ public class Schedule extends DataModel {
 		for (int i = 0; i < getColumnCount(); i++) {
 			_dataTable.getColumnModel().getColumn(i).setCellRenderer(renderer);
 		}
-		
+
 		//get the advisor schedules
-		
+
 		for (Course course : getCourses()) {
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
-			
+
 			if (advisor == null) {
 				System.err.println("\nERROR: Null advisor encountered when setting advisor schedule");
 				System.exit(1);
 			}
-			
+
 			advisor.schedule.add(course);
 		}
 
@@ -163,8 +164,21 @@ public class Schedule extends DataModel {
 	 */
     @Override
 	public Color getHighlightTextColor(int row, int column) {
-		Course course = getCourseFromRow(row);
+  		Course course = getCourseFromRow(row);
 		return (course.isILC) ? Color.red : Color.black;
+	}
+
+
+	/**
+	 * Get a highlight background color for a given row and column
+	 * @param row the 0-based row
+	 * @param column the 0-based column
+	 * @return the highlight backgroundcolor, if null use default (black)
+	 */
+    @Override
+	public Color getHighlightBackgroundColor(int row, int column) {
+ 		Course course = getCourseFromRow(row);
+		return (course.honors()) ? X11Colors.getX11Color("alice blue") : Color.white;
 	}
 
 
@@ -212,20 +226,20 @@ public class Schedule extends DataModel {
 	protected void doubleClicked(int row, ITabled o) {
 
 	}
-	
+
 	/**
 	 * Get the list of courses (in CRNs) for an advisor
 	 * @return he list of courses (in CRNs) for an advisor
 	 */
 	public List<String> getAdvisorSchedule(Advisor advisor) {
 		List<String> crns = new ArrayList<>();
-		
+
 		for (Course course : getCourses()) {
 			if (advisor.id.equals(course.id)) {
 				crns.add(course.crn);
 			}
 		}
-		
+
 		return crns;
 	}
 

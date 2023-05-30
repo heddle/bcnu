@@ -2,6 +2,7 @@ package cnuphys.advisors.model;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,6 +10,7 @@ import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
+import cnuphys.advisors.dialogs.StudentDialog;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.table.CustomRenderer;
@@ -22,12 +24,15 @@ import cnuphys.bCNU.util.X11Colors;
  */
 public class StudentData extends DataModel {
 
+	private StudentDialog _dialog;
+
+
 	//attributes for student data
 	private static final DataAttribute studentAttributes[] = { DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt, DataManager.lcNumAtt,
 			DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
-			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt };
+			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt, DataManager.inClassAtt };
 
 	public StudentData(String baseName) {
 		super(baseName, studentAttributes);
@@ -254,6 +259,23 @@ public class StudentData extends DataModel {
 	@Override
 	protected void doubleClicked(int row, ITabled o) {
 		Student student = (Student)o;
+
+
+		Rectangle bounds = null;
+
+		if (_dialog != null) {
+			bounds = _dialog.getBounds();
+			_dialog.setVisible(false);
+		}
+
+		_dialog = new StudentDialog(student);
+
+		if (bounds != null) {
+			_dialog.setBounds(bounds);
+		}
+
+		_dialog.setVisible(true);
 	}
+
 
 }

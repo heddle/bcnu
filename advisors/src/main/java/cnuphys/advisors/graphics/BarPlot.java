@@ -66,7 +66,7 @@ public class BarPlot extends JComponent {
 
 	   setPreferredSize(new Dimension(width, height));
 	}
-	
+
 	/**
 	 * A simple bar plot
 	 * @param title the title of the plot
@@ -144,8 +144,8 @@ public class BarPlot extends JComponent {
 			fillAndFrame(g, r, barFill, Color.black);
 
 			g.setColor(Color.black);
-			
-			
+
+
 			String valStr;
 			if ((r.value % 1) < 0.01) {
 				valStr = "" + (int)r.value;
@@ -156,8 +156,8 @@ public class BarPlot extends JComponent {
 			else {
 				valStr = String.format("%-4.2f", r.value);
 			}
-			
-			
+
+
 			int sw = fm.stringWidth(valStr);
 			int x = r.x + (r.width - sw)/2;
 			int y = r.y - 4;

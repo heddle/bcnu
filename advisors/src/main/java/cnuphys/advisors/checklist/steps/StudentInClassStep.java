@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.frame.AdvisorAssign;
-import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.StudentData;
@@ -42,26 +40,26 @@ public class StudentInClassStep  implements IAlgorithmStep{
 		return true;
 
 	}
-	
+
 	private Advisor bestInClassAdvisor(Student student) {
-		
+
 		int target = AdvisorAssign.targetAverage();
 
-		
-		ArrayList<Advisor> potAdvisors = new ArrayList<>(); 
+
+		ArrayList<Advisor> potAdvisors = new ArrayList<>();
 		List<Course> schedule = student.schedule;
-		
+
 		for (Course course : schedule) {
 			Advisor adv = DataManager.getAdvisorData().getAdvisorFromId(course.id);
 			if ((adv != null) && !adv.locked() && (adv.adviseeCount() <= target)) {
 				potAdvisors.add(adv);
 			}
 		}
-		
+
 		if (potAdvisors.isEmpty()) {
 			return null;
 		}
-		
+
 		else if (potAdvisors.size() == 1) {
 			return potAdvisors.get(0);
 		}
@@ -71,30 +69,30 @@ public class StudentInClassStep  implements IAlgorithmStep{
 				System.out.println(
 						"  ** POTENTIAL IN CLASS MATCH STUDENT: " + student.fullNameAndID() + "  ADV: " + adv.name);
 			}
-			
+
 			for (Advisor adv : potAdvisors) {
 				if (student.major == adv.subject) {
 					System.out.println("  ** MAJOR MATCH");
 					return adv;
 				}
 			}
-			
+
 			for (Advisor adv : potAdvisors) {
 				if (student.major == adv.preferred2ndMajor) {
 					System.out.println("  ** PREF 2ND MAJOR MATCH");
 					return adv;
 				}
 			}
-			
+
 			for (Advisor adv : potAdvisors) {
 				if (student.major.isInMajorFamily(adv.subject)) {
 					System.out.println("  ** FAMILY MATCH");
 					return adv;
 				}
 			}
-			
+
 			//give to least num advisees
-			
+
 			int min = 10000;
 			Advisor minAdv = null;
 			for (Advisor adv : potAdvisors) {

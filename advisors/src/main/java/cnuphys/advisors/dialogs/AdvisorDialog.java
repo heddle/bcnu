@@ -26,9 +26,9 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 
 public class AdvisorDialog extends SimpleDialog {
-	
+
 	private static Color _honBG = X11Colors.getX11Color("alice blue");
-	
+
 	private static SimpleAttributeSet BLACK_PLAIN_HON = TextPaneScrollPane.createStyle(Color.black, _honBG, "sansserif", 11, false, false);
 	private static SimpleAttributeSet BLACK_BOLD_HON = TextPaneScrollPane.createStyle(Color.black, _honBG, "sansserif", 11, false, true);
 	private static SimpleAttributeSet GRAY_ITALIC_HON = TextPaneScrollPane.createStyle(Color.gray, _honBG, "sansserif", 11, true, false);
@@ -61,8 +61,6 @@ public class AdvisorDialog extends SimpleDialog {
 		JPanel np = new JPanel();
 
 		np.setLayout(new VerticalFlowLayout());
-
-//		np.setLayout(new VerticalFlowLayout());
 		np.add(makeLabel(_advisor.name));
 
 		String ds = valString("Dept", _advisor.department.name());

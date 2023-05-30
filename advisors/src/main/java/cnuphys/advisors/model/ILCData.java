@@ -92,7 +92,7 @@ public class ILCData extends DataModel {
 
 		return null;
 	}
-	
+
 	/**
 	 * Get the ilc course from the advisor
 	 * @param advisor the advisor

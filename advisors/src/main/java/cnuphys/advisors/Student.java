@@ -69,8 +69,24 @@ public class Student extends Person implements ITabled {
 	private boolean checkString(String s, String patt) {
 		return s.replace("\"", "").trim().toUpperCase().contains(patt.toUpperCase());
 	}
-	
-	
+
+	public boolean hasCourseWithAdvisor() {
+		if (advisor != null) {
+			for (Course course : schedule) {
+
+				if (course.honors() && (course.id.equals(DataManager.honorsDirector.id))) {
+					continue;
+				}
+
+				if (advisor.id.equals(course.id)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
 	public Course courseWithThisAdvisor(Advisor advisor) {
 		for (Course course : schedule) {
 			if (advisor.id.equals(course.id)) {
@@ -139,7 +155,7 @@ public class Student extends Person implements ITabled {
 	public boolean prsc() {
 		return check(Person.PRESSCHOLAR);
 	}
-	
+
 	/**
 	 * Is the student in PLP?
 	 * @return true if the student is in plp
@@ -147,7 +163,7 @@ public class Student extends Person implements ITabled {
 	public boolean plp() {
 		return check(Person.PLP);
 	}
-	
+
 	/**
 	 * Is the student a premed scholar?
 	 * @return true if the student is a premed scholar
@@ -155,7 +171,7 @@ public class Student extends Person implements ITabled {
 	public boolean psp() {
 		return check(Person.PREMEDSCHOLAR);
 	}
-	
+
 	/**
 	 * Is the student prelaw?
 	 * @return true if the student is prelaw
@@ -163,7 +179,7 @@ public class Student extends Person implements ITabled {
 	public boolean prelaw() {
 		return check(Person.PRELAW);
 	}
-	
+
 	/**
 	 * Is the student a wind ensemble scholar?
 	 * @return true if the student is a wind ensemble scholar
@@ -171,7 +187,7 @@ public class Student extends Person implements ITabled {
 	public boolean wind() {
 		return check(Person.WIND);
 	}
-	
+
 	/**
 	 * Is the student a community captain?
 	 * @return true if the student is a community captain
@@ -179,7 +195,7 @@ public class Student extends Person implements ITabled {
 	public boolean ccpt() {
 		return check(Person.CCPT);
 	}
-	
+
 	/**
 	 * Is the student in biotech management?
 	 * @return true if the student is in biotech management
@@ -187,7 +203,7 @@ public class Student extends Person implements ITabled {
 	public boolean btmg() {
 		return check(Person.BTMG);
 	}
-	
+
 
 	@Override
 	public String getValueAt(int col) {
@@ -235,6 +251,9 @@ public class Student extends Person implements ITabled {
 		}
 		else if (col == 15) {
 			return advisor == null ? "---" : advisor.name;
+		}
+		else if (col == 16) {
+			return hasCourseWithAdvisor() ? "Y" : "";
 		}
 
 		else {

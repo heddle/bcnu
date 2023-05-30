@@ -9,13 +9,13 @@ import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.model.DataManager;
 
 public class StudentsMajorStep implements IAlgorithmStep {
-	
+
 	@Override
 	public boolean run() {
 		// first, assign by major
 		// this does not reassign students so only used unassigned
 
-		
+
 		//first for the advisors "subject")
 		for (Major major : Major.values()) {
 
@@ -30,8 +30,8 @@ public class StudentsMajorStep implements IAlgorithmStep {
 			DataManager.roundRobinAssign(advisors, students, true, "Students by Major");
 
 		}
-		
-//		//then for secondary major 
+
+//		//then for secondary major
 		for (Major major : Major.values()) {
 
 			//get unassigned honors students and honors advisor

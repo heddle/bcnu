@@ -26,7 +26,7 @@ public class Utilities {
 
 		return lines;
 	}
-	
+
 	/**
 	 * Generate a random in int the range min to max inclusive
 	 * @param min the min value
@@ -36,17 +36,17 @@ public class Utilities {
 	public static int randomInt(int min, int max) {
 		return ThreadLocalRandom.current().nextInt(min, max + 1);
 	}
-	
+
 	public static void main(String arg[]) {
 		int minCount = 0;
 		int maxCount = 0;
 		int n = 100000000;
 		int min = 2;
 		int max = 101;
-		
+
 		for (int i = 0; i < n; i++) {
 			int rannum = randomInt(min, max);
-			
+
 			if (rannum < min) {
 				System.out.println("generated a num < min " + rannum);
 				System.exit(1);
@@ -64,8 +64,8 @@ public class Utilities {
 
 
 		}
-		
-		int expectedCount = (int)((double)n)/(max-min+1);
+
+		int expectedCount = (int)(n)/(max-min+1);
 		System.out.println("num min = " + minCount + "   expected: " + expectedCount);
 		System.out.println("num max = " + maxCount + "   expected: " + expectedCount);
 	}

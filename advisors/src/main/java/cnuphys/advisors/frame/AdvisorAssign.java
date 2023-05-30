@@ -13,19 +13,22 @@ import javax.swing.Box;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
+import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.dialogs.MessageDialog;
 import cnuphys.advisors.dialogs.OptionsDialog;
-import cnuphys.advisors.enums.Semester;
+import  cnuphys.advisors.enums.Semester;
 import cnuphys.advisors.graphics.AdvisorDisplay;
 import cnuphys.advisors.graphics.AdvisorPanel;
+import cnuphys.advisors.graphics.SizedText;
 import cnuphys.advisors.io.OutputManager;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
+import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.simanneal.SimulationPlot;
 
@@ -60,10 +63,10 @@ public class AdvisorAssign extends JFrame {
 
 	//the main menu bar
 	private JMenuBar _menuBar;
-	
+
 	//the advisor panel
 	private AdvisorPanel _advisorPanel;
-	
+
 	private static OptionsDialog _optionsDialog = new OptionsDialog();
 
 
@@ -85,7 +88,7 @@ public class AdvisorAssign extends JFrame {
 
 		pack();
 	}
-	
+
 	/**
 	 * Set uo the GUI
 	 */
@@ -100,11 +103,19 @@ public class AdvisorAssign extends JFrame {
 
 		//add the check list
 		_checklist = CheckList.getInstance();
+		SizedText st = new SizedText(OptionsDialog.currentAlgorithm.description(), Fonts.defaultFont, _checklist.getPreferredSize().width);
+		st.setBorder(new CommonBorder("Current Algorithm"));
 
-		_advisorPanel = new AdvisorPanel(AdvisorSimulation.getInstance(), _checklist);
+		JPanel sp = new JPanel();
+		sp.setLayout(new BorderLayout(4, 4));
+		sp.add(_checklist, BorderLayout.CENTER);
+		sp.add(st, BorderLayout.NORTH);
 
+		_advisorPanel = new AdvisorPanel(AdvisorSimulation.getInstance(), sp);
 
 		add(_advisorPanel, BorderLayout.CENTER);
+
+
 		createInfoLabel();
 
 	}
@@ -112,7 +123,7 @@ public class AdvisorAssign extends JFrame {
 	public SimulationPlot getSimulationPlot() {
 		return _advisorPanel.getSimulationPlot();
 	}
-	
+
 	/**
 	 * Get the semester we are examining
 	 * @return the semester we are examining
@@ -171,12 +182,12 @@ public class AdvisorAssign extends JFrame {
 			int unassignedCount = studentCount - assignedCount1;
 			double avgReq = ((double) studentCount) / advisorCount;
 
-			s = String.format(" %s    FCA Count: %d    Student Count: %d    Assigned: %d    Unassigned: %d    Required Avg: %4.1f  ",
-					getSemester().name(), advisorCount, studentCount, assignedCount1, unassignedCount, avgReq);
+			s = String.format(" %s    #FCA: %d    #Student: %d    #Student in FCA's class: %d    Assigned: %d    Unassigned: %d    Required Avg: %4.1f  ",
+					getSemester().name(), advisorCount, studentCount, DataManager.studentsHavingAdvisorAsInstructorCount(), assignedCount1, unassignedCount, avgReq);
 		}
-		
+
 		Advisor honorsDirector = DataManager.honorsDirector;
-		
+
 		s += " Honors Director: " + honorsDirector.name + "  ";
 
 		_infoLabel.setText(s);
@@ -196,14 +207,14 @@ public class AdvisorAssign extends JFrame {
 
 	public static void showMessage(String text) {
 
-		MessageDialog messageDialog = new MessageDialog("Secondary Majors", true, text, Fonts.hugeFont);
+		MessageDialog messageDialog = new MessageDialog("Secondary Majors", true, text, Fonts.defaultFont);
 		messageDialog.setVisible(true);
 	}
-	
+
 	public static boolean useBusinessFamily() {
 		return _optionsDialog.useBusinessFamily();
 	}
-	
+
 	/**
 	 * Are we grouping bio related majors?
 	 * @return true if we are grouping bio related majors
@@ -211,7 +222,7 @@ public class AdvisorAssign extends JFrame {
 	public static boolean useBioFamily() {
 		return _optionsDialog.useBioFamily();
 	}
-	
+
 	/**
 	 * Are we grouping chem related majors?
 	 * @return true if we are grouping chem related majors
@@ -219,7 +230,7 @@ public class AdvisorAssign extends JFrame {
 	public static boolean useChemFamily() {
 		return _optionsDialog.useChemFamily();
 	}
-	
+
 	/**
 	 * Called when all done!
 	 */
@@ -227,6 +238,7 @@ public class AdvisorAssign extends JFrame {
 		System.out.println("Assignments are complete!");
 		AdvisorDisplay.getInstance().done();
 		OutputManager.outputResults();
+		MenuManager.getInstance().plotMenu.done();
 	}
 
 	/**
@@ -240,17 +252,17 @@ public class AdvisorAssign extends JFrame {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				
+
 				_optionsDialog.setVisible(true);
-				
+
 				JFrame frame = getInstance();
 
 				frame.setVisible(true);
 				frame.setLocationRelativeTo(null);
-				
+
 				String text = "This would be a good time to bring up the list of advisors" +
 						" and assign any \"secondary majors.\"";
-				
+
 				showMessage(text);
 
 			}

@@ -1,7 +1,5 @@
 package cnuphys.advisors.simulation;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
@@ -61,9 +59,9 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		_attributes.setPlotTitle("Assignment Energy");
 		_attributes.setYAxisLabel("Energy");
 		_attributes.setMinTemp(0.01);
-		_attributes.setCoolRate(0.002);
+		_attributes.setCoolRate(0.00175);
 	//	_attributes.setMaxSteps(20000);
-		_attributes.setThermalizationCount(1000);
+		_attributes.setThermalizationCount(1200);
 		_attributes.setSuccessCount(200);
 	}
 
@@ -120,7 +118,7 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 				}
 
 			} else if (_simState == SimulationState.RUNNING) { // running
-				int succ = 0;
+//				int succ = 0;
 
 				double eCurrent = _currentSolution.getEnergy();
 
@@ -131,7 +129,7 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 					if (metrop(eCurrent, eTest)) {  //accept rearrangement
 						_currentSolution = rearrangement;
 						eCurrent = eTest;
-						succ++;
+//						succ++;
 //						if (succ > _attributes.getSuccessCount()) {
 //							System.out.println("Breaking on success count");
 //							break;

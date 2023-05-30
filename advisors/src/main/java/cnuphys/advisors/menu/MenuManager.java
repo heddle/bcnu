@@ -19,14 +19,21 @@ public class MenuManager {
 	//singleton
 	private static MenuManager _instance;
 
+	/** the file menu */
+	public FileMenu fileMenu;
+
+	/** the lot menu */
+	public PlotMenu plotMenu;
+
+
 	//private constructor for singleton
 	private MenuManager() {
 	}
 
 	public void init(JMenuBar menuBar) {
 		_menuBar = menuBar;
-		new FileMenu();
-		new PlotMenu();
+		fileMenu = new FileMenu();
+		plotMenu = new PlotMenu();
 
 	}
 

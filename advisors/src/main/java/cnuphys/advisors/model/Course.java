@@ -45,7 +45,11 @@ public class Course implements ITabled {
 		}
 
 	}
-	
+
+	public boolean honors() {
+		return subject.toUpperCase().equals("HONR");
+	}
+
 	/**
 	 * An info string for this course
 	 * @return an info string

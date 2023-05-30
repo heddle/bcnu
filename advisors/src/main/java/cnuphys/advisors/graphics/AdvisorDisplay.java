@@ -53,8 +53,8 @@ public class AdvisorDisplay extends JPanel {
 		}
 		return _instance;
 	}
-	
-	
+
+
 	/**
 	 * Add a component that represents the content
 	 *
@@ -76,9 +76,9 @@ public class AdvisorDisplay extends JPanel {
 	 	validate();
 		repaint();
 	}
-	
+
 	/**
-	 * All done. 
+	 * All done.
 	 */
 	public void done() {
 		_buttonPanel.done();

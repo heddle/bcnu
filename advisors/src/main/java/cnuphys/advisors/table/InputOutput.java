@@ -1,7 +1,6 @@
 package cnuphys.advisors.table;
 
 import java.io.File;
-import java.io.PrintStream;
 
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.bCNU.util.Environment;

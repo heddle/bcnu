@@ -20,25 +20,25 @@ public class HonorsAlgorithmStep implements IAlgorithmStep {
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);
 		List<Advisor> advisors = advisorData.getAdvisors();
 		advisors.removeIf(x -> x.locked());
-		
+
 		List<Student> students = DataManager.getUnassignedHonorsStudents();
-	
+
 		Algorithm.runAlgorithm(students, advisors);
-		
+
 		try {
 			AdvisorSimulation.getInstance().getSimThread().join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 
-		
+
 		System.out.println("Honors algorithm complete");
-		
+
 		//lock students
 		for (Student student : students) {
 			student.setLocked();
 		}
-		
+
 		//lock down any advisors at target and lock down honors director
 		int target = AdvisorAssign.targetAverage();
 		for (Advisor advisor : advisors) {
@@ -46,10 +46,10 @@ public class HonorsAlgorithmStep implements IAlgorithmStep {
 				advisor.setLocked();
 			}
 		}
-		
-		
-		
+
+
+
 		return true;
 	}
 
-} 
+}

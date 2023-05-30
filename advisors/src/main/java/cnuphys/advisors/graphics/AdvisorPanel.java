@@ -4,9 +4,9 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.Rectangle;
 
+import javax.swing.JComponent;
 import javax.swing.JPanel;
 
-import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.simanneal.SimulationPanel;
 import cnuphys.simanneal.SimulationPlot;
@@ -30,11 +30,11 @@ public class AdvisorPanel extends JPanel {
 	// the simulation
 	private AdvisorSimulation _simulation;
 
-	public AdvisorPanel(AdvisorSimulation simulation, CheckList checklist) {
+	public AdvisorPanel(AdvisorSimulation simulation, JComponent content) {
 		_simulation = simulation;
 
 		AdvisorDisplay.getInstance().setPreferredSize(new Dimension(width, height));
-		_simPanel = new SimulationPanel(_simulation, AdvisorDisplay.getInstance(), checklist);
+		_simPanel = new SimulationPanel(_simulation, AdvisorDisplay.getInstance(), content);
 
 		_simPanel.buttonPanelSetVisible(false);
 		add(_simPanel);
@@ -45,7 +45,7 @@ public class AdvisorPanel extends JPanel {
 		Insets def = super.getInsets();
 		return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
 	}
-	
+
 	public SimulationPlot getSimulationPlot() {
 		return _simPanel.getSimulationPlot();
 	}

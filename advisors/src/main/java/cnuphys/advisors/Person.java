@@ -69,6 +69,14 @@ public abstract class Person implements ITabled {
 	public void setILC(boolean ilc) {
 		set(ILC, ilc);
 	}
+	
+	/**
+	 * Convenience method to set the PSP status
+	 */
+	public void setPSP() {
+		set(PREMEDSCHOLAR);
+	}
+
 
 	/**
 	 * Convenience method to check whether person is honors

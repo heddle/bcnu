@@ -5,7 +5,6 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.frame.AdvisorAssign;
-import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 
 public class Algorithm {
@@ -24,8 +23,8 @@ public class Algorithm {
 		if (!check(students, advisors)) {
 			return false;
 		}
-		
-		
+
+
 		//now the annealing
 		AdvisorSimulation.getInstance().reset(advisors, students);
 		AdvisorSimulation.getInstance().startSimulation();

@@ -9,47 +9,42 @@ import cnuphys.advisors.dialogs.AdvisorDialog;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 
-public class HonorsAdvisors extends DataModel {
-	
+public class PSPAdvisors extends DataModel {
+
 	private AdvisorDialog _dialog;
-
+	
 	//attributes for honors advisors data
-	private static final DataAttribute honAdvAttributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
-			DataManager.firstNameAtt, DataManager.directorAtt};
+	private static final DataAttribute pspAdvAttributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
+			DataManager.firstNameAtt};
 
 
-	public HonorsAdvisors(String baseName) {
-		super(baseName, honAdvAttributes);
+	public PSPAdvisors(String baseName) {
+		super(baseName, pspAdvAttributes);
 	}
 
+	
 	@Override
 	protected void processData() {
 
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
-		int directorIndex = getColumnIndex(DataManager.directorAtt);
 
 		//dont create an actual model, just mark the corresponding advisor  as an honors advisor
 		for (String s[] : _data) {
 			String id = DataManager.fixId(s[idIndex]);
 			String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
-			String dirString = s[directorIndex];
 
 			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(id);
 			if (advisor == null) {
-				System.out.println(String.format("Did not match honors advisor [%s] %s, %s to any current advisor", id,
+				System.out.println(String.format("Did not match psp advisor [%s] %s, %s to any current advisor", id,
 						lastName, firstName));
 				continue;
 			} else {
-				advisor.setHonors();
+				advisor.setPSP();
 			}
 
-
-			if (dirString.contains("Y")) {
-				DataManager.honorsDirector = advisor;
-			}
 		}
 
 		//raw data not needed
@@ -64,8 +59,7 @@ public class HonorsAdvisors extends DataModel {
 		if (!e.getValueIsAdjusting()) {
 		}
 	}
-
-
+	
 
 	/**
 	 * Double clicked on a row
@@ -90,7 +84,7 @@ public class HonorsAdvisors extends DataModel {
 		}
 
 		_dialog.setVisible(true);
-
 	}
+
 
 }

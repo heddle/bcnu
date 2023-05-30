@@ -105,8 +105,8 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 		_header = baseModel._header;
 		columnNames = baseModel.columnNames;
 		columnWidths = baseModel.columnWidths;
-		
-		
+
+
 
 		for (ITabled itabled : baseModel._tableData) {
 			if (itabled.check(bits)) {
@@ -116,7 +116,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 
 		createDataTable();
 	}
-	
+
 
 	/**
 	 * Create a submodel using a filter
@@ -381,7 +381,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 			public int compare(ITabled o1, ITabled o2) {
 				String s1 = o1.getValueAt(column);
 				String s2 = o2.getValueAt(column);
-				
+
 				if (name.contains("#ADV") || name.contains("#MAJ")) {
 					Integer i1 = Integer.parseInt(s1);
 					Integer i2 = Integer.parseInt(s2);
