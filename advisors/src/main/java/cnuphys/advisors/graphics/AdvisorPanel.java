@@ -8,6 +8,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import cnuphys.advisors.simulation.AdvisorSimulation;
+import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.simanneal.SimulationPanel;
 import cnuphys.simanneal.SimulationPlot;
 
@@ -34,9 +35,11 @@ public class AdvisorPanel extends JPanel {
 		_simulation = simulation;
 
 		AdvisorDisplay.getInstance().setPreferredSize(new Dimension(width, height));
-		_simPanel = new SimulationPanel(_simulation, AdvisorDisplay.getInstance(), content);
+		_simPanel = new SimulationPanel(_simulation, 0, AdvisorDisplay.getInstance(), content);
 
-		_simPanel.buttonPanelSetVisible(false);
+		_simPanel.buttonPanelRemove();
+		_simPanel.stateLabelRemove();
+
 		add(_simPanel);
 	}
 

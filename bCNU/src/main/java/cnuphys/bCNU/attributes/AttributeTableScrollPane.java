@@ -16,9 +16,9 @@ public class AttributeTableScrollPane extends JScrollPane {
 	/**
 	 * Create a scroll panel controlling an attribute table.
 	 */
-	public AttributeTableScrollPane() {
+	public AttributeTableScrollPane(int preferredHeight) {
 		super();
-		createAttributeTable();
+		createAttributeTable(preferredHeight);
 		setPreferredSize(new java.awt.Dimension(280, 300));
 		getViewport().add(attributeTable);
 	}
@@ -46,8 +46,8 @@ public class AttributeTableScrollPane extends JScrollPane {
 	/**
 	 * Create the table (and the table model).
 	 */
-	protected void createAttributeTable() {
-		attributeTable = new AttributeTable();
+	protected void createAttributeTable(int preferredHeight) {
+		attributeTable = new AttributeTable(preferredHeight);
 	}
 
 }

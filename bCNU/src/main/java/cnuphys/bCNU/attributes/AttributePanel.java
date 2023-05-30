@@ -10,8 +10,8 @@ public class AttributePanel extends JPanel {
 
 	private AttributeTable _attributeTable;
 
-	public AttributePanel(Attributes attributes) {
-		_attributeTable = new AttributeTable();
+	public AttributePanel(Attributes attributes, int preferredHeight) {
+		_attributeTable = new AttributeTable(preferredHeight);
 		_attributeTable.setData(attributes);
 		setLayout(new BorderLayout(4, 4));
 

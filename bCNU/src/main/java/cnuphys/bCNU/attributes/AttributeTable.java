@@ -55,12 +55,14 @@ public class AttributeTable extends JTable {
 
 	// columns
 	private TableColumn c1, c2;
+	
+	private int _preferredHeight;
 
 	/**
 	 * Create an attribute table with default column widths
 	 */
-	public AttributeTable() {
-		this(NAME_WIDTH, VAL_WIDTH);
+	public AttributeTable(int height) {
+		this(NAME_WIDTH, VAL_WIDTH, height);
 	}
 
 	/**
@@ -69,9 +71,10 @@ public class AttributeTable extends JTable {
 	 * @param nw width of name column
 	 * @param vw width of value column
 	 */
-	public AttributeTable(int nw, int vw) {
+	public AttributeTable(int nw, int vw, int height) {
 		_nameWidth = nw;
 		_valueWidth = vw;
+		_preferredHeight = height;
 
 		putClientProperty("terminateEditOnFocusLost", true);
 
@@ -190,7 +193,13 @@ public class AttributeTable extends JTable {
 				public Dimension getPreferredSize() {
 					Dimension d = super.getPreferredSize();
 					d.width = _nameWidth + _valueWidth + 20;
-					d.height = getData().size() * 27;
+
+					if (_preferredHeight < 1) {
+						d.height = getData().size() * 27;
+					}
+					else {
+						d.height = _preferredHeight;
+					}
 					return d;
 				}
 			};
@@ -230,7 +239,7 @@ public class AttributeTable extends JTable {
 
 		// make the table
 
-		AttributeTable table = new AttributeTable();
+		AttributeTable table = new AttributeTable(0);
 
 		table.setData(attributes);
 		AttributePanel panel = new AttributePanel(table);

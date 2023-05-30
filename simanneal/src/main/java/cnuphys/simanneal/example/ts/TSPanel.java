@@ -23,7 +23,7 @@ public class TSPanel extends JPanel {
 
 		_tsDisplay = new TSDisplay(_simulation);
 		_tsDisplay.setPreferredSize(new Dimension(550, 550));
-		_simPanel = new SimulationPanel(_simulation, _tsDisplay);
+		_simPanel = new SimulationPanel(_simulation, 0, _tsDisplay);
 		add(_simPanel);
 	}
 

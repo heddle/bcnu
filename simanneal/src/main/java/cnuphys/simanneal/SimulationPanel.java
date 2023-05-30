@@ -7,12 +7,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cnuphys.bCNU.attributes.AttributePanel;
+import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 
 /**
@@ -58,8 +60,8 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	 * @param content    the custom content, e.g. a map for the traveling
 	 *                   salesperson problem
 	 */
-	public SimulationPanel(Simulation simulation, JComponent content) {
-		this(simulation, content, null);
+	public SimulationPanel(Simulation simulation, int preferredHeight, JComponent content) {
+		this(simulation, preferredHeight, content, null);
 	}
 
 	/**
@@ -69,7 +71,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	 * @param content    the custom content, e.g. a map for the traveling
 	 *                   salesperson problem
 	 */
-	public SimulationPanel(Simulation simulation, JComponent content, JComponent content2) {
+	public SimulationPanel(Simulation simulation, int preferredHeight, JComponent content, JComponent content2) {
 		setLayout(new BorderLayout(4, 4));
 		_simulation = simulation;
 		_simulation.addUpdateListener(this);
@@ -82,7 +84,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		leftP.add(Box.createHorizontalStrut(80), BorderLayout.WEST);
 		add(leftP, BorderLayout.WEST);
 
-		addEast();
+		addEast(preferredHeight);
 		addCenter();
 
 	}
@@ -108,6 +110,20 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		panel.setLayout(new BorderLayout(4, 4));
 		return panel;
 	}
+	
+	private JPanel insetVPanel() {
+		JPanel panel = new JPanel() {
+			@Override
+			public Insets getInsets() {
+				Insets def = super.getInsets();
+				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
+			}
+
+		};
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		return panel;
+	}
+
 
 	// put the sim plot in the center
 	private void addCenter() {
@@ -121,25 +137,27 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		add(panel, BorderLayout.CENTER);
 	}
 
+	
+	private JPanel _eastPanel;
 	// add the east panel
-	private void addEast() {
-		JPanel panel = insetPanel();
+	private void addEast(int preferredHeight) {
+		_eastPanel = insetVPanel();
 
 		// state label in north
 		_stateLabel = new JLabel("State:            ");
-		panel.add(_stateLabel, BorderLayout.NORTH);
+		_eastPanel.add(_stateLabel);
 
 		// attributes in center of east panel
-		_attributePanel = new AttributePanel(_simulation.getAttributes());
+		_attributePanel = new AttributePanel(_simulation.getAttributes(), preferredHeight);
 
-		JPanel cp = insetPanel();
-		cp.add(_attributePanel, BorderLayout.NORTH);
+		JPanel cp = insetVPanel();
+		cp.add(_attributePanel);
 		
 		if (_content2 != null) {
-			cp.add(_content2, BorderLayout.SOUTH);
+			cp.add(_content2);
 		}
 		
-		panel.add(cp, BorderLayout.CENTER);
+		_eastPanel.add(cp);
 
 		// buttons in south of east panel
 		_buttonPanel = new JPanel();
@@ -155,9 +173,9 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		_buttonPanel.add(resumeButton);
 		_buttonPanel.add(resetButton);
 		_buttonPanel.add(stopButton);
-		panel.add(_buttonPanel, BorderLayout.SOUTH);
+		_eastPanel.add(_buttonPanel);
 
-		add(panel, BorderLayout.EAST);
+		add(_eastPanel, BorderLayout.EAST);
 		fixPanelState();
 	}
 	
@@ -165,12 +183,22 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	 * Show or hide the button panel
 	 * @param vis the visibility flag
 	 */
-	public void buttonPanelSetVisible(boolean vis) {
-		_buttonPanel.setVisible(vis);
+	public void buttonPanelRemove() {
+		_eastPanel.remove(_buttonPanel);
+		revalidate();
+	}
+	
+	/**
+	 * Show or hide the state label
+	 * @param vis the visibility flag
+	 */
+	public void stateLabelRemove() {
+		_eastPanel.remove(_stateLabel);
 		revalidate();
 	}
 
-	// create a buttom
+
+	// create a button
 	private JButton makeButton(String label) {
 		JButton button = new JButton(label);
 		button.addActionListener(this);

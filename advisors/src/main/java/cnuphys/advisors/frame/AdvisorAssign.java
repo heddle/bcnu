@@ -90,7 +90,7 @@ public class AdvisorAssign extends JFrame {
 	}
 
 	/**
-	 * Set uo the GUI
+	 * Set up the GUI
 	 */
 	public void setup() {
 

@@ -25,7 +25,7 @@ public class LayoutPanel extends JPanel {
 
 		_layoutDisplay = new LayoutDisplay(_simulation);
 		_layoutDisplay.setPreferredSize(new Dimension(LayoutSimulation.width, LayoutSimulation.height));
-		_simPanel = new SimulationPanel(_simulation, _layoutDisplay);
+		_simPanel = new SimulationPanel(_simulation, 0, _layoutDisplay);
 		add(_simPanel);
 	}
 
