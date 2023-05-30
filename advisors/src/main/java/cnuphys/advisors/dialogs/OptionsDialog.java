@@ -107,7 +107,7 @@ public class OptionsDialog extends SimpleDialog {
 			algPanel.add(rb);
 		}
 
-		algPanel.setBorder(new CommonBorder("Select and optimization algorithm"));
+		algPanel.setBorder(new CommonBorder("Select an optimization algorithm"));
 		return algPanel;
 	}
 
