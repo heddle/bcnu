@@ -22,11 +22,20 @@ public class SizedText extends JComponent {
 	private static int margin = 6;
 
 	private Font _font;
+	
+	private int _width;
 
 	private ArrayList<String> lines = new ArrayList<>();
 
+	/**
+	 * Create a sort of label that will size to the text
+	 * @param text
+	 * @param font
+	 * @param width
+	 */
 	public SizedText(String text, Font font, int width) {
 		_font = font;
+		_width = width;
 		sizeText(text, font, width);
 		
 		setBorder(BorderFactory.createLoweredBevelBorder());
@@ -36,6 +45,7 @@ public class SizedText extends JComponent {
 	private void sizeText(String text, Font font, int width) {
 		String tokens[] = FileUtilities.tokens(text);
 		FontMetrics fm = this.getFontMetrics(font);
+		lines.clear();
 
 		String s = "";
 		for (String tok : tokens) {
@@ -78,6 +88,11 @@ public class SizedText extends JComponent {
 	@Override
 	public Dimension getPreferredSize() {
 		return size;
+	}
+	
+	public void setText(String text) {
+		sizeText(text, _font, _width);
+		repaint();
 	}
 
 }

@@ -15,6 +15,7 @@ public class HonorsAlgorithmStep implements IAlgorithmStep {
 
 	@Override
 	public boolean run() {
+				
 		//now run the algorithm with unassigned honors students and unlocked
 		//honors advisors
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);

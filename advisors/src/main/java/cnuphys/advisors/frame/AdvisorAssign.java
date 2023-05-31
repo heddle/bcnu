@@ -11,6 +11,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenuBar;
@@ -70,6 +71,7 @@ public class AdvisorAssign extends JFrame {
 
 	private static OptionsDialog _optionsDialog = new OptionsDialog();
 
+	private static SizedText _bigText;
 
 	//private constructor for singleton
 	private AdvisorAssign() {
@@ -113,10 +115,12 @@ public class AdvisorAssign extends JFrame {
 			}
 
 		};
-		
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+	
 		SizedText st = new SizedText(OptionsDialog.currentAlgorithm.description(), Fonts.defaultFont, _checklist.getPreferredSize().width);
 		panel.setBorder(new CommonBorder("Current Algorithm"));
 		panel.add(st);
+		
 
 		JPanel sp = new JPanel();
 		sp.setLayout(new BorderLayout(4, 4));
@@ -129,6 +133,9 @@ public class AdvisorAssign extends JFrame {
 
 
 		createInfoLabel();
+		
+		_bigText = new SizedText("Ready", Fonts.hugeFont, _checklist.getPreferredSize().width);
+		sp.add(_bigText, BorderLayout.SOUTH);
 
 	}
 
@@ -251,6 +258,11 @@ public class AdvisorAssign extends JFrame {
 		AdvisorDisplay.getInstance().done();
 		OutputManager.outputResults();
 		MenuManager.getInstance().plotMenu.done();
+		setBigText("Done");
+	}
+	
+	public static void setBigText(String text) {
+		_bigText.setText(text);
 	}
 
 	/**
