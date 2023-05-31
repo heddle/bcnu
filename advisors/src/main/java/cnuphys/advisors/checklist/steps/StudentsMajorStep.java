@@ -6,13 +6,31 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.DataManager;
 
 public class StudentsMajorStep implements IAlgorithmStep {
 
 	@Override
 	public boolean run() {
-		// first, assign by major
+		
+		//first for specialty
+		for (Specialty specialty : Specialty.values()) {
+			if (specialty != Specialty.NONE) {
+				//get unassigned honors students and honors advisor
+				List<Student> students = DataManager.getUnassignedStudentsForSpecialty(specialty);
+				List<Advisor> advisors = DataManager.getAdvisorsForSpecialty(specialty);
+
+				//remove locked students and advisors
+				students.removeIf(x -> x.locked());
+				advisors.removeIf(x -> x.locked());
+
+				DataManager.roundRobinAssign(advisors, students, true, "Students by Specialty");
+				
+			}
+		}
+
+		// then by major
 		// this does not reassign students so only used unassigned
 
 
@@ -31,7 +49,7 @@ public class StudentsMajorStep implements IAlgorithmStep {
 
 		}
 
-//		//then for secondary major
+		//then for secondary major
 		for (Major major : Major.values()) {
 
 			//get unassigned honors students and honors advisor
@@ -45,6 +63,7 @@ public class StudentsMajorStep implements IAlgorithmStep {
 			DataManager.roundRobinAssign(advisors, students, true, "Students by Secondary FCA Major");
 
 		}
+		
 
 
 		return true;

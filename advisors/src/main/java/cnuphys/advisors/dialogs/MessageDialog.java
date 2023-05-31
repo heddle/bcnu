@@ -2,6 +2,9 @@ package cnuphys.advisors.dialogs;
 
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Insets;
+
+import javax.swing.JPanel;
 
 import cnuphys.advisors.graphics.SizedText;
 import cnuphys.bCNU.dialog.SimpleDialog;
@@ -26,7 +29,18 @@ public class MessageDialog extends SimpleDialog {
 
 		String message = (String)userObject1;
 		Font font = (Font)userObject2;
-		return new SizedText(message, font, WIDTH);
+		
+		JPanel panel = new JPanel() {
+			@Override
+			public Insets getInsets() {
+				Insets def = super.getInsets();
+				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
+			}
+
+		};
+		
+		panel.add(new SizedText(message, font, WIDTH));
+		return panel;
 	}
 
 }

@@ -14,6 +14,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.ILCCourse;
@@ -45,8 +46,11 @@ public class AdvisorDialog extends SimpleDialog {
 	//advisor being displayed
 	private Advisor _advisor;
 
-	//choose prefrerred major (other than own)
+	//choose preferred major (other than own)
 	private EnumComboBox _preferredMajorCombo;
+	
+	//choose specialty
+	private EnumComboBox _specialtyCombo;
 
 	public AdvisorDialog(Advisor advisor) {
 		super("Advisor Information", false, "Close");
@@ -79,6 +83,7 @@ public class AdvisorDialog extends SimpleDialog {
 		np.add(makeLabel(ilcString() ));
 
 		np.add(preferred2ndMajor());
+		np.add(specialty());
 
 		np.setBorder(new CommonBorder("Basic advisor information"));
 		add(np, BorderLayout.NORTH);
@@ -180,6 +185,29 @@ public class AdvisorDialog extends SimpleDialog {
 		p.add(_preferredMajorCombo);
 		return p;
 	}
+	
+	//panel that holds the optional specialty
+	private JPanel specialty() {
+		JPanel p = new JPanel();
+		p.setLayout(new FlowLayout(FlowLayout.LEFT, 4, 4));
+		p.add(makeLabel("Advising Specialty"));
+
+		_specialtyCombo = Specialty.getComboBox(_advisor.specialty);
+
+		_specialtyCombo.setFont(Fonts.defaultFont);
+		_specialtyCombo.addActionListener (new ActionListener () {
+		    @Override
+			public void actionPerformed(ActionEvent e) {
+		    	 Enum en = _specialtyCombo.getSelectedEnum();
+				Specialty specialty = (Specialty) en;
+				System.out.println("SELECTED SPECIALTY: " + specialty);
+				_advisor.specialty = specialty;
+			}
+		});
+		p.add(_specialtyCombo);
+		return p;
+	}
+
 
 
 	//create a label

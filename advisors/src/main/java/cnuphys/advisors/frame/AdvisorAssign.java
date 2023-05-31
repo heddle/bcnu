@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -103,13 +104,24 @@ public class AdvisorAssign extends JFrame {
 
 		//add the check list
 		_checklist = CheckList.getInstance();
+		
+		JPanel panel = new JPanel() {
+			@Override
+			public Insets getInsets() {
+				Insets def = super.getInsets();
+				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
+			}
+
+		};
+		
 		SizedText st = new SizedText(OptionsDialog.currentAlgorithm.description(), Fonts.defaultFont, _checklist.getPreferredSize().width);
-		st.setBorder(new CommonBorder("Current Algorithm"));
+		panel.setBorder(new CommonBorder("Current Algorithm"));
+		panel.add(st);
 
 		JPanel sp = new JPanel();
 		sp.setLayout(new BorderLayout(4, 4));
 		sp.add(_checklist, BorderLayout.CENTER);
-		sp.add(st, BorderLayout.NORTH);
+		sp.add(panel, BorderLayout.NORTH);
 
 		_advisorPanel = new AdvisorPanel(AdvisorSimulation.getInstance(), sp);
 
@@ -207,7 +219,7 @@ public class AdvisorAssign extends JFrame {
 
 	public static void showMessage(String text) {
 
-		MessageDialog messageDialog = new MessageDialog("Secondary Majors", true, text, Fonts.defaultFont);
+		MessageDialog messageDialog = new MessageDialog("Secondary Majors and Specialties", true, text, Fonts.defaultFont);
 		messageDialog.setVisible(true);
 	}
 
@@ -261,7 +273,7 @@ public class AdvisorAssign extends JFrame {
 				frame.setLocationRelativeTo(null);
 
 				String text = "This would be a good time to bring up the list of advisors" +
-						" and assign any \"secondary majors.\"";
+						" and assign any \"secondary majors\" and advising specialties. Just double-click the advisor's name.";
 
 				showMessage(text);
 

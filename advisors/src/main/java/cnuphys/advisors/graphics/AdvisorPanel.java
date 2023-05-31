@@ -39,6 +39,7 @@ public class AdvisorPanel extends JPanel {
 
 		_simPanel.buttonPanelRemove();
 		_simPanel.stateLabelRemove();
+		_simPanel.attributeTableRemove();
 
 		add(_simPanel);
 	}

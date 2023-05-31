@@ -5,6 +5,7 @@ import java.util.List;
 
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
@@ -28,6 +29,9 @@ public class Advisor extends Person implements ITabled {
 	 * e.g. Ryan Fisher and psych"
 	 */
 	public Major preferred2ndMajor;
+	
+	/** a specialty, e.g. premed scholars */
+	public Specialty specialty = Specialty.NONE;
 
 	/** in case we want to disable an advisor */
 	public boolean acceptingCohort = true;

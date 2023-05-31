@@ -144,7 +144,7 @@ public class PlotManager {
 			counts[n] += 1;
 		}
 
-		BarPlot barPlot = new BarPlot("Number of Unique Majors", categories, counts);
+		BarPlot barPlot = new BarPlot("Number of Unique Majors for FCA", categories, counts);
 		AdvisorDisplay.getInstance().setContent(barPlot);
 	}
 

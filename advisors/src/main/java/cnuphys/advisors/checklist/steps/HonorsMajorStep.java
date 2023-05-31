@@ -6,6 +6,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.IAlgorithmStep;
 import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.DataManager;
 
 /**
@@ -17,24 +18,37 @@ public class HonorsMajorStep implements IAlgorithmStep {
 
 	@Override
 	public boolean run() {
-		// first, assign by major
-		// this does not reassign students so only used unassigned
 
+		//first for specialty
+		for (Specialty specialty : Specialty.values()) {
+			if (specialty != Specialty.NONE) {
+				//get unassigned honors students and honors advisor
+				List<Student> students = DataManager.getUnassignedHonorsStudentsForSpecialty(specialty);
+				List<Advisor> advisors = DataManager.getHonorsAdvisorsForSpecialty(specialty);
 
-		//first for the advisors "subject")
-		for (Major major : Major.values()) {
+				// remove locked students and advisors
+				students.removeIf(x -> x.locked());
+				advisors.removeIf(x -> x.locked());
 
-			//get unassigned honors students and honors advisor
-			List<Student> students = DataManager.getUnassignedHonorsStudentsForMajor(major);
-			List<Advisor> advisors = DataManager.getHonorsAdvisorsForMajor(major);
+				DataManager.roundRobinAssign(advisors, students, true, "Students by Specialty");
 
-			//remove locked students and advisors
-			students.removeIf(x -> x.locked());
-			advisors.removeIf(x -> x.locked());
+			}
 
-			DataManager.roundRobinAssign(advisors, students, true, "Honors by Major");
+			// then by major
+			// this does not reassign students so only used unassigned
+			for (Major major : Major.values()) {
 
-		}
+				// get unassigned honors students and honors advisor
+				List<Student> students = DataManager.getUnassignedHonorsStudentsForMajor(major);
+				List<Advisor> advisors = DataManager.getHonorsAdvisorsForMajor(major);
+
+				// remove locked students and advisors
+				students.removeIf(x -> x.locked());
+				advisors.removeIf(x -> x.locked());
+
+				DataManager.roundRobinAssign(advisors, students, true, "Honors by Major");
+
+			}
 
 		//then for secondary major
 		for (Major major : Major.values()) {
@@ -50,7 +64,8 @@ public class HonorsMajorStep implements IAlgorithmStep {
 			DataManager.roundRobinAssign(advisors, students, true, "Honors by Secondary FCA Major");
 
 		}
-
+		
+		}
 
 		return true;
 	}

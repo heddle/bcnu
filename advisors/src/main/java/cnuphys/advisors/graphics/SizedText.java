@@ -5,13 +5,17 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 
 import cnuphys.bCNU.util.FileUtilities;
 
 public class SizedText extends JComponent {
+	
+	private static Color bg = new Color(248, 255, 248);
 
 	private Dimension size;
 
@@ -24,6 +28,8 @@ public class SizedText extends JComponent {
 	public SizedText(String text, Font font, int width) {
 		_font = font;
 		sizeText(text, font, width);
+		
+		setBorder(BorderFactory.createLoweredBevelBorder());
 	}
 
 
@@ -47,17 +53,22 @@ public class SizedText extends JComponent {
 			lines.add(s);
 		}
 
-		size = new Dimension(width + 2*margin, 16 + lines.size()*(fm.getHeight()+2));
+		size = new Dimension(width + 2*margin, 12 + lines.size()*(fm.getHeight()+2));
 	}
 
 	@Override
 	public void paintComponent(Graphics g) {
+		
+		Rectangle b = getBounds();
+		g.setColor(bg);
+		g.fillRect(0, 0, b.width, b.height);
+		
 		g.setFont(_font);
 		FontMetrics fm = this.getFontMetrics(_font);
 		g.setColor(Color.black);
 		int dh = fm.getHeight() + 2;
 
-		int y = 7;
+		int y = 2;
 		for (String line : lines) {
 			y += dh;
 			g.drawString(line, margin, y);

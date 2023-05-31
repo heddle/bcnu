@@ -8,6 +8,7 @@ import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.enums.Major;
+import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.bCNU.util.UnicodeSupport;
 
@@ -216,10 +217,10 @@ public class DataManager {
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
 			if (advisor.honors()) {
-				if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject))
-				if (major.isInMajorFamily(advisor.preferred2ndMajor)) {
-			//	if (major == advisor.preferred2ndMajor) {
-					advisors.add(advisor);
+				if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject)) {
+					if (major.isInMajorFamily(advisor.preferred2ndMajor)) {
+						advisors.add(advisor);
+					}
 				}
 			}
 		}
@@ -237,16 +238,58 @@ public class DataManager {
 		ArrayList<Advisor> advisors = new ArrayList<>();
 
 		for (Advisor advisor : _advisorData.getAdvisors()) {
-			if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject))
+			if ((advisor.preferred2ndMajor != null) && (advisor.preferred2ndMajor != advisor.subject)) {
 				if (major.isInMajorFamily(advisor.preferred2ndMajor)) {
-			//	if (major == advisor.preferred2ndMajor) {
 					advisors.add(advisor);
 				}
-
+			}
 		}
 
 		return advisors;
 	}
+	
+	/**
+	 * Get a list of honors advisors whose subject matches a specialty
+	 *
+	 * @param specialty the specialty to match
+	 * @return the list
+	 */
+	public static List<Advisor> getHonorsAdvisorsForSpecialty(Specialty specialty) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		if (specialty != Specialty.NONE) {
+			for (Advisor advisor : _advisorData.getAdvisors()) {
+				if (advisor.honors()) {
+					if (advisor.specialty == specialty) {
+						advisors.add(advisor);
+					}
+				}
+			}
+		}
+
+		return advisors;
+	}
+
+	/**
+	 * Get a list of advisors whose subject matches a specialty
+	 *
+	 * @param specialty the specialty to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForSpecialty(Specialty specialty) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		if (specialty != Specialty.NONE) {
+			for (Advisor advisor : _advisorData.getAdvisors()) {
+				if (advisor.specialty == specialty) {
+					advisors.add(advisor);
+				}
+			}
+		}
+
+		return advisors;
+	}
+
 
 	/**
 	 * Get a list of advisors whose subject matches a department
@@ -390,6 +433,47 @@ public class DataManager {
 
 		return students;
 	}
+	
+	/**
+	 * Get a list of unassigned honors students with a given specialty
+	 *
+	 * @param specialty the specialty to match
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedHonorsStudentsForSpecialty(Specialty specialty) {
+		ArrayList<Student> students = new ArrayList<>();
+
+		if (specialty != Specialty.NONE) {
+			for (Student student : _studentData.getStudents()) {
+				if (!student.assigned() && student.honors() && student.check(specialty.getBit())) {
+					students.add(student);
+				}
+			}
+		}
+
+		return students;
+	}
+	
+	/**
+	 * Get a list of unassigned students with a given specialty
+	 *
+	 * @param specialty the specialty to match
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedStudentsForSpecialty(Specialty specialty) {
+		ArrayList<Student> students = new ArrayList<>();
+
+		if (specialty != Specialty.NONE) {
+			for (Student student : _studentData.getStudents()) {
+				if (!student.assigned() && student.check(specialty.getBit())) {
+					students.add(student);
+				}
+			}
+		}
+
+		return students;
+	}
+
 
 	/**
 	 * Get the schedule of classes data

@@ -139,6 +139,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 
 	
 	private JPanel _eastPanel;
+	private JPanel _contentPanel;
 	// add the east panel
 	private void addEast(int preferredHeight) {
 		_eastPanel = insetVPanel();
@@ -150,14 +151,14 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		// attributes in center of east panel
 		_attributePanel = new AttributePanel(_simulation.getAttributes(), preferredHeight);
 
-		JPanel cp = insetVPanel();
-		cp.add(_attributePanel);
+		_contentPanel = insetVPanel();
+		_contentPanel.add(_attributePanel);
 		
 		if (_content2 != null) {
-			cp.add(_content2);
+			_contentPanel.add(_content2);
 		}
 		
-		_eastPanel.add(cp);
+		_eastPanel.add(_contentPanel);
 
 		// buttons in south of east panel
 		_buttonPanel = new JPanel();
@@ -180,8 +181,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	}
 	
 	/**
-	 * Show or hide the button panel
-	 * @param vis the visibility flag
+	 * Remove the button panel
 	 */
 	public void buttonPanelRemove() {
 		_eastPanel.remove(_buttonPanel);
@@ -189,11 +189,19 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	}
 	
 	/**
-	 * Show or hide the state label
-	 * @param vis the visibility flag
+	 * Remove the state label
 	 */
 	public void stateLabelRemove() {
 		_eastPanel.remove(_stateLabel);
+		revalidate();
+	}
+
+	
+	/**
+	 * Remove the attribute table
+	 */
+	public void attributeTableRemove() {
+		_contentPanel.remove(_attributePanel);
 		revalidate();
 	}
 

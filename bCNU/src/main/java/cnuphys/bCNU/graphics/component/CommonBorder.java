@@ -15,12 +15,12 @@ import cnuphys.bCNU.util.Fonts;
 public class CommonBorder extends TitledBorder {
 
 	public Border etched = BorderFactory.createEtchedBorder();
-	public Font font = Fonts.commonFont(Font.PLAIN, 9);
+	private static Font _font = Fonts.commonFont(Font.PLAIN, 10);
 
 	public CommonBorder() {
 		super(BorderFactory.createEtchedBorder());
 		setTitleColor(Color.blue);
-		setTitleFont(font);
+		setTitleFont(_font);
 	}
 
 	public CommonBorder(String title) {
