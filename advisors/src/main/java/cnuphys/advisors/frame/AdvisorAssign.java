@@ -30,6 +30,7 @@ import cnuphys.advisors.io.OutputManager;
 import cnuphys.advisors.menu.MenuManager;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
+import cnuphys.advisors.threading.ThreadManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.simanneal.SimulationPlot;
@@ -255,14 +256,17 @@ public class AdvisorAssign extends JFrame {
 	 */
 	public static void allDone() {
 		System.out.println("Assignments are complete!");
+		ThreadManager.getInstance().done();
 		AdvisorDisplay.getInstance().done();
 		OutputManager.outputResults();
 		MenuManager.getInstance().plotMenu.done();
 		setBigText("Done");
 	}
-	
+
 	public static void setBigText(String text) {
-		_bigText.setText(text);
+		if (_bigText != null) {
+			_bigText.setText(text != null ? text : "???");
+		}
 	}
 
 	/**

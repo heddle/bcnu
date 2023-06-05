@@ -49,8 +49,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _ccptAdvisorsButton;
 
 	private JButton _departMajorButton;
-	private JButton _catalogButton;
-
+	
 
 	private String rowLabels[] = {"  STUDENTS ", "  ADVISORS  ", " "};
 	private JPanel _rows[] = new JPanel[rowLabels.length];
@@ -93,7 +92,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_lcsButton = createButton("LCs", true, _rows[2]);
 		_classesButton = createButton("Classes", true, _rows[2]);
 		_departMajorButton = createButton("Dept/Maj", true, _rows[2]);
-		_catalogButton = createButton("Catalogs", false, _rows[2]);
 
 	}
 
@@ -101,7 +99,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	 * Add done. Set certain buttons enabled.
 	 */
 	public void done() {
-		_catalogButton.setEnabled(true);
 	}
 
 
@@ -278,12 +275,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("Departments and Majors");
 	}
 
-	//handle click catalog button
-	private void handleCatalog() {
-		AdvisorDisplay.getInstance().setContent(new CatalogPane());
-		AdvisorInfoLabel.getInstance().setText("Catalogs Needed");
-	}
-
 	//handle click on ILCs button
 	private void handleILCs() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getILCData().getScrollPane());
@@ -303,6 +294,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		}
 	}
 
+	//one of the buttons was selected
 	private void handleButton(JButton button) {
 		if (button == _allAdvisorsButton) {
 			handleAllAdvisors();
@@ -363,9 +355,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		}
 		else if (button == _departMajorButton) {
 			handleDepartmentMajor();
-		}
-		else if (button == _catalogButton) {
-			handleCatalog();
 		}
 		else if (button == _ilcsButton) {
 			handleILCs();

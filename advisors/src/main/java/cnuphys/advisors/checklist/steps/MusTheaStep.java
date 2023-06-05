@@ -4,17 +4,21 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.model.DataManager;
 
-public class MusTheaStep implements IAlgorithmStep  {
+public class MusTheaStep extends CheckListLaunchable  {
+
+	public MusTheaStep(String info, boolean enabled) {
+		super("MUSC/THEA", info, enabled);
+	}
 
 	/**
 	 * Assign the Music and Theater advisees
 	 */
 	@Override
-	public boolean run() {
+	public void launch() {
 		List<Student> musicStudents = DataManager.getStudentsForMajor(Major.MUSIC);
 		List<Student> theaterStudents = DataManager.getStudentsForMajor(Major.THEA);
 
@@ -23,10 +27,6 @@ public class MusTheaStep implements IAlgorithmStep  {
 
 		DataManager.roundRobinAssign(musicAdvisors, musicStudents, true, "In Music assign");
 		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, true, "In Theater assign");
-
-		return true;
 	}
-
-
 
 }

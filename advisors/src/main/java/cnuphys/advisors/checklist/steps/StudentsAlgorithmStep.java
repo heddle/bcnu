@@ -4,16 +4,20 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 
-public class StudentsAlgorithmStep implements IAlgorithmStep {
+public class StudentsAlgorithmStep extends CheckListLaunchable {
+
+	public StudentsAlgorithmStep(String info, boolean enabled) {
+		super("Students Algorithm", info, enabled);
+	}
 
 	@Override
-	public boolean run() {
+	public void launch() {
 		//now run the algorithm with all unassigned students and all
 		// unlocked advisors
 		AdvisorData advisorData = DataManager.getAdvisorData();
@@ -46,9 +50,5 @@ public class StudentsAlgorithmStep implements IAlgorithmStep {
 				advisor.setLocked();
 			}
 		}
-
-
-		return true;
 	}
-
 }

@@ -5,20 +5,24 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.ILCCourse;
 import cnuphys.advisors.model.ILCData;
 
-public class ILCStep implements IAlgorithmStep {
+public class ILCStep extends CheckListLaunchable {
+
+	public ILCStep(String info, boolean enabled) {
+		super("ILC", info, enabled);
+	}
 
 	/**
 	 * Assign the ILC advisees
 	 */
 	@Override
-	public boolean run() {
+	public void launch() {
 		ILCData ilcData = DataManager.getILCData();
 
 		List<Student> students = DataManager.getUnassignedStudents();
@@ -71,9 +75,6 @@ public class ILCStep implements IAlgorithmStep {
 				advisor.setLocked();
 			}
 		}
-
-
-		return true;
 	}
 
 }

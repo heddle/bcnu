@@ -77,20 +77,6 @@ OENB, PCSE, PFAR, PHIL, POLS, PSYC, SOCL, NONE, INTERDIS;
 		return majors;
 	}
 
-
-	/**
-	 * Get the number of catalogs needed by this department
-	 * @return the number of catalogs needed
-	 */
-	public int catalogsNeeded() {
-	    List<Advisor> advisors = DataManager.getAdvisorsForDepartment(this);
-	    int count = 0;
-	    for (Advisor advisor : advisors) {
-	    	count += advisor.adviseeCount();
-	    }
-	    return count;
-	}
-
 	/**
 	 * Returns the enum value from the name.
 	 *

@@ -27,52 +27,9 @@ public class OutputManager {
 		_outputDir = new File(dataDir, "output");
 		_outputDir.mkdir();
 
-		writeCatalogFile();
 		writeAssignmentsFile();
 	}
 
-	//write catalog requirements by dept and advisor
-	private static void writeCatalogFile() {
-		File catFile = new File(_outputDir, "catalogs.txt");
-		catFile.delete();
-
-		PrintWriter pw;
-
-		try {
-			pw = new PrintWriter(catFile);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return;
-		}
-
-		pw.println("Catalog Distribution");
-
-
-
-		int total = 0;
-
-		for (Department dept : Department.values()) {
-			pw.println("\n" + dept.name());
-			int departTot = 0;
-
-			List<Advisor> advisors = DataManager.getAdvisorsForDepartment(dept);
-
-			for (Advisor advisor : advisors) {
-				int count = advisor.adviseeCount();
-				String s = String.format("  %s  [%d]", advisor.name, count);
-				pw.println(s);
-				departTot += count;
-				total += count;
-
-			}
-			pw.println("Department Count: " + departTot);
-		}
-
-		pw.println("\nTotal catalogs: " + total);
-
-		pw.flush();
-		pw.close();
-	}
 
 	//write the all important assignments file
 	private static void writeAssignmentsFile() {
@@ -105,7 +62,7 @@ public class OutputManager {
 
 		};
 
-		String sArr[] = new String[18];
+		String sArr[] = new String[19];
 		for (Advisor advisor : advisors) {
 
 			List<Student> students = advisor.advisees;
@@ -118,10 +75,10 @@ public class OutputManager {
 	}
 
 
-
+// write an individual assignment
 	private static void writeAssignment(CSVWriter csvw, Advisor advisor, Student student, String sArr[]) {
 
-		sArr[0] = student.id;
+		sArr[0] = "\"\t" + student.id + "\"";  //will get leading 0's
 		sArr[1] = student.lastName;
 		sArr[2] = student.firstName;
 		sArr[3] = student.ilc() ? "ILC" : "";
@@ -136,9 +93,10 @@ public class OutputManager {
 		sArr[12] = student.btmg() ? "BTMG" : "";
 		sArr[13] = student.major.name();
 		sArr[14] = "\"" + advisor.name + "\"";
-		sArr[15] = "FCA";
-		sArr[16] = advisor.department.name();
-		sArr[17] = advisor.email;
+		sArr[15] = "\"\t" + advisor.id + "\"";  //will get leading 0's
+		sArr[16] = "FCA";
+		sArr[17] = advisor.department.name();
+		sArr[18] = advisor.email;
 
 		csvw.writeRow(sArr);
 	}
@@ -159,9 +117,10 @@ public class OutputManager {
 				"BTMG", // 13
 				"MAJOR_1ST", // 14
 				"ADVISOR", // 15
-				"ADV_TYPE", // 16
-				"ADV1_DEPT", // 17
-				"ADVISOR_EMAIL" // 18
+				"ADV_ID", // 16
+				"ADV_TYPE", // 17
+				"ADV1_DEPT", // 18
+				"ADVISOR_EMAIL" // 19
 		);
 	}
 

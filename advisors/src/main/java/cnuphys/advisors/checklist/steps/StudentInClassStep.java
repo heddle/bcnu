@@ -5,17 +5,21 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.StudentData;
 
-public class StudentInClassStep  implements IAlgorithmStep{
+public class StudentInClassStep  extends CheckListLaunchable {
 
+
+	public StudentInClassStep(String info, boolean enabled) {
+		super("Student in Class", info, enabled);
+	}
 
 	@Override
-	public boolean run() {
+	public void launch() {
 		StudentData studentData = DataManager.getStudentData();
 
 		List<Student> students = studentData.getStudents();
@@ -36,9 +40,6 @@ public class StudentInClassStep  implements IAlgorithmStep{
 				}
 			}
 		}
-
-		return true;
-
 	}
 
 	private Advisor bestInClassAdvisor(Student student) {

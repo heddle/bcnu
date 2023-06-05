@@ -5,15 +5,19 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.StudentData;
 
-public class PresScholarStep implements IAlgorithmStep {
+public class PresScholarStep extends CheckListLaunchable {
+
+	public PresScholarStep(String info, boolean enabled) {
+		super("Pres Scholar", info, enabled);
+	}
 
 	@Override
-	public boolean run() {
+	public void launch() {
 		//get the pres scholar advisors and students
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.PRESSCHOLAR);
 
@@ -40,8 +44,6 @@ public class PresScholarStep implements IAlgorithmStep {
 		for (Advisor advisor : advisorData.getAdvisors()) {
 			advisor.setLocked();
 		}
-
-		return true;
 	}
 
 }

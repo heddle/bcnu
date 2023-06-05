@@ -4,7 +4,7 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.DataManager;
@@ -14,10 +14,14 @@ import cnuphys.advisors.model.DataManager;
  * @author heddle
  *
  */
-public class HonorsMajorStep implements IAlgorithmStep {
+public class HonorsMajorStep extends CheckListLaunchable {
+
+	public HonorsMajorStep(String info, boolean enabled) {
+		super("Honors by Major", info, enabled);
+	}
 
 	@Override
-	public boolean run() {
+	public void launch() {
 
 		//first for specialty
 		for (Specialty specialty : Specialty.values()) {
@@ -66,8 +70,7 @@ public class HonorsMajorStep implements IAlgorithmStep {
 		}
 		
 		}
-
-		return true;
 	}
+
 
 }

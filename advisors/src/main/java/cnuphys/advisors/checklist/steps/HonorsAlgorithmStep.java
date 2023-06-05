@@ -5,16 +5,20 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 
-public class HonorsAlgorithmStep implements IAlgorithmStep {
+public class HonorsAlgorithmStep extends CheckListLaunchable {
+
+	public HonorsAlgorithmStep(String info, boolean enabled) {
+		super("Honors Algorithm", info, enabled);
+	}
 
 	@Override
-	public boolean run() {
+	public void launch() {
 				
 		//now run the algorithm with unassigned honors students and unlocked
 		//honors advisors
@@ -47,10 +51,6 @@ public class HonorsAlgorithmStep implements IAlgorithmStep {
 				advisor.setLocked();
 			}
 		}
-
-
-
-		return true;
 	}
 
 }

@@ -20,6 +20,7 @@ import cnuphys.advisors.checklist.steps.StudentsMajorStep;
 import cnuphys.advisors.dialogs.OptionsDialog;
 import cnuphys.advisors.enums.EAlgorithm;
 import cnuphys.advisors.frame.AdvisorAssign;
+import cnuphys.advisors.threading.ThreadManager;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 
@@ -28,44 +29,43 @@ public class CheckList extends JPanel {
 	private static int HEIGHT = 450;
 
 	//assign pres scholars
-	private CheckListComponent presScholarStep;
+	private CheckListLaunchable presScholarStep;
 
 	//assign ILC advisors
-	private CheckListComponent ilcStep;
+	private CheckListLaunchable ilcStep;
 
 	//assign music and theater
-	private CheckListComponent musTheaStep;
+	private CheckListLaunchable musTheaStep;
 
 	//assign community captains
-	private CheckListComponent ccptStep;
+	private CheckListLaunchable ccptStep;
 
 	//assign bio tech and management
-	private CheckListComponent btmgStep;
+	private CheckListLaunchable btmgStep;
 
 	//assign prelaw students
-	private CheckListComponent prelawStep;
+	private CheckListLaunchable prelawStep;
 
 	//assign honors students in honors advisor's class
-	private CheckListComponent honorsStudentInClassStep;
+	private CheckListLaunchable honorsStudentInClassStep;
 
 	//assign honors students by major
-	private CheckListComponent honorsMajorStep;
+	private CheckListLaunchable honorsMajorStep;
 
 	//assign honors students by algorithm
-	private CheckListComponent honorsAlgorithmStep;
+	private CheckListLaunchable honorsAlgorithmStep;
 
 	//assign  students in FCA's class
-	private CheckListComponent studentInClassStep;
+	private CheckListLaunchable studentInClassStep;
 	
 	//assign  PSP Students to PSP advisors
-	private CheckListComponent pspStep;
-
+	private CheckListLaunchable pspStep;
 
 	//assign honors students by major and 2ndary major
-	private CheckListComponent studentsMajorStep;
+	private CheckListLaunchable studentsMajorStep;
 
 	//assign remaining students by algorithm
-	private CheckListComponent studentsAlgorithmStep;
+	private CheckListLaunchable studentsAlgorithmStep;
 
 
 	//singleton
@@ -88,33 +88,32 @@ public class CheckList extends JPanel {
 		return _instance;
 	}
 
+	//add the graphical components
 	private void addComponents() {
 
 		EAlgorithm ealg = OptionsDialog.currentAlgorithm;
 		boolean inClass = (ealg == EAlgorithm.PutInFCAOptNumMaj);
 
 
-		presScholarStep = new CheckListComponent("Presidential scholars", new PresScholarStep(), true);
-		ilcStep = new CheckListComponent("ILC students", new ILCStep(), false);
-		ccptStep = new CheckListComponent("Community Captains", new CommunityCaptainStep(), false);
-		musTheaStep = new CheckListComponent("Music & Theater majors", new MusTheaStep(), false);
-		btmgStep = new CheckListComponent("Bio Tech & Management students", new BTMGStep(), false);
-		prelawStep = new CheckListComponent("Prelaw students", new PrelawStep(), false);
+		presScholarStep = new PresScholarStep("Presidential scholars", true);
+		ilcStep = new ILCStep("ILC students", false);
+		ccptStep = new CommunityCaptainStep("Community Captains", false);
+		musTheaStep = new MusTheaStep("Music & Theater majors", false);
+		btmgStep = new BTMGStep("Bio Tech & Management students",false);
+		prelawStep = new PrelawStep("Prelaw students", false);
 
 		if (inClass) {
-			honorsStudentInClassStep = new CheckListComponent("Honors in Honors FCA Class",
-					new HonorsStudentInClassStep(), false);
+			honorsStudentInClassStep = new HonorsStudentInClassStep("Honors in Honors FCA Class", false);
 		}
-		honorsMajorStep = new CheckListComponent("Honors students by major", new HonorsMajorStep(), false);
-		honorsAlgorithmStep = new CheckListComponent("Honors students by algorithm", new HonorsAlgorithmStep(), false);
+		honorsMajorStep = new HonorsMajorStep("Honors students by major", false);
+		honorsAlgorithmStep = new HonorsAlgorithmStep("Honors students by algorithm", false);
 
-		pspStep = new CheckListComponent("Premed scholars to PSP advisors", new PSPStep(), false);
+		pspStep = new PSPStep("Premed scholars to PSP advisors", false);
 		if (inClass) {
-			studentInClassStep = new CheckListComponent("Student in FCA Class", new StudentInClassStep(), false);
+			studentInClassStep = new StudentInClassStep("Student in FCA Class", false);
 		}
-		studentsMajorStep = new CheckListComponent("Students by major", new StudentsMajorStep(), false);
-		studentsAlgorithmStep = new CheckListComponent("Remaining students by algorithm", new StudentsAlgorithmStep(),
-				false);
+		studentsMajorStep = new StudentsMajorStep("Students by major", false);
+		studentsAlgorithmStep = new StudentsAlgorithmStep("Remaining students by algorithm", false);
 
 		add(presScholarStep);
 		add(ilcStep);
@@ -147,12 +146,13 @@ public class CheckList extends JPanel {
 	}
 
 	public void initRun() {
-		presScholarStep.run();
-		ilcStep.run();
-		ccptStep.run();
-		musTheaStep.run();
-		btmgStep.run();
-		prelawStep.run();
+		ThreadManager tm = ThreadManager.getInstance();
+		tm.queue(presScholarStep);
+		tm.queue(ilcStep);
+		tm.queue(ccptStep);
+		tm.queue(musTheaStep);
+		tm.queue(btmgStep);
+		tm.queue(prelawStep);
 	}
 
 	/**

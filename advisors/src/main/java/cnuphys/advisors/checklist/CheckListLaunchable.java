@@ -11,44 +11,45 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.graphics.AdvisorDisplay;
+import cnuphys.advisors.threading.ILaunchable;
+import cnuphys.advisors.threading.ThreadManager;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 
-public class CheckListComponent extends JPanel {
+public abstract class CheckListLaunchable extends JComponent implements ILaunchable {
 
-	public static final Dimension ledSize = new Dimension(13, 13);
-
-	//is the step completed?
+	// is the step completed?
 	public boolean done;
 
-	//the algorithm step
-	private IAlgorithmStep _step;
+	// size of the led
+	public static final Dimension ledSize = new Dimension(13, 13);
 
 	private static final Color _doneColor = X11Colors.getX11Color("Dark Green");
 	private static final Color _todoColor = Color.red;
 
-	//do it button
+	/** the run button */
 	public JButton _doitButton;
 
-	//LED
+	/** the red/green light */
 	public JComponent _led;
+	
+	/** the name of the launchable */
+	public String name;
 
 	/**
 	 * Create a component backing a step of the algorithm
-	 * @param leftLab
+	 * 
 	 * @param info
-	 * @param step
 	 * @param enabled
-	 * @param done  already done?
+	 * @param done    already done?
 	 */
-	public CheckListComponent(String info, IAlgorithmStep step, boolean enabled) {
-		_step = step;
+	public CheckListLaunchable(String name, String info, boolean enabled) {
+		this.name = name;
 		setLayout(new FlowLayout(FlowLayout.LEFT, 4, 2));
 
 		if (!done) {
@@ -56,7 +57,6 @@ public class CheckListComponent extends JPanel {
 		}
 		add(led());
 		add(makeLabel(info));
-
 
 		setEnabled(enabled);
 		setBorder(new EmptyBorder(2, 2, 0, 0));
@@ -72,36 +72,18 @@ public class CheckListComponent extends JPanel {
 		}
 	}
 
-	/**
-	 * run the step
-	 */
-	public void run() {
-		if (_step != null) {
-			done = _step.run();
-
-			if (done && (_doitButton != null)) {
-					remove(_doitButton);
-				_doitButton = null;
-			}
-
-			repaint();
-			AdvisorAssign.updateInfoLabel();
-			CheckList.getInstance().checkState();
-
-			AdvisorDisplay.getInstance().dataChange();
-		}
-	}
-
 	// make the button that launches the algorithm step
 	private JButton makeDoItButton() {
 		_doitButton = new JButton("Run");
 		_doitButton.setFont(Fonts.tweenFont);
+		
+		final ILaunchable launchable = this;
 
 		ActionListener al = new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				run();
+				ThreadManager.getInstance().queue(launchable);
 			}
 
 		};
@@ -117,7 +99,7 @@ public class CheckListComponent extends JPanel {
 		return lab;
 	}
 
-	//the led status
+	// the led status
 	private JComponent led() {
 		_led = new JComponent() {
 			@Override
@@ -139,4 +121,22 @@ public class CheckListComponent extends JPanel {
 
 		return _led;
 	}
+
+	@Override
+	public void launchDone() {
+		done = true;
+
+		if (_doitButton != null) {
+			remove(_doitButton);
+			_doitButton = null;
+		}
+
+		repaint();
+		AdvisorAssign.updateInfoLabel();
+		AdvisorAssign.setBigText(name + ": done");
+		CheckList.getInstance().checkState();
+
+		AdvisorDisplay.getInstance().dataChange();
+	}
+
 }

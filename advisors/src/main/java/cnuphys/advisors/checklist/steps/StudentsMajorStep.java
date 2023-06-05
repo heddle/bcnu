@@ -4,15 +4,20 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.checklist.IAlgorithmStep;
+import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.DataManager;
 
-public class StudentsMajorStep implements IAlgorithmStep {
+public class StudentsMajorStep extends CheckListLaunchable {
+
+	public StudentsMajorStep(String info, boolean enabled) {
+		super("Students by  Major", info, enabled);
+		// TODO Auto-generated constructor stub
+	}
 
 	@Override
-	public boolean run() {
+	public void launch() {
 		
 		//first for specialty
 		for (Specialty specialty : Specialty.values()) {
@@ -63,11 +68,6 @@ public class StudentsMajorStep implements IAlgorithmStep {
 			DataManager.roundRobinAssign(advisors, students, true, "Students by Secondary FCA Major");
 
 		}
-		
-
-
-		return true;
 	}
-
 
 }
