@@ -167,15 +167,9 @@ public abstract class PlainPanel3D extends Panel3D {
 			AbstractButton ab = _checkBoxArray.getButton(s);
 			ab.setFont(Fonts.smallFont);
 			ab.setSelected(!SHOW_MAP_EXTENTS.equals(s));
-
-//			if (!SHOW_SIM_SDOCA.equals(s)) {
-//				ab.setSelected(true);
-//			}
 			ab.addActionListener(al);
 		}
 		fixSize();
-
-		enableBSTOuterLayers();
 	}
 
 	@Override
@@ -352,12 +346,6 @@ public abstract class PlainPanel3D extends Panel3D {
 		if (ab != null) {
 			ab.setEnabled(enabled);
 		}
-	}
-
-	public void enableBSTOuterLayers() {
-		boolean oldGeo = Ced.getCed().useOldBSTGeometry();
-		enableLabel(SHOW_BST_LAYER_7, oldGeo);
-		enableLabel(SHOW_BST_LAYER_8, oldGeo);
 	}
 
 	/**
@@ -664,26 +652,6 @@ public abstract class PlainPanel3D extends Panel3D {
 	 */
 	public boolean showBSTLayer6() {
 		return showBST() && show(PlainPanel3D.SHOW_BST_LAYER_6);
-	}
-
-	/**
-	 * Show BST Layer 7?
-	 *
-	 * @return <code>true</code> if we are to show BST Layer 7
-	 */
-	public boolean showBSTLayer7() {
-		boolean oldBSTGeometry = Ced.getCed().useOldBSTGeometry();
-		return oldBSTGeometry && showBST() && show(PlainPanel3D.SHOW_BST_LAYER_7);
-	}
-
-	/**
-	 * Show BST Layer 8?
-	 *
-	 * @return <code>true</code> if we are to show BST Layer 8
-	 */
-	public boolean showBSTLayer8() {
-		boolean oldBSTGeometry = Ced.getCed().useOldBSTGeometry();
-		return oldBSTGeometry && showBST() && show(PlainPanel3D.SHOW_BST_LAYER_8);
 	}
 
 	/**

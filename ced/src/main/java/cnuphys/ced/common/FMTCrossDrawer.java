@@ -212,7 +212,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 	private void feedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 
-		// svt crosses?
+		// fmt crosses?
 		CrossList2 crosses = FMTCrosses.getInstance().getCrosses();
 		int len = (crosses == null) ? 0 : crosses.size();
 

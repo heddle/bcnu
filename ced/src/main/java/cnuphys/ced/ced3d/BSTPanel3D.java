@@ -24,7 +24,7 @@ public class BSTPanel3D extends DetectorItem3D {
 	protected static final float CROSS_LEN = 3f; // in cm
 	protected static final Color crossColor = X11Colors.getX11Color("dark green");
 
-	// the 1=based sect
+	// the 1-based sect
 	private int _sector;
 
 	// the 1-based "biglayer" [1..8] used by the data
@@ -40,7 +40,7 @@ public class BSTPanel3D extends DetectorItem3D {
 	public void drawShape(GLAutoDrawable drawable) {
 		float coords[] = new float[36];
 
-		BSTGeometry.getLayerQuads(_sector, _layer, coords);
+		BSTGeometry.getLayerQuads(_sector-1, _layer-1, coords);
 
 		Color color = ((_layer % 2) == 0) ? X11Colors.getX11Color("coral", getVolumeAlpha())
 				: X11Colors.getX11Color("Powder Blue", getVolumeAlpha());
@@ -54,7 +54,7 @@ public class BSTPanel3D extends DetectorItem3D {
 		float coords36[] = new float[36];
 		boolean drawOutline = false;
 
-		AdcList hits = BST.getInstance().getHits();
+		AdcList hits = BST.getInstance().getADCHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcHit hit : hits) {
 				if (hit != null) {
@@ -63,7 +63,7 @@ public class BSTPanel3D extends DetectorItem3D {
 					if ((_sector == sector) && (_layer == layer)) {
 						drawOutline = true;
 						int strip = hit.component;
-						BSTGeometry.getStrip(sector, layer, strip, coords6);
+						BSTGeometry.getStripCM(sector, layer, strip, coords6);
 
 						if (showHits()) {
 							Support3D.drawLine(drawable, coords6, hitColor, STRIPLINEWIDTH);
@@ -75,7 +75,7 @@ public class BSTPanel3D extends DetectorItem3D {
 		} // hits not null
 
 		if (drawOutline) { // if any hits, draw it once
-			BSTGeometry.getLayerQuads(_sector, _layer, coords36);
+			BSTGeometry.getLayerQuads(_sector-1, _layer-1, coords36);
 			Support3D.drawQuads(drawable, coords36, outlineHitColor, 1f, true);
 		}
 
@@ -98,7 +98,7 @@ public class BSTPanel3D extends DetectorItem3D {
 
 					drawCrossPoint(drawable, x1, y1, z1, crossColor);
 				}
-			} // svt
+			} // bst
 
 		}
 
@@ -152,10 +152,6 @@ public class BSTPanel3D extends DetectorItem3D {
 			return _cedPanel3D.showBSTLayer5();
 		case 6:
 			return _cedPanel3D.showBSTLayer6();
-		case 7:
-			return _cedPanel3D.showBSTLayer7();
-		case 8:
-			return _cedPanel3D.showBSTLayer8();
 		}
 		return false;
 	}

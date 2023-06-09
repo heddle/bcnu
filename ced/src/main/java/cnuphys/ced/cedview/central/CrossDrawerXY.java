@@ -30,7 +30,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	private static final String FBCOL = "$wheat$";
 
 	// cached rectangles for feedback
-	private Rectangle _svtFBRects[];
+	private Rectangle _bstFBRects[];
 
 	// cached rectangles for feedback
 	private Rectangle _bmtFBRects[];
@@ -51,7 +51,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 		// clip the active area
 		Rectangle sr = container.getInsetRectangle();
 		g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-		_svtFBRects = null;
+		_bstFBRects = null;
 		_bmtFBRects = null;
 
 		Stroke oldStroke = g2.getStroke();
@@ -78,9 +78,9 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 		int len = (crosses == null) ? 0 : crosses.size();
 
 		if (len == 0) {
-			_svtFBRects = null;
+			_bstFBRects = null;
 		} else {
-			_svtFBRects = new Rectangle[len];
+			_bstFBRects = new Rectangle[len];
 		}
 
 		if (len > 0) {
@@ -119,11 +119,11 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 					DataDrawSupport.drawCross(g, pp.x, pp.y, DataDrawSupport.BST_CROSS);
 
 					// fbrects for quick feedback
-					_svtFBRects[i] = new Rectangle(pp.x - DataDrawSupport.CROSSHALF, pp.y - DataDrawSupport.CROSSHALF,
+					_bstFBRects[i] = new Rectangle(pp.x - DataDrawSupport.CROSSHALF, pp.y - DataDrawSupport.CROSSHALF,
 							2 * DataDrawSupport.CROSSHALF, 2 * DataDrawSupport.CROSSHALF);
 				} // location !bad
 				else {
-					_svtFBRects[i] = new Rectangle(0, 0, 0, 0);
+					_bstFBRects[i] = new Rectangle(0, 0, 0, 0);
 				}
 
 			}
@@ -205,15 +205,15 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	public void feedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 
-		// svt crosses?
+		// bst crosses?
 		if (_view.showCrosses()) {
 
 			CrossList2 crosses = BSTCrosses.getInstance().getCrosses();
 			int len = (crosses == null) ? 0 : crosses.size();
 
-			if ((len > 0) && (_svtFBRects != null) && (_svtFBRects.length == len)) {
+			if ((len > 0) && (_bstFBRects != null) && (_bstFBRects.length == len)) {
 				for (int i = 0; i < len; i++) {
-					if ((_svtFBRects[i] != null) && _svtFBRects[i].contains(screenPoint)) {
+					if ((_bstFBRects[i] != null) && _bstFBRects[i].contains(screenPoint)) {
 
 						Cross2 cross = crosses.elementAt(i);
 						feedbackStrings.add(

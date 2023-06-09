@@ -31,8 +31,7 @@ public class GeometryManager {
 	private static GeometryManager instance;
 
 	// BSTxy panels
-	private static Vector<BSTxyPanel> _bstXYpanels8Layers = new Vector<>(); // old
-	private static Vector<BSTxyPanel> _bstXYpanels6Layers = new Vector<>(); // new
+	private static Vector<BSTxyPanel> _bstXYpanelsLayers = new Vector<>(); // new
 
 	// cal sector 0 in clas coordinates
 	public static ECSector clas_Cal_Sector0;
@@ -59,7 +58,7 @@ public class GeometryManager {
 		// DC Geometry
 		DCGeometry.initialize();
 
-		// BMT micromegas geometry
+		// BMT geometry
 		BMTGeometry.initialize();
 
 		// get the FTOF geometry
@@ -118,26 +117,15 @@ public class GeometryManager {
 		// use the geometry service
 
 		double vals[] = new double[10];
-		for (int bigLayer = 1; bigLayer <= 8; bigLayer++) {
-			// geom service uses superlayer and layer
-			int supl = ((bigLayer - 1) / 2); // 0, 1, 2, 3
-			int lay = ((bigLayer - 1) % 2); // 0, 1, 0, 1
+		for (int layer = 0; layer < 6; layer++) {
 
-			int numSect = BSTGeometry.sectorsPerSuperlayer[supl];
+			int numSect = BSTGeometry.sectorsPerLayer[layer];
 
-			for (int sector = 1; sector <= numSect; sector++) {
+			for (int sector = 0; sector < numSect; sector++) {
 
-				// public static void getLimitValues(int sector, int superlayer,
-				// int layer, double vals[]) {
-				BSTGeometry.getLimitValues(sector - 1, supl, lay, vals);
-				int hackSector = svtSectorHack(numSect, sector);
-//				hackSector = sector;
-
-				BSTxyPanel svtPanel = new BSTxyPanel(hackSector, bigLayer, vals);
-				if (bigLayer < 7) {
-					_bstXYpanels6Layers.add(new BSTxyPanel(hackSector, bigLayer, vals));
-				}
-				_bstXYpanels8Layers.add(new BSTxyPanel(hackSector, bigLayer, vals));
+				BSTGeometry.getLimitValues(sector, layer, vals);
+				
+				_bstXYpanelsLayers.add(new BSTxyPanel(sector + 1, layer + 1, vals));
 			}
 		}
 
@@ -149,17 +137,17 @@ public class GeometryManager {
 //	 * @param numSect the number of sectors
 //	 * @param sector the sector 1..N
 //	 */
-	public int svtSectorHack(int numSect, int sector) {
-		int n2 = numSect / 2;
-		int hackSect = 2 + n2 - sector;
-		if (hackSect <= 0) {
-			hackSect += numSect;
-		}
-		// System.err.println("LAY: " + layer + " SUPL: " + superlayer + " SECT " +
-		// sector + " NUMSECT: " +
-		// numSect + " hackSect: " + hackSect);
-		return hackSect;
-	}
+//	public int bstSectorHack(int numSect, int sector) {
+//		int n2 = numSect / 2;
+//		int hackSect = 2 + n2 - sector;
+//		if (hackSect <= 0) {
+//			hackSect += numSect;
+//		}
+//		// System.err.println("LAY: " + layer + " SUPL: " + superlayer + " SECT " +
+//		// sector + " NUMSECT: " +
+//		// numSect + " hackSect: " + hackSect);
+//		return hackSect;
+//	}
 
 	/**
 	 * Get the sector [1..6] from the phi value
@@ -241,10 +229,7 @@ public class GeometryManager {
 	 * @return the panels
 	 */
 	public static List<BSTxyPanel> getBSTxyPanels() {
-		if (Ced.getCed().useOldBSTGeometry()) {
-			return _bstXYpanels8Layers;
-		}
-		return _bstXYpanels6Layers;
+		return _bstXYpanelsLayers;
 	}
 
 	/**

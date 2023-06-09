@@ -35,10 +35,9 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 
 		// first index is layer 0..7, second is sector 0..23
 		int bstFullData[][][] = AccumulationManager.getInstance().getAccumulatedBSTFullData();
-		for (int lay0 = 0; lay0 < 8; lay0++) {
-			int supl0 = lay0 / 2;
-			for (int sect0 = 0; sect0 < BSTGeometry.sectorsPerSuperlayer[supl0]; sect0++) {
-				for (int strip0 = 0; strip0 < 255; strip0++) {
+		for (int lay0 = 0; lay0 < 6; lay0++) {
+			for (int sect0 = 0; sect0 < BSTGeometry.sectorsPerLayer[lay0]; sect0++) {
+				for (int strip0 = 0; strip0 < 256; strip0++) {
 					int hitCount = bstFullData[lay0][sect0][strip0];
 
 					if (hitCount > 1) {
@@ -58,7 +57,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
 
-		AdcList hits = BST.getInstance().getHits();
+		AdcList hits = BST.getInstance().getADCHits();
 		if ((hits != null) && !hits.isEmpty()) {
 
 //			Shape oldClip = g.getClip();
@@ -66,16 +65,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 
 			for (AdcHit hit : hits) {
 				if (hit != null) {
-					// HACK GEO SECTOR DOESN"T MATCH REAL
-					// TODO Undo hack when geometry fixed
-
-					int superlayer = (hit.layer - 1) / 2;
-					int numSect = BSTGeometry.sectorsPerSuperlayer[superlayer];
-					int hackSect = (hit.sector + (numSect / 2)) % numSect;
-					if (hackSect == 0)
-						hackSect = numSect;
-
-					BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hackSect);
+					BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hit.sector);
 					if (panel != null) {
 						_view.drawBSTStrip(g2, container, Color.red, hit.sector, hit.layer, hit.component);
 					} else {

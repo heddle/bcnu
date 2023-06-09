@@ -6,9 +6,16 @@ import java.util.Vector;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.event.data.lists.BaseHit2List;
+
 public class BST extends DetectorData {
 
+	// list of BST adc hits
 	AdcList _adcHits = new AdcList("BST::adc");
+	
+	// list of BST reconstructed hits
+	BaseHit2List _bstRecHits;
+
 
 	private static BST _instance;
 
@@ -27,6 +34,7 @@ public class BST extends DetectorData {
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		_adcHits = new AdcList("BST::adc");
+		_bstRecHits = new BaseHit2List("BSTRec::Hits", "strip");
 	}
 
 	/**
@@ -44,9 +52,20 @@ public class BST extends DetectorData {
 	 *
 	 * @return the adc hit list
 	 */
-	public AdcList getHits() {
+	public AdcList getADCHits() {
 		return _adcHits;
 	}
+	
+
+	/**
+	 * Get the BST reconstructed hits
+	 *
+	 * @return the BST reconstructed hits
+	 */
+	public BaseHit2List getRecHits() {
+		return _bstRecHits;
+	}
+
 
 	/**
 	 * Get a collection of all strip, adc doublets for a given sector and layer
@@ -60,7 +79,7 @@ public class BST extends DetectorData {
 	public Vector<int[]> allStripsForSectorAndLayer(int sector, int layer) {
 		Vector<int[]> strips = new Vector<>();
 
-		AdcList hits = getHits();
+		AdcList hits = getADCHits();
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcHit hit : hits) {
 				if ((hit.sector == sector) && (hit.layer == layer)) {

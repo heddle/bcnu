@@ -80,7 +80,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	// the CTOF polygons
 	private CTOFXYPolygon _ctofPoly[] = new CTOFXYPolygon[48];
 
-	// Micro megas [sector][layer]
+	// BMT [sector][layer]
 	private BMTSectorItem _bmtItems[][];
 
 	// units are mm
@@ -130,16 +130,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 	}
-
-//	/**
-//	 * Get the Micromegas sector item
-//	 * @param sector [1..3]
-//	 * @param layer [1..6]
-//	 * @return the Micromegas sector item
-//	 */
-//	public MicroMegasSector getMicroMegasSector(int sector, int layer) {
-//		return microMegasSector[sector-1][layer-1];
-//	}
 
 	/**
 	 * Create a Central detector XY view
@@ -293,8 +283,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	/**
 	 * Get the panel based on the layer and sector
 	 *
-	 * @param layer  1..8
-	 * @param sector 1..24
+	 * @param layer  1-based layer 1..6
+	 * @param sector 1-based sector (max is layer dependent)
 	 * @return the panel
 	 */
 	public static BSTxyPanel getPanel(int layer, int sector) {
@@ -310,6 +300,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				}
 			}
 		}
+		
+		System.err.println("Null BST xy panel");
 
 		return null;
 	}
@@ -388,32 +380,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			g2.setColor(TEXT);
 			pmid.x = (p1.x + p2.x) / 2;
 			pmid.y = (p1.y + p2.y) / 2;
-//			String s = "" + panel.getSector();
-			// TODO fix HACK
-//			String s = "" + svtSectorHack(panel.getLayer(), panel.getSector());
 			String s = "" + panel.getSector();
 			extendLine(porig, pmid, 4 + panel.getLayer() / 2, fm.stringWidth(s), fm.getHeight());
 			g2.drawString(s, pmid.x, pmid.y);
 		}
-	}
-
-//	/**
-//	 * Rotates the sector number by 180 degrees
-//	 * @param layer the layer 1..8
-//	 * @param sector the sector 1..N
-//	 */
-	public int svtSectorHack(int layer, int sector) {
-		int superlayer = (layer - 1) / 2; // zero based
-		int numSect = BSTGeometry.sectorsPerSuperlayer[superlayer];
-		int n2 = numSect / 2;
-		int hackSect = (sector + n2) % numSect;
-		if (hackSect == 0) {
-			hackSect = numSect;
-		}
-		// System.err.println("LAY: " + layer + " SUPL: " + superlayer + " SECT " +
-		// sector + " NUMSECT: " +
-		// numSect + " hackSect: " + hackSect);
-		return hackSect;
 	}
 
 	private static void extendLine(Point p0, Point p1, int del, int sw, int fh) {
@@ -505,9 +475,9 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		if (_closestPanel != null) {
 
 			int region = (_closestPanel.getLayer() + 1) / 2;
-			fbString("red", "svt layer " + _closestPanel.getLayer(), feedbackStrings);
-			fbString("red", "svt region " + region, feedbackStrings);
-			fbString("red", "svt sector " + _closestPanel.getSector(), feedbackStrings);
+			fbString("red", "BST layer " + _closestPanel.getLayer(), feedbackStrings);
+			fbString("red", "BST region " + region, feedbackStrings);
+			fbString("red", "BST sector " + _closestPanel.getSector(), feedbackStrings);
 		} else {
 			double rad = Math.hypot(worldPoint.x, worldPoint.y);
 			boolean found = false;
@@ -562,7 +532,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		// hits data
 
 		if (_closestPanel != null) {
-			AdcList hits = BST.getInstance().getHits();
+			AdcList hits = BST.getInstance().getADCHits();
 			if ((hits != null) && !hits.isEmpty()) {
 				Vector<int[]> stripADCData = BST.getInstance().allStripsForSectorAndLayer(_closestPanel.getSector(),
 						_closestPanel.getLayer());
@@ -586,6 +556,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			}
 		}
 
+		boolean foundHit = false;
 		if (showReconHits()) {
 			BaseHit2List reconHits = BMT.getInstance().getRecHits();
 			if ((reconHits != null) && !reconHits.isEmpty()) {
@@ -593,10 +564,26 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 					if (bhit2.contains(screenPoint)) {
 						fbString("orange", "BMT recon hit sector  " + bhit2.sector + " layer " + bhit2.layer + " strip "
 								+ bhit2.component, feedbackStrings);
+						foundHit = true;
 						break;
 					}
 				}
 			}
+			if (!foundHit) {
+				reconHits = BST.getInstance().getRecHits();
+				if ((reconHits != null) && !reconHits.isEmpty()) {
+					for (BaseHit2 bhit2 : reconHits) {
+						if (bhit2.contains(screenPoint)) {
+							fbString("orange", "BST recon hit sector  " + bhit2.sector + " layer " + bhit2.layer + " strip "
+									+ bhit2.component, feedbackStrings);
+							foundHit = true;
+							break;
+						}
+					}
+				}
+			
+			}
+			
 		}
 
 		// near a swum trajectory?

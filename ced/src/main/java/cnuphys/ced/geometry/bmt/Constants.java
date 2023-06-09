@@ -7,7 +7,7 @@ public class Constants {
 	}
 
 	/*
-	 * The algorithm to describe the geometry of the Barrel Micromegas is provided
+	 * The algorithm to describe the geometry of the BMT is provided
 	 * by Franck Sabatie and implemented into the Java framework. This version is
 	 * for the last region of the BMT only. CRC and CRZ characteristics localize
 	 * strips in the cylindrical coordinate system. The target center is at the

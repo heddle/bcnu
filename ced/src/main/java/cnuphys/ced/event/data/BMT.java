@@ -13,7 +13,7 @@ import cnuphys.ced.event.data.lists.BaseHit2List;
 
 public class BMT extends DetectorData {
 
-	// list of adc hits
+	// list of BMT adc hits
 	AdcList _adcHits = new AdcList("BMT::adc");
 
 	// list of BMT reconstructed hits

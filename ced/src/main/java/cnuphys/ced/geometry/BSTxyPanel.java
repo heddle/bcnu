@@ -7,12 +7,10 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 
 	private double z0, z1, z2, z3, z4, z5;
 
-	// the layer [1..8]
+	// the layer [1..6]
 	private int layer;
 
 	// the "sector" 1 .. max, max depends on layer,
-	// max = {10, 14, 18, 24} for layers {(1,2), (3,4), (5,6), (7,8)}
-	// respectively
 	private int _sector;
 
 	// used in z view for ordering
@@ -28,7 +26,7 @@ public class BSTxyPanel implements Comparable<BSTxyPanel> {
 	 * Create an BSTxyPanel. The panel is really just a thick line
 	 *
 	 * @param sect 1-based
-	 * @param lay  1..8
+	 * @param lay  1..6
 	 * @param vals should be an array of 10 numbers x y x y z0..z5
 	 */
 	public BSTxyPanel(int sect, int lay, double vals[]) {

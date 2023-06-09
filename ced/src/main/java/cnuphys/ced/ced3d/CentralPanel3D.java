@@ -48,21 +48,15 @@ public class CentralPanel3D extends CedPanel3D {
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
 
-		// mc hit drawer
-		// MCHitDrawer3D mchd = new MCHitDrawer3D(this);
-		// addItem(mchd);
 
-		// svt panels
+		// sbt panels
 		for (int layer = 1; layer <= 6; layer++) {
-			// for (int layer = 1; layer <= 8; layer++) {
-			// geom service uses 0-based superlayer [0,1,2,3] and layer [0,1]
-			int supl = ((layer - 1) / 2); // 0, 1, 2, 3
 
-			int numSect = BSTGeometry.sectorsPerSuperlayer[supl];
+			int numSect = BSTGeometry.sectorsPerLayer[layer-1];
 
 			for (int sector = 1; sector <= numSect; sector++) {
-				BSTPanel3D svt = new BSTPanel3D(this, sector, layer);
-				addItem(svt);
+				BSTPanel3D bst = new BSTPanel3D(this, sector, layer);
+				addItem(bst);
 			}
 		}
 

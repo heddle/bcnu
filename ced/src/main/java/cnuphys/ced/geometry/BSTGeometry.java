@@ -2,37 +2,23 @@ package cnuphys.ced.geometry;
 
 import java.awt.geom.Point2D;
 
-import org.jlab.detector.base.GeometryFactory;
-import org.jlab.geom.base.ConstantProvider;
-import org.jlab.geom.base.DetectorTransformation;
-import org.jlab.geom.detector.bst.BSTFactory;
-import org.jlab.geom.detector.bst.BSTLayer;
-import org.jlab.geom.prim.Line3D;
-import org.jlab.geom.prim.Point3D;
-import org.jlab.geom.prim.Transformation3D;
+import org.jlab.detector.calib.utils.DatabaseConstantProvider;
+import org.jlab.detector.geant4.v2.SVT.SVTStripFactory;
+import org.jlab.geometry.prim.Line3d;
+
+import cnuphys.ced.frame.Ced;
+import eu.mihosoft.vrl.v3d.Vector3d;
 
 public class BSTGeometry {
 
-	// use coat java or peter's
-	public static final boolean USECOATJAVA = true;
+	private static SVTStripFactory _svtFac;
 
-	// used for coordinate transformations
-	private static DetectorTransformation _transform;
-
-	private static ConstantProvider bstDataProvider = GeometryFactory
-			.getConstants(org.jlab.detector.base.DetectorType.BST);
-
-	private static BSTFactory bstFactory = new BSTFactory();
-
-	// the base layer that we will transform to get what we need
-	private static BSTLayer _svtLayer0;
-	private static BSTLayer _svtLayer1;
 
 	// for putting in dead zone
-	public static final double ZGAP = 1.67; // mm
+	private static final double ZGAP = 1.67; // mm
 
 	/** sectors per superlayer */
-	public static final int[] sectorsPerSuperlayer = { 10, 14, 18, 24 };
+	public static final int[] sectorsPerLayer = {10, 10, 14, 14, 18, 18};
 
 	/**
 	 * Initialize the BST Geometry
@@ -43,118 +29,69 @@ public class BSTGeometry {
 		System.out.println("===  BST Geometry Initialization  ===");
 		System.out.println("=====================================");
 
-		if (USECOATJAVA) {
-			// create a ring layer
-			_svtLayer0 = bstFactory.createRingLayer(bstDataProvider, 0, 0, 0);
-			_svtLayer1 = bstFactory.createRingLayer(bstDataProvider, 0, 0, 1);
+		String variationName = Ced.getGeometryVariation();
+		DatabaseConstantProvider cp = new DatabaseConstantProvider(11, variationName);
 
-			// create a detector transform
-			_transform = bstFactory.getDetectorTransform(bstDataProvider);
-		} else {
-		}
+		_svtFac = new SVTStripFactory(cp, true);
 	}
+
 
 	/**
 	 * Get the strip as a line
 	 *
-	 * @param sector     (0-based) number of sectors are {10, 14, 18, 24} for
-	 *                   superlayers {0, 1, 2, 3} respectively.
-	 * @param superlayer in the range [0..3]
-	 * @param layer      either 0 or 1
-	 * @param strip      should be in the range [0..255]
-	 * @return the strip as a line
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
+	 * @param strip      (0-based)should be in the range [0..255]
+	 * @return the strip as a line units are mm
 	 */
-	public static Line3D getStrip(int sector, int superlayer, int layer, int strip) {
-		if ((strip < 0) || (strip > 255)) {
-//			System.err.println("Bad strip ID " + (strip + 1) + " in BST bank.");
-			return null;
-		}
-
-		Line3D tempLine;
-		try {
-			if (layer == 0) {
-				tempLine = _svtLayer0.getComponent(strip).getLine();
-			} else {
-				tempLine = _svtLayer1.getComponent(strip).getLine();
-			}
-
-			Transformation3D t3d = _transform.get(sector, superlayer, layer);
-			Line3D line = new Line3D(tempLine);
-			t3d.apply(line);
-			return line;
-
-		} catch (NullPointerException npe) {
-			System.err.println("BST GetStrip " + npe.getMessage());
-			System.err.println("sector: " + sector);
-			System.err.println("superlayer: " + superlayer);
-			System.err.println("layer: " + layer);
-			System.err.println("strip: " + strip);
-		}
-
-		return null;
-
+	public static Line3d getStrip(int sector, int layer, int strip) {
+		return _svtFac.getShiftedStrip(layer, sector, strip);
 	}
-
-	/**
-	 *
-	 * @param sector     (0-based) number of sectors are {10, 14, 18, 24} for
-	 *                   superlayers {0, 1, 2, 3} respectively.
-	 * @param superlayer in the range [0..3]
-	 * @param layer      either 0 or 1
-	 * @param p3d
-	 * @return
-	 */
-	// public static Point3D inverseRotate(int sector, int superlayer, int
-	// layer, Point3D p3d) {
-	// Transformation3D t3d = _transform.get(sector, superlayer,
-	// layer).inverse();
-	// Point3D p = new Point3D(p3d);
-	// t3d.apply(p);
-	// return p;
-	// }
 
 	/**
 	 * Get the coordinates (a line) for a strip for 3D view
 	 *
-	 * @param sector the 1-based layer dependent sector
-	 * @param layer  the "big" layer 1..8
-	 * @param strip  the strip 1..256
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
+	 * @param strip      (0-based)should be in the range [0..255]
 	 * @param coords (dim = 6) will hold line as [x1,y1,z1,x2,y2,z2] in cm
 	 */
+	public static void getStripCM(int sector, int layer, int strip, float coords[]) {
+		getStrip(sector, layer, strip, coords);
+		for (int i = 0; i < coords.length; i++) {
+			coords[i] /= 10;
+		}
+	}
+	
+	/**
+	 * Get the coordinates (a line) for a strip for 3D view
+	 *
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
+	 * @param strip      (0-based)should be in the range [0..255]
+	 * @param coords (dim = 6) will hold line as [x1,y1,z1,x2,y2,z2] in mm
+	 */
 	public static void getStrip(int sector, int layer, int strip, float coords[]) {
-		// geom service uses 0-based superlayer and layer
-		int supl = ((layer - 1) / 2); // 0, 1, 2, 3 (ring)
-		int lay = ((layer - 1) % 2); // 0, 1, 0, 1
-
-		int numSect = BSTGeometry.sectorsPerSuperlayer[supl];
-
-		// HACK fix mismatch reality vs. Geo database
-		sector = GeometryManager.getInstance().svtSectorHack(numSect, sector);
-
-//		System.err.print("STRIP: " + strip);
-//		//HACK on STrip
-//		strip = 256-strip;
-//		System.err.println("    HACK STRIP: " + strip);
 
 		// note supl and lay just computed as zero based
-		Line3D line = getStrip(sector - 1, supl, lay, strip - 1);
+		Line3d line = getStrip(sector, layer, strip);
 
 		if (line != null) {
-			coords[0] = (float) (line.origin().x());
-			coords[1] = (float) (line.origin().y());
-			coords[2] = (float) (line.origin().z());
-			coords[3] = (float) (line.end().x());
-			coords[4] = (float) (line.end().y());
-			coords[5] = (float) (line.end().z());
-
+			coords[0] = (float) (line.origin().x);
+			coords[1] = (float) (line.origin().y);
+			coords[2] = (float) (line.origin().z);
+			coords[3] = (float) (line.end().x);
+			coords[4] = (float) (line.end().y);
+			coords[5] = (float) (line.end().z);
 		}
 	}
 
+
 	/**
-	 * Get the triplet quad coordinates for 3D view
+	 * Get the triplet quad coordinates for 3D view. Units are cm
 	 *
-	 * @param sector the 1-based layer dependent sector
-	 * @param layer  the "big" layer 1..8
+	 * @param sector     (0-based) number of sectors are {10, 14, 18}
+	 * @param layer      (0-based) [0..5]
 	 * @param coords (dim = 26) will hold quads as [x1, y1, z1, ... x4, y4, z4] for
 	 *               quad 1 (12 numbers) [x1, y1, z1, ... x4, y4, z4] for quad 2 (12
 	 *               numbers) [x1, y1, z1, ... x4, y4, z4] for quad 3 (12 numbers)
@@ -162,18 +99,10 @@ public class BSTGeometry {
 
 	public static void getLayerQuads(int sector, int layer, float coords[]) {
 
-		// geom service uses 0-based superlayer and layer
-		int supl = ((layer - 1) / 2); // 0, 1, 2, 3 (ring)
-		int lay = ((layer - 1) % 2); // 0, 1, 0, 1
 
-		int numSect = BSTGeometry.sectorsPerSuperlayer[supl];
+			double vals[] = new double[10];
 
-		// HACK fix mismatch reality vs. Geo database
-		sector = GeometryManager.getInstance().svtSectorHack(numSect, sector);
-
-		double vals[] = new double[10];
-
-		BSTGeometry.getLimitValues(sector - 1, supl, lay, vals);
+		getLimitValues(sector, layer, vals); //returns mm
 		// covert to cm
 		for (int i = 0; i < 10; i++) {
 			vals[i] /= 10;
@@ -196,6 +125,7 @@ public class BSTGeometry {
 		fillCoords(24, coords, x1, y1, x2, y2, z5, z6);
 	}
 
+	//fill the 3D coords
 	private static void fillCoords(int index, float coords[], float x1, float y1, float x2, float y2, float zmin,
 			float zmax) {
 
@@ -218,47 +148,37 @@ public class BSTGeometry {
 	 * Get the points in the geometry service that were in the old file for drawing
 	 * in the BST views
 	 *
-	 * @param sector     the 0-based sector
-	 * @param superlayer the superlayer [0..3]
-	 * @param layer      the layer [0,1]
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
 	 * @param vals       holds for (10) numbers. All are in mm. The first four are
 	 *                   x, y, x, y for drawing the xy view. The last six are the
 	 *                   six z values that define (in z) the three active regions
 	 */
-	public static void getLimitValues(int sector, int superlayer, int layer, double vals[]) {
-		Line3D line = getStrip(sector, superlayer, layer, 0);
-		Point3D mp3d1 = line.origin();
-		line = getStrip(sector, superlayer, layer, 255);
-		Point3D mp3d2 = line.origin();
-		// convert to mm
-		vals[0] = mp3d1.x() * 10;
-		vals[1] = mp3d1.y() * 10;
-		vals[2] = mp3d2.x() * 10;
-		vals[3] = mp3d2.y() * 10;
+	public static void getLimitValues(int sector, int layer, double vals[]) {
 
-		// Point2D.Double wp0 = getStripMidpoint(sector, superlayer, layer, 0);
-		// Point2D.Double wp1 = getStripMidpoint(sector, superlayer, layer,
-		// 255);
-		// vals[0] = wp0.x*10;
-		// vals[1] = wp0.y*10;
-		// vals[2] = wp1.x*10;
-		// vals[3] = wp1.y*10;
-
+		Line3d line0 = getStrip(sector, layer, 0);
+		Line3d line1 = getStrip(sector, layer, 255);
+		Vector3d o = line0.origin();
+		Vector3d e = line1.end();
+		vals[0] = o.x;
+		vals[1] = o.y;
+		vals[2] = e.x;
+		vals[3] = e.y;
+		
 		double z0 = Double.POSITIVE_INFINITY;
 		double z5 = Double.NEGATIVE_INFINITY;
 
 		for (int strip = 0; strip < 256; strip++) {
-			line = getStrip(sector, superlayer, layer, strip);
-			Point3D p0 = line.origin();
-			Point3D p1 = line.end();
-			z0 = Math.min(z0, p0.z());
-			z0 = Math.min(z0, p1.z());
-			z5 = Math.max(z5, p0.z());
-			z5 = Math.max(z5, p1.z());
+			Line3d line = getStrip(sector, layer, strip);
+			Vector3d p0 = line.origin();
+			Vector3d p1 = line.end();
+			
+			z0 = Math.min(z0, p0.z);
+			z0 = Math.min(z0, p1.z);
+			z5 = Math.max(z5, p0.z);
+			z5 = Math.max(z5, p1.z);
 		}
 		// put in dead zone by hand
-		z0 = z0 * 10; // mm
-		z5 = z5 * 10; // mm
 		double del = (z5 - z0) / 3;
 		double z1 = z0 + del - ZGAP / 2;
 		double z2 = z1 + ZGAP;
@@ -277,81 +197,125 @@ public class BSTGeometry {
 	/**
 	 * Get the XY coordinates of the midpoint of the line
 	 *
-	 * @param sector     number of sectors are {10, 14, 18, 24} for superlayers {0,
-	 *                   1, 2, 3} respectively.
-	 * @param superlayer in the range [0..3]
-	 * @param layer      either 0 or 1
-	 * @param strip      should be in the range [0..255]
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
+	 * @param strip      (0-based)should be in the range [0..255]
 	 * @return the midpoint of the strip, with the z component dropped
 	 */
-	public static Point2D.Double getStripMidpoint(int sector, int superlayer, int layer, int strip) {
+	public static Point2D.Double getStripMidpoint(int sector, int layer, int strip) {
+		Point2D.Double wp =  new Point2D.Double();
+		getStripMidpoint(sector, layer, strip, wp);
+		return wp;
+	}
+	
+	/**
+	 * Get the XY coordinates of the midpoint of the line
+	 *
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
+	 * @param strip      (0-based)should be in the range [0..255]
+	 * @param wp will hold the point
+	 * @return the midpoint of the strip, with the z component dropped umits ate mm
+	 */
+	public static void getStripMidpoint(int sector, int layer, int strip, Point2D.Double wp) {
 
-		if (strip > 256) {
-			return null;
-		}
+		Line3d line = getStrip(sector, layer, strip);
+		Vector3d p0 = line.origin();
+		Vector3d p1 = line.end();
 
-		Line3D line = getStrip(sector, superlayer, layer, strip);
-		Point3D mp3d = line.midpoint();
-		return new Point2D.Double(mp3d.x(), mp3d.y());
+		double xmp = 0.5*(p0.x + p1.x);
+		double ymp = 0.5*(p0.y + p1.y);
+		wp.setLocation(xmp, ymp);
 	}
 
+
 	public static void main(String arg[]) {
-		initialize();
 
-		// int superlayer = 3;
-		// int sector = 2;
-		// int layer = 0;
-		//
-		// for (int strip = 0; strip < 256; strip++) {
-		// Line3D line = getStrip(sector, superlayer, layer, strip);
-		//
-		// Point3D mp3d1 = line.origin();
-		// Point3D mp3d2 = line.end();
-		//
-		// String s =
-		// String.format("%4d %4d %4d STRIP = %4d (%-11.5f %-11.5f %-11.5f)
-		// (%-11.5f %-11.5f %-11.5f) strip length: %-11.5f",
-		// superlayer+1, sector+1, layer+1, strip+1,
-		// mp3d1.x()*10, mp3d1.y()*10, mp3d1.z()*10,
-		// mp3d2.x()*10, mp3d2.y()*10, mp3d2.z()*10, line.length()*10);
-		// System.err.println(s);
-		// }
+		String variationName = Ced.getGeometryVariation();
+		DatabaseConstantProvider cp = new DatabaseConstantProvider(11, variationName);
 
-		// double vals[] = new double[10];
-		// for (int supl = 3; supl < 4; supl++) {
-		// // for (int supl = 0; supl < 4; supl++) {
-		// // for (int lay = 0; lay < 1; lay++) {
-		// for (int lay = 1; lay < 2; lay++) {
-		// for (int sect = 0; sect < 1; sect++) {
-		// // for (int sect = 0; sect < sectorsPerSuperlayer[supl];
-		// // sect++) {
-		// getLimitValues(sect, supl, lay, vals);
-		//
-		// String s = String
-		// .format("%4d %4d %4d %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f
-		// %-9.3f %-9.3f %-9.3f",
-		// supl + 1, sect + 1, lay + 1, vals[0],
-		// vals[1], vals[2], vals[3], vals[4],
-		// vals[5], vals[6], vals[7], vals[8], vals[9]);
-		// System.err.println(s);
-		// }
-		// }
-		// }
+		SVTStripFactory svtFac = new SVTStripFactory(cp, true);
 
-		float coords[] = new float[6];
+		int sector = 3;
+		int layer = 5;
+
 		for (int strip = 1; strip <= 256; strip++) {
-			getStrip(1, 8, strip, coords);
-			String s = String.format("strip %4d  coords: [%-9.3f  %-9.3f  %-9.3f]  [%-9.3f  %-9.3f  %-9.3f]  ", strip,
-					coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+			Line3d line = svtFac.getShiftedStrip(layer-1, sector-1, strip-1);
+
+
+			Vector3d origin = line.origin();
+			Vector3d end = line.end();
+
+			double dx = end.x - origin.x;
+			double dy = end.y - origin.y;
+			double dz = end.z - origin.z;
+			double len = Math.sqrt(dx*dx + dy*dy + dz*dz);
+
+
+			String s = String.format(
+					"%4d %4d STRIP = %4d (%-11.5f %-11.5f %-11.5f) (%-11.5f %-11.5f %-11.5f) strip length: %-11.5f",
+					sector, layer, strip, origin.x, origin.y, origin.z,
+					end.x, end.y, end.z, len);
 			System.err.println(s);
 		}
 
-		double vals[] = new double[10];
-		getLimitValues(0, 3, 1, vals);
 
-		System.out.println("done.");
-		String s = String.format("%-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f", vals[0],
-				vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8], vals[9]);
-		System.err.println(s);
+	//	Line3d line = svtFac.getShiftedStrip(layer-1, sector-1, strip-1);
+
+		//this is supposed to create less pounding of ccdb
+//		DefaultLogger.initialize();
+
+
+//		initialize();
+
+//		int sector = 3;
+//		int layer = 5;
+
+//		for (int strip = 1; strip < 256; strip++) {
+//			Line3D line = getStrip(sector, layer, strip);
+//
+//			Point3D mp3d1 = line.origin();
+//			Point3D mp3d2 = line.end();
+//
+//			String s = String.format(
+//					"%4d %4d STRIP = %4d (%-11.5f %-11.5f %-11.5f) (%-11.5f %-11.5f %-11.5f) strip length: %-11.5f",
+//					sector, layer, strip, mp3d1.x() * 10, mp3d1.y() * 10, mp3d1.z() * 10,
+//					mp3d2.x() * 10, mp3d2.y() * 10, mp3d2.z() * 10, line.length() * 10);
+//			System.err.println(s);
+//		}
+
+//		double vals[] = new double[10];
+//		// for (int supl = 3; supl < 4; supl++) {
+//		for (int supl = 0; supl < 3; supl++) {
+//			for (int lay = 0; lay < 1; lay++) {
+//				// for (int lay = 1; lay < 2; lay++) {
+//				// for (int sect = 0; sect < 1; sect++) {
+//				for (int sect = 0; sect < sectorsPerSuperlayer[supl]; sect++) {
+//					getLimitValues(sect, supl, lay, vals);
+//
+//					String s = String.format(
+//							"%4d %4d %4d %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f",
+//							supl + 1, sect + 1, lay + 1, vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6],
+//							vals[7], vals[8], vals[9]);
+//					System.err.println(s);
+//				}
+//			}
+//		}
+
+//		float coords[] = new float[6];
+//		for (int strip = 1; strip <= 256; strip++) {
+//			getStrip(1, 6, strip, coords);
+//			String s = String.format("strip %4d  coords: [%-9.3f  %-9.3f  %-9.3f]  [%-9.3f  %-9.3f  %-9.3f]  ", strip,
+//					coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+//			System.err.println(s);
+//		}
+//
+//		double vals[] = new double[10];
+//		getLimitValues(0, 3, 1, vals);
+//
+//		System.out.println("done.");
+//		String s = String.format("%-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f", vals[0],
+//				vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8], vals[9]);
+//		System.err.println(s);
 	}
 }

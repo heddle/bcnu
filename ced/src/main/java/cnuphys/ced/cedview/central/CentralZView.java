@@ -826,7 +826,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	}
 
 	/**
-	 * Draw an svt strip
+	 * Draw a BST strip
 	 *
 	 * @param g2        graphics context
 	 * @param container the container
@@ -838,7 +838,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	public void drawBSTStrip(Graphics2D g2, IContainer container, Color color, int sector, int layer, int strip) {
 
-		BSTGeometry.getStrip(sector, layer, strip, _sCoords);
+		BSTGeometry.getStrip(sector-1, layer-1, strip-1, _sCoords);
 
 		Stroke oldStroke = g2.getStroke();
 		g2.setColor(color);
@@ -865,22 +865,13 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 			double y2 = _sCoords[1] + t2 * dY;
 			double z2 = _sCoords[2] + t2 * dZ;
 
-			// cm to mm
-			double alpha1 = labToLocalWithAlpha(10 * x1, 10 * y1, 10 * z1, _sP1);
-			double alpha2 = labToLocalWithAlpha(10 * x2, 10 * y2, 10 * z2, _sP2);
+			double alpha1 = labToLocalWithAlpha(x1, y1, z1, _sP1);
+			double alpha2 = labToLocalWithAlpha(x2, y2, z2, _sP2);
 
 			drawAlphaLine(g2, _sP1.x, _sP1.y, _sP2.x, _sP2.y, alpha1, alpha2);
 
 		}
 
-		// Just draw a line from (x1,y1,z1) to (x2,y2,z2)
-
-//		// cm to mm
-//		double alpha1 = labToLocal(10 * _sCoords[0], 10 * _sCoords[1], 10 * _sCoords[2], _sP1);
-//		double alpha2 = labToLocal(10 * _sCoords[3], 10 * _sCoords[4], 10 * _sCoords[5], _sP2);
-//
-//
-//		drawAlphaLine(g2, _sP1.x, _sP1.y, _sP2.x, _sP2.y, alpha1, alpha2);
 		g2.setStroke(oldStroke);
 
 	}

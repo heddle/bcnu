@@ -29,10 +29,4 @@ public class CentralView3D extends CedView3D {
 		return panel;
 	}
 
-	@Override
-	public void refresh() {
-		super.refresh();
-		((CentralPanel3D) _panel3D).enableBSTOuterLayers();
-	}
-
 }

@@ -155,17 +155,15 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_DCAccumulatedData = new int[GeoConstants.NUM_SECTOR][GeoConstants.NUM_SUPERLAYER][GeoConstants.NUM_LAYER][GeoConstants.NUM_WIRE];
 
 		// down to layer
-		_BSTAccumulatedData = new int[8][];
-		for (int lay0 = 0; lay0 < 8; lay0++) {
-			int supl0 = lay0 / 2;
-			_BSTAccumulatedData[lay0] = new int[BSTGeometry.sectorsPerSuperlayer[supl0]];
+		_BSTAccumulatedData = new int[6][];
+		for (int lay0 = 0; lay0 < 6; lay0++) {
+			_BSTAccumulatedData[lay0] = new int[BSTGeometry.sectorsPerLayer[lay0]];
 		}
 
 		// down to strip
-		_BSTFullAccumulatedData = new int[8][][];
-		for (int lay0 = 0; lay0 < 8; lay0++) {
-			int supl0 = lay0 / 2;
-			_BSTFullAccumulatedData[lay0] = new int[BSTGeometry.sectorsPerSuperlayer[supl0]][256];
+		_BSTFullAccumulatedData = new int[6][][];
+		for (int lay0 = 0; lay0 < 6; lay0++) {
+			_BSTFullAccumulatedData[lay0] = new int[BSTGeometry.sectorsPerLayer[lay0]][256];
 		}
 
 		// ctof storage
@@ -269,9 +267,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 
 		// clear bst panel accumulation
-		for (int layer = 0; layer < 8; layer++) {
-			int supl0 = layer / 2;
-			for (int sector = 0; sector < BSTGeometry.sectorsPerSuperlayer[supl0]; sector++) {
+		for (int layer = 0; layer < 6; layer++) {
+			for (int sector = 0; sector < BSTGeometry.sectorsPerLayer[layer]; sector++) {
 				_BSTAccumulatedData[layer][sector] = 0;
 				for (int strip = 0; strip < 256; strip++) {
 					_BSTFullAccumulatedData[layer][sector][strip] = 0;
