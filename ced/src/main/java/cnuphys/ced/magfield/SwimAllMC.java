@@ -25,7 +25,6 @@ import cnuphys.swim.Swimming;
 public class SwimAllMC implements ISwimAll {
 
 	// integration cutoff
-	private static final double RMAX = 10.0;
 	private static final double PATHMAX = 11.0;
 
 	/**
@@ -68,8 +67,6 @@ public class SwimAllMC implements ISwimAll {
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 
-			double sf = PATHMAX;
-
 			if (lid != null) {
 				try {
 					AdaptiveSwimResult result = new AdaptiveSwimResult(true);
@@ -86,7 +83,7 @@ public class SwimAllMC implements ISwimAll {
 					swam.add(summaryStr);
 
 					swimmer.swim(lid.getCharge(), trd.getXo() / 100, trd.getYo() / 100, trd.getZo() / 100,
-							trd.getMomentum() / 1000, trd.getTheta(), trd.getPhi(), sf, stepSize, eps, result);
+							trd.getMomentum() / 1000, trd.getTheta(), trd.getPhi(), PATHMAX, stepSize, eps, result);
 					result.getTrajectory().setLundId(lid);
 					result.getTrajectory().setSource(trd.getSource());
 

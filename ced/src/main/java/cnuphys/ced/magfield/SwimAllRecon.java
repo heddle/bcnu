@@ -24,7 +24,6 @@ import cnuphys.swim.Swimming;
 public class SwimAllRecon implements ISwimAll {
 
 	// integration cutoff
-	private static final double RMAX = 10.0;
 	private static final double PATHMAX = 11.;
 
 	/**
