@@ -47,6 +47,11 @@ public class BaseHit2 {
 		_screenLocation.y = pp.y;
 	}
 
+	/**
+	 * Does the hit contain the mouse point?
+	 * @param pp the mouse point
+	 * @return true if the hit contains the mouse point
+	 */
 	public boolean contains(Point pp) {
 		return ((Math.abs(_screenLocation.x - pp.x) <= DataDrawSupport.HITHALF)
 				&& (Math.abs(_screenLocation.y - pp.y) <= DataDrawSupport.HITHALF));

@@ -46,7 +46,6 @@ import cnuphys.lund.LundSupport;
 import cnuphys.magfield.MagneticFields;
 import cnuphys.magfield.Solenoid;
 import cnuphys.magfield.Torus;
-import cnuphys.swim.SwimMenu;
 import cnuphys.swim.Swimming;
 
 public class ClasIoEventManager {
@@ -165,8 +164,8 @@ public class ClasIoEventManager {
 	 * Set the displayed event to the current event
 	 */
 	private void setCurrentEvent() {
-		
-		
+
+
 		try {
 
 			if (_currentEvent != null) {
@@ -244,10 +243,10 @@ public class ClasIoEventManager {
 		}
 		return instance;
 	}
-	
+
 	/**
 	 * Get info about the current event
-	 * 
+	 *
 	 * @return
 	 */
 	public String currentInfoString() {
@@ -377,8 +376,8 @@ public class ClasIoEventManager {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	//partial reset for new event source
 	private void reset() {
 		_runData.reset();
@@ -442,7 +441,7 @@ public class ClasIoEventManager {
 		_etDialog.setVisible(true);
 
 		if (_etDialog.reason() == DialogUtilities.OK_RESPONSE) {
-			
+
 			reset();
 
 			_dataSource = null;
@@ -474,7 +473,7 @@ public class ClasIoEventManager {
 				setEventSourceType(EventSourceType.ET);
 				Log.getInstance().info("Attempting to open EvioETSource.");
 				_dataSource.open(_currentETFile);
-				
+
 				//auto select events every 2 sec
 				Ced.getCed().getEventMenu().autoCheckAuto();
 			} catch (Exception e) {
@@ -1131,7 +1130,7 @@ public class ClasIoEventManager {
 			_allMCSwimmer.swimAll();
 		}
 	}
-	
+
 	private void swimAllRecon() {
 		if (_allReconSwimmer != null) {
 			_allReconSwimmer.swimAll();

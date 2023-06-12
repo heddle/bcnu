@@ -15,9 +15,9 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.event.data.AdcECALHit;
+import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcLRHit;
 import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
@@ -682,8 +682,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		// BST
 		AdcList bstList = BST.getInstance().updateAdcList();
 		accumBST(bstList);
-		
-	
+
+
 	}
 
 	// accumulate bst

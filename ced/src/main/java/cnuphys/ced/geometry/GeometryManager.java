@@ -17,7 +17,6 @@ import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Vector3D;
 
 import cnuphys.bCNU.log.Log;
-import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
@@ -124,30 +123,13 @@ public class GeometryManager {
 			for (int sector = 0; sector < numSect; sector++) {
 
 				BSTGeometry.getLimitValues(sector, layer, vals);
-				
+
 				_bstXYpanelsLayers.add(new BSTxyPanel(sector + 1, layer + 1, vals));
 			}
 		}
 
 	}
 
-	// convert from geometry sectors to actual sectors. They disagree.
-//	/**
-//	 * Rotates the sector number by 180 degrees
-//	 * @param numSect the number of sectors
-//	 * @param sector the sector 1..N
-//	 */
-//	public int bstSectorHack(int numSect, int sector) {
-//		int n2 = numSect / 2;
-//		int hackSect = 2 + n2 - sector;
-//		if (hackSect <= 0) {
-//			hackSect += numSect;
-//		}
-//		// System.err.println("LAY: " + layer + " SUPL: " + superlayer + " SECT " +
-//		// sector + " NUMSECT: " +
-//		// numSect + " hackSect: " + hackSect);
-//		return hackSect;
-//	}
 
 	/**
 	 * Get the sector [1..6] from the phi value
@@ -182,7 +164,7 @@ public class GeometryManager {
 		}
 		return 1;
 	}
-	
+
 	/**
 	 * Cross two vectors and return result as a unit vector. Used to make planes.
 	 * @param u one vector
@@ -577,7 +559,7 @@ public class GeometryManager {
 		Vector3D norm = new Vector3D(sphi, -cphi, 0);
 		return new Plane3D(point, norm);
 	}
-	
+
 
 	/**
 	 * allocate an array of allocated points

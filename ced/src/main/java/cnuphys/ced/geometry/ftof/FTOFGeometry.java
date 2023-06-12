@@ -208,7 +208,7 @@ public class FTOFGeometry {
 		corners[3] = new Point3D(paddle.getVolumePoint(4));
 
 	}
-	
+
 	/**
 	 * Get the z that points the point on the face plane
 	 * @param sector     the 1-based sector
@@ -220,7 +220,7 @@ public class FTOFGeometry {
 	public static double getZ(int sector, int panel, double x, double y) {
 		return _facePlanes[sector-1][panel].getZ(x, y);
 	}
-	
+
 	/**
 	 * Convert from clas3D to local coordinates
 	 * @param sector the 1-based sector
@@ -235,7 +235,7 @@ public class FTOFGeometry {
 		_facePlanes[sector-1][panel].closestPoint(x, y, z, cp);
 		wp.setLocation(cp.x, cp.y);
 	}
-	
+
 	/**
 	 * Get the polygon for a paddle
 	 * @param sector the 1-based sector
@@ -251,7 +251,7 @@ public class FTOFGeometry {
 			wp[i].y = corners[i].y();
 		}
 	}
-	
+
 	/**
 	 * Get the name of the panel
 	 * @param panel PANEL_1A, PANEL_1B or PANEL_12 (0, 1, 2)
@@ -260,7 +260,7 @@ public class FTOFGeometry {
 	public static String getPanelName(int panel) {
 		return ftofNames[panel];
 	}
-	
+
 	/**
 	 * Get the number of paddles
 	 * @param sector the 1-based sector
@@ -364,7 +364,7 @@ public class FTOFGeometry {
 		for (int i = 0; i < 4; i++) {
 			System.out.println("[" + i + "]    " + corners[i]);
 		}
-		
+
 		System.out.println("FTOF geo done");
 	}
 }

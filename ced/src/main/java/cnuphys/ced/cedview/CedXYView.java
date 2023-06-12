@@ -1,7 +1,6 @@
 package cnuphys.ced.cedview;
 
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -228,6 +227,6 @@ public abstract class CedXYView extends CedView {
 		fbString("yellow", "phi " + DoubleFormat.doubleFormat(phi, 2) + UnicodeSupport.DEGREE, feedbackStrings);
 
 	}
-	
+
 
 }

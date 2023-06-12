@@ -37,10 +37,10 @@ public class DrawingLegend extends JPanel {
 
 	private static final int X = 10;
 	private static final int Y = 12;
-	
+
 	private static final int numRow = 17;
 	private static final int numCol = 2;
-	
+
 	Dimension size = new Dimension(numCol * 150, numRow * 30);
 
 	public DrawingLegend() {
@@ -54,7 +54,7 @@ public class DrawingLegend extends JPanel {
 		g.setColor(Color.black);
 		g.fillRect(0, 0, b.width, b.height);
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		return size;
@@ -72,7 +72,7 @@ public class DrawingLegend extends JPanel {
 		add(clusterReconHighlight());
 		add(ecalRec());
 		add(ecalRecHighlight());
-		
+
 		add(crossHB());
 		add(crossTB());
 		add(crossHBAI());
@@ -94,7 +94,7 @@ public class DrawingLegend extends JPanel {
 		add(segmentTBAI());
 		add(segmentHBAI());
 	}
-	
+
 	//PCAL/ECAL recon normal
 	private LComp ecalRec() {
 		LComp comp = new LComp() {
@@ -125,7 +125,7 @@ public class DrawingLegend extends JPanel {
 		return comp;
 	}
 
-	
+
 	//Hit based hit
 	private LComp hbHit() {
 		LComp comp = new LComp() {
@@ -140,7 +140,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Recon hb Highlight
 	private LComp hbHitHighlight() {
 		LComp comp = new LComp() {
@@ -170,7 +170,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Hit based hit
 	private LComp tbHit() {
 		LComp comp = new LComp() {
@@ -202,7 +202,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Recon hit Highlight
 	private LComp hitReconHighlight() {
 		LComp comp = new LComp() {
@@ -233,7 +233,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//Recon cluster
 	private LComp clusterReconHighlight() {
 		LComp comp = new LComp() {

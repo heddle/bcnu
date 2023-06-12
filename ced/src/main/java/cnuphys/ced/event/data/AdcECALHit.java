@@ -17,7 +17,7 @@ public class AdcECALHit implements Comparable<AdcECALHit> {
 	public float time =-1;
 	public byte order;
 	public short occurances = 1;
-	
+
 
 	public AdcECALHit(byte sector, byte layer, short component, byte order, int adc, float time, short ped) {
 		super();
@@ -30,7 +30,7 @@ public class AdcECALHit implements Comparable<AdcECALHit> {
 		this.ped = ped;
 		occurances = 1;
 	}
-	
+
 	/**
 	 * Just used for binary sort
 	 * @param sector
@@ -57,9 +57,9 @@ public class AdcECALHit implements Comparable<AdcECALHit> {
 		}
 		return c;
 	}
-	
+
 	public void swapValues(AdcECALHit  hit) {
-		
+
 		if ((sector != hit.sector) || (layer != hit.layer) || (component != hit.component)) {
 			System.err.println("Mismatch in TdcAdcECALHit swapValues");
 			return;
@@ -69,7 +69,7 @@ public class AdcECALHit implements Comparable<AdcECALHit> {
 		time = hit.time;
 		order = hit.order;
 	}
-	
+
 	/**
 	 * String used for hashing to look for duplicates
 	 * @return hash string

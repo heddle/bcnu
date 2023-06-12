@@ -2,17 +2,11 @@ package cnuphys.ced.cedview.ftof;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.cedview.SwimTrajectoryDrawerXY;
-import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.DataDrawSupport;
 
 /**
  * Handles drawing and feedback for data in the FTOF banks
@@ -30,16 +24,16 @@ public class FTOFDataDrawer {
 
 	//adc handler
 	private FTOFAdcHandler _adcHandler;
-	
+
 	//cluster handler
 	private FTOFClusterHandler _clusterHandler;
-	
+
 	//recon hits handler
 	private FTOFHitHandler _hitHandler;
-	
+
 	//hit based hits handler
 	private FTOFHBHandler _hbHandler;
-	
+
 	//accumulatin data
 	private FTOFAccumulationHandler _accumHandler;
 

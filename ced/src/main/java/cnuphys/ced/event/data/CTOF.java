@@ -8,7 +8,7 @@ import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 public class CTOF extends DetectorData {
 
 	TdcAdcTOFHitList _tdcAdcHits = new TdcAdcTOFHitList("CTOF::tdc", "CTOF::adc");
-	
+
 	private ClusterList _clusters = new ClusterList("CTOF::clusters");
 
 
@@ -50,7 +50,7 @@ public class CTOF extends DetectorData {
 	public TdcAdcTOFHitList getHits() {
 		return _tdcAdcHits;
 	}
-	
+
 	/**
 	 * Get the reconstructed cluster list
 	 *

@@ -197,7 +197,7 @@ public class SectorView extends SliceView implements ChangeListener {
 				PropertySupport.TITLE, title, PropertySupport.PROPNAME, propname, PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER 
+				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER
 						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND + ControlPanel.TARGETSLIDER
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
@@ -413,8 +413,8 @@ public class SectorView extends SliceView implements ChangeListener {
 				if (ClasIoEventManager.getInstance().isAccumulating()) {
 					return;
 				}
-				
-				
+
+
 				drawTiltedAxis(g, container, UPPER_SECTOR);
 				drawTiltedAxis(g, container, LOWER_SECTOR);
 
@@ -428,7 +428,7 @@ public class SectorView extends SliceView implements ChangeListener {
 					_wiresDirty = false;
 
 				}
-				
+
 			}
 
 		};
@@ -443,7 +443,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
+
 				if (ClasIoEventManager.getInstance().isAccumulating()) {
 					System.err.println("SD AFTER");
 					return;

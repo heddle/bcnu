@@ -65,7 +65,7 @@ public class DataDrawSupport {
 	public static final String[] EC_PLANE_NAMES = { "?", "Inner", "Outer" };
 	public static final String[] EC_VIEW_NAMES = { "?", "U", "V", "W" };
 
-	
+
 	/**
 	 * Draw the ECAL reconstruction
 	 *
@@ -75,9 +75,9 @@ public class DataDrawSupport {
 	public static void drawECALRec(Graphics g, Point pp, boolean highlight) {
 		SymbolDraw.drawDavid(g, pp.x, pp.y, highlight ? 5 : 4, Color.black, highlight ? Color.yellow : Color.red);
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Draw a hit based hit at the given screen location
 	 *
@@ -88,8 +88,8 @@ public class DataDrawSupport {
 		g.setColor(Color.white);
 		g.drawLine(pp.x - 4, pp.y - 5, pp.x + 6, pp.y + 5);
 		g.drawLine(pp.x - 4, pp.y + 5, pp.x + 6, pp.y - 5);
-		
-		
+
+
 		g.setColor(rec_hit_lineColor);
 		g.drawLine(pp.x - 5, pp.y - 5, pp.x + 5, pp.y + 5);
 		g.drawLine(pp.x - 5, pp.y + 5, pp.x + 5, pp.y - 5);
@@ -98,7 +98,7 @@ public class DataDrawSupport {
 		g.setColor(rec_hit_lineColor);
 		g.drawRect(pp.x - 3, pp.y - 3, 6, 6);
 	}
-	
+
 	/**
 	 * Draw a highlighted HB hit at the given screen location
 	 *
@@ -115,7 +115,7 @@ public class DataDrawSupport {
 		g.drawOval(pp.x - 8, pp.y - 8, 16, 16);
 	}
 
-	
+
 	/**
 	 * Draw a time based hit at the given screen location
 	 *
@@ -132,10 +132,10 @@ public class DataDrawSupport {
 		g.drawLine(pp.x - 5, pp.y + 5, pp.x + 5, pp.y - 5);
 		g.setColor(CedColors.TB_COLOR);
 		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
-		
+
 		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, true);	//	g.drawRect(pp.x - 3, pp.y - 3, 6, 6);
 	}
-	
+
 	/**
 	 * Draw a highlighted TB hit at the given screen location
 	 *
@@ -153,8 +153,12 @@ public class DataDrawSupport {
 	}
 
 
+	//Convert opaque color to one woth alpha
+	private static Color alphaColor(Color color, int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
+	}
 
-	
+
 	/**
 	 * Draw a reconstructed hit at the given screen location
 	 *
@@ -162,7 +166,7 @@ public class DataDrawSupport {
 	 * @param pp the screen location
 	 */
 	public static void drawReconHit(Graphics g, Point pp) {
-		
+
 		g.setColor(Color.white);
 		g.drawLine(pp.x - 4, pp.y - 5, pp.x + 6, pp.y + 5);
 		g.drawLine(pp.x - 4, pp.y + 5, pp.x + 6, pp.y - 5);
@@ -174,7 +178,28 @@ public class DataDrawSupport {
 		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
 		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, true);
 	}
-	
+
+	/**
+	 * Draw a reconstructed hit at the given screen location
+	 *
+	 * @param g  the graphics context
+	 * @param pp the screen location
+	 */
+	public static void drawReconHit(Graphics g, Point pp, int alpha) {
+
+		g.setColor(alphaColor(Color.white, alpha));
+		g.drawLine(pp.x - 4, pp.y - 5, pp.x + 6, pp.y + 5);
+		g.drawLine(pp.x - 4, pp.y + 5, pp.x + 6, pp.y - 5);
+
+		g.setColor(alphaColor(rec_hit_lineColor, alpha));
+		g.drawLine(pp.x - 5, pp.y - 5, pp.x + 5, pp.y + 5);
+		g.drawLine(pp.x - 5, pp.y + 5, pp.x + 5, pp.y - 5);
+		g.setColor(alphaColor(rec_hit_fillColor, alpha));
+		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
+		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, true);
+	}
+
+
 	/**
 	 * Draw a highlighted reconstructed hit at the given screen location
 	 *
@@ -222,7 +247,7 @@ public class DataDrawSupport {
 		g.fillRect(pp.x - 3, pp.y - 3, 6, 6);
 		GraphicsUtilities.drawSimple3DRect(g, pp.x - 3, pp.y - 3, 6, 6, false);
 	}
-	
+
 	/**
 	 * Draw a reconstructed hit at the given screen location
 	 *

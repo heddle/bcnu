@@ -774,7 +774,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	 * Refresh the view. Base implementation works only for container views.
 	 */
 	public void refresh() {
-		if (_container != null) {
+		if (isVisible() && (_container != null)) {
 			_container.refresh();
 		}
 	}
@@ -797,9 +797,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		if (BaseMDIApplication.getHeadsUpDisplay() != null) {
-			BaseMDIApplication.getHeadsUpDisplay().clear();
-		}
 	}
 
 	@Override
@@ -808,19 +805,19 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	@Override
 	public void componentMoved(ComponentEvent arg0) {
-		Point p = getLocation();
-		if (p.y < -9) {
-			p.y = -9;
-			setLocation(p);
-		}
+//		Point p = getLocation();
+//		if (p.y < -9) {
+//			p.y = -9;
+//			setLocation(p);
+//		}
 	}
 
 	@Override
 	public void componentResized(ComponentEvent arg0) {
-		// hard to believe necessary but funny things happen without it
-		if (_desktop != null) {
-			_desktop.repaint();
-		}
+//		// hard to believe necessary but funny things happen without it
+//		if (_desktop != null) {
+//			_desktop.repaint();
+//		}
 	}
 
 	@Override

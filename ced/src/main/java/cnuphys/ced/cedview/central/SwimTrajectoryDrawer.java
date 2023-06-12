@@ -5,15 +5,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.magneticfield.swim.ASwimTrajectoryDrawer;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.swim.SwimMenu;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.SwimTrajectory2D;
-import cnuphys.swim.Swimming;
 
 public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
@@ -33,7 +30,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	public void draw(Graphics g, IContainer container) {
 
 		if (!ClasIoEventManager.getInstance().isAccumulating()) {
-			
+
 			Rectangle sr = container.getInsetRectangle();
 			Graphics2D g2 = (Graphics2D) g;
 
@@ -42,44 +39,6 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			g2.clipRect(sr.x, sr.y, sr.width, sr.height);
 			super.draw(g, container);
 			g2.setClip(oldClip);
-//
-//
-//			// Draw Monte-Carlo tracks
-//			if (SwimMenu.getInstance().showMonteCarloTracks()) {
-//				List<SwimTrajectory> trajectories = Swimming.getMCTrajectories();
-//				if ((trajectories != null) && (trajectories.size() > 0)) {
-//
-//					Rectangle sr = container.getInsetRectangle();
-//					Graphics2D g2 = (Graphics2D) g;
-//
-//					Shape oldClip = g2.getClip();
-//
-//					g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-//					super.draw(g, container);
-//					g2.setClip(oldClip);
-//				}
-//			}
-//
-//			// Draw Reconstructed Tracks
-//			if (SwimMenu.getInstance().showReconstructedTracks()) {
-//
-//				List<SwimTrajectory> trajectories = Swimming.getReconTrajectories();
-//
-//				int count = (trajectories == null) ? 0 : trajectories.size();
-//
-//				if (count < 1) {
-//					return;
-//				}
-//
-//				Rectangle sr = container.getInsetRectangle();
-//				Graphics2D g2 = (Graphics2D) g;
-//
-//				Shape oldClip = g2.getClip();
-//
-//				g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-//				super.draw(g, container);
-//				g2.setClip(oldClip);
-//			}
 		}
 	}
 

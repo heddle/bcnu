@@ -21,30 +21,30 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 
 	public TdcAdcTOFHitList(String tdcBankName, String adcBankName) {
 		super();
-		
+
 		Hashtable<String, TdcAdcTOFHit> hitHash = new Hashtable<>();
-		
+
 		//TDC
 		byte[] sector = ColumnData.getByteArray(tdcBankName + ".sector");
 		int count = (sector == null) ? 0 : sector.length;
-		
+
 		if (count > 0) {
 			byte[] layer = ColumnData.getByteArray(tdcBankName + ".layer");
 			short[] component = ColumnData.getShortArray(tdcBankName + ".component");
 			byte[] order = ColumnData.getByteArray(tdcBankName + ".order");
 			int[] tdc = ColumnData.getIntArray(tdcBankName + ".TDC");
 
-			
+
 			for (int i = 0; i < count; i++) {
 				String hash = hash(sector[i], layer[i], component[i]);
 				TdcAdcTOFHit hit = hitHash.get(hash);
-				
+
 				if (hit == null) {
 					hit = new TdcAdcTOFHit(sector[i], layer[i], component[i]);
 					hitHash.put(hash, hit);
 					add(hit);
 				}
-				
+
 				if (order[i] == 2) {
 					hit.tdcL = tdc[i];
 				}
@@ -52,13 +52,13 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 					hit.tdcR = tdc[i];
 				}
 			}
-				
+
 		}
-		
+
 		//ADC
 		sector = ColumnData.getByteArray(adcBankName + ".sector");
 		count = (sector == null) ? 0 : sector.length;
-		
+
 		if (count > 0) {
 			byte[] layer = ColumnData.getByteArray(adcBankName + ".layer");
 			short[] component = ColumnData.getShortArray(adcBankName + ".component");
@@ -67,11 +67,11 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 			short[] ped = ColumnData.getShortArray(adcBankName + ".ped");
 			float[] time = ColumnData.getFloatArray(adcBankName + ".time");
 
-			
+
 			for (int i = 0; i < count; i++) {
 				String hash = hash(sector[i], layer[i], component[i]);
 				TdcAdcTOFHit hit = hitHash.get(hash);
-				
+
 				if (hit == null) {
 //					String errMsg = String.format("This should not have happened [%s][%s] sect: %d  lay: %d  comp: %d. ", tdcBankName, adcBankName, sector[i], layer[i], component[i]);
 //					System.err.println(errMsg);
@@ -79,7 +79,7 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 					hitHash.put(hash, hit);
 					add(hit);
 				}
-				
+
 				if (order[i] == 0) {
 					hit.adcL = adc[i];
 					hit.pedL = ped[i];
@@ -90,9 +90,9 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 					hit.pedR = ped[i];
 					hit.timeR = time[i];
 				}
-			}	
+			}
 		}
-		
+
 		Collections.sort(this);
 		_maxADC = -1;
 		for (TdcAdcTOFHit hit : this) {

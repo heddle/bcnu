@@ -52,7 +52,7 @@ public class ConnectETDialog extends SimpleDialog {
 	}
 
 	/**
-	 * Override to create the component that goes in the west. 
+	 * Override to create the component that goes in the west.
 	 *
 	 * @return the component that is placed in the west
 	 */

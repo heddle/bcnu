@@ -13,7 +13,6 @@ import java.util.Properties;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 
-import cnuphys.bCNU.feedback.HeadsUpDisplay;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.menu.FileMenu;
 import cnuphys.bCNU.menu.MenuManager;
@@ -41,9 +40,6 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 	 * Attributes created from the variable length arguments.
 	 */
 	protected Properties _properties;
-
-	// used (optionally) for feedback
-	private static HeadsUpDisplay _headsUpDisplay;
 
 	// singleton. Applications cannot create other applications.
 	private static BaseMDIApplication instance;
@@ -137,25 +133,6 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 
 	public static BaseMDIApplication getApplication() {
 		return instance;
-	}
-
-	/**
-	 * Get the heads up display (might be null)
-	 * 
-	 * @return the heads up display
-	 */
-	public static HeadsUpDisplay getHeadsUpDisplay() {
-		return _headsUpDisplay;
-	}
-
-	/**
-	 * Add a heads up display (as a glass pane) for this application
-	 */
-	protected static void addHeadsUp() {
-		_headsUpDisplay = new HeadsUpDisplay(instance);
-		instance.setGlassPane(_headsUpDisplay);
-		instance.getGlassPane().setVisible(true);
-
 	}
 
 	/**

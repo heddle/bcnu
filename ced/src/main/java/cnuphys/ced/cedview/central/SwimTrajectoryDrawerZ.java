@@ -5,16 +5,13 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Point2D;
-import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.magneticfield.swim.ASwimTrajectoryDrawer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.lund.LundId;
-import cnuphys.swim.SwimMenu;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.SwimTrajectory2D;
-import cnuphys.swim.Swimming;
 
 public class SwimTrajectoryDrawerZ extends ASwimTrajectoryDrawer {
 
@@ -33,7 +30,7 @@ public class SwimTrajectoryDrawerZ extends ASwimTrajectoryDrawer {
 	@Override
 	public void draw(Graphics g, IContainer container) {
 		if (!ClasIoEventManager.getInstance().isAccumulating()) {
-			
+
 			Rectangle sr = container.getInsetRectangle();
 			Graphics2D g2 = (Graphics2D) g;
 

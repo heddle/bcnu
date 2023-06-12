@@ -17,9 +17,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -153,7 +151,7 @@ public class SectorPCALItem extends PolygonItem {
 		if ((hits != null) && !hits.isEmpty()) {
 			for (AdcECALHit hit : hits) {
 				if (hit != null) {
-					
+
 					try {
 						if ((hit.sector == _sector) && (hit.layer == (_stripType + 1))) {
 							int strip0 = hit.component - 1;
@@ -171,7 +169,7 @@ public class SectorPCALItem extends PolygonItem {
 								} else {
 									fc = hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc());
 								}
-								
+
 								WorldGraphicsUtilities.drawPath2D(g, container, path, fc, fc, 0, LineStyle.SOLID, true);
 							}
 

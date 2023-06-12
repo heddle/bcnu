@@ -1,7 +1,7 @@
 package cnuphys.ced.event.data;
 
 public class VanillaHit implements Comparable<VanillaHit> {
-	
+
 	public final byte sector;
 	public final byte layer;
 	public final short component;
@@ -32,7 +32,7 @@ public class VanillaHit implements Comparable<VanillaHit> {
 		}
 		return c;
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("sect: %d lay: %d comp: %d ord: %d count: %d", sector, layer, component, order, occurances);

@@ -62,7 +62,7 @@ public class BSTGeometry {
 			coords[i] /= 10;
 		}
 	}
-	
+
 	/**
 	 * Get the coordinates (a line) for a strip for 3D view
 	 *
@@ -164,7 +164,7 @@ public class BSTGeometry {
 		vals[1] = o.y;
 		vals[2] = e.x;
 		vals[3] = e.y;
-		
+
 		double z0 = Double.POSITIVE_INFINITY;
 		double z5 = Double.NEGATIVE_INFINITY;
 
@@ -172,7 +172,7 @@ public class BSTGeometry {
 			Line3d line = getStrip(sector, layer, strip);
 			Vector3d p0 = line.origin();
 			Vector3d p1 = line.end();
-			
+
 			z0 = Math.min(z0, p0.z);
 			z0 = Math.min(z0, p1.z);
 			z5 = Math.max(z5, p0.z);
@@ -202,12 +202,12 @@ public class BSTGeometry {
 	 * @param strip      (0-based)should be in the range [0..255]
 	 * @return the midpoint of the strip, with the z component dropped
 	 */
-	public static Point2D.Double getStripMidpoint(int sector, int layer, int strip) {
+	public static Point2D.Double getStripMidpointXY(int sector, int layer, int strip) {
 		Point2D.Double wp =  new Point2D.Double();
-		getStripMidpoint(sector, layer, strip, wp);
+		getStripMidpointXY(sector, layer, strip, wp);
 		return wp;
 	}
-	
+
 	/**
 	 * Get the XY coordinates of the midpoint of the line
 	 *
@@ -215,9 +215,9 @@ public class BSTGeometry {
 	 * @param layer      (0-based) [0..5]
 	 * @param strip      (0-based)should be in the range [0..255]
 	 * @param wp will hold the point
-	 * @return the midpoint of the strip, with the z component dropped umits ate mm
+	 * @return the midpoint of the strip, with the z component dropped units are mm
 	 */
-	public static void getStripMidpoint(int sector, int layer, int strip, Point2D.Double wp) {
+	public static void getStripMidpointXY(int sector, int layer, int strip, Point2D.Double wp) {
 
 		Line3d line = getStrip(sector, layer, strip);
 		Vector3d p0 = line.origin();
@@ -226,6 +226,25 @@ public class BSTGeometry {
 		double xmp = 0.5*(p0.x + p1.x);
 		double ymp = 0.5*(p0.y + p1.y);
 		wp.setLocation(xmp, ymp);
+	}
+
+	/**
+	 * Get the 3D midpoint
+	 * @param sector     (0-based) number of sectors by layer are {10, 10, 14, 14, 18, 18}
+	 * @param layer      (0-based) [0..5]
+	 * @param strip      (0-based)should be in the range [0..255]
+	 * @return the strip midpoint units are mm
+	 */
+	public static Vector3d getStripMidpoint(int sector, int layer, int strip) {
+		Line3d line = getStrip(sector, layer, strip);
+		Vector3d p0 = line.origin();
+		Vector3d p1 = line.end();
+
+		double xmp = 0.5*(p0.x + p1.x);
+		double ymp = 0.5*(p0.y + p1.y);
+		double zmp = 0.5*(p0.z + p1.z);
+
+		return new Vector3d(xmp, ymp, zmp);
 	}
 
 

@@ -79,7 +79,7 @@ public class SwimAllMC implements ISwimAll {
 							trd.getMomentum(), trd.getTheta(), trd.getPhi());
 
 					if (swam.contains(summaryStr)) {
-			//			System.err.println("Skipping duplicate swim, probably MC::Particle and MC::Lund [" + lid.getName() + "]");
+						System.err.println("Skipping duplicate swim, probably MC::Particle and MC::Lund [" + lid.getName() + "]");
 						continue;
 					}
 

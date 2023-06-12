@@ -30,7 +30,6 @@ import cnuphys.splot.plot.X11Colors;
 public class SplashWindowCED extends JWindow {
 
 	private ImageIcon _cnu2;
-	private Dimension _tileSize;
 
 	// close (and kill the startup)
 	private JButton _closeButton;

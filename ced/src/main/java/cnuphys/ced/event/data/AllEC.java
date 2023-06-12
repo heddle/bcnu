@@ -4,7 +4,6 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.ClusterList;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
 
 public class AllEC extends DetectorData {
 

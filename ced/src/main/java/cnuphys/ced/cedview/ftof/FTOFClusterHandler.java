@@ -23,14 +23,14 @@ public class FTOFClusterHandler {
 	private Point _pp = new Point();
 	private Point2D.Double _wp = new Point2D.Double();
 
-	
+
 	// the parent view
 	private FTOFView _view;
 
 	public FTOFClusterHandler(FTOFView view) {
 		_view = view;
 	}
-	
+
 	// draw the clusters
 	public void draw(Graphics g, IContainer container) {
 		if (_view.isSingleEventMode() && _view.showClusters()) {
@@ -66,10 +66,10 @@ public class FTOFClusterHandler {
 		}
 
 	}
-	
+
 	public void getFeedbackStrings(IContainer container, int sect, int panel, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
-		
+
 		if (_view.isSingleEventMode() && _view.showClusters()) {
 
 			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
@@ -112,10 +112,10 @@ public class FTOFClusterHandler {
 
 		} else { // accum mode
 		}
-		
+
 	}
-	
-	
+
+
 
 
 }

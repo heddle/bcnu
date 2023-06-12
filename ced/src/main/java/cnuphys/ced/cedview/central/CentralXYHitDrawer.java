@@ -205,11 +205,11 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		drawBMTADCData(g, container);
 		drawBMTReconHits(g, container);
 	}
-	
+
 	//draw BMT adc data
 	private void drawBMTADCData(Graphics g, IContainer container) {
 		if (_view.showADCHits()) {
-			
+
 			Point pp = new Point();
 			Point2D.Double wp = new Point2D.Double();
 
@@ -219,15 +219,21 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				for (AdcHit hit : hits) {
 					if (hit != null) {
 						BMTSectorItem bmtItem = _view.getBMTSectorItem(hit.sector, hit.layer);
-
+						if (bmtItem.getLastDrawnPolygon() != null) {
+							g.setColor(X11Colors.getX11Color("tan"));
+							g.fillPolygon(bmtItem.getLastDrawnPolygon());
+							g.setColor(Color.red);
+							g.drawPolygon(bmtItem.getLastDrawnPolygon());
+						}
 						Polygon poly = bmtItem.getStripPolygon(container, hit.component);
 						if (poly != null) {
-							g.setColor(X11Colors.getX11Color("tan"));
+							g.setColor(Color.black);
 							g.fillPolygon(poly);
-							g.setColor(Color.red);
+							g.setColor(Color.yellow);
 							g.drawPolygon(poly);
+
 						}
-						
+
 						if (bmtItem.isZLayer()) {
 
 							Color color = hits.adcColor(hit);
@@ -237,13 +243,13 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 							double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
 							wp.x = rad * Math.cos(phi);
 							wp.y = rad * Math.sin(phi);
-								
+
 							container.worldToLocal(pp, wp);
 							hit.setLocation(pp);
 							DataDrawSupport.drawAdcHit(g, pp, color);
 						}
-						
-						
+
+
 					}
 				}
 
@@ -257,6 +263,8 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		if (_view.showReconHits()) {
 			Point pp = new Point();
 			Point2D.Double wp = new Point2D.Double();
+
+	//		DataManager.getInstance().
 
 			BaseHit2List recHits = BMT.getInstance().getRecHits();
 			if (recHits != null) {
@@ -283,7 +291,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		}
 
 	}
-	
+
 	// draw BST hits single event mode
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
@@ -306,17 +314,16 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 						if (panel != null) {
 							_view.drawBSTPanel(g2, container, panel, _baseColor);
 							_view.drawBSTPanel(g2, container, panel, hits.adcColor(hit));
-							// _view.drawBSTPanel(g2, container, panel, Color.red);
 						}
 
 					}
 				}
 
-			}	
+			}
 		}
 	}
 
-	
+
 	// draw bst reconstructed hits
 	private void drawBSTReconHits(Graphics g, IContainer container) {
 		if (_view.showReconHits()) {
@@ -327,7 +334,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			if (recHits != null) {
 
 				for (BaseHit2 bhit2 : recHits) {
-					BSTGeometry.getStripMidpoint(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1, wp);
+					BSTGeometry.getStripMidpointXY(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1, wp);
 					container.worldToLocal(pp, wp);
 					bhit2.setLocation(pp);
 					DataDrawSupport.drawReconHit(g, pp);

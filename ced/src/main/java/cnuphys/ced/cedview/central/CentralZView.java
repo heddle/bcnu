@@ -150,7 +150,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
 						+ ControlPanel.FIELDLEGEND +
 						ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
+				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH | DisplayBits.RECONHITS
 						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS |
 						DisplayBits.CVTRECTRAJ | DisplayBits.CVTP1TRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
 				3, 5);
@@ -841,7 +841,6 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		BSTGeometry.getStrip(sector-1, layer-1, strip-1, _sCoords);
 
 		Stroke oldStroke = g2.getStroke();
-		g2.setColor(color);
 		g2.setStroke(stroke);
 
 		int nStep = 10;
@@ -868,7 +867,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 			double alpha1 = labToLocalWithAlpha(x1, y1, z1, _sP1);
 			double alpha2 = labToLocalWithAlpha(x2, y2, z2, _sP2);
 
-			drawAlphaLine(g2, _sP1.x, _sP1.y, _sP2.x, _sP2.y, alpha1, alpha2);
+			drawAlphaLine(g2, color, _sP1.x, _sP1.y, _sP2.x, _sP2.y, alpha1, alpha2);
 
 		}
 
@@ -876,21 +875,16 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	}
 
-	private void drawAlphaLine(Graphics2D g2, int x1, int y1, int x2, int y2, double alpha1, double alpha2) {
-		Color baseColor = g2.getColor();
-
+	private void drawAlphaLine(Graphics g, Color color, int x1, int y1, int x2, int y2, double alpha1, double alpha2) {
 		double alpha = 0.5 * (alpha1 + alpha2);
 
 		int alp = (int) Math.max(0, Math.min(255, 255 * alpha));
+		Color ca = new Color(color.getRed(), color.getGreen(), color.getBlue(), alp);
+		g.setColor(ca);
 
-		Color ca = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), alp);
-		g2.setColor(ca);
-
-		g2.drawLine(_sP1.x, _sP1.y, _sP2.x, _sP2.y);
-
-		g2.setColor(baseColor);
-
+		g.drawLine(_sP1.x, _sP1.y, _sP2.x, _sP2.y);
 	}
+
 
 	/**
 	 * The z location of the target

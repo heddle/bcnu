@@ -49,7 +49,6 @@ import cnuphys.ced.component.MagFieldDisplayArray;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.ced.event.data.AdcColorScale;
-import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
@@ -69,16 +68,16 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	//name used for reading and writing properties
 	//can be different from title
 	protected String VIEWPROPNAME = "???";
-	
+
 	//to speed up by suppressing refreshes
 	public static boolean SUPPRESSREFRESH = false;
-	
+
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
 	// for accumulation drawing
 	private double _medianRelSetting = 0.25;
-	
+
 	//for 0 adc values
 	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
 	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
@@ -275,7 +274,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_activeProbe = FieldProbe.factory();
 		}
 	}
-	
+
 	/**
 	 * Suppress refresh to avoid unnecessary drawing.
 	 * USE CAUTIOUSLY!!
@@ -285,7 +284,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		SUPPRESSREFRESH = suppress;
 	}
 
-	
+
 	/**
 	 * Accessor for the control panel
 	 * @return the control panel
@@ -293,7 +292,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public ControlPanel getControlPanel() {
 		return _controlPanel;
 	}
-	
+
 	/**
 	 * Clear the text area
 	 */
@@ -302,7 +301,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_controlPanel.clearTextArea();
 		}
 	}
-	
+
 	/**
 	 * Clear the text area
 	 * @param s text to appear at top
@@ -313,7 +312,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 	}
 
-	
+
 	/**
 	 * Append to the text area
 	 * @param s the text to append
@@ -321,7 +320,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public void appendToTextArea(String s) {
 		if (_controlPanel != null) {
 			_controlPanel.appendToTextArea(s);
-		}		
+		}
 	}
 
 
@@ -1090,13 +1089,13 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		refresh();
 //		TimedRefreshManager.getInstance().add(this);
 	}
-	
+
 	/**
 	 * Refresh the view. Base implementation works only for container views.
 	 */
 	@Override
 	public void refresh() {
-		
+
 		if (SUPPRESSREFRESH) {
 			return;
 		}
@@ -1205,7 +1204,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			int seqNum = ClasIoEventManager.getInstance().getSequentialEventNumber();
 			int trueNum = ClasIoEventManager.getInstance().getTrueEventNumber();
 			feedbackStrings.add(String.format("$orange red$Event number  Sequential %d  True %d", seqNum, trueNum));
-			
+
 		}
 
 		// get the sector
@@ -1326,7 +1325,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		if (!_eventManager.isAccumulating()) {
 			clearTextArea();
 			appendToTextArea(ClasIoEventManager.getInstance().currentInfoString());
-	//		getUserComponent().repaint();
 			getContainer().redoFeedback();
 		}
 	}
@@ -1582,7 +1580,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		PropertiesManager.getInstance().putAndWrite(propName, cssStr);
 
 	}
-	
+
 	/**
 	 * Specialty method that draws text at the end of a line from the origin. Good for
 	 * labeling sectors in XY views
@@ -1593,28 +1591,28 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @param end the end point
 	 */
 	public static void drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Point2D.Double end) {
-		
+
 		double theta = Math.atan2(end.y, end.x);
-	
+
 		Point pend = new Point();
 		Point pext = new Point();
-		
+
 		container.worldToLocal(pend, end);
-		
+
 		g.setFont(font);
 		int fh = g.getFontMetrics().getHeight();
 		int sw = g.getFontMetrics().stringWidth(s);
-		
+
 		int dx = (int)(fh*Math.cos(theta));
 		int dy = (int)(fh*Math.sin(theta));
-		
+
 		pext.x = pend.x - dx - sw/2;
 		pext.y = pend.y - dy + fh/2;
-		
+
 		g.setColor(Color.white);
-		g.drawString(s, pext.x-1, pext.y-1);	
+		g.drawString(s, pext.x-1, pext.y-1);
 		g.setColor(Color.black);
-		g.drawString(s, pext.x, pext.y);		
+		g.drawString(s, pext.x, pext.y);
 
 	}
 

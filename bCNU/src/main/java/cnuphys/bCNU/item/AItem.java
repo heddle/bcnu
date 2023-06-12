@@ -762,6 +762,14 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	public Point getRotatePoint(IContainer container) {
 		return null;
 	}
+	
+	/**
+	 * Get the last drawn polygon. 
+	 * @return the last drawn polygon.
+	 */
+	public Polygon getLastDrawnPolygon() {
+		return _lastDrawnPolygon;
+	}
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.

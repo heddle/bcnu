@@ -20,7 +20,6 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.FeedbackRect;
-import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BMTGeometry;
 
 public class BMTSectorItem extends DonutItem {
@@ -157,7 +156,7 @@ public class BMTSectorItem extends DonutItem {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
-		
+
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}

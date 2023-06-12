@@ -440,7 +440,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 	}
 
 	/**
-	 * Auto select the auto event every two seconds. This is 
+	 * Auto select the auto event every two seconds. This is
 	 * called after successful connection to an ET ring so that
 	 * shift takers don't have to remember to do it.
 	 */
@@ -450,7 +450,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		fixState();
 		autoAction();
 	}
-	
+
 	//action when selected the auto event radio
 	private void autoAction() {
 		if (_periodEvent.isSelected()) {
@@ -481,7 +481,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 				_nextEventTimer.stop();
 			}
 		}
-		
+
 	}
 
 	// create the event every so many seconds widget

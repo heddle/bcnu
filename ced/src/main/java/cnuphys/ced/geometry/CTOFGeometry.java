@@ -14,7 +14,7 @@ public class CTOFGeometry {
 	public static final double ROUTER = RINNER + 30.226; // mm
 
 	public static final int COUNT = 48;
-	
+
 
 	// the quads for the xy view
 	private static Point2D.Double _quads[][];

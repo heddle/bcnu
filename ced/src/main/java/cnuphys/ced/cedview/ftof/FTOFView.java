@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Hashtable;
@@ -20,8 +19,6 @@ import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.style.LineStyle;
-import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
@@ -32,8 +29,6 @@ import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayArray;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class FTOFView extends HexView {
@@ -81,7 +76,7 @@ public class FTOFView extends HexView {
 		super(getAttributes(title));
 
 		_dataDrawer = new FTOFDataDrawer(this);
-		
+
 		//for handling highlights
 		_highlightHandler = new FTOFHighlightHandler(this);
 
@@ -162,21 +157,21 @@ public class FTOFView extends HexView {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
+
 
 				if (!_eventManager.isAccumulating()) {
-					
+
 					drawAllPaddles(g, container);
 
-					
+
 					//draw all data
 					_dataDrawer.draw(g, container);
-					
+
 					//highlight?
 					_highlightHandler.draw(g, container);
 
 					drawCoordinateSystem(g, container);
-					
+
 					double xx = (displayPanel() != 2) ? 420 : 340;
 					drawSectorNumbers(g, container, xx);
 				} // not acumulating
@@ -292,7 +287,7 @@ public class FTOFView extends HexView {
 				break;
 			}
 		}
-		
+
 	}
 
 	/**
@@ -334,7 +329,7 @@ public class FTOFView extends HexView {
 		return view;
 
 	}
-	
+
 	/**
 	 * Get the max adc in the current event for color scaling
 	 * @return
@@ -342,7 +337,7 @@ public class FTOFView extends HexView {
 	public int getMaxADC() {
 		return _maxAdc;
 	}
-	
+
 	/**
 	 * A new event has arrived.
 	 *
@@ -351,7 +346,7 @@ public class FTOFView extends HexView {
 	@Override
 	public void newClasIoEvent(final DataEvent event) {
 		super.newClasIoEvent(event);
-		
+
 		//useful to cache the max adc
 		_maxAdc = 0;
 		int adc[] = ColumnData.getIntArray("FTOF::adc.ADC");
@@ -372,7 +367,7 @@ public class FTOFView extends HexView {
 		if (bankName.startsWith("FTOF")) {
 			_highlightHandler.set(bankName, index);
 		}
-		
+
 		refresh();
 	}
 
@@ -394,8 +389,8 @@ public class FTOFView extends HexView {
 	public int displayPanel() {
 		return getIntProperty(DisplayArray.TOFPANEL_PROPERTY);
 	}
-	
-	
+
+
 
 
 }

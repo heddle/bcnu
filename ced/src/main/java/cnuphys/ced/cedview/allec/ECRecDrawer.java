@@ -11,7 +11,6 @@ import java.util.List;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
@@ -72,7 +71,7 @@ public class ECRecDrawer extends ECViewDrawer {
 
 		for (int index = 0; index < recCal.count; index++) {
 			drawRecCal(g, container, index, false);
-		} 
+		}
 
 	}
 
@@ -92,7 +91,7 @@ public class ECRecDrawer extends ECViewDrawer {
 		if (recCal.isEmpty()) {
 			return;
 		}
-		
+
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();
@@ -139,7 +138,7 @@ public class ECRecDrawer extends ECViewDrawer {
 				String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[index])));
 
 	}
-	
+
 	/**
 	 * Use what was drawn to generate feedback strings
 	 *

@@ -34,11 +34,11 @@ public class DrawingLegendDialog extends SimpleDialog {
 	}
 
 	public static void showDialog() {
-		
+
 		if (_dialog == null) {
 			_dialog = new DrawingLegendDialog();
 		}
-		
+
 		if (!_dialog.isVisible()) {
 			DialogUtilities.centerDialog(_dialog);
 		}

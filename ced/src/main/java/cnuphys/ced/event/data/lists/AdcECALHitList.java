@@ -59,7 +59,7 @@ public class AdcECALHitList extends Vector<AdcECALHit> {
 				}
 
 			}
-			
+
 			Collections.sort(this);
 
 			//get max adc

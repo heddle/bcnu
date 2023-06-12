@@ -16,9 +16,9 @@ public class AdcList extends Vector<AdcHit> {
 	// for 0 adc values
 	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
 	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
-	
+
 	public AdcList(String adcBankName) {
-		
+
 		Hashtable<String, AdcHit> hitHash = new Hashtable<>();
 
 		byte[] sector = ColumnData.getByteArray(adcBankName + ".sector");
@@ -38,7 +38,7 @@ public class AdcList extends Vector<AdcHit> {
 
 				if (hit == null) {
 					hit = new AdcHit(sector[i], layer[i], component[i]);
-					
+
 					hit.adc = ADC[i];
 					hit.ped = ped[i];
 					hit.time = time[i];
@@ -66,7 +66,7 @@ public class AdcList extends Vector<AdcHit> {
 		}
 
 	}
-	
+
 	// string for hashtable
 	private String hash(byte sector, byte layer, short component) {
 		return "" + sector + "|" + layer + component;

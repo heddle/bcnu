@@ -24,7 +24,7 @@ import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")
 public class CNDXYPolygon extends Polygon {
-	
+
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();

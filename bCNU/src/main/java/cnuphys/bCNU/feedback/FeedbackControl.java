@@ -118,11 +118,6 @@ public class FeedbackControl {
 			_container.getFeedbackPane().updateFeedback(_newFeedbackStrings);
 		}
 
-		if (BaseMDIApplication.getHeadsUpDisplay() != null) {
-			System.err.println("HUD update");
-			BaseMDIApplication.getHeadsUpDisplay().update(_newFeedbackStrings);
-		}
-
 		// swap old and new
 		Vector<String> temp = _oldFeedbackStrings;
 		_oldFeedbackStrings = _newFeedbackStrings;

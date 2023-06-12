@@ -22,7 +22,6 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PrintUtilities;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.ced3d.view.PlainView3D;
-import cnuphys.ced.frame.Ced;
 import cnuphys.lund.X11Colors;
 import cnuphys.magfield.MagneticFields;
 import item3D.Axes3D;

@@ -17,10 +17,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.ECGeometry;
 
 public class SectorECALItem extends PolygonItem {
@@ -92,7 +89,7 @@ public class SectorECALItem extends PolygonItem {
 			System.err.println("StripType: " + _stripType + " path is null");
 			return;
 		}
-		
+
 		setPath(path);
 		// super.drawItem(g, container);
 
@@ -154,10 +151,10 @@ public class SectorECALItem extends PolygonItem {
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
-			
+
 			for (AdcECALHit hit : hits) {
 				if (hit != null) {
-					
+
 					try {
 						if (hit.sector == _sector) {
 							int layer = hit.layer - 4; // 0..5

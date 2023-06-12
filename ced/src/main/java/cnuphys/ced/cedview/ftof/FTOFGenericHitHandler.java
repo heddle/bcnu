@@ -33,9 +33,9 @@ public abstract class FTOFGenericHitHandler {
 		_fbprefix = fbprefix;
 		_view = view;
 	}
-	
+
 	public abstract boolean showTheseHits();
-	
+
 	public abstract void drawHit(Graphics g, Point pp);
 
 	// draw the clusters

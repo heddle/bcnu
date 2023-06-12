@@ -17,10 +17,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.ced.item.HexSectorItem;
@@ -120,7 +117,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 			drawAccumulatedHits(g, container);
 		}
 	}
-	
+
 	//is this for this sector and PCAL, not ECAL
 	private boolean isThisPC(byte sector, byte layer) {
 		return (sector == getSector()) && (layer < 4);
@@ -132,16 +129,16 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
-			
+
 			for (AdcECALHit hit : hits) {
 				if (hit != null) {
-					
+
 					try {
 						if (isThisPC(hit.sector, hit.layer)) {
 							int view0 = hit.layer - 1; // uvw
 							int strip0 = hit.component - 1;
 							Polygon poly = stripPolygon(container, view0, strip0);
-							
+
 							//handle monochrome
 							boolean isMono = _pcalView.getControlPanel().isMonochrome();
 							if (isMono) {
@@ -310,7 +307,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 		double d2 = work[0].distance(work[3]);
 		double t3 = (1 + gap / d2);
 		double t4 = (1 + (gap + len) / d2);
-		
+
 		extendLine(work[2], work[1], extension[0], t1);
 		extendLine(work[2], work[1], extension[1], t2);
 		extendLine(work[3], work[0], extension[2], t4);

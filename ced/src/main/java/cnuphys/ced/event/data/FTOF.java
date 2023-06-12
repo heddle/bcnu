@@ -26,7 +26,7 @@ public class FTOF extends DetectorData {
 
 	// reconstructed hit list
 	private Hit1List _hits;
-	
+
 	// clusters
 	private ClusterList _clusters = new ClusterList("FTOF::clusters");
 
@@ -62,7 +62,7 @@ public class FTOF extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		
+
 		_clusters.update();
 		_tdcAdcHits = new TdcAdcTOFHitList("FTOF::tdc", "FTOF::adc");
 		try {
@@ -144,7 +144,7 @@ public class FTOF extends DetectorData {
 	public Hit1List getHits() {
 		return _hits;
 	}
-	
+
 	/**
 	 * Get the reconstructed cluster list
 	 *

@@ -95,7 +95,7 @@ public class SuperLayerDrawing {
 	}
 
 	public void drawItem(Graphics g, IContainer container, Polygon lastDrawnPolygon, boolean segmentsOnly) {
-		
+
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}

@@ -51,8 +51,8 @@ public class ECView extends HexView {
 
 	//bank matches
 	private static String _defMatches[] = {"ECAL", "REC::Calorimeter"};
-	
-	//for highlighting when 
+
+	//for highlighting when
 	private int _recBankHighlightIndex = -1;
 
 
@@ -156,20 +156,20 @@ public class ECView extends HexView {
 
 					//draw REC::Calorimeter data
 					_recDrawer.draw(g, container);
-					
+
 					//hightlight?
 					if (_recBankHighlightIndex >= 0) {
 						_recDrawer.drawRecCal(g, container, _recBankHighlightIndex, true);
 					}
 
 				} // not acumulating
-				
+
 				g.setColor(TRANSTEXT2);
 				g.setFont(_font);
 				g.drawString("ECAL", 5, g.getFontMetrics().getAscent());
 			}
 
-			
+
 		};
 
 		getContainer().setAfterDraw(afterDraw);
@@ -308,7 +308,7 @@ public class ECView extends HexView {
 		return view;
 
 	}
-	
+
 	/**
 	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank
@@ -316,15 +316,15 @@ public class ECView extends HexView {
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
-		
+
 		if ("REC::Calorimeter".equals(bankName)) {
 			_recBankHighlightIndex = index;
 		}
-		
+
 		refresh();
 
 	}
-	
+
 	/**
 	 * Opened a new event file
 	 *

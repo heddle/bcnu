@@ -217,7 +217,7 @@ public class UrWELLGeometry {
 
 	//main program for testing
 	public static void main(String[] arg) {
-		
+
 		// this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 

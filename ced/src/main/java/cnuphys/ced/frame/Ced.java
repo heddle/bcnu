@@ -7,8 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +30,6 @@ import cnuphys.bCNU.eliza.ElizaDialog;
 import cnuphys.bCNU.fortune.FortuneManager;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.log.Log;
-import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.bCNU.menu.MenuManager;
 import cnuphys.bCNU.ping.Ping;
 import cnuphys.bCNU.util.Environment;
@@ -198,7 +195,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private SwimmimgPlayground3D _swimming3DView;
 	private CentralView3D _central3DView;
 	private FTCalView3D _ftCal3DView;
-	
+
 	private FTOFView _ftofView;
 
 	// magfield testing views
@@ -326,7 +323,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
 
-		
+
 		if (_use3D) {
 			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
 			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
@@ -740,7 +737,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 					_envDisplay.setText(Environment.getInstance().toString());
 					_envDisplay.setVisible(true);
 				}
-				
+
 				else if (source == drawLeg) {
 					DrawingLegendDialog.showDialog();
 				}

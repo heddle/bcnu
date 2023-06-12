@@ -24,7 +24,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** property for inner outer */
 	public static final String SHOWINNER_PROPERTY = "DisplayInner";
-	
+
 	/** property for tof panel */
 	public static final String TOFPANEL_PROPERTY = "DisplayInner";
 
@@ -58,7 +58,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Tag and access to the inner/outer button group */
 	public static final String INNEROUTER_BUTTONGROUP = "InnerOuterButtonGroup";
-	
+
 	/** Tag and access to the tof panel button group */
 	public static final String TOFPANEL_BUTTONGROUP = "TOFPanelButtonGroup";
 
@@ -80,7 +80,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Label for w strips */
 	public static final String W_LABEL = "W";
-	
+
 	/** Label for TOF panel 1A strips */
 	public static final String PAN1A_LABEL = "Panel 1A";
 
@@ -261,7 +261,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	// controls whether we draw w strips
 	private AbstractButton _wButton;
-	
+
 	// controls whether we draw panel 1A on TOF views
 	private AbstractButton _pan1aButton;
 
@@ -284,16 +284,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	public DisplayArray(CedView view, int bits, int nc, int hgap) {
 		super(nc, hgap, -2);
 		_view = view;
-		
+
 		//tof panels?
-		
+
 		if (Bits.checkBit(bits, DisplayBits.TOFPANELS)) {
 			_pan1aButton = add(PAN1A_LABEL, true, true, TOFPANEL_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
 					.getCheckBox();
 
 			_pan1bButton = add(PAN1B_LABEL, false, true, TOFPANEL_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
 					.getCheckBox();
-			
+
 			_pan2Button = add(PAN2_LABEL, false, true, TOFPANEL_BUTTONGROUP, this, X11Colors.getX11Color("navy"))
 					.getCheckBox();
 

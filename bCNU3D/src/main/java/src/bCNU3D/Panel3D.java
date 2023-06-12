@@ -12,8 +12,6 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 
 import javax.swing.JComponent;
@@ -38,9 +36,7 @@ import com.jogamp.opengl.awt.GLJPanel;
 import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
-import com.jogamp.opengl.util.Animator;
 
-//import com.jogamp.opengl.util.FPSAnimator;
 
 @SuppressWarnings("serial")
 public class Panel3D extends JPanel implements GLEventListener {
@@ -53,13 +49,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 	private float _bgGreen = BGFEFAULT;
 	private float _bgBlue = BGFEFAULT;
 
-
-	// different modes of operation
-	public static enum DrawMode {
-		MANUAL, ANIMATOR
-	};
-
-	protected final DrawMode _drawMode = DrawMode.MANUAL;
 
 	protected float _xscale = 1.0f;
 	protected float _yscale = 1.0f;
@@ -98,11 +87,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 	protected KeyAdapter3D _keyAdapter;
 
 	protected String _rendererStr;
-
-	// private FPSAnimator animator;
-
-	private Animator animator;
-
 
 	/*
 	 * The panel that holds the 3D objects
@@ -184,32 +168,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 		gljpanel.addMouseWheelListener(_mouseAdapter);
 
 		createInitialItems();
-//		setupMaintenanceTimer();
-
 	}
-
-	// calls refresh at a slow rate to get rid of ghosts
-//	private void setupMaintenanceTimer() {
-//		TimerTask task = new TimerTask() {
-//
-//			
-//			@Override
-//			public void run() {
-//				if (refreshPending) {
-//					refreshPending = false;
-//					refresh();
-//				}
-//				if (_enableMaintenance) {
-//					_doingMaintenance = true;
-//					refresh();
-//				}
-//			}
-//
-//		};
-//		_timer = new Timer();
-//		_timer.scheduleAtFixedRate(task, 10000, 1000);
-//
-//	}
 
 	// the openGL version and renderer strings
 	protected String _versionStr;
@@ -265,26 +224,10 @@ public class Panel3D extends JPanel implements GLEventListener {
 	@Override
 	public void display(GLAutoDrawable drawable) {
 
-		if (_drawMode == DrawMode.ANIMATOR) {
-			if (animator == null) {
-				// animator = new FPSAnimator(gljpanel, 24);
-				animator = new Animator(gljpanel);
-				animator.start();
-			}
-		}
-
-		// every time we draw we pause the animator.
-		// all "refresh" does is restart it!
-		if (_drawMode == DrawMode.ANIMATOR) {
-			animator.pause();
-		}
 
 		GL2 gl = drawable.getGL().getGL2();
 		
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
-		if (_drawMode == DrawMode.ANIMATOR) {
-			animator.pause();
-		}
 
 		gl.glLoadIdentity(); // reset the model-view matrix
 
@@ -305,23 +248,8 @@ public class Panel3D extends JPanel implements GLEventListener {
 			}
 		}
 
-		// test tubes
-		// Support3D.drawLine(drawable, 300f, 300f, 200f, -200f, -50f, -50,
-		// Color.magenta, 1f);
-		// Support3D.drawTube(drawable, 300f, 300f, 200f, -200f, -50f, -50, 50f,
-		// new Color(128, 128, 128, 64));
-
-		if (_drawMode == DrawMode.ANIMATOR) {
-			animator.pause();
-		}
 		gl.glPopMatrix();
 
-//		if (_doingMaintenance) {
-//			_doingMaintenance = false;
-//			_enableMaintenance = false;
-//		} else {
-//			_enableMaintenance = true;
-//		}
 	}
 
 	@Override
@@ -512,13 +440,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 			return;
 		}
 
-		if (_drawMode == DrawMode.MANUAL) {
-			gljpanel.display();
-		} else if (_drawMode == DrawMode.ANIMATOR) {
-			if ((animator != null) && (animator.isPaused())) {
-				animator.resume();
-			}
-		}
+		gljpanel.display();
 
 	}
 

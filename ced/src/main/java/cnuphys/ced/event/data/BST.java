@@ -12,7 +12,7 @@ public class BST extends DetectorData {
 
 	// list of BST adc hits
 	AdcList _adcHits = new AdcList("BST::adc");
-	
+
 	// list of BST reconstructed hits
 	BaseHit2List _bstRecHits;
 
@@ -55,7 +55,7 @@ public class BST extends DetectorData {
 	public AdcList getADCHits() {
 		return _adcHits;
 	}
-	
+
 
 	/**
 	 * Get the BST reconstructed hits

@@ -1629,33 +1629,4 @@ public class GraphicsUtilities {
 		}
 	}
 
-	/**
-	 * Run a runnable directly if this is not the EDT (AWT) thread. If it is, run on
-	 * the invokeLater method. Note in either case the runnable WILL be run on the
-	 * EDT.
-	 * 
-	 * @param runnable the runnable to run
-	 */
-	public static void invokeInDispatchThreadIfNeeded(Runnable runnable) {
-		if (EventQueue.isDispatchThread()) {
-			// run directly
-			runnable.run();
-		} else {
-			// do all gui events, then run on EDT
-			SwingUtilities.invokeLater(runnable);
-		}
-	}
-
-	public static void main(String arg[]) {
-		Color colors[] = { Color.red, Color.blue, Color.green, new Color(16, 32, 64, 128) };
-
-		for (Color c : colors) {
-			String s = colorToHex(c);
-			Color tc = colorFromHex(s);
-
-			System.out.println(s);
-			System.out.println(tc.toString());
-		}
-	}
-
 }

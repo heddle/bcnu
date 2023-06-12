@@ -50,7 +50,6 @@ import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
-import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
@@ -300,7 +299,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				}
 			}
 		}
-		
+
 		System.err.println("Null BST xy panel");
 
 		return null;
@@ -576,14 +575,15 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 						if (bhit2.contains(screenPoint)) {
 							fbString("orange", "BST recon hit sector  " + bhit2.sector + " layer " + bhit2.layer + " strip "
 									+ bhit2.component, feedbackStrings);
+
 							foundHit = true;
 							break;
 						}
 					}
 				}
-			
+
 			}
-			
+
 		}
 
 		// near a swum trajectory?

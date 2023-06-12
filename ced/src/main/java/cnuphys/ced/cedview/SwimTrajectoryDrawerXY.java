@@ -33,7 +33,7 @@ public class SwimTrajectoryDrawerXY extends ASwimTrajectoryDrawer {
 
 	@Override
 	public void drawTrajectories(Graphics g, IContainer container) {
-		
+
 		for (SwimTrajectory2D trajectory2D : _trajectories2D) {
 
 			boolean show = true;

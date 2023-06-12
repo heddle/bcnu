@@ -6,8 +6,6 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -227,7 +226,7 @@ public class ReconDrawer extends SectorViewDrawer {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Use what was drawn to generate feedback strings
 	 *
@@ -242,13 +241,7 @@ public class ReconDrawer extends SectorViewDrawer {
 			List<String> feedbackStrings, int option) {
 
 		if (_view.showClusters()) {
-			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings)) {
-				return;
-			}
-			if (clusterListFeedback("FTOF", FTOF.getInstance().getClusters(), screenPoint, feedbackStrings)) {
-				return;
-			}
-			if (clusterListFeedback("CTOF", CTOF.getInstance().getClusters(), screenPoint, feedbackStrings)) {
+			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings) || clusterListFeedback("FTOF", FTOF.getInstance().getClusters(), screenPoint, feedbackStrings) || clusterListFeedback("CTOF", CTOF.getInstance().getClusters(), screenPoint, feedbackStrings)) {
 				return;
 			}
 		}

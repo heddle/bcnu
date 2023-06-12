@@ -23,18 +23,18 @@ import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
  *
  */
 public class FTOFAdcHandler {
-	
+
 	private static final String fbcolor = "$medium spring green$";
 
-	
+
 	// the parent view
 	private FTOFView _view;
 
 	public FTOFAdcHandler(FTOFView view) {
 		_view = view;
 	}
-	
-	
+
+
 	// draw the adc data
 	public void draw(Graphics g, IContainer container) {
 		if (_view.isSingleEventMode() && _view.showClusters()) {
@@ -47,7 +47,7 @@ public class FTOFAdcHandler {
 			if (hitList != null) {
 				Polygon poly = new Polygon();
 				boolean isMono = _view.getControlPanel().isMonochrome();
-				
+
 				Color lc = isMono ? Color.red : Color.black;
 
 
@@ -56,30 +56,30 @@ public class FTOFAdcHandler {
 					if (panel == _view.displayPanel()) {
 						int adcL = hit.adcL;
 						int adcR = hit.adcR;
-						
+
 						Color colorL = isMono ? _view.adcMonochromeColor(adcL, _view.getMaxADC()) : _view.adcColor(adcL, _view.getMaxADC());
 						Color colorR = isMono ? _view.adcMonochromeColor(adcR, _view.getMaxADC()) : _view.adcColor(adcR, _view.getMaxADC());
 						_view.getPaddlePolygon(container, hit.sector, panel, hit.component, poly);
 						GradientPaint gpaint = new GradientPaint(poly.xpoints[0], poly.ypoints[0], colorL, poly.xpoints[2], poly.ypoints[2], colorR);
-						
+
 
 						((Graphics2D)g).setPaint(gpaint);
 						((Graphics2D)g).fillPolygon(poly);
-						
+
 						g.setColor(lc);
 						g.drawPolygon(poly);
 					}
 				}
 			}
-				
+
 
 
 		} else {
 			// drawAccumulatedHits(g, container);
 		}
-		
+
 	}
-	
+
 	public void getFeedbackStrings(IContainer container, int sect, int layer, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
 		TdcAdcTOFHitList hitList = FTOF.getInstance().getTdcAdcHits();

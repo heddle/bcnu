@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
-import java.util.Hashtable;
 import java.util.List;
 
 import org.jlab.geom.prim.Point3D;
@@ -16,13 +15,9 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.VanillaHit;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.HexSectorItem;
@@ -40,7 +35,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	private ECView _ecView;
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
-	
+
 	/**
 	 * Get a hex sector item
 	 *
@@ -131,7 +126,7 @@ public class ECHexSectorItem extends HexSectorItem {
 			drawAccumulatedHits(g, container, plane);
 		}
 	}
-	
+
 	//is this for this sector and ECAL, not PCAL
 	private boolean isThisEC(byte sector, byte layer) {
 		return (sector == getSector()) && (layer > 3);
@@ -142,11 +137,11 @@ public class ECHexSectorItem extends HexSectorItem {
 
 		AdcECALHitList hits = AllEC.getInstance().getHits();
 		if ((hits != null) && !hits.isEmpty()) {
-			
+
 			for (AdcECALHit hit : hits) {
-				
+
 				if (hit != null) {
-																				
+
 					try {
 						if (isThisEC(hit.sector, hit.layer)) {
 							int layer = hit.layer - 4; // 0..5
@@ -321,7 +316,7 @@ public class ECHexSectorItem extends HexSectorItem {
 			Point2D.Double extension[], double fract) {
 
 		double gap = 1.;
-;
+
 		double len = fract * 32;
 		stripWorldPolygon(plane, stripType, stripIndex, work);
 
@@ -456,7 +451,7 @@ public class ECHexSectorItem extends HexSectorItem {
 					for (int stype = 0; stype < 3; stype++) {
 						int layer = 4 + 3 * plane + stype;
 						int component = uvw[stype];
-						
+
 						AdcECALHit hit = hits.get(getSector(), layer, component);
 						if (hit != null) {
 							hit.adcFeedback(AllEC.layerNames[layer], "strip", feedbackStrings);

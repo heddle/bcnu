@@ -87,7 +87,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// control the nominal target z
 	private JSlider _targetSlider;
-	
+
 	// a text area for some messages
 	private SimpleScrollableTextArea _cpTextArea;
 
@@ -184,7 +184,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	public JTabbedPane getTabbedPane() {
 		return _tabbedPane;
 	}
-	
+
 	/**
 	 * Is monochrome selected?
 	 * @return true if monochrome selected
@@ -283,8 +283,8 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		return tabbedPane;
 	}
-	
-	
+
+
 
 	//create the panel that holds the display array
 	//and possibly other components
@@ -299,7 +299,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			_allDCDisplayPanel = new AllDCDisplayPanel(_view);
 			sp.add(_allDCDisplayPanel);
 		}
-		
+
 		//text area
 		_cpTextArea = new SimpleScrollableTextArea(10, 28);
 		sp.add(_cpTextArea.getScrollPane());
@@ -307,14 +307,14 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		clearTextArea();
 
 		// accumulation
-		
-		
+
+
 		if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
 			_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
 					"Relative Accumulation or ADC Value", 10, _view.getMedianSetting(), true, true);
 
 			sp.add(_colorPanel);
-			
+
 		}
 
 		// adc threshold
@@ -323,8 +323,8 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 		return sp;
 	}
-	
-	
+
+
 	/**
 	 * Clear the text area
 	 */
@@ -333,7 +333,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			_cpTextArea.setText("");
 		}
 	}
-	
+
 	/**
 	 * Clear the text area
 	 * @param a string at the top
@@ -344,7 +344,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 	}
 
-	
+
 	/**
 	 * Append to the text area
 	 * @param s the text to append
@@ -352,7 +352,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	public void appendToTextArea(String s) {
 		if (_cpTextArea != null) {
 			_cpTextArea.append(s);
-		}		
+		}
 	}
 
 //	/**

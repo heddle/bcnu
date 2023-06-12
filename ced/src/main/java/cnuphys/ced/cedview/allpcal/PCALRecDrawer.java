@@ -11,7 +11,6 @@ import java.util.List;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
@@ -19,7 +18,6 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.frame.CedColors;
-import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.LundId;
 
@@ -77,7 +75,7 @@ public class PCALRecDrawer extends PCALViewDrawer {
 
 
 	}
-	
+
 
 	/**
 	 * Draw a single RecCal "cluster"
@@ -95,7 +93,7 @@ public class PCALRecDrawer extends PCALViewDrawer {
 		if (recCal.isEmpty()) {
 			return;
 		}
-		
+
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();

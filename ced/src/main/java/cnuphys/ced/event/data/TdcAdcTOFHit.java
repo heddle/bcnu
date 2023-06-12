@@ -25,7 +25,7 @@ public class TdcAdcTOFHit implements Comparable<TdcAdcTOFHit> {
 	public byte order = -1;
 
 	/**
-	 * 
+	 *
 	 * @param sector 1-based
 	 * @param layer 1-based
 	 * @param component 1-based
@@ -51,7 +51,7 @@ public class TdcAdcTOFHit implements Comparable<TdcAdcTOFHit> {
 		}
 		return c;
 	}
-	
+
 
 	@Override
 	public boolean equals(Object obj) {

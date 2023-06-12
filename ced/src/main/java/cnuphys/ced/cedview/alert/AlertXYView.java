@@ -1,7 +1,6 @@
 package cnuphys.ced.cedview.alert;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -16,7 +15,6 @@ import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
@@ -124,9 +122,9 @@ public class AlertXYView extends CedXYView {
 
 	//draw the dc wires
 	private void drawWires(Graphics g, IContainer container) {
-		
+
 		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
-		
+
 		for (DCLayer dcl : dcLayers) {
 			if (dcl.numWires >  0) {
 				dcl.drawXYWires(g, container);
@@ -137,27 +135,27 @@ public class AlertXYView extends CedXYView {
 
 	//draw all the layers shells
 	private void drawLayerShells(Graphics g, IContainer container) {
-		
+
 		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
-		
+
 		for (DCLayer dcl : dcLayers) {
 			if (dcl.numWires >  0) {
 				dcl.drawXYDonut(g, container);
 			}
-			
+
 		}
 	}
-	
+
 	private void drawPaddles(Graphics g, IContainer container) {
 		Collection<TOFLayer> tofLayers = AlertGeometry.getAllTOFLayers();
-		
+
 		for (TOFLayer tof : tofLayers) {
 			if (tof.numPaddles >  0) {
 				tof.drawAllPaddles(g, container);
 			}
-			
+
 		}
-		
+
 	}
 
 	/**

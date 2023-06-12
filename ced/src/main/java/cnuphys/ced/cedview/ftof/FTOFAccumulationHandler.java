@@ -9,16 +9,16 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.FTOF;
 
 public class FTOFAccumulationHandler {
-	
+
 	private FTOFView _view;
-	
+
 	public FTOFAccumulationHandler(FTOFView view) {
 		_view = view;
 	}
-	
+
 	public void draw(Graphics g, IContainer container) {
-		
-		
+
+
 		Polygon poly = new Polygon();
 		int hits[][] = null;
 
@@ -40,17 +40,17 @@ public class FTOFAccumulationHandler {
 		}
 
 		if (hits != null) {
-			
+
 			for (int sect0 = 0; sect0 < 6; sect0++) {
-				
+
 				for (int paddle0 = 0; paddle0 < hits[sect0].length; paddle0++) {
 					int hitCount = hits[sect0][paddle0];
-					
+
 					double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
 					Color fc = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
-					
+
 					_view.getPaddlePolygon(container, sect0+1, _view.displayPanel(), paddle0+1, poly);
-					
+
 					g.setColor(fc);
 					g.fillPolygon(poly);
 					g.setColor(Color.LIGHT_GRAY);
@@ -61,7 +61,7 @@ public class FTOFAccumulationHandler {
 
 		}
 
-		
+
 	}
 
 }
