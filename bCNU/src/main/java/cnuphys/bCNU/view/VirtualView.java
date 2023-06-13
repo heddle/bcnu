@@ -8,6 +8,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -20,6 +22,7 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -71,6 +74,9 @@ public class VirtualView extends BaseView
 
 	// for public access
 	private static VirtualView _instance;
+	
+	//refresh pending?
+	private boolean _refreshPending;
 
 	/**
 	 * Create a virtual view view
@@ -105,6 +111,18 @@ public class VirtualView extends BaseView
 		setAfterDraw();
 
 		_instance = this;
+		
+		ActionListener taskPerformer = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent evt) {
+				if (_refreshPending) {
+					getContainer().refresh();
+					_refreshPending = false;
+				}
+			}
+		};
+		new Timer(1500, taskPerformer).start();
+
 
 	}
 
@@ -121,6 +139,7 @@ public class VirtualView extends BaseView
 	 * Reconfigure the virtual view
 	 */
 	public void reconfigure() {
+		
 		Dimension d = _parent.getSize();
 
 		int width = _numcol * d.width;
@@ -135,7 +154,7 @@ public class VirtualView extends BaseView
 			}
 		}
 
-		getContainer().refresh();
+		_refreshPending = true;
 	}
 
 	private void setOffsets() {
@@ -296,7 +315,7 @@ public class VirtualView extends BaseView
 			if (view.getVirtualItem() != null) {
 				view.getVirtualItem().setLocation();
 				view.getVirtualItem().setVisible(true);
-				getContainer().refresh();
+				_refreshPending = true;
 			}
 		}
 	}
@@ -311,7 +330,7 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(false);
-			getContainer().refresh();
+			_refreshPending = true;
 
 		}
 	}
@@ -322,7 +341,7 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(false);
-			getContainer().refresh();
+			_refreshPending = true;
 		}
 	}
 
@@ -332,7 +351,7 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(true);
-			getContainer().refresh();
+			_refreshPending = true;
 		}
 	}
 
@@ -345,7 +364,7 @@ public class VirtualView extends BaseView
 			getContainer().getAnnotationLayer().sendToFront(view.getVirtualItem());
 			view.getVirtualItem().getStyle().setFillColor(_vwfillActive);
 			view.getVirtualItem().getStyle().setLineColor(Color.white);
-			getContainer().refresh();
+			_refreshPending = true;
 		}
 	}
 
@@ -357,14 +376,14 @@ public class VirtualView extends BaseView
 			view.getVirtualItem().setVisible(true);
 			view.getVirtualItem().getStyle().setFillColor(_vwfillInactive);
 			view.getVirtualItem().getStyle().setLineColor(Color.blue);
-			getContainer().refresh();
+			_refreshPending = true;
 		}
 	}
 
 	@Override
 	public void viewAdded(BaseView view) {
 		addView(view);
-		getContainer().refresh();
+		_refreshPending = true;
 	}
 
 	@Override
@@ -374,7 +393,7 @@ public class VirtualView extends BaseView
 
 			if (view.getVirtualItem() != null) {
 				getContainer().getAnnotationLayer().remove(view.getVirtualItem());
-				view.getContainer().refresh();
+				_refreshPending = true;
 			}
 
 			_views.remove(view);
@@ -405,32 +424,31 @@ public class VirtualView extends BaseView
 			@Override
 			public void componentResized(ComponentEvent e) {
 				vitem.setLocation();
-				getContainer().refresh();
+				_refreshPending = true;
 			}
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
 				vitem.setLocation();
-				getContainer().refresh();
+				_refreshPending = true;
 			}
 
 			@Override
 			public void componentShown(ComponentEvent e) {
 				vitem.setLocation();
-				getContainer().refresh();
+				_refreshPending = true;
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
 				vitem.setLocation();
-				getContainer().refresh();
+				_refreshPending = true;
 			}
 
 		};
 
 		view.addComponentListener(cl);
-
-		getContainer().refresh();
+		_refreshPending = true;
 	}
 
 	@Override
@@ -493,8 +511,7 @@ public class VirtualView extends BaseView
 		}
 
 		_currentCol = clickCol;
-		getContainer().refresh();
-//		reportVisibility();
+		_refreshPending = true;
 	}
 
 	private Rectangle getColRect(int col) {
@@ -855,7 +872,7 @@ public class VirtualView extends BaseView
 		}
 
 		_currentCol = col;
-		getContainer().refresh();
+		_refreshPending = true;
 
 	}
 

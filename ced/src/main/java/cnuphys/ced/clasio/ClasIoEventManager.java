@@ -165,7 +165,6 @@ public class ClasIoEventManager {
 	 */
 	private void setCurrentEvent() {
 
-
 		try {
 
 			if (_currentEvent != null) {

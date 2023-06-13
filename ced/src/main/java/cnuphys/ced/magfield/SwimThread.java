@@ -12,8 +12,10 @@ import cnuphys.swim.Swimming;
 
 public class SwimThread extends Thread {
 
+	/** Swimming a Monte Carlo particle */
 	public static final int MCSWIM = 1;
 	
+	/** Swimming a reconstructed particle */
 	public static final int RECONSWIM = 2;
 
 	//holds the trajectory info
@@ -38,7 +40,7 @@ public class SwimThread extends Thread {
 
 	public SwimThread(TrajectoryRowData trd, double sFinal, double stepSize, double eps,
 			int swimType) {
-		_swimmer = new AdaptiveSwimmer();;
+		_swimmer = new AdaptiveSwimmer();
 		_trd = trd;
 		_sFinal = sFinal;	
 		_initStepSize = stepSize;

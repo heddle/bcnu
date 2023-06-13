@@ -1,14 +1,19 @@
 package cnuphys.bCNU.view;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemModification.ModificationType;
 import cnuphys.bCNU.item.RectangleItem;
+import cnuphys.bCNU.item.ResizePolicy;
 
 //getAnnotationLayer()
 public class VirtualWindowItem extends RectangleItem {
@@ -54,6 +59,39 @@ public class VirtualWindowItem extends RectangleItem {
 	}
 
 	/**
+	 * A modification such as a drag, resize or rotate is continuing.
+	 */
+	@Override
+	public void modify() {
+
+		if (_modification.getType() == ModificationType.DRAG) {
+			_path = (Path2D.Double) (_modification.getStartPath().clone());
+
+			Point2D.Double swp = _modification.getStartWorldPoint();
+			Point2D.Double cwp = _modification.getCurrentWorldPoint();
+			double dx = cwp.x - swp.x;
+			double dy = cwp.y - swp.y;
+			AffineTransform at = AffineTransform.getTranslateInstance(dx, dy);
+			_path.transform(at);
+
+			if (_secondaryPoints != null) {
+				Path2D.Double path2 = (Path2D.Double) _modification.getSecondaryPath().clone();
+				path2.transform(at);
+				WorldGraphicsUtilities.pathToWorldPolygon(path2, _secondaryPoints);
+			}
+
+			// fix focus
+			Point2D.Double sf = _modification.getStartFocus();
+
+			if ((sf != null) && (_focus != null)) {
+				at.transform(sf, _focus);
+			}
+			
+			_vview.getContainer().refresh();
+		}
+	}
+
+	/**
 	 * A modification such as a drag, resize or rotate has ended.
 	 */
 	@Override
@@ -67,6 +105,7 @@ public class VirtualWindowItem extends RectangleItem {
 
 			_baseView.offset(dh, dv);
 			setLocation();
+			
 			_vview.getContainer().refresh();
 			break;
 

@@ -191,6 +191,7 @@ public class BaseContainer extends JComponent
 	 * @param worldSystem the default world system.
 	 */
 	public BaseContainer(BaseView view, Rectangle2D.Double worldSystem) {
+	//	setDoubleBuffered(true);
 		_view = view;
 		_worldSystem = worldSystem;
 		_feedbackControl = new FeedbackControl(this);
@@ -570,12 +571,15 @@ public class BaseContainer extends JComponent
 		refresh();
 	}
 
+	
+	int refCount = 0;
 	/**
 	 * Refresh the container. Base implementation is the offscreen refresh. Sets the
 	 * offscreen buffer to dirty.
 	 */
 	@Override
 	public void refresh() {
+			
 		_offscreenBufferDirty = true;
 		repaint();
 

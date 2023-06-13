@@ -1,5 +1,7 @@
 package cnuphys.ced.magfield;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import cnuphys.adaptiveSwim.AdaptiveSwimException;
@@ -47,6 +49,9 @@ public class SwimAllRecon implements ISwimAll {
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
+		
+		ArrayList<SwimThread> swimThreads = new ArrayList<>();
+
 		Swimming.clearReconTrajectories();
 
 		Vector<TrajectoryRowData> data = getRowData();
@@ -54,43 +59,98 @@ public class SwimAllRecon implements ISwimAll {
 			return;
 		}
 
-		AdaptiveSwimmer swimmer = new AdaptiveSwimmer();
 		double stepSize = 1.0e-3;
 		double eps = 1.0e-6;
 
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 
-			double sf = PATHMAX;
-			String source = trd.getSource();
-
-			if ((source != null) && (source.contains("CVT"))) {
-				sf = 1.5; //shorter max path for cvt tracks
-			}
-
 			if (lid != null) {
-				try {
-					AdaptiveSwimResult result = new AdaptiveSwimResult(true);
-					swimmer.swim(lid.getCharge(), trd.getXo() / 100, trd.getYo() / 100, trd.getZo() / 100,
-							trd.getMomentum() / 1000, trd.getTheta(), trd.getPhi(), sf, stepSize, eps, result);
-					result.getTrajectory().setLundId(lid);
-					result.getTrajectory().setSource(trd.getSource());
+				double sf = PATHMAX;
+				String source = trd.getSource();
 
-					if (result.getTrajectory().getGeneratedParticleRecord() == null) {
-						InitialValues iv = result.getInitialValues();
-						GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.charge,
-								iv.xo, iv.yo, iv.zo, iv.p, iv.theta, iv.phi);
-						result.getTrajectory().setGeneratedParticleRecord(genPart);
-					}
-
-	//				result.printOut(System.err, trd.getSource());
-					Swimming.addReconTrajectory(result.getTrajectory());
-				} catch (AdaptiveSwimException e) {
-					e.printStackTrace();
+				if ((source != null) && (source.contains("CVT"))) {
+					sf = 1.5; //shorter max path for cvt tracks
 				}
+				SwimThread st = new SwimThread(trd, sf, stepSize, eps, SwimThread.RECONSWIM);
+				swimThreads.add(st);
+				st.start();
 
 			}
 		} //for trd
+		
+		while (!allDone(swimThreads)) {
+			try {
+				Thread.sleep(10);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+	}
+	
+	private boolean allDone(List<SwimThread> threads) {
+		
+		for (SwimThread st : threads) {
+			if (!st.isDone()) {
+				return false;
+			}
+		}
+		
+		return true;
+	}
+
+		
+		//@Override
+		public void XswimAll() {
+			if (ClasIoEventManager.getInstance().isAccumulating()) {
+				return;
+			}
+			Swimming.clearReconTrajectories();
+
+			Vector<TrajectoryRowData> data = getRowData();
+			if (data == null) {
+				return;
+			}
+
+			AdaptiveSwimmer swimmer = new AdaptiveSwimmer();
+			double stepSize = 1.0e-3;
+			double eps = 1.0e-6;
+
+			for (TrajectoryRowData trd : data) {
+				LundId lid = LundSupport.getInstance().get(trd.getId());
+
+				double sf = PATHMAX;
+				String source = trd.getSource();
+
+				if ((source != null) && (source.contains("CVT"))) {
+					sf = 1.5; //shorter max path for cvt tracks
+				}
+
+				if (lid != null) {
+					try {
+						AdaptiveSwimResult result = new AdaptiveSwimResult(true);
+						swimmer.swim(lid.getCharge(), trd.getXo() / 100, trd.getYo() / 100, trd.getZo() / 100,
+								trd.getMomentum() / 1000, trd.getTheta(), trd.getPhi(), sf, stepSize, eps, result);
+						result.getTrajectory().setLundId(lid);
+						result.getTrajectory().setSource(trd.getSource());
+
+						if (result.getTrajectory().getGeneratedParticleRecord() == null) {
+							InitialValues iv = result.getInitialValues();
+							GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.charge,
+									iv.xo, iv.yo, iv.zo, iv.p, iv.theta, iv.phi);
+							result.getTrajectory().setGeneratedParticleRecord(genPart);
+						}
+
+		//				result.printOut(System.err, trd.getSource());
+						Swimming.addReconTrajectory(result.getTrajectory());
+					} catch (AdaptiveSwimException e) {
+						e.printStackTrace();
+					}
+
+				}
+			} //for trd
+
 
 
 
