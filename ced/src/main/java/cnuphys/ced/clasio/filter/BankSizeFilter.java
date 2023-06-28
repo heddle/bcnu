@@ -14,7 +14,6 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.ced.alldata.DataManager;
-import cnuphys.ced.alldata.graphics.AllBanksList;
 import cnuphys.ced.properties.PropertiesManager;
 
 /**

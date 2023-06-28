@@ -48,9 +48,9 @@ public class AdcList extends Vector<AdcHit> {
 					add(hit);
 				}
 				else {
-					String s1 = String.format("duplicate [%s] event num %d ", adcBankName, ClasIoEventManager.getInstance().getSequentialEventNumber());
-					String s2 = String.format(" [sector: %d, layer: %d, component: %d]", hit.sector, hit.layer, hit.component);
-					System.err.println(s1 + s2);
+//					String s1 = String.format("duplicate [%s] event num %d ", adcBankName, ClasIoEventManager.getInstance().getSequentialEventNumber());
+//					String s2 = String.format(" [sector: %d, layer: %d, component: %d]", hit.sector, hit.layer, hit.component);
+//					System.err.println(s1 + s2);
 				}
 			}
 

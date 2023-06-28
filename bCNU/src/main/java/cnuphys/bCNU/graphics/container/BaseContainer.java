@@ -45,8 +45,8 @@ import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.item.PolylineItem;
 import cnuphys.bCNU.item.RadArcItem;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.layer.LayerControl;
+import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.view.BaseView;
@@ -55,9 +55,9 @@ import cnuphys.bCNU.visible.VisibilityTableScrollPane;
 /**
  * This the primary component. It contains a list of layers (each containing a
  * list of items.)
- * 
+ *
  * @author heddle
- * 
+ *
  */
 
 @SuppressWarnings("serial")
@@ -151,7 +151,7 @@ public class BaseContainer extends JComponent
 	protected LogicalLayer _annotationLayer;
 
 	// A map of layers added by users.
-	private Hashtable<String, LogicalLayer> _userLayers = new Hashtable<String, LogicalLayer>(47);
+	private Hashtable<String, LogicalLayer> _userLayers = new Hashtable<>(47);
 
 	/**
 	 * Controls the feedback for the container. You can add and remove feedback
@@ -176,16 +176,16 @@ public class BaseContainer extends JComponent
 	/**
 	 * Constructor for a container that does not live in a view. It might live on a
 	 * panel, for example
-	 * 
+	 *
 	 * @param worldSystem the default world system.
 	 */
 	public BaseContainer(Rectangle2D.Double worldSystem) {
 		this(null, worldSystem);
 	}
-
+	
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param view        Every container lives on one view. This is the view, which
 	 *                    is an internal frame, that owns this container.
 	 * @param worldSystem the default world system.
@@ -223,7 +223,7 @@ public class BaseContainer extends JComponent
 	/**
 	 * Share the model of another view. Note, this is not a copy, either view can
 	 * modify the layers and items.
-	 * 
+	 *
 	 * @param sContainer the source container
 	 */
 	public void shareModel(BaseContainer sContainer) {
@@ -237,7 +237,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Just give the container a simple drawer
-	 * 
+	 *
 	 * @param drawer the only drawer
 	 */
 	public void noModel(IDrawable drawer) {
@@ -251,7 +251,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Test whether the view is on screen
-	 * 
+	 *
 	 * @return <code>true</code> if the view is on screen
 	 */
 	public boolean isOnScreen() {
@@ -272,11 +272,12 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Override the paint command. Draw all the layers.
-	 * 
+	 *
 	 * @param g the graphics context.
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
 
 		// if our offscreen buffer is not dirty, use it and we are done.
 		if (!_offscreenBufferDirty) {
@@ -316,14 +317,14 @@ public class BaseContainer extends JComponent
 		}
 
 		// copy onto real screen
-		_offscreenBufferDirty = false;
-		osg.dispose();
 		g.drawImage(_offscreenBuffer, 0, 0, this);
+		osg.dispose();
+		_offscreenBufferDirty = false;
 	}
 
 	/**
 	 * Add a layer for containing items rendered on this container..
-	 * 
+	 *
 	 * @param name the name of the layer. If one with that name already exists, it
 	 *             is returned.
 	 */
@@ -345,7 +346,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Add a layer to this container.
-	 * 
+	 *
 	 * @param layer the layer to add.
 	 */
 	@Override
@@ -360,7 +361,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the annotation layer for this obtainer.
-	 * 
+	 *
 	 * @return the annotation layer for this obtainer. All drawing tools draw on the
 	 *         annotation layer, which is kept on top.
 	 */
@@ -372,7 +373,7 @@ public class BaseContainer extends JComponent
 	/**
 	 * Gets a user layer by name. Do not use for the annotation layer-- for that use
 	 * getAnnotationLayer().
-	 * 
+	 *
 	 * @param name the name of the user layer.
 	 * @return the layer, or <code>null</code>.
 	 */
@@ -387,7 +388,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Add a layer for containing items rendered on this container..
-	 * 
+	 *
 	 * @param layer the layer to add.
 	 */
 	@Override
@@ -403,10 +404,10 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * See if we need to create a new buffer
-	 * 
+	 *
 	 * @return the size of the offscreen buffer.
 	 */
-	protected Dimension checkOffscreenBuffer() {
+	private Dimension checkOffscreenBuffer() {
 		Dimension size = getSize();
 		boolean newbuffer = false;
 		if (_offscreenBuffer == null) {
@@ -430,7 +431,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * This converts a screen or pixel point to a world point.
-	 * 
+	 *
 	 * @param pp contains the local (screen-pixel) point.
 	 * @param wp will hold the resultant world point.
 	 */
@@ -443,7 +444,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * This converts a world point to a screen or pixel point.
-	 * 
+	 *
 	 * @param pp will hold the resultant local (screen-pixel) point.
 	 * @param wp contains world point.
 	 */
@@ -457,12 +458,12 @@ public class BaseContainer extends JComponent
 				System.err.println("Null pointer exception in BaseContainer worldToLocal pp = " + pp + "  wp = " + wp);
 				npe.printStackTrace();
 			}
-		} 
+		}
 	}
 
 	/**
 	 * This converts a world rectangle to a screen or pixel rectangle.
-	 * 
+	 *
 	 * @param r  will hold the resultant local (screen-pixel) rectangle.
 	 * @param wr contains the world rectangle.
 	 */
@@ -485,7 +486,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * This converts a screen or local rectangle to a world rectangle.
-	 * 
+	 *
 	 * @param r  contains the local (screen-pixel) rectangle.
 	 * @param wr will hold the resultant world rectangle.
 	 */
@@ -509,7 +510,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * This converts a world point to a screen or pixel point.
-	 * 
+	 *
 	 * @param pp will hold the resultant local (screen-pixel) point.
 	 * @param wx the world x coordinate.
 	 * @param wy the world y coordinate.
@@ -521,7 +522,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Pan the container.
-	 * 
+	 *
 	 * @param dh the horizontal step in pixels.
 	 * @param dv the vertical step in pixels.
 	 */
@@ -541,7 +542,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Recenter the container at the point of a click.
-	 * 
+	 *
 	 * @param pp the point in question. It will be the new center.
 	 */
 	@Override
@@ -571,7 +572,7 @@ public class BaseContainer extends JComponent
 		refresh();
 	}
 
-	
+
 	int refCount = 0;
 	/**
 	 * Refresh the container. Base implementation is the offscreen refresh. Sets the
@@ -579,8 +580,8 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void refresh() {
-			
 		_offscreenBufferDirty = true;
+		
 		repaint();
 
 		if (getToolBar() != null) {
@@ -592,7 +593,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Convenience routine to scale the container.
-	 * 
+	 *
 	 * @param scaleFactor the scale factor.
 	 */
 	@Override
@@ -617,7 +618,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * This is called when we have completed a rubber banding. pane.
-	 * 
+	 *
 	 * @param b The rubber band bounds.
 	 */
 
@@ -644,7 +645,7 @@ public class BaseContainer extends JComponent
 	 * <li>panning
 	 * <li>recenter
 	 * </ol>
-	 * 
+	 *
 	 * @param dirty the new value of the dirty flag.
 	 */
 	@Override
@@ -663,7 +664,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Find an item, if any, at the point.
-	 * 
+	 *
 	 * @param lp The pixel point in question.
 	 * @return the topmost satisfying item, or null.
 	 */
@@ -685,7 +686,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Obtain a collection of all enclosed items across all layers.
-	 * 
+	 *
 	 * @param rect the rectangle in question.
 	 * @return all items on all layers enclosed by the rectangle.
 	 */
@@ -697,7 +698,7 @@ public class BaseContainer extends JComponent
 			return null;
 		}
 
-		Vector<AItem> items = new Vector<AItem>(25);
+		Vector<AItem> items = new Vector<>(25);
 		for (IDrawable drawable : _layers) {
 			((LogicalLayer) drawable).addEnclosedItems(this, items, rect);
 		}
@@ -706,14 +707,14 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Find all items, if any, at the point.
-	 * 
+	 *
 	 * @param lp the pixel point in question.
 	 * @return all items across all layers that contain the given point. It may be
 	 *         an empty vector, but it won't be <code>null</null>.
 	 */
 	@Override
 	public Vector<AItem> getItemsAtPoint(Point lp) {
-		Vector<AItem> items = new Vector<AItem>(25, 10);
+		Vector<AItem> items = new Vector<>(25, 10);
 
 		if (_layers != null) {
 			for (int i = _layers.size() - 1; i >= 0; i--) {
@@ -727,7 +728,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Check whether at least one item on any layer is selected.
-	 * 
+	 *
 	 * @return <code>true</code> if at least one item on any layer is selected.
 	 */
 	@Override
@@ -745,7 +746,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Delete all selected items, across all layers.
-	 * 
+	 *
 	 * @param container the container they lived on.
 	 */
 	@Override
@@ -760,7 +761,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Select or deselect all items, across all layers.
-	 * 
+	 *
 	 * @param select the selection flag.
 	 */
 	@Override
@@ -775,7 +776,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the background image.
-	 * 
+	 *
 	 * @return the fully painted background image.
 	 */
 	@Override
@@ -795,7 +796,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set whether or not the offscreen buffer is dirty.
-	 * 
+	 *
 	 * @param dirty If <code>true</code>, offscreen buffer is dirty
 	 */
 	public void setOffscreenBufferDirty(boolean dirty) {
@@ -804,7 +805,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Zooms to the specified area.
-	 * 
+	 *
 	 * @param xmin minimum x coordinate.
 	 * @param xmax maximum x coordinate.
 	 * @param ymin minimum y coordinate.
@@ -820,7 +821,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Reword the container. I.e., the new values will be the default world
-	 * 
+	 *
 	 * @param xmin minimum x coordinate.
 	 * @param xmax maximum x coordinate.
 	 * @param ymin minimum y coordinate.
@@ -835,7 +836,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get this container's tool bar.
-	 * 
+	 *
 	 * @return this container's tool bar, or <code>null</code>.
 	 */
 	@Override
@@ -845,7 +846,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set this container's tool bar.
-	 * 
+	 *
 	 * @param toolBar the new toolbar.
 	 */
 	@Override
@@ -855,7 +856,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse has been clicked.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -869,7 +870,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse has entered the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -884,7 +885,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse has exited the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -894,7 +895,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse was pressed in the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -903,7 +904,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse was released in the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -915,7 +916,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse was dragged in the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -928,7 +929,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse has moved in the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -942,7 +943,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Convert the mouse event location to a world point.
-	 * 
+	 *
 	 * @param me the mouse event
 	 * @return the world location of the mouse click
 	 */
@@ -958,7 +959,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Gets the current mouse position.
-	 * 
+	 *
 	 * @return the current mouse position.
 	 */
 	public Point getCurrentMousePoint() {
@@ -967,7 +968,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the active button on the toolbar, if there is a toolbar.
-	 * 
+	 *
 	 * @return the active toggle button.
 	 */
 	@Override
@@ -982,7 +983,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Convenience method to update the location string in the toolbar.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 * @param dragging   <code>true</code> if we are dragging
 	 */
@@ -1030,7 +1031,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the view (internal frame) that holds this container.
-	 * 
+	 *
 	 * @return the view (internal frame) that holds this container.
 	 */
 	@Override
@@ -1040,7 +1041,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * An item has changed.
-	 * 
+	 *
 	 * @param list     the list it was on, which will be a layer.
 	 * @param drawable the drawable (item) that changed.
 	 * @param type     the type of the change.
@@ -1121,7 +1122,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Sets the feedback pane. This is an optional alternative to a HUD.
-	 * 
+	 *
 	 * @param feedbackPane the feedback pane.
 	 */
 	@Override
@@ -1131,7 +1132,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the optional feedback pane.
-	 * 
+	 *
 	 * @return the feedbackPane
 	 */
 	@Override
@@ -1142,7 +1143,7 @@ public class BaseContainer extends JComponent
 	/**
 	 * Return the object that controls the container's feedback. You can and and
 	 * remove feedback providers using this object.
-	 * 
+	 *
 	 * @return the object that controls the container's feedback.
 	 */
 	@Override
@@ -1152,7 +1153,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the optional YouAreHereItem
-	 * 
+	 *
 	 * @return the youAreHereItem
 	 */
 	@Override
@@ -1162,7 +1163,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the optional YouAreHereItem.
-	 * 
+	 *
 	 * @param youAreHereItem the youAreHereItem to set
 	 */
 	@Override
@@ -1174,7 +1175,7 @@ public class BaseContainer extends JComponent
 	 * This is sometimes used as needed (i.e., not created until requested). That
 	 * will generally make it the topmost view--so it is good for things like a
 	 * reference point (YouAreHereItem).
-	 * 
+	 *
 	 * @return the glass layer.
 	 */
 	@Override
@@ -1188,7 +1189,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the underlying component, which is me.
-	 * 
+	 *
 	 * @return the underlying component, which is me.
 	 */
 	@Override
@@ -1198,7 +1199,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the after-draw drawable for this container.
-	 * 
+	 *
 	 * @param afterDraw the new after-draw drawable.
 	 */
 	@Override
@@ -1208,7 +1209,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * get the after drawer
-	 * 
+	 *
 	 * @return the after drawer
 	 */
 	public IDrawable getAfterDraw() {
@@ -1217,7 +1218,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the before-draw drawable.
-	 * 
+	 *
 	 * @param beforeDraw the new before-draw drawable.
 	 */
 	@Override
@@ -1227,7 +1228,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * get the before drawer
-	 * 
+	 *
 	 * @return the before drawer
 	 */
 	public IDrawable getBeforeDraw() {
@@ -1236,7 +1237,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the optional magnification drawer
-	 * 
+	 *
 	 * @param mdraw the optional magnification drawer
 	 */
 	public void setMagnificationDraw(IDrawable mdraw) {
@@ -1245,7 +1246,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the optional magnification drawer
-	 * 
+	 *
 	 * @return the optional magnification drawer
 	 */
 	public IDrawable getMagnificationDraw() {
@@ -1254,7 +1255,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * From a given screen rectangle, create an ellipse item.
-	 * 
+	 *
 	 * @param layer the layer to put the item on
 	 * @param rect  the bounding screen rectangle, probably from rubber banding.
 	 * @return the new item
@@ -1293,7 +1294,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * From a given screen rectangle, create a rectangle item.
-	 * 
+	 *
 	 * @param layer the layer to put the item on
 	 * @param b     the screen rectangle, probably from rubber banding.
 	 * @return the new item
@@ -1315,7 +1316,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * From two given screen points, create a line item
-	 * 
+	 *
 	 * @param layer the layer to put the item on
 	 * @param p0    one screen point, probably from rubber banding.
 	 * @param p1    another screen point, probably from rubber banding.
@@ -1333,7 +1334,7 @@ public class BaseContainer extends JComponent
 	/**
 	 * Create a radarc item from the given parameters, probably obtained by
 	 * rubberbanding.
-	 * 
+	 *
 	 * @param layer    the layer to put the item on
 	 * @param pc       the center of the arc
 	 * @param p1       the point at the end of the first leg. Thus pc->p1 determine
@@ -1353,7 +1354,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * From a given screen polygon, create a polygon item.
-	 * 
+	 *
 	 * @param layer the layer to put the item on
 	 * @param pp    the screen polygon, probably from rubber banding.
 	 * @return the new item
@@ -1374,7 +1375,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * From a given screen polygon, create a polyline item.
-	 * 
+	 *
 	 * @param layer the layer to put the item on
 	 * @param pp    the screen polyline, probably from rubber banding.
 	 * @return the new item
@@ -1403,7 +1404,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get a scroll pane with a table for controlling logical layer visibility
-	 * 
+	 *
 	 * @return a scroll pane with a table for controlling logical layer visibility
 	 */
 	@Override
@@ -1417,7 +1418,7 @@ public class BaseContainer extends JComponent
 	/**
 	 * Handle a file, one that probably result from a drag and drop or a double
 	 * click. Treat it like an "open".
-	 * 
+	 *
 	 * @param file the file to handle.
 	 */
 	@Override
@@ -1427,7 +1428,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get a location string for a point
-	 * 
+	 *
 	 * @param wp the world point in question
 	 * @return a location string for a point
 	 */
@@ -1438,7 +1439,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get all the layers.
-	 * 
+	 *
 	 * @return all logical layers in the container.
 	 */
 	@Override
@@ -1449,7 +1450,7 @@ public class BaseContainer extends JComponent
 	/**
 	 * Create a Point2D.Double or subclass thereof that is appropriate for this
 	 * container.
-	 * 
+	 *
 	 * @return a Point2D.Double or subclass thereof that is appropriate for this
 	 *         container.
 	 */
@@ -1460,7 +1461,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Get the current world system
-	 * 
+	 *
 	 * @return the world system
 	 */
 	@Override
@@ -1470,7 +1471,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the world system (does not cause redraw)
-	 * 
+	 *
 	 * @param wr the new world system
 	 */
 	@Override
@@ -1511,7 +1512,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Convert a pixel based polygon to a world based polygon.
-	 * 
+	 *
 	 * @param polygon      the pixel based polygon
 	 * @param worldPolygon the world based polygon
 	 */
@@ -1528,7 +1529,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Convert a world based polygon to a pixel based polygon.
-	 * 
+	 *
 	 * @param polygon      the pixel based polygon
 	 * @param worldPolygon the world based polygon
 	 */
@@ -1548,7 +1549,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The mouse scroll wheel has been moved.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -1562,7 +1563,7 @@ public class BaseContainer extends JComponent
 	 * Obtain the inset rectangle. Insets are the inert region around the
 	 * container's active area. Often there are no insets. Sometimes they are used
 	 * so that text can be written in the inset area, such as for plot view.
-	 * 
+	 *
 	 * @return the inset rectangle.
 	 */
 	@Override
@@ -1585,7 +1586,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the left margin
-	 * 
+	 *
 	 * @param lMargin the left margin
 	 */
 	@Override
@@ -1595,7 +1596,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the top margin
-	 * 
+	 *
 	 * @param tMargin the top margin
 	 */
 	@Override
@@ -1605,7 +1606,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the right margin
-	 * 
+	 *
 	 * @param rMargin the right margin
 	 */
 	@Override
@@ -1615,7 +1616,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Set the bottom margin
-	 * 
+	 *
 	 * @param bMargin the bottom margin
 	 */
 	@Override
@@ -1625,7 +1626,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Recenter the world rectangle.
-	 * 
+	 *
 	 * @param wr        the affected rectangle
 	 * @param newCenter the new center.
 	 */
@@ -1636,7 +1637,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * SCale the world rectangle, keeping the center fixed.
-	 * 
+	 *
 	 * @param wr    the affected rectangle
 	 * @param scale the factor to scale by.
 	 */
@@ -1656,7 +1657,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * The active toolbar button changed.
-	 * 
+	 *
 	 * @param activeButton the new active button.
 	 */
 	@Override
@@ -1665,7 +1666,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Have you handled the print button so the default action is ignored.
-	 * 
+	 *
 	 * @return <code>true</code> if the printer button was handled.
 	 */
 	@Override
@@ -1675,7 +1676,7 @@ public class BaseContainer extends JComponent
 
 	/**
 	 * Have you handled the camera button so the default action is ignored.
-	 * 
+	 *
 	 * @return <code>true</code> if the camera button was handled.
 	 */
 	@Override

@@ -13,7 +13,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -39,10 +38,8 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
-//import cnuphys.bCNU.view.XMLView;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataManager;
-import cnuphys.ced.alldata.graphics.DefinitionManager;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
@@ -95,10 +92,10 @@ import cnuphys.ced.event.data.TBCrosses;
 import cnuphys.ced.event.data.TBSegments;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.magfield.PlotFieldDialog;
-import cnuphys.ced.magfield.SwimAllMC;
-import cnuphys.ced.magfield.SwimAllRecon;
 import cnuphys.ced.noise.NoiseManager;
 import cnuphys.ced.properties.PropertiesManager;
+import cnuphys.ced.swim.SwimAllMC;
+import cnuphys.ced.swim.SwimAllRecon;
 import cnuphys.ced.trigger.TriggerDialog;
 import cnuphys.ced.trigger.TriggerManager;
 import cnuphys.ced.trigger.TriggerMenuPanel;
@@ -217,9 +214,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			+ "<br><br>Download the latest version at <a href=\"https://userweb.jlab.org/~heddle/ced/builds/\">https://userweb.jlab.org/~heddle/ced/builds/</a>"
 			+ "<br><br>Email bug reports to david.heddle@cnu.edu";
 
-	// "play" dc occupancy?
-	private JCheckBoxMenuItem _playDCOccupancy;
-
 	// for the traveling salesperson dialog
 	private TSDialog _tsDialog;
 
@@ -319,9 +313,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_urwellXyView, 8, VirtualView.BOTTOMLEFT);
 		_virtualView.moveTo(_ftofView, 9, VirtualView.UPPERRIGHT);
 		_virtualView.moveTo(_ftcalXyView, 10, VirtualView.CENTER);
-		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
-
 		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
 
 
 		if (_use3D) {
@@ -752,10 +745,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		omenu.add(memPlot);
 		omenu.add(drawLeg);
 
-		// define menu
-		omenu.addSeparator();
-		omenu.add(DefinitionManager.getInstance().getMenu());
-
 	}
 
 	/**
@@ -846,24 +835,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_eventMenu.addSeparator();
 		MenuManager.addMenuItem("Noise Algorithm Parameters...", _eventMenu, al2);
 
-		_eventMenu.addSeparator();
-
-		_playDCOccupancy = new JCheckBoxMenuItem("\"Play\" Drift Chamber Occupancy", false);
-		_eventMenu.add(_playDCOccupancy);
 	}
-
-	/**
-	 * Flag controlling whether a tone indicating the DC occupancy is played
-	 *
-	 * @return <code>true</code> if the tone should be played
-	 */
-	public boolean playDCOccupancy() {
-		if (_playDCOccupancy != null) {
-			return _playDCOccupancy.getState();
-		}
-		return false;
-	}
-
 
 	/**
 	 * Get the virtual view

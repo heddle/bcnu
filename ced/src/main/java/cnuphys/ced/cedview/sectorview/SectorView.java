@@ -198,7 +198,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER
-						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND + ControlPanel.TARGETSLIDER
+						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND 
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
 						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_NN
@@ -529,11 +529,7 @@ public class SectorView extends SliceView implements ChangeListener {
 	public void stateChanged(ChangeEvent e) {
 		Object source = e.getSource();
 
-		// change target z?
-		if (source == _controlPanel.getTargetSlider()) {
-			_targetZ = (_controlPanel.getTargetSlider().getValue());
-			getContainer().refresh();
-		} else if (source == _controlPanel.getPhiSlider()) {
+		if (source == _controlPanel.getPhiSlider()) {
 			// change the projection plane
 			projectionPlane = GeometryManager.constantPhiPlane(getSliderPhi());
 

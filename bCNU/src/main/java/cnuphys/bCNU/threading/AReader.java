@@ -2,29 +2,35 @@ package cnuphys.bCNU.threading;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public abstract class Reader<T> extends Thread {
+/**
+ * Base implementation for a Reader thread from a blocking queue
+ * @author heddle
+ *
+ * @param <T>
+ */
+public abstract class AReader<T> extends Thread {
 	
-	//the fifo being dequeued
-	private BlockingFIFO<T> _fifo;
+	//the queue being dequeued
+	private ABlockingQueue<T> _queue;
 	
 	// lag to stop the thread
 	private AtomicBoolean running = new AtomicBoolean(false);
 	
 	/**
-	 * Create a reader (dequeuer) for a BlockingFIFO
-	 * @param fifo the fifo
+	 * Create a reader (dequeuer) for a BlockingQuueue
+	 * @param queue the queue
 	 */
-	public Reader(BlockingFIFO<T> fifo) {
-		_fifo = fifo;
+	public AReader(ABlockingQueue<T> queue) {
+		_queue = queue;
 	}
 	
 	@Override
 	public void run() {
 		running.set(true);
 		while (running.get()) {
-			T val = _fifo.dequeue();
-			if (val != null) {
-				process(val);
+			T object = _queue.dequeue();
+			if (object != null) {
+				process(object);
 			}
 		}
 	}

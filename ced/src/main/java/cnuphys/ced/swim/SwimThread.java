@@ -1,9 +1,10 @@
-package cnuphys.ced.magfield;
+package cnuphys.ced.swim;
 
 import cnuphys.adaptiveSwim.AdaptiveSwimException;
 import cnuphys.adaptiveSwim.AdaptiveSwimResult;
 import cnuphys.adaptiveSwim.AdaptiveSwimmer;
 import cnuphys.adaptiveSwim.InitialValues;
+import cnuphys.adaptiveSwim.SwimType;
 import cnuphys.lund.GeneratedParticleRecord;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -11,12 +12,6 @@ import cnuphys.lund.TrajectoryRowData;
 import cnuphys.swim.Swimming;
 
 public class SwimThread extends Thread {
-
-	/** Swimming a Monte Carlo particle */
-	public static final int MCSWIM = 1;
-	
-	/** Swimming a reconstructed particle */
-	public static final int RECONSWIM = 2;
 
 	//holds the trajectory info
 	private final TrajectoryRowData _trd;
@@ -30,30 +25,18 @@ public class SwimThread extends Thread {
 	private final double _initStepSize;
 	
 	private final double _eps;
-	
-	private final int _swimType;
 
-	/** Is the run method complete */
-	private boolean _done;
-	
-	private static int count = 0;
-
-	public SwimThread(TrajectoryRowData trd, double sFinal, double stepSize, double eps,
-			int swimType) {
+	public SwimThread(TrajectoryRowData trd, double sFinal, double stepSize, double eps) {
 		_swimmer = new AdaptiveSwimmer();
 		_trd = trd;
 		_sFinal = sFinal;	
 		_initStepSize = stepSize;
 		_eps = eps;
-		_swimType = swimType;
 	}
 
 	@Override
 	public void run() {
 		
-		int scount = count++;
-		System.err.println("STARTING SWIM " + scount);
-		_done = false;
 		LundId lid = LundSupport.getInstance().get(_trd.getId());
 
 		AdaptiveSwimResult result = new AdaptiveSwimResult(true);
@@ -74,25 +57,17 @@ public class SwimThread extends Thread {
 			result.getTrajectory().setGeneratedParticleRecord(genPart);
 		}
 
-		if (_swimType == MCSWIM) {
+		if (_trd.getSwimType() == SwimType.MCSWIM) {
 			Swimming.addMCTrajectory(result.getTrajectory());
 		}
-		else if (_swimType == RECONSWIM) {
+		else if (_trd.getSwimType() == SwimType.RECONSWIM) {
 			Swimming.addReconTrajectory(result.getTrajectory());
 		}
 		else {
-			System.err.println("Uknown swim type in SwimThread: " + _swimType);
+			System.err.println("Unknown swim type in SwimThread: " + _trd.getSwimType());
 		}
 
-		_done = true;
-		System.err.println("ENDING SWIM " + scount);
-	}
-	
-	/**
-	 * Is the run method done?
-	 * @return true if the run method is done
-	 */
-	public boolean isDone() {
-		return _done;
 	}
 }
+	
+

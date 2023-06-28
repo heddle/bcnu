@@ -1,4 +1,4 @@
-package cnuphys.ced.magfield;
+package cnuphys.ced.swim;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,34 +81,24 @@ public class SwimAllMC implements ISwimAll {
 					}
 
 					swam.add(summaryStr);
-
-					SwimThread st = new SwimThread(trd, PATHMAX, stepSize, eps, SwimThread.MCSWIM);
+					SwimThread st = new SwimThread(trd, PATHMAX, stepSize, eps);
 					swimThreads.add(st);
 					st.start();
 			}
 			
 		} //for trd
 		
-		while (!allDone(swimThreads)) {
+		for (SwimThread st : swimThreads) {
 			try {
-				Thread.sleep(10);
+				st.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		
 
 	}
 	
-	private boolean allDone(List<SwimThread> threads) {
-		
-		for (SwimThread st : threads) {
-			if (!st.isDone()) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
 	
 	/**
 	 * Swim all Monte Carlo particles

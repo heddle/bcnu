@@ -1,4 +1,4 @@
-package cnuphys.ced.magfield;
+package cnuphys.ced.swim;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +8,7 @@ import cnuphys.adaptiveSwim.AdaptiveSwimException;
 import cnuphys.adaptiveSwim.AdaptiveSwimResult;
 import cnuphys.adaptiveSwim.AdaptiveSwimmer;
 import cnuphys.adaptiveSwim.InitialValues;
+import cnuphys.adaptiveSwim.SwimType;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoReconEventView;
@@ -72,34 +73,22 @@ public class SwimAllRecon implements ISwimAll {
 				if ((source != null) && (source.contains("CVT"))) {
 					sf = 1.5; //shorter max path for cvt tracks
 				}
-				SwimThread st = new SwimThread(trd, sf, stepSize, eps, SwimThread.RECONSWIM);
+				SwimThread st = new SwimThread(trd, sf, stepSize, eps);
 				swimThreads.add(st);
 				st.start();
 
 			}
 		} //for trd
 		
-		while (!allDone(swimThreads)) {
+		for (SwimThread st : swimThreads) {
 			try {
-				Thread.sleep(10);
+				st.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-
 	}
 	
-	private boolean allDone(List<SwimThread> threads) {
-		
-		for (SwimThread st : threads) {
-			if (!st.isDone()) {
-				return false;
-			}
-		}
-		
-		return true;
-	}
-
 		
 		//@Override
 		public void XswimAll() {

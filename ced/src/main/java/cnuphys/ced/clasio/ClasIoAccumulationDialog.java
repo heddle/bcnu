@@ -269,10 +269,6 @@ public class ClasIoAccumulationDialog extends JDialog {
 							if (((count + 1) % modCount) == 0) {
 								int value = (int) ((100.0 * count) / fcount);
 								_progressBar.setValue(value);
-
-								if (Ced.getCed().playDCOccupancy()) {
-									DC.getInstance().playOccupancyTone(75);
-								}
 							}
 						}
 

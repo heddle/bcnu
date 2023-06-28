@@ -4,6 +4,7 @@ import java.util.Vector;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.adaptiveSwim.SwimType;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.lund.LundId;
@@ -116,7 +117,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 					// note conversions to degrees and MeV
 					TrajectoryRowData row = new TrajectoryRowData(i, lid, xo, yo, zo, 1000 * p,
-							Math.toDegrees(theta), Math.toDegrees(phi), 0, bankName);
+							Math.toDegrees(theta), Math.toDegrees(phi), 0, bankName, SwimType.MCSWIM);
 					data.add(row);
 
 				}

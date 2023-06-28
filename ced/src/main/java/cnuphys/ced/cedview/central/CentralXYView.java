@@ -94,6 +94,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draws reconstructed crosses
 	private CrossDrawerXY _crossDrawer;
+	
+	// draws reconstructed clusters
+	private ClusterDrawerXY _clusterDrawer;
+
 
 	// draws hits
 	private CentralXYHitDrawer _hitDrawer;
@@ -111,6 +115,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		super(keyVals);
 
 		_crossDrawer = new CrossDrawerXY(this);
+		_clusterDrawer = new ClusterDrawerXY(this);
 		_hitDrawer = new CentralXYHitDrawer(this);
 
 		// draws any swum trajectories (in the after draw)
@@ -158,7 +163,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
+				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
 						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
 						+ DisplayBits.GLOBAL_TB,
@@ -231,6 +236,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 					if (showCrosses()) {
 						_crossDrawer.draw(g, container);
+					}
+
+					if (showClusters()) {
+						_clusterDrawer.draw(g, container);
 					}
 
 					Rectangle screenRect = getActiveScreenRectangle(container);

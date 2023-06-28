@@ -2,12 +2,10 @@ package cnuphys.ced.event.data;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.bCNU.util.SoundUtils;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.event.data.lists.DCClusterList;
 import cnuphys.ced.event.data.lists.DCReconHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
-import cnuphys.ced.frame.Ced;
 
 public class DC extends DetectorData {
 
@@ -124,9 +122,6 @@ public class DC extends DetectorData {
 			e.printStackTrace();
 		}
 
-		if (Ced.getCed().playDCOccupancy()) {
-			playOccupancyTone(75);
-		}
 	}
 
 	/**
@@ -206,12 +201,4 @@ public class DC extends DetectorData {
 		}
 	}
 
-	private static final int MIN_HZ = 1500;
-	private static final int MAX_HZ = 4000;
-	private static final int UNDER_HZ = 440;
-	private static final int OVER_HZ = 5000;
-
-	public void playOccupancyTone(int msec) {
-		SoundUtils.playData(MIN_HZ, MAX_HZ, msec, 0.0005, 0.07, totalOccupancy(), UNDER_HZ, OVER_HZ, 1.);
-	}
 }

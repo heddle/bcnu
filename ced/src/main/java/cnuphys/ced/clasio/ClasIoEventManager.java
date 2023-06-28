@@ -34,8 +34,6 @@ import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.bCNU.util.RingBuffer;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
-import cnuphys.ced.alldata.graphics.DefinitionManager;
-import cnuphys.ced.alldata.graphics.PlotDialog;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
 import cnuphys.ced.clasio.filter.FilterManager;
@@ -171,7 +169,6 @@ public class ClasIoEventManager {
 
 				if (isAccumulating()) {
 					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
-					notifyAllDefinedPlots(_currentEvent);
 				} else {
 					CedView.suppressRefresh(true);
 					_runData.set(_currentEvent);
@@ -663,22 +660,6 @@ public class ClasIoEventManager {
 	 */
 	public void setAllReconSwimmer(ISwimAll allSwimmer) {
 		_allReconSwimmer = allSwimmer;
-	}
-
-	// During accumulation, notify any plots
-	// define through the Define menu
-	protected void notifyAllDefinedPlots(DataEvent event) {
-		if (isAccumulating() && (event != null)) {
-			Vector<PlotDialog> plots = DefinitionManager.getInstance().getAllPlots();
-
-			if ((plots != null) && !plots.isEmpty()) {
-				for (PlotDialog plot : plots) {
-					if (plot != null) {
-						plot.newClasIoEvent(event);
-					}
-				}
-			}
-		}
 	}
 
 	// decode an evio event to hipo

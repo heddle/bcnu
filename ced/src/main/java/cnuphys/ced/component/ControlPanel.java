@@ -52,9 +52,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	/** Bit used to create a torus legend */
 	public static final int FIELDLEGEND = 04;
 
-	/** Bit used to create a target slider */
-	public static final int TARGETSLIDER = 020;
-
 	/** Bit used to create a feedback pane */
 	public static final int FEEDBACK = 040;
 
@@ -84,9 +81,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// magnetic field display
 	private MagFieldDisplayArray _magFieldDisplayArray;
-
-	// control the nominal target z
-	private JSlider _targetSlider;
 
 	// a text area for some messages
 	private SimpleScrollableTextArea _cpTextArea;
@@ -355,53 +349,11 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 	}
 
-//	/**
-//	 * Get the slider for the accumulation legend
-//	 *
-//	 * @return the slider
-//	 */
-//	public JSlider getAccumulationSlider() {
-//		return (_colorPanel == null) ? null : _colorPanel.getSlider();
-//	}
-
-//	/**
-//	 * Create the slider used to control the target z
-//	 *
-//	 * @return the slider used to control the target z
-//	 */
-//	private Box createTargetSlider() {
-//		Box box = Box.createVerticalBox();
-//
-//		int targ_min = -200;
-//		int targ_max = 200;
-//		int targ_init = 0;
-//
-//		_targetSlider = new JSlider(SwingConstants.HORIZONTAL, targ_min, targ_max, targ_init);
-//
-//		_targetSlider.setMajorTickSpacing(100);
-//		_targetSlider.setMinorTickSpacing(10);
-//		_targetSlider.setPaintTicks(true);
-//		_targetSlider.setPaintLabels(true);
-//		_targetSlider.setFont(Fonts.tinyFont);
-//		_targetSlider.setFocusable(false); // so ugly focus border not drawn
-//
-//		if (_view instanceof ChangeListener) {
-//			_targetSlider.addChangeListener((ChangeListener) _view);
-//		}
-//
-//		Dimension d = _targetSlider.getPreferredSize();
-//		d.width = SLIDERWIDTH;
-//		_targetSlider.setPreferredSize(d);
-//		box.add(_targetSlider);
-//
-//		box.setBorder(new CommonBorder("Target Z (cm)"));
-//		return box;
-//	}
 
 	/**
-	 * Create the slider used to control the target z
+	 * Create the slider used to control the adc threshold
 	 *
-	 * @return the slider used to control the target z
+	 * @return the slider used to control the adc threshold
 	 */
 	private Box createAdcThresholdSlider() {
 		Box box = Box.createVerticalBox();
@@ -435,9 +387,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	}
 
 	/**
-	 * Create the slider used to control the target z
+	 * Create the slider used to control phi
 	 *
-	 * @return the slider used to control the target z
+	 * @return the slider used to control phi
 	 */
 	private Box createPhiSlider(boolean isBig) {
 		Box box = Box.createVerticalBox();
@@ -506,15 +458,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	 */
 	public CommonBorder getAdcThresholdBorder() {
 		return _adcThresholdBorder;
-	}
-
-	/**
-	 * Get the slider for target position.
-	 *
-	 * @return the slider for target position.
-	 */
-	public JSlider getTargetSlider() {
-		return _targetSlider;
 	}
 
 	/**

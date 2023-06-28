@@ -147,7 +147,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.PHISLIDER + ControlPanel.TARGETSLIDER + ControlPanel.PHI_SLIDER_BIG
+						+ ControlPanel.PHISLIDER + ControlPanel.PHI_SLIDER_BIG
 						+ ControlPanel.FIELDLEGEND +
 						ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH | DisplayBits.RECONHITS
@@ -904,11 +904,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	public void stateChanged(ChangeEvent e) {
 		Object source = e.getSource();
 
-		// change target z?
-		if (source == _controlPanel.getTargetSlider()) {
-			_targetZ = (_controlPanel.getTargetSlider().getValue());
-			getContainer().refresh();
-		} else if (source == _controlPanel.getPhiSlider()) {
+		if (source == _controlPanel.getPhiSlider()) {
 			phiFromSlider();
 			getContainer().setDirty(true);
 			getContainer().refresh();

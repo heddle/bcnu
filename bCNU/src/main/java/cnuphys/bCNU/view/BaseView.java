@@ -592,41 +592,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	}
 
 	/**
-	 * Get a view from its container
-	 * 
-	 * @param container the container
-	 * @return the view which holds this container
-	 */
-	public static BaseView getViewFromContainer(IContainer container) {
-		if (container == null) {
-			System.err.println("NULL container");
-			return null;
-		}
-
-		if (Desktop.getInstance() == null) {
-			return null;
-		}
-
-		JInternalFrame frames[] = Desktop.getInstance().getAllFrames();
-		if (frames == null) {
-			return null;
-		}
-		if (frames.length == 0) {
-			return null;
-		}
-
-		for (JInternalFrame tf : frames) {
-			if (tf instanceof BaseView) {
-				BaseView bv = (BaseView) tf;
-				if (container == bv.getContainer()) {
-					return (BaseView) tf;
-				}
-			}
-		}
-		return null;
-	}
-
-	/**
 	 * Get the virtual window item used on the virtual view
 	 * 
 	 * @return the virtual window item used on the virtual view
@@ -823,5 +788,4 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 	}
-
 }
