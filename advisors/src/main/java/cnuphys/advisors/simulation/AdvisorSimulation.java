@@ -59,10 +59,10 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		_attributes.removeAttribute(SimulationAttributes.SUCCESSCOUNT);
 		_attributes.setPlotTitle("Assignment Energy");
 		_attributes.setYAxisLabel("Energy");
-		_attributes.setMinTemp(0.01);
-		_attributes.setCoolRate(0.00175);
+		_attributes.setMinTemp(0.005);
+		_attributes.setCoolRate(0.0015);
 	//	_attributes.setMaxSteps(20000);
-		_attributes.setThermalizationCount(1200);
+		_attributes.setThermalizationCount(1400);
 	}
 
 	@Override
