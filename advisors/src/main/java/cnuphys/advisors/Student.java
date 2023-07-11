@@ -14,9 +14,6 @@ public class Student extends Person implements ITabled {
 	/** learning community as a string */
 	public String lc;
 
-	/** learning community as a number */
-	public int lcNum;
-
 	/** the student's last name */
 	public String lastName;
 
@@ -33,12 +30,9 @@ public class Student extends Person implements ITabled {
 	public List<Course> schedule = new ArrayList<>();
 
 
-	public Student(String id, String lastName, String firstName, String lc, String plp, String honr, String prsc,
+	public Student(String id, String lastName, String firstName, String plp, String honr, String prsc,
 			String psp, String prelaw, String wind, String ccap, String btmg, String maj) {
 		super();
-		this.lc = lc;
-
-		lcNum = Integer.parseInt(lc.replaceAll("[^\\d.]", ""));
 
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
@@ -217,42 +211,39 @@ public class Student extends Person implements ITabled {
 			return firstName;
 		}
 		else if (col == 4) {
-			return "L" + lcNum;
-		}
-		else if (col == 5) {
 			return ilc() ? "ILC" : "";
 		}
-		else if (col == 6) {
+		else if (col == 5) {
 			return plp() ? "PLP" : "";
 		}
-		else if (col == 7) {
+		else if (col == 6) {
 			return honors() ? "HON": "";
 		}
-		else if (col == 8) {
+		else if (col == 7) {
 			return prsc() ? "PRSC": "";
 		}
-		else if (col == 9) {
+		else if (col == 8) {
 			return psp() ? "PSP" : "";
 		}
-		else if (col == 10) {
+		else if (col == 9) {
 			return prelaw() ? "PLW" : "";
 		}
-		else if (col == 11) {
+		else if (col == 10) {
 			return wind() ? "WIND" : "";
 		}
-		else if (col == 12) {
+		else if (col == 11) {
 			return ccpt() ? "CCAP" : "";
 		}
-		else if (col == 13) {
+		else if (col == 12) {
 			return btmg() ? "BTMG" : "";
 		}
-		else if (col == 14) {
+		else if (col == 13) {
 			return major.name();
 		}
-		else if (col == 15) {
+		else if (col == 14) {
 			return advisor == null ? "---" : advisor.name;
 		}
-		else if (col == 16) {
+		else if (col == 15) {
 			return hasCourseWithAdvisor() ? "Y" : "";
 		}
 

@@ -59,7 +59,7 @@ public class DataManager {
 	public static final DataAttribute enrollmentAtt = new DataAttribute("Count", 45);
 
 	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");
-	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
+//	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
 
 
 	public static final DataAttribute crnAtt = new DataAttribute("CRN", 40);
@@ -84,7 +84,7 @@ public class DataManager {
 	public static final DataAttribute plpAtt = new DataAttribute("PLP", 35);
 	public static final DataAttribute honrAtt = new DataAttribute("HONR", 38);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
-	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46);
+	public static final DataAttribute prelawAtt = new DataAttribute("PRELAW", 46, "PLW");
 	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 60, "Major_1st");
 	public static final DataAttribute emailAtt = new DataAttribute("ADVISOR_EMAIL", 170, "email", "student_email");
 	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);

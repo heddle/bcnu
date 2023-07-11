@@ -95,8 +95,11 @@ public class Schedule extends DataModel {
 				//try to set instructor subject (major) bases on course taught
 
 				Major major = Major.getValue(subject);
+				
+				String trimSubj = subject.trim().toLowerCase();
+				
 				if (major == null) {
-					if (!subject.trim().toLowerCase().contains("honr")) {
+					if (!(trimSubj.contains("honr") || trimSubj.contains("idst"))) {
 						System.out.println("Could not match major to course subject [" + subject + "]");
 					}
 				}

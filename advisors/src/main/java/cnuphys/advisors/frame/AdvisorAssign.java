@@ -56,7 +56,7 @@ public class AdvisorAssign extends JFrame {
 	private static AdvisorAssign _instance;
 
 	//what semester are we dealing with
-	private static Semester _semester = Semester.Fall2022;
+	private static Semester _semester = Semester.Fall2023;
 
 	//a label on the menu bar for the semester
 	private static JLabel _infoLabel;

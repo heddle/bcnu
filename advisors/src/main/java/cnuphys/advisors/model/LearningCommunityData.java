@@ -14,7 +14,7 @@ public class LearningCommunityData extends DataModel {
 
 
 	// attributes for student data
-	private static final DataAttribute attributes[] = { DataManager.rowAtt, DataManager.lcNumAtt,
+	private static final DataAttribute attributes[] = { DataManager.rowAtt,
 			DataManager.lcAtt, DataManager.enrollmentAtt, DataManager.crnAtt,
 			DataManager.subjectAtt, DataManager.courseAtt, DataManager.llcAtt, DataManager.notesAtt,
 			DataManager.instructorAtt};

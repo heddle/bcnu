@@ -6,7 +6,7 @@ import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Major {
-	NONE, ACCT, AMSTD, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
+	NONE, ACCT, AMSTD, ANTH, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
 	ENGL, ENVSTD, FIN, FINART, FRENCH, GERMAN, HIST, INFSCI, KINES, MARKT, MATH, MGMT, MUSIC, NEURO,
 	OEBIO, PHILO, PHYS, POLSCI, PSYCH, SOCIOL, SOWK, SPAN, STDART, THEA, UNDEC;
 
@@ -41,6 +41,7 @@ public enum Major {
 
 		names.put(ACCT, new String[] {"accounting"});
 		names.put(AMSTD, new String[] {"american studies", "amst", "ldsp"});
+		names.put(ANTH, new String[] {"anthropology"});
 		names.put(BIOCHM, new String[] {"biochemistry", "mbch", "bchm"});
 		names.put(BIOL, new String[] {"biology", "phys biology", "integrative biology", "biol", "pmed"});
 		names.put(BUSN, new String[] {"business-undeclared", "business administration", "lutr", "btmg"});
@@ -52,7 +53,7 @@ public enum Major {
 		names.put(COMENG, new String[] {"computer engineering", "cpen", "engr"});
 		names.put(COMSCI, new String[] {"computer science", "cs", "cpsc", "pcse"});
 		names.put(CRIM, new String[] {"criminology"});
-		names.put(CYBER, new String[] {"cybersecurity"});
+		names.put(CYBER, new String[] {"cybersecurity", "cybr"});
 		names.put(ECON, new String[] {"economics", "economics-ba"});
 		names.put(EE, new String[] {"electrical engineering", "eeng"});
 		names.put(ENGL, new String[] {"english"});
@@ -84,6 +85,7 @@ public enum Major {
 
 		departments.put(NONE, Department.NONE);
 		departments.put(ACCT, Department.LUTR);
+		departments.put(ANTH, Department.SOCL);
 		departments.put(AMSTD, Department.LDSP);
 		departments.put(BIOCHM, Department.MBCH);
 		departments.put(BIOL, Department.OENB);

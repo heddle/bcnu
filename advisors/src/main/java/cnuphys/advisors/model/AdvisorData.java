@@ -96,8 +96,6 @@ public class AdvisorData extends DataModel {
 
 	@Override
 	protected void processData() {
-		int colCount = _header.length;
-
 		int nameIndex = getColumnIndex(DataManager.advisorAtt);
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int deptIndex = getColumnIndex(DataManager.departmentNameAtt);

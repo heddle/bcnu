@@ -77,7 +77,7 @@ public abstract class DataModel extends DefaultTableModel implements ListSelecti
 
 		File file = InputOutput.openDataFile(baseName);
 
-		InputOutput.debugPrint(baseName);
+		InputOutput.debugPrintln(baseName);
 
 		try {
 			_data = new ArrayList<>();

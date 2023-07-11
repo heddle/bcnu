@@ -29,7 +29,7 @@ public class StudentData extends DataModel {
 
 	//attributes for student data
 	private static final DataAttribute studentAttributes[] = { DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
-			DataManager.firstNameAtt, DataManager.lcNumAtt,
+			DataManager.firstNameAtt, 
 			DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
 			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt, DataManager.inClassAtt };
@@ -87,13 +87,12 @@ public class StudentData extends DataModel {
 	@Override
 	protected void processData() {
 		int idIndex = getColumnIndex(DataManager.idAtt);
-		int lcNumIndex = getColumnIndex(DataManager.lcNumAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
 		int prscIndex = getColumnIndex(DataManager.prscAtt);
 		int windIndex = getColumnIndex(DataManager.windAtt);
 		int ccapIndex = getColumnIndex(DataManager.ccapAtt);
-		int btmgIndex = getColumnIndex(DataManager.btmgAtt);
+	//	int btmgIndex = getColumnIndex(DataManager.btmgAtt);
 
 
 		int plpIndex = getColumnIndex(DataManager.plpAtt);
@@ -107,13 +106,11 @@ public class StudentData extends DataModel {
     		String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
 
-			String lcNum = s[lcNumIndex];
-
 			String prsc = s[prscIndex];
 			String wind = s[windIndex];
 			String ccap = s[ccapIndex];
-			String btmg = s[btmgIndex];
-
+//			String btmg = s[btmgIndex];
+			String btmg = "";
 
 			String plp = s[plpIndex];
 			String honr = s[honrIndex];
@@ -121,7 +118,7 @@ public class StudentData extends DataModel {
 			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
 
-			_tableData.add(new Student(id, lastName, firstName, lcNum, plp, honr, prsc, psp, prelaw, wind, ccap, btmg, major));
+			_tableData.add(new Student(id, lastName, firstName, plp, honr, prsc, psp, prelaw, wind, ccap, btmg, major));
 		}
 
 		//raw data not needed

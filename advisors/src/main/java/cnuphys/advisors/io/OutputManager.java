@@ -82,21 +82,20 @@ public class OutputManager {
 		sArr[1] = student.lastName;
 		sArr[2] = student.firstName;
 		sArr[3] = student.ilc() ? "ILC" : "";
-		sArr[4] = "L" + student.lcNum;
-		sArr[5] = student.plp() ? "PLP" : "";
-		sArr[6] = student.honors() ? "HON": "";
-		sArr[7] = student.prsc() ? "PRSC": "";
-		sArr[8] = student.psp() ? "PSP" : "";
-		sArr[9] = student.prelaw() ? "PLW" : "";
-		sArr[10] = student.wind() ? "WIND" : "";
-		sArr[11] = student.ccpt() ? "CCAP" : "";
-		sArr[12] = student.btmg() ? "BTMG" : "";
-		sArr[13] = student.major.name();
-		sArr[14] = "\"" + advisor.name + "\"";
-		sArr[15] = "\"\t" + advisor.id + "\"";  //will get leading 0's
-		sArr[16] = "FCA";
-		sArr[17] = advisor.department.name();
-		sArr[18] = advisor.email;
+		sArr[4] = student.plp() ? "PLP" : "";
+		sArr[5] = student.honors() ? "HON": "";
+		sArr[6] = student.prsc() ? "PRSC": "";
+		sArr[7] = student.psp() ? "PSP" : "";
+		sArr[8] = student.prelaw() ? "PLW" : "";
+		sArr[9] = student.wind() ? "WIND" : "";
+		sArr[10] = student.ccpt() ? "CCAP" : "";
+		sArr[11] = student.btmg() ? "BTMG" : "";
+		sArr[12] = student.major.name();
+		sArr[13] = "\"" + advisor.name + "\"";
+		sArr[14] = "\"\t" + advisor.id + "\"";  //will get leading 0's
+		sArr[15] = "FCA";
+		sArr[16] = advisor.department.name();
+		sArr[17] = advisor.email;
 
 		csvw.writeRow(sArr);
 	}
@@ -106,7 +105,6 @@ public class OutputManager {
 				"Last", // 2
 				"FIRST", // 3
 				"ILC", // 4
-				"LC", // 5
 				"PLP", // 6
 				"HONR", // 7
 				"PRSC", // 8
