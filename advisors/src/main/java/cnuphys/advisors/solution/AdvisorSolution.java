@@ -95,25 +95,26 @@ public class AdvisorSolution extends Solution {
 
 	@Override
 	public Solution getRearrangement() {
-		AdvisorSolution rearrangement = (AdvisorSolution)copy();
+		AdvisorSolution rearrangement = (AdvisorSolution) copy();
 
 		List<Student> students = _simulation.students;
+		if (students.isEmpty()) {
+			System.err.println("Empty student collection in GetRearrangement");
+		} else {
+			// get two random students to exchange
+			int ranNum = Utilities.randomInt(0, students.size() - 1);
 
-		//get two random students to exchange
+			studentA = students.get(ranNum);
+			studentB = studentA;
 
-		int ranNum = Utilities.randomInt(0, students.size()-1);
+			while (studentA.advisor == studentB.advisor) {
+				ranNum = Utilities.randomInt(0, students.size() - 1);
+				studentB = students.get(ranNum);
+			}
 
-		studentA = students.get(ranNum);
-		studentB = studentA;
-
-		while (studentA.advisor == studentB.advisor) {
-			ranNum = Utilities.randomInt(0, students.size()-1);
-			studentB = students.get(ranNum);
+			// now exchange the students
+			_simulation.exchangeStudents(studentA, studentB);
 		}
-
-		//now exchange the students
-		_simulation.exchangeStudents(studentA, studentB);
-
 		return rearrangement;
 	}
 
