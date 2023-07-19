@@ -106,6 +106,35 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 	 * @param container the drawing container
 	 */
 	public void drawBMTClusters(Graphics g, IContainer container) {
+		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
+		if (event == null) {
+			return;
+		}
+
+		byte sector[] = ColumnData.getByteArray("BMTRec::Clusters.sector");
+
+		int count = (sector == null) ? 0 : sector.length;
+		if (count == 0) {
+			return;
+		}
+		
+		float x1[] = ColumnData.getFloatArray("BMTRec::Clusters.x1");
+		float y1[] = ColumnData.getFloatArray("BMTRec::Clusters.y1");
+		float x2[] = ColumnData.getFloatArray("BMTRec::Clusters.x2");
+		float y2[] = ColumnData.getFloatArray("BMTRec::Clusters.y2");
+		
+		Point p1 = new Point();
+		Point p2 = new Point();
+
+		for (int i = 0;i < count; i++) {
+			container.worldToLocal(p1, 10*x1[i], 10*y1[i]);
+			container.worldToLocal(p2, 10*x2[i], 10*y2[i]);
+			g.setColor(Color.black);
+			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			DataDrawSupport.drawReconCluster(g, p1);
+			DataDrawSupport.drawReconCluster(g, p2);
+		}
+
 	}
 
 

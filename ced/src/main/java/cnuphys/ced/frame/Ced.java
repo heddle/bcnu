@@ -10,6 +10,9 @@ import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Paths;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -1128,7 +1131,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-
+		
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 

@@ -23,6 +23,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Vector;
 
+import org.jlab.io.base.DataEvent;
+
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -33,9 +35,12 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
+import cnuphys.ced.cedview.urwell.HighlightData;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.AdcHit;
@@ -46,6 +51,7 @@ import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
+import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
@@ -81,6 +87,11 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// BMT [sector][layer]
 	private BMTSectorItem _bmtItems[][];
+	
+	//for highlighting
+	private HighlightData _bstHighlightData = new HighlightData();
+	private HighlightData _bmtHighlightData = new HighlightData();
+
 
 	// units are mm
 	// private static Rectangle2D.Double _defaultWorldRectangle = new
@@ -241,6 +252,11 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 					if (showClusters()) {
 						_clusterDrawer.draw(g, container);
 					}
+					
+					//data selected highlight?
+					drawDataSelectedHighlight(g, container);
+
+
 
 					Rectangle screenRect = getActiveScreenRectangle(container);
 					drawAxes(g, container, screenRect, true);
@@ -252,6 +268,62 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		};
 		getContainer().setAfterDraw(afterDraw);
 	}
+	
+	//draw data selected hightlight data
+	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
+
+		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
+		if (dataEvent == null) {
+			return;
+		}
+
+		if (showClusters()) {
+			drawHighlightClusters(g, container, dataEvent);
+		}
+
+	}
+	
+	//draw highlighted clusters
+	private void drawHighlightClusters(Graphics g, IContainer container, DataEvent dataEvent) {
+		// indices are zero based
+		if ((_bstHighlightData.cluster >= 0) && dataEvent.hasBank("BSTRec::Clusters")) {
+			int idx = _bstHighlightData.cluster; // 0 based
+
+			float x1 = ColumnData.getFloatArray("BSTRec::Clusters.x1")[idx];
+			float y1 = ColumnData.getFloatArray("BSTRec::Clusters.y1")[idx];
+			float x2 = ColumnData.getFloatArray("BSTRec::Clusters.x2")[idx];
+			float y2 = ColumnData.getFloatArray("BSTRec::Clusters.y2")[idx];
+			Point p1 = new Point();
+			Point p2 = new Point();
+
+			container.worldToLocal(p1, 10 * x1, 10 * y1);
+			container.worldToLocal(p2, 10 * x2, 10 * y2);
+			g.setColor(Color.black);
+			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			DataDrawSupport.drawReconClusterHighlight(g, p1);
+			DataDrawSupport.drawReconClusterHighlight(g, p2);
+		}
+		
+		if ((_bmtHighlightData.cluster >= 0) && dataEvent.hasBank("BMTRec::Clusters")) {
+			int idx = _bmtHighlightData.cluster; // 0 based
+
+			float x1 = ColumnData.getFloatArray("BMTRec::Clusters.x1")[idx];
+			float y1 = ColumnData.getFloatArray("BMTRec::Clusters.y1")[idx];
+			float x2 = ColumnData.getFloatArray("BMTRec::Clusters.x2")[idx];
+			float y2 = ColumnData.getFloatArray("BMTRec::Clusters.y2")[idx];
+			Point p1 = new Point();
+			Point p2 = new Point();
+
+			container.worldToLocal(p1, 10 * x1, 10 * y1);
+			container.worldToLocal(p2, 10 * x2, 10 * y2);
+			g.setColor(Color.black);
+			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			DataDrawSupport.drawReconClusterHighlight(g, p1);
+			DataDrawSupport.drawReconClusterHighlight(g, p2);
+		}
+
+	}
+
 
 	// draw cosmic ray tracks
 	private void drawCosmicTracks(Graphics g, IContainer container) {
@@ -739,5 +811,50 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
 		wp.x = x;
 		wp.y = y;
+	}
+	
+	/**
+	 * In the BankDataTable a row was selected.
+	 * @param bankName the name of the bank
+	 * @param index the 0-based index into the bank
+	 */
+	@Override
+	public void dataSelected(String bankName, int index) {
+		System.out.println("CentralXY selected [" + bankName + "]  index: " + index);
+		
+		if ("BMT::adc".equals(bankName)) {
+		}
+		else if ("BMTRec::Clusters".equals(bankName)) {
+		}
+		else if ("BMTRec::Crosses".equals(bankName)) {
+		}
+		else if ("BMTRec::Hits".equals(bankName)) {
+			_bstHighlightData.hit = index;
+		}
+		else if ("BST::adc".equals(bankName)) {
+		}
+		else if ("BSTRec::Clusters".equals(bankName)) {
+			_bstHighlightData.cluster = index;
+		}
+		else if ("BSTRec::Crosses".equals(bankName)) {
+			_bstHighlightData.cross = index;
+		}
+		else if ("BSTRec::Hits".equals(bankName)) {
+		}
+		else if ("CTOF::adc".equals(bankName)) {
+		}
+		else if ("CTOF::hits".equals(bankName)) {
+		}
+		else if ("CTOF::tdc".equals(bankName)) {
+		}
+		else if ("CVTRec::Tracks".equals(bankName)) {
+		}
+		else if ("CVTRec::Trajectory".equals(bankName)) {
+		}
+		else if ("CVTRec::uTracks".equals(bankName)) {
+		}
+
+		refresh();
+
 	}
 }
