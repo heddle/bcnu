@@ -6,6 +6,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.model.StudentData;
@@ -36,7 +37,7 @@ public class PresScholarStep extends CheckListLaunchable {
 
 			student.setLocked(false);
 
-			advisors.get(index).addAdvisee(student, true);
+			advisors.get(index).addAdvisee(student, true, EReason.PRSC);
 			i++;
 		}
 

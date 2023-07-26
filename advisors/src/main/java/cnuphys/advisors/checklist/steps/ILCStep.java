@@ -6,6 +6,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
@@ -59,7 +60,7 @@ public class ILCStep extends CheckListLaunchable {
 
 					if (assign) {
 						student.setILC();
-						advisor.addAdvisee(student, true);
+						advisor.addAdvisee(student, true, EReason.ILC);
 						ilc.count += 1;
 					}
 				}

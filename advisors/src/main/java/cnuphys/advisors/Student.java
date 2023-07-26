@@ -3,6 +3,7 @@ package cnuphys.advisors;
 import java.util.ArrayList;
 import java.util.List;
 
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.Course;
@@ -25,6 +26,9 @@ public class Student extends Person implements ITabled {
 
 	/** the assigned advisor */
 	public Advisor advisor;
+	
+	/** thereason for the assignment */
+	public EReason reason = EReason.NONE;
 
 	/** Student schedule only of classes taught by an FCA */
 	public List<Course> schedule = new ArrayList<>();
@@ -244,6 +248,9 @@ public class Student extends Person implements ITabled {
 			return advisor == null ? "---" : advisor.name;
 		}
 		else if (col == 15) {
+			return reason == EReason.NONE ? "---" : reason.name();
+		}
+		else if (col == 16) {
 			return hasCourseWithAdvisor() ? "Y" : "";
 		}
 

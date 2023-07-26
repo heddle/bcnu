@@ -6,6 +6,7 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
@@ -27,7 +28,7 @@ public class HonorsStudentInClassStep extends CheckListLaunchable {
 			Advisor adv = bestInClassAdvisor(student);
 			if (adv != null) {
 				System.out.println("  ** HONR BEST MATCH " + adv.name);
-				adv.addAdvisee(student, true);
+				adv.addAdvisee(student, true, EReason.HONR);
 
 				if (adv.adviseeCount() >= target) {
 					adv.setLocked();

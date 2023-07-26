@@ -7,6 +7,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckList;
 import cnuphys.advisors.enums.Department;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.frame.AdvisorAssign;
@@ -48,15 +49,17 @@ public class DataManager {
 	public static final DataAttribute rowAtt = new DataAttribute(" ", 40);
 
 
-	public static final DataAttribute inClassAtt = new DataAttribute(UnicodeSupport.SMILEYFACE, 20);
+	public static final DataAttribute inClassAtt = new DataAttribute(UnicodeSupport.SMILEYFACE, 18);
 	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 72, "id", "cnuid");
-	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 160);
+	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 150);
 	public static final DataAttribute lastNameAtt = new DataAttribute("LAST", 105, "last name", "lastname", "last_name", "lname");
-	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 80, "first name", "firstname", "lfirst_name", "fname");
+	public static final DataAttribute firstNameAtt = new DataAttribute("FIRST", 72, "first name", "firstname", "lfirst_name", "fname");
 	public static final DataAttribute departmentNameAtt = new DataAttribute("DEPT", 70, "department", "adv1_dept");
 	public static final DataAttribute numAdviseeAtt = new DataAttribute("#ADV", 45);
 	public static final DataAttribute numMajorAtt = new DataAttribute("#MAJ", 45);
 	public static final DataAttribute enrollmentAtt = new DataAttribute("Count", 45);
+
+	public static final DataAttribute reasonAtt = new DataAttribute("Reason", 44);
 
 	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");
 //	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
@@ -545,7 +548,7 @@ public class DataManager {
 	 * @param lockWhenDone if true, lock the students down
 	 * @param errPrompt used in a error message if all advisors max out
 	 */
-	public static  void roundRobinAssign(List<Advisor> advisors, List<Student> students, boolean lockWhenDone, String errPrompt) {
+	public static  void roundRobinAssign(List<Advisor> advisors, List<Student> students, boolean lockWhenDone, String errPrompt, EReason reason) {
 
 		int numAdvisor = advisors.size();
 		int numStudent = students.size();
@@ -571,7 +574,7 @@ public class DataManager {
 				continue;
 			}
 
-			advisor.addAdvisee(student, lockWhenDone);
+			advisor.addAdvisee(student, lockWhenDone, reason);
 
 			if (advisor.adviseeCount() >= globalTarget) {
 				advisor.setLocked();

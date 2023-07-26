@@ -6,6 +6,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.model.DataManager;
 
 public class PSPStep extends CheckListLaunchable {
@@ -22,7 +23,7 @@ public class PSPStep extends CheckListLaunchable {
 
 		List<Student> students = DataManager.getUnassignedPSPStudents();
 
-		DataManager.roundRobinAssign(advisors, students, true, "PSP students");
+		DataManager.roundRobinAssign(advisors, students, true, "PSP students", EReason.PSP);
 	}
 	
 }

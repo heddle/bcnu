@@ -5,6 +5,7 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.DataManager;
@@ -34,7 +35,7 @@ public class HonorsMajorStep extends CheckListLaunchable {
 				students.removeIf(x -> x.locked());
 				advisors.removeIf(x -> x.locked());
 
-				DataManager.roundRobinAssign(advisors, students, true, "Students by Specialty");
+				DataManager.roundRobinAssign(advisors, students, true, "Students by Specialty", EReason.SPEC);
 
 			}
 
@@ -50,7 +51,7 @@ public class HonorsMajorStep extends CheckListLaunchable {
 				students.removeIf(x -> x.locked());
 				advisors.removeIf(x -> x.locked());
 
-				DataManager.roundRobinAssign(advisors, students, true, "Honors by Major");
+				DataManager.roundRobinAssign(advisors, students, true, "Honors by Major", EReason.MAJOR);
 
 			}
 
@@ -65,7 +66,7 @@ public class HonorsMajorStep extends CheckListLaunchable {
 			students.removeIf(x -> x.locked());
 			advisors.removeIf(x -> x.locked());
 
-			DataManager.roundRobinAssign(advisors, students, true, "Honors by Secondary FCA Major");
+			DataManager.roundRobinAssign(advisors, students, true, "Honors by Secondary FCA Major", EReason.MAJ2ND);
 
 		}
 		

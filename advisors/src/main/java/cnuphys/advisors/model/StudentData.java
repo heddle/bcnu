@@ -32,7 +32,7 @@ public class StudentData extends DataModel {
 			DataManager.firstNameAtt, 
 			DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
-			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt, DataManager.inClassAtt };
+			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt, DataManager.reasonAtt, DataManager.inClassAtt };
 
 	public StudentData(String baseName) {
 		super(baseName, studentAttributes);

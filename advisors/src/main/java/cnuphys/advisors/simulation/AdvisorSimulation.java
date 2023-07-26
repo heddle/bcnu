@@ -4,6 +4,7 @@ import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.solution.AdvisorSolution;
 import cnuphys.advisors.table.InputOutput;
@@ -166,8 +167,8 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		advisorA.removeAdvisee(studentA);
 		advisorB.removeAdvisee(studentB);
 
-		advisorA.addAdvisee(studentB, false);
-		advisorB.addAdvisee(studentA, false);
+		advisorA.addAdvisee(studentB, false, EReason.ALG);
+		advisorB.addAdvisee(studentA, false, EReason.ALG);
 
 		studentA.advisor = advisorB;
 		studentB.advisor = advisorA;

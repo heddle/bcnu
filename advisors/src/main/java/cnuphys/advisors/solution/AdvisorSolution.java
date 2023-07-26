@@ -6,6 +6,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.dialogs.OptionsDialog;
 import cnuphys.advisors.enums.EAlgorithm;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.simulation.AdvisorSimulation;
 import cnuphys.advisors.table.InputOutput;
@@ -144,7 +145,7 @@ public class AdvisorSolution extends Solution {
 					simulation.advisors.size(), simulation.students.size());
 			InputOutput.debugPrintln(s);
 			DataManager.roundRobinAssign(simulation.advisors, simulation.students, false,
-					"Error in Solution initalSolution");
+					"Error in Solution initalSolution", EReason.ALG);
 
 			InputOutput.debugPrintln("Initial solution energy: " + solution.getEnergy());
 		}

@@ -5,6 +5,7 @@ import java.util.List;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.model.DataManager;
 
@@ -25,8 +26,8 @@ public class MusTheaStep extends CheckListLaunchable  {
 		List<Advisor> musicAdvisors = DataManager.getAdvisorsForMajor(Major.MUSIC);
 		List<Advisor> theaterAdvisors = DataManager.getAdvisorsForMajor(Major.THEA);
 
-		DataManager.roundRobinAssign(musicAdvisors, musicStudents, true, "In Music assign");
-		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, true, "In Theater assign");
+		DataManager.roundRobinAssign(musicAdvisors, musicStudents, true, "In Music assign", EReason.MUSC);
+		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, true, "In Theater assign", EReason.THEA);
 	}
 
 }

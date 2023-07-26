@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cnuphys.advisors.enums.Department;
+import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.io.ITabled;
@@ -92,7 +93,7 @@ public class Advisor extends Person implements ITabled {
 	 * @param student
 	 * @param lockStudentWhenDone if true lock down student so can't be reassigned by algorithm
 	 */
-	public void addAdvisee(Student student, boolean lockStudentWhenDone) {
+	public void addAdvisee(Student student, boolean lockStudentWhenDone, EReason reason) {
 
 		//is the advisor locked?
 		if (locked()) {
@@ -115,6 +116,8 @@ public class Advisor extends Person implements ITabled {
 		advisees.remove(student);
 		advisees.add(student);
 		student.setLocked(lockStudentWhenDone);
+		
+		student.reason = reason;
 		student.advisor = this;
 
 //		String s = String.format("Assignment made. Advisor: [%s] (%d) Student: [%s]", name, adviseeCount(), student.fullNameAndID());
