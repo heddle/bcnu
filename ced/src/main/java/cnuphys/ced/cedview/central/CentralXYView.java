@@ -287,6 +287,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private void drawHighlightClusters(Graphics g, IContainer container, DataEvent dataEvent) {
 		// indices are zero based
 		if ((_bstHighlightData.cluster >= 0) && dataEvent.hasBank("BSTRec::Clusters")) {
+			
+			if (ColumnData.getFloatArray("BSTRec::Clusters.x1") == null) {
+				return;
+			}
 			int idx = _bstHighlightData.cluster; // 0 based
 
 			float x1 = ColumnData.getFloatArray("BSTRec::Clusters.x1")[idx];
