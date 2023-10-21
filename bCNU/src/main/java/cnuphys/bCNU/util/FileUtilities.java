@@ -21,7 +21,6 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
-import cnuphys.bCNU.component.filetree.ExtensionFileFilter;
 import cnuphys.bCNU.graphics.ImageManager;
 
 public class FileUtilities {
@@ -687,37 +686,6 @@ public class FileUtilities {
 		return null;
 	}
 
-	/**
-	 * Concatenate all the files in a directory into a single string
-	 * 
-	 * @param dir       the directory in question
-	 * @param extension the extension filter (e.g., "xml");
-	 * @return a single string;
-	 */
-	public static String concatenate(File dir, String extension) {
-		if ((dir == null) || !dir.isDirectory() || (extension == null)) {
-			return null;
-		}
-
-		ArrayList<String> extensions = new ArrayList<String>();
-		extensions.add(extension);
-
-		ExtensionFileFilter ef = new ExtensionFileFilter(extensions);
-
-		File files[] = dir.listFiles(ef);
-		if (files == null) {
-			return null;
-		}
-
-		StringBuffer sb = new StringBuffer(5000 * files.length);
-		for (File file : files) {
-			if (!file.isDirectory()) {
-				sb.append(AsciiReadSupport.asciiFileToString(file));
-			}
-		}
-
-		return sb.toString();
-	}
 
 	/**
 	 * Obtain a list of classes found in a jar file
