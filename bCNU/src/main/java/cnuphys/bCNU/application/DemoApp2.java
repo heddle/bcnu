@@ -23,7 +23,6 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.DrawingView;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.ViewManager;
-import cnuphys.bCNU.view.XMLView;
 
 public class DemoApp2 extends BaseMDIApplication {
 
@@ -121,9 +120,6 @@ public class DemoApp2 extends BaseMDIApplication {
 		// add a user panel on the east
 		drawingView.add(makeUserPanel(), BorderLayout.EAST);
 
-		// xml view
-		XMLView xmlView = new XMLView();
-		xmlView.setVisible(false);
 
 	}
 

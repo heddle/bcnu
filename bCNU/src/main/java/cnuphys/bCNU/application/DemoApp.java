@@ -9,7 +9,6 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.DrawingView;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.ViewManager;
-import cnuphys.bCNU.view.XMLView;
 
 /**
  * Demonstrates and tests the generic views
@@ -65,10 +64,6 @@ public class DemoApp extends BaseMDIApplication {
 		// drawing view
 		DrawingView drawingView = DrawingView.createDrawingView();
 		drawingView.setVisible(true);
-
-		// xml view
-		XMLView xmlView = new XMLView();
-		xmlView.setVisible(false);
 
 	}
 
