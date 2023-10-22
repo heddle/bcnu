@@ -8,7 +8,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.StringTokenizer;
 import java.util.Vector;
@@ -384,31 +383,6 @@ public class FileUtilities {
 	}
 
 	/**
-	 * Given a search path and a baseName, find a readable file.
-	 * 
-	 * @param searchPath the search path, e.g. "dir1;dir2;..."
-	 * @param baseName   the base file name with extension, e.g., myfile.txt
-	 * @return the first matching file that can be read.
-	 */
-	public static File findReadableFile(String searchPath, String baseName) {
-		if ((searchPath == null) || (baseName == null)) {
-			return null;
-		}
-
-		String tokens[] = tokens(searchPath, File.pathSeparator);
-		if (tokens != null) {
-			for (String dir : tokens) {
-				File file = new File(dir, baseName);
-				if ((file != null) && (file.exists() && (file.canRead()))) {
-					return file;
-				}
-			}
-		}
-
-		return null;
-	}
-
-	/**
 	 * @param defaultDir the defaultDir to set
 	 * @param checkExist if <code>true</code>, only set if it exists.
 	 */
@@ -510,12 +484,6 @@ public class FileUtilities {
 		return s;
 	}
 
-	public static int appendOrOverwrite(String prompt) {
-		Object[] options = { "Append", "Overwrite", "Cancel" };
-
-		return JOptionPane.showOptionDialog(null, prompt, "Append or Overwrite?", JOptionPane.YES_NO_CANCEL_OPTION,
-				JOptionPane.QUESTION_MESSAGE, ImageManager.cnuIcon, options, options[0]);
-	}
 
 	/**
 	 * Converts a base path and some other path to the relative path (for the other
@@ -631,60 +599,6 @@ public class FileUtilities {
 		return null;
 	}
 
-	/**
-	 * Scan from a root, digging down, looking for a named file. Hidden directories
-	 * and files (starting with a ".") are skipped.
-	 * 
-	 * @param root     the root dir to start from, if null the home dir is used.
-	 * @param baseName the baseName of the file you are looking for. It can be a
-	 *                 subpath such as "bankdefs/trunk/clas12/field.data".
-	 * @param maxLevel the maximum number of levels to drill down
-	 * @return the first matching file that is found, or null.
-	 */
-	public static File findFile(String root, String baseName, int maxLevel) {
-		return findFile(fixSeparator(root), baseName, 0, Math.max(Math.min(maxLevel, 15), 1));
-	}
-
-	// recursive call used by public findDirectory
-	private static File findFile(String root, String baseName, int currentLevel, int maxLevel) {
-
-		if (baseName == null) {
-			return null;
-		}
-
-		if (root == null) {
-			root = Environment.getInstance().getHomeDirectory();
-		}
-
-		if (currentLevel > maxLevel) {
-			return null;
-		}
-
-		File rootDir = new File(root);
-		if (!rootDir.exists() || !rootDir.isDirectory()) {
-			return null;
-		}
-
-		File files[] = rootDir.listFiles();
-		if (files == null) {
-			return null;
-		}
-
-		for (File file : files) {
-			// skip hidden files
-			if (!file.getName().startsWith(".") && !file.getName().startsWith("$")) {
-				if (file.isDirectory()) {
-					File ff = findFile(file.getPath(), baseName, currentLevel + 1, maxLevel);
-					if (ff != null) {
-						return ff;
-					}
-				} else if (file.getPath().endsWith(baseName)) {
-					return file;
-				}
-			}
-		} // end for
-		return null;
-	}
 
 
 	/**

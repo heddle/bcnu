@@ -18,9 +18,6 @@ import javax.swing.JTextField;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.toolbar.lasso.FunnelLassoRectButton;
-import cnuphys.bCNU.graphics.toolbar.lasso.ILassoListener;
-import cnuphys.bCNU.graphics.toolbar.lasso.LassoRectButton;
 import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.Fonts;
 
@@ -95,12 +92,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	// default pointer tool
 	private PointerButton _pointerButton;
-
-	// optional lasso rectangle button
-	private LassoRectButton _lassoRectButton;
-
-	// optional funnellasso rectangle button
-	private FunnelLassoRectButton _funnellassoRectButton;
 
 	// rubber-band zoom
 	private BoxZoomButton _boxZoomButton;
@@ -486,24 +477,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	}
 
 	/**
-	 * Get the toolbar's lasso rectangle button.
-	 * 
-	 * @return the toolbar's lasso rectangle button.
-	 */
-	public LassoRectButton getLassoRectButton() {
-		return _lassoRectButton;
-	}
-
-	/**
-	 * Get the toolbar's funnellasso rectangle button.
-	 * 
-	 * @return the toolbar's funnellasso rectangle button.
-	 */
-	public FunnelLassoRectButton getFunnelLassoRectButton() {
-		return _funnellassoRectButton;
-	}
-
-	/**
 	 * Get the toolbar's polygon button.
 	 * 
 	 * @return the toolbar's polygon button.
@@ -837,48 +810,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 		if (_userComponent != null) {
 			_userComponent.setUserDraw(drawable);
 		}
-	}
-
-	/**
-	 * Add the lasso button
-	 * 
-	 * @param lassoListener will respond to the lasso selections
-	 */
-	public void addLassoButton(ILassoListener lassoListener) {
-		addLassoButton(lassoListener, false);
-	}
-
-	/**
-	 * Add the funnellasso button
-	 * 
-	 * @param lassoListener will respond to the funnellasso selections
-	 */
-	public void addFunnelLassoButton(ILassoListener lassoListener) {
-		addFunnelLassoButton(lassoListener, false);
-	}
-
-	/**
-	 * Add the lasso button
-	 * 
-	 * @param lassoListener will respond to the lasso selections
-	 * @param xormode       will cause the lasso to rubberband in simpler xormode.
-	 *                      This works better for 3D containers.
-	 */
-	public void addLassoButton(ILassoListener lassoListener, boolean xormode) {
-		_lassoRectButton = new LassoRectButton(_container, lassoListener, xormode);
-		add(_lassoRectButton);
-	}
-
-	/**
-	 * Add the funnellasso button
-	 * 
-	 * @param lassoListener will respond to the funnel lasso selections
-	 * @param xormode       will cause the funnel lasso to rubberband in simpler
-	 *                      xormode. This works better for 3D containers.
-	 */
-	public void addFunnelLassoButton(ILassoListener lassoListener, boolean xormode) {
-		_funnellassoRectButton = new FunnelLassoRectButton(_container, lassoListener, xormode);
-		add(_funnellassoRectButton);
 	}
 
 	/**

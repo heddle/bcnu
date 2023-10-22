@@ -24,7 +24,6 @@ import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.CommonToolBar;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.bCNU.util.PrintUtilities;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.splot.plot.VerticalLabelUI;
 
@@ -330,15 +329,7 @@ public class ContainerPanel extends JPanel  {
 		
 
 		// toolbar
-		_toolbar = new BaseToolBar(_container, _tbarBits) {
-			@Override
-			public void paint(Graphics g) {
-				// exclude from print
-				if (!PrintUtilities.isPrinting()) {
-					super.paint(g);
-				}
-			}
-		};
+		_toolbar = new BaseToolBar(_container, _tbarBits);
 
 		_northPanel = new JPanel();
 		_northPanel.setOpaque(true);
@@ -363,13 +354,6 @@ public class ContainerPanel extends JPanel  {
 		Color bg = X11Colors.getX11Color("alice blue");
 
 		JLabel label = new JLabel() {
-			@Override
-			public void paint(Graphics g) {
-				// exclude from print
-				if (!PrintUtilities.isPrinting()) {
-					super.paint(g);
-				}
-			}
 
 			@Override
 			public Dimension getPreferredSize() {
