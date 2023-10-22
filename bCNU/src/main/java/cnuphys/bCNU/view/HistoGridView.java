@@ -143,36 +143,6 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 				((HistoGridView) (getView())).resetPlotToolbars(activeButton == getToolBar().getBoxZoomButton());
 			}
 
-			/**
-			 * Have you handled the print button so the default action is ignored.
-			 * 
-			 * @return <code>true</code> if the printer button was handled.
-			 */
-			@Override
-			public boolean handledPrint() {
-				PlotCanvas canvas = ((HistoGridView) (getView()))._hotCanvas;
-				if (canvas != null) {
-					canvas.print();
-				}
-
-				return true;
-			}
-
-			/**
-			 * Have you handled the camera button so the default action is ignored.
-			 * 
-			 * @return <code>true</code> if the camera button was handled.
-			 */
-			@Override
-			public boolean handledCamera() {
-				PlotCanvas canvas = ((HistoGridView) (getView()))._hotCanvas;
-				if (canvas != null) {
-					canvas.takePicture();
-				}
-
-				return true;
-			}
-
 		};
 
 		final HistoGridView view = new HistoGridView(numRow, numCol, cellWidth, cellHeight, PropertySupport.WIDTH,

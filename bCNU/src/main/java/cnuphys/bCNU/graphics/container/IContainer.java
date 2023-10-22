@@ -268,20 +268,6 @@ public interface IContainer {
 	public void activeToolBarButtonChanged(ToolBarToggleButton activeButton);
 
 	/**
-	 * Have you handled the print button so the default action is ignored.
-	 * 
-	 * @return <code>true</code> if the printer button was handled.
-	 */
-	public boolean handledPrint();
-
-	/**
-	 * Have you handled the camera button so the default action is ignored.
-	 * 
-	 * @return <code>true</code> if the camera button was handled.
-	 */
-	public boolean handledCamera();
-
-	/**
 	 * Get the active button on the toolbar, if there is a toolbar.
 	 * 
 	 * @return the active toggle button.

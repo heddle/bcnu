@@ -54,14 +54,12 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	public static final int RECTGRIDBUTTON = 01000000;
 
 	// used to eliminate some basic buttons
-	public static final int NOPRINTERBUTTON = 010000000;
-	public static final int NOCAMERABUTTON = 020000000;
 	public static final int CENTERBUTTON = 040000000;
 
 	public static final int DRAWING = ELLIPSEBUTTON + TEXTBUTTON + RECTANGLEBUTTON + POLYGONBUTTON + LINEBUTTON
 			+ RADARCBUTTON + POLYLINEBUTTON;
 
-	public static final int EVERYTHING = 07777777777 & ~NOCAMERABUTTON & ~NOPRINTERBUTTON & ~NOZOOM;
+	public static final int EVERYTHING = 07777777777 & ~NOZOOM;
 	public static final int STANDARD = EVERYTHING & ~CONTROLPANELBUTTON & ~USERCOMPONENT & ~CLONEBUTTON;
 
 	public static final int NODRAWING = EVERYTHING & ~DRAWING;
@@ -149,12 +147,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	// toggle control panel
 	private ControlPanelButton _cpButton;
 
-	// creates a file image
-	private CameraButton _cameraButton;
-
-	// prints the container
-	private PrinterButton _printerButton;
-
 	// the owner container
 	private IContainer _container;
 
@@ -202,13 +194,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	 * @param bits Bitwise test of which annotation buttons to add.
 	 */
 	protected void makeButtons(int bits) {
-		if (notNothing && !Bits.checkBit(bits, NOCAMERABUTTON)) {
-			_cameraButton = new CameraButton(_container);
-		}
-
-		if (notNothing && !Bits.checkBit(bits, NOPRINTERBUTTON)) {
-			_printerButton = new PrinterButton(_container);
-		}
 
 		if (notNothing) {
 			if (!Bits.checkBit(bits, NOZOOM)) {
@@ -296,8 +281,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 			setDefaultToggleButton(_pointerButton);
 		}
 
-		add(_printerButton);
-		add(_cameraButton);
 		add(_cpButton, false); // false to prevent it joining button group
 		add(_boxZoomButton);
 		add(_zoomInButton);
@@ -447,14 +430,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 		return _magnifyButton;
 	}
 
-	/**
-	 * Get the camera button.
-	 * 
-	 * @return the camera button.
-	 */
-	public CameraButton getCameraButton() {
-		return _cameraButton;
-	}
 
 	/**
 	 * Get the button used for recentering.

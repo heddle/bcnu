@@ -212,18 +212,6 @@ public class Container2D implements IContainer {
 	}
 
 	@Override
-	public boolean handledPrint() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean handledCamera() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public ToolBarToggleButton getActiveButton() {
 		// TODO Auto-generated method stub
 		return null;

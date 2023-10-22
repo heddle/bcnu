@@ -1,6 +1,5 @@
 package cnuphys.bCNU.graphics.container;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -25,7 +24,6 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 import cnuphys.bCNU.drawable.DrawableChangeType;
 import cnuphys.bCNU.drawable.DrawableList;
@@ -235,40 +233,6 @@ public class BaseContainer extends JComponent
 		setForeground(sContainer.getForeground());
 	}
 
-	/**
-	 * Just give the container a simple drawer
-	 *
-	 * @param drawer the only drawer
-	 */
-	public void noModel(IDrawable drawer) {
-		_layers = null;
-		_afterDraw = drawer;
-		_beforeDraw = null;
-		_userLayers = null;
-		setBackground(Color.gray);
-		setForeground(Color.black);
-	}
-
-	/**
-	 * Test whether the view is on screen
-	 *
-	 * @return <code>true</code> if the view is on screen
-	 */
-	public boolean isOnScreen() {
-		if (_view == null) {
-			return false;
-		}
-
-		JFrame jf = _view.getParentFrame();
-		if (jf == null) {
-			return false;
-		}
-
-		Dimension d = jf.getSize();
-		Rectangle pr = new Rectangle(0, 0, d.width, d.height);
-		Rectangle r = _view.getBounds();
-		return ((pr != null) && (r != null) && pr.intersects(r));
-	}
 
 	/**
 	 * Override the paint command. Draw all the layers.
@@ -1554,9 +1518,6 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent mouseEvent) {
-		// TODO properly implement
-		// Cannot scroll HUD as it is not scrollable, or is it?
-		// Is it possible to encapsulate HUD in a transparent JScrollPane?
 	}
 
 	/**
@@ -1662,26 +1623,6 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void activeToolBarButtonChanged(ToolBarToggleButton activeButton) {
-	}
-
-	/**
-	 * Have you handled the print button so the default action is ignored.
-	 *
-	 * @return <code>true</code> if the printer button was handled.
-	 */
-	@Override
-	public boolean handledPrint() {
-		return false;
-	}
-
-	/**
-	 * Have you handled the camera button so the default action is ignored.
-	 *
-	 * @return <code>true</code> if the camera button was handled.
-	 */
-	@Override
-	public boolean handledCamera() {
-		return false;
 	}
 
 }
