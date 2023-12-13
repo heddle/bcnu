@@ -19,7 +19,6 @@ import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.bCNU.util.PrintUtilities;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.ced3d.view.PlainView3D;
 import cnuphys.lund.X11Colors;
@@ -264,14 +263,6 @@ public abstract class PlainPanel3D extends Panel3D {
 		add(ep, BorderLayout.EAST);
 	}
 
-
-	/**
-	 * Print the panel.
-	 */
-	@Override
-	public void print() {
-		PrintUtilities.printComponent(this);
-	}
 
 	/**
 	 * Snapshot of the panel.

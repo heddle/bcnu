@@ -11,7 +11,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
-import cnuphys.bCNU.util.PrintUtilities;
+
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.ced3d.PlainPanel3D;
@@ -86,9 +86,7 @@ public abstract class PlainView3D extends BaseView implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 
 		Object source = e.getSource();
-		if (source == _printMenuItem) {
-			PrintUtilities.printComponent(_panel3D);
-		} else if (source == _pngMenuItem) {
+        if (source == _pngMenuItem) {
 			GraphicsUtilities.saveAsPng(_panel3D);
 		} else if (source == _refreshItem) {
 			_panel3D.refresh();
