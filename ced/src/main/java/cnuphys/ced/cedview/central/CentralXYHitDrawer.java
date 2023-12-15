@@ -25,6 +25,7 @@ import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.splot.plot.X11Colors;
+import eu.mihosoft.vrl.v3d.Vector3d;
 
 public class CentralXYHitDrawer extends CentralHitDrawer {
 
@@ -272,7 +273,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				if (recHits.count() > 0) {
 					for (BaseHit2 bhit2 : recHits) {
 						BMTSectorItem bmtItem = _view.getBMTSectorItem(bhit2.sector, bhit2.layer);
-						if (bmtItem.isZLayer()) {
+						if (bmtItem != null && bmtItem.isZLayer()) {
 
 							double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(bhit2.sector, bhit2.layer,
 									bhit2.component);
@@ -331,13 +332,21 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			Point2D.Double wp = new Point2D.Double();
 
 			BaseHit2List recHits = BST.getInstance().getRecHits();
+			
 			if (recHits != null) {
 
 				for (BaseHit2 bhit2 : recHits) {
-					BSTGeometry.getStripMidpointXY(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1, wp);
-					container.worldToLocal(pp, wp);
-					bhit2.setLocation(pp);
-					DataDrawSupport.drawReconHit(g, pp);
+					if (bhit2.sector > 0 && bhit2.layer > 0 && bhit2.component > 0 && bhit2.layer < 7
+							&& bhit2.component < 257 && (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
+						BSTGeometry.getStripMidpointXY(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1, wp);
+						container.worldToLocal(pp, wp);
+						bhit2.setLocation(pp);
+						DataDrawSupport.drawReconHit(g, pp);
+
+					} else {
+						System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits   " + bhit2);
+					}
+
 				}
 
 			}

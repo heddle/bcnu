@@ -45,7 +45,13 @@ public class BSTGeometry {
 	 * @return the strip as a line units are mm
 	 */
 	public static Line3d getStrip(int sector, int layer, int strip) {
-		return _svtFac.getShiftedStrip(layer, sector, strip);
+		try {
+			return _svtFac.getStrip(layer, sector, strip);
+		} catch (IllegalArgumentException e) {
+			System.err.println("getStrip: sector=" + sector + " layer=" + layer + " strip=" + strip);
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/**
@@ -236,6 +242,7 @@ public class BSTGeometry {
 	 * @return the strip midpoint units are mm
 	 */
 	public static Vector3d getStripMidpoint(int sector, int layer, int strip) {
+		
 		Line3d line = getStrip(sector, layer, strip);
 		Vector3d p0 = line.origin();
 		Vector3d p1 = line.end();

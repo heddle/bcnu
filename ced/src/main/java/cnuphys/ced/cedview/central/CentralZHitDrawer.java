@@ -94,10 +94,18 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 			if (recHits != null) {
 
 				for (BaseHit2 bhit2 : recHits) {
-					Vector3d v = BSTGeometry.getStripMidpoint(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1);
-					double alpha = _view.labToLocalWithAlpha(v.x, v.y, v.z, pp);
-					int alp = (int) Math.max(0, Math.min(255, 255 * alpha));
-					DataDrawSupport.drawReconHit(g, pp, alp);
+
+					if (bhit2.sector > 0 && bhit2.layer > 0 && bhit2.component > 0 && bhit2.layer < 7
+							&& bhit2.component < 257 && (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
+						Vector3d v = BSTGeometry.getStripMidpoint(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1);
+						double alpha = _view.labToLocalWithAlpha(v.x, v.y, v.z, pp);
+						int alp = (int) Math.max(0, Math.min(255, 255 * alpha));
+						DataDrawSupport.drawReconHit(g, pp, alp);
+
+					} else {
+						System.err.println("bad data in CentralZHitDrawer drawBSTReconHits   " + bhit2);
+					}
+
 				}
 
 			}
