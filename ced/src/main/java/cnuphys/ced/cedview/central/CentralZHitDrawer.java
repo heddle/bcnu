@@ -103,7 +103,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 						DataDrawSupport.drawReconHit(g, pp, alp);
 
 					} else {
-						System.err.println("bad data in CentralZHitDrawer drawBSTReconHits   " + bhit2);
+			//			System.err.println("bad data in CentralZHitDrawer drawBSTReconHits   " + bhit2);
 					}
 
 				}

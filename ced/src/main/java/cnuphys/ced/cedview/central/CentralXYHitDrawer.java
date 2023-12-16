@@ -344,7 +344,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 						DataDrawSupport.drawReconHit(g, pp);
 
 					} else {
-						System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits   " + bhit2);
+	//					System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits   " + bhit2);
 					}
 
 				}

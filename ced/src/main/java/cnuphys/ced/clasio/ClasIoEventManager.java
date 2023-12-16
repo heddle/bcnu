@@ -1070,7 +1070,7 @@ public class ClasIoEventManager {
 					IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
 					if (listeners[i] == IClasIoEventListener.class) {
 						boolean notify = true;
-						if (this.isAccumulating()) {
+						if (isAccumulating()) {
 							notify = !listener.ignoreIfAccumulating();
 						}
 
@@ -1102,7 +1102,10 @@ public class ClasIoEventManager {
 				((CedView) jif).getContainer().redoFeedback();
 			}
 		}
-
+		
+		
+		//refresh
+		//Ced.refresh();
 	}
 
 	private void swimAllMC() {

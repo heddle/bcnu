@@ -48,8 +48,7 @@ public class BSTGeometry {
 		try {
 			return _svtFac.getStrip(layer, sector, strip);
 		} catch (IllegalArgumentException e) {
-			System.err.println("getStrip: sector=" + sector + " layer=" + layer + " strip=" + strip);
-			e.printStackTrace();
+			System.err.println("Illegal Values: getStrip: sector=" + sector + " layer=" + layer + " strip=" + strip);
 		}
 		return null;
 	}
@@ -286,62 +285,6 @@ public class BSTGeometry {
 		}
 
 
-	//	Line3d line = svtFac.getShiftedStrip(layer-1, sector-1, strip-1);
 
-		//this is supposed to create less pounding of ccdb
-//		DefaultLogger.initialize();
-
-
-//		initialize();
-
-//		int sector = 3;
-//		int layer = 5;
-
-//		for (int strip = 1; strip < 256; strip++) {
-//			Line3D line = getStrip(sector, layer, strip);
-//
-//			Point3D mp3d1 = line.origin();
-//			Point3D mp3d2 = line.end();
-//
-//			String s = String.format(
-//					"%4d %4d STRIP = %4d (%-11.5f %-11.5f %-11.5f) (%-11.5f %-11.5f %-11.5f) strip length: %-11.5f",
-//					sector, layer, strip, mp3d1.x() * 10, mp3d1.y() * 10, mp3d1.z() * 10,
-//					mp3d2.x() * 10, mp3d2.y() * 10, mp3d2.z() * 10, line.length() * 10);
-//			System.err.println(s);
-//		}
-
-//		double vals[] = new double[10];
-//		// for (int supl = 3; supl < 4; supl++) {
-//		for (int supl = 0; supl < 3; supl++) {
-//			for (int lay = 0; lay < 1; lay++) {
-//				// for (int lay = 1; lay < 2; lay++) {
-//				// for (int sect = 0; sect < 1; sect++) {
-//				for (int sect = 0; sect < sectorsPerSuperlayer[supl]; sect++) {
-//					getLimitValues(sect, supl, lay, vals);
-//
-//					String s = String.format(
-//							"%4d %4d %4d %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f",
-//							supl + 1, sect + 1, lay + 1, vals[0], vals[1], vals[2], vals[3], vals[4], vals[5], vals[6],
-//							vals[7], vals[8], vals[9]);
-//					System.err.println(s);
-//				}
-//			}
-//		}
-
-//		float coords[] = new float[6];
-//		for (int strip = 1; strip <= 256; strip++) {
-//			getStrip(1, 6, strip, coords);
-//			String s = String.format("strip %4d  coords: [%-9.3f  %-9.3f  %-9.3f]  [%-9.3f  %-9.3f  %-9.3f]  ", strip,
-//					coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-//			System.err.println(s);
-//		}
-//
-//		double vals[] = new double[10];
-//		getLimitValues(0, 3, 1, vals);
-//
-//		System.out.println("done.");
-//		String s = String.format("%-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f %-9.3f", vals[0],
-//				vals[1], vals[2], vals[3], vals[4], vals[5], vals[6], vals[7], vals[8], vals[9]);
-//		System.err.println(s);
 	}
 }
