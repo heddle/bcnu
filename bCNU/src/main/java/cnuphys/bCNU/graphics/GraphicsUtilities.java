@@ -1417,37 +1417,7 @@ public class GraphicsUtilities {
 		g.drawPolygon(xPoints, yPoints, 3);
 	}
 
-	public static void drawSwimTrajectory(Graphics g, IContainer container, SwimTrajectory2D trajectory) {
 
-		Graphics2D g2 = (Graphics2D) g;
-
-		Stroke oldStroke = g2.getStroke();
-
-		Polygon poly = new Polygon();
-		Point2D.Double path[] = trajectory.getPath();
-
-		if (path == null) {
-			return;
-		}
-
-		Point pp = new Point();
-
-		for (Point2D.Double wp : path) {
-			container.worldToLocal(pp, wp);
-			poly.addPoint(pp.x, pp.y);
-		}
-
-		if (poly.npoints > 1) {
-
-			LundId lid = trajectory.getTrajectory3D().getLundId();
-			LundStyle style = lid.getStyle();
-			g.setColor(style.getLineColor());
-			g2.setStroke(style.getStroke());
-			g.drawPolyline(poly.xpoints, poly.ypoints, poly.npoints);
-		}
-
-		g2.setStroke(oldStroke);
-	}
 
 	/**
 	 * Get the hex format of the color in the form #rrggbbaa

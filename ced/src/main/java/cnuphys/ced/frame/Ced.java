@@ -124,7 +124,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.5.4";
+	private static final String _release = "1.5.5";
 
 	// used for one time inits
 	private int _firstTime = 0;
