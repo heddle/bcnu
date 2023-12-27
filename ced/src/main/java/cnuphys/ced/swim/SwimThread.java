@@ -1,9 +1,8 @@
 package cnuphys.ced.swim;
 
-import cnuphys.adaptiveSwim.AdaptiveSwimException;
-import cnuphys.adaptiveSwim.AdaptiveSwimResult;
-import cnuphys.adaptiveSwim.AdaptiveSwimmer;
-import cnuphys.adaptiveSwim.InitialValues;
+import cnuphys.CLAS12Swim.CLAS12SwimResult;
+import cnuphys.CLAS12Swim.CLAS12Swimmer;
+import cnuphys.CLAS12Swim.CLAS12Values;
 import cnuphys.adaptiveSwim.SwimType;
 import cnuphys.lund.GeneratedParticleRecord;
 import cnuphys.lund.LundId;
@@ -17,21 +16,27 @@ public class SwimThread extends Thread {
 	private final TrajectoryRowData _trd;
 	
 	//the swimmer
-	private final AdaptiveSwimmer _swimmer;
+	private final CLAS12Swimmer _swimmer;
 	
 	//the max path length
-	private final double _sFinal;
+	private final double _sMax;
 	
-	private final double _initStepSize;
+	private final double _h;
 	
-	private final double _eps;
+	private final double _tolerance;
 
-	public SwimThread(TrajectoryRowData trd, double sFinal, double stepSize, double eps) {
-		_swimmer = new AdaptiveSwimmer();
+	/**
+	 * @param trd the trajectory row data
+	 * @param sMax the max path length
+	 * @param h the initial step size
+	 * @param tolerance the tolerance	
+	 */
+	public SwimThread(TrajectoryRowData trd, double sMax, double h, double tolerance) {
+		_swimmer = new CLAS12Swimmer();
 		_trd = trd;
-		_sFinal = sFinal;	
-		_initStepSize = stepSize;
-		_eps = eps;
+		_sMax = sMax;	
+		_h = h;
+		_tolerance = tolerance;
 	}
 
 	@Override
@@ -39,21 +44,18 @@ public class SwimThread extends Thread {
 		
 		LundId lid = LundSupport.getInstance().get(_trd.getId());
 
-		AdaptiveSwimResult result = new AdaptiveSwimResult(true);
+		CLAS12SwimResult result = null;
 		
-		try {
-			_swimmer.swim(lid.getCharge(), _trd.getXo() / 100, _trd.getYo() / 100, _trd.getZo() / 100,
-					_trd.getMomentum() / 1000, _trd.getTheta(), _trd.getPhi(), _sFinal, _initStepSize, _eps, result);
-		} catch (AdaptiveSwimException e) {
-			e.printStackTrace();
-		}
+		//have to convert trd momentum to GeV
+		result = _swimmer.swim(lid.getCharge(), _trd.getXo(), _trd.getYo(), _trd.getZo(),
+				_trd.getMomentum() / 1000, _trd.getTheta(), _trd.getPhi(), _sMax, _h, _tolerance);
 		result.getTrajectory().setLundId(lid);
 		result.getTrajectory().setSource(_trd.getSource());
 
 		if (result.getTrajectory().getGeneratedParticleRecord() == null) {
-			InitialValues iv = result.getInitialValues();
+			CLAS12Values iv = result.getInitialValues();
 			GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.charge,
-					iv.xo, iv.yo, iv.zo, iv.p, iv.theta, iv.phi);
+					iv.x, iv.y, iv.z, iv.p, iv.theta, iv.phi);
 			result.getTrajectory().setGeneratedParticleRecord(genPart);
 		}
 

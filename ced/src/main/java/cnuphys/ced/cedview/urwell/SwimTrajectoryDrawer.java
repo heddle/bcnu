@@ -86,7 +86,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	@Override
 	public void project(double[] v3d, Point2D.Double wp) {
 		// convert to cm
-		wp.setLocation(v3d[0] * 100, v3d[1] * 100);
+		wp.setLocation(v3d[0], v3d[1]);
 	}
 
 	@Override

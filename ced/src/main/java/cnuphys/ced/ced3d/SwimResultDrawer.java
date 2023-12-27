@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
+import cnuphys.CLAS12Swim.CLAS12SwimResult;
 import cnuphys.adaptiveSwim.AdaptiveSwimResult;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundStyle;
@@ -25,9 +26,9 @@ public class SwimResultDrawer extends Item3D {
 	@Override
 	public void draw(GLAutoDrawable drawable) {
 
-		ArrayList<AdaptiveSwimResult> results = SwimmerControlPanel.getSwimResults();
+		ArrayList<CLAS12SwimResult> results = SwimmerControlPanel.getSwimResults();
 
-		for (AdaptiveSwimResult result : results) {
+		for (CLAS12SwimResult result : results) {
 
 			if (!SwimmerControlPanel.showTrajectory(result)) {
 				continue;
@@ -68,10 +69,10 @@ public class SwimResultDrawer extends Item3D {
 
 		for (int i = 0; i < size; i++) {
 			double v[] = traj.get(i);
-			int j = i * 3;			// convert to cm
-			coords[j] = 100 * (float) v[0];
-			coords[j + 1] = 100 * (float) v[1];
-			coords[j + 2] = 100 * (float) v[2];
+			int j = i * 3;			// in cm
+			coords[j] = (float) v[0];
+			coords[j + 1] = (float) v[1];
+			coords[j + 2] = (float) v[2];
 		}
 
 		Support3D.drawPolyLine(drawable, coords, color, 2f);

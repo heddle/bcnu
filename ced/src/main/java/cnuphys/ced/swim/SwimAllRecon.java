@@ -20,7 +20,7 @@ import cnuphys.swim.Swimming;
 public class SwimAllRecon implements ISwimAll {
 
 	// integration cutoff
-	private static final double PATHMAX = 11.;
+	private static final double PATHMAX = 900;
 
 	/**
 	 * Get all the row data so the trajectory dialog can be updated.
@@ -55,8 +55,12 @@ public class SwimAllRecon implements ISwimAll {
 
 		double stepSize = 1.0e-3;
 		double eps = 1.0e-6;
+		
+		System.err.println("Swimming all Recon particles. Count: " + data.size());
+		int cnt = 1;
 
 		for (TrajectoryRowData trd : data) {
+			System.err.println("Swimming Recon particle " + cnt++ + " of " + data.size());
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 
 			if (lid != null) {
@@ -64,7 +68,7 @@ public class SwimAllRecon implements ISwimAll {
 				String source = trd.getSource();
 
 				if ((source != null) && (source.contains("CVT"))) {
-					sf = 1.5; //shorter max path for cvt tracks
+					sf = 150; //shorter max path for cvt tracks
 				}
 				SwimThread st = new SwimThread(trd, sf, stepSize, eps);
 				swimThreads.add(st);

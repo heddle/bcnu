@@ -20,7 +20,7 @@ import cnuphys.swim.Swimming;
 public class SwimAllMC implements ISwimAll {
 
 	// integration cutoff
-	private static final double PATHMAX = 11.0;
+	private static final double PATHMAX = 900;
 
 	/**
 	 * Get all the row data so the trajectory dialog can be updated.
@@ -60,7 +60,11 @@ public class SwimAllMC implements ISwimAll {
 		//used to avoid swimming duplicates
 		ArrayList<String> swam = new ArrayList<>();
 
+		System.err.println("Swimming all MC particles. Count: " + data.size());
+		int cnt = 1;
+		
 		for (TrajectoryRowData trd : data) {
+			System.err.println("Swimming MC particle " + cnt++ + " of " + data.size());
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 
 			if (lid != null) {
@@ -90,6 +94,7 @@ public class SwimAllMC implements ISwimAll {
 			}
 		}
 
+		System.err.println("Finished swimming all MC particles.");
 
 	}
 

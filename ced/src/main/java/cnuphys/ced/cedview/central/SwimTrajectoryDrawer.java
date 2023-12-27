@@ -66,8 +66,8 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	@Override
 	public void project(double[] v3d, Point2D.Double wp) {
 
-		// the path in the 3D traj is in meters. We want mm.
-		_view.labToWorld(1000 * v3d[0], 1000 * v3d[1], 1000 * v3d[2], wp);
+		// the path in the 3D traj is in cm. We want mm.
+		_view.labToWorld(10 * v3d[0], 10 * v3d[1], 10 * v3d[2], wp);
 
 	}
 

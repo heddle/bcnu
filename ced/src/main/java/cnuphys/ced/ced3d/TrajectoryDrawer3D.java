@@ -118,10 +118,10 @@ public class TrajectoryDrawer3D extends Item3D {
 		for (int i = 0; i < size; i++) {
 			double v[] = traj.get(i);
 			int j = i * 3;
-			// convert to cm
-			coords[j] = 100 * (float) v[0];
-			coords[j + 1] = 100 * (float) v[1];
-			coords[j + 2] = 100 * (float) v[2];
+			// in cm
+			coords[j] = (float) v[0];
+			coords[j + 1] = (float) v[1];
+			coords[j + 2] = (float) v[2];
 		}
 
 		Support3D.drawPolyLine(drawable, coords, color, 2f);

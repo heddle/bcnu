@@ -19,9 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 
-import cnuphys.adaptiveSwim.AdaptiveSwimException;
-import cnuphys.adaptiveSwim.AdaptiveSwimResult;
-import cnuphys.adaptiveSwim.AdaptiveSwimmer;
+import cnuphys.CLAS12Swim.CLAS12SwimResult;
+import cnuphys.CLAS12Swim.CLAS12Swimmer;
 import cnuphys.adaptiveSwim.geometry.Plane;
 import cnuphys.bCNU.component.LabeledTextField;
 import cnuphys.bCNU.component.VariableRange;
@@ -59,7 +58,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	public static Font swimFont = Fonts.mediumFont;
 
 	//swim results
-	public static ArrayList<AdaptiveSwimResult> _swimResults = new ArrayList<>();
+	public static ArrayList<CLAS12SwimResult> _swimResults = new ArrayList<>();
 
 	//algorithm selection
 	private JRadioButton _standardRB;
@@ -99,8 +98,8 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	private String[] _rangeUnits = {"GeV/c", "cm", "cm", "cm", "deg", "deg"};
 
 	//the min and max for the ranges
-	private double[] _rangeMin = {1, 0, 0, 0, 20, -180};
-	private double[] _rangeMax = {10, 0, 0, 0, 50, 180};
+	private double[] _rangeMin = {0.5, 0, 0, 0, 20, -180};
+	private double[] _rangeMax = {5, 0, 0, 0, 50, 180};
 
 	//number to swim
 	private LabeledTextField _swimCount;
@@ -124,7 +123,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 
 	// rho cutoff cm
 	private LabeledTextField _fixedRho;
-	private double _lastFixedRho = 30; //cm
+	private double _lastFixedRho = 100; //cm
 
 
 	//shared random number generator
@@ -453,7 +452,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	 * @param result the swimmer result
 	 * @return
 	 */
-	public static boolean showTrajectory(AdaptiveSwimResult result) {
+	public static boolean showTrajectory(CLAS12SwimResult result) {
 		if (result == null) {
 			return false;
 		}
@@ -463,9 +462,10 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 			return true;
 		}
 
-		int status = result.getStatus();
+		
+		boolean swimFailed = result.getStatus() == CLAS12Swimmer.SWIM_TARGET_MISSED;
 
-		if (((status == 0) && (_show == SHOW.SUCCESSES)) || ((status != 0) && (_show == SHOW.FAILURES))) {
+		if ((!swimFailed && (_show == SHOW.SUCCESSES)) || (swimFailed && (_show == SHOW.FAILURES))) {
 			return true;
 		}
 
@@ -630,12 +630,6 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 			_view.refresh();
 		}
 
-
-
-//		private JRadioButton _sucessesRB;
-//		private JRadioButton _failuresRB;
-//		private JRadioButton _allRB;
-
 		fixState();
 	}
 
@@ -663,7 +657,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	 * Get the current collection of swim results
 	 * @return the current collection of swim results
 	 */
-	public static ArrayList<AdaptiveSwimResult> getSwimResults() {
+	public static ArrayList<CLAS12SwimResult> getSwimResults() {
 		return _swimResults;
 	}
 
@@ -691,101 +685,64 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	//swim using the new swimmer
 	private void newSwim() {
 
-		//convert lengths to meters
-		double sMax = getSmax()/10;
-		double accuracy = getAccuracy()*1e-6;
-	    double stepSize = 5e-4; // 500 microns
-		double eps = 1.0e-6;
+		double sMax = getSmax(); //cm
+		double accuracy = getAccuracy()*1e-4; //microns to cm
+	    double h = 5e-4; //step size
+		double tolerance = 1.0e-6;
 
-		AdaptiveSwimmer adaptiveSwimmer = new AdaptiveSwimmer();
+		CLAS12Swimmer swimmer = new CLAS12Swimmer();
 
 
 		for (int i = 0; i < getSwimCount(); i++) {
-
-			AdaptiveSwimResult result = new AdaptiveSwimResult(true);
+			
+			CLAS12SwimResult result = null;
 
 			int q = getCharge();
 			double p = _ranges[0].nextRandom();
-			double xo = _ranges[1].nextRandom()/100; //m
-			double yo = _ranges[2].nextRandom()/100; //m
-			double zo = _ranges[3].nextRandom()/100; //m
+			double xo = _ranges[1].nextRandom(); //cm
+			double yo = _ranges[2].nextRandom(); //cm
+			double zo = _ranges[3].nextRandom(); //cm
 			double theta = _ranges[4].nextRandom();
 			double phi = _ranges[5].nextRandom();
 
 			switch(_algorithm) {
 			case STANDARD:
+				result = swimmer.swim(q, xo, yo, zo, p, theta, phi, sMax, h, tolerance);
 				break;
 
 			case FIXEDZ:
 				double z = getFixedZ();  //rho in cm
-				z /= 100; //convert to m
-				try {
-					adaptiveSwimmer.swimZ(q, xo, yo, zo, p, theta, phi, z, accuracy, sMax, stepSize, eps, result);
-				} catch (AdaptiveSwimException e) {
-					e.printStackTrace();
-				}
-
+				result = swimmer.swimZ(q, xo, yo, zo, p, theta, phi, z, sMax, accuracy, h, tolerance);
 				break;
 
 			case FIXEDRHO:
-
-				double rho = getFixedRho();  //rho in cm
-				rho /= 100; //convert to m
-				try {
-					adaptiveSwimmer.swimRho(q, xo, yo, zo, p, theta, phi, rho, accuracy, sMax, stepSize, eps, result);
-				} catch (AdaptiveSwimException e) {
-					e.printStackTrace();
-				}
-
-
-//				String rs = String.format("Final rho: %-9.5f cm   status: %d", result.getFinalRho()*10, result.getStatus());
-//				System.err.println(rs);
+				result = swimmer.swimRho(q, xo, yo, zo, p, theta, phi, getFixedRho(), sMax, accuracy, h, tolerance);
 				break;
 
 			case TOPLANE:
 				double norm[] = _planePanel.getNormal();
 				double point[] = _planePanel.getPoint();
 
-				double pntMeter[] = new double[3];
-
-				//point has to be converted cm to m
-				//norm in arbitrary units
-
-				for (int k = 0; k < 3; k++) {
-					pntMeter[k] = point[k]/100;
-				}
-
-				Plane targetPlane = new Plane(norm, pntMeter);
-				try {
-					adaptiveSwimmer.swimPlane(q, xo, yo, zo, p, theta, phi, targetPlane, accuracy, sMax, stepSize, eps, result);
-				} catch (AdaptiveSwimException e) {
-					e.printStackTrace();
-				}
+			Plane targetPlane = new Plane(norm, point);
+				result = swimmer.swimPlane(q, xo, yo, zo, p, theta, phi, targetPlane, sMax, accuracy, h, tolerance);
 				break;
 
 			case TOCYLINDER:
-				double p1[] = _cylinderPanel.getCenterLineP1();
-				double p2[] = _cylinderPanel.getCenterLineP2();
-
-				for (int k = 0; k < 3; k++) {
-					p1[k] = p1[k]/100; //meters
-					p2[k] = p2[k]/100; //meters
-				}
+				double p1[] = _cylinderPanel.getCenterLineP1(); //cm
+				double p2[] = _cylinderPanel.getCenterLineP2(); //cm
 
 
-				double radius = _cylinderPanel.getRadius()/100; //meters
+				double radius = _cylinderPanel.getRadius(); //cm
 
-				try {
-					adaptiveSwimmer.swimCylinder(q, xo, yo, zo, p, theta, phi, p1, p2, radius, accuracy, sMax, stepSize, eps, result);
-				} catch (AdaptiveSwimException e) {
-					e.printStackTrace();
-				}
+				result = swimmer.swimCylinder(q, xo, yo, zo, p, theta, phi, p1, p2, radius, sMax, accuracy, h, tolerance);
 
 				break;
 
 			}
 
-			_swimResults.add(result);
+			if (result != null) {
+				_swimResults.add(result);
+			}
 
 		}
 
