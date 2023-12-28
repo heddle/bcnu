@@ -39,7 +39,7 @@ public class SwimResultDrawer extends Item3D {
 			if (traj != null) {
 				Color color = failColor;
 				if (result.getStatus() == 0) { //success
-					color = (result.getInitialValues().charge < 0) ?  negColor : posColor;
+					color = (result.getInitialValues().q < 0) ?  negColor : posColor;
 				}
 				drawSwimTrajectory(drawable, traj, color);
 			}

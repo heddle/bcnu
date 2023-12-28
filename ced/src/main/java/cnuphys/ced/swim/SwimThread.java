@@ -54,7 +54,7 @@ public class SwimThread extends Thread {
 
 		if (result.getTrajectory().getGeneratedParticleRecord() == null) {
 			CLAS12Values iv = result.getInitialValues();
-			GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.charge,
+			GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.q,
 					iv.x, iv.y, iv.z, iv.p, iv.theta, iv.phi);
 			result.getTrajectory().setGeneratedParticleRecord(genPart);
 		}

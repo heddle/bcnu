@@ -712,11 +712,11 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 
 			case FIXEDZ:
 				double z = getFixedZ();  //rho in cm
-				result = swimmer.swimZ(q, xo, yo, zo, p, theta, phi, z, sMax, accuracy, h, tolerance);
+				result = swimmer.swimZ(q, xo, yo, zo, p, theta, phi, z, accuracy, sMax, h, tolerance);
 				break;
 
 			case FIXEDRHO:
-				result = swimmer.swimRho(q, xo, yo, zo, p, theta, phi, getFixedRho(), sMax, accuracy, h, tolerance);
+				result = swimmer.swimRho(q, xo, yo, zo, p, theta, phi, getFixedRho(), accuracy, sMax, h, tolerance);
 				break;
 
 			case TOPLANE:
@@ -724,7 +724,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 				double point[] = _planePanel.getPoint();
 
 			Plane targetPlane = new Plane(norm, point);
-				result = swimmer.swimPlane(q, xo, yo, zo, p, theta, phi, targetPlane, sMax, accuracy, h, tolerance);
+				result = swimmer.swimPlane(q, xo, yo, zo, p, theta, phi, targetPlane, accuracy, sMax, h, tolerance);
 				break;
 
 			case TOCYLINDER:
@@ -734,7 +734,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 
 				double radius = _cylinderPanel.getRadius(); //cm
 
-				result = swimmer.swimCylinder(q, xo, yo, zo, p, theta, phi, p1, p2, radius, sMax, accuracy, h, tolerance);
+				result = swimmer.swimCylinder(q, xo, yo, zo, p, theta, phi, p1, p2, radius, accuracy, sMax, h, tolerance);
 
 				break;
 
