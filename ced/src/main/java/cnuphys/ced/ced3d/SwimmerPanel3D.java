@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import cnuphys.adaptiveSwim.geometry.Plane;
 import cnuphys.ced.ced3d.view.PlainView3D;
-import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
+import cnuphys.ced.ced3d.view.SwimmingTestView3D;
 import item3D.Cylinder;
 import item3D.Item3D;
 import item3D.Quad3D;
@@ -59,7 +59,7 @@ public class SwimmerPanel3D extends PlainPanel3D  {
 	// add west panel
 	@Override
 	protected void addWest() {
-		_controlPanel = new SwimmerControlPanel((SwimmimgPlayground3D) _view, this);
+		_controlPanel = new SwimmerControlPanel((SwimmingTestView3D) _view, this);
 
 		add(_controlPanel, BorderLayout.WEST);
 	}

@@ -6,7 +6,7 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.ced.ced3d.PlainPanel3D;
 import cnuphys.ced.ced3d.SwimmerPanel3D;
 
-public class SwimmimgPlayground3D extends PlainView3D {
+public class SwimmingTestView3D extends PlainView3D {
 
 
 	public static final float xdist = -200f;
@@ -17,7 +17,7 @@ public class SwimmimgPlayground3D extends PlainView3D {
 	private static final float thetay = 90f;
 	private static final float thetaz = 90f;
 
-	public SwimmimgPlayground3D() {
+	public SwimmingTestView3D() {
 		super("Swimming Testing 3D View", thetax, thetay, thetaz, xdist, ydist, zdist);
 		Dimension d = GraphicsUtilities.getDisplaySize();
 

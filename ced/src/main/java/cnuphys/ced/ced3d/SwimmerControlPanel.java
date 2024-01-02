@@ -28,7 +28,7 @@ import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
-import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
+import cnuphys.ced.ced3d.view.SwimmingTestView3D;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
 
@@ -36,17 +36,12 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 
 	public enum SWIM_ALGORITHM {STANDARD, FIXEDZ, FIXEDRHO, TOPLANE, TOCYLINDER}
 
-	public enum SWIMMER {OLD, NEW}
-
 	public enum CHARGE {POSITIVE, NEGATIVE, RANDOM}
 
 	public enum SHOW {SUCCESSES, FAILURES, ALL}
 
 	//which swim algorithm (stopper)
 	private SWIM_ALGORITHM _algorithm = SWIM_ALGORITHM.FIXEDRHO;
-
-	//which swimmer
-	private SWIMMER _whichSwimmer = SWIMMER.NEW;
 
 	//how charge is determined
 	private CHARGE _charge = CHARGE.RANDOM;
@@ -66,10 +61,6 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	private JRadioButton _fixedRhoRB;
 	private JRadioButton _toPlaneRB;
 	private JRadioButton _toCylinderRB;
-
-	//swimmer selection
-	private JRadioButton _oldSwimmerRB;
-	private JRadioButton _newSwimmerRB;
 
 	//charge choices
 	private JRadioButton _positiveChargeRB;
@@ -98,8 +89,8 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	private String[] _rangeUnits = {"GeV/c", "cm", "cm", "cm", "deg", "deg"};
 
 	//the min and max for the ranges
-	private double[] _rangeMin = {0.5, 0, 0, 0, 20, -180};
-	private double[] _rangeMax = {5, 0, 0, 0, 50, 180};
+	private double[] _rangeMin = {0.4, 0, 0, 0, 20, -180};
+	private double[] _rangeMax = {3, 0, 0, 0, 45, 180};
 
 	//number to swim
 	private LabeledTextField _swimCount;
@@ -130,7 +121,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	private Random _rand = new Random();
 
 	//parent view
-	private SwimmimgPlayground3D _view;
+	private SwimmingTestView3D _view;
 
 	//parent panel
 	private SwimmerPanel3D _panel3D;
@@ -154,7 +145,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 	/**
 	 * The control panel for the swim tester 3D view
 	 */
-	public SwimmerControlPanel(SwimmimgPlayground3D view, SwimmerPanel3D panel3D) {
+	public SwimmerControlPanel(SwimmingTestView3D view, SwimmerPanel3D panel3D) {
 		_view = view;
 		_panel3D = panel3D;
 		setLayout(new BorderLayout(6, 4));
@@ -412,7 +403,6 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
         p.setLayout(new BorderLayout(2, 4));
 
         p.add(cutoffPanel(), BorderLayout.CENTER);
-        p.add(getWhichSwimmerPanel(), BorderLayout.NORTH);
 
         JPanel sp = new JPanel();
         sp.setLayout(new VerticalFlowLayout());
@@ -427,25 +417,6 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 		return p;
 	}
 
-
-	//chose the swimmer old or new
-	private JPanel getWhichSwimmerPanel() {
-		JPanel p = new JPanel();
-		p.setLayout(new FlowLayout(FlowLayout.LEFT, 8, 0));
-
-		JLabel lab = new JLabel("Swimmer: ");
-		lab.setFont(swimFont);
-		p.add(lab);
-
-		ButtonGroup bg = new ButtonGroup();
-		_oldSwimmerRB   = createRadioButton("old", _whichSwimmer == SWIMMER.OLD, bg, p);
-
-		//for now, disable old swimmer
-		_oldSwimmerRB.setEnabled(false);
-
-		_newSwimmerRB   = createRadioButton("new", _whichSwimmer == SWIMMER.NEW, bg, p);
-		return p;
-	}
 
 	/**
 	 * Test of whether a trajectory should be shown
@@ -462,7 +433,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 			return true;
 		}
 
-		
+
 		boolean swimFailed = result.getStatus() == CLAS12Swimmer.SWIM_TARGET_MISSED;
 
 		if ((!swimFailed && (_show == SHOW.SUCCESSES)) || (swimFailed && (_show == SHOW.FAILURES))) {
@@ -587,45 +558,47 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 		else if (source == _swimButton) {
 			handleSwim();
 		}
-		else if (source == _standardRB) {
+		else if ((source == _standardRB) && (_algorithm != SWIM_ALGORITHM.STANDARD)) {
+			handleClear();
 			_algorithm = SWIM_ALGORITHM.STANDARD;
 		}
-		else if (source == _fixedZRB) {
+		else if ((source == _fixedZRB) && (_algorithm != SWIM_ALGORITHM.FIXEDZ)) {
+			handleClear();
 			_algorithm = SWIM_ALGORITHM.FIXEDZ;
 		}
-		else if (source == _fixedRhoRB) {
+		else if ((source == _fixedRhoRB) && (_algorithm != SWIM_ALGORITHM.FIXEDRHO)) {
+			handleClear();
 			_algorithm = SWIM_ALGORITHM.FIXEDRHO;
 		}
-		else if (source == _toPlaneRB) {
+		else if ((source == _toPlaneRB) && (_algorithm != SWIM_ALGORITHM.TOPLANE)) {
+			handleClear();
 			_algorithm = SWIM_ALGORITHM.TOPLANE;
 		}
-		else if (source == _toCylinderRB) {
+		else if ((source == _toCylinderRB) && (_algorithm != SWIM_ALGORITHM.TOCYLINDER)) {
+			handleClear();
 			_algorithm = SWIM_ALGORITHM.TOCYLINDER;
 		}
-		else if (source == _oldSwimmerRB) {
-			_whichSwimmer = SWIMMER.OLD;
-		}
-		else if (source == _newSwimmerRB) {
-			_whichSwimmer = SWIMMER.NEW;
-		}
-		else if (source == _positiveChargeRB) {
+		else if ((source == _positiveChargeRB) && (_charge != CHARGE.POSITIVE)){
+			handleClear();
 			_charge = CHARGE.POSITIVE;
 		}
 		else if (source == _negativeChargeRB) {
+			handleClear();
 			_charge = CHARGE.NEGATIVE;
 		}
-		else if (source == _randomChargeRB) {
+		else if ((source == _randomChargeRB) && (_charge != CHARGE.RANDOM)) {
+			handleClear();
 			_charge = CHARGE.RANDOM;
 		}
-		else if (source == _sucessesRB) {
+		else if ((source == _sucessesRB) && (_show != SHOW.SUCCESSES)) {
 			_show = SHOW.SUCCESSES;
 			_view.refresh();
 		}
-		else if (source == _failuresRB) {
+		else if ((source == _failuresRB) && (_show != SHOW.FAILURES)) {
 			_show = SHOW.FAILURES;
 			_view.refresh();
 		}
-		else if (source == _allRB) {
+		else if ((source == _allRB) && (_show != SHOW.ALL)) {
 			_show = SHOW.ALL;
 			_view.refresh();
 		}
@@ -642,7 +615,13 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 			return 1;
 		}
 		else {
-			return (_rand.nextDouble() < 0.5) ? -1 : 1;
+			double rval = _rand.nextDouble();
+			if (rval < 0.4) {
+				return -1;
+			} else if (rval > 0.6) {
+				return 1;
+			}
+			return 0;
 		}
 
 	}
@@ -663,23 +642,11 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 
 	//handle generation of swim trajectories
 	private void handleSwim() {
-
 		//set the visual aid display item
 		setDisplayItem();
 
-		if (_whichSwimmer == SWIMMER.OLD) {
-			oldSwim();
-		}
-		else { //new swimmer
-			newSwim();
-		}
-
+		newSwim();
 		_view.refresh();
-	}
-
-	//swim using the old swimmer
-	private void oldSwim() {
-
 	}
 
 	//swim using the new swimmer
@@ -694,7 +661,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 
 
 		for (int i = 0; i < getSwimCount(); i++) {
-			
+
 			CLAS12SwimResult result = null;
 
 			int q = getCharge();

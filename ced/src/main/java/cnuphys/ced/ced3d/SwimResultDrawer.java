@@ -18,6 +18,7 @@ public class SwimResultDrawer extends Item3D {
 	private static final Color failColor = Color.black;
 	private static final Color posColor = Color.red;
 	private static final Color negColor = Color.blue;
+	private static final Color neutralColor = Color.cyan;
 
 	public SwimResultDrawer(PlainPanel3D panel3D) {
 		super(panel3D);
@@ -39,7 +40,14 @@ public class SwimResultDrawer extends Item3D {
 			if (traj != null) {
 				Color color = failColor;
 				if (result.getStatus() == 0) { //success
-					color = (result.getInitialValues().q < 0) ?  negColor : posColor;
+					int q = result.getInitialValues().q;
+					if (q == 0) {
+						color = neutralColor;
+					} else if (q < 0) {
+						color = negColor;
+					} else {
+						color = posColor;
+					}
 				}
 				drawSwimTrajectory(drawable, traj, color);
 			}

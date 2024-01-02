@@ -46,7 +46,7 @@ import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
-import cnuphys.ced.ced3d.view.SwimmimgPlayground3D;
+import cnuphys.ced.ced3d.view.SwimmingTestView3D;
 import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
@@ -192,7 +192,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private LogView _logView;
 	private ForwardView3D _forward3DView;
 
-	private SwimmimgPlayground3D _swimming3DView;
+	private SwimmingTestView3D _swimming3DView;
 	private CentralView3D _central3DView;
 	private FTCalView3D _ftCal3DView;
 
@@ -466,7 +466,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			_ftCal3DView = new FTCalView3D();
 
 			if (isExperimental()) {
-				_swimming3DView = new SwimmimgPlayground3D();
+				_swimming3DView = new SwimmingTestView3D();
 			}
 		}
 
