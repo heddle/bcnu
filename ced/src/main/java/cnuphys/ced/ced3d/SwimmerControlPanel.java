@@ -655,7 +655,7 @@ public class SwimmerControlPanel extends JPanel implements ActionListener, Magne
 		double sMax = getSmax(); //cm
 		double accuracy = getAccuracy()*1e-4; //microns to cm
 	    double h = 5e-4; //step size
-		double tolerance = 1.0e-6;
+		double tolerance = 1.0e-8;
 
 		CLAS12Swimmer swimmer = new CLAS12Swimmer();
 

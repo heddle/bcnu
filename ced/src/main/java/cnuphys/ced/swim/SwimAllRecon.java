@@ -54,13 +54,9 @@ public class SwimAllRecon implements ISwimAll {
 		}
 
 		double stepSize = 1.0e-3;
-		double eps = 1.0e-6;
+		double tolerance = 1.0e-8;
 		
-		System.err.println("Swimming all Recon particles. Count: " + data.size());
-		int cnt = 1;
-
 		for (TrajectoryRowData trd : data) {
-			System.err.println("Swimming Recon particle " + cnt++ + " of " + data.size());
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 
 			if (lid != null) {
@@ -70,7 +66,7 @@ public class SwimAllRecon implements ISwimAll {
 				if ((source != null) && (source.contains("CVT"))) {
 					sf = 150; //shorter max path for cvt tracks
 				}
-				SwimThread st = new SwimThread(trd, sf, stepSize, eps);
+				SwimThread st = new SwimThread(trd, sf, stepSize, tolerance);
 				swimThreads.add(st);
 				st.start();
 
