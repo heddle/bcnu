@@ -1,7 +1,6 @@
 package cnuphys.bCNU.view;
 
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -13,7 +12,6 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.ItemModification.ModificationType;
 import cnuphys.bCNU.item.RectangleItem;
-import cnuphys.bCNU.item.ResizePolicy;
 
 //getAnnotationLayer()
 public class VirtualWindowItem extends RectangleItem {
@@ -42,7 +40,7 @@ public class VirtualWindowItem extends RectangleItem {
 	/**
 	 * Called when the item was double clicked. The default implementation is to
 	 * edit the item's properties.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -51,7 +49,7 @@ public class VirtualWindowItem extends RectangleItem {
 
 	/**
 	 * Sets whether this item is marked as selected.
-	 * 
+	 *
 	 * @param selected the new value of the flag.
 	 */
 	@Override
@@ -86,7 +84,7 @@ public class VirtualWindowItem extends RectangleItem {
 			if ((sf != null) && (_focus != null)) {
 				at.transform(sf, _focus);
 			}
-			
+
 			_vview.getContainer().refresh();
 		}
 	}
@@ -105,7 +103,7 @@ public class VirtualWindowItem extends RectangleItem {
 
 			_baseView.offset(dh, dv);
 			setLocation();
-			
+
 			_vview.getContainer().refresh();
 			break;
 
@@ -117,7 +115,7 @@ public class VirtualWindowItem extends RectangleItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -159,7 +157,7 @@ public class VirtualWindowItem extends RectangleItem {
 
 	/**
 	 * Get the base view that this item represents
-	 * 
+	 *
 	 * @return the base view
 	 */
 	public BaseView getBaseView() {

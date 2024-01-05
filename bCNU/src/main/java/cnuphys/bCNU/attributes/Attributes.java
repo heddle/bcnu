@@ -19,7 +19,7 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 
 	/**
 	 * See if there is an attribute with the given key
-	 * 
+	 *
 	 * @param attributeKey the key
 	 * @return <code>true</code> if this collection contains the key
 	 */
@@ -35,7 +35,7 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 
 	/**
 	 * Tries to find the attribute with the given key
-	 * 
+	 *
 	 * @param attributeKey match to the key
 	 * @return the Attribute, or null.
 	 */
@@ -52,7 +52,7 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 
 	/**
 	 * Tries to set the attribute with the given value
-	 * 
+	 *
 	 * @param attributeKey match to the key
 	 * @param value        the value to set
 	 * @return <code>true</code> if the operation was successful
@@ -83,7 +83,7 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 		add(index, attribute);
 		return true;
 	}
-	
+
 	/**
 	 * Remove an attribute
 	 * @param key the key (name)
@@ -99,7 +99,7 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 
 	/**
 	 * Add an attribute
-	 * 
+	 *
 	 * @param key      the key (name)
 	 * @param value    the value
 	 * @param editable whether it is editable
@@ -113,7 +113,7 @@ public class Attributes extends Vector<Attribute> implements Comparator<Attribut
 
 	/**
 	 * Add an attribute that is editable and not hidden
-	 * 
+	 *
 	 * @param key   the key (name)
 	 * @param value the value
 	 * @return

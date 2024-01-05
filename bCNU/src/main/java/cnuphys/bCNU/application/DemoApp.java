@@ -12,9 +12,9 @@ import cnuphys.bCNU.view.ViewManager;
 
 /**
  * Demonstrates and tests the generic views
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class DemoApp extends BaseMDIApplication {
@@ -24,7 +24,7 @@ public class DemoApp extends BaseMDIApplication {
 
 	/**
 	 * Constructor (private--used to create singleton)
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of attributes in type-value
 	 *                pairs. For example, AttributeType.NAME, "my application",
 	 *                AttributeType.CENTER, true, etc.
@@ -35,7 +35,7 @@ public class DemoApp extends BaseMDIApplication {
 
 	/**
 	 * Public access to the singleton.
-	 * 
+	 *
 	 * @return the singleton (the main application frame.)(
 	 */
 	public static DemoApp getInstance() {
@@ -72,7 +72,7 @@ public class DemoApp extends BaseMDIApplication {
 	 * <p>
 	 * Command line arguments:</br>
 	 * -p [dir] dir is the optional default directory for the file manager
-	 * 
+	 *
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {

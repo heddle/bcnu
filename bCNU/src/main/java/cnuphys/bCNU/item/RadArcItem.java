@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.item;
 
@@ -19,7 +19,7 @@ public class RadArcItem extends PolygonItem {
 
 	/**
 	 * Create a radius-arc (pie shape) item.
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param wpc      the center of the arc
 	 * @param wp1      the point at the end of the first leg. Thus wpc->wp1
@@ -123,7 +123,7 @@ public class RadArcItem extends PolygonItem {
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.
-	 * 
+	 *
 	 * @return the selection points used to indicate this item is selected.
 	 */
 	@Override
@@ -147,7 +147,7 @@ public class RadArcItem extends PolygonItem {
 
 	/**
 	 * Get the rotation point
-	 * 
+	 *
 	 * @param container the container bing rendered
 	 * @return the rotation point where rotations are initiated
 	 */

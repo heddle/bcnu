@@ -4,7 +4,7 @@ public class AttributeByteEditor extends AttributeIntegerValueEditor<Byte> {
 
 	/**
 	 * Create a Byte editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */

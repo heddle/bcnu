@@ -12,7 +12,7 @@ public class RectangleItem extends PolygonItem {
 
 	/**
 	 * Create a world rectangle object.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 * @param wr    the initial bounds of the item.
 	 */

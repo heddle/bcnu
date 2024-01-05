@@ -15,9 +15,9 @@ import cnuphys.bCNU.layer.LogicalLayer;
 
 /**
  * Basic point item
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class PointItem extends AItem {
 
@@ -38,7 +38,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Constructor for a basic point item.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 */
 	public PointItem(LogicalLayer layer) {
@@ -48,7 +48,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Constructor for a basic point item.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 * @param icon  an icon to draw at the point
 	 */
@@ -60,7 +60,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Constructor for a basic point item.
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param location the location for the point.
 	 */
@@ -71,7 +71,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -125,7 +125,7 @@ public class PointItem extends AItem {
 	 * Checks whether the item should be drawn. This is an additional check, beyond
 	 * the simple visibility flag check. For example, it might check whether the
 	 * item intersects the area being drawn.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 * @return <code>true</code> if the item passes any and all tests, and should be
@@ -142,7 +142,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * get the bounding rect in pixels.
-	 * 
+	 *
 	 * @param container the container being rendered
 	 * @return the box around the active part of the image.
 	 */
@@ -224,7 +224,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Set the current location.
-	 * 
+	 *
 	 * @param currentLocation the new location to set
 	 */
 	@Override
@@ -240,7 +240,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Get the world bounding rectangle of the item.
-	 * 
+	 *
 	 * @return the world box containing the item. For a point item, which has no
 	 *         extent, this is <code>null</code>.
 	 */
@@ -251,7 +251,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Get the horizontal alignment for the image icon
-	 * 
+	 *
 	 * @return the horizontal alignment for the image icon
 	 */
 	public int getAlignmentH() {
@@ -260,7 +260,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Set the horizontal alignment for the image icon
-	 * 
+	 *
 	 * @param xAlignment the xAlignment to set
 	 */
 	public void setAlignmentH(int xAlignment) {
@@ -269,7 +269,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Get the vertical alignment for the image icon
-	 * 
+	 *
 	 * @return the vertical alignment for the image icon
 	 */
 	public int getAlignmentV() {
@@ -278,7 +278,7 @@ public class PointItem extends AItem {
 
 	/**
 	 * Set the vertical alignment for the image icon
-	 * 
+	 *
 	 * @param yAlignment the yAlignment to set
 	 */
 	public void setAlignmentV(int yAlignment) {

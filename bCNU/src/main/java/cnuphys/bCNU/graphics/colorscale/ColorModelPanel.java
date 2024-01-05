@@ -13,6 +13,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.view.BaseView;
@@ -39,7 +40,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Create a panel with a slider and a color legend
-	 * 
+	 *
 	 * @param model        the color model
 	 * @param desiredWidth pixel width
 	 * @param name         a name
@@ -52,7 +53,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Create a panel with a slider and a color legend
-	 * 
+	 *
 	 * @param model        the color model
 	 * @param desiredWidth pixel width
 	 * @param name         a name
@@ -74,7 +75,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 		_legend.setBorder(null);
 
 //		_slider = new JSlider(JSlider.HORIZONTAL, 0, MAXVAL, MAXVAL/2) {
-//			
+//
 //			@Override
 //			public Dimension getPreferredSize() {
 //				Dimension sd = super.getPreferredSize();
@@ -125,7 +126,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 //	public JSlider getSlider() {
 //		return _slider;
 //	}
-//	
+//
 //	/**
 //	 * Set the value of the slider
 //	 * @param val a fractional value [0.. 1]
@@ -135,7 +136,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 //		ival = Math.max(0,  Math.min(MAXVAL, ival));
 //		_slider.setValue(ival);
 //	}
-//	
+//
 //	/**
 //	 * Get the fractional value of the slider [0..1]
 //	 * @return the fractional value of the slider
@@ -153,12 +154,12 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 //	public double getAbsoluteValue() {
 //		double relVal = getValue();
 //		double vals[] = _model.values;
-//		
+//
 //		int len = vals.length;
-//		
+//
 //		double min = vals[0];
 //		double max = vals[len-1];
-//		
+//
 //		return min + relVal*(max - min);
 //	}
 
@@ -167,7 +168,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 		Insets def = super.getInsets();
 		return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
 	}
-	
+
 	/**
 	 * Is monochrome selected
 	 * @return true of monochrome is selected
@@ -178,7 +179,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Main program for testing
-	 * 
+	 *
 	 * @param arg command arguments ignored
 	 */
 	public static void main(String arg[]) {
@@ -191,7 +192,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 
 		/**
 		 * Create a panel with a slider and a color legend
-		 * 
+		 *
 		 * @param model        the color model
 		 * @param desiredWidth pixel width
 		 * @param name         a name
@@ -220,7 +221,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 //				double val = panel.getAbsoluteValue();
 //				System.out.println("value: " + val);
 //			}
-//			
+//
 //		};
 
 //		panel.getSlider().addChangeListener(changeListener);
@@ -239,7 +240,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 
 	/**
 	 * Get the color scale model if there is one.
-	 * 
+	 *
 	 * @return the color scale model for accumulation, etc.
 	 */
 	public ColorScaleModel getColorScaleModel() {

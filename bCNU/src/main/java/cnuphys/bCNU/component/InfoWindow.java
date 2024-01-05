@@ -29,7 +29,7 @@ public class InfoWindow extends JWindow {
 	/**
 	 * Create (or reuse) a translucent window for displaying a label. Probably used
 	 * for hovering window.
-	 * 
+	 *
 	 * @param label       the label
 	 * @param opacity
 	 * @param screenPoint

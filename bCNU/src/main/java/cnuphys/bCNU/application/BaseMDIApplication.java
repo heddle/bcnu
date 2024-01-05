@@ -26,11 +26,11 @@ import cnuphys.bCNU.view.ViewManager;
  * attributes. The attributes can be standard attributes, or user defined
  * attributes. All attributes are optional, and attributes can be provided in
  * any order.
- * 
+ *
  * @see cnuphys.bCNU.attributes.Attributes
- * 
+ *
  * @author heddle
- * 
+ *
  */
 
 @SuppressWarnings("serial")
@@ -46,7 +46,7 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of attributes in type-value
 	 *                pairs. For example, AttributeType.NAME, "my application",
 	 *                AttributeType.CENTER, true, etc.
@@ -138,7 +138,7 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 	/**
 	 * The global key dispatcher. Default implementation passes the event to type
 	 * handlers.
-	 * 
+	 *
 	 * @param the key event
 	 * @return <code>false</code> if the event should continue down the chain
 	 */
@@ -161,7 +161,7 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 	/**
 	 * The dispatcher handed this a key press event. The default implementation does
 	 * nothing.
-	 * 
+	 *
 	 * @param e the key event
 	 * @return <code>false</code> if the event should continue down the chain
 	 */
@@ -172,7 +172,7 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 	/**
 	 * The dispatcher handed this a key type event. The default implementation does
 	 * nothing.
-	 * 
+	 *
 	 * @param e the key event
 	 * @return <code>false</code> if the event should continue down the chain
 	 */
@@ -183,7 +183,7 @@ public class BaseMDIApplication extends JFrame implements KeyEventDispatcher {
 	/**
 	 * The dispatcher handed this a key release event. The default implementation
 	 * does nothing.
-	 * 
+	 *
 	 * @param e the key event
 	 * @return <code>false</code> if the event should continue down the chain
 	 */

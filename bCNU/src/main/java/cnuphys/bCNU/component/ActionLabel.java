@@ -16,7 +16,7 @@ public class ActionLabel extends JLabel {
 
 	private static Font enabledFontSmall = new Font("SansSerif", Font.ITALIC, 8);
 	private static Font disabledFontSmall = new Font("SansSerif", Font.BOLD, 8);
-	
+
 	public static Font enabledFontLarge = new Font("SansSerif", Font.ITALIC, 11);
 	private static Font disabledFontLarge = new Font("SansSerif", Font.BOLD, 11);
 
@@ -37,16 +37,16 @@ public class ActionLabel extends JLabel {
 	public ActionLabel(String label, boolean enabled) {
 		this(label, enabled, false);
 	}
-	
+
 	/**
-	 * Create an action label 
+	 * Create an action label
 	 * @param label the label
 	 * @param enabled is enabled or not
 	 * @parame larger font determines smaller or larger font size
 	 */
 	public ActionLabel(String label, boolean enabled, boolean largerFont) {
 		super(label);
-		
+
 		if (largerFont) {
 			_enabledFont = enabledFontLarge;
 			_disabledFont = disabledFontLarge;
@@ -55,7 +55,7 @@ public class ActionLabel extends JLabel {
 			_enabledFont = enabledFontSmall;
 			_disabledFont = disabledFontSmall;
 		}
-		
+
 		setEnabled(enabled);
 
 
@@ -87,7 +87,7 @@ public class ActionLabel extends JLabel {
 	 * Notify listeners we have a new event ready for display. All they may want is
 	 * the notification that a new event has arrived. But the event itself is passed
 	 * along.
-	 * 
+	 *
 	 * @param evioEvent the event in question;
 	 */
 	private void notifyActionListeners() {
@@ -114,7 +114,7 @@ public class ActionLabel extends JLabel {
 
 	/**
 	 * Remove an ActionListener.
-	 * 
+	 *
 	 * @param listener the ActionListener to remove.
 	 */
 	public void removeActionListener(ActionListener listener) {
@@ -128,7 +128,7 @@ public class ActionLabel extends JLabel {
 
 	/**
 	 * Add an ActionListener.
-	 * 
+	 *
 	 * @param listener the ActionListener listener to add.
 	 */
 	public void addActionListener(ActionListener listener) {

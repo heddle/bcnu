@@ -19,12 +19,12 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
  *
  */
 public class RollOverPanel extends JPanel {
-	
+
 	protected EventListenerList _listenerList;
 
-	
+
 	/**
-	 * 
+	 *
 	 * @param title
 	 * @param numCols
 	 * @param font
@@ -32,22 +32,22 @@ public class RollOverPanel extends JPanel {
 	 * @param bg
 	 * @param labels
 	 */
-	public RollOverPanel(String title, int numCols, 
+	public RollOverPanel(String title, int numCols,
 			Font font, Color fg, Color bg, String... labels) {
-		
+
 		int numLabels = labels.length;
 		int numRows = 1 + (numLabels-1)/numCols;
 		setLayout(new GridLayout(numRows, numCols, 4, 4));
 		for (String label : labels) {
 			addLabel(label, font, fg, bg);
 		}
-		
+
 		if (title != null) {
 			new CommonBorder(title);
 		}
-		
+
 	}
-	
+
 	//add a roll over listener
 	private void addLabel(String label, Font font, Color fg, Color bg) {
 		JLabel jlab = new JLabel(label);
@@ -55,23 +55,23 @@ public class RollOverPanel extends JPanel {
 		jlab.setFont(font);
 		jlab.setForeground(fg);
 		jlab.setBackground(bg);
-		
+
 		jlab.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		MouseAdapter ml = new MouseAdapter() {
 
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				notifyListeners(jlab, 0, e);	
+				notifyListeners(jlab, 0, e);
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
-				notifyListeners(jlab, 1, e);	
+				notifyListeners(jlab, 1, e);
 			}
 
-			
+
 		};
 
 		jlab.addMouseListener(ml);
@@ -107,7 +107,7 @@ public class RollOverPanel extends JPanel {
 
 	/**
 	 * Remove a roll over listener
-	 * 
+	 *
 	 * @param listener the roll over listener remove.
 	 */
 	public void removeRollOverListener(IRollOverListener listener) {
@@ -121,7 +121,7 @@ public class RollOverPanel extends JPanel {
 
 	/**
 	 * Add a roll over listener
-	 * 
+	 *
 	 * @param listener the roll over listener to add.
 	 */
 	public void addRollOverListener(IRollOverListener listener) {

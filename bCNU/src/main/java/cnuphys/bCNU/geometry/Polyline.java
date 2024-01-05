@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * A PolyLine is a collection of Points. It is considered "open". i.e. the last
  * point is not the same as the first.
- * 
+ *
  * @author heddle
  *
  */
@@ -14,7 +14,7 @@ public class Polyline extends ArrayList<Point> {
 
 	/**
 	 * Get a String representation
-	 * 
+	 *
 	 * @return a String representation of the PolyLine
 	 */
 	@Override

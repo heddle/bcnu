@@ -5,7 +5,9 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
 import javax.swing.JComponent;
+
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.component.CommonBorder;
@@ -13,7 +15,7 @@ import cnuphys.bCNU.util.Fonts;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class ColorModelLegend extends JComponent {
@@ -28,7 +30,7 @@ public class ColorModelLegend extends JComponent {
 
 	/**
 	 * Create a color legend with the given color model.
-	 * 
+	 *
 	 * @param model        the model to display as a legend.
 	 * @param desiredWidth the width of the component (not including gap)
 	 * @param name         the border text
@@ -49,7 +51,7 @@ public class ColorModelLegend extends JComponent {
 
 	/**
 	 * Create a color legend with the given color model.
-	 * 
+	 *
 	 * @param model        the model to display as a legend.
 	 * @param desiredWidth the width of the component (not including gap)
 	 * @param name         the border text
@@ -137,7 +139,7 @@ public class ColorModelLegend extends JComponent {
 
 	/**
 	 * Set the color model
-	 * 
+	 *
 	 * @param model the new color model
 	 */
 	public void setColorScaleModel(ColorScaleModel model) {
@@ -147,7 +149,7 @@ public class ColorModelLegend extends JComponent {
 
 	/**
 	 * Get the color scale model if there is one.
-	 * 
+	 *
 	 * @return the color scale model for accumulation, etc.
 	 */
 	public ColorScaleModel getColorScaleModel() {

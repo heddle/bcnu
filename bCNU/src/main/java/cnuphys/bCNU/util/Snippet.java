@@ -17,9 +17,9 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
  * This is a snippet of text. Used for latex-like strings. A snippet has an
  * offset relative to the origin of the main string and a font used for the
  * entire snippet.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class Snippet {
 
@@ -60,7 +60,7 @@ public class Snippet {
 
 	/**
 	 * Draw rotated text.
-	 * 
+	 *
 	 * @param g            the Graphics context.
 	 * @param xo           the x pixel coordinate of baseline of the main string of
 	 *                     which this is a snippet.
@@ -104,7 +104,7 @@ public class Snippet {
 
 	/**
 	 * Create a string representation
-	 * 
+	 *
 	 * @return a string representation
 	 */
 	@Override
@@ -119,7 +119,7 @@ public class Snippet {
 
 	/**
 	 * Get the size of a Snippet
-	 * 
+	 *
 	 * @param c the compoment whose FontMetrics we use
 	 * @return the dinesion of the snippet
 	 */
@@ -131,7 +131,7 @@ public class Snippet {
 
 	/**
 	 * Get an array of snippets from a compound string
-	 * 
+	 *
 	 * @param baseFont the baseline font. Each snippet will have this font or an
 	 *                 excursion from this font.
 	 * @param cstr     the compound string
@@ -152,7 +152,7 @@ public class Snippet {
 
 		boolean slashSet = false;
 		Font currentFont = cloneFont(baseFont);
-		Vector<Snippet> snippets = new Vector<Snippet>(tokens.length);
+		Vector<Snippet> snippets = new Vector<>(tokens.length);
 
 		int delX = 0;
 		int delY = 0;
@@ -293,7 +293,7 @@ public class Snippet {
 
 	/**
 	 * This method breaks a string into an array of tokens.
-	 * 
+	 *
 	 * @param str       the string to decompose.
 	 * @param delimiter the delimiter
 	 * @return an array of tokens

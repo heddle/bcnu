@@ -23,7 +23,7 @@ public class TranslucentWindow extends JWindow {
 
 	/**
 	 * Create a translucent window
-	 * 
+	 *
 	 * @param opacity how opaque (0: transparent, 1: opaque)
 	 */
 	private TranslucentWindow(float opacity) {
@@ -34,7 +34,7 @@ public class TranslucentWindow extends JWindow {
 	/**
 	 * Create (or reuse) a translucent window for displaying a label. Probably used
 	 * for hovering window.
-	 * 
+	 *
 	 * @param label       the label
 	 * @param opacity
 	 * @param screenPoint
@@ -73,7 +73,7 @@ public class TranslucentWindow extends JWindow {
 
 	/**
 	 * Check whether the graphics device supports translucency
-	 * 
+	 *
 	 * @return
 	 */
 	public static boolean isTranslucencySupported() {

@@ -11,9 +11,9 @@ import cnuphys.bCNU.util.Environment;
 
 /**
  * Used to rubber band a zoom.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class BoxZoomButton extends ToolBarToggleButton implements IRubberbanded {
@@ -25,7 +25,7 @@ public class BoxZoomButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Create the button for a rubber-band zoom.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public BoxZoomButton(IContainer container) {
@@ -35,7 +35,7 @@ public class BoxZoomButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Handle a mouse press (into the container) event (if this tool is active).
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class BoxZoomButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Set the xor mode
-	 * 
+	 *
 	 * @param mode the xor mode
 	 */
 	public void setXorMode(boolean mode) {

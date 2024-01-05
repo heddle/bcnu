@@ -8,10 +8,10 @@ import javax.swing.event.EventListenerList;
 
 
 public class Ping {
-		
+
 	//the collection of listeners
 	private EventListenerList _listeners;
-	
+
 	public Ping(int delayInMillis) {
 		ActionListener taskPerformer = new ActionListener() {
 			@Override
@@ -21,14 +21,14 @@ public class Ping {
 		};
 		new Timer(delayInMillis, taskPerformer).start();
 	}
-	
+
 	//ping all the listeners
 	private void notifyListeners() {
-				
+
 		if (_listeners == null) {
 			return;
 		}
-		
+
 		// Guaranteed to return a non-null array
 		Object[] listeners = _listeners.getListenerList();
 
@@ -40,10 +40,10 @@ public class Ping {
 			}
 		}
 	}
-	
+
 	/**
 	 * Remove a ping listener.
-	 * 
+	 *
 	 * @param listener the ping listener to remove.
 	 */
 	public void removePingListener(IPing listener) {
@@ -57,7 +57,7 @@ public class Ping {
 
 	/**
 	 * Add a ping listener.
-	 * 
+	 *
 	 * @param listener the ping listener to add.
 	 */
 	public void addPingListener(IPing listener) {

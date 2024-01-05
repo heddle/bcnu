@@ -40,8 +40,9 @@ public class KeyStack {
 	 * Get a key from the stack.
 	 */
 	public Key key(int n) {
-		if (n < 0 || n >= keyTop)
+		if (n < 0 || n >= keyTop) {
 			return null;
+		}
 		return keyStack[n];
 	}
 
@@ -55,10 +56,11 @@ public class KeyStack {
 		}
 		int i;
 		for (i = keyTop; i > 0; i--) {
-			if (key.rank > keyStack[i - 1].rank)
+			if (key.rank > keyStack[i - 1].rank) {
 				keyStack[i] = keyStack[i - 1];
-			else
+			} else {
 				break;
+			}
 		}
 		keyStack[i] = key;
 		keyTop++;

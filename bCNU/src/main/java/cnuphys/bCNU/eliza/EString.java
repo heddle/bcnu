@@ -19,10 +19,12 @@ public class EString {
 		while (i < str.length() && j < pat.length()) {
 			char p = pat.charAt(j);
 			// stop if pattern is * or #
-			if (p == '*' || p == '#')
+			if (p == '*' || p == '#') {
 				return count;
-			if (str.charAt(i) != p)
+			}
+			if (str.charAt(i) != p) {
 				return -1;
+			}
 			// they are still equal
 			i++;
 			j++;
@@ -38,8 +40,9 @@ public class EString {
 	public static int findPat(String str, String pat) {
 		int count = 0;
 		for (int i = 0; i < str.length(); i++) {
-			if (amatch(str.substring(i), pat) >= 0)
+			if (amatch(str.substring(i), pat) >= 0) {
 				return count;
+			}
 			count++;
 		}
 		return -1;
@@ -52,8 +55,9 @@ public class EString {
 	public static int findNum(String str) {
 		int count = 0;
 		for (int i = 0; i < str.length(); i++) {
-			if (num.indexOf(str.charAt(i)) == -1)
+			if (num.indexOf(str.charAt(i)) == -1) {
 				return count;
+			}
 			count++;
 		}
 		return count;
@@ -80,8 +84,9 @@ public class EString {
 					// find using remaining pat
 					n = findPat(str.substring(i), pat.substring(pos + 1));
 				}
-				if (n < 0)
+				if (n < 0) {
 					return false;
+				}
 				matches[j++] = str.substring(i, i + n);
 				i += n;
 				pos++;
@@ -92,14 +97,16 @@ public class EString {
 				pos++;
 			} else {
 				int n = amatch(str.substring(i), pat.substring(pos));
-				if (n <= 0)
+				if (n <= 0) {
 					return false;
+				}
 				i += n;
 				pos += n;
 			}
 		}
-		if (i >= str.length() && pos >= pat.length())
+		if (i >= str.length() && pos >= pat.length()) {
 			return true;
+		}
 		return false;
 	}
 
@@ -123,8 +130,9 @@ public class EString {
 					// find using remaining pat
 					n = findPat(str, pat.substring(1));
 				}
-				if (n < 0)
+				if (n < 0) {
 					return false;
+				}
 				matches[j++] = str.substring(0, n);
 				str = str.substring(n);
 				pat = pat.substring(1);
@@ -138,14 +146,16 @@ public class EString {
 				// pat = pat.substring(1);
 			} else {
 				int n = amatch(str, pat);
-				if (n <= 0)
+				if (n <= 0) {
 					return false;
+				}
 				str = str.substring(n);
 				pat = pat.substring(n);
 			}
 		}
-		if (str.length() == 0 && pat.length() == 0)
+		if (str.length() == 0 && pat.length() == 0) {
 			return true;
+		}
 		return false;
 	}
 
@@ -174,8 +184,9 @@ public class EString {
 	 */
 	public static String compress(String s) {
 		String dest = "";
-		if (s.length() == 0)
+		if (s.length() == 0) {
 			return s;
+		}
 		char c = s.charAt(0);
 		for (int i = 1; i < s.length(); i++) {
 			if (c == ' ' && ((s.charAt(i) == ' ') || (s.charAt(i) == ',') || (s.charAt(i) == '.'))) {
@@ -196,8 +207,9 @@ public class EString {
 	 */
 	public static String trim(String s) {
 		for (int i = 0; i < s.length(); i++) {
-			if (s.charAt(i) != ' ')
+			if (s.charAt(i) != ' ') {
 				return s.substring(i);
+			}
 		}
 		return "";
 	}
@@ -206,18 +218,23 @@ public class EString {
 	 * Pad by ensuring there are spaces before and after the sentence.
 	 */
 	public static String pad(String s) {
-		if (s.length() == 0)
+		if (s.length() == 0) {
 			return " ";
+		}
 		char first = s.charAt(0);
 		char last = s.charAt(s.length() - 1);
-		if (first == ' ' && last == ' ')
+		if (first == ' ' && last == ' ') {
 			return s;
-		if (first == ' ' && last != ' ')
+		}
+		if (first == ' ' && last != ' ') {
 			return s + " ";
-		if (first != ' ' && last == ' ')
+		}
+		if (first != ' ' && last == ' ') {
 			return " " + s;
-		if (first != ' ' && last != ' ')
+		}
+		if (first != ' ' && last != ' ') {
 			return " " + s + " ";
+		}
 		// impossible
 		return s;
 	}
@@ -227,9 +244,11 @@ public class EString {
 	 */
 	public static int count(String s, char c) {
 		int count = 0;
-		for (int i = 0; i < s.length(); i++)
-			if (s.charAt(i) == c)
+		for (int i = 0; i < s.length(); i++) {
+			if (s.charAt(i) == c) {
 				count++;
+			}
+		}
 		return count;
 	}
 }

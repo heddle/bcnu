@@ -82,7 +82,7 @@ public class ColorPanel extends JPanel implements ItemListener, ChangeListener {
 
 			/**
 			 * Override getMinimumSize for nicer appearance
-			 * 
+			 *
 			 * @return Minimum size for panel
 			 */
 			@Override
@@ -92,7 +92,7 @@ public class ColorPanel extends JPanel implements ItemListener, ChangeListener {
 
 			/**
 			 * Override getPreferredSize for nicer appearance
-			 * 
+			 *
 			 * @return Preferred size for panel
 			 */
 			@Override
@@ -168,7 +168,7 @@ public class ColorPanel extends JPanel implements ItemListener, ChangeListener {
 
 	/**
 	 * Check whether "no color" was selected
-	 * 
+	 *
 	 * @return true if no color was selected
 	 */
 
@@ -178,7 +178,7 @@ public class ColorPanel extends JPanel implements ItemListener, ChangeListener {
 
 	/**
 	 * Set whether user is allowed to select "no color"
-	 * 
+	 *
 	 * @param anc
 	 */
 
@@ -188,7 +188,7 @@ public class ColorPanel extends JPanel implements ItemListener, ChangeListener {
 
 	/**
 	 * Set whether user is allowed to set gtransparency level
-	 * 
+	 *
 	 * @param anc If true, use can select transparency
 	 */
 
@@ -226,7 +226,7 @@ public class ColorPanel extends JPanel implements ItemListener, ChangeListener {
 
 	/**
 	 * Get the selected color, modified for transparency if necessary
-	 * 
+	 *
 	 * @return the color
 	 */
 

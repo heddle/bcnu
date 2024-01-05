@@ -18,7 +18,7 @@ public class ColorDialog extends JDialog {
 
 	/**
 	 * Constructor (transparency disabled).
-	 * 
+	 *
 	 * @param initColor    The initial color
 	 * @param allowNoColor If true, user can select "no color"
 	 */
@@ -29,7 +29,7 @@ public class ColorDialog extends JDialog {
 
 	/**
 	 * Constructor (transparency disabled).
-	 * 
+	 *
 	 * @param initColor         The initial color
 	 * @param allowNoColor      If true, user can select "no color"
 	 * @param allowTransparency It true, alpha color slider is enabled.
@@ -47,7 +47,7 @@ public class ColorDialog extends JDialog {
 
 	/**
 	 * Create the color panel
-	 * 
+	 *
 	 * @param initColor         The initial color
 	 * @param allowNoColor      If true, user can select "no color"
 	 * @param allowTransparency It true, alpha color slider is enabled.

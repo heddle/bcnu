@@ -19,7 +19,7 @@ public class CheckBoxData {
 	/**
 	 * Create an object that will possibly then be placed in a
 	 * <code>CommonCheckBoxArray</code>.
-	 * 
+	 *
 	 * @param label        the check box label.
 	 * @param intialState  the initial state of the selection.
 	 * @param enabled      whether the check box is selectable.
@@ -35,7 +35,7 @@ public class CheckBoxData {
 	/**
 	 * Create an object that will possibly then be placed in a
 	 * <code>CheckBoxArray</code>.
-	 * 
+	 *
 	 * @param label        the check box label.
 	 * @param initialState the initial state of the selection.
 	 * @param enabled      whether the check box is selectable.
@@ -72,7 +72,7 @@ public class CheckBoxData {
 
 	/**
 	 * Convenience method to get the label.
-	 * 
+	 *
 	 * @return the underlying checkbox's label.
 	 */
 	public String getText() {
@@ -81,7 +81,7 @@ public class CheckBoxData {
 
 	/**
 	 * Convenience method to get the selection state.
-	 * 
+	 *
 	 * @return the underlying checkbox's selection state.
 	 */
 	public boolean isSelected() {
@@ -90,7 +90,7 @@ public class CheckBoxData {
 
 	/**
 	 * Convenience method to set the underlying checkbox's selection state.
-	 * 
+	 *
 	 * @param selected the value for the state.
 	 */
 	public void setSelected(boolean selected) {
@@ -99,7 +99,7 @@ public class CheckBoxData {
 
 	/**
 	 * Convenience method to set the underlying checkbox's enabled state.
-	 * 
+	 *
 	 * @param enabled the value for the state.
 	 */
 	public void setEnabled(boolean enabled) {
@@ -108,7 +108,7 @@ public class CheckBoxData {
 
 	/**
 	 * Gets the underlying check box.
-	 * 
+	 *
 	 * @return the underlying checkbox.
 	 */
 	public AbstractButton getCheckBox() {

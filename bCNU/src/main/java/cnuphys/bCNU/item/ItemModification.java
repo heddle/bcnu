@@ -12,7 +12,7 @@ public class ItemModification {
 
 	public enum ModificationType {
 		DRAG, RESIZE, ROTATE
-	};
+	}
 
 	// the type of modification. This must be set by the item.
 	// Default is drag.
@@ -72,7 +72,7 @@ public class ItemModification {
 	/**
 	 * Create an ItemModification. The type is the default: DRAG. It can be changed
 	 * via setType.
-	 * 
+	 *
 	 * @param item              the item being modified.
 	 * @param container         the item's container.
 	 * @param startMousePoint   the mouse point where the item was grabbed.
@@ -113,7 +113,7 @@ public class ItemModification {
 
 	/**
 	 * Get the type of modification.
-	 * 
+	 *
 	 * @return the type of modification
 	 */
 	public ModificationType getType() {
@@ -122,7 +122,7 @@ public class ItemModification {
 
 	/**
 	 * Set the type of modification.
-	 * 
+	 *
 	 * @param type the type to set
 	 */
 	public void setType(ModificationType type) {
@@ -131,7 +131,7 @@ public class ItemModification {
 
 	/**
 	 * Get the current location of the mouse.
-	 * 
+	 *
 	 * @return the currentMousePoint
 	 */
 	public Point getCurrentMousePoint() {
@@ -140,7 +140,7 @@ public class ItemModification {
 
 	/**
 	 * Set the current mouse location. This will be done by the PointerButton.
-	 * 
+	 *
 	 * @param currentMousePoint the currentMousePoint to set
 	 */
 	public void setCurrentMousePoint(Point currentMousePoint) {
@@ -151,7 +151,7 @@ public class ItemModification {
 	/**
 	 * The focus is the world reference point for the item. It might be its location
 	 * or its centroid. It has to be set by the item when
-	 * 
+	 *
 	 * @return the startFocus
 	 */
 	public Point2D.Double getStartFocus() {
@@ -161,7 +161,7 @@ public class ItemModification {
 	/**
 	 * The focus is the world reference point for the item. It might be its location
 	 * or its centroid. It has to be set by the item when the modification starts.
-	 * 
+	 *
 	 * @param startFocus the startFocus to set
 	 */
 	public void setStartFocus(Point2D.Double startFocus) {
@@ -172,7 +172,7 @@ public class ItemModification {
 	 * The focus is the screen (pixel) version of reference point for the item. It
 	 * might be its location or its centroid. It has to be set by the item when the
 	 * modification starts.
-	 * 
+	 *
 	 * @return the startFocusPoint
 	 */
 	public Point getStartFocusPoint() {
@@ -183,7 +183,7 @@ public class ItemModification {
 	 * The focus is the screen (pixel) version reference point for the item. It
 	 * might be its location or its centroid. It has to be set by the item when the
 	 * modification starts.
-	 * 
+	 *
 	 * @param startFocusPoint the startFocusPoint to set
 	 */
 	public void setStartFocusPoint(Point startFocusPoint) {
@@ -194,7 +194,7 @@ public class ItemModification {
 	 * The selectIndex can be used by the item to cache the index of the selectRect
 	 * that started the modification. This is often needed for resizing and
 	 * rotating.
-	 * 
+	 *
 	 * @return the selectIndex
 	 */
 	public int getSelectIndex() {
@@ -205,7 +205,7 @@ public class ItemModification {
 	 * The selectIndex can be used by the item to cache the index of the selectRect
 	 * that started the modification. This is often needed for resizing and
 	 * rotating.
-	 * 
+	 *
 	 * @param selectIndex the selectIndex to set
 	 */
 	public void setSelectIndex(int selectIndex) {
@@ -214,7 +214,7 @@ public class ItemModification {
 
 	/**
 	 * Get the item being modified.
-	 * 
+	 *
 	 * @return the item being modified.
 	 */
 	public AItem getItem() {
@@ -223,7 +223,7 @@ public class ItemModification {
 
 	/**
 	 * Get the container that holds the item on one of its layers.
-	 * 
+	 *
 	 * @return the container holding the item.
 	 */
 	public IContainer getContainer() {
@@ -232,7 +232,7 @@ public class ItemModification {
 
 	/**
 	 * Get the point where the grab was initiated.
-	 * 
+	 *
 	 * @return the startMousePoint the point where the grab was initiated.
 	 */
 	public Point getStartMousePoint() {

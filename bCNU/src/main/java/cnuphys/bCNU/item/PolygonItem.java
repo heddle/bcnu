@@ -9,7 +9,7 @@ public class PolygonItem extends PathBasedItem {
 
 	/**
 	 * Create a world polygon item
-	 * 
+	 *
 	 * @param layer  the Layer this item is on.
 	 * @param points the points of the polygon
 	 */
@@ -24,7 +24,7 @@ public class PolygonItem extends PathBasedItem {
 
 	/**
 	 * Create a world polygon item
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 */
 	public PolygonItem(LogicalLayer layer) {
@@ -33,7 +33,7 @@ public class PolygonItem extends PathBasedItem {
 
 	/**
 	 * Set the path from a world polygon.
-	 * 
+	 *
 	 * @param points the points of the polygon.
 	 */
 	public void setPath(Point2D.Double points[]) {

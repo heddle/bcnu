@@ -4,7 +4,7 @@ public class AddressSupport {
 
 	/**
 	 * converts from a long to an ip string
-	 * 
+	 *
 	 * @param i the ipaddress as a long
 	 * @return the ip address as a string
 	 */
@@ -14,7 +14,7 @@ public class AddressSupport {
 
 	/**
 	 * converts from a String to a long
-	 * 
+	 *
 	 * @param addr the address as a string e.g., 123.24.55.34
 	 * @return the address as an int
 	 */
@@ -37,7 +37,7 @@ public class AddressSupport {
 	/**
 	 * Convert mac address of the form 00:c0:4f:a3:58:23 or 00-c0-4f-a3-58-23 to a
 	 * long
-	 * 
+	 *
 	 * @param s the mac address
 	 * @return the long
 	 */
@@ -50,7 +50,7 @@ public class AddressSupport {
 			delimiter = ":";
 		} else {
 			delimiter = "-";
-			;
+
 		}
 
 		String tokens[] = FileUtilities.tokens(s, delimiter);
@@ -69,7 +69,7 @@ public class AddressSupport {
 
 	/**
 	 * Convert mac address from a long to the form 00:c0:4f:a3:58:23
-	 * 
+	 *
 	 * @param maddr the mac address as a long
 	 * @return the mac address as a String
 	 */

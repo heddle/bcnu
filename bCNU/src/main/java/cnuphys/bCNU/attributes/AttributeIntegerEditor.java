@@ -4,7 +4,7 @@ public class AttributeIntegerEditor extends AttributeIntegerValueEditor<Integer>
 
 	/**
 	 * Create an integer editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */

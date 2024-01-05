@@ -180,7 +180,7 @@ public class BaseContainer extends JComponent
 	public BaseContainer(Rectangle2D.Double worldSystem) {
 		this(null, worldSystem);
 	}
-	
+
 	/**
 	 * Constructor
 	 *
@@ -545,7 +545,7 @@ public class BaseContainer extends JComponent
 	@Override
 	public void refresh() {
 		_offscreenBufferDirty = true;
-		
+
 		repaint();
 
 		if (getToolBar() != null) {

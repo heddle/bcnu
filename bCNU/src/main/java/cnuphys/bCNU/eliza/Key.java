@@ -40,8 +40,9 @@ public class Key {
 	 * Print the key and all under it.
 	 */
 	public void print(int indent) {
-		for (int i = 0; i < indent; i++)
+		for (int i = 0; i < indent; i++) {
 			System.out.print(" ");
+		}
 		System.out.println("key: " + key + " " + rank);
 		decomp.print(indent + 2);
 	}
@@ -50,8 +51,9 @@ public class Key {
 	 * Print the key and rank only, not the rest.
 	 */
 	public void printKey(int indent) {
-		for (int i = 0; i < indent; i++)
+		for (int i = 0; i < indent; i++) {
 			System.out.print(" ");
+		}
 		System.out.println("key: " + key + " " + rank);
 	}
 

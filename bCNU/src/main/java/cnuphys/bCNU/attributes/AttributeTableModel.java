@@ -1,10 +1,11 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
 import java.awt.Dimension;
 import java.util.Collections;
+
 import javax.swing.JSlider;
 import javax.swing.table.AbstractTableModel;
 
@@ -38,7 +39,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Get the data
-	 * 
+	 *
 	 * @return the table data
 	 */
 	public Attributes getData() {
@@ -47,7 +48,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Get the number of columns.
-	 * 
+	 *
 	 * @return the number of columns.
 	 */
 	@Override
@@ -57,7 +58,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Tries to find the 0-based row that contains a given attribute.
-	 * 
+	 *
 	 * @param attributeKey match to the key
 	 * @return the row containing the attribute with the key, or -1.
 	 */
@@ -77,7 +78,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Tries to find the attribute with the given key
-	 * 
+	 *
 	 * @param attributeKey match to the key
 	 * @return the Attribute, or null.
 	 */
@@ -90,7 +91,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Get the number of rows.
-	 * 
+	 *
 	 * @return the number of rows.
 	 */
 	@Override
@@ -100,7 +101,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Get the object at a given row and column.
-	 * 
+	 *
 	 * @param rowIndex    the zero based row index.
 	 * @param columnIndex the zero based column index.
 	 * @return the value as an Object.
@@ -147,7 +148,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Get the Attribute at the given row
-	 * 
+	 *
 	 * @param row the row
 	 * @return the Attribute
 	 */
@@ -162,7 +163,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Set the value at a given row and column.
-	 * 
+	 *
 	 * @param object the object to set
 	 * @param row    the zero based row.
 	 * @param col    the zero based column.
@@ -171,11 +172,7 @@ public class AttributeTableModel extends AbstractTableModel {
 	@Override
 	public void setValueAt(Object object, int row, int col) {
 
-		if ((object == null) || !(object instanceof Attribute)) {
-			return;
-		}
-
-		if (row < 0) {
+		if ((object == null) || !(object instanceof Attribute) || (row < 0)) {
 			return;
 		}
 
@@ -192,7 +189,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Check whether the cell is editable.
-	 * 
+	 *
 	 * @param row the zero based row.
 	 * @param col the zero based column.
 	 */
@@ -209,7 +206,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Return the column name.
-	 * 
+	 *
 	 * @param col the zero based column.
 	 * @return the column name.
 	 */
@@ -224,7 +221,7 @@ public class AttributeTableModel extends AbstractTableModel {
 
 	/**
 	 * Get the displayedAttributes object.
-	 * 
+	 *
 	 * @param displayedAttributes the new displayedAttributes object.
 	 */
 	public void setData(Attributes attributes) {

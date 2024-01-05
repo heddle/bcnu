@@ -22,12 +22,12 @@ public class ImageManager {
 	/**
 	 * A memory only cache for Images (not ImageIcons).
 	 */
-	private Hashtable<URL, Image> imageHashtable = new Hashtable<URL, Image>(137);
+	private Hashtable<URL, Image> imageHashtable = new Hashtable<>(137);
 
 	/**
 	 * A memory only cache for ImageIcons (not Images).
 	 */
-	private Hashtable<String, ImageIcon> imageIconHashtable = new Hashtable<String, ImageIcon>(193);
+	private Hashtable<String, ImageIcon> imageIconHashtable = new Hashtable<>(193);
 
 	/**
 	 * singleton
@@ -43,7 +43,7 @@ public class ImageManager {
 
 	/**
 	 * Access to the image manager singleton
-	 * 
+	 *
 	 * @return the image manager singleton.
 	 */
 	public static ImageManager getInstance() {
@@ -61,7 +61,7 @@ public class ImageManager {
 
 	/**
 	 * Load an image from file or the jar file.
-	 * 
+	 *
 	 * @param imageFileName the image files name.
 	 * @param component     a component to serve as an ImageObserver(any component
 	 *                      should do).
@@ -90,7 +90,7 @@ public class ImageManager {
 
 	/**
 	 * Load an image icon from a buffered image.
-	 * 
+	 *
 	 * @param bufferedImage the buffered image.
 	 * @param hashKey       the hashtable key.
 	 * @return the image icon.
@@ -118,7 +118,7 @@ public class ImageManager {
 
 	/**
 	 * Load an image icon from file or the jar file.
-	 * 
+	 *
 	 * @param imageFileName the image file name, relative to class path.
 	 * @return the loaded ImageIcon, or <code>null</code>.
 	 */
@@ -155,7 +155,7 @@ public class ImageManager {
 
 	/**
 	 * Load an image from a local file.
-	 * 
+	 *
 	 * @param fileName  the name of the file holding the image. It will first treat
 	 *                  this as an absolute path. If that fails, it will try to uses
 	 *                  it relative to the current working directory. If that fails,
@@ -197,7 +197,7 @@ public class ImageManager {
 
 	/**
 	 * Load an image from a URL
-	 * 
+	 *
 	 * @param url The url of the image
 	 * @param c   A component to use as an observer
 	 * @return the image found at the url
@@ -222,7 +222,7 @@ public class ImageManager {
 
 	/**
 	 * Try to obtain an ImageIcon from the cache.
-	 * 
+	 *
 	 * @param key the has key.
 	 * @return an ImageIcom from the key, or null.
 	 */
@@ -232,7 +232,7 @@ public class ImageManager {
 
 	/**
 	 * Place an ImageIcon into the cache.
-	 * 
+	 *
 	 * @param key       the hask key to use.
 	 * @param imageIcon the ImageIcon to cache.
 	 */

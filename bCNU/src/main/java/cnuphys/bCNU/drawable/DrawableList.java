@@ -12,10 +12,10 @@ import cnuphys.bCNU.layer.LogicalLayer;
 /**
  * A list of <code>IDrawable</code> objects. This is used in several places,
  * including Layers.
- * 
+ *
  * @see IDrawable
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class DrawableList extends Vector<IDrawable> implements IDrawable {
@@ -53,7 +53,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Constructs a <code>DrawableList</code> with the specified name.
-	 * 
+	 *
 	 * @param name the <code>DrawableList</code>'s name.
 	 */
 	public DrawableList(String name) {
@@ -63,7 +63,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Add an <code>IDrawableListener</code>.
-	 * 
+	 *
 	 * @see IDrawableListener
 	 * @param drawableListener the <code>IDrawableListener</code> to add.
 	 */
@@ -82,7 +82,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Remove an <code>IDrawableListener</code>.
-	 * 
+	 *
 	 * @see IDrawableListener
 	 * @param drawableListener the <code>IDrawableListener</code> to remove.
 	 */
@@ -97,7 +97,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Notify interested parties that an <code>IDrawable</code> has changed
-	 * 
+	 *
 	 * @param drawable the <code>IDrawable</code> in question.
 	 * @param type     the type of change, e.g. one of the enum constants in the
 	 *                 <code>DrawableChangeType</code> class.
@@ -122,7 +122,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Adds an <code>IDrawable</code> to this list.
-	 * 
+	 *
 	 * @param drawable the <code>IDrawable</code> to add.
 	 * @return <code>true</code> (as specified by Collection.add(E))
 	 */
@@ -135,7 +135,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Remove an <code>IDrawable</code> object from this list.
-	 * 
+	 *
 	 * @param drawable the <code>IDrawable</code> to remove.
 	 * @return <code>true</code> if the list contained the specified IDrawable.
 	 */
@@ -160,7 +160,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Draw all the <code>IDrawable</code> objects in this list.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphic container being rendered.
 	 */
@@ -181,7 +181,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Returns the list name.
-	 * 
+	 *
 	 * @return the list name.
 	 */
 	@Override
@@ -192,7 +192,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	/**
 	 * Move an IDrawable upward in the list which has the effect of sending it
 	 * backward when drawn.
-	 * 
+	 *
 	 * @param drawable the IDrawable to move backward.
 	 */
 	public void sendBackward(IDrawable drawable) {
@@ -211,7 +211,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	/**
 	 * Move an IDrawable downward in the list which has the effect of sending it
 	 * forward when drawn.
-	 * 
+	 *
 	 * @param drawable the IDrawable to move backward.
 	 */
 	public void sendForward(IDrawable drawable) {
@@ -230,7 +230,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	/**
 	 * Put an <code>IDrawable</code> at the top of the list, which has the effect of
 	 * sending to the back when drawn.
-	 * 
+	 *
 	 * @param drawable the <code>IDrawable</code> to put at the beginning of the
 	 *                 list, which will result in being drawn on the bottom.
 	 */
@@ -246,7 +246,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	/**
 	 * Put an <code>IDrawable</code> at the bottom of the list, which has the effect
 	 * of sending to the front when drawn.
-	 * 
+	 *
 	 * @param drawable the <code>IDrawable</code> to put at the end of the list,
 	 *                 which will result in being drawn on top.
 	 */
@@ -261,7 +261,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Check whether this list is marked as visible.
-	 * 
+	 *
 	 * @return <code>true</code> is this list is marked as visible.
 	 */
 	@Override
@@ -271,7 +271,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Sets the visibility flag.
-	 * 
+	 *
 	 * @param visible the new value of the flag.
 	 */
 	@Override
@@ -291,7 +291,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Check whether this list is marked as locked.
-	 * 
+	 *
 	 * @return <code>true</code> is this list is marked as locked.
 	 */
 	public boolean isLocked() {
@@ -300,7 +300,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Sets the lock flag.
-	 * 
+	 *
 	 * @param locked the new value of the flag
 	 */
 	public void setLocked(boolean locked) {
@@ -309,7 +309,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Set the name for this list.
-	 * 
+	 *
 	 * @param name the name to set.
 	 */
 	public void setName(String name) {
@@ -318,7 +318,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Get the overall "show names" flag
-	 * 
+	 *
 	 * @return the value of the "show names " flag
 	 */
 	public boolean showNames() {
@@ -327,7 +327,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Set the overall "show names" flag
-	 * 
+	 *
 	 * @param showNames the value of the "show names" flag
 	 */
 	public void setShowNames(boolean showNames) {
@@ -336,7 +336,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Return a descriptive string.
-	 * 
+	 *
 	 * @return a descriptive string.
 	 */
 	@Override
@@ -366,7 +366,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	 * need to be redone. By careful use of the dirty states, expensive calculations
 	 * can be performed only when needed. The danger is that something that makes
 	 * the items "dirty" gets missed.
-	 * 
+	 *
 	 * @param dirty the value to set for the <code>dirty</code> flag.
 	 */
 	@Override
@@ -381,7 +381,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/**
 	 * Equality check.
-	 * 
+	 *
 	 * @return <code>true</code> if objects are equal.
 	 */
 	@Override
@@ -395,7 +395,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.drawable.IDrawable#prepareForRemoval()
 	 */
 	@Override
@@ -405,7 +405,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	/**
 	 * Set whether this logical layer is enabled. If a layer is not enabled, items
 	 * on the layer cannot be selected.
-	 * 
+	 *
 	 * @param enabled the new value of the enabled flag.
 	 */
 	@Override
@@ -416,7 +416,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	/**
 	 * Checks whether this logical layer is enabled. If a layer is not enabled,
 	 * items on the layer cannot be selected.
-	 * 
+	 *
 	 * @return <code>true</code> if the logical layer is enabled.
 	 */
 	@Override

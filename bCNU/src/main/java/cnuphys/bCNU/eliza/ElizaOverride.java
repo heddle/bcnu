@@ -18,9 +18,9 @@ import cnuphys.bCNU.util.Environment;
 
 /**
  * This is used to create exceptions to
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class ElizaOverride implements Serializable {
@@ -51,7 +51,7 @@ public class ElizaOverride implements Serializable {
 			"I have neither the time nor the crayons to explain this to you.",
 			"It is kind of sad watching you attempt to squeeze all your vacabulary into one sentence." };
 
-	private static Vector<String> snideReplies = new Vector<String>();
+	private static Vector<String> snideReplies = new Vector<>();
 
 	private static boolean _loaded;
 
@@ -124,11 +124,7 @@ public class ElizaOverride implements Serializable {
 			loadOverrides();
 		}
 
-		if ((_overRides == null) || (_overRides.size() < 1)) {
-			return null;
-		}
-
-		if (phrase == null) {
+		if ((_overRides == null) || (_overRides.size() < 1) || (phrase == null)) {
 			return null;
 		}
 
@@ -166,7 +162,7 @@ public class ElizaOverride implements Serializable {
 
 	/**
 	 * This method breaks a string into an array of tokens.
-	 * 
+	 *
 	 * @param str the string to decompose.
 	 * @return an array of tokens
 	 */
@@ -186,7 +182,7 @@ public class ElizaOverride implements Serializable {
 
 	/**
 	 * Generate a response to override the eliza response
-	 * 
+	 *
 	 * @param tokens the cleaned up input tokens
 	 * @return the substitute response. If null, let Eliza generate a response.
 	 */
@@ -262,7 +258,7 @@ public class ElizaOverride implements Serializable {
 
 	/**
 	 * Reads a serializable object from a file.
-	 * 
+	 *
 	 * @param fullfn the full path.
 	 * @return the deserialized object.
 	 */
@@ -300,9 +296,9 @@ public class ElizaOverride implements Serializable {
 
 	/**
 	 * serialWrite writes out a serializable object to a file.
-	 * 
+	 *
 	 * @param obj    the serializable object.
-	 * 
+	 *
 	 * @param fullfn the full path.
 	 */
 	public static void serialWrite(Serializable obj, String fullfn) {
@@ -352,7 +348,7 @@ public class ElizaOverride implements Serializable {
 	}
 
 	public static void main(String arg[]) {
-		_overRides = new Vector<ElizaOverride>(100, 10);
+		_overRides = new Vector<>(100, 10);
 
 		_overRides.add(new ElizaOverride(MATCH_ALL,
 				"It must be operator error. c e d never crashes. But report it to heddle@jlab.org. He will most likely mock you.",
@@ -434,7 +430,7 @@ public class ElizaOverride implements Serializable {
 				"asshole", "fucker", "bitch"));
 
 		_overRides.add(new ElizaOverride(MATCH_PHRASE, "\"I will now execute \\\"sudo rm  -fr ~\\\\*\\\"\"", "damn", "you"));
-		
+
 		_overRides.add(new ElizaOverride(MATCH_ANY, "ChatGPT is a worthless piece of malware.", "chatgpt", "ChatGPT"));
 
 

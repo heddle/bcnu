@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -19,7 +19,7 @@ public class AttributeDoubleEditor extends AttributeRealValueEditor {
 
 	/**
 	 * Render the value for display
-	 * 
+	 *
 	 * @param value the
 	 */
 	@Override

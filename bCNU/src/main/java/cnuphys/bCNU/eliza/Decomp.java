@@ -1,7 +1,5 @@
 package cnuphys.bCNU.eliza;
 
-import java.lang.Math;
-
 /**
  * Eliza decomposition rule
  */
@@ -30,8 +28,9 @@ public class Decomp {
 	 */
 	public void print(int indent) {
 		String m = mem ? "true" : "false";
-		for (int i = 0; i < indent; i++)
+		for (int i = 0; i < indent; i++) {
 			System.out.print(" ");
+		}
 		System.out.println("decomp: " + pattern + " " + m);
 		reasemb.print(indent + 2);
 	}
@@ -71,7 +70,8 @@ public class Decomp {
 		}
 		// Increment and make sure it is within range.
 		currReasmb++;
-		if (currReasmb >= size)
+		if (currReasmb >= size) {
 			currReasmb = 0;
+		}
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.item;
 
@@ -14,23 +14,23 @@ import cnuphys.bCNU.layer.LogicalLayer;
 
 /**
  * This is for items that are pixel based
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public abstract class APixelBasedItem extends AItem {
 
 	// it the placement absolute or relative
 	public enum PlacementType {
 		ABSOLUTE, RELATIVE
-	};
+	}
 
 	// used for relative placement only
 	// x: min means left, max means right
 	// y: min menas top, max means botton
 	public enum PlacementEdge {
 		MINIMUM, CENTER, MAXIMUM
-	};
+	}
 
 	// default placement is relative to lower left
 	protected PlacementType placementType = PlacementType.RELATIVE;
@@ -46,7 +46,7 @@ public abstract class APixelBasedItem extends AItem {
 
 	/**
 	 * Create a pixel based item
-	 * 
+	 *
 	 * @param layer the logical layer containing the item.
 	 */
 	public APixelBasedItem(LogicalLayer layer) {
@@ -66,7 +66,7 @@ public abstract class APixelBasedItem extends AItem {
 	 * Checks whether the item should be drawn. This is an additional check, beyond
 	 * the simple visibility flag check. For example, it might check whether the
 	 * item intersects the area being drawn.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 * @return <code>true</code> if the item passes any and all tests, and should be
@@ -122,7 +122,7 @@ public abstract class APixelBasedItem extends AItem {
 	/**
 	 * Get the upper left location of the item. The location is absolute for
 	 * absolute placement and a delta for relative placement.
-	 * 
+	 *
 	 * @return the location
 	 */
 	public Point getLocation() {
@@ -131,7 +131,7 @@ public abstract class APixelBasedItem extends AItem {
 
 	/**
 	 * Set the upper-left location of the item
-	 * 
+	 *
 	 * @param location the location to set. The location is absolute for absolute
 	 *                 placement and a delta for relative placement.
 	 */
@@ -141,7 +141,7 @@ public abstract class APixelBasedItem extends AItem {
 
 	/**
 	 * Get the width and height of the item
-	 * 
+	 *
 	 * @return the size of the item
 	 */
 	public Dimension getSize() {
@@ -150,7 +150,7 @@ public abstract class APixelBasedItem extends AItem {
 
 	/**
 	 * Set the width and height of the item
-	 * 
+	 *
 	 * @param size the size to set for the item
 	 */
 	public void setSize(Dimension size) {
@@ -159,7 +159,7 @@ public abstract class APixelBasedItem extends AItem {
 
 	/**
 	 * Get the bounds of the container
-	 * 
+	 *
 	 * @return the rectangle giving the bounds
 	 */
 	@Override
@@ -212,7 +212,7 @@ public abstract class APixelBasedItem extends AItem {
 
 	/**
 	 * Get the world bounding rectangle of the item.
-	 * 
+	 *
 	 * @return the world box containing the item. For a pixel based item this is
 	 *         <code>null</code>.
 	 */

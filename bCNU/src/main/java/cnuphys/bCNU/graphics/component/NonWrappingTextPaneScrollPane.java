@@ -45,7 +45,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Constructor will also create the text pane itself.
-	 * 
+	 *
 	 * @param label if not null, will use for a border.
 	 */
 	public NonWrappingTextPaneScrollPane(String label) {
@@ -60,7 +60,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Set the background, by setting the underlying text pane's background.
-	 * 
+	 *
 	 * @param c the color to use.
 	 */
 	@Override
@@ -73,7 +73,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Create a style, not underlined, no with default spacing.
-	 * 
+	 *
 	 * @param fg         the foreground color.
 	 * @param fontFamily the font family to use,
 	 * @param fontSize   the font size to use,
@@ -88,7 +88,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Create a style, not underlined with default spacing.
-	 * 
+	 *
 	 * @param fg         the foreground color.
 	 * @param bg         the background color.
 	 * @param fontFamily the font family to use,
@@ -104,7 +104,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Create a style
-	 * 
+	 *
 	 * @param fg         the foreground color.
 	 * @param bg         the background color.
 	 * @param fontFamily the font family to use,
@@ -152,7 +152,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Append a message to the underlying text area.
-	 * 
+	 *
 	 * @param text the message to append.
 	 */
 
@@ -162,7 +162,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Append some text with a specific style.
-	 * 
+	 *
 	 * @param text  the text to append.
 	 * @param style the style to use, can be one of the class constants such as
 	 *              BOLD_RED.
@@ -173,18 +173,14 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Append some text with a specific style.
-	 * 
+	 *
 	 * @param text      the text to append.
 	 * @param style     the style to use, can be one of the class constants such as
 	 *                  BOLD_RED.
 	 * @param writeTime if <code>true</code> writes out a time stamp.
 	 */
 	public void append(String text, AttributeSet style, boolean writeTime) {
-		if (text == null) {
-			return;
-		}
-
-		if (document == null) {
+		if ((text == null) || (document == null)) {
 			return;
 		}
 
@@ -216,7 +212,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Clear all the text.
-	 * 
+	 *
 	 */
 	public void clear() {
 		if (textPane == null) {
@@ -229,7 +225,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Get the current default style.
-	 * 
+	 *
 	 * @return the current default style.
 	 */
 	public SimpleAttributeSet getDefaultStyle() {
@@ -238,7 +234,7 @@ public class NonWrappingTextPaneScrollPane extends JScrollPane {
 
 	/**
 	 * Set the default style.
-	 * 
+	 *
 	 * @param defaultStyle the new default style
 	 */
 	public void setDefaultStyle(SimpleAttributeSet defaultStyle) {

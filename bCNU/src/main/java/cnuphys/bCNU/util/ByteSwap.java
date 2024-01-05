@@ -4,7 +4,7 @@ public class ByteSwap {
 
 	/**
 	 * Swap 4-byte integer
-	 * 
+	 *
 	 * @param val integer to swap
 	 * @return swapped 4-byte integer
 	 */
@@ -21,7 +21,7 @@ public class ByteSwap {
 
 	/**
 	 * Swap a 2-byte integer (a short)
-	 * 
+	 *
 	 * @param val short to swap
 	 * @return swapped 2-byte integer (short)
 	 */

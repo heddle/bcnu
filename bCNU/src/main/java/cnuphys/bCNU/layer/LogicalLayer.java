@@ -18,7 +18,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Create a layer for holding items.
-	 * 
+	 *
 	 * @param name the name of the layer.
 	 */
 	public LogicalLayer(IContainer container, String name) {
@@ -29,7 +29,7 @@ public class LogicalLayer extends DrawableList {
 	/**
 	 * Add all the items on this layer that enclose a given point to a vector of
 	 * items. This will be used to collect all such items across all layers.
-	 * 
+	 *
 	 * @param items       the collection we are adding to.
 	 * @param container   the graphical container rendering the item.
 	 * @param screenPoint the point in question.
@@ -44,7 +44,7 @@ public class LogicalLayer extends DrawableList {
 	/**
 	 * Add all the selected items on this layer to an Items collection. This is used
 	 * to find all selected items across all layers.
-	 * 
+	 *
 	 * @param items the collection to which we will add all selected items on this
 	 *              layer.
 	 */
@@ -62,7 +62,7 @@ public class LogicalLayer extends DrawableList {
 	 * providers. If they are not removed they will continue to produce feedback
 	 * (and will not be garbage collected) even if they are removed from the
 	 * layer--which itself only ensures that they will not be drawn.
-	 * 
+	 *
 	 * @param container
 	 */
 	public void clearAllItems(IContainer container) {
@@ -95,7 +95,7 @@ public class LogicalLayer extends DrawableList {
 	 * Deletes all selected (visible) items on this layer. Deleting simply means
 	 * removing them from the list. They will no longer be drawn. Items that are not
 	 * deletable are not removed.
-	 * 
+	 *
 	 * @param container the container they lived on.
 	 */
 	public void deleteSelectedItems(IContainer container) {
@@ -129,7 +129,7 @@ public class LogicalLayer extends DrawableList {
 	/**
 	 * Delete a single item, making sure to remove it from the feedback listener
 	 * list.
-	 * 
+	 *
 	 * @param item the item to remove
 	 */
 	public void deleteItem(AItem item) {
@@ -139,7 +139,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Find the topmost item, if any, at the point, probably a mouse location.
-	 * 
+	 *
 	 * @param container   the graphical container rendering the item.
 	 * @param screenPoint the point in question.
 	 * @return the topmost item at that location, or <code>null</code>.
@@ -162,7 +162,7 @@ public class LogicalLayer extends DrawableList {
 	/**
 	 * Returns all items that contain the given point. The items are returned in
 	 * reverse order, from top to bottom.
-	 * 
+	 *
 	 * @param container the graphical container rendering the item.
 	 * @param lp        the point in question.
 	 * @return all items that contain the given point. If any, the topmost will be
@@ -178,7 +178,7 @@ public class LogicalLayer extends DrawableList {
 				AItem item = (AItem) get(i);
 				if (item.isVisible() && item.contains(container, lp)) {
 					if (locitems == null) {
-						locitems = new Vector<AItem>(25, 10);
+						locitems = new Vector<>(25, 10);
 					}
 					locitems.add(item);
 				}
@@ -190,7 +190,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Count how many items are selected on this layer.
-	 * 
+	 *
 	 * @return the number of selected items on this layer..
 	 */
 	public int getSelectedCount() {
@@ -208,7 +208,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Check whether at least one item is selected.
-	 * 
+	 *
 	 * @return <code>true</code> if at least one item is selected.
 	 */
 	public boolean anySelected() {
@@ -225,7 +225,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Obtain a collection of selected items on this layer.
-	 * 
+	 *
 	 * @return all selected items on this layer.
 	 */
 	public Vector<AItem> getSelectedItems() {
@@ -236,7 +236,7 @@ public class LogicalLayer extends DrawableList {
 			for (IDrawable drawable : this) {
 				if (((AItem) drawable).isSelected() && ((AItem) drawable).isVisible()) {
 					if (selitems == null) {
-						selitems = new Vector<AItem>(25, 10);
+						selitems = new Vector<>(25, 10);
 					}
 					selitems.add((AItem) drawable);
 				}
@@ -255,7 +255,7 @@ public class LogicalLayer extends DrawableList {
 		synchronized (this) {
 			for (IDrawable drawable : this) {
 				if (allitems == null) {
-					allitems = new Vector<AItem>(25, 10);
+					allitems = new Vector<>(25, 10);
 				}
 				allitems.add((AItem) drawable);
 
@@ -266,7 +266,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Select (or deselect) all items.
-	 * 
+	 *
 	 * @param select if <code>true</code> select, otherwise deselect.
 	 */
 	public void selectAllItems(boolean select) {
@@ -275,7 +275,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Select (or deselect) all item excepting a single specified item.
-	 * 
+	 *
 	 * @param select       if <code>true</code> select, otherwise deselect.
 	 * @param excludedItem optional Item to be excluded from the operation, may be
 	 *                     null.
@@ -300,7 +300,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Select or deselect a single item and send the notification.
-	 * 
+	 *
 	 * @param item   the item in question.
 	 * @param select the new select state.
 	 */
@@ -318,7 +318,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Add all the enclosed items to a collection
-	 * 
+	 *
 	 * @param container the container being rendered.
 	 * @param items     the vector we are adding to.
 	 * @param rect      the enclosing rectangle.
@@ -334,7 +334,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Get all the items enclosed by a rectangle.
-	 * 
+	 *
 	 * @param container the container being rendered.
 	 * @param rect      the rectangle in question.
 	 */
@@ -342,7 +342,7 @@ public class LogicalLayer extends DrawableList {
 
 		synchronized (this) {
 			if (size() > 0) {
-				Vector<AItem> encitems = new Vector<AItem>(25);
+				Vector<AItem> encitems = new Vector<>(25);
 				for (IDrawable drawable : this) {
 					if (drawable instanceof AItem) {
 						AItem item = (AItem) drawable;
@@ -359,7 +359,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Equality check.
-	 * 
+	 *
 	 * @return <code>true</code> if objects are equal.
 	 */
 	public boolean equals(LogicalLayer o) {
@@ -372,7 +372,7 @@ public class LogicalLayer extends DrawableList {
 
 	/**
 	 * Get the container for this layer.
-	 * 
+	 *
 	 * @return the container for this layer.
 	 */
 	public IContainer getContainer() {

@@ -8,7 +8,7 @@ import java.io.FileReader;
 /**
  * Simplifies the reading of an ascii file. Assumes comments begin with a "!".
  * This should be extended, and the processLine method overridden.
- * 
+ *
  * @author heddle
  *
  */
@@ -19,7 +19,7 @@ public abstract class AsciiReader {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param file the ascii file to be processed
 	 * @throws FileNotFoundException
 	 */
@@ -42,7 +42,7 @@ public abstract class AsciiReader {
 
 	/**
 	 * Process one non comment line from the file.
-	 * 
+	 *
 	 * @param line the line to be processed.
 	 */
 	protected abstract void processLine(String line);

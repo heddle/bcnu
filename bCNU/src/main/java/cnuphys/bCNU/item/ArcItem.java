@@ -12,7 +12,7 @@ public class ArcItem extends PolylineItem {
 
 	/**
 	 * Create an arc item.
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param wpc      the center of the arc
 	 * @param wp1      the point at the end of the first leg. Thus wpc->wp1
@@ -27,7 +27,7 @@ public class ArcItem extends PolylineItem {
 
 	/**
 	 * Create an arc
-	 * 
+	 *
 	 * @param layer      the Layer this item is on
 	 * @param wpc        the center of the arc
 	 * @param radius     the radius of the arc
@@ -57,7 +57,7 @@ public class ArcItem extends PolylineItem {
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.
-	 * 
+	 *
 	 * @return the selection points used to indicate this item is selected.
 	 */
 	@Override
@@ -81,7 +81,7 @@ public class ArcItem extends PolylineItem {
 
 	/**
 	 * Get the rotation point
-	 * 
+	 *
 	 * @param container the container bing rendered
 	 * @return the rotation point where rotations are initiated
 	 */

@@ -3,6 +3,7 @@ package cnuphys.bCNU.feedback;
 import java.awt.Color;
 import java.util.Hashtable;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
 import javax.swing.text.SimpleAttributeSet;
@@ -12,7 +13,7 @@ import cnuphys.bCNU.util.X11Colors;
 
 /**
  * A FeedbackPane for displaying mouse over feedback
- * 
+ *
  * @author heddle
  */
 
@@ -22,7 +23,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	// stores styles based on a string. When a feedback string is
 	// appended, if it begins with one of the keys the style will be
 	// used. If not, the default style is used.
-	private Hashtable<String, SimpleAttributeSet> styles = new Hashtable<String, SimpleAttributeSet>(101);
+	private Hashtable<String, SimpleAttributeSet> styles = new Hashtable<>(101);
 
 	/**
 	 * Default fontsize for feedback text.
@@ -43,7 +44,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	/**
 	 * Constructor Create a feedback pane to display mouse-over feedback. This is a
 	 * "low tech" alternative to using the HUD.
-	 * 
+	 *
 	 * @param width the preferred width.
 	 */
 	public FeedbackPane(int width) {
@@ -53,7 +54,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	/**
 	 * Constructor Create a feedback pane to display mouse-over feedback. This is a
 	 * "low tech" alternative to using the HUD.
-	 * 
+	 *
 	 * @param width the preferred width.
 	 */
 	public FeedbackPane(int width, int height) {
@@ -68,7 +69,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 
 	/**
 	 * Fix the message so it gets appended nicely.
-	 * 
+	 *
 	 * @param message the input message.
 	 * @return the fixed message.
 	 */
@@ -90,7 +91,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	 * append("yomama") will append "yomama" in the default style.
 	 * append("$red$yomama") will append "yomama" in red. append("$dark
 	 * blue$yomama") will append "yomama" in dark blue.
-	 * 
+	 *
 	 * @param message the message text.
 	 */
 	@Override
@@ -118,7 +119,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 
 	/**
 	 * Append the message with the provided style.
-	 * 
+	 *
 	 * @param style   the style to use
 	 * @param message the message text.
 	 */
@@ -128,7 +129,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 
 	/**
 	 * This updates the feedback pane.
-	 * 
+	 *
 	 * @param feedbackStrings contains the new feedback strings.
 	 */
 	public void updateFeedback(List<String> feedbackStrings) {

@@ -103,7 +103,7 @@ public class UnicodeSupport {
 
 	/**
 	 * Replace the Latex-like special characters with their unicode equivalents.
-	 * 
+	 *
 	 * @param s the input string
 	 * @return the output, where special character sequences are replaced by unicode
 	 *         characters.

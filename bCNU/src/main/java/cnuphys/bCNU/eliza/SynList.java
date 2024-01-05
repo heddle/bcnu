@@ -19,8 +19,9 @@ public class SynList extends Vector {
 	 */
 	public void print(int indent) {
 		for (int i = 0; i < size(); i++) {
-			for (int j = 0; j < indent; j++)
+			for (int j = 0; j < indent; j++) {
 				System.out.print(" ");
+			}
 			System.out.print("synon: ");
 			WordList w = (WordList) elementAt(i);
 			w.print(indent);
@@ -33,8 +34,9 @@ public class SynList extends Vector {
 	public WordList find(String s) {
 		for (int i = 0; i < size(); i++) {
 			WordList w = (WordList) elementAt(i);
-			if (w.find(s))
+			if (w.find(s)) {
 				return w;
+			}
 		}
 		return null;
 	}
@@ -65,8 +67,9 @@ public class SynList extends Vector {
 			if (EString.match(str, pat, lines)) {
 				int n = EString.count(first, '*');
 				// Make room for the synonym in the match list.
-				for (int j = lines.length - 2; j >= n; j--)
+				for (int j = lines.length - 2; j >= n; j--) {
 					lines[j + 1] = lines[j];
+				}
 				// The synonym goes in the match list.
 				lines[n] = (String) syn.elementAt(i);
 				return true;

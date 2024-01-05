@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.graphics.toolbar;
 
@@ -16,7 +16,7 @@ public class LineButton extends ToolBarToggleButton implements IRubberbanded {
 
 	/**
 	 * Create a button for creating rectangles by rubberbanding.
-	 * 
+	 *
 	 * @param container the container using this button.
 	 */
 	public LineButton(IContainer container) {
@@ -25,7 +25,7 @@ public class LineButton extends ToolBarToggleButton implements IRubberbanded {
 
 	/**
 	 * The mouse has been pressed, start rubber banding.
-	 * 
+	 *
 	 * @param mouseEvent the causal mouse event.
 	 */
 	@Override

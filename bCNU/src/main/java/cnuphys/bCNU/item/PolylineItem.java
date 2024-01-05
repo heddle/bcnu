@@ -11,7 +11,7 @@ public class PolylineItem extends PathBasedItem {
 
 	/**
 	 * Create a world polyline item
-	 * 
+	 *
 	 * @param layer  the Layer this item is on.
 	 * @param points the points of the polygon
 	 */
@@ -27,7 +27,7 @@ public class PolylineItem extends PathBasedItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */

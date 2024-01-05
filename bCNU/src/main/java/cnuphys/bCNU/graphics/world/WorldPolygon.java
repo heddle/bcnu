@@ -8,7 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Arrays;
 
 public class WorldPolygon {
-	
+
 	/**
 	 * The total number of points. The value of <code>npoints</code> represents
 	 * the number of valid points in this <code>Polygon</code> and might be less
@@ -17,7 +17,7 @@ public class WorldPolygon {
 	 */
 
 	public int npoints;
-	
+
 	/**
 	 * The array of X coordinates. The number of elements in this array might be
 	 * more than the number of X coordinates in this <code>Polygon</code>. The
@@ -33,7 +33,7 @@ public class WorldPolygon {
 	 * extra elements allow new points to be added to this <code>Polygon</code>
 	 * without re-creating this array. The value of <code>npoints</code> is
 	 * equal to the number of valid points in this <code>Polygon</code>.
-	 * 
+	 *
 	 * @serial
 	 * @since 1.0
 	 */
@@ -43,7 +43,7 @@ public class WorldPolygon {
 	 * The bounds of this {@code Polygon}. This value can be null.
 	 */
 	protected Rectangle2D.Double bounds;
-	
+
 	/*
 	 * Default length for xpoints and ypoints.
 	 */
@@ -51,18 +51,18 @@ public class WorldPolygon {
 
 	/**
 	 * Creates an empty polygon.
-	 * 
+	 *
 	 * @since 1.0
 	 */
 	public WorldPolygon() {
 		xpoints = new double[MIN_LENGTH];
 		ypoints = new double[MIN_LENGTH];
 	}
-	
+
 	/**
 	 * Constructs and initializes a <code>Polygon</code> from the specified
 	 * parameters.
-	 * 
+	 *
 	 * @param xpoints
 	 *            an array of X coordinates
 	 * @param ypoints
@@ -126,7 +126,7 @@ public class WorldPolygon {
 	 * than resetting the current one if the number of vertices in the new
 	 * polygon data is significantly smaller than the number of vertices in the
 	 * data from before the reset.
-	 * 
+	 *
 	 * @see java.awt.Polygon#invalidate
 	 * @since 1.4
 	 */
@@ -143,7 +143,7 @@ public class WorldPolygon {
 	 * results from methods such as <code>getBounds</code> or
 	 * <code>contains</code> that might cache data from earlier computations
 	 * relating to the vertex coordinates.
-	 * 
+	 *
 	 * @see java.awt.Polygon#getBounds
 	 * @since 1.4
 	 */
@@ -154,11 +154,11 @@ public class WorldPolygon {
 	/*
 	 * Calculates the bounding box of the points passed to the constructor. Sets
 	 * <code>bounds</code> to the result.
-	 * 
+	 *
 	 * @param xpoints[] array of <i>x</i> coordinates
-	 * 
+	 *
 	 * @param ypoints[] array of <i>y</i> coordinates
-	 * 
+	 *
 	 * @param npoints the total number of points
 	 */
 	void calculateBounds(double xpoints[], double ypoints[], int npoints) {
@@ -181,7 +181,7 @@ public class WorldPolygon {
 
 	/*
 	 * Resizes the bounding box to accomodate the specified coordinates.
-	 * 
+	 *
 	 * @param x,&nbsp;y the specified coordinates
 	 */
 	void updateBounds(double x, double y) {
@@ -209,7 +209,7 @@ public class WorldPolygon {
 	 * <code>Polygon</code> has already been performed, such as
 	 * <code>getBounds</code> or <code>contains</code>, then this method updates
 	 * the bounding box.
-	 * 
+	 *
 	 * @param x
 	 *            the specified X coordinate
 	 * @param y
@@ -245,7 +245,7 @@ public class WorldPolygon {
 	 * the smallest {@link Rectangle} whose sides are parallel to the x and y
 	 * axes of the coordinate space, and can completely contain the
 	 * <code>Polygon</code>.
-	 * 
+	 *
 	 * @return a <code>Rectangle</code> that defines the bounds of this
 	 *         <code>Polygon</code>.
 	 * @since 1.1
@@ -258,7 +258,7 @@ public class WorldPolygon {
 	 * Determines whether the specified coordinates are inside this
 	 * <code>Polygon</code>.
 	 * <p>
-	 * 
+	 *
 	 * @param x
 	 *            the specified X coordinate to be tested
 	 * @param y
@@ -271,10 +271,10 @@ public class WorldPolygon {
 	public boolean contains(int x, int y) {
 		return contains((double) x, (double) y);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 * @since 1.2
 	 */
 	public boolean contains(double x, double y) {
@@ -340,10 +340,10 @@ public class WorldPolygon {
 		return ((hits & 1) != 0);
 	}
 
-	
+
 	/**
 	 * Returns the bounds of this <code>Polygon</code>.
-	 * 
+	 *
 	 * @return the bounds of this <code>Polygon</code>.
 	 * @since 1.0
 	 */
@@ -356,15 +356,15 @@ public class WorldPolygon {
 		}
 		return bounds.getBounds();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
-	 * 
+	 *
 	 */
 	public boolean contains(Point2D p) {
 		return contains(p.getX(), p.getY());
 	}
-	
+
 
 
 	public PathIterator getPathIterator(AffineTransform arg0) {

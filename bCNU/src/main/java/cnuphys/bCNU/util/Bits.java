@@ -4,7 +4,7 @@ public class Bits {
 
 	/**
 	 * See if the control bit is set in the bits variable.
-	 * 
+	 *
 	 * @param bits the int that holds the bits.
 	 * @param b    the bit to check.
 	 * @return <code>true</code> if the bit is set.
@@ -15,7 +15,7 @@ public class Bits {
 
 	/**
 	 * Sets the given control bit.
-	 * 
+	 *
 	 * @param bits the int that holds the bits.
 	 * @param b    the bit to set.
 	 * @return the modified bits.
@@ -27,7 +27,7 @@ public class Bits {
 
 	/**
 	 * Clear the given control bit.
-	 * 
+	 *
 	 * @param bits the int that holds the bits.
 	 * @param b    the bit to clear.
 	 * @return the modified bits.
@@ -39,7 +39,7 @@ public class Bits {
 
 	/**
 	 * Clear the given control bit.
-	 * 
+	 *
 	 * @param bits the lonh that holds the bits.
 	 * @param b    the bit to clear.
 	 * @return the modified bits.
@@ -51,7 +51,7 @@ public class Bits {
 
 	/**
 	 * Toggle the given control bit.
-	 * 
+	 *
 	 * @param bits the int that holds the bits.
 	 * @param b    the bit to toggle.
 	 * @return The modified bits.
@@ -63,7 +63,7 @@ public class Bits {
 
 	/**
 	 * Find the first bit set.
-	 * 
+	 *
 	 * @return the first bit set, or -1.
 	 */
 	public static int firstBit(int x) {
@@ -80,7 +80,7 @@ public class Bits {
 
 	/**
 	 * Count the bits turned on in a word.
-	 * 
+	 *
 	 * @param x the word to count.
 	 * @return the number of "on" bits in the word.
 	 */
@@ -97,7 +97,7 @@ public class Bits {
 
 	/**
 	 * See if the control bit is set in the bits variable.
-	 * 
+	 *
 	 * @param bits the long that holds the bits.
 	 * @param b    the bit to check.
 	 * @return <code>true</code> if the bit is set.
@@ -108,7 +108,7 @@ public class Bits {
 
 	/**
 	 * Sets the given control bit.
-	 * 
+	 *
 	 * @param bits     the long that holds the bits.
 	 * @param bitIndex the bit index [0..63] to set.
 	 * @return the modified bits.
@@ -120,7 +120,7 @@ public class Bits {
 
 	/**
 	 * Checks the given control bit.
-	 * 
+	 *
 	 * @param bits     the long that holds the bits.
 	 * @param bitIndex the bit index [0..63] to set.
 	 * @return <code>true</code> if the given bit is set
@@ -132,7 +132,7 @@ public class Bits {
 
 	/**
 	 * Count the bits turned on in a word.
-	 * 
+	 *
 	 * @param x the word to count.
 	 * @return the number of "on" bits in the word.
 	 */

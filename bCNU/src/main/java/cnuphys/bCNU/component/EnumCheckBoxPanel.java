@@ -22,7 +22,7 @@ public class EnumCheckBoxPanel extends JPanel {
 
 	/**
 	 * Create a panel of JCheckBox objects from an enum map.
-	 * 
+	 *
 	 * @param enumMap an EnumMap<enum, String>. The enum is the key, and the string,
 	 *                which will become the label, is the value.
 	 */
@@ -31,8 +31,8 @@ public class EnumCheckBoxPanel extends JPanel {
 
 		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-		forwardHash = new Hashtable<Enum<?>, JCheckBox>(2 * keySet.size() + 1);
-		reverseHash = new Hashtable<JCheckBox, Enum<?>>(2 * keySet.size() + 1);
+		forwardHash = new Hashtable<>(2 * keySet.size() + 1);
+		reverseHash = new Hashtable<>(2 * keySet.size() + 1);
 
 		// in this enumMap the enum is the key, and a string is the value
 		for (Object key : keySet) {
@@ -49,7 +49,7 @@ public class EnumCheckBoxPanel extends JPanel {
 
 	/**
 	 * Get the button state of the corresponding enum
-	 * 
+	 *
 	 * @param key
 	 * @return true if the checkbox is selected
 	 */
@@ -59,7 +59,7 @@ public class EnumCheckBoxPanel extends JPanel {
 
 	/**
 	 * Set the button state of the corresponding enum
-	 * 
+	 *
 	 * @param key
 	 * @param state
 	 */
@@ -69,7 +69,7 @@ public class EnumCheckBoxPanel extends JPanel {
 
 	/**
 	 * Obtain the enum from the checkbox
-	 * 
+	 *
 	 * @param cb the check box in question.
 	 * @return the corresponding enum.
 	 */

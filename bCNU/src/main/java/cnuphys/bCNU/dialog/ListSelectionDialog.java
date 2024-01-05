@@ -10,6 +10,7 @@ import java.awt.event.WindowEvent;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -26,7 +27,7 @@ import cnuphys.bCNU.graphics.ImageManager;
 
 /**
  * Simple dialog for selection from a list
- * 
+ *
  * @author heddle
  *
  */
@@ -49,7 +50,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 
 	/**
 	 * Create a selection dialog for a list of items
-	 * 
+	 *
 	 * @param parent        the JFrame parent. If null, Orion.getInstance() is used
 	 * @param title         the title of the dialog
 	 * @param modal         whether or not the dialog is modal
@@ -106,7 +107,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 	/**
 	 * Get the reason the dialog closed, either DialogUtilities.CANCEL_RESPONSE or
 	 * DialogUtilities.OK_RESPONSE
-	 * 
+	 *
 	 * @return reason the dialog closed
 	 */
 	public int getReason() {
@@ -116,7 +117,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 	/**
 	 * Get the JList component so that you can optionally add a
 	 * ListSelectionListener
-	 * 
+	 *
 	 * @return the JList component
 	 */
 	public JList<T> getJList() {
@@ -125,7 +126,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 
 	/**
 	 * Get the underlying list model
-	 * 
+	 *
 	 * @return the list data model
 	 */
 	public DefaultListModel<T> getModel() {
@@ -191,7 +192,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 	/**
 	 * Get the single selected value for a single selection list or the smallest
 	 * indexed selected value for a multiple selection list
-	 * 
+	 *
 	 * @return the selected value
 	 */
 	public T getSelectedValue() {
@@ -200,7 +201,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 
 	/**
 	 * Get a list of selected values, or an empty list
-	 * 
+	 *
 	 * @return a list of selected values
 	 */
 	public List<T> getSelectedListValues() {
@@ -209,7 +210,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 
 	/**
 	 * Create a selection dialog for a list of items
-	 * 
+	 *
 	 * @param parent        the JFrame parent. If null, Orion.getInstance() is used
 	 * @param title         the title of the dialog
 	 * @param modal         whether or not the dialog is modal
@@ -226,7 +227,7 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 		for (String s : items) {
 			list.add(s);
 		}
-		return new ListSelectionDialog<String>(parent, title, modal, selectionMode, preferredSize, list);
+		return new ListSelectionDialog<>(parent, title, modal, selectionMode, preferredSize, list);
 	}
 
 	public static void main(String arg[]) {
@@ -237,11 +238,11 @@ public class ListSelectionDialog<T> extends JDialog implements ActionListener {
 				"abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWZYZ" };
 
 		ArrayList<TestObject> objects = new ArrayList<>();
-		for (int i = 0; i < names.length; i++) {
-			objects.add(new TestObject(names[i]));
+		for (String name : names) {
+			objects.add(new TestObject(name));
 		}
 
-//    	public ListSelectionDialog(JFrame parent, String title, boolean modal, 
+//    	public ListSelectionDialog(JFrame parent, String title, boolean modal,
 //    			int selectionMode, Dimension preferredSize, List<T> items) {
 
 		ListSelectionDialog<TestObject> dialog = new ListSelectionDialog<>(null, "Sample Selection", true,

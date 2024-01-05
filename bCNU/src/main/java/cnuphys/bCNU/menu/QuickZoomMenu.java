@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
 import cnuphys.bCNU.view.BaseView;
 
 public class QuickZoomMenu extends JMenu implements ActionListener {
@@ -26,7 +27,7 @@ public class QuickZoomMenu extends JMenu implements ActionListener {
 
 	/**
 	 * Get the base view owner
-	 * 
+	 *
 	 * @return the base view owner
 	 */
 	public BaseView getView() {

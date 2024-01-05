@@ -172,7 +172,7 @@ public class FontDialog extends JDialog implements ListSelectionListener, ItemLi
 
 	/**
 	 * Create the font list.
-	 * 
+	 *
 	 * @return the font family selection list.
 	 */
 	private JList createFontList() {
@@ -198,10 +198,12 @@ public class FontDialog extends JDialog implements ListSelectionListener, ItemLi
 		boolean isItalic = italicCb.isSelected();
 
 		int attrs = Font.PLAIN;
-		if (isBold)
+		if (isBold) {
 			attrs = Font.BOLD;
-		if (isItalic)
+		}
+		if (isItalic) {
 			attrs |= Font.ITALIC;
+		}
 		returnFont = new Font(resultName, attrs, resultSize);
 		previewArea.setFont(returnFont);
 		pack(); // ensure Dialog is big enough.
@@ -214,7 +216,7 @@ public class FontDialog extends JDialog implements ListSelectionListener, ItemLi
 
 	/**
 	 * One of the list's was selected. Redo the preview.
-	 * 
+	 *
 	 * @param lse the list selection event.
 	 */
 	@Override
@@ -224,7 +226,7 @@ public class FontDialog extends JDialog implements ListSelectionListener, ItemLi
 
 	/**
 	 * One of check boxes was selected.
-	 * 
+	 *
 	 * @param ise the state changed event.
 	 */
 	@Override

@@ -19,7 +19,7 @@ public class EnumComboBox extends JComboBox {
 
 	/**
 	 * Create a combobox from an enum map.
-	 * 
+	 *
 	 * @param enumMap    an EnumMap<enum, String>. The enum is the key, and the
 	 *                   string, which will become the label, is the value.
 	 * @param defaultKey the enum that should default to "on".
@@ -30,7 +30,7 @@ public class EnumComboBox extends JComboBox {
 
 	/**
 	 * Create a combobox from an enum map.
-	 * 
+	 *
 	 * @param enumMap     an EnumMap<enum, String>. The enum is the key, and the
 	 *                    string, which will become the label, is the value.
 	 * @param defaultKey  the enum that should default to "on".
@@ -40,7 +40,7 @@ public class EnumComboBox extends JComboBox {
 		Set<?> keySet = enumMap.keySet();
 
 		_extraChoice = extraChoice;
-		reverseHash = new Hashtable<String, Enum<?>>(2 * keySet.size() + 1);
+		reverseHash = new Hashtable<>(2 * keySet.size() + 1);
 
 		// an extra choice? Like "any"
 		if (_extraChoice != null) {
@@ -66,7 +66,7 @@ public class EnumComboBox extends JComboBox {
 	/**
 	 * Get the enum corresponding to the selected string, which is the nice name of
 	 * the enum.
-	 * 
+	 *
 	 * @return the selected enum value. Returns <code>null</code> if "extra choice"
 	 *         was used and selected.
 	 */

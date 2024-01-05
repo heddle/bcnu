@@ -46,7 +46,7 @@ public class TextFieldPanel extends JPanel {
 
 	/**
 	 * Get the text from the underlying text field
-	 * 
+	 *
 	 * @return the text from the underlying text field
 	 */
 	public String getText() {
@@ -55,7 +55,7 @@ public class TextFieldPanel extends JPanel {
 
 	/**
 	 * Set the text for the underlying text field
-	 * 
+	 *
 	 * @param text the text for the underlying text field
 	 */
 	public void setText(String text) {
@@ -64,7 +64,7 @@ public class TextFieldPanel extends JPanel {
 
 	/**
 	 * Set whether the underlying text field is editable
-	 * 
+	 *
 	 * @param editable the editable flag
 	 */
 	public void setEditable(boolean editable) {

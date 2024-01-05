@@ -30,9 +30,9 @@ import cnuphys.bCNU.util.Fonts;
 
 /**
  * A dialog for a label and a font.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class LabelDialog extends JDialog implements ListSelectionListener, ItemListener {
@@ -148,7 +148,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Create the panel that holds the checkboxes for bold and italic.
-	 * 
+	 *
 	 * @return the panel that holds the checkboxes for bold and italic.
 	 */
 	private JPanel createCheckBoxPanel() {
@@ -168,7 +168,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 	/**
 	 * Create the font scroll lists *family and size) and add them to the given
 	 * panel.
-	 * 
+	 *
 	 * @param panel the panel to hold the lists.
 	 */
 	public void createScrollLists(JPanel panel) {
@@ -191,7 +191,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Create the text entry field
-	 * 
+	 *
 	 * @return the text entry field
 	 */
 	private void createTextEntryField() {
@@ -201,7 +201,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Create a box that contains the color labels.
-	 * 
+	 *
 	 * @return a box that contains the color labels.
 	 */
 	private Box createTextAndColorBox() {
@@ -229,7 +229,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Create the button panel.
-	 * 
+	 *
 	 * @return the button panel.
 	 */
 	private JPanel createButtonPanel() {
@@ -266,7 +266,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Create the font list.
-	 * 
+	 *
 	 * @return the font family selection list.
 	 */
 	private JList createFontList() {
@@ -292,10 +292,12 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 		boolean isItalic = italicCb.isSelected();
 
 		int attrs = Font.PLAIN;
-		if (isBold)
+		if (isBold) {
 			attrs = Font.BOLD;
-		if (isItalic)
+		}
+		if (isItalic) {
 			attrs |= Font.ITALIC;
+		}
 		returnFont = new Font(resultName, attrs, resultSize);
 		previewArea.setFont(returnFont);
 		pack(); // ensure Dialog is big enough.
@@ -308,7 +310,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Gets the result string, which will be null if cancelled.
-	 * 
+	 *
 	 * @return the result string.
 	 */
 	public String getText() {
@@ -317,7 +319,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * One of the list's was selected. Redo the preview.
-	 * 
+	 *
 	 * @param lse the list selection event.
 	 */
 	@Override
@@ -327,7 +329,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * One of check boxes was selected.
-	 * 
+	 *
 	 * @param ise the state changed event.
 	 */
 	@Override
@@ -337,7 +339,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Get the text foreground
-	 * 
+	 *
 	 * @return the text foreground
 	 */
 	public Color getTextForeground() {
@@ -346,7 +348,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Get the text background
-	 * 
+	 *
 	 * @return the text background
 	 */
 	public Color getTextBackground() {
@@ -355,7 +357,7 @@ public class LabelDialog extends JDialog implements ListSelectionListener, ItemL
 
 	/**
 	 * Main program for testing.
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String args[]) {

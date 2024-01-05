@@ -4,13 +4,11 @@ import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.util.Hashtable;
 
-import cnuphys.bCNU.log.Log;
-
 /**
  * This is used so that we can have common fonts across all components.
- * 
+ *
  * @author DHeddle
- * 
+ *
  */
 public class Fonts {
 
@@ -23,9 +21,9 @@ public class Fonts {
 	// the bulletproof backup if the target is not found
 	private static String backupFamily = "SansSerif";
 
-	private static Hashtable<String, Font> fonts = new Hashtable<String, Font>(41);
-	
-	
+	private static Hashtable<String, Font> fonts = new Hashtable<>(41);
+
+
 	//for huge warnings
 	public static Font monsterFont = commonFont(Font.BOLD, 44);
 
@@ -55,7 +53,7 @@ public class Fonts {
 
 	// common medium font used for components
 	public static Font mediumItalicFont = commonFont(Font.ITALIC, 11);
-	
+
 	// common medium font used for components
 	public static Font mediumItalicBoldFont = commonFont(Font.ITALIC + Font.BOLD, 11);
 
@@ -108,7 +106,7 @@ public class Fonts {
 
 	/**
 	 * Scale a font
-	 * 
+	 *
 	 * @param font        the font to scale
 	 * @param scaleFactor the multiplicative scale factor
 	 * @return the derived font
@@ -119,7 +117,7 @@ public class Fonts {
 
 	/**
 	 * Obtain a font from the common family
-	 * 
+	 *
 	 * @param style bitwise Font.PLAIN, Font.BOLD, etc
 	 * @param size  the size
 	 * @return the common font.

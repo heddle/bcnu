@@ -6,7 +6,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * @author heddle
- * 
+ *
  */
 public class DrawableAdapter implements IDrawable {
 
@@ -15,7 +15,7 @@ public class DrawableAdapter implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.drawable.IDrawable#draw(java.awt.Graphics,
 	 * cnuphys.bCNU.graphics.container.IContainer)
 	 */
@@ -25,7 +25,7 @@ public class DrawableAdapter implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.drawable.IDrawable#prepareForRemoval()
 	 */
 	@Override
@@ -34,7 +34,7 @@ public class DrawableAdapter implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.drawable.IDrawable#setDirty(boolean)
 	 */
 	@Override
@@ -43,7 +43,7 @@ public class DrawableAdapter implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.visible.IVisible#getName()
 	 */
 	@Override
@@ -53,7 +53,7 @@ public class DrawableAdapter implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.visible.IVisible#isVisible()
 	 */
 	@Override
@@ -63,7 +63,7 @@ public class DrawableAdapter implements IDrawable {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see cnuphys.bCNU.visible.IVisible#setVisible(boolean)
 	 */
 	@Override

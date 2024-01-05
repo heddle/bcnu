@@ -31,7 +31,7 @@ import cnuphys.bCNU.view.BaseView;
 
 /**
  * This class is used for the desktop.
- * 
+ *
  * @author heddle
  */
 @SuppressWarnings("serial")
@@ -69,7 +69,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Create a desktop pane.
-	 * 
+	 *
 	 * @param background      optional background color.
 	 * @param backgroundImage optional background image. Will be tiled. Probably
 	 *                        reference into a jar file, such as
@@ -104,7 +104,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Create a desktop pane.
-	 * 
+	 *
 	 * @param background      optional background color.
 	 * @param backgroundImage optional background image. Will be tiled. Probably
 	 *                        reference into a jar file, such as
@@ -119,7 +119,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Access to the singleton
-	 * 
+	 *
 	 * @return the singleton desktop
 	 */
 	public static Desktop getInstance() {
@@ -129,7 +129,7 @@ public final class Desktop extends JDesktopPane {
 	/**
 	 * The paint method for the desktop. This is where the background image gets
 	 * tiled
-	 * 
+	 *
 	 * @param g the graphics context.
 	 */
 	@Override
@@ -148,7 +148,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Set an "after" draw
-	 * 
+	 *
 	 * @param afterDraw the drawable
 	 */
 	public void setAfterDraw(IDrawable afterDraw) {
@@ -157,7 +157,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Tile the background.
-	 * 
+	 *
 	 * @param g the graphics context
 	 */
 	private void tile(Graphics g) {
@@ -178,7 +178,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Gets the top internal frame. Surprising that we had to write this.
-	 * 
+	 *
 	 * @return the top internal frame.
 	 */
 	public JInternalFrame getTopFrame() {
@@ -351,11 +351,11 @@ public final class Desktop extends JDesktopPane {
 		}
 
 		for (String targetLnF : preferredLnF) {
-			for (int i = 0; i < lnfinfo.length; i++) {
-				String linfoName = lnfinfo[i].getClassName();
+			for (LookAndFeelInfo element : lnfinfo) {
+				String linfoName = element.getClassName();
 				if (linfoName.indexOf(targetLnF) >= 0) {
 					try {
-						UIManager.setLookAndFeel(lnfinfo[i].getClassName());
+						UIManager.setLookAndFeel(element.getClassName());
 						UIDefaults defaults = UIManager.getDefaults();
 
 						defaults.put("RadioButtonMenuItem.checkIcon", MetalIconFactory.getRadioButtonMenuItemIcon());
@@ -370,7 +370,7 @@ public final class Desktop extends JDesktopPane {
 
 	/**
 	 * Checks whether all views are ready for display.
-	 * 
+	 *
 	 * @return <code>true</code> if all views are ready for display.
 	 */
 	public boolean isReady() {

@@ -11,7 +11,7 @@ import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
  *
  */
 public class ContainerGridView extends ScrollableGridView {
-	
+
 	// the containers
 	protected ContainerPanel _panels[][];
 	public final int numRow;
@@ -34,11 +34,11 @@ public class ContainerGridView extends ScrollableGridView {
 		this.numCol = numCol;
 		_panels = new ContainerPanel[numRow][numCol];
 	}
-		
+
 
 	/**
 	 * Check whether the pointer bar is active on the tool bar
-	 * 
+	 *
 	 * @return <code>true</code> if the Pointer button is active.
 	 */
 	protected boolean isPointerButtonActive() {
@@ -56,12 +56,12 @@ public class ContainerGridView extends ScrollableGridView {
 	 */
 	public void setLabels(int row, int col, String title, String xlabel, String ylabel) {
 		ContainerPanel panel = getContainerPanel(row, col);
-		
+
 		if (panel != null) {
 			panel.setLabels(title, xlabel, ylabel);
 		}
 	}
-	
+
 
 
 	/**
@@ -72,12 +72,12 @@ public class ContainerGridView extends ScrollableGridView {
 	 */
 	public void setTitle(int row, int col, String title) {
 		ContainerPanel panel = getContainerPanel(row, col);
-		
+
 		if (panel != null) {
 			panel.setTitle(title);
 		}
 	}
-	
+
 	/**
 	 * Set the x label for one of the cells
 	 * @param row the 0-based row
@@ -86,7 +86,7 @@ public class ContainerGridView extends ScrollableGridView {
 	 */
 	public void setXLabel(int row, int col, String label) {
 		ContainerPanel panel = getContainerPanel(row, col);
-		
+
 		if (panel != null) {
 			panel.setXLabel(label);
 		}
@@ -100,7 +100,7 @@ public class ContainerGridView extends ScrollableGridView {
 	 */
 	public void setYLabel(int row, int col, String label) {
 		ContainerPanel panel = getContainerPanel(row, col);
-		
+
 		if (panel != null) {
 			panel.setYLabel(label);
 		}
@@ -108,25 +108,22 @@ public class ContainerGridView extends ScrollableGridView {
 
 	/**
 	 * Get the container panel in the given cell
-	 * 
+	 *
 	 * @param row the 0-based row
 	 * @param col the 0-based column
 	 * @return the container panel (might be <code>null</code>);
 	 */
 	public ContainerPanel getContainerPanel(int row, int col) {
-		if ((row < 0) || (row >= numRow)) {
-			return null;
-		}
-		if ((col < 0) || (col >= numCol)) {
+		if ((row < 0) || (row >= numRow) || (col < 0) || (col >= numCol)) {
 			return null;
 		}
 
 		return _panels[row][col];
 	}
-	
+
 	/**
 	 * Get the container in the given cell
-	 * 
+	 *
 	 * @param row the 0-based row
 	 * @param col the 0-based column
 	 * @return the container  (might be <code>null</code>);

@@ -9,10 +9,10 @@ public class MathUtilities {
 
 	//small number test
 	private static final double TINY = 1.0e-16;
-	
+
 	/**
 	 * Get an int as an unsigned long
-	 * 
+	 *
 	 * @param x the int
 	 * @return the unsigned long
 	 */
@@ -24,7 +24,7 @@ public class MathUtilities {
 	 * Given two points p0 and p1, imagine a line from p0 to p1. Take the line to be
 	 * parameterized by parameter t so that at t = 0 we are at p0 and t = 1 we are
 	 * at p1.
-	 * 
+	 *
 	 * @param p0         start point of main line
 	 * @param p1         end point of main line
 	 * @param wp         the point from which we drop a perpendicular to p0 -> p1
@@ -61,7 +61,7 @@ public class MathUtilities {
 	 * Given two points p0 and p1, imagine a line from p0 to p1. Take the line to be
 	 * parameterized by parameter t so that at t = 0 we are at p0 and t = 1 we are
 	 * at p1.
-	 * 
+	 *
 	 * @param p0         start point of main line
 	 * @param p1         end point of main line
 	 * @param wp         the point from which we drop a perpendicular to p0 -> p1
@@ -90,7 +90,7 @@ public class MathUtilities {
 	 * Given two points p0 and p1, imagine a line from p0 to p1. Take the line to be
 	 * parameterized by parameter t so that at t = 0 we are at p0 and t = 1 we are
 	 * at p1.
-	 * 
+	 *
 	 * @param x1         x coordinate of one endpoint
 	 * @param y1         y coordinate of one endpoint
 	 * @param x2         x coordinate of other endpoint
@@ -121,7 +121,7 @@ public class MathUtilities {
 	 * Given two points p0 and p1, imagine a line from p0 to p1. Take the line to be
 	 * parameterized by parameter t so that at t = 0 we are at p0 and t = 1 we are
 	 * at p1.
-	 * 
+	 *
 	 * @param p0 start point of main line
 	 * @param p1 end point of main line
 	 * @param wp the point from which we drop a perpendicular to p0 -> p1
@@ -139,11 +139,11 @@ public class MathUtilities {
 		double t = numerator / denominator;
 		return t;
 	}
-	
+
 
 	/**
 	 * Given an array of pixel points, this rearranges the array into a convex hull.
-	 * 
+	 *
 	 * @param points the array of pixel points.
 	 * @return an index which is less than or equal to the size of the points array.
 	 *         Use that many points as the convex hull. In other words, if
@@ -174,7 +174,7 @@ public class MathUtilities {
 
 	/**
 	 * Given an array of world points, this rearranges the array into a convex hull.
-	 * 
+	 *
 	 * @param points the array of world points.
 	 * @return an index which is less than or equal to the size of the points array.
 	 *         Use that many points as the convex hull. In other words, if
@@ -238,7 +238,7 @@ public class MathUtilities {
 		// sort base on polar angle wrt points[0]
 
 		final Point2D.Double p0 = points[0];
-		Comparator<Point2D.Double> comparator = new Comparator<Point2D.Double>() {
+		Comparator<Point2D.Double> comparator = new Comparator<>() {
 
 			@Override
 			public int compare(Point2D.Double wp1, Point2D.Double wp2) {
@@ -285,7 +285,7 @@ public class MathUtilities {
 
 	/**
 	 * Sort an array with an index sort
-	 * 
+	 *
 	 * @param   <T>
 	 * @param a the array to sort
 	 * @param c the comparator
@@ -297,7 +297,7 @@ public class MathUtilities {
 			indexArray[i] = i;
 		}
 
-		Comparator<Integer> comparator = new Comparator<Integer>() {
+		Comparator<Integer> comparator = new Comparator<>() {
 
 			@Override
 			public int compare(Integer i1, Integer i2) {
@@ -316,7 +316,7 @@ public class MathUtilities {
 
 	/**
 	 * Sort an array of doubles with an index sort
-	 * 
+	 *
 	 * @param a the array to sort
 	 * @return the resulting index sorted array.
 	 */
@@ -344,7 +344,7 @@ public class MathUtilities {
 			}
 		};
 
-		Comparator<Integer> comparator = new Comparator<Integer>() {
+		Comparator<Integer> comparator = new Comparator<>() {
 
 			@Override
 			public int compare(Integer i1, Integer i2) {
@@ -360,9 +360,9 @@ public class MathUtilities {
 		}
 		return iarray;
 	}
-	
+
 	/**
-	 * 
+	 *
 	 * @param p1 First endpoint of first segment
 	 * @param p2 Second endpoint of first segment
 	 * @param q1 First endpoint of second segment
@@ -370,11 +370,11 @@ public class MathUtilities {
 	 * @param u Will hold intersection, or NaN s if no intersection
 	 * @return <code>true</code> if intersection is found
 	 */
-	public static boolean segmentCrossing(Point2D.Double p1, Point2D.Double p2, 
+	public static boolean segmentCrossing(Point2D.Double p1, Point2D.Double p2,
 			Point2D.Double q1, Point2D.Double q2, Point2D.Double u) {
 		u.x = Double.NaN;
 		u.y = Double.NaN;
-		
+
 		double x1o = p1.x;
         double dx1 = p2.x - p1.x;
 
@@ -401,11 +401,11 @@ public class MathUtilities {
                 return true;
             }
          }
-        
+
         return false;
-		
+
 	}
-	
+
 	/**
 	 * Does a segment intersect a rectangle
 	 * @param p1
@@ -418,21 +418,21 @@ public class MathUtilities {
 	 */
 	public static boolean segmentCutsRectangle(Point2D.Double p1, Point2D.Double p2,
 			double x, double y, double w, double h, Point2D.Double u1, Point2D.Double u2) {
-		
+
 		Point2D.Double q1 = new Point2D.Double();
 		Point2D.Double q2 = new Point2D.Double();
-		
+
 		Point2D.Double u = new Point2D.Double();
-		
+
 		int count = 0;
-		
+
 		q1.setLocation(x, y);
 		q2.setLocation(x, y+h);
 		if (segmentCrossing(p1, p2, q1, q2, u)) {
 			u1.setLocation(u);
 			count = 1;
 		}
-		
+
 		q2.setLocation(x+w, y);
 		if (segmentCrossing(p1, p2, q1, q2, u)) {
 			if (count == 0) {
@@ -457,11 +457,11 @@ public class MathUtilities {
 				return true;
 			}
 		}
-		
+
 		if (count == 0) {
 			return false;
 		}
-		
+
 		q2.setLocation(x+w, y);
 		if (segmentCrossing(p1, p2, q1, q2, u)) {
 			u2.setLocation(u);
@@ -474,24 +474,24 @@ public class MathUtilities {
 
 	// main program for testing
 	public static void main(String arg[]) {
-//		public static boolean segmentCrossing(Point2D.Double p1, Point2D.Double p2, 
+//		public static boolean segmentCrossing(Point2D.Double p1, Point2D.Double p2,
 //				Point2D.Double q1, Point2D.Double q2, Point2D.Double u) {
-		
+
 		Point2D.Double p1 = new Point2D.Double();
 		Point2D.Double p2 = new Point2D.Double();
 		Point2D.Double q1 = new Point2D.Double();
 		Point2D.Double q2 = new Point2D.Double();
 		Point2D.Double u1 = new Point2D.Double();
 		Point2D.Double u2 = new Point2D.Double();
-		
+
 		p1.setLocation(2, 2);
 		p2.setLocation(6, 6);
-		
+
         double x = 3;
         double y = 2;
         double w = 2;
         double h = 2;
-	
+
 		boolean result = segmentCutsRectangle(p1, p2, x, y, w, h, u1, u2);
 		System.out.println("done");
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -17,7 +17,7 @@ public class AttributeCellEditor implements TableCellEditor {
 
 	/**
 	 * Create an attribute cell editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 */
 	public AttributeCellEditor(AttributeTable attributeTable) {
@@ -27,7 +27,7 @@ public class AttributeCellEditor implements TableCellEditor {
 	/**
 	 * Get the component that will do the editing. For complicates edits (such as
 	 * color) the editing is done "in-situ" and this returns null.
-	 * 
+	 *
 	 * @param table      The underlying table.
 	 * @param value      The object being edited.
 	 * @param isSelected

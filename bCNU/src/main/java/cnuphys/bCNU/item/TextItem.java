@@ -44,7 +44,7 @@ public class TextItem extends RectangleItem {
 	private Color _textColor = Color.black;
 
 	/**
-	 * 
+	 *
 	 * @param layer     the layer which will hold the item.
 	 * @param location  the location of the lower left
 	 * @param font      the font to use.
@@ -68,7 +68,7 @@ public class TextItem extends RectangleItem {
 
 	/**
 	 * Custom drawer for the text item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -94,7 +94,7 @@ public class TextItem extends RectangleItem {
 	/**
 	 * Get the size of the text, including an invisible border of thickness MARGIN
 	 * all around.
-	 * 
+	 *
 	 * @return the size of the text, including an invisible border of thickness
 	 *         MARGIN all around.
 	 */
@@ -149,7 +149,7 @@ public class TextItem extends RectangleItem {
 
 	/**
 	 * Get the text foreground color
-	 * 
+	 *
 	 * @return the text foreground color
 	 */
 	public Color getTextColor() {
@@ -158,7 +158,7 @@ public class TextItem extends RectangleItem {
 
 	/**
 	 * Set the text foreground color
-	 * 
+	 *
 	 * @param textForeground the text foreground color to set
 	 */
 	public void setTextColor(Color textForeground) {
@@ -167,7 +167,7 @@ public class TextItem extends RectangleItem {
 
 	/**
 	 * Get the rotation point
-	 * 
+	 *
 	 * @param container the container bing rendered
 	 * @return the rotation point where rotations are initiated
 	 */

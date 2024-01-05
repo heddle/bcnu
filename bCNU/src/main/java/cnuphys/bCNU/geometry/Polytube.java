@@ -6,7 +6,7 @@ import java.util.ArrayList;
  * A poly tube is a collection of infinite lines that are added in order.
  * Consider a hexagonal tube. That would be the six edges added either CW or CCW
  * as you look down the tube.
- * 
+ *
  * @author heddle
  *
  */
@@ -16,7 +16,7 @@ public class Polytube extends ArrayList<Line> {
 	/**
 	 * Get a polyline for the start or end face. This treats all the lines as
 	 * directed segments since the enf (face) has no meaning for infinite lines.
-	 * 
+	 *
 	 * @param end one of the Constants START or END
 	 * @return a polyline for the given end
 	 */
@@ -35,7 +35,7 @@ public class Polytube extends ArrayList<Line> {
 
 	/**
 	 * Get the polyline representing the intersection of this polytube with a plane
-	 * 
+	 *
 	 * @param plane    the plane to intersect
 	 * @param lineType either Constants.INFINITE or Constants.SEGMENT
 	 * @return the polyline or <code>null</code> if no intersection is found
@@ -66,7 +66,7 @@ public class Polytube extends ArrayList<Line> {
 
 	/**
 	 * Get a String representation
-	 * 
+	 *
 	 * @return a String representation of the PolyTube
 	 */
 	@Override

@@ -26,7 +26,7 @@ public abstract class ToolBarButton extends JButton implements ActionListener {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param container     the owner container.
 	 * @param imageFileName the name if the file holding the icon
 	 * @param toolTip       a string for a tool tip
@@ -53,7 +53,7 @@ public abstract class ToolBarButton extends JButton implements ActionListener {
 
 	/**
 	 * Respond to an action event. That is, the button was selected.
-	 * 
+	 *
 	 * @param e the event in question.
 	 */
 	@Override
@@ -61,7 +61,7 @@ public abstract class ToolBarButton extends JButton implements ActionListener {
 
 	/**
 	 * Get the appropriate cursor for this tool.
-	 * 
+	 *
 	 * @return the cursor appropriate when the mouse is in the container (and this
 	 *         button is active).
 	 */
@@ -71,7 +71,7 @@ public abstract class ToolBarButton extends JButton implements ActionListener {
 
 	/**
 	 * Get the preferred size.
-	 * 
+	 *
 	 * @return the preferred size for layout.
 	 */
 	@Override

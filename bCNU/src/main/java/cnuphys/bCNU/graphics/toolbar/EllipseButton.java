@@ -13,7 +13,7 @@ public class EllipseButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Create a button for creating ellipses by rubberbanding.
-	 * 
+	 *
 	 * @param container the container using this button.
 	 */
 	public EllipseButton(IContainer container) {

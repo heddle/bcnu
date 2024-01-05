@@ -6,14 +6,14 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class UndoZoomButton extends ToolBarButton {
 
 	/**
 	 * Create the button used for undoing the previous zoom.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public UndoZoomButton(IContainer container) {
@@ -22,7 +22,7 @@ public class UndoZoomButton extends ToolBarButton {
 
 	/**
 	 * This is what I do if I am pressed
-	 * 
+	 *
 	 * @param e The causal event.
 	 */
 	@Override

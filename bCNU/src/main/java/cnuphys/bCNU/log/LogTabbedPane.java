@@ -1,6 +1,7 @@
 package cnuphys.bCNU.log;
 
 import java.awt.Color;
+
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -21,16 +22,16 @@ public class LogTabbedPane extends JTabbedPane implements ChangeListener {
 	private TextPaneScrollPane info = new TextPaneScrollPane();
 	private TextPaneScrollPane config = new TextPaneScrollPane();
 	private TextPaneScrollPane exception = new TextPaneScrollPane();
-	
+
 	//auto new line?
 	private boolean _autoNewline;
-	
+
 	public LogTabbedPane() {
 		this(true);
 	}
 
 	public LogTabbedPane(boolean autonewline) {
-		
+
 		_autoNewline = autonewline;
 
 		add("error", error);
@@ -89,7 +90,7 @@ public class LogTabbedPane extends JTabbedPane implements ChangeListener {
 
 	/**
 	 * Fix the message so it gets appended nicely.
-	 * 
+	 *
 	 * @param message the input message.
 	 * @return the fixed message.
 	 */
@@ -106,7 +107,7 @@ public class LogTabbedPane extends JTabbedPane implements ChangeListener {
 
 	/**
 	 * The method from the ChangeListener interface.
-	 * 
+	 *
 	 * @param ce the causal ChangeEvent.
 	 */
 	@Override

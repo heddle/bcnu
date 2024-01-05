@@ -38,7 +38,7 @@ public class ColorLabel extends JComponent {
 
 	/**
 	 * Create a clickable color label.
-	 * 
+	 *
 	 * @param colorChangeListener the listener for color changes.
 	 * @param intitialColor       the intial color.
 	 * @param prompt              the prompt string.
@@ -49,7 +49,7 @@ public class ColorLabel extends JComponent {
 
 	/**
 	 * Create an inert color label.
-	 * 
+	 *
 	 * @param color  the color.
 	 * @param prompt the prompt string.
 	 */
@@ -66,7 +66,7 @@ public class ColorLabel extends JComponent {
 
 	/**
 	 * Create a clickable color label.
-	 * 
+	 *
 	 * @param colorChangeListener the listener for color changes.
 	 * @param intitialColor       the initial color.
 	 * @param prompt              the prompt string.
@@ -135,7 +135,7 @@ public class ColorLabel extends JComponent {
 
 	/**
 	 * Return the current color.
-	 * 
+	 *
 	 * @return the current color.
 	 */
 	public Color getColor() {
@@ -144,7 +144,7 @@ public class ColorLabel extends JComponent {
 
 	/**
 	 * Set the new color.
-	 * 
+	 *
 	 * @param newColor the new color index.
 	 */
 	public void setColor(Color newColor) {

@@ -7,7 +7,6 @@ import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
 
-import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.TextUtilities;
 
@@ -20,14 +19,14 @@ public class FeedbackControl {
 	private EventListenerList _listenerList;
 
 	// the newly acquired feedback strings
-	private Vector<String> _newFeedbackStrings = new Vector<String>(50);
+	private Vector<String> _newFeedbackStrings = new Vector<>(50);
 
 	// the previous feedback strings
-	private Vector<String> _oldFeedbackStrings = new Vector<String>(50);
+	private Vector<String> _oldFeedbackStrings = new Vector<>(50);
 
 	/**
 	 * Create a feedback controller for a container.
-	 * 
+	 *
 	 * @param container
 	 */
 	public FeedbackControl(IContainer container) {
@@ -36,7 +35,7 @@ public class FeedbackControl {
 
 	/**
 	 * Request feedback strings from all providers.
-	 * 
+	 *
 	 * @param pp the screen location of the mouse.
 	 * @param wp the corresponding world points.
 	 */
@@ -63,7 +62,7 @@ public class FeedbackControl {
 
 	/**
 	 * Add a Feedback provider.
-	 * 
+	 *
 	 * @param provider the Feedback provider listener to add.
 	 */
 	public void addFeedbackProvider(IFeedbackProvider provider) {
@@ -79,7 +78,7 @@ public class FeedbackControl {
 
 	/**
 	 * Remove a Feedback provider.
-	 * 
+	 *
 	 * @param provider the Feedback provider to remove.
 	 */
 	public void removeFeedbackProvider(IFeedbackProvider provider) {
@@ -93,7 +92,7 @@ public class FeedbackControl {
 
 	/**
 	 * The mouse has moved, so update the feedback
-	 * 
+	 *
 	 * @param mouseEvent the screen location
 	 * @param wp         the corresponding world point.
 	 * @param dragging   <code>true</code> if we are dragging

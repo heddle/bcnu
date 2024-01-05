@@ -90,7 +90,7 @@ public class PropertySupport {
 
 	/**
 	 * Create a set of properties from the key values
-	 * 
+	 *
 	 * @param keyValues the set of key values
 	 * @return a set of properties
 	 */
@@ -121,7 +121,7 @@ public class PropertySupport {
 	/**
 	 * Convert a properties object into an object array. This is the inverse of the
 	 * fromKeyValues method.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the corresponding object array.
 	 */
@@ -146,7 +146,7 @@ public class PropertySupport {
 
 	/**
 	 * Get an azimuth angle in degrees. Generally 0 is due north, 90 due east, etc.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the aximuth in degrees. On error, return 0.
 	 */
@@ -156,7 +156,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the full path of an image file to be used as a background mage.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the file path. On error return <code>null</code>.
 	 */
@@ -166,7 +166,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the bottom margin in pixels.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the bottom margin. On error, return 0.
 	 */
@@ -176,7 +176,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the top margin in pixels.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the top margin. On error, return 0.
 	 */
@@ -186,7 +186,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the left margin in pixels.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the left margin. On error, return 0.
 	 */
@@ -196,7 +196,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the right margin in pixels.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the right margin. On error, return 0.
 	 */
@@ -206,7 +206,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the left location in pixels.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the left location. On error, return 0.
 	 */
@@ -216,7 +216,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the top location in pixels.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the top location. On error, return 0.
 	 */
@@ -226,7 +226,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the "is visible" boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the visible flag. On error, return true.
 	 */
@@ -236,7 +236,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the "scrollable" boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the scrollable flag. On error, return false.
 	 */
@@ -246,7 +246,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the "use toolbar" boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the toolbar flag. On error, return true.
 	 */
@@ -256,7 +256,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the tool bar bits.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the toolbar bits. On error, return 0.
 	 */
@@ -266,7 +266,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the "use standard view decorations" boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the decorations flag. On error, return true.
 	 */
@@ -276,7 +276,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the closable boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the closable flag. On error, return true.
 	 */
@@ -286,7 +286,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the draggable boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the draggable flag. On error, return false.
 	 */
@@ -296,7 +296,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the view iconifiable boolean flag.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the iconifiable flag. On error, return true.
 	 */
@@ -306,7 +306,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the view maximize boolean flag. For views.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the maximize flag. On error, return false.
 	 */
@@ -316,7 +316,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the view maximizable boolean flag. For views.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the maximizable flag. On error, return true.
 	 */
@@ -326,7 +326,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the view resizable boolean flag. For views.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the resizable flag. On error, return true.
 	 */
@@ -336,7 +336,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the item rotatable boolean flag. For views.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the rotatable flag. On error, return true.
 	 */
@@ -346,7 +346,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a world coordinate system
-	 * 
+	 *
 	 * @param props the properties
 	 * @return a world rectangle. On error, return defaultWorldRect
 	 */
@@ -356,17 +356,17 @@ public class PropertySupport {
 
 	/**
 	 * Get a title
-	 * 
+	 *
 	 * @param props the properties
 	 * @return a title On error return unknownString.
 	 */
 	public static String getTitle(Properties props) {
 		return getString(props, TITLE, unknownString);
 	}
-	
+
 	/**
 	 * Get the name for reading writing user pref properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return a propname On error return unknownString.
 	 */
@@ -377,7 +377,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the path of the data directory
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the path of the data directory. On error return defaultDataDir.
 	 */
@@ -387,7 +387,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a container from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return an IContainer, on error return null
 	 */
@@ -401,7 +401,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a (screen) fraction from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return a (screen) fraction, on error return Double.NaN.
 	 */
@@ -411,7 +411,7 @@ public class PropertySupport {
 
 	/**
 	 * Get an optional component used to split the west part of a view
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the component
 	 */
@@ -421,7 +421,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a font from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return a Font, on error return _defaultFont
 	 */
@@ -435,7 +435,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a symbol from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return a SymbolType, on error return SymbolType.SQUARE
 	 */
@@ -449,7 +449,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the symbol size in pixels
-	 * 
+	 *
 	 * @param props the properties
 	 * @return get the symbol size (width and height) in pixels. On error return 8.
 	 */
@@ -461,7 +461,7 @@ public class PropertySupport {
 	/**
 	 * Get the optional user data. This is any object that the user wants to attach
 	 * to the shape.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the user data (might be <code>null</code>).
 	 */
@@ -471,7 +471,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the sector id.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the sector Id. On error return Integer.MIN_VALUE (-2^31 =
 	 *         -2147483648)
@@ -482,7 +482,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the superlayer id.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the suplerlayer Id. On error return Integer.MIN_VALUE (-2^31 =
 	 *         -2147483648)
@@ -493,7 +493,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the layer id.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the layer Id. On error return Integer.MIN_VALUE (-2^31 = -2147483648)
 	 */
@@ -503,7 +503,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the component id.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the component Id. On error return Integer.MIN_VALUE (-2^31 =
 	 *         -2147483648)
@@ -514,7 +514,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the crate id.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the crate Id. On error return Integer.MIN_VALUE (-2^31 = -2147483648)
 	 */
@@ -524,7 +524,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the slot id.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the slot Id. On error return Integer.MIN_VALUE (-2^31 = -2147483648)
 	 */
@@ -534,7 +534,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the channelid.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the channel Id. On error return Integer.MIN_VALUE (-2^31 =
 	 *         -2147483648)
@@ -545,7 +545,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the background color from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the background color. On error return null.
 	 */
@@ -555,7 +555,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the text color from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the text color. On error return _defaultTextColor.
 	 */
@@ -565,7 +565,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the rotation angle assumed to be in degrees.
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the rotation angle assumed to be in degrees. On error return 0.
 	 */
@@ -575,7 +575,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the fill color from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the fill color. On error return _defaultFillColor.
 	 */
@@ -585,7 +585,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the line color from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the line color. On error return _defaultLineColor.
 	 */
@@ -595,7 +595,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the line style from the properties.
-	 * 
+	 *
 	 * @param props the properties.
 	 * @return the linestyle. On error return LineStyle.SOLID.
 	 */
@@ -611,7 +611,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a line width from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the width. On error return 0.
 	 */
@@ -621,7 +621,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a width from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the width. On error return Integer.MIN_VALUE (-2^31 = -2147483648)
 	 */
@@ -631,7 +631,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a height from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the height. On error return Integer.MIN_VALUE (-2^31 = -2147483648)
 	 */
@@ -641,7 +641,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the virtual view panel from the properties
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the virtual view panel. On error return Integer.MIN_VALUE (-2^31 =
 	 *         -2147483648)
@@ -652,7 +652,7 @@ public class PropertySupport {
 
 	/**
 	 * Get the locked flag. (Default is true)
-	 * 
+	 *
 	 * @param props the properties
 	 * @return the locked flag
 	 */
@@ -662,7 +662,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a world rectangle
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -683,7 +683,7 @@ public class PropertySupport {
 	/**
 	 * Get a color from a properties. Tries to handle both a String (from the X11
 	 * database, e.g. "coral", "red", "powder blue") and a Java Color value.
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -707,7 +707,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a JComponent from properties.
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -723,7 +723,7 @@ public class PropertySupport {
 
 	/**
 	 * Get a String from properties.
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -744,7 +744,7 @@ public class PropertySupport {
 	/**
 	 * Get an int from properties. Tries to handle both a String (e.g., "67") and
 	 * Integer value.
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -775,7 +775,7 @@ public class PropertySupport {
 	/**
 	 * Get a double from properties. Tries to handle both a String (e.g., "67.0")
 	 * and Double value.
-	 * 
+	 *
 	 * @param props the properties
 	 * @param key   the key
 	 * @return the double value, or on error return Double.NaN.
@@ -787,7 +787,7 @@ public class PropertySupport {
 	/**
 	 * Get a double from properties. Tries to handle both a String (e.g., "67.0")
 	 * and Double value.
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -826,7 +826,7 @@ public class PropertySupport {
 	/**
 	 * Get a float from properties. Tries to handle both a String (e.g., "67.0") and
 	 * Float value.
-	 * 
+	 *
 	 * @param props the properties
 	 * @param key   the key
 	 * @return the double value, or on error return Float.NaN.
@@ -838,7 +838,7 @@ public class PropertySupport {
 	/**
 	 * Get a float from properties. Tries to handle both a String (e.g., "67.0") and
 	 * Float value.
-	 * 
+	 *
 	 * @param props        the properties
 	 * @param key          the key
 	 * @param defaultValue the default value
@@ -874,7 +874,7 @@ public class PropertySupport {
 	/**
 	 * Get a boolean from properties. Tries to handle both a String (e.g., "true")
 	 * and Boolean value.
-	 * 
+	 *
 	 * @param props the properties
 	 * @param key   the key
 	 * @param       boolean defaultVal

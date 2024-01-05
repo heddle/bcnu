@@ -16,7 +16,7 @@ import cnuphys.bCNU.util.Environment;
 
 /**
  * The is the default "pointer" button.
- * 
+ *
  * @author heddle
  */
 @SuppressWarnings("serial")
@@ -62,7 +62,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Creates the default pointer button used for selecting objects,
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public PointerButton(final IContainer container) {
@@ -79,7 +79,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 	 * The mouse was clicked. Note that the order the events will come is PRESSED,
 	 * RELEASED, CLICKED. And a CLICKED will happen only if the mouse was not moved
 	 * between press and release.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -91,7 +91,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 	 * The mouse was clicked. Note that the order the events will come is PRESSED,
 	 * RELEASED, CLICKED. And a CLICKED will happen only if the mouse was not moved
 	 * between press and release.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -138,7 +138,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Mouse has been dragged with pointer button active.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -203,7 +203,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 	 * The mouse was clicked. Note that the order the events will come is PRESSED,
 	 * RELEASED, CLICKED. And a CLICKED will happen only if the mouse was not moved
 	 * between press and release.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -228,7 +228,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Handle a mouse double event.
-	 * 
+	 *
 	 * @param mouseEvent the causal event
 	 */
 	@Override
@@ -241,7 +241,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Handle a mouse button 3 event.
-	 * 
+	 *
 	 * @param mouseEvent the causal event
 	 */
 	@Override
@@ -251,19 +251,15 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 
 	/**
 	 * Select items based on a click.
-	 * 
+	 *
 	 * @param item       if not null, we clicked on this item. If null, we clicked
 	 *                   on the container but not on an item.
 	 * @param mouseEvent the causal event
 	 */
 	private void selectItemsFromClick(AItem item, MouseEvent mouseEvent) {
 
-		if (!SwingUtilities.isLeftMouseButton(mouseEvent)) {
-			return;
-		}
-
 		// if we click on a selected item do nothing
-		if ((item != null) && ((item.isLocked()) || item.isSelected())) {
+		if (!SwingUtilities.isLeftMouseButton(mouseEvent) || ((item != null) && ((item.isLocked()) || item.isSelected()))) {
 			return;
 		}
 

@@ -13,9 +13,9 @@ import cnuphys.bCNU.application.Desktop;
 
 /**
  * The global file menu common to all bCNU applications
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class FileMenu extends JMenu {

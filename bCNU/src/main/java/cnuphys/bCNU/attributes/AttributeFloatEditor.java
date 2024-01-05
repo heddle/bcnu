@@ -16,7 +16,7 @@ public class AttributeFloatEditor extends AttributeRealValueEditor {
 
 	/**
 	 * Render the value for display
-	 * 
+	 *
 	 * @param value the
 	 */
 	@Override

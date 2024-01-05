@@ -35,12 +35,12 @@ public enum LedState {
 		green_icon = ImageManager.getInstance().loadImageIcon("images/green-led.png");
 		yellow_icon = ImageManager.getInstance().loadImageIcon("images/yellow-led.png");
 		unknown_icon = ImageManager.getInstance().loadImageIcon("images/off-led.png");
-	};
+	}
 
 	/**
 	 * A map for names of the <code>LedStyle</code> enum values.
 	 */
-	public static final EnumMap<LedState, String> names = new EnumMap<LedState, String>(LedState.class);
+	public static final EnumMap<LedState, String> names = new EnumMap<>(LedState.class);
 
 	static {
 		names.put(LedState.RED, "Red");
@@ -52,7 +52,7 @@ public enum LedState {
 	/**
 	 * A map for colors of the <code>LedStyle</code> enum values.
 	 */
-	public static final EnumMap<LedState, Color> colors = new EnumMap<LedState, Color>(LedState.class);
+	public static final EnumMap<LedState, Color> colors = new EnumMap<>(LedState.class);
 
 	static {
 		colors.put(LedState.RED, Color.red);
@@ -64,7 +64,7 @@ public enum LedState {
 	/**
 	 * A map for icons of the <code>LedStyle</code> enum values.
 	 */
-	public static final EnumMap<LedState, ImageIcon> icons = new EnumMap<LedState, ImageIcon>(LedState.class);
+	public static final EnumMap<LedState, ImageIcon> icons = new EnumMap<>(LedState.class);
 
 	static {
 		icons.put(LedState.RED, red_icon);
@@ -75,7 +75,7 @@ public enum LedState {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>LineStyle</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -89,10 +89,7 @@ public enum LedState {
 		}
 
 		for (LedState cs : values()) {
-			if (name.equalsIgnoreCase(cs.name())) {
-				return cs;
-			}
-			if (name.equalsIgnoreCase(names.get(cs))) {
+			if (name.equalsIgnoreCase(cs.name()) || name.equalsIgnoreCase(names.get(cs))) {
 				return cs;
 			}
 		}
@@ -101,7 +98,7 @@ public enum LedState {
 
 	/**
 	 * Get the color to display.
-	 * 
+	 *
 	 * @return the color to display.
 	 */
 	public Color getColor() {
@@ -110,7 +107,7 @@ public enum LedState {
 
 	/**
 	 * Get the icon to display.
-	 * 
+	 *
 	 * @return the icon to display.
 	 */
 	public ImageIcon getIcon() {
@@ -119,7 +116,7 @@ public enum LedState {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -130,7 +127,7 @@ public enum LedState {
 	 * Returns the array of nice (more readable) names from the enum map. These are
 	 * more suitable than the raw names for presentations in radio boxes, lists,
 	 * etc.
-	 * 
+	 *
 	 * @return the string array of nice names for display.
 	 */
 	public static String[] getNames() {

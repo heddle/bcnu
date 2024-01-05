@@ -9,9 +9,9 @@ import cnuphys.splot.plot.SplotMenus;
 
 /**
  * This is a predefined view used to display a plot from splot
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class PlotView extends BaseView {
@@ -24,7 +24,7 @@ public class PlotView extends BaseView {
 
 	// all the menus and items
 	protected SplotMenus _menus;
-	
+
 	public PlotView() {
 		this("sPlot");
 	}
@@ -53,7 +53,7 @@ public class PlotView extends BaseView {
 
 	/**
 	 * Get the plot canvas
-	 * 
+	 *
 	 * @return th plot canvas
 	 */
 	public PlotCanvas getPlotCanvas() {

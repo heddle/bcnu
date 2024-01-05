@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.graphics.toolbar;
 
@@ -13,7 +13,7 @@ import cnuphys.bCNU.item.AItem;
 
 /**
  * @author heddle
- * 
+ *
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
@@ -22,7 +22,7 @@ public class PolylineButton extends ToolBarToggleButton implements IRubberbanded
 
 	/**
 	 * Create a button for creating a polygon.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public PolylineButton(IContainer container) {
@@ -31,7 +31,7 @@ public class PolylineButton extends ToolBarToggleButton implements IRubberbanded
 
 	/**
 	 * The mouse has been pressed, start rubber banding.
-	 * 
+	 *
 	 * @param mouseEvent the causal mouse event.
 	 */
 	@Override

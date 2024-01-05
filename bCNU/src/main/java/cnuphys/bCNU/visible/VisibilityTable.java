@@ -34,7 +34,7 @@ public class VisibilityTable extends JTable implements ItemListener {
 
 	/**
 	 * Create a table for toggling visibility (probably of logical layers)
-	 * 
+	 *
 	 * @param container container holding the list of drawables (prpbably layers)
 	 * @param visList   the list of drawables
 	 */
@@ -124,7 +124,7 @@ public class VisibilityTable extends JTable implements ItemListener {
 
 	/**
 	 * One of the vis toggles has changed. Refresh the container.
-	 * 
+	 *
 	 * @param e the causal event
 	 */
 	@Override
@@ -188,7 +188,7 @@ public class VisibilityTable extends JTable implements ItemListener {
 
 	/**
 	 * Reorder the table after a drag.
-	 * 
+	 *
 	 * @param layerName
 	 * @param newRow
 	 */

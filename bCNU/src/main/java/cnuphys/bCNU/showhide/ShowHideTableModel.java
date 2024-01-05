@@ -22,7 +22,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 	protected static final int _columnWidths[] = { 30, 500 };
 
 	// the model data
-	protected Vector<IShowHide> _data = new Vector<IShowHide>(20, 10);
+	protected Vector<IShowHide> _data = new Vector<>(20, 10);
 
 	// Listener for model events
 	private EventListenerList _listenerList = null;
@@ -37,7 +37,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -47,7 +47,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -60,7 +60,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -86,13 +86,13 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Add a new IVisible into the table.
-	 * 
+	 *
 	 * @param ivis the new object to add to the model.
 	 */
 	public void add(IShowHide ivis) {
 		if (ivis != null) {
 			if (_data == null) {
-				_data = new Vector<IShowHide>(20, 10);
+				_data = new Vector<>(20, 10);
 			}
 			_data.add(ivis);
 			fireTableDataChanged();
@@ -101,7 +101,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * remove an IVisible from the table.
-	 * 
+	 *
 	 * @param ivis the IVisible to remove
 	 */
 	public void remove(IShowHide ivis) {
@@ -121,7 +121,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Set the entire model
-	 * 
+	 *
 	 * @param data the data to set
 	 */
 	public void setData(Vector<IShowHide> data) {
@@ -131,15 +131,12 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the IShowHide in the model at the given row.
-	 * 
+	 *
 	 * @param row the zero based row
 	 * @return the IShowHide corresponding to the row.
 	 */
 	public IShowHide getElementAtRow(int row) {
-		if ((_data == null) || (row < 0)) {
-			return null;
-		}
-		if (row >= _data.size()) {
+		if ((_data == null) || (row < 0) || (row >= _data.size())) {
 			return null;
 		}
 		return _data.get(row);
@@ -147,7 +144,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Add an <code>IShowHideListener</code>.
-	 * 
+	 *
 	 * @see IShowHideListener
 	 * @param modelListener the <code>IShowHideListener</code> to add.
 	 */
@@ -166,7 +163,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Remove an <code>IShowHideListener</code>.
-	 * 
+	 *
 	 * @see IShowHideListener
 	 * @param modelListener the <code>IShowHideListener</code> to remove.
 	 */
@@ -181,7 +178,7 @@ public class ShowHideTableModel extends DefaultTableModel {
 
 	/**
 	 * Notify interested parties that a visibility has changed
-	 * 
+	 *
 	 */
 	public void notifyModelChangeListeners(IShowHide ish) {
 

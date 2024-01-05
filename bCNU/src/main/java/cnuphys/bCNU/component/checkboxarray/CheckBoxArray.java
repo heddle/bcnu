@@ -15,9 +15,9 @@ import cnuphys.bCNU.log.Log;
 
 /**
  * Used to create a panel of options.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class CheckBoxArray extends JPanel {
@@ -31,7 +31,7 @@ public class CheckBoxArray extends JPanel {
 	/**
 	 * A map of the buttons that are added.
 	 */
-	protected Hashtable<String, AbstractButton> buttons = new Hashtable<String, AbstractButton>(59);
+	protected Hashtable<String, AbstractButton> buttons = new Hashtable<>(59);
 
 	// keep track of what column
 	private int _nextIndex = 0;
@@ -41,7 +41,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Create a check box array.
-	 * 
+	 *
 	 * @param numColumns the number of columns.
 	 * @param hgap       the horizontal gap.
 	 * @param vgap       the vertical gap.
@@ -67,7 +67,7 @@ public class CheckBoxArray extends JPanel {
 	/**
 	 * Creates a CheckBoxArray of checkboxes (no radio buttons). All the buttons are
 	 * enabled and unselected.
-	 * 
+	 *
 	 * @param numColumns the number of columns.
 	 * @param hgap       the horizontal gap.
 	 * @param vgap       the vertical gap.
@@ -83,7 +83,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Add a check box that is not part of a button group.
-	 * 
+	 *
 	 * @param label        the checkbox label.
 	 * @param initialState the initial state of the selection.
 	 * @param enabled      whether it is selectable or not.
@@ -99,7 +99,7 @@ public class CheckBoxArray extends JPanel {
 	/**
 	 * Add a check box that is not part of a button group. This has a convenience
 	 * piece that checks that a mask bit is set.
-	 * 
+	 *
 	 * @param label        the checkbox label.
 	 * @param initialState the initial state of the selection.
 	 * @param enabled      whether it is selectable or not.
@@ -119,7 +119,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Add a check box that might be part of a button group.
-	 * 
+	 *
 	 * @param label           the checkbox label.
 	 * @param initialState    the initial state of the selection.
 	 * @param enabled         whether it is sectable or not.
@@ -152,7 +152,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Get which button is active on a given button group
-	 * 
+	 *
 	 * @param buttonGroupName the name of the buttonGroup;
 	 * @return the active toolbar toggle button, or null.
 	 */
@@ -187,7 +187,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Set a member of a button group to be selected.
-	 * 
+	 *
 	 * @param buttonGroup    the button group.
 	 * @param abstractButton the button to set selected.
 	 */
@@ -204,13 +204,13 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Get a button group, creating if necessary.
-	 * 
+	 *
 	 * @param buttonGroupName the name of the button group.
 	 * @return the button group with the given name.
 	 */
 	private ButtonGroup getOrCreate(String buttonGroupName) {
 		if (buttonGroups == null) {
-			buttonGroups = new Hashtable<String, ButtonGroup>(47);
+			buttonGroups = new Hashtable<>(47);
 		}
 		ButtonGroup bg = buttonGroups.get(buttonGroupName);
 
@@ -223,7 +223,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Set a button's (checkbox) selected state based on its label.
-	 * 
+	 *
 	 * @param label    the button's label
 	 * @param selected the button's selected state
 	 */
@@ -238,7 +238,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * See if a button (checkbox) is selected based on its label.
-	 * 
+	 *
 	 * @param label the button's label
 	 * @return <code>true</code> if the button is selected.
 	 */
@@ -253,7 +253,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * See if a button (checkbox) is enabled based on its label.
-	 * 
+	 *
 	 * @param label the button's label
 	 * @return <code>true</code> if the button is enabled.
 	 */
@@ -268,7 +268,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Set a button's enabled stated based on its label.
-	 * 
+	 *
 	 * @param label   the button's label
 	 * @param enabled the enabled flag
 	 */
@@ -283,7 +283,7 @@ public class CheckBoxArray extends JPanel {
 
 	/**
 	 * Get the corresponding abstract button
-	 * 
+	 *
 	 * @param label the label to match
 	 * @return the correseponding button
 	 */
@@ -294,7 +294,7 @@ public class CheckBoxArray extends JPanel {
 	/**
 	 * Issue a warning that we tried to acess a non-existent button based on the
 	 * provided label.
-	 * 
+	 *
 	 * @param label the label in question.
 	 */
 	private void nullWarning(String label) {

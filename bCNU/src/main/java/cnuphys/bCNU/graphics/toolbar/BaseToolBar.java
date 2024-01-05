@@ -23,7 +23,7 @@ import cnuphys.bCNU.util.Fonts;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMotionListener {
@@ -149,7 +149,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Create a toolbar with all the buttons.
-	 * 
+	 *
 	 * @param container the container this toolbar controls.
 	 */
 	public BaseToolBar(IContainer container) {
@@ -158,7 +158,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Create a tool bar.
-	 * 
+	 *
 	 * @param container the container this toolbar controls.
 	 * @param bits      controls which tools are added.
 	 */
@@ -181,7 +181,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Makes all the buttons.
-	 * 
+	 *
 	 * @param bits Bitwise test of which annotation buttons to add.
 	 */
 	protected void makeButtons(int bits) {
@@ -345,7 +345,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Sets the text in the text field widget.
-	 * 
+	 *
 	 * @param text the new text.
 	 */
 	public void setText(String text) {
@@ -362,7 +362,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Enable/disable the drawing buttons
-	 * 
+	 *
 	 * @param enabled the desired stated.
 	 */
 	public void enableDrawingButtons(boolean enabled) {
@@ -405,7 +405,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the button used for a box (rubberband) zoom.
-	 * 
+	 *
 	 * @return the button used for a box (rubberband) zoom.
 	 */
 	public BoxZoomButton getBoxZoomButton() {
@@ -414,7 +414,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the button used for magnification.
-	 * 
+	 *
 	 * @return the button used for magnification.
 	 */
 	public MagnifyButton getMagnifyButton() {
@@ -424,7 +424,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the button used for recentering.
-	 * 
+	 *
 	 * @return the button used for recentering.
 	 */
 	public CenterButton getCenterButton() {
@@ -433,7 +433,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's delete button.
-	 * 
+	 *
 	 * @return the toolbar's delete button.
 	 */
 	public DeleteButton getDeleteButton() {
@@ -442,7 +442,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's control panel button.
-	 * 
+	 *
 	 * @return the toolbar's control panel button.
 	 */
 	public ControlPanelButton getControlPanelButton() {
@@ -451,7 +451,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's ellipse button.
-	 * 
+	 *
 	 * @return the toolbar's ellipse button.
 	 */
 	public EllipseButton getEllipseButton() {
@@ -460,7 +460,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's pan button.
-	 * 
+	 *
 	 * @return the toolbar's pan button.
 	 */
 	public PanButton getPanButton() {
@@ -469,7 +469,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's point button.
-	 * 
+	 *
 	 * @return the toolbar's pointer button.
 	 */
 	public PointerButton getPointerButton() {
@@ -478,7 +478,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's polygon button.
-	 * 
+	 *
 	 * @return the toolbar's polygon button.
 	 */
 	public PolygonButton getPolygonButton() {
@@ -487,7 +487,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's polyline button.
-	 * 
+	 *
 	 * @return the toolbar's polyline button.
 	 */
 	public PolylineButton getPolylineButton() {
@@ -496,7 +496,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's range button.
-	 * 
+	 *
 	 * @return the toolbar's range button.
 	 */
 	public RangeButton getRangeButton() {
@@ -505,7 +505,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's rectangle button.
-	 * 
+	 *
 	 * @return the toolbar's rectangle button.
 	 */
 	public RectangleButton getRectangleButton() {
@@ -514,7 +514,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's rectangle grid button.
-	 * 
+	 *
 	 * @return the toolbar's rectangle grid button.
 	 */
 	public RectGridButton getRectGridButton() {
@@ -523,7 +523,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's radarc button.
-	 * 
+	 *
 	 * @return the toolbar's radarc button.
 	 */
 	public RadArcButton getRadArcButton() {
@@ -532,7 +532,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's line button.
-	 * 
+	 *
 	 * @return the toolbar's line button.
 	 */
 	public LineButton getLineButton() {
@@ -541,7 +541,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's refresh button.
-	 * 
+	 *
 	 * @return the toolbar's refresh button.
 	 */
 	public RefreshButton getRefreshButton() {
@@ -550,7 +550,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's text button.
-	 * 
+	 *
 	 * @return the toolbar's text button.
 	 */
 	public TextButton getTextButton() {
@@ -559,7 +559,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's undozoom button.
-	 * 
+	 *
 	 * @return the toolbar's undozoom button.
 	 */
 	public UndoZoomButton getUndoZoomButton() {
@@ -568,7 +568,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's world (default world zoom) button.
-	 * 
+	 *
 	 * @return the toolbar's world button.
 	 */
 	public WorldButton getWorldButton() {
@@ -577,7 +577,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's clone button.
-	 * 
+	 *
 	 * @return the toolbar's zoom-in button.
 	 */
 	public CloneButton getCloneButton() {
@@ -586,7 +586,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's zoom-in button.
-	 * 
+	 *
 	 * @return the toolbar's zoom-in button.
 	 */
 	public ZoomInButton getZoomInButton() {
@@ -595,7 +595,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the toolbar's zoom-out button.
-	 * 
+	 *
 	 * @return the toolbar's zoom-out button.
 	 */
 	public ZoomOutButton getZoomOutButton() {
@@ -606,7 +606,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	 * The mouse was clicked. Note that the order the events will come is PRESSED,
 	 * RELEASED, CLICKED. And a CLICKED will happen only if the mouse was not moved
 	 * between press and release.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -640,7 +640,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * The mouse has entered the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -655,7 +655,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * The mouse has exited the container.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -673,7 +673,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	 * The mouse was pressed. Note that the order the events will come is PRESSED,
 	 * RELEASED, CLICKED. And a CLICKED will happen only if the mouse was not moved
 	 * between press and release.
-	 * 
+	 *
 	 * @param me the causal event.
 	 */
 	@Override
@@ -710,7 +710,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	 * RELEASED, CLICKED. And a CLICKED will happen only if the mouse was not moved
 	 * between press and release. Also, the RELEASED will come even if the mouse was
 	 * dragged off the container.
-	 * 
+	 *
 	 * @param me the causal event.
 	 */
 	@Override
@@ -737,7 +737,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	}
 
 	/**
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override
@@ -758,7 +758,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	/**
 	 * The mouse has moved. Note will not come here if mouse button pressed, will go
 	 * to DRAG instead.
-	 * 
+	 *
 	 * @param me the causal event.
 	 */
 	@Override
@@ -774,7 +774,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Convenience routine to get the active button.
-	 * 
+	 *
 	 * @return the active toggle button.
 	 */
 	@Override
@@ -794,7 +794,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Get the user component, on which the app might draw stuff
-	 * 
+	 *
 	 * @return the userComponent
 	 */
 	public UserToolBarComponent getUserComponent() {
@@ -803,7 +803,7 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 	/**
 	 * Set the drawable for the user component (if there is a user component).
-	 * 
+	 *
 	 * @param drawable the drawable to use.
 	 */
 	public void setUserComponentDrawable(IDrawable drawable) {

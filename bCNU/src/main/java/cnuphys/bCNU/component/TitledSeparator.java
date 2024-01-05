@@ -1,13 +1,22 @@
 package cnuphys.bCNU.component;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.Box;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.UIManager;
 
 /**
  * This custom title panel creates a separators on the left and right side of
  * the given title string. The left separator has a fixed width of 8 pixels, the
  * right separator will fill the remainder of the panel.
- * 
+ *
  * For example ( | --- aTitle
  * ---------------------------------------------------------- |
  */

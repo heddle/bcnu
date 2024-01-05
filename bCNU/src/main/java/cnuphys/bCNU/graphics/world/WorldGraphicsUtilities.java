@@ -30,9 +30,9 @@ import cnuphys.lund.LundSupport;
 
 /**
  * Drawing methods for world based objects.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class WorldGraphicsUtilities {
 
@@ -53,7 +53,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a horizontal "etched" world line
-	 * 
+	 *
 	 * @param g          the graphics context.
 	 * @param container  the container on which it is rendered.
 	 * @param x          x coordinate of start point.
@@ -87,7 +87,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a verticle "etched" world line
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x         x coordinate of vertical line
@@ -121,7 +121,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world line
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param wp0       one end point.
@@ -135,7 +135,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world line
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x1        x coordinate of start point.
@@ -151,7 +151,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world line
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x1        x coordinate of start point.
@@ -188,7 +188,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Set the stlye defaults
-	 * 
+	 *
 	 * @param g the graphics context
 	 */
 	public static void setStyleDefaults(Graphics g) {
@@ -199,7 +199,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Convert two world points (possible line endpoints) to pixel coordinates.
-	 * 
+	 *
 	 * @param container
 	 * @param p0        will hold one pixel point.
 	 * @param p1        will hold other pixel point.
@@ -213,7 +213,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world line 1 pixel wide in solid style
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x1        x coordinate of start point.
@@ -229,7 +229,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get pixel rectangle boundary of two wotld points
-	 * 
+	 *
 	 * @param container
 	 * @param wp0       one end point.
 	 * @param wp1       another end point.
@@ -255,7 +255,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get pixel rectangle boundary of two wotld points
-	 * 
+	 *
 	 * @param container
 	 * @param x1        x coordinate of one end point.
 	 * @param y1        y coordinate of one end point.
@@ -286,7 +286,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Draw a world radarc. This is something with an inner and outer radius and an
 	 * opening and closing angle.
-	 * 
+	 *
 	 * @param g          the graphics context.
 	 * @param container  the container on which it is rendered.
 	 * @param xc         the horizontal center.
@@ -333,7 +333,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Draw a world radarc. This is something with an inner and outer radius and an
 	 * opening and closing angle. This will draw using a 1 pixel wide solid line.
-	 * 
+	 *
 	 * @param g          the graphics context.
 	 * @param container  the container on which it is rendered.
 	 * @param xc         the horizontal center.
@@ -355,7 +355,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Draw a world radarc. This is something with an inner and outer radius and an
 	 * opening and closing angle. This will draw using a 1 pixel wide solid line.
-	 * 
+	 *
 	 * @param g          the graphics context.
 	 * @param container  the container on which it is rendered.
 	 * @param xc         the horizontal center.
@@ -375,7 +375,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Create a screen representation of world circle.
-	 * 
+	 *
 	 * @param container the container on which it is rendered.
 	 * @param xc        the horizontal center.
 	 * @param yc        the vertical center.
@@ -405,7 +405,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Create a screen representation of world donut.
-	 * 
+	 *
 	 * @param container the container on which it is rendered.
 	 * @param xc        the horizontal center.
 	 * @param yc        the vertical center.
@@ -455,7 +455,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Create a screen representation of world arc.
-	 * 
+	 *
 	 * @param container  the container on which it is rendered.
 	 * @param xc         the horizontal center.
 	 * @param yc         the vertical center.
@@ -492,10 +492,10 @@ public class WorldGraphicsUtilities {
 
 		return new Polygon(x, y, NUMCIRCSTEP);
 	}
-	
+
 	/**
 	 * Draw a world oval.
-	 * 
+	 *
 	 * @param g              the graphics context.
 	 * @param container      the container on which it is rendered.
 	 * @param worldRectangle the world rectangle defining the enclosed oval
@@ -532,7 +532,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world rectangle.
-	 * 
+	 *
 	 * @param g              the graphics context.
 	 * @param container      the container on which it is rendered.
 	 * @param worldRectangle the world rectangle being drawn.
@@ -566,10 +566,10 @@ public class WorldGraphicsUtilities {
 		}
 
 	}
-	
+
 	/**
 	 * Draw a world oval with a solid, 1 pixel outline.
-	 * 
+	 *
 	 * @param g              the graphics context.
 	 * @param container      the container on which it is rendered.
 	 * @param worldRectangle the world rectangle defining the enclosed oval
@@ -583,7 +583,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world rectangle with a solid, 1 pixel outline.
-	 * 
+	 *
 	 * @param g              the graphics context.
 	 * @param container      the container on which it is rendered.
 	 * @param worldRectangle the world rectangle being drawn.
@@ -597,7 +597,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world oval based on an IStyled object.
-	 * 
+	 *
 	 * @param g              the graphics context.
 	 * @param container      the container on which it is rendered.
 	 * @param worldRectangle the world rectangle defining the enclosed oval
@@ -610,7 +610,7 @@ public class WorldGraphicsUtilities {
 	}
 	/**
 	 * Draw a world rectangle based on an IStyled object.
-	 * 
+	 *
 	 * @param g              the graphics context.
 	 * @param container      the container on which it is rendered.
 	 * @param worldRectangle the world rectangle being drawn.
@@ -624,7 +624,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draws outline a highlighted world rectangle.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param wr        the rectangle being highlighted.
@@ -642,7 +642,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world polygon.
-	 * 
+	 *
 	 * @param g            the graphics context.
 	 * @param container    the container on which it is rendered.
 	 * @param worldPolygon the world polygon being drawn.
@@ -680,7 +680,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draws a hit based on the Lund Id.
-	 * 
+	 *
 	 * @param g            the graphics context.
 	 * @param container    the container on which it is rendered.
 	 * @param bounds       the world bounds of the hit being drawn.
@@ -753,7 +753,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Create a color legend component for a specific lund id.
-	 * 
+	 *
 	 * @param id the id
 	 * @return the component, which will be placed in a legend.
 	 */
@@ -769,7 +769,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Draws a hit based on the Lund Id. This accepts a double Id which is converted
 	 * to an int to support GEMC
-	 * 
+	 *
 	 * @param g            the graphics context.
 	 * @param container    the container on which it is rendered.
 	 * @param bounds       the world bounds of the hit being drawn.
@@ -788,7 +788,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw ghosted (etched) text at the given world point.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x         x coordinate of left of text.
@@ -801,7 +801,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw ghosted (etched) text at the given world point.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x         x coordinate of left of text.
@@ -823,7 +823,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw text at the given world point.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x         x coordinate of left of text.
@@ -845,7 +845,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw halo text at the given world point.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x         x coordinate of left of text.
@@ -858,7 +858,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw halo text at the given world point.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param x         x coordinate of left of text.
@@ -881,7 +881,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world path.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param path      the path rectangle being drawn.
@@ -897,7 +897,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Draw a world path.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
 	 * @param path      the path rectangle being drawn.
@@ -951,7 +951,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get the number of points in a path
-	 * 
+	 *
 	 * @param path the path being examined.
 	 * @return the number of elementary points (from moveto and lineto)
 	 */
@@ -983,7 +983,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get the convex hull of a path
-	 * 
+	 *
 	 * @param path the path in question
 	 * @return the convex hull
 	 */
@@ -1031,12 +1031,12 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Convert a path to a collection of points. This is not a general method, it
 	 * only works for simple paths of line segments. It does not deal with curves.
-	 * 
+	 *
 	 * @param path the path in question
 	 * @return a collection of vertices
 	 */
 	public static Vector<Point2D.Double> getPoints(Path2D path) {
-		Vector<Point2D.Double> pointList = new Vector<Point2D.Double>();
+		Vector<Point2D.Double> pointList = new Vector<>();
 		double[] coords = new double[2];
 		int numSubPaths = 0;
 		for (PathIterator pi = path.getPathIterator(null); !pi.isDone(); pi.next()) {
@@ -1062,7 +1062,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get an indexed point of a path.
-	 * 
+	 *
 	 * @param index the index of the point we seek, starting at zero.
 	 * @param path  the path being examined.
 	 * @return the point, or <code>null</code>
@@ -1095,7 +1095,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Convert a world path to a pixel polygon
-	 * 
+	 *
 	 * @param container the container being rendered
 	 * @param path      the path being converted
 	 * @return the pixel polygon
@@ -1133,7 +1133,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Counts the needed capacity if you are going to pull out the points an put
 	 * them in a collection. Note: for now only handles moveto and lineto.
-	 * 
+	 *
 	 * @param path the input path
 	 * @return the size needed for a collection
 	 */
@@ -1163,7 +1163,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Convert a rectangle into a path.
-	 * 
+	 *
 	 * @param wr the input rectangle
 	 * @return the path corresponding to the rectangle
 	 */
@@ -1182,7 +1182,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Convert a polygon into a path.
-	 * 
+	 *
 	 * @param points the input points
 	 * @return the path corresponding to the points
 	 */
@@ -1206,7 +1206,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Computes the intersection of two lines, p1 -> p2, and q1 -> q2.
-	 * 
+	 *
 	 * @param p1 the first end point on line 1
 	 * @param p2 the second end point on line 1
 	 * @param q1 the first end point on line 2
@@ -1249,7 +1249,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get the for corners of a rectangle as a point array
-	 * 
+	 *
 	 * @param wr the rectangle in question
 	 * @return the point array
 	 */
@@ -1268,7 +1268,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get donut points given some defining data
-	 * 
+	 *
 	 * @param wpc         the center of the donut
 	 * @param radiusInner the inner radius
 	 * @param radiusOuter the outer radius
@@ -1304,7 +1304,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get radarc points given some defining data
-	 * 
+	 *
 	 * @param wpc      the center of the arc
 	 * @param wp1      the point at the end of the first leg. Thus wpc->wp1
 	 *                 determine the radius.
@@ -1339,7 +1339,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Get arc points given some defining data
-	 * 
+	 *
 	 * @param wpc      the center of the arc
 	 * @param wp1      the point at the end of the first leg. Thus wpc->wp1
 	 *                 determine the radius.
@@ -1373,7 +1373,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Create a point from a center with a given radius and angle
-	 * 
+	 *
 	 * @param center the center
 	 * @param radius the radius
 	 * @param theta  the angle measured as the usual polar theta
@@ -1389,7 +1389,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Get a world polygon from a path, using (for now at least) only the MoveTo and
 	 * LineTo pats of the path.
-	 * 
+	 *
 	 * @param path the path in question
 	 * @return the vertex points
 	 */
@@ -1410,7 +1410,7 @@ public class WorldGraphicsUtilities {
 			case PathIterator.SEG_MOVETO:
 			case PathIterator.SEG_LINETO:
 				if (v == null) {
-					v = new Vector<Point2D.Double>(50, 25);
+					v = new Vector<>(50, 25);
 				}
 				v.add(new Point2D.Double(coords[0], coords[1]));
 				break;
@@ -1435,7 +1435,7 @@ public class WorldGraphicsUtilities {
 	/**
 	 * Set a world polygon from a path, using (for now at least) only the MoveTo and
 	 * LineTo pats of the path.
-	 * 
+	 *
 	 * @param path the path in question
 	 * @param wp   the point array--assumes it is big enough and the points have
 	 *             already been created.
@@ -1472,7 +1472,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Contains test
-	 * 
+	 *
 	 * @param poly the polygon
 	 * @param wp   the point to test
 	 * @return <code>true</code> if the point is contained
@@ -1519,7 +1519,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Obtain the area of a polygon.
-	 * 
+	 *
 	 * @param poly the polygon in question
 	 * @return the area.
 	 */
@@ -1560,7 +1560,7 @@ public class WorldGraphicsUtilities {
 	 * The intersection is with a line drawn from the point along the given azimuth.
 	 * This may not be general, but for the case of a "focus" inside the polygon and
 	 * not too weird of a polygon it should be fine.
-	 * 
+	 *
 	 * @param p0      the focus point, or the start of the line.
 	 * @param azimuth the angle in degrees at which the line radiates.
 	 * @param path    the path that will be intersected.
@@ -1575,7 +1575,7 @@ public class WorldGraphicsUtilities {
 	 * polygon. The intersection is with a line drawn from the point along the given
 	 * azimuth. This may not be general, but for the case of a "focus" inside the
 	 * polygon and not too weird of a polygon it should be fine.
-	 * 
+	 *
 	 * @param p0      the focus point, or the start of the line.
 	 * @param azimuth the angle in degrees at which the line radiates.
 	 * @param poly    the polygon that will be intersected.
@@ -1606,7 +1606,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Project a world point a length and azimuth angle.
-	 * 
+	 *
 	 * @param focus    the point being projected
 	 * @param distance the distance of the offset.
 	 * @param angle    the direction of the offset, in degrees, measured as an
@@ -1622,7 +1622,7 @@ public class WorldGraphicsUtilities {
 
 	/**
 	 * Simulate an ellipse
-	 * 
+	 *
 	 * @param w       the width of the ellipse in km
 	 * @param h       the height of the ellipse in km
 	 * @param azimuth the rotation of the ellipse in degrees. 0 is north, 90 east,
@@ -1689,8 +1689,7 @@ public class WorldGraphicsUtilities {
 
 		if (Math.abs(azimuth) > 1.0e-12) {
 
-			for (int ii = 0; ii < bp.length; ii++) {
-				Point2D.Double tmp = bp[ii];
+			for (java.awt.geom.Point2D.Double tmp : bp) {
 				double gcd = center.distance(tmp);
 
 				double az2 = Point2DSupport.azimuth(center, tmp);
@@ -1706,7 +1705,7 @@ public class WorldGraphicsUtilities {
 	 * Obtain roughly the pixel/unit where unit is the length unit of our world
 	 * system. This is approximate. The bigger this number is the more zoomed in we
 	 * are.
-	 * 
+	 *
 	 * @param container the container in question.
 	 * @return the rough pixel density, e.g. pixel/cm is cm is the world unit.
 	 */

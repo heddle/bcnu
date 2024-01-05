@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.dialog;
 
@@ -27,9 +27,9 @@ import cnuphys.bCNU.graphics.ImageManager;
  * A simple dialog template. The dialog is given a Border layout, and component
  * creators for the different directions are called. They should be overridden
  * to provide actual content.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class SimpleDialog extends JDialog implements ActionListener {
@@ -49,16 +49,16 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	// convenient access to south button panel (if exists)
 	protected JPanel buttonPanel;
-	
+
 	//a user object that cab be used in the creation methods
 	protected Object userObject1;
-	
+
 	//a user object that cab be used in the creation methods
 	protected Object userObject2;
-	
+
 	/**
 	 * Create a SimpleDialog
-	 * 
+	 *
 	 * @param title    the title of the dialog
 	 * @param modal    if <code>true</code> the dialog is modal
 	 * @param closeout a set of closeout labels
@@ -69,7 +69,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Create a SimpleDialog
-	 * 
+	 *
 	 * @param title    the title of the dialog
 	 * @param modal    if <code>true</code> the dialog is modal
 	 * @param userObj  the user object
@@ -146,7 +146,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 	/**
 	 * Add a component if the given borderlayout direction as long as it is not
 	 * <code>null</code>.
-	 * 
+	 *
 	 * @param component the component to add (oftent a panel with other components)
 	 * @param direction the BorderLayout direction.
 	 */
@@ -158,7 +158,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Override to create the component that goes in the north.
-	 * 
+	 *
 	 * @return the component that is placed in the north
 	 */
 	protected Component createNorthComponent() {
@@ -167,7 +167,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Override to create the component that goes in the south.
-	 * 
+	 *
 	 * @return the component that is placed in the south. The default implementation
 	 *         creates a row of closeout buttons.
 	 */
@@ -197,7 +197,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 	 * Get the first button on this dialog with the given label. This will search
 	 * all buttons, not just the closout buttons, so it is safe only if no more than
 	 * one button has the given label.
-	 * 
+	 *
 	 * @param label the label to search for.
 	 * @return the first button among its components that has the given label, or
 	 *         <code>null</code>.
@@ -236,7 +236,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 	/**
 	 * Enable or disable a button with a given label. Assumes no more than one
 	 * button has the given label.
-	 * 
+	 *
 	 * @param label   the label to match
 	 * @param enabled the enable flag
 	 */
@@ -256,7 +256,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Override to create the component that goes in the east.
-	 * 
+	 *
 	 * @return the component that is placed in the east
 	 */
 	protected Component createEastComponent() {
@@ -265,7 +265,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Override to create the component that goes in the west.
-	 * 
+	 *
 	 * @return the component that is placed in the west.
 	 */
 	protected Component createWestComponent() {
@@ -275,7 +275,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 	/**
 	 * Override to create the component that goes in the center. Usually this is the
 	 * "main" component.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	protected Component createCenterComponent() {
@@ -284,7 +284,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see
 	 * java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
 	 */
@@ -298,7 +298,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 	/**
 	 * Get the reason that the dialog was closed, which is just the label of the
 	 * last button hit.
-	 * 
+	 *
 	 * @return the label of the last button hit.
 	 */
 	public String getReason() {
@@ -307,7 +307,7 @@ public class SimpleDialog extends JDialog implements ActionListener {
 
 	/**
 	 * A closeout button was hit. The default behavior is to shutdown the dialog.
-	 * 
+	 *
 	 * @param command the label on the button that was hit.
 	 */
 	protected void handleCommand(String command) {

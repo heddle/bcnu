@@ -82,8 +82,9 @@ public class LineWrapCellRenderer extends JTextArea implements TableCellRenderer
 		// row.
 		int height = fontHeight * lines;
 
-		if (table.getRowHeight() < height)
+		if (table.getRowHeight() < height) {
 			table.setRowHeight(height);
+		}
 
 		return this;
 	}

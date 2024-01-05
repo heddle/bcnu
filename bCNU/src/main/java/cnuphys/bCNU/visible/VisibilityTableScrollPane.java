@@ -13,7 +13,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class VisibilityTableScrollPane extends JScrollPane {
@@ -28,7 +28,7 @@ public class VisibilityTableScrollPane extends JScrollPane {
 
 	/**
 	 * Constructor will also create the table itself.
-	 * 
+	 *
 	 * @param container container holding the list of drawables (prpbably layers)
 	 * @param visList   the list of drawables
 	 * @param label     a label for the list
@@ -45,7 +45,7 @@ public class VisibilityTableScrollPane extends JScrollPane {
 
 	/**
 	 * Accessor for the underlying table.
-	 * 
+	 *
 	 * @return the underlying visibility table.
 	 */
 	public VisibilityTable getVisibilityTable() {
@@ -72,7 +72,7 @@ public class VisibilityTableScrollPane extends JScrollPane {
 
 	/**
 	 * Simple accessor for underlying model.
-	 * 
+	 *
 	 * @return The underlying table model.
 	 */
 	public VisibilityTableModel getVisibilityTableModel() {

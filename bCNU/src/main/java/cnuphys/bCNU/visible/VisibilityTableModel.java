@@ -10,7 +10,7 @@ import cnuphys.bCNU.graphics.ImageManager;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class VisibilityTableModel extends DefaultTableModel {
@@ -40,7 +40,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 	protected static final int columnWidths[] = { 20, 20, 90 };
 
 	// the model data
-	protected Vector<IDrawable> _data = new Vector<IDrawable>(100, 25);
+	protected Vector<IDrawable> _data = new Vector<>(100, 25);
 
 	/**
 	 * Constructor
@@ -59,7 +59,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	@Override
@@ -69,7 +69,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the number of rows
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	@Override
@@ -82,7 +82,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * Set the value at a given row and column.
-	 * 
+	 *
 	 * @param value The string to set.
 	 * @param row   The zero based row.
 	 * @param col   The zero based column.
@@ -110,7 +110,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the value at a given row and column
-	 * 
+	 *
 	 * @return the value at a given row and column
 	 */
 	@Override
@@ -139,7 +139,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * Add a new IVisible into the table.
-	 * 
+	 *
 	 * @param ivis the new object to add to the model.
 	 */
 	public synchronized void add(IDrawable ivis) {
@@ -150,7 +150,7 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * remove an IVisible from the table.
-	 * 
+	 *
 	 * @param ivis the IVisible to remove.
 	 */
 	public synchronized void remove(IDrawable ivis) {
@@ -177,15 +177,12 @@ public class VisibilityTableModel extends DefaultTableModel {
 
 	/**
 	 * Get the drawable in the model at the given row.
-	 * 
+	 *
 	 * @param row the zero based row
 	 * @return the IDrawble corresponding to the row.
 	 */
 	public IDrawable getDrawableAtRow(int row) {
-		if ((_data == null) || (row < 0)) {
-			return null;
-		}
-		if (row >= _data.size()) {
+		if ((_data == null) || (row < 0) || (row >= _data.size())) {
 			return null;
 		}
 		return _data.elementAt(row);

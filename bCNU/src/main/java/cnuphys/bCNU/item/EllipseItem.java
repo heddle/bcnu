@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.item;
 
@@ -12,12 +12,12 @@ import cnuphys.bCNU.layer.LogicalLayer;
 
 /**
  * @author heddle
- * 
+ *
  */
 public class EllipseItem extends PolygonItem {
 	/**
 	 * Create a world rectangle object.
-	 * 
+	 *
 	 * @param layer   the Layer this item is on.
 	 * @param w       the width of the ellipse
 	 * @param h       the height of the ellipse
@@ -31,7 +31,7 @@ public class EllipseItem extends PolygonItem {
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.
-	 * 
+	 *
 	 * @return the selection points used to indicate this item is selected.
 	 */
 	@Override

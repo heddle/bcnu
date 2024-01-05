@@ -30,7 +30,7 @@ public class SplashWindow extends JWindow {
 	private JComponent _center;
 
 	private StreamCapturePane _scp;
-	
+
 	public static final String[] animatedGifs = { "images/anicat.gif", "images/anir2d2.gif", "images/coffee.gif",
 			"images/sun.gif", "images/rubik80.gif", "images/bee.gif", "images/loading.gif", "images/progress33.gif",
 			"images/saucer.gif", "images/spinglobe.gif", "images/runner.gif", "images/sun2.gif", "images/push.gif",

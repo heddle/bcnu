@@ -16,7 +16,7 @@ public class CenterButton extends ToolBarToggleButton {
 
 	/**
 	 * Create the button used for recentering a container.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public CenterButton(IContainer container) {
@@ -26,7 +26,7 @@ public class CenterButton extends ToolBarToggleButton {
 
 	/**
 	 * The container has been clicked with this as the active button.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override

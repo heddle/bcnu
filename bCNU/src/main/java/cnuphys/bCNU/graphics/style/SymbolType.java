@@ -10,7 +10,7 @@ public enum SymbolType {
 	/**
 	 * A map for the names of the symbols
 	 */
-	public static EnumMap<SymbolType, String> names = new EnumMap<SymbolType, String>(SymbolType.class);
+	public static EnumMap<SymbolType, String> names = new EnumMap<>(SymbolType.class);
 
 	static {
 		names.put(SQUARE, "Square");
@@ -26,7 +26,7 @@ public enum SymbolType {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -35,7 +35,7 @@ public enum SymbolType {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>SymbolType</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -50,11 +50,8 @@ public enum SymbolType {
 
 		for (SymbolType val : values()) {
 			// check the nice name
-			if (name.equalsIgnoreCase(val.toString())) {
-				return val;
-			}
 			// check the base name
-			if (name.equalsIgnoreCase(val.name())) {
+			if (name.equalsIgnoreCase(val.toString()) || name.equalsIgnoreCase(val.name())) {
 				return val;
 			}
 		}
@@ -63,7 +60,7 @@ public enum SymbolType {
 
 	/**
 	 * Obtain a combo box of choices.
-	 * 
+	 *
 	 * @param defaultChoice
 	 * @return the combo box of symbol choices
 	 */

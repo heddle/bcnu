@@ -37,7 +37,7 @@ public class Led extends JComponent {
 	// enum for click type
 	private enum ClickType {
 		SINGLE, DOUBLE, RIGHT
-	};
+	}
 
 	// LED label
 	private String _label;
@@ -52,7 +52,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param state the initial state.
 	 * @param label the label. Should be no more than a few characters.
 	 */
@@ -62,7 +62,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param state the initial state.
 	 * @param label the label. Should be no more than a few characters.
 	 */
@@ -104,7 +104,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Paint the LED
-	 * 
+	 *
 	 * @param g the graphics context
 	 */
 	@Override
@@ -144,7 +144,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Notify listeners of a click.
-	 * 
+	 *
 	 * @param type The causal event.
 	 */
 
@@ -180,7 +180,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Remove a LedListener.
-	 * 
+	 *
 	 * @param fl The LedListener listener to remove.
 	 */
 	public void removeLedListener(LedListener fl) {
@@ -194,7 +194,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Add a LedListener.
-	 * 
+	 *
 	 * @param fl the LedListener listener to add.
 	 */
 	public void addLedListener(LedListener fl) {
@@ -212,7 +212,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Get the state of the LED.
-	 * 
+	 *
 	 * @return the current state of the LED.
 	 */
 	public LedState getState() {
@@ -221,7 +221,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Set the state of the LED.
-	 * 
+	 *
 	 * @param state the new state of the LED.
 	 */
 	public void setState(LedState state) {
@@ -230,7 +230,7 @@ public class Led extends JComponent {
 
 	/**
 	 * Get the LED label.
-	 * 
+	 *
 	 * @return the label for the led.
 	 */
 	public String getLabel() {

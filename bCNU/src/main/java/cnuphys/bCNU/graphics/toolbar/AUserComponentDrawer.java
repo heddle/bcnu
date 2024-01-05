@@ -12,12 +12,10 @@ import java.util.Vector;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.magneticfield.swim.ASwimTrajectoryDrawer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundStyle;
-import cnuphys.splot.plot.GraphicsUtilities;
 
 public abstract class AUserComponentDrawer extends DrawableAdapter {
 
@@ -47,7 +45,7 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 
 	/**
 	 * Create a User Component (on the toolbar) drawer for a given view.
-	 * 
+	 *
 	 * @param view the view with a toolbar that has a user component.
 	 */
 	public AUserComponentDrawer(BaseView view) {
@@ -57,7 +55,7 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 
 	/**
 	 * Draw on the component.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the container on the view.
 	 */
@@ -116,7 +114,7 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 
 	/**
 	 * Draw a line for use on a toolbar user component, most likely
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal staring point
 	 * @param yc the central vertical position
@@ -138,7 +136,7 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 //			g.setColor(style.getLineColor());
 //			g2.drawLine(x, yc, x + linelen, yc);
 //		}
-		
+
 		g.setColor(style.getLineColor());
 		g2.setStroke(style.getStroke());
 
@@ -166,7 +164,7 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 	/**
 	 * This method must be filled in to return all the unique LundIds associated
 	 * with this event.
-	 * 
+	 *
 	 * @return all the unique LundIds associated with this event.
 	 */
 	protected abstract Vector<LundId> getUniqueLundIds();

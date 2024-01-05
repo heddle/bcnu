@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.graphics.toolbar;
 
@@ -16,7 +16,7 @@ public class RadArcButton extends ToolBarToggleButton implements IRubberbanded {
 
 	/**
 	 * Create a button for creating rectangles by rubberbanding.
-	 * 
+	 *
 	 * @param container the container using this button.
 	 */
 	public RadArcButton(IContainer container) {
@@ -25,7 +25,7 @@ public class RadArcButton extends ToolBarToggleButton implements IRubberbanded {
 
 	/**
 	 * The mouse has been pressed, start rubber banding.
-	 * 
+	 *
 	 * @param mouseEvent the causal mouse event.
 	 */
 	@Override
@@ -67,10 +67,7 @@ public class RadArcButton extends ToolBarToggleButton implements IRubberbanded {
 		double r1 = Math.sqrt(dx1 * dx1 + dy1 * dy1);
 		double r2 = Math.sqrt(dx2 * dx2 + dy2 * dy2);
 
-		if (r1 < 0.99) {
-			return;
-		}
-		if (r2 < 0.99) {
+		if ((r1 < 0.99) || (r2 < 0.99)) {
 			return;
 		}
 

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -25,7 +25,7 @@ public class AttributeTableScrollPane extends JScrollPane {
 
 	/**
 	 * Accessor for the table.
-	 * 
+	 *
 	 * @return the property table.
 	 */
 

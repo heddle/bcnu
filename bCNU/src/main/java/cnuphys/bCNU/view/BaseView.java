@@ -19,6 +19,7 @@ import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
+
 import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -29,7 +30,6 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.format.DoubleFormat;
@@ -43,17 +43,17 @@ import cnuphys.bCNU.util.PropertySupport;
 /**
  * The BaseView class is the base class for all "views." Views are the internal
  * frames--the independent desktop windows.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class BaseView extends JInternalFrame implements FocusListener, MouseListener, ComponentListener {
-	
+
 	//name used for reading and writing properties
 	//can be different from title
 	protected String VIEWPROPNAME = "?";
-	
+
 
 	// use to stack views as added
 	private static int LASTLEFT = 0;
@@ -91,7 +91,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of propeties in type-value
 	 *                pairs. For example, PropertySupport.TITLE, "my application",
 	 *                PropertySupport.MAXIMIZABE, true, etc.
@@ -135,7 +135,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 		setResizable(standardDecorations || resizable);
 		setClosable(standardDecorations || closable);
 		setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-		
+
 		VIEWPROPNAME = PropertySupport.getPropName(_properties);
 
 		int left = PropertySupport.getLeft(_properties);
@@ -264,7 +264,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the starting upper-left of the view
-	 * 
+	 *
 	 * @return the starting upper-left of the view
 	 */
 	public Point getStartingLocation() {
@@ -279,7 +279,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the parent JFrame
-	 * 
+	 *
 	 * @return the parent JFrame (the application)
 	 */
 	public JFrame getParentFrame() {
@@ -291,7 +291,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Checks whether this view is on top.
-	 * 
+	 *
 	 * @return <code>true</code> if this view (internal frame) is on top.
 	 */
 	public boolean isOnTop() {
@@ -307,9 +307,9 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 		JInternalFrame frames[] = _desktop.getAllFrames();
 
-		for (int i = 0; i < frames.length; i++) {
-			if (frames[i].isShowing()) {
-				return frames[i] == this;
+		for (JInternalFrame frame : frames) {
+			if (frame.isShowing()) {
+				return frame == this;
 			}
 		}
 
@@ -318,7 +318,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the view's layer and item container, which may be <code>null</code>.
-	 * 
+	 *
 	 * @return the view's layer and item container, which may be <code>null</code>.
 	 */
 	@SuppressWarnings("all")
@@ -328,7 +328,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Override getName to return the title of the view.
-	 * 
+	 *
 	 * @return the title of the view as the name of the view.
 	 */
 	@Override
@@ -343,10 +343,10 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	public String getPropertyName() {
 		return VIEWPROPNAME;
 	}
-	
+
 	/**
 	 * Get the user panel for adding more widgets
-	 * 
+	 *
 	 * @return the userPanel
 	 */
 	public JPanel getUserPanel() {
@@ -356,7 +356,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	/**
 	 * Called by a container when a right click is not handled. The usual reason is
 	 * that the right click was on an inert spot.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 * @return <code>true</code> if the event was consumed
 	 */
@@ -373,7 +373,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Checks if the view is ready for display.
-	 * 
+	 *
 	 * @return <code>true</code> if the view is ready for display.
 	 */
 	public boolean isReady() {
@@ -382,7 +382,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Set the view arrangement from the properties
-	 * 
+	 *
 	 * @param properties the properties to use
 	 */
 	public void setFromProperties(Properties properties) {
@@ -438,7 +438,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the properties for this view
-	 * 
+	 *
 	 * @return the properties for this view
 	 */
 	public Properties getProperties() {
@@ -447,7 +447,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get a boolean property
-	 * 
+	 *
 	 * @param key the key
 	 * @return the value (false on error).
 	 */
@@ -457,17 +457,17 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Set set a boolean property
-	 * 
+	 *
 	 * @param key the key matched to the boolean we are setting
 	 * @param val the value to set
 	 */
 	public void setBooleanProperty(String key, boolean val) {
 		_properties.put(key, val ? "true" : "false");
 	}
-	
+
 	/**
 	 * Get an int property
-	 * 
+	 *
 	 * @param key the key
 	 * @return the int value (-1 on error).
 	 */
@@ -477,7 +477,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Set set an int property
-	 * 
+	 *
 	 * @param key the key matched to the boolean we are setting
 	 * @param val the value to set
 	 */
@@ -488,7 +488,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Obtain the properties of this view that can be used to save a configuration.
-	 * 
+	 *
 	 * @return the properties that define the configuration
 	 */
 	public Properties getConfigurationProperties() {
@@ -593,7 +593,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the virtual window item used on the virtual view
-	 * 
+	 *
 	 * @return the virtual window item used on the virtual view
 	 */
 	protected VirtualWindowItem getVirtualItem() {
@@ -602,7 +602,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Set the virtual window item used on the virtual view
-	 * 
+	 *
 	 * @param virtualItem the virtual window item used on the virtual view
 	 */
 	protected void setVirtualItem(VirtualWindowItem virtualItem) {
@@ -611,7 +611,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Offset the view's location
-	 * 
+	 *
 	 * @param dh the horizontal change
 	 * @param dv the vertical change
 	 */
@@ -625,7 +625,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Used if this view has some special clipping needs
-	 * 
+	 *
 	 * @return a special clip, or <code>null</code> if no special clipping
 	 */
 	public Shape getSpecialClip() {
@@ -634,7 +634,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Convenience method for getting the view's toolbar, if there is one.
-	 * 
+	 *
 	 * @return the view's toolbar, or <code>null</code>.
 	 */
 	public BaseToolBar getToolBar() {
@@ -647,7 +647,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	/**
 	 * Convenience method for getting the user component on the view's toolbar, if
 	 * there is one.
-	 * 
+	 *
 	 * @return the the user component on the view's toolbar, or <code>null</code>.
 	 */
 	public UserToolBarComponent getUserComponent() {
@@ -681,7 +681,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the view's popup menu
-	 * 
+	 *
 	 * @return the view's quickzoom menu
 	 */
 	public ViewPopupMenu getViewPopupMenu() {
@@ -690,7 +690,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Add a quick zoom to the view's popup
-	 * 
+	 *
 	 * @param title the title of the quickzoom
 	 * @param xmin  min world x
 	 * @param ymin  min world y
@@ -704,7 +704,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Check whether this view is scrollable
-	 * 
+	 *
 	 * @return <code>true</code> if this view is scrollable
 	 */
 	public boolean isScrollable() {
@@ -713,7 +713,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	/**
 	 * Get the scroll pane (often <code>null</code>)
-	 * 
+	 *
 	 * @return the scroll pane
 	 */
 	public JScrollPane getScrollPane() {

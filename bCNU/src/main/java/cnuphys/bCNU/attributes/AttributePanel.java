@@ -36,7 +36,7 @@ public class AttributePanel extends JPanel {
 
 	/**
 	 * Get the underlying table
-	 * 
+	 *
 	 * @return the underlying table
 	 */
 	public AttributeTable getAttributeTable() {

@@ -12,7 +12,7 @@ import java.util.List;
 public class FBData {
 	private String[] _text;
 	private Rectangle _rect;
-	
+
 	public FBData(Point pp, String... text) {
 		_text = text;
 		_rect = new Rectangle(pp.x - 4, pp.y - 4, 8, 8);

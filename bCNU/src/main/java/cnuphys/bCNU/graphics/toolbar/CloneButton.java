@@ -11,7 +11,7 @@ public class CloneButton extends ToolBarButton {
 
 	/**
 	 * Create the zoom-in button, which zooms in by a fixed amount.
-	 * 
+	 *
 	 * @param container the container this button acts upon.
 	 */
 	public CloneButton(IContainer container) {
@@ -20,7 +20,7 @@ public class CloneButton extends ToolBarButton {
 
 	/**
 	 * This is what I do if I am pressed
-	 * 
+	 *
 	 * @param e The causal event.
 	 */
 	@Override
@@ -30,7 +30,7 @@ public class CloneButton extends ToolBarButton {
 
 	/**
 	 * Get the preferred size.
-	 * 
+	 *
 	 * @return the preferred size for layout.
 	 */
 	@Override

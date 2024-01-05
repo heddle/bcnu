@@ -13,9 +13,9 @@ import cnuphys.bCNU.log.Log;
 
 /**
  * Manages all the views, or internal frames.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class ViewManager extends Vector<BaseView> {
@@ -41,7 +41,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Make the view visible and change to its viretual panel
-	 * 
+	 *
 	 * @param view the view
 	 * @param vis  whether it is visible
 	 */
@@ -56,7 +56,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Add (register) a view for control by this manager.
-	 * 
+	 *
 	 * @param view the View to add.
 	 * @return <code>true</code>, per Collection guidelines.
 	 */
@@ -87,7 +87,7 @@ public class ViewManager extends Vector<BaseView> {
 		};
 		mi.addActionListener(al);
 		_viewMenu.add(mi);
-		
+
 		Log.getInstance().config("ViewManager: added view: " + view.getTitle());
 
 		if (view instanceof VirtualView) {
@@ -98,7 +98,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Removes (unregisters) a view.
-	 * 
+	 *
 	 * @param view the View to remove.
 	 * @return <code>true</code> if this ViewManager contained the specified view.
 	 */
@@ -131,7 +131,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Obtain the singleton.
-	 * 
+	 *
 	 * @return the singleton ViewManager object.
 	 */
 	public static ViewManager getInstance() {
@@ -143,7 +143,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Gets the view menu whose state is maintained by the ViewManager.
-	 * 
+	 *
 	 * @return the view menu.
 	 */
 	public JMenu getViewMenu() {
@@ -176,7 +176,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Add a data change listener
-	 * 
+	 *
 	 * @param listener the listener to add
 	 */
 	public void addViewListener(IViewListener listener) {
@@ -192,7 +192,7 @@ public class ViewManager extends Vector<BaseView> {
 
 	/**
 	 * Remove a ViewListener.
-	 * 
+	 *
 	 * @param listener the listener to remove.
 	 */
 

@@ -18,7 +18,7 @@ public class BaseBeamLineItem extends LineItem {
 
 	/**
 	 * Create a beamline item which is a glorified line.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 */
 	public BaseBeamLineItem(LogicalLayer layer) {
@@ -28,7 +28,7 @@ public class BaseBeamLineItem extends LineItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */

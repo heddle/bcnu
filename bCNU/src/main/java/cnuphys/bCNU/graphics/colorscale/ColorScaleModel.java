@@ -7,9 +7,9 @@ import cnuphys.lund.X11Colors;
 
 /**
  * Used for color scales, such as on magnetic field plots
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class ColorScaleModel {
 
@@ -47,7 +47,7 @@ public class ColorScaleModel {
 	private int _numberOfRows = 1;
 
 	private Color HOTCOLOR = Color.red;
-	
+
 	private ColorScaleModel _monochromeModel;
 
 	/**
@@ -57,7 +57,7 @@ public class ColorScaleModel {
 	 * in the space between 2 values. However, this is not a requirement. It will
 	 * still give sensible results. Also, the value array is NOT assumed to be
 	 * equally spaced.
-	 * 
+	 *
 	 * @param values the array of values.
 	 * @param colors the array of colors.
 	 */
@@ -72,7 +72,7 @@ public class ColorScaleModel {
 	 * in the space between 2 values. However, this is not a requirement. It will
 	 * still give sensible results. Also, the value array is NOT assumed to be
 	 * equally spaced.
-	 * 
+	 *
 	 * @param comment an extra comment.
 	 * @param values  the array of values.
 	 * @param colors  the array of colors.
@@ -88,7 +88,7 @@ public class ColorScaleModel {
 	 * in the space between 2 values. However, this is not a requirement. It will
 	 * still give sensible results. Also, the value array is NOT assumed to be
 	 * equally spaced.
-	 * 
+	 *
 	 * @param comment      an extra comment.
 	 * @param values       the array of values.
 	 * @param colors       the array of colors.
@@ -122,14 +122,14 @@ public class ColorScaleModel {
 	 * value = 8.01 -> tooBigColor
 	 * <p>
 	 * value = 4 (exactly) -> G
-	 * 
+	 *
 	 * @param value the for which we want the color.
 	 * @return the color corresponding to the value.
 	 */
 	public Color getColor(double value) {
 		return getColor(value, false);
 	}
-	
+
 	public Color getMonochromeColor(double value) {
 		return getMonochromeColor(value, false);
 	}
@@ -137,7 +137,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get a monochrome color via getColor but add an alpha value
-	 * 
+	 *
 	 * @param value the value
 	 * @param alpha the alpha value [0..255]
 	 * @return the color corresponding to the value.
@@ -147,10 +147,10 @@ public class ColorScaleModel {
 		Color color = new Color(c.getRed(), c.getGreen(), c.getBlue(), alpha);
 		return color;
 	}
-	
+
 	/**
 	 * Get a color via getColor but add an alpha value
-	 * 
+	 *
 	 * @param value the value
 	 * @param alpha the alpha value [0..255]
 	 * @return the color corresponding to the value.
@@ -178,7 +178,7 @@ public class ColorScaleModel {
 	 * value = 8.01 -> tooBigColor
 	 * <p>
 	 * value = 4 (exactly) -> G
-	 * 
+	 *
 	 * @param value                 the for which we want the color.
 	 * @param useColorInterpolation if <code>true</code>, use color interpolation.
 	 * @return the color corresponding to the value.
@@ -236,7 +236,7 @@ public class ColorScaleModel {
 			return colors[index];
 		}
 	}
-	
+
 	/**
 	 * Given a value, returns the corresponding color. Example:
 	 * <p>
@@ -253,7 +253,7 @@ public class ColorScaleModel {
 	 * value = 8.01 -> tooBigColor
 	 * <p>
 	 * value = 4 (exactly) -> G
-	 * 
+	 *
 	 * @param value                 the for which we want the color.
 	 * @param useColorInterpolation if <code>true</code>, use color interpolation.
 	 * @return the color corresponding to the value.
@@ -264,12 +264,12 @@ public class ColorScaleModel {
 		}
 		return _monochromeModel.getColor(value, useColorInterpolation);
 	}
-	
+
 
 	/**
 	 * Compute the fraction difference between two points, normalized to the full
 	 * scale.
-	 * 
+	 *
 	 * @param v1 one value.
 	 * @param v2 the other value.
 	 * @return the fractional difference.
@@ -288,7 +288,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the minimum value of the values array.
-	 * 
+	 *
 	 * @return the minimum value of the values array.
 	 */
 	public double getMinValue() {
@@ -297,7 +297,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the maximum value of the values array.
-	 * 
+	 *
 	 * @return the maximum value of the values array.
 	 */
 	public double getMaxValue() {
@@ -306,7 +306,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the color array.
-	 * 
+	 *
 	 * @return the color array.
 	 */
 	public Color[] getColors() {
@@ -315,7 +315,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the too-big color.
-	 * 
+	 *
 	 * @return the color used for a "too big" value.
 	 */
 	public Color getTooBigColor() {
@@ -324,7 +324,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the too-small color.
-	 * 
+	 *
 	 * @return the color used for a "too small" value.
 	 */
 	public Color getTooSmallColor() {
@@ -333,7 +333,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the values array.
-	 * 
+	 *
 	 * @return the values array.
 	 */
 	public double[] getValues() {
@@ -342,7 +342,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the comment of the color scale.
-	 * 
+	 *
 	 * @return the color scale comment.
 	 */
 	public String getComment() {
@@ -351,7 +351,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the precision used for display.
-	 * 
+	 *
 	 * @return the precision used for display.
 	 */
 	public int getPrecision() {
@@ -381,7 +381,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the color based on the fract.
-	 * 
+	 *
 	 * @param c1
 	 * @param c2
 	 * @param fract
@@ -427,7 +427,7 @@ public class ColorScaleModel {
 
 	/**
 	 * Get a scale such as you might find on a weather map.
-	 * 
+	 *
 	 * @param n the number of "in between colors"
 	 * @return a set of colors for a weather map
 	 */
@@ -462,24 +462,24 @@ public class ColorScaleModel {
 
 	/**
 	 * Get the off scale color
-	 * 
+	 *
 	 * @return the hot color
 	 */
 	public Color getHotColor() {
 		return HOTCOLOR;
 	}
-	
+
 	public static ColorScaleModel createColorModel(double minVal, double maxVal, int numVal, Color start, Color end) {
 		int numColor = numVal-1;
 		double values[] = new double[numVal];
 		Color[] colors = new Color[numColor];
-		
-	
+
+
 		double dv = (maxVal - minVal)/(numVal-1);
 		for (int i = 0; i < numVal; i++) {
 			values[i] = minVal + i*dv;
 		}
-		
+
 		int r1 = start.getRed();
 		int r2 = end.getRed();
 		int g1 = start.getGreen();
@@ -490,21 +490,21 @@ public class ColorScaleModel {
 		double dr = ((double)(r2-r1))/(numColor-1);
 		double dg = ((double)(g2-g1))/(numColor-1);
 		double db = ((double)(b2-b1))/(numColor-1);
-		
+
 		for (int i = 0; i < numColor; i++) {
 			int r = Math.min(255, (int)(r1 + i*dr));
 			int g = Math.min(255, (int)(g1 + i*dg));
 			int b = Math.min(255, (int)(b1 + i*db));
-			
+
 			colors[i] = new Color(r, g, b);
 		}
-		
+
 		return new ColorScaleModel(values, colors);
 	}
 
 	/**
 	 * Get a monochrome model companion to a color model.
-	 * 
+	 *
 	 * @param model the color model.
 	 * @return a monochrome model companion
 	 */
@@ -535,7 +535,7 @@ public class ColorScaleModel {
 	/**
 	 * Create a uniform array of values with one more entry than are in a colors
 	 * array.
-	 * 
+	 *
 	 * @param colors a colors array
 	 * @param min    the min value
 	 * @param max    the max value

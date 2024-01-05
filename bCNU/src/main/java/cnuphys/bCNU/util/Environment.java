@@ -17,15 +17,16 @@ import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
+
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
 
 /**
  * This utility class holds environmental information such as the home
  * directory, current working directory, host name, etc.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public final class Environment {
 
@@ -118,7 +119,7 @@ public final class Environment {
 
 	/**
 	 * Get the common panel background color
-	 * 
+	 *
 	 * @return the common panel background color
 	 */
 	public static Color getCommonPanelBackground() {
@@ -127,7 +128,7 @@ public final class Environment {
 
 	/**
 	 * Check whether we are dragging or modifying an item.
-	 * 
+	 *
 	 * @return <code>true</code> if we are dragging or modifying an item.
 	 */
 	public boolean isDragging() {
@@ -137,7 +138,7 @@ public final class Environment {
 	/**
 	 * Set whether or not dragging is occurring. This cam be used to pause threads
 	 * that might be affecting the screen.
-	 * 
+	 *
 	 * @param dragging <code>true</code> if dragging is occuring.
 	 */
 	public void setDragging(boolean dragging) {
@@ -153,7 +154,7 @@ public final class Environment {
 
 	/**
 	 * For scaling things like fonts. Their size should be multiplied by this.
-	 * 
+	 *
 	 * @return the resolutionScaleFactor
 	 */
 	public float getResolutionScaleFactor() {
@@ -162,7 +163,7 @@ public final class Environment {
 
 	/**
 	 * Get the dots per inch for the main display
-	 * 
+	 *
 	 * @return the dots per inch
 	 */
 	public double getDotsPerInch() {
@@ -171,7 +172,7 @@ public final class Environment {
 
 	/**
 	 * Get the dots per inch for the main display
-	 * 
+	 *
 	 * @return the dots per inch
 	 */
 	public double getDotsPerCentimeter() {
@@ -180,7 +181,7 @@ public final class Environment {
 
 	/**
 	 * Public access for the singleton.
-	 * 
+	 *
 	 * @return the singleton object.
 	 */
 	public static Environment getInstance() {
@@ -192,7 +193,7 @@ public final class Environment {
 
 	/**
 	 * Convenience routine for getting a system property.
-	 * 
+	 *
 	 * @param keyName the key name of the property
 	 * @return the property, or <code>null</null>.
 	 */
@@ -206,7 +207,7 @@ public final class Environment {
 
 	/**
 	 * Get the JAVA class path.
-	 * 
+	 *
 	 * @return the JAVA class path.
 	 */
 	public String getClassPath() {
@@ -215,7 +216,7 @@ public final class Environment {
 
 	/**
 	 * Get the current working directory.
-	 * 
+	 *
 	 * @return the currentWorkingDirectory.
 	 */
 	public String getCurrentWorkingDirectory() {
@@ -224,7 +225,7 @@ public final class Environment {
 
 	/**
 	 * Gets the user's home directory.
-	 * 
+	 *
 	 * @return the user's home directory.
 	 */
 	public String getHomeDirectory() {
@@ -233,7 +234,7 @@ public final class Environment {
 
 	/**
 	 * Gets the operating system name.
-	 * 
+	 *
 	 * @return the operating system name..
 	 */
 	public String getOsName() {
@@ -242,7 +243,7 @@ public final class Environment {
 
 	/**
 	 * Gets the temp directory.
-	 * 
+	 *
 	 * @return the tempDirectory.
 	 */
 	public String getTempDirectory() {
@@ -251,7 +252,7 @@ public final class Environment {
 
 	/**
 	 * Gets the user name.
-	 * 
+	 *
 	 * @return the userName.
 	 */
 	public String getUserName() {
@@ -260,7 +261,7 @@ public final class Environment {
 
 	/**
 	 * Gets the host address.
-	 * 
+	 *
 	 * @return the host name.
 	 */
 	public String getHostAddress() {
@@ -269,7 +270,7 @@ public final class Environment {
 
 	/**
 	 * Check whether we are running on linux
-	 * 
+	 *
 	 * @return <code>true</code> if we are running on linux
 	 */
 	public boolean isLinux() {
@@ -278,7 +279,7 @@ public final class Environment {
 
 	/**
 	 * Check whether we are running on Windows
-	 * 
+	 *
 	 * @return <code>true</code> if we are running on Windows
 	 */
 	public boolean isWindows() {
@@ -287,7 +288,7 @@ public final class Environment {
 
 	/**
 	 * Check whether we are running on a Mac
-	 * 
+	 *
 	 * @return <code>true</code> if we are running on a Mac
 	 */
 	public boolean isMac() {
@@ -305,7 +306,7 @@ public final class Environment {
 	 * Get the application name. This is the simple part of the name of the class
 	 * with the main metho. That is, if the main method is in
 	 * com.yomama.yopapa.Dude, this returns "dude" (converts to lower case.)
-	 * 
+	 *
 	 * @return the application name
 	 */
 	public String getApplicationName() {
@@ -334,7 +335,7 @@ public final class Environment {
 	 * Gets a File object for the configuration file. There is no guarantee that the
 	 * file exists. It is the application name with a ".xml" extension in the user's
 	 * home directory.
-	 * 
+	 *
 	 * @return a File object for the configuration file
 	 */
 	public File getConfigurationFile() {
@@ -359,7 +360,7 @@ public final class Environment {
 
 	/**
 	 * On Mac, uses the say command to say something.
-	 * 
+	 *
 	 * @param sayThis the string to say
 	 */
 	public void say(String sayThis) {
@@ -386,7 +387,7 @@ public final class Environment {
 
 	/**
 	 * Get the UIManager's choice for panel background color
-	 * 
+	 *
 	 * @return the UIManager's choice for panel background color
 	 */
 	public Color getDefaultPanelBackgroundColor() {
@@ -403,7 +404,7 @@ public final class Environment {
 	/**
 	 * Get a File object representing the preferences file. No guarantee that it
 	 * exists.
-	 * 
+	 *
 	 * @return a File object representing the preferences file.
 	 */
 	private File getPreferencesFile() {
@@ -415,7 +416,7 @@ public final class Environment {
 
 	/**
 	 * Obtain a preference from the key
-	 * 
+	 *
 	 * @param key the key
 	 * @return the String corresponding to the key, or <code>null</code>.
 	 */
@@ -430,7 +431,7 @@ public final class Environment {
 	/**
 	 * Get the properties, which start out as the user preferences (or null) but
 	 * which can be added to.
-	 * 
+	 *
 	 * @return the properties
 	 */
 	public Properties getProperties() {
@@ -441,7 +442,7 @@ public final class Environment {
 	 * Convenience method to get a Vector of strings as a single string in the
 	 * preferences file. For example, it might be a Vector of recently visited
 	 * files.
-	 * 
+	 *
 	 * @param key   the key
 	 * @param value the vector holding the strings
 	 * @return a Vector of preferences
@@ -457,7 +458,7 @@ public final class Environment {
 			return null;
 		}
 
-		Vector<String> v = new Vector<String>(tokens.length);
+		Vector<String> v = new Vector<>(tokens.length);
 		for (String tok : tokens) {
 			v.add(tok);
 		}
@@ -466,7 +467,7 @@ public final class Environment {
 
 	/**
 	 * Save a value in the preferences and write the preferneces file.
-	 * 
+	 *
 	 * @param key   the key
 	 * @param value the value
 	 */
@@ -488,7 +489,7 @@ public final class Environment {
 	 * Convenience method to save a Vector of strings as a single string in the
 	 * preferences file. For example, it might be a Vector of recently visited
 	 * files.
-	 * 
+	 *
 	 * @param key    the key
 	 * @param values the vector holding the strings
 	 */
@@ -528,7 +529,7 @@ public final class Environment {
 
 	/**
 	 * Useful for making common look components
-	 * 
+	 *
 	 * @param component the component
 	 * @param color     the background color--if <code>null</code> use default.
 	 */
@@ -540,7 +541,7 @@ public final class Environment {
 
 	/**
 	 * Print a memory report
-	 * 
+	 *
 	 * @param message a message to add on
 	 */
 	public static String memoryReport(String message) {
@@ -565,7 +566,7 @@ public final class Environment {
 
 	/**
 	 * Get a short summary string
-	 * 
+	 *
 	 * @return a short summary string
 	 */
 	public String summaryString() {
@@ -575,7 +576,7 @@ public final class Environment {
 
 	/**
 	 * Split the application's class path into directories and jar files
-	 * 
+	 *
 	 * @return an array of the class path segments
 	 */
 	public String[] splitClassPath() {
@@ -584,7 +585,7 @@ public final class Environment {
 
 	/**
 	 * Split the path into directories and jar files
-	 * 
+	 *
 	 * @return an array of the path segments
 	 */
 	public String[] splitPath(String classPath) {
@@ -602,7 +603,7 @@ public final class Environment {
 
 	/**
 	 * Convert to a string representation.
-	 * 
+	 *
 	 * @return a string representation of the <code>Environment</code> object.
 	 */
 
@@ -657,7 +658,7 @@ public final class Environment {
 
 	/**
 	 * Main program for testing.
-	 * 
+	 *
 	 * @param arg command line arguments (ignored).
 	 */
 	public static void main(String arg[]) {

@@ -8,7 +8,7 @@ public enum TextAlignment {
 	/**
 	 * A map for the names of the fill styles.
 	 */
-	public static EnumMap<TextAlignment, String> names = new EnumMap<TextAlignment, String>(TextAlignment.class);
+	public static EnumMap<TextAlignment, String> names = new EnumMap<>(TextAlignment.class);
 
 	static {
 		names.put(CENTER, "Center");
@@ -18,7 +18,7 @@ public enum TextAlignment {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>FillStyle</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -32,10 +32,7 @@ public enum TextAlignment {
 		}
 
 		for (TextAlignment fs : values()) {
-			if (name.equalsIgnoreCase(fs.name())) {
-				return fs;
-			}
-			if (name.equalsIgnoreCase(names.get(fs))) {
+			if (name.equalsIgnoreCase(fs.name()) || name.equalsIgnoreCase(names.get(fs))) {
 				return fs;
 			}
 		}
@@ -44,7 +41,7 @@ public enum TextAlignment {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -55,7 +52,7 @@ public enum TextAlignment {
 	 * Returns the array of nice (more readable) names from the enum map. These are
 	 * more suitable than the raw names for presentations in radio boxes, lists,
 	 * etc.
-	 * 
+	 *
 	 * @return the string array of nice names for display.
 	 */
 	public static String[] getNames() {

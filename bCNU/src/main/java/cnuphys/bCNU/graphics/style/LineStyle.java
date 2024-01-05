@@ -8,7 +8,7 @@ public enum LineStyle {
 	/**
 	 * A map for the names of the line styles
 	 */
-	public static EnumMap<LineStyle, String> names = new EnumMap<LineStyle, String>(LineStyle.class);
+	public static EnumMap<LineStyle, String> names = new EnumMap<>(LineStyle.class);
 
 	static {
 		names.put(SOLID, "Solid");
@@ -22,7 +22,7 @@ public enum LineStyle {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -31,7 +31,7 @@ public enum LineStyle {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>LineStyle</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -46,11 +46,8 @@ public enum LineStyle {
 
 		for (LineStyle val : values()) {
 			// check the nice name
-			if (name.equalsIgnoreCase(val.toString())) {
-				return val;
-			}
 			// check the base name
-			if (name.equalsIgnoreCase(val.name())) {
+			if (name.equalsIgnoreCase(val.toString()) || name.equalsIgnoreCase(val.name())) {
 				return val;
 			}
 		}

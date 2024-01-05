@@ -12,7 +12,7 @@ public class YouAreHereItem extends PointItem {
 
 	/**
 	 * Constructor for a YouAreHereItem which is like a reference point.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 */
 	public YouAreHereItem(LogicalLayer layer) {
@@ -23,7 +23,7 @@ public class YouAreHereItem extends PointItem {
 
 	/**
 	 * Convenience function to create a YouAreHere item
-	 * 
+	 *
 	 * @param container the container whose one and only YouAreHereItem is being
 	 *                  created.
 	 * @param location  the default location.
@@ -44,7 +44,7 @@ public class YouAreHereItem extends PointItem {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the Base container.
 	 * @param pp              the mouse location.
 	 * @param Point2D         .Double the corresponding world point.

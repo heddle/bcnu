@@ -1,18 +1,26 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.util;
 
-import java.io.*;
-import java.util.*;
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
+import java.awt.Component;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
+import java.util.Vector;
+
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JTable;
+import javax.swing.ListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * A Renderer for multiline table header labels to save space when the label is
  * bigger than the data being displayed
- * 
+ *
  * @version 1.0 11/09/98
  */
 @SuppressWarnings("serial")
@@ -35,7 +43,7 @@ public class MultilineHeaderRenderer extends JList implements TableCellRenderer 
 		String str = (value == null) ? "" : value.toString();
 		BufferedReader br = new BufferedReader(new StringReader(str));
 		String line;
-		Vector<String> v = new Vector<String>();
+		Vector<String> v = new Vector<>();
 		try {
 			while ((line = br.readLine()) != null) {
 				v.addElement(line);

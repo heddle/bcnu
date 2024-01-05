@@ -15,7 +15,7 @@ public class PanelItem extends PixelRectangleItem {
 	/**
 	 * Create a panel whose location is based on world coordinates but whose extent
 	 * is in pixels. And example might be a plot item or image.
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param location the location of the lower-left in world coordinates
 	 * @param width    the width in pixels

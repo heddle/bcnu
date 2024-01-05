@@ -12,7 +12,7 @@ import cnuphys.bCNU.util.X11Colors;
 /**
  * Combines all log messages into one text pane. Uses different colors to
  * highlight different types of log messages.
- * 
+ *
  * @author heddle
  */
 
@@ -32,7 +32,7 @@ public class SimpleLogPane extends TextPaneScrollPane {
 	private static EnumMap<Grade, SimpleAttributeSet> styles;
 
 	static {
-		styles = new EnumMap<Grade, SimpleAttributeSet>(Grade.class);
+		styles = new EnumMap<>(Grade.class);
 		styles.put(Grade.INFO, createStyle(Color.black, "sansserif", INFOFONTSIZE, false, false));
 		styles.put(Grade.CONFIG, createStyle(Color.blue, "sansserif", CONFIGFONTSIZE, false, false));
 		styles.put(Grade.WARNING,
@@ -77,7 +77,7 @@ public class SimpleLogPane extends TextPaneScrollPane {
 
 	/**
 	 * Fix the message so it gets appended nicely.
-	 * 
+	 *
 	 * @param message the input message.
 	 * @return the fixed message.
 	 */
@@ -94,7 +94,7 @@ public class SimpleLogPane extends TextPaneScrollPane {
 
 	/**
 	 * Append the message with the appropriate style.
-	 * 
+	 *
 	 * @param grade   the grade of the messaged.
 	 * @param message the message text.
 	 */

@@ -14,7 +14,7 @@ import javax.swing.SwingUtilities;
 /**
  * This is an experimental class for overlaying a clear window on a component.
  * It is needed for rubberbanding over a 3D canvas.
- * 
+ *
  * @author heddle
  *
  */
@@ -29,7 +29,7 @@ public class RubberBandClearWindow extends Window {
 
 	/**
 	 * Create a translucent window
-	 * 
+	 *
 	 * @param opacity the smaller the number, the more transparent
 	 * @throws HeadlessException
 	 */

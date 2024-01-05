@@ -15,16 +15,16 @@ import cnuphys.bCNU.util.PropertySupport;
 
 /**
  * A simple view used to test the tool bar.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class DrawingView extends BaseView implements IFeedbackProvider {
 
 	/**
 	 * Create a drawing view
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	private DrawingView(Object... keyVals) {
@@ -41,7 +41,7 @@ public class DrawingView extends BaseView implements IFeedbackProvider {
 
 	/**
 	 * Convenience method for creating a Drawing View.
-	 * 
+	 *
 	 * @return a new DrawingView object
 	 */
 	public static DrawingView createDrawingView() {
@@ -68,7 +68,7 @@ public class DrawingView extends BaseView implements IFeedbackProvider {
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
 	 * first.
-	 * 
+	 *
 	 * @param container   the base container for the view.
 	 * @param screenPoint the pixel point
 	 * @param worldPoint  the corresponding world location.

@@ -22,7 +22,7 @@ public class IpAddressSupport {
 
 	/**
 	 * Checks whether an IP Address is validated by the basic no wildcard pattern
-	 * 
+	 *
 	 * @param ipAddress the IP address as a string
 	 * @return <code>true</code> if the ipaddress was validated as legal.
 	 */
@@ -35,7 +35,7 @@ public class IpAddressSupport {
 
 	/**
 	 * Checks whether an IP Address matches the simple star wildcard
-	 * 
+	 *
 	 * @param ipPattern the IP pattern to validate as a string
 	 * @return <code>true</code> if the pattern was validated as legal.
 	 */
@@ -65,15 +65,12 @@ public class IpAddressSupport {
 
 	/**
 	 * Create a Pattern from a filter string.
-	 * 
+	 *
 	 * @param filterString something like "157.185.*.*"
 	 * @return the pattern that can be used for matching, or <code>null</code>
 	 */
 	public static Pattern createPattern(String filterString) {
-		if (filterString == null) {
-			return null;
-		}
-		if (ANY_ADDRESS.equals(filterString)) {
+		if ((filterString == null) || ANY_ADDRESS.equals(filterString)) {
 			return null;
 		}
 
@@ -96,7 +93,7 @@ public class IpAddressSupport {
 
 	/**
 	 * Main program for testing
-	 * 
+	 *
 	 * @param arg command arguments ignored
 	 */
 	public static void main(String arg[]) {

@@ -4,7 +4,7 @@ public class AttributeShortEditor extends AttributeIntegerValueEditor<Short> {
 
 	/**
 	 * Create a Short editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */

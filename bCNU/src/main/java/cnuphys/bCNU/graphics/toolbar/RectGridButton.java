@@ -11,7 +11,7 @@ public class RectGridButton extends ToolBarToggleButton implements IRubberbanded
 
 	/**
 	 * Create a button for creating rectangles by rubberbanding.
-	 * 
+	 *
 	 * @param container the container using this button.
 	 */
 	public RectGridButton(IContainer container) {
@@ -20,7 +20,7 @@ public class RectGridButton extends ToolBarToggleButton implements IRubberbanded
 
 	/**
 	 * The mouse has been pressed, start rubber banding.
-	 * 
+	 *
 	 * @param mouseEvent the causal mouse event.
 	 */
 	@Override

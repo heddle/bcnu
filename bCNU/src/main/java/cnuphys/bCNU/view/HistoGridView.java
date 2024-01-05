@@ -38,7 +38,7 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 
 	/**
 	 * Create a histo grid
-	 * 
+	 *
 	 * @param numRow
 	 * @param numCol
 	 * @param cellWidth
@@ -64,7 +64,7 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 
 	/**
 	 * Get the plot panel in the given cell
-	 * 
+	 *
 	 * @param row the 1-based row
 	 * @param col the 1-based column
 	 * @return the plot item (might be <code>null</code>);
@@ -75,7 +75,7 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 
 	/**
 	 * Get the histo data for the histogram given cell
-	 * 
+	 *
 	 * @param row the 1-based row
 	 * @param col the 1-based column
 	 * @return the histo data (might be <code>null</code>);
@@ -95,7 +95,7 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 
 	/**
 	 * Create a histo grid
-	 * 
+	 *
 	 * @param title
 	 * @param numRow
 	 * @param numCol
@@ -135,7 +135,7 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 
 			/**
 			 * The active toolbar button changed.
-			 * 
+			 *
 			 * @param activeButton the new active button.
 			 */
 			@Override
@@ -289,7 +289,7 @@ public class HistoGridView extends ScrollableGridView implements MouseListener, 
 
 	/**
 	 * Check whether the pointer bar is active on the tool bar
-	 * 
+	 *
 	 * @return <code>true</code> if the Pointer button is active.
 	 */
 	protected boolean isPointerButtonActive() {

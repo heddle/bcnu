@@ -51,7 +51,7 @@ public class IpPortPanel extends JPanel {
 
 	/**
 	 * Get the entered IP address
-	 * 
+	 *
 	 * @return the IP address
 	 */
 	public String getIpAddress() {
@@ -60,7 +60,7 @@ public class IpPortPanel extends JPanel {
 
 	/**
 	 * Set the IP address
-	 * 
+	 *
 	 * @param ipAddress the new IP address
 	 */
 	public void setIpAddress(String ipAddress) {
@@ -69,7 +69,7 @@ public class IpPortPanel extends JPanel {
 
 	/**
 	 * Get the port number
-	 * 
+	 *
 	 * @return the port number
 	 */
 	public int getPort() {
@@ -85,7 +85,7 @@ public class IpPortPanel extends JPanel {
 
 	/**
 	 * Set the port number
-	 * 
+	 *
 	 * @param port the new port
 	 */
 	public void setPort(int port) {
@@ -98,7 +98,7 @@ public class IpPortPanel extends JPanel {
 
 	/**
 	 * Main program for testing.
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {

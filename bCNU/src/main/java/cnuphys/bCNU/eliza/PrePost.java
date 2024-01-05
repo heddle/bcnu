@@ -21,8 +21,9 @@ public class PrePost {
 	 * Print the pre-post entry.
 	 */
 	public void print(int indent) {
-		for (int i = 0; i < indent; i++)
+		for (int i = 0; i < indent; i++) {
 			System.out.print(" ");
+		}
 		System.out.println("pre-post: " + src + "  " + dest);
 	}
 

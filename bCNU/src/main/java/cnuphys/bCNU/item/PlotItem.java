@@ -21,7 +21,7 @@ public class PlotItem extends PanelItem {
 	/**
 	 * Create a panel whose location is based on world coordinates but whose extent
 	 * is in pixels. And example might be a plot item or image.
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param location the location of the lower-left in world coordinates
 	 * @param width    the width in pixels
@@ -32,7 +32,7 @@ public class PlotItem extends PanelItem {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param location the location of the lower-left in world coordinates
 	 * @param width    the width in pixels
@@ -55,7 +55,7 @@ public class PlotItem extends PanelItem {
 
 	/**
 	 * Convenience method to create a histogram plot item
-	 * 
+	 *
 	 * @param layer          the Layer this item is on.
 	 * @param location       the location of the lower-left in world coordinates
 	 * @param width          the width in pixels
@@ -87,7 +87,7 @@ public class PlotItem extends PanelItem {
 
 	/**
 	 * Get the underlying plot canvas
-	 * 
+	 *
 	 * @return the underlying plot canvas
 	 */
 	public PlotCanvas getPlotCanvas() {
@@ -96,7 +96,7 @@ public class PlotItem extends PanelItem {
 
 	/**
 	 * Get the plot parameters
-	 * 
+	 *
 	 * @return the plot parameters
 	 */
 	public PlotParameters getPlotParameters() {

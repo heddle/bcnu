@@ -7,12 +7,12 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+
 import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -40,14 +40,14 @@ public class ContainerPanel extends JPanel  {
 
 	// title related
 	private JLabel _title;
-	
+
 	// status label
 	private JLabel _status;
 
 	// axes labels
 	private JLabel _xLabel;
 	private JLabel _yLabel;
-	
+
 	//the compass panels
 	private JPanel _northPanel;
 	private JPanel _southPanel;
@@ -63,13 +63,13 @@ public class ContainerPanel extends JPanel  {
 	protected int _tbarBits;
 
 	protected int _decorations;
-	
+
 	//work point
 	private Point2D.Double _wp = new Point2D.Double();
-	
+
 	/**
 	 * Create a container panel with a [0, 0, 1, 1] world system.
-	 * 
+	 *
 	 * @param dataSet   the data set
 	 * @param plotTitle the title of the plot
 	 */
@@ -80,7 +80,7 @@ public class ContainerPanel extends JPanel  {
 
 	/**
 	 * Create a container panel
-	 * 
+	 *
 	 * @param worldSystem  the world system
 	 */
 	public ContainerPanel(int toolbarBits, Rectangle2D.Double worldSystem) {
@@ -90,7 +90,7 @@ public class ContainerPanel extends JPanel  {
 
 	/**
 	 * Create a container panel
-	 * 
+	 *
 	 * @param worldSystem  the world system
 	 * @param decorations
 	 */
@@ -105,20 +105,20 @@ public class ContainerPanel extends JPanel  {
 
 		addSouth();
 		addNorth();
-		
+
 		setBackground(Color.white);
 		setOpaque(true);
 		setBorder(new CommonBorder());
 
 	}
-	
+
 	/**
 	 * Refresh the container.
 	 */
 	public void refresh() {
 		_container.refresh();
 	}
-	
+
 	/**
 	 * Get the title label
 	 * @return the title label object
@@ -126,7 +126,7 @@ public class ContainerPanel extends JPanel  {
 	public JLabel getTitle() {
 		return _title;
 	}
-	
+
 	/**
 	 * Set all three labels
 	 * @param title the title
@@ -138,7 +138,7 @@ public class ContainerPanel extends JPanel  {
 		setXLabel(xlabel);
 		setYLabel(ylabel);
 	}
-	
+
 	/**
 	 * Set the panel's x axis label
 	 * @param xlabel the new title
@@ -168,7 +168,7 @@ public class ContainerPanel extends JPanel  {
 
 	/**
 	 * Set the panel's y axis label
-	 * 
+	 *
 	 * @param ylabel the new title
 	 */
 	public void setYLabel(String ylabel) {
@@ -185,23 +185,23 @@ public class ContainerPanel extends JPanel  {
 			wp.setOpaque(false);
 			wp.setLayout(new BorderLayout());
 			_yLabel = makeRotatedLabel(Fonts.defaultFont, Color.white, Color.black);
-			
+
 			wp.add(_yLabel, BorderLayout.CENTER);
 			wp.add(Box.createVerticalStrut(100), BorderLayout.SOUTH);
 			wp.add(Box.createHorizontalStrut(6), BorderLayout.EAST);
 			add(wp, BorderLayout.WEST);
-		
+
 
 		}
 		_yLabel.setText(ylabel);
 	}
-	
+
 	/**
 	 * Set the panel's title
 	 * @param title the new title
 	 */
 	public void setTitle(String title) {
-		
+
 		if (title == null) {
 			if (_title != null) {
 				_northPanel.remove(_title);
@@ -209,39 +209,39 @@ public class ContainerPanel extends JPanel  {
 				return;
 			}
 		}
-		
+
 		if (_title == null) {
 			JPanel tp = new JPanel();
 			tp.setLayout(new FlowLayout(FlowLayout.CENTER));
-			
+
 			tp.setBackground(Color.white);
 			tp.setOpaque(true);
 
-			_title = makeLabel(tp, Fonts.defaultLargeFont, Color.white, Color.black);			
+			_title = makeLabel(tp, Fonts.defaultLargeFont, Color.white, Color.black);
 			_northPanel.add(tp, BorderLayout.SOUTH);
 		}
 		_title.setText(title);
 	}
-	
+
 	//convenience method to make a label
 	private JLabel makeLabel(JPanel p, Font font, Color bg, Color fg) {
 		JLabel label = new JLabel();
 		label.setFont(font);
-		
+
 		label.setOpaque(true);
 		label.setBackground(bg);
 		label.setForeground(fg);
 		p.add(label);
 		return label;
 	}
-	
+
 	// convenience function for making a rotated label for y axis label
 	private JLabel makeRotatedLabel(Font font, Color bg, Color fg) {
 		JLabel lab = new JLabel();
 		lab.setLayout(new BorderLayout());
 		lab.setFont(font);
 		lab.setOpaque(true);
-		
+
 		lab.setUI(new VerticalLabelUI());
 
 		if (bg != null) {
@@ -250,18 +250,18 @@ public class ContainerPanel extends JPanel  {
 		if (fg != null) {
 			lab.setForeground(fg);
 		}
-		
+
 		return lab;
 	}
 
-	
+
 	//create the container
 	private void createContainer(Rectangle2D.Double worldSystem) {
 		_container = new BaseContainer(null, worldSystem);
 		_container.setBorder(new CommonBorder());
-		
+
 		_container.setBackground(X11Colors.getX11Color("alice blue"));
-		
+
 		MouseInputAdapter mia = new MouseInputAdapter() {
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -269,28 +269,28 @@ public class ContainerPanel extends JPanel  {
 					_status.setText("");
 				}
 			}
-			
+
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				
+
 				if (_status != null) {
 					Point pp = e.getPoint();
 					_container.localToWorld(pp, _wp);
-					
+
 					String s = String.format("local: [%d, %d]  world: [%-5.2f, %-5.2f]", pp.x, pp.y, _wp.x, _wp.y);
 					_status.setText(s);
 				}
-				
-			}	
-			
+
+			}
+
 			@Override
 			public void mouseDragged(MouseEvent e) {
-			}			
+			}
 
 
 
 		};
-		
+
 		_container.addMouseListener(mia);
 		_container.addMouseMotionListener(mia);
 
@@ -326,7 +326,7 @@ public class ContainerPanel extends JPanel  {
 
 	// add the north component
 	private void addNorth() {
-		
+
 
 		// toolbar
 		_toolbar = new BaseToolBar(_container, _tbarBits);
@@ -348,7 +348,7 @@ public class ContainerPanel extends JPanel  {
 	private JLabel makeStatusLabel(int numLines) {
 		Font font = Fonts.mediumFont;
 		FontMetrics fm = getFontMetrics(font);
-		
+
 		//allow for number of lines
 		final int height = 4 + numLines * (fm.getHeight() + 2);
 		Color bg = X11Colors.getX11Color("alice blue");
@@ -389,12 +389,12 @@ public class ContainerPanel extends JPanel  {
 
 		return label;
 	}
-	
+
 
 
 	/**
 	 * Get the underlying container
-	 * 
+	 *
 	 * @return the container
 	 */
 	public BaseContainer getBaseContainer() {

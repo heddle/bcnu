@@ -4,7 +4,7 @@ public class AttributeLongEditor extends AttributeIntegerValueEditor<Long> {
 
 	/**
 	 * Create a long integer editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */

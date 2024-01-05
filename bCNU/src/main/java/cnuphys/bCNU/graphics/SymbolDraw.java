@@ -14,7 +14,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draws the appropriate symbol at the provided screen location.
-	 * 
+	 *
 	 * @param g     the graphics context
 	 * @param x     the x screen coordinate.
 	 * @param y     the y screen coordinate.
@@ -28,7 +28,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draws the appropriate symbol at the provided screen location.
-	 * 
+	 *
 	 * @param g     the graphics context
 	 * @param x     the x screen coordinate.
 	 * @param y     the y screen coordinate.
@@ -45,7 +45,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draws the appropriate symbol at the provided screen location.
-	 * 
+	 *
 	 * @param g          the graphics context
 	 * @param x          the x screen coordinate.
 	 * @param y          the y screen coordinate.
@@ -100,7 +100,7 @@ public class SymbolDraw {
 		case X:
 			drawX(g, x, y, s2, lineColor);
 			break;
-			
+
 		case STAR:
 			drawStar(g, x, y, s2, lineColor);
 
@@ -112,10 +112,10 @@ public class SymbolDraw {
 		g2.setStroke(oldStroke);
 
 	}
-	
+
 	/**
 	 * Draw a simple star
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -132,7 +132,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple rectangle
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -160,7 +160,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple oval
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -188,7 +188,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple up triangle
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -223,7 +223,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw the david symbol
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -255,7 +255,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple down triangle
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -290,7 +290,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple cross
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -308,7 +308,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple X symbol.
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center
@@ -326,7 +326,7 @@ public class SymbolDraw {
 
 	/**
 	 * Draw a simple diamond
-	 * 
+	 *
 	 * @param g  the graphics context
 	 * @param x  the horizontal center
 	 * @param y  the vertical center

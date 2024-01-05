@@ -12,14 +12,14 @@ import cnuphys.bCNU.util.UnicodeSupport;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class TextButton extends ToolBarToggleButton {
 
 	/**
 	 * Create a button for creating annotated text items.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public TextButton(IContainer container) {
@@ -28,7 +28,7 @@ public class TextButton extends ToolBarToggleButton {
 
 	/**
 	 * The mouse was clicked.
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	@Override

@@ -13,7 +13,7 @@ public interface ISwimAll {
 
 	/**
 	 * Get all the row data so the trajectory dialog can be updated.
-	 * 
+	 *
 	 * @param manager the swim manager
 	 * @return a vector of TrajectoryRowData objects.
 	 */

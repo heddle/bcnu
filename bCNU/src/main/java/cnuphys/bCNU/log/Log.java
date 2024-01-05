@@ -25,7 +25,7 @@ public class Log {
 
 	/**
 	 * Access to the Log singleton.
-	 * 
+	 *
 	 * @return the Log singleton.
 	 */
 	public static Log getInstance() {
@@ -99,7 +99,7 @@ public class Log {
 
 	/**
 	 * Remove a LogListener.
-	 * 
+	 *
 	 * @param logListener the LogListener to remove.
 	 */
 
@@ -114,7 +114,7 @@ public class Log {
 
 	/**
 	 * Send a error string to the listeners.
-	 * 
+	 *
 	 * @param message the error message string.
 	 */
 	public void error(String message) {
@@ -123,7 +123,7 @@ public class Log {
 
 	/**
 	 * Send a config string to the listeners.
-	 * 
+	 *
 	 * @param message the config message string.
 	 */
 
@@ -133,7 +133,7 @@ public class Log {
 
 	/**
 	 * Send a warning to the logger.
-	 * 
+	 *
 	 * @param message the warning message.
 	 */
 	public void warning(String message) {
@@ -142,7 +142,7 @@ public class Log {
 
 	/**
 	 * Send an info string to the logger.
-	 * 
+	 *
 	 * @param message the informational string.
 	 */
 	public void info(String message) {
@@ -151,7 +151,7 @@ public class Log {
 
 	/**
 	 * Send an exception to the "severe" handler.
-	 * 
+	 *
 	 * @param t a Throwable--usually an Exception.
 	 */
 	public void exception(Throwable t) {
@@ -160,7 +160,7 @@ public class Log {
 
 	/**
 	 * Place the stack trace from a throwable into a string.
-	 * 
+	 *
 	 * @param t the Throwable (Exception or Error)
 	 * @return the string with the stack trace info.
 	 */

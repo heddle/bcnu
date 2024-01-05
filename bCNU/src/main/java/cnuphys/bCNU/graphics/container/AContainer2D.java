@@ -30,18 +30,18 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.visible.VisibilityTableScrollPane;
 
 public abstract class AContainer2D implements IContainer, MouseListener, MouseMotionListener, MouseWheelListener, IDrawableListener {
-	
+
 	/**
 	 * A collection of layers. This is the container's model.
 	 */
 	protected DrawableList _layers = new DrawableList("Layers");
 
-	
+
 	/**
 	 * The annotation layer. Every container has one.
 	 */
 	protected LogicalLayer _annotationLayer;
-	
+
 	// A map of layers added by users.
 	protected Hashtable<String, LogicalLayer> _userLayers = new Hashtable<>(47);
 
@@ -60,7 +60,7 @@ public abstract class AContainer2D implements IContainer, MouseListener, MouseMo
 		}
 		layer.addDrawableListener(this);
 	}
-	
+
 	/**
 	 * Get the annotation layer for this obtainer.
 	 *

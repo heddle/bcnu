@@ -6,16 +6,16 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * Zoom out by a fixed amount.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class ZoomOutButton extends ToolBarButton {
 
 	/**
 	 * Create the zoom-out button, which zooms out by a fixed amount.
-	 * 
+	 *
 	 * @param container the container this button acts upon.
 	 */
 	public ZoomOutButton(IContainer container) {
@@ -24,7 +24,7 @@ public class ZoomOutButton extends ToolBarButton {
 
 	/**
 	 * This is what I do if I am pressed
-	 * 
+	 *
 	 * @param e the causal event.
 	 */
 	@Override

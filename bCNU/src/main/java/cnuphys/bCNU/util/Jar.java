@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.Vector;
-import java.util.jar.Attributes;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
@@ -25,7 +24,7 @@ public class Jar {
 	 * temp file, and the name of the temp file will be returned. The temp file is
 	 * set to disappear when the JVM that created it shuts down-- so it truly is a
 	 * temp file.
-	 * 
+	 *
 	 * @param cl    A class loader--probably this.getClass().getClassLoader of the
 	 *              calling object.
 	 * @param file  the file.
@@ -81,7 +80,7 @@ public class Jar {
 
 	/**
 	 * Obtain an vector of the jar file entries.
-	 * 
+	 *
 	 * @param jarPath the full path for the jar file.
 	 * @return an vector of the jar file entries.
 	 */
@@ -101,7 +100,7 @@ public class Jar {
 				String name = entry.getName();
 
 				if (v == null) {
-					v = new Vector<String>(25);
+					v = new Vector<>(25);
 				}
 
 				v.add(name);
@@ -115,7 +114,7 @@ public class Jar {
 
 		return v;
 	}
-	
+
 	/**
 	 * Get a attribute from a jar file manifes from mainAttributes
 	 * @param jarPath path to the jar file
@@ -129,9 +128,9 @@ public class Jar {
 			if (mf == null) {
 				return null;
 			}
-			
+
 			return mf.getMainAttributes().getValue(attributeName);
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

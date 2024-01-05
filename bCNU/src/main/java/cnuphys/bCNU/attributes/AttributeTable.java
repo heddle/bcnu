@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -24,9 +24,9 @@ import cnuphys.bCNU.util.Fonts;
 
 /**
  * A general table for displaying and editing attributes.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class AttributeTable extends JTable {
@@ -55,7 +55,7 @@ public class AttributeTable extends JTable {
 
 	// columns
 	private TableColumn c1, c2;
-	
+
 	private int _preferredHeight;
 
 	/**
@@ -67,7 +67,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Create an attribute table
-	 * 
+	 *
 	 * @param nw width of name column
 	 * @param vw width of value column
 	 */
@@ -112,7 +112,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Get the attribute data model
-	 * 
+	 *
 	 * @return the data model
 	 */
 	public AttributeTableModel getAttributeTableModel() {
@@ -121,7 +121,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Get the data
-	 * 
+	 *
 	 * @return the table data
 	 */
 	public List<Attribute> getData() {
@@ -131,7 +131,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Set the model data
-	 * 
+	 *
 	 * @param attributes the data
 	 */
 	public void setData(Attributes attributes) {
@@ -156,7 +156,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Tries to find the attribute with the given key
-	 * 
+	 *
 	 * @param attributeKey match to the key
 	 * @return the Attribute, or null.
 	 */
@@ -166,7 +166,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Get the Attribute at the given row
-	 * 
+	 *
 	 * @param row the row
 	 * @return the Attribute
 	 */
@@ -183,7 +183,7 @@ public class AttributeTable extends JTable {
 
 	/**
 	 * Get the scroll pane.
-	 * 
+	 *
 	 * @return the scroll pane.
 	 */
 	public JScrollPane getScrollPane() {

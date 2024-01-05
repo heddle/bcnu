@@ -63,7 +63,7 @@ public class DialogUtilities {
 
 	/**
 	 * Center a dialog
-	 * 
+	 *
 	 * @param dialog the dialog to center
 	 */
 
@@ -73,7 +73,7 @@ public class DialogUtilities {
 
 	/**
 	 * Place a component in the upper right
-	 * 
+	 *
 	 * @param component The Component to center.
 	 */
 	public static void upperRightComponent(Component component, int dh, int dv) {
@@ -111,7 +111,7 @@ public class DialogUtilities {
 
 	/**
 	 * Convenience routine for padding a string using the default font.
-	 * 
+	 *
 	 * @param inp  The string to be padded.
 	 * @param tstr The test string-- try to return a string the same length
 	 */
@@ -149,7 +149,7 @@ public class DialogUtilities {
 
 	/**
 	 * Create a nice padded panel.
-	 * 
+	 *
 	 * @param hpad      the pixel pad on the left and right
 	 * @param vpad      the pixel pad on the top and bottom
 	 * @param component the main component placed in the center.
@@ -174,7 +174,7 @@ public class DialogUtilities {
 
 	/**
 	 * Create a dialog with a prompt and a set of options
-	 * 
+	 *
 	 * @param prompt
 	 * @param options
 	 * @return a result indicating yes or no.

@@ -6,10 +6,11 @@ public class BlockingFIFO<T> extends ABlockingQueue<T> {
 
 	/**
 	 * Dequeue an object. If queue is empty, wait.
-	 * Any number of reader threads can call this. 
+	 * Any number of reader threads can call this.
 	 * When an object arrives, one of the threads will be given the object,
 	 * @return a object for processing.
 	 */
+	@Override
 	protected T dequeueObject() {
 		if (isEmpty()) {
 			try {
@@ -24,6 +25,6 @@ public class BlockingFIFO<T> extends ABlockingQueue<T> {
 		// return first element
 		return remove(0);
 	}
-	
+
 
 }

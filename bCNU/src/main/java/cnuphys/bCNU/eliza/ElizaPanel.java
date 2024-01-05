@@ -13,7 +13,7 @@ import cnuphys.bCNU.util.Environment;
 
 /**
  * A panel to hold an Eliza dialog
- * 
+ *
  * @author heddle
  *
  */
@@ -69,7 +69,7 @@ public class ElizaPanel extends JPanel {
 
 	/**
 	 * The doctor is speaking
-	 * 
+	 *
 	 * @param s what she is saying
 	 */
 	public void doctor(String s) {
@@ -80,7 +80,7 @@ public class ElizaPanel extends JPanel {
 
 	/**
 	 * The patient is speaking
-	 * 
+	 *
 	 * @param s
 	 */
 	public void patient(String s) {

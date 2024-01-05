@@ -11,7 +11,7 @@ public class DonutItem extends PolygonItem {
 
 	/**
 	 * Create a donut item.
-	 * 
+	 *
 	 * @param layer       the Layer this item is on.
 	 * @param wpc         the center of the arc
 	 * @param radiusInner the inner radius
@@ -30,7 +30,7 @@ public class DonutItem extends PolygonItem {
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.
-	 * 
+	 *
 	 * @return the selection points used to indicate this item is selected.
 	 */
 	@Override

@@ -10,7 +10,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class PanButton extends ToolBarToggleButton {
@@ -27,7 +27,7 @@ public class PanButton extends ToolBarToggleButton {
 
 	/**
 	 * Create a button for panning the container.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public PanButton(IContainer container) {
@@ -53,7 +53,7 @@ public class PanButton extends ToolBarToggleButton {
 
 	/**
 	 * Updates the results of a pan.
-	 * 
+	 *
 	 * @param mouseEvent the new current location.
 	 * @param container  the container.
 	 */
@@ -87,7 +87,7 @@ public class PanButton extends ToolBarToggleButton {
 
 	/**
 	 * Local pan method
-	 * 
+	 *
 	 * @param mouseEvent the causal event.
 	 */
 	private void pan(MouseEvent mouseEvent) {
@@ -107,7 +107,7 @@ public class PanButton extends ToolBarToggleButton {
 
 	/**
 	 * Get the appropriate cursor for this tool.
-	 * 
+	 *
 	 * @return The cursor appropriate when the mouse is in the map canvas.
 	 */
 
@@ -118,7 +118,7 @@ public class PanButton extends ToolBarToggleButton {
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
 	 */
 	@Override

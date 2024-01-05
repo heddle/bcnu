@@ -6,7 +6,7 @@ public class AttributeSliderEditor extends AttributeEditor<JSlider> {
 
 	/**
 	 * Create an Boolean editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */

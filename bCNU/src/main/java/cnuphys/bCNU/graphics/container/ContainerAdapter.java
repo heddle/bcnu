@@ -312,7 +312,7 @@ public class ContainerAdapter implements IContainer {
 
 	/**
 	 * The active toolbar button changed.
-	 * 
+	 *
 	 * @param activeButton the new active button.
 	 */
 	@Override

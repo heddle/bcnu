@@ -11,7 +11,7 @@ public interface IFeedbackProvider extends EventListener {
 
 	/**
 	 * Add any appropriate feedback strings panel.
-	 * 
+	 *
 	 * @param container       the container.
 	 * @param pp              the mouse location.
 	 * @param wp              the corresponding world point.

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Insets;
+
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -46,7 +47,7 @@ public class TextDisplayDialog extends SimpleDialog {
 
 	/**
 	 * Set the text in the text area
-	 * 
+	 *
 	 * @param text the text
 	 */
 	public void setText(String text) {
@@ -55,7 +56,7 @@ public class TextDisplayDialog extends SimpleDialog {
 
 	/**
 	 * Get the Writer object that writes to the text area
-	 * 
+	 *
 	 * @return the writer
 	 */
 	public TextAreaWriter getWriter() {
@@ -64,7 +65,7 @@ public class TextDisplayDialog extends SimpleDialog {
 
 	/**
 	 * Override to create the component that goes in the center.
-	 * 
+	 *
 	 * @return the component that is placed in the north
 	 */
 	@Override
@@ -90,7 +91,7 @@ public class TextDisplayDialog extends SimpleDialog {
 
 	/**
 	 * Get the text area that displays the yaml
-	 * 
+	 *
 	 * @return the text area that displays the yaml
 	 */
 	public JTextArea getTextArea() {

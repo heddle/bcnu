@@ -6,7 +6,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * @author heddle
- * 
+ *
  *         TODO To change the template for this generated type comment go to
  *         Window - Preferences - Java - Code Style - Code Templates
  */
@@ -15,7 +15,7 @@ public class DeleteButton extends ToolBarButton {
 
 	/**
 	 * Create the button used to delete items on the container.
-	 * 
+	 *
 	 * @param container the owner container.
 	 */
 	public DeleteButton(IContainer container) {
@@ -24,7 +24,7 @@ public class DeleteButton extends ToolBarButton {
 
 	/**
 	 * This is what I do if I am pressed, i.e. delete all selected items.
-	 * 
+	 *
 	 * @param e The causal event.
 	 */
 	@Override

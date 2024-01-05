@@ -2,7 +2,7 @@ package cnuphys.bCNU.geometry;
 
 /**
  * Ordinary 3D vector
- * 
+ *
  * @author heddle
  *
  */
@@ -16,7 +16,7 @@ public class Vector extends Point {
 
 	/**
 	 * Create a Vector from a point
-	 * 
+	 *
 	 * @param p the point
 	 */
 	public Vector(Point p) {
@@ -25,7 +25,7 @@ public class Vector extends Point {
 
 	/**
 	 * Create a vector
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate
@@ -36,7 +36,7 @@ public class Vector extends Point {
 
 	/**
 	 * The square of the length of the vector
-	 * 
+	 *
 	 * @return the square of the length of the vector
 	 */
 	public double lengthSquared() {
@@ -45,16 +45,17 @@ public class Vector extends Point {
 
 	/**
 	 * The length of the vector
-	 * 
+	 *
 	 * @return the length of the vector
 	 */
+	@Override
 	public double length() {
 		return Math.sqrt(lengthSquared());
 	}
 
 	/**
 	 * Set the components of the vector
-	 * 
+	 *
 	 * @param x the x component
 	 * @param y the y component
 	 * @param z the z component
@@ -68,7 +69,7 @@ public class Vector extends Point {
 
 	/**
 	 * The cross product of two vectors
-	 * 
+	 *
 	 * @param a one vector
 	 * @param b other vector
 	 * @return c = a x b
@@ -81,7 +82,7 @@ public class Vector extends Point {
 
 	/**
 	 * The in-place cross product of two vectors
-	 * 
+	 *
 	 * @param a one vector
 	 * @param b other vector
 	 * @param c on return c = a x b
@@ -94,7 +95,7 @@ public class Vector extends Point {
 
 	/**
 	 * Scale a vector
-	 * 
+	 *
 	 * @param scaleFactor the scale factor
 	 */
 	public void scale(double scaleFactor) {
@@ -105,7 +106,7 @@ public class Vector extends Point {
 
 	/**
 	 * Compute the angle between two vectors in radians
-	 * 
+	 *
 	 * @param a one vector
 	 * @param b the other vector
 	 * @return the angle between two vectors in radians
@@ -123,7 +124,7 @@ public class Vector extends Point {
 
 	/**
 	 * Compute the angle between two vectors in degrees
-	 * 
+	 *
 	 * @param a one vector
 	 * @param b the other vector
 	 * @return the angle between two vectors in degrees
@@ -134,7 +135,7 @@ public class Vector extends Point {
 
 	/**
 	 * Get a unit vector in the same direction as this
-	 * 
+	 *
 	 * @return a unit vector
 	 */
 	public Vector unitVector() {
@@ -148,7 +149,7 @@ public class Vector extends Point {
 
 	/**
 	 * project vector a in the direction of vector b
-	 * 
+	 *
 	 * @param a the vector to project
 	 * @param b the vector whose direction we project on
 	 * @return the projection of a
@@ -168,7 +169,7 @@ public class Vector extends Point {
 
 	/**
 	 * Get the difference between two vectors
-	 * 
+	 *
 	 * @param a one vector
 	 * @param b the other vector
 	 * @return the difference between two vectors a - b
@@ -179,7 +180,7 @@ public class Vector extends Point {
 
 	/**
 	 * Get the in-place difference between two vectors
-	 * 
+	 *
 	 * @param a one vector
 	 * @param b the other vector
 	 * @param c upon return the difference between two vectors a - b

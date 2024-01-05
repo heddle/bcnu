@@ -12,9 +12,9 @@ import cnuphys.bCNU.util.Fonts;
 
 /**
  * Draws a little 2D coordinate system indicator
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class CoordinateSystemDrawable extends DrawableAdapter {
 
@@ -40,7 +40,7 @@ public class CoordinateSystemDrawable extends DrawableAdapter {
 	 * Create a little coordinate system indicator. Not very general-- assumes z
 	 * axis is to the right and x-y plane perpendicular ro screen with x vertical if
 	 * phi = 0.
-	 * 
+	 *
 	 * @param size   the canvas size in pixels
 	 * @param xlabel the x axis label
 	 * @param ylabel the y axis label
@@ -53,7 +53,7 @@ public class CoordinateSystemDrawable extends DrawableAdapter {
 
 	/**
 	 * The drawing method
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 */

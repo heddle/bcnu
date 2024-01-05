@@ -1,12 +1,18 @@
 package cnuphys.bCNU.dialog;
 
 /**
- * A Vertical flow layout, similar to JAVA's FlowLayout. 
+ * A Vertical flow layout, similar to JAVA's FlowLayout.
  * @author heddle
  */
-import java.awt.*;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.awt.LayoutManager2;
 import java.io.Serializable;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Vector;
 
 @SuppressWarnings("serial")
 public class VerticalFlowLayout implements LayoutManager2, Serializable {
@@ -100,13 +106,13 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 		m_internalPadX = 0;
 		m_internalPadY = 0;
 
-		components = new Vector<AlignedComponent>();
+		components = new Vector<>();
 	}
 
 	/**
 	 * Constructs a new VerticalFlowLayout with your own width sizing type and
 	 * vertical gap values.
-	 * 
+	 *
 	 * @param uniformWidths size the widths of the component to be uniform or not
 	 * @param vGap          vertical gap
 	 */
@@ -114,12 +120,12 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 		bUniformWidths = uniformWidths;
 		m_vGap = vGap;
 
-		components = new Vector<AlignedComponent>();
+		components = new Vector<>();
 	}
 
 	/**
 	 * Adds the specified component to the layout.
-	 * 
+	 *
 	 * @param name this is ignored
 	 * @param comp the component to be added
 	 * @exception IllegalArgumentException Invalid component or constraint.
@@ -155,7 +161,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 
 	/**
 	 * Remove the specified component.
-	 * 
+	 *
 	 * @param comp the component to be removed
 	 * @exception IllegalArgumentException Invalid component.
 	 */
@@ -191,7 +197,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Gets the minimum dimensions needed to lay out the component contained in the
 	 * specified target container.
-	 * 
+	 *
 	 * @param parent the Container on which to do the layout
 	 * @see Container
 	 * @see #preferredLayoutSize
@@ -212,7 +218,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	 * <LI>For the vertical size, this will add up the heights of all of the
 	 * components and add in the internal and external vertical paddings.
 	 * </UL>
-	 * 
+	 *
 	 * @param parent the Container on which to do the layout
 	 * @see Container
 	 * @see #minimumLayoutSize
@@ -291,7 +297,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 
 	/**
 	 * Layout the components within the specified container
-	 * 
+	 *
 	 * @param parent the container that is being layed out
 	 * @see Container
 	 */
@@ -343,7 +349,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 					int height = comp.getPreferredSize().height + (m_internalPadY * 2);
 
 					// compute width for this component + 2*m_internalPadX
-					if (bUniformWidths == true) {
+					if (bUniformWidths) {
 						// get the width of the widest component
 						compWidth = m_widestWidth + (m_internalPadX * 2);
 					} else {
@@ -376,7 +382,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Adds the specified component to the layout, using the specified constraint
 	 * object.
-	 * 
+	 *
 	 * @param comp        the component to be added
 	 * @param constraints where/how the component is added to the layout.
 	 */
@@ -391,7 +397,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 
 	/**
 	 * Returns the maximum size of this component.
-	 * 
+	 *
 	 * @see java.awt.Component#getMinimumSize()
 	 * @see java.awt.Component#getPreferredSize()
 	 * @see LayoutManager
@@ -437,7 +443,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 
 	/**
 	 * See if the widths are set to uniform.
-	 * 
+	 *
 	 * @return uniform width flag
 	 */
 	public boolean areWidthsUniform() {
@@ -446,7 +452,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 
 	/**
 	 * Get the vertical gap value.
-	 * 
+	 *
 	 * @return vertical gap
 	 */
 	public int getVerticalGap() {
@@ -456,7 +462,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Returns the left external horizontal padding. This is the space between the
 	 * widest component in the column and the left edge.
-	 * 
+	 *
 	 * @return Left external horizontal padding.
 	 */
 	public int getExternalPadLeft() {
@@ -466,7 +472,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Returns the right external horizontal padding. This is the space between the
 	 * widest component in the column and the left right edge.
-	 * 
+	 *
 	 * @return Right external horizontal padding.
 	 */
 	public int getExternalPadRight() {
@@ -476,7 +482,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Returns the top external vertical padding. This is the space between the top
 	 * component and the top edge.
-	 * 
+	 *
 	 * @return Top external vertical padding.
 	 */
 	public int getExternalPadTop() {
@@ -486,7 +492,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Returns the bottom external vertical padding. This is the space between the
 	 * bottom component and the bottom edge.
-	 * 
+	 *
 	 * @return Bottom external vertical padding.
 	 */
 	public int getExternalPadBottom() {
@@ -498,7 +504,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	 * horizontal preferred size of all of the components by a certain amount. It
 	 * works great on buttons, because their preferred size is usually not wide
 	 * enough to look good.
-	 * 
+	 *
 	 * @return internal horizontal padding
 	 */
 	public int getInternalPadX() {
@@ -509,7 +515,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	 * Get the internal vertical padding. This is a simple way to grow the vertical
 	 * preferred size of all of the components by a certain amount. It works great
 	 * on buttons, because their preferred size is usually too short.
-	 * 
+	 *
 	 * @return internal vertical padding
 	 */
 	public int getInternalPadY() {
@@ -519,7 +525,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Set the uniform width flag. If you set this to true, the alignment value is
 	 * ignored.
-	 * 
+	 *
 	 * @param uniformWidths
 	 *                      <UL>
 	 *                      <LI>true = make all the widths uniform (sizing to match
@@ -534,7 +540,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 
 	/**
 	 * Set the vertical gap value.
-	 * 
+	 *
 	 * @param vGap vertical gap
 	 */
 	public void setVerticalGap(int vGap) {
@@ -544,7 +550,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Set the left external horizontal padding. This is the space between the
 	 * widest component in the column and the edge.
-	 * 
+	 *
 	 * @param padding the amount of padding in pixels.
 	 */
 	public void setExternalPadLeft(int padding) {
@@ -554,7 +560,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Set the right external horizontal padding. This is the space between the
 	 * widest component in the column and the edge.
-	 * 
+	 *
 	 * @param padding the amount of padding in pixels.
 	 */
 	public void setExternalPadRight(int padding) {
@@ -564,7 +570,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Set the top external vertical padding. This is the space between the top and
 	 * the top edge.
-	 * 
+	 *
 	 * @param padding the amount of padding in pixels.
 	 */
 	public void setExternalPadTop(int padding) {
@@ -574,7 +580,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	/**
 	 * Set the bottom external vertical padding. This is the space between the
 	 * bottom and the bottom edge.
-	 * 
+	 *
 	 * @param padding the amount of padding in pixels.
 	 */
 	public void setExternalPadBottom(int padding) {
@@ -586,7 +592,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	 * horizontal preferred size of all of the components by a certain amount. It
 	 * works great on buttons, because their preferred size is usually not wide
 	 * enough to look good.
-	 * 
+	 *
 	 * @param padding internal horizontal padding
 	 */
 	public void setInternalPadX(int padding) {
@@ -597,7 +603,7 @@ public class VerticalFlowLayout implements LayoutManager2, Serializable {
 	 * Set the internal vertical padding. This is a simple way to grow the vertical
 	 * preferred size of all of the components by a certain amount. It works great
 	 * on buttons, because their preferred size is usually too short.
-	 * 
+	 *
 	 * @param padding internal vertical padding
 	 */
 	public void setInternalPadY(int padding) {

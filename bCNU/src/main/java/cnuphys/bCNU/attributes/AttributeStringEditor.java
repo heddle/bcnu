@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -17,7 +17,7 @@ public class AttributeStringEditor extends AttributeEditor<JTextField> implement
 
 	/**
 	 * Create a String editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */
@@ -35,7 +35,7 @@ public class AttributeStringEditor extends AttributeEditor<JTextField> implement
 
 	/**
 	 * See if a string has changed. If so, fire a notice.
-	 * 
+	 *
 	 * @param eventComponent
 	 */
 
@@ -81,7 +81,7 @@ public class AttributeStringEditor extends AttributeEditor<JTextField> implement
 
 	/**
 	 * Render the value for display
-	 * 
+	 *
 	 * @param value the
 	 */
 	@Override

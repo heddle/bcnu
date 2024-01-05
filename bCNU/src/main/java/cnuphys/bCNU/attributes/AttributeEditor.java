@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -28,7 +28,7 @@ public abstract class AttributeEditor<T extends JComponent> {
 
 	/**
 	 * Create an editor
-	 * 
+	 *
 	 * @param attributeTable the table
 	 * @param attribute      the attribute being edited
 	 */
@@ -41,7 +41,7 @@ public abstract class AttributeEditor<T extends JComponent> {
 
 	/**
 	 * Create the appropriate editor for the attribute
-	 * 
+	 *
 	 * @param attributeTable the table
 	 * @param attribute      the attribute
 	 * @return the appropriate editor
@@ -86,7 +86,7 @@ public abstract class AttributeEditor<T extends JComponent> {
 
 	/**
 	 * Render the value for display
-	 * 
+	 *
 	 * @param value the
 	 */
 	public abstract void renderValue(Object value);

@@ -9,6 +9,7 @@ import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+
 import cnuphys.bCNU.log.Log;
 
 public class MenuManager {
@@ -27,11 +28,11 @@ public class MenuManager {
 	private JMenuBar _menuBar;
 
 	// keep track of the menus added
-	private Hashtable<String, JMenu> _menus = new Hashtable<String, JMenu>(41);
+	private Hashtable<String, JMenu> _menus = new Hashtable<>(41);
 
 	/**
 	 * private constructor for singleton.
-	 * 
+	 *
 	 * @param menuBar the main menubar
 	 */
 	private MenuManager(JMenuBar menuBar) {
@@ -40,7 +41,7 @@ public class MenuManager {
 
 	/**
 	 * Public access for the singleton.
-	 * 
+	 *
 	 * @param menubar the main menu bar
 	 * @return the menu manager for the one and only BaseMDIApplication.
 	 */
@@ -54,7 +55,7 @@ public class MenuManager {
 	/**
 	 * This one is used after the menu manager is created. Then you can add menus to
 	 * the main frame without a reference to it.
-	 * 
+	 *
 	 * @return the menu manager for the one and only BaseMDIApplication.
 	 */
 	public static MenuManager getInstance() {
@@ -63,7 +64,7 @@ public class MenuManager {
 
 	/**
 	 * Add a menu to the main menu bar.
-	 * 
+	 *
 	 * @param menu the menu to add.
 	 */
 	public void addMenu(JMenu menu) {
@@ -79,7 +80,7 @@ public class MenuManager {
 
 	/**
 	 * Get a menu based on its name.
-	 * 
+	 *
 	 * @param text the name of the menu, e.g., "File".
 	 * @return the menu, if it finds it.
 	 */
@@ -89,7 +90,7 @@ public class MenuManager {
 
 	/**
 	 * Get the file menu.
-	 * 
+	 *
 	 * @return the file menu, if it has been set.
 	 */
 	public JMenu getFileMenu() {
@@ -101,7 +102,7 @@ public class MenuManager {
 
 	/**
 	 * Get the option menu.
-	 * 
+	 *
 	 * @return the option menu, if it has been set.
 	 */
 	public JMenu getOptionMenu() {
@@ -113,7 +114,7 @@ public class MenuManager {
 
 	/**
 	 * Remove an unwanted menu from the menu bar
-	 * 
+	 *
 	 * @param menu the menu to remove
 	 */
 	public void removeMenu(JMenu menu) {
@@ -122,7 +123,7 @@ public class MenuManager {
 
 	/**
 	 * Set the file menu
-	 * 
+	 *
 	 * @param menu the file menu
 	 */
 	public static void setFileMenu(JMenu menu) {
@@ -131,7 +132,7 @@ public class MenuManager {
 
 	/**
 	 * Convenience routine for adding a checkbox menu item.
-	 * 
+	 *
 	 * @param label the menu label.
 	 * @param menu  optional menu to add the item to.
 	 * @param ilist optional ItemListener.
@@ -143,7 +144,7 @@ public class MenuManager {
 
 	/**
 	 * Convenience routine for adding a checkbox menu item.
-	 * 
+	 *
 	 * @param label the menu label.
 	 * @param menu  optional menu to add the item to.
 	 * @param ilist optional ItemListener.
@@ -169,7 +170,7 @@ public class MenuManager {
 
 	/**
 	 * Convenience routine for adding a menu item.
-	 * 
+	 *
 	 * @param label    the menu label.
 	 * @param mnemonic the mnemonic character.
 	 * @param index    the index (0 based) at which to add the item.
@@ -203,7 +204,7 @@ public class MenuManager {
 
 	/**
 	 * Convenience routine for adding a menu item.
-	 * 
+	 *
 	 * @param label    the menu label.
 	 * @param mnemonic the mnemonic character.
 	 * @param menu     the menu to add the item to.
@@ -217,7 +218,7 @@ public class MenuManager {
 
 	/**
 	 * Convenience routine for adding a menu item.
-	 * 
+	 *
 	 * @param label the menu label.
 	 * @param index the index (0 based) at which to add the item.
 	 * @param menu  the menu to add the item to.
@@ -231,7 +232,7 @@ public class MenuManager {
 
 	/**
 	 * Convenience routine for adding a menu item.
-	 * 
+	 *
 	 * @param label the menu label;
 	 * @param menu  the menu to add the item to.
 	 * @param alist optional action listener.

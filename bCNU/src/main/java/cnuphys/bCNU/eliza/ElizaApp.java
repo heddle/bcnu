@@ -6,11 +6,13 @@ import java.awt.Dimension;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Toolkit;
+
 import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 
 /**
  * Eliza Application.
- * 
+ *
  * Adapted from implementation by Charles Hayden see:
  * http://chayden.net/eliza/Eliza.html
  */
@@ -24,7 +26,7 @@ public class ElizaApp extends JFrame {
 		addContent();
 		System.err.println("done adding content");
 
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		// setSize(600, 600);
 		pack();
 	}
@@ -38,13 +40,14 @@ public class ElizaApp extends JFrame {
 
 	/**
 	 * Center a component.
-	 * 
+	 *
 	 * @param component The Component to center.
 	 */
 	public static void centerComponent(Component component) {
 
-		if (component == null)
+		if (component == null) {
 			return;
+		}
 
 		try {
 

@@ -10,7 +10,7 @@ import java.util.Vector;
 
 /**
  * A splashscreen window
- * 
+ *
  * @author heddle
  *
  */
@@ -30,7 +30,7 @@ public class SplashScreen extends Window {
 
 	/**
 	 * Create a translucent window to use as a splash screen
-	 * 
+	 *
 	 * @param imagePath   the path to the splash screen image
 	 * @param opacity     the smaller the number, the more transparent
 	 * @param minDuration the minimum duration in milliseconds that you want the
@@ -55,7 +55,7 @@ public class SplashScreen extends Window {
 
 	/**
 	 * See if we can close (that the minimum up has passed)
-	 * 
+	 *
 	 * @return <code>true</code> if we can close.
 	 */
 	public boolean canClose() {
@@ -64,12 +64,12 @@ public class SplashScreen extends Window {
 
 	/**
 	 * Add transient text to the collection of transient texts.
-	 * 
+	 *
 	 * @param transientText the transient text to add.
 	 */
 	public void addTransientText(TransientText transientText) {
 		if (_transientText == null) {
-			_transientText = new Vector<TransientText>();
+			_transientText = new Vector<>();
 		}
 		_transientText.add(transientText);
 	}

@@ -13,7 +13,7 @@ import cnuphys.bCNU.format.DoubleFormat;
 
 
 public class CSVWriter {
-	
+
 	private OutputStreamWriter _writer;
 
 	/**
@@ -24,7 +24,7 @@ public class CSVWriter {
 	public CSVWriter(String path) {
 		this(new File(path));
 	}
-	
+
 	/**
 	 * Create a CSV Write from a File object
 	 * @param file the File object. The disk file will
@@ -41,8 +41,8 @@ public class CSVWriter {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Close the stream
 	 */
@@ -56,7 +56,7 @@ public class CSVWriter {
 			}
 		}
 	}
-	
+
 
 	/**
 	 * Write a row of doubles to the csv file
@@ -66,12 +66,12 @@ public class CSVWriter {
 		if ((vals == null) || (vals.length == 0)) {
 			return;
 		}
-		
+
 		int len = vals.length;
 		int guessSize = 20*len;
-		
+
 		StringBuffer sb = new StringBuffer(guessSize);
-		
+
 		for (int i = 0; i < len; i++) {
 			boolean last = (i == (len-1));
 			sb.append(DoubleFormat.doubleFormat(vals[i], 6, 3));
@@ -82,7 +82,7 @@ public class CSVWriter {
 				sb.append("\n");
 			}
 		}
-		
+
 		try {
 			_writer.write(sb.toString());
 		} catch (IOException e) {
@@ -90,7 +90,7 @@ public class CSVWriter {
 		}
 
 	}
-	
+
 	/**
 	 * Write a row of doubles to the csv file
 	 * @param vals the row of doubles
@@ -99,17 +99,17 @@ public class CSVWriter {
 		if ((vals == null) || (vals.length == 0)) {
 			return;
 		}
-		
+
 		int len = vals.length;
 		int guessSize = 20*len;
-		
+
 		StringBuffer sb = new StringBuffer(guessSize);
-		
+
 		for (int i = 0; i < len; i++) {
 			sb.append(DoubleFormat.doubleFormat(vals[i], 6, 3));
 			sb.append(",");
 		}
-		
+
 		try {
 			_writer.write(sb.toString());
 		} catch (IOException e) {
@@ -117,23 +117,23 @@ public class CSVWriter {
 		}
 
 	}
-	
+
 	/**
 	 * Write a row of strings to the csv file
 	 * @param strings the row of strings
 	 */
 	public void writeRow(String...strings) {
-		
+
 		if ((strings == null) || (strings.length == 0)) {
 			return;
 		}
-		
+
 		int len = strings.length;
-		
+
 		int guessSize = 20*len;
-		
+
 		StringBuffer sb = new StringBuffer(guessSize);
-		
+
 		for (int i = 0; i < len; i++) {
 			boolean last = (i == (len-1));
 			sb.append(strings[i]);
@@ -144,43 +144,43 @@ public class CSVWriter {
 				sb.append("\n");
 			}
 		}
-		
+
 		try {
 			_writer.write(sb.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * Write a row of strings to the csv file
 	 * @param strings the row of strings
 	 */
 	public void writeStartOfRow(String...strings) {
-		
+
 		if ((strings == null) || (strings.length == 0)) {
 			return;
 		}
-		
+
 		int len = strings.length;
-		
+
 		int guessSize = 20*len;
-		
+
 		StringBuffer sb = new StringBuffer(guessSize);
-		
+
 		for (int i = 0; i < len; i++) {
 			sb.append(strings[i]);
 			sb.append(",");
 		}
-		
+
 		try {
 			_writer.write(sb.toString());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+
 	/**
 	 * Write a blank row
 	 */

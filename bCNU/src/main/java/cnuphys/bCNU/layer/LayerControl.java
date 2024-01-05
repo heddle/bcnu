@@ -17,7 +17,7 @@ public class LayerControl implements IDrawableListener {
 
 	/**
 	 * Constructor for a layer controller.
-	 * 
+	 *
 	 * @param container the parent container.
 	 */
 	public LayerControl(IContainer container) {

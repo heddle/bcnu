@@ -76,7 +76,7 @@ public class MagnifyWindow extends JWindow {
 
 	/**
 	 * The mag menu to put on the main menu
-	 * 
+	 *
 	 * @return the mag menu
 	 */
 	public static JMenu magificationMenu() {
@@ -98,8 +98,8 @@ public class MagnifyWindow extends JWindow {
 
 		};
 
-		for (int i = 0; i < _mags.length; i++) {
-			JRadioButtonMenuItem mitem = new JRadioButtonMenuItem(_mags[i].toString(), _selectedMag == _mags[i]);
+		for (Integer _mag : _mags) {
+			JRadioButtonMenuItem mitem = new JRadioButtonMenuItem(_mag.toString(), _selectedMag == _mag);
 			bga.add(mitem);
 			mitem.addActionListener(al);
 			_magMenu.add(mitem);
@@ -110,7 +110,7 @@ public class MagnifyWindow extends JWindow {
 
 	/**
 	 * Magnify a view
-	 * 
+	 *
 	 * @param sContainer the container to magnify
 	 * @param me         the mouse event which contains the location
 	 */
@@ -212,7 +212,7 @@ public class MagnifyWindow extends JWindow {
 
 	/**
 	 * Get the world coordinates of the center of the mag window
-	 * 
+	 *
 	 * @return the world coordinates of the center of the mag window
 	 */
 	public static Point2D.Double getWorldCenter() {

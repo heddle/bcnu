@@ -31,8 +31,9 @@ public class WordList extends Vector {
 	 */
 	boolean find(String s) {
 		for (int i = 0; i < size(); i++) {
-			if (s.equals(elementAt(i)))
+			if (s.equals(elementAt(i))) {
 				return true;
+			}
 		}
 		return false;
 	}

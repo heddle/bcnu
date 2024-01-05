@@ -10,7 +10,7 @@ public class Point2DSupport {
 	/**
 	 * This is creation by subtraction. Be very careful of the order. This return
 	 * wp2 - wp1
-	 * 
+	 *
 	 * @param wp1 the first point
 	 * @param wp2 the second point
 	 * @return the delta, wp2-wp1
@@ -21,7 +21,7 @@ public class Point2DSupport {
 
 	/**
 	 * The length of the vector
-	 * 
+	 *
 	 * @param wp the point in question
 	 * @return the usual vector magnitude
 	 */
@@ -31,7 +31,7 @@ public class Point2DSupport {
 
 	/**
 	 * The length squared of the vector. This can be usefor for faster sorting.
-	 * 
+	 *
 	 * @param wp the point in question
 	 * @return the square of the usual vector magnitude
 	 */
@@ -41,7 +41,7 @@ public class Point2DSupport {
 
 	/**
 	 * Obtain a unit vector in the same direction as this vector
-	 * 
+	 *
 	 * @param wp the point in question
 	 * @return a unit vector in the same direction as this vector
 	 */
@@ -55,7 +55,7 @@ public class Point2DSupport {
 
 	/**
 	 * Usual inner product
-	 * 
+	 *
 	 * @param v1 one vector
 	 * @param v2 another vector
 	 * @return the dot product
@@ -67,7 +67,7 @@ public class Point2DSupport {
 	/**
 	 * Get the magnitude of the cross product. The sign tells us whether we are in
 	 * +z or -z direction.
-	 * 
+	 *
 	 * @param v1 one vector
 	 * @param v2 another vector
 	 * @return the magnitude of the cross product
@@ -78,7 +78,7 @@ public class Point2DSupport {
 
 	/**
 	 * Get the angle between two vectors
-	 * 
+	 *
 	 * @param v1 one vector
 	 * @param v2 another vector
 	 * @return the angle between the vectors in degrees.
@@ -100,7 +100,7 @@ public class Point2DSupport {
 
 	/**
 	 * Project one vector onto another vector
-	 * 
+	 *
 	 * @param v the vector being projected
 	 * @param a the vector defining the projection direction.
 	 * @return the result of projecting v in the direction of a.
@@ -117,7 +117,7 @@ public class Point2DSupport {
 
 	/*
 	 * Get the polar coordinate angle.
-	 * 
+	 *
 	 * @return the angle, in degrees, measured ccw from the x axis.
 	 */
 	public static double angle(Point2D.Double wp) {
@@ -126,7 +126,7 @@ public class Point2DSupport {
 
 	/**
 	 * Computes the distance between this world point and another.
-	 * 
+	 *
 	 * @param wp the other world point.
 	 * @return the distance, i.e., the length of (wp - this).
 	 */
@@ -138,7 +138,7 @@ public class Point2DSupport {
 
 	/**
 	 * Computes the azimuth between this world point and another.
-	 * 
+	 *
 	 * @param wp the other world point.
 	 * @return the azimuth in degrees, where 0 is north, 90 east, etc.
 	 */
@@ -150,7 +150,7 @@ public class Point2DSupport {
 
 	/*
 	 * Get a string representation.
-	 * 
+	 *
 	 * @return a string representation.
 	 */
 	public static String toString(Point2D.Double wp) {

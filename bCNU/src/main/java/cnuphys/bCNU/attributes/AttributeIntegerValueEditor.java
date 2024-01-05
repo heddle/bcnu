@@ -19,7 +19,7 @@ public abstract class AttributeIntegerValueEditor<T> extends AttributeStringEdit
 
 	/**
 	 * Create an editor for Doubles.
-	 * 
+	 *
 	 * @param propertyData       the attribute being edited.
 	 * @param propertyCellEditor the owner Cell Editor.
 	 */
@@ -33,7 +33,7 @@ public abstract class AttributeIntegerValueEditor<T> extends AttributeStringEdit
 
 	/**
 	 * See if a string has changed. If so, fire a notice.
-	 * 
+	 *
 	 * @param eventComponent
 	 */
 
@@ -64,7 +64,7 @@ public abstract class AttributeIntegerValueEditor<T> extends AttributeStringEdit
 
 	/**
 	 * Render the value for display
-	 * 
+	 *
 	 * @param value the
 	 */
 	@Override

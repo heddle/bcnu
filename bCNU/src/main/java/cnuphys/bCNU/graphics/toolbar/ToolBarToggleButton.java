@@ -6,6 +6,7 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
+
 import javax.swing.ImageIcon;
 
 import cnuphys.bCNU.graphics.ImageManager;
@@ -63,7 +64,7 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 
 	/**
 	 * Create a toolbar toggle button with default preferred size of 22x22
-	 * 
+	 *
 	 * @param container     the owner container.
 	 * @param imageFileName the name if the file holding the icon
 	 * @param toolTip       a string for a tool tip
@@ -74,7 +75,7 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 
 	/**
 	 * Create a toolbar toggle button
-	 * 
+	 *
 	 * @param container       the owner container.
 	 * @param imageFileName   the name if the file holding the icon
 	 * @param toolTip         a string for a tool tip
@@ -117,7 +118,7 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 
 	/**
 	 * Get the preferred size.
-	 * 
+	 *
 	 * @return the preferred size for layout.
 	 */
 	@Override
@@ -127,7 +128,7 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 
 	/**
 	 * Get the appropriate cursor for this tool.
-	 * 
+	 *
 	 * @return The cursor appropriate when the mouse is in the container. The
 	 *         default will be a cross hair.
 	 */
@@ -161,7 +162,7 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 
 	/**
 	 * Handle a mouse button 3 event.
-	 * 
+	 *
 	 * @param mouseEvent the causal event
 	 */
 	@Override
@@ -207,7 +208,7 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 
 	/**
 	 * Get the view this toll bar button resides upon
-	 * 
+	 *
 	 * @return the parent view
 	 */
 	public BaseView getView() {

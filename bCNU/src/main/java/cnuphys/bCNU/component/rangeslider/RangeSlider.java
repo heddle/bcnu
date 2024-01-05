@@ -150,7 +150,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Create a Range Slider with two thumbs
-	 * 
+	 *
 	 * @param fullRange    the full range of the slider.
 	 * @param valueLabeler knows the appropriate way to draw labels for the values.
 	 *                     For example, if the values represent unix times, the
@@ -176,7 +176,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Paint the component
-	 * 
+	 *
 	 * @param g the graphics context
 	 */
 	@Override
@@ -378,7 +378,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Get the height needed for all the stuff;
-	 * 
+	 *
 	 * @return
 	 */
 	protected int getPreferredHeight() {
@@ -406,7 +406,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Set the current range of the slider
-	 * 
+	 *
 	 * @param currentRange
 	 */
 	public void setCurrentRange(Range currentRange) {
@@ -415,7 +415,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Remove a range slider listener.
-	 * 
+	 *
 	 * @param listener the range slider listener to remove.
 	 */
 	public void removeRangeSliderListener(IRangeSliderListener listener) {
@@ -429,7 +429,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Add a range slider listener.
-	 * 
+	 *
 	 * @param listener the range slider listener to add.
 	 */
 	public void addRangeSliderListener(IRangeSliderListener listener) {
@@ -610,7 +610,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 	/**
 	 * Check whether the given value is in the current range. It is an inclusive
 	 * check.
-	 * 
+	 *
 	 * @param val the value to test.
 	 * @return <code>true</code> if the value is equal to a limit or between the
 	 *         limits.
@@ -621,7 +621,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Check whether the given value is in the full range. It is an inclusive check.
-	 * 
+	 *
 	 * @param val the value to test.
 	 * @return <code>true</code> if the value is equal to a limit or between the
 	 *         limits.
@@ -632,7 +632,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Set a new full range. Will set the current range to be the full extent.
-	 * 
+	 *
 	 * @param fullRange the new full range
 	 */
 	public void setFullRange(Range fullRange) {
@@ -643,7 +643,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Called when the animation run button is selected
-	 * 
+	 *
 	 * @param del            the increment of the runTime value. It will be
 	 *                       incremented from the current range min time to the max
 	 *                       time in steps of del.
@@ -739,7 +739,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Main program for testing.
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
@@ -778,7 +778,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Get the run time for an animation.
-	 * 
+	 *
 	 * @return the run time for the animation.
 	 */
 	public long getRunTime() {
@@ -787,7 +787,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Check whether we are running
-	 * 
+	 *
 	 * @return the running flag for the animation
 	 */
 	public boolean isRunning() {
@@ -796,7 +796,7 @@ public class RangeSlider extends JComponent implements MouseMotionListener, Mous
 
 	/**
 	 * Check whether we are at full range
-	 * 
+	 *
 	 * @return <code>true</code> if we are at full range.
 	 */
 	public boolean atFullRange() {

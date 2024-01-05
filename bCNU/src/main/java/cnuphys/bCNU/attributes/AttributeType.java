@@ -9,7 +9,7 @@ import cnuphys.bCNU.component.EnumComboBox;
 /**
  * Use to designate the current type of attribute. We need an editor for each
  * type.
- * 
+ *
  * @author heddle
  *
  */
@@ -20,7 +20,7 @@ public enum AttributeType {
 	/**
 	 * A map for the names of the attribute types
 	 */
-	public static EnumMap<AttributeType, String> names = new EnumMap<AttributeType, String>(AttributeType.class);
+	public static EnumMap<AttributeType, String> names = new EnumMap<>(AttributeType.class);
 
 	static {
 		names.put(BOOLEAN, "boolean");
@@ -38,7 +38,7 @@ public enum AttributeType {
 	/**
 	 * A map for the editors for the types
 	 */
-	public static EnumMap<AttributeType, Class> editorClasses = new EnumMap<AttributeType, Class>(AttributeType.class);
+	public static EnumMap<AttributeType, Class> editorClasses = new EnumMap<>(AttributeType.class);
 
 	static {
 		editorClasses.put(BOOLEAN, AttributeBooleanEditor.class);
@@ -54,7 +54,7 @@ public enum AttributeType {
 
 	/**
 	 * From an object, obtain the type
-	 * 
+	 *
 	 * @param value the object
 	 * @return the type
 	 */
@@ -90,7 +90,7 @@ public enum AttributeType {
 
 	/**
 	 * Get the class for creating an editor
-	 * 
+	 *
 	 * @return the class for creating an editor
 	 */
 	public Class<?> getEditorClass() {
@@ -99,7 +99,7 @@ public enum AttributeType {
 
 	/**
 	 * Get the nice name of the enum.
-	 * 
+	 *
 	 * @return the nice name, for combo boxes, menus, etc.
 	 */
 	public String getName() {
@@ -108,7 +108,7 @@ public enum AttributeType {
 
 	/**
 	 * Returns the enum value from the name.
-	 * 
+	 *
 	 * @param name the name to match.
 	 * @return the <code>SymbolType</code> that corresponds to the name. Returns
 	 *         <code>null</code> if no match is found. Note it will check (case
@@ -123,11 +123,8 @@ public enum AttributeType {
 
 		for (AttributeType val : values()) {
 			// check the nice name
-			if (name.equalsIgnoreCase(val.toString())) {
-				return val;
-			}
 			// check the base name
-			if (name.equalsIgnoreCase(val.name())) {
+			if (name.equalsIgnoreCase(val.toString()) || name.equalsIgnoreCase(val.name())) {
 				return val;
 			}
 		}
@@ -136,7 +133,7 @@ public enum AttributeType {
 
 	/**
 	 * Obtain a combo box of choices.
-	 * 
+	 *
 	 * @param defaultChoice
 	 * @return the combo box of attribute choices
 	 */

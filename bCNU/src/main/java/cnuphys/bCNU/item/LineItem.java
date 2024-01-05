@@ -16,7 +16,7 @@ public class LineItem extends AItem {
 
 	/**
 	 * Create a world line object.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 * @param wp0   start of the line.
 	 * @param wp1   end of the line of the line.
@@ -29,7 +29,7 @@ public class LineItem extends AItem {
 
 	/**
 	 * Check whether the (rendered) item contains the given screen point.
-	 * 
+	 *
 	 * @param container   the graphical container rendering the item.
 	 * @param screenPoint a pixel location.
 	 * @return <code>true</code> if the item, as rendered on the given container,
@@ -52,7 +52,7 @@ public class LineItem extends AItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -65,7 +65,7 @@ public class LineItem extends AItem {
 	 * Checks whether the item should be drawn. This is an additional check, beyond
 	 * the simple visibility flag check. For example, it might check whether the
 	 * item intersects the area being drawn.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 * @return <code>true</code> if the item passes any and all tests, and should be
@@ -79,7 +79,7 @@ public class LineItem extends AItem {
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.
-	 * 
+	 *
 	 * @return the selection points used to indicate this item is selected.
 	 */
 	@Override
@@ -148,7 +148,7 @@ public class LineItem extends AItem {
 
 	/**
 	 * Get the world bounding rectangle of the item.
-	 * 
+	 *
 	 * @return the world box containing the item.
 	 */
 	@Override

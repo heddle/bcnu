@@ -4,10 +4,12 @@ package cnuphys.bCNU.graphics.component;
  * CommonBorder
  * Description: Border style stolen from Hv_Border
  */
+import java.awt.Color;
+import java.awt.Font;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+import javax.swing.border.TitledBorder;
 
 import cnuphys.bCNU.util.Fonts;
 
@@ -30,7 +32,7 @@ public class CommonBorder extends TitledBorder {
 
 	/**
 	 * Create a common border with an empty border around it
-	 * 
+	 *
 	 * @param title the title
 	 * @param size  the size of the empty border in pixels
 	 * @return the compound border

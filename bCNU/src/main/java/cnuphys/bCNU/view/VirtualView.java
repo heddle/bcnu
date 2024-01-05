@@ -44,7 +44,7 @@ public class VirtualView extends BaseView
 
 	private static final String VVTITLE = "Desktop";
 
-	private Vector<BaseView> _views = new Vector<BaseView>();
+	private Vector<BaseView> _views = new Vector<>();
 
 	private static int _numcol = 8;
 
@@ -74,13 +74,13 @@ public class VirtualView extends BaseView
 
 	// for public access
 	private static VirtualView _instance;
-	
+
 	//refresh pending?
 	private boolean _refreshPending;
 
 	/**
 	 * Create a virtual view view
-	 * 
+	 *
 	 * @param keyVals variable set of arguments.
 	 */
 	private VirtualView(Object... keyVals) {
@@ -111,7 +111,7 @@ public class VirtualView extends BaseView
 		setAfterDraw();
 
 		_instance = this;
-		
+
 		ActionListener taskPerformer = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
@@ -128,7 +128,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Public access to the virtual view.
-	 * 
+	 *
 	 * @return the virtual view.
 	 */
 	public static VirtualView getInstance() {
@@ -139,7 +139,7 @@ public class VirtualView extends BaseView
 	 * Reconfigure the virtual view
 	 */
 	public void reconfigure() {
-		
+
 		Dimension d = _parent.getSize();
 
 		int width = _numcol * d.width;
@@ -241,7 +241,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Convenience method for creating a Drawing View.
-	 * 
+	 *
 	 * @return a new DrawingView object
 	 */
 	public static VirtualView createVirtualView(int numcol) {
@@ -281,7 +281,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Get the number of columns
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	public int getNumCol() {
@@ -296,9 +296,9 @@ public class VirtualView extends BaseView
 		int maxw = 0;
 		int maxh = 0;
 
-		for (int i = 0; i < devices.length; i++) {
-			maxw = Math.max(maxw, devices[i].getDisplayMode().getWidth());
-			maxh = Math.max(maxh, devices[i].getDisplayMode().getHeight());
+		for (GraphicsDevice element : devices) {
+			maxw = Math.max(maxw, element.getDisplayMode().getWidth());
+			maxh = Math.max(maxh, element.getDisplayMode().getHeight());
 		}
 
 		int width = _numcol * maxw;
@@ -403,11 +403,7 @@ public class VirtualView extends BaseView
 	// add a view and create the item that represents it
 	private void addView(BaseView view) {
 		// don't add myself
-		if (view == this) {
-			return;
-		}
-
-		if (_views.contains(view)) {
+		if ((view == this) || _views.contains(view)) {
 			return;
 		}
 
@@ -470,7 +466,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Virtual view: no offesetting!
-	 * 
+	 *
 	 * @param dh the horizontal change
 	 * @param dv the vertical change
 	 */
@@ -565,7 +561,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Total offset based on the current cell
-	 * 
+	 *
 	 * @return dh in x, dv in y
 	 */
 	public Point2D.Double totalOffset() {
@@ -576,7 +572,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Move a view to the center of a specific virtual cell
-	 * 
+	 *
 	 * @param view the view to move
 	 * @param col  the col
 	 */
@@ -590,7 +586,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Move a view to a specific virtual cell
-	 * 
+	 *
 	 * @param view the view to move
 	 * @param col  the col
 	 * @param dh   additional horizontal offset
@@ -603,7 +599,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Move a view to a specific virtual cell
-	 * 
+	 *
 	 * @param view the view to move
 	 * @param col  the col
 	 * @param dh   additional horizontal offset
@@ -639,46 +635,46 @@ public class VirtualView extends BaseView
 
 		int xc = (int) (x + dx / 2);
 		int yc = (int) (y + dy / 2);
-		
+
 		Rectangle bounds = view.getBounds();
 		int delx = xc - (bounds.x + bounds.width / 2);
 		int dely = (yc - 40) - (bounds.y + bounds.height / 2);
 
 		view.offset(delx + dh, dely + dv);
 	}
-	
+
 	public int getViewColumn(BaseView view) {
-		
+
 		Rectangle2D.Double world = getContainer().getWorldSystem();
 		double dx = world.width / _numcol;
 		Rectangle bounds = view.getBounds();
 		double xc = bounds.getCenterX();
-		
+
 		int col = _currentCol + (int)(xc/dx);
-		
+
 		if (xc < 0) {
 			col -= 1;
 		}
-		
+
 		col = Math.max(0, Math.min(col, (_numcol - 1)));
 
 		return col;
-		
+
 	}
-	
+
 	public void moveToCurrentColumn(BaseView view) {
-		
+
 		int col = getViewColumn(view);
-		
+
 		if (col == _currentCol) {
 			return;
 		}
-		
+
 		Rectangle2D.Double world = getContainer().getWorldSystem();
 		double dx = world.width / _numcol;
-		
+
 		Rectangle bounds = view.getBounds();
-		double dh = bounds.x - (col-_currentCol)*dx - _SLOP;;
+		double dh = bounds.x - (col-_currentCol)*dx - _SLOP;
 		double dv = bounds.y - _SLOP;
 
 		moveTo(view, _currentCol, (int)dh, (int)dv, UPPERLEFT);
@@ -686,7 +682,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Move a view to a specific virtual cell
-	 * 
+	 *
 	 * @param view the view to move
 	 * @param col  the col
 	 */
@@ -696,7 +692,7 @@ public class VirtualView extends BaseView
 			return;
 		}
 
-		if (fit == false) {
+		if (!fit) {
 			moveTo(view, col, 0, 0);
 			return;
 		}
@@ -735,7 +731,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Move a view to a specific virtual cell
-	 * 
+	 *
 	 * @param view       the view to move
 	 * @param col        the col
 	 * @param constraint constraint constant
@@ -743,7 +739,7 @@ public class VirtualView extends BaseView
 	public void moveTo(BaseView view, int col, int constraint) {
 		moveTo(view, col, 0, 0, constraint);
 	}
-	
+
 	/**
 	 * Get the current column that is visible
 	 * @return the current column that is visible
@@ -754,7 +750,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Move a view to a specific virtual cell
-	 * 
+	 *
 	 * @param view       the view to move
 	 * @param col        the col
 	 * @param delh       additional horizontal offset
@@ -843,7 +839,7 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Activates the view's cell so that it is visible
-	 * 
+	 *
 	 * @param view the view
 	 */
 	public void activateViewCell(BaseView view) {
@@ -878,15 +874,12 @@ public class VirtualView extends BaseView
 
 	/**
 	 * Is a given view visible (crue test)
-	 * 
+	 *
 	 * @param view the view to check
 	 * @return <code>true</code> if the view appears to be visible.
 	 */
 	public boolean isViewVisible(BaseView view) {
-		if (view == null) {
-			return false;
-		}
-		if (view.isIcon()) {
+		if ((view == null) || view.isIcon()) {
 			return false;
 		}
 

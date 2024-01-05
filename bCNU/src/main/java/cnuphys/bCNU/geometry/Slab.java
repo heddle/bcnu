@@ -3,7 +3,7 @@ package cnuphys.bCNU.geometry;
 /**
  * A slab is a rectangular solid. It is a polytube with exactly four lines, no
  * more no less
- * 
+ *
  * @author heddle
  *
  */
@@ -16,7 +16,7 @@ public class Slab extends Polytube {
 	 * Create a Slab made from 4 lines in rotational order. The front of the slab
 	 * will be quad made of the start points of the lines. The back will be the end
 	 * points.
-	 * 
+	 *
 	 * @param l1
 	 * @param l2
 	 * @param l3
@@ -31,7 +31,7 @@ public class Slab extends Polytube {
 
 	/**
 	 * Make a slab from 8 points
-	 * 
+	 *
 	 * @param s1 the start of line (edge) 1
 	 * @param e1 the end of line (edge) 1
 	 * @param s2 the start of line (edge) 2
@@ -47,7 +47,7 @@ public class Slab extends Polytube {
 
 	/**
 	 * Add a line. Trying to add past four causes an exception
-	 * 
+	 *
 	 * @param line the line to add
 	 */
 	@Override
@@ -61,7 +61,7 @@ public class Slab extends Polytube {
 
 	/**
 	 * Slabs are immutable. You cannot remove lines
-	 * 
+	 *
 	 * @param object the line you are mistakenly trying to remove
 	 * @return false
 	 */
@@ -72,7 +72,7 @@ public class Slab extends Polytube {
 
 	/**
 	 * Slabs are immutable. You cannot remove lines
-	 * 
+	 *
 	 * @param index the index of line you are mistakenly trying to remove
 	 * @return null
 	 */
@@ -83,7 +83,7 @@ public class Slab extends Polytube {
 
 	/**
 	 * Get the corners into a coordinate array of the type needed for OpenGL drawing
-	 * 
+	 *
 	 * @return a float array 24 entries (x1,y1,z1), ... (x8, y8, z8) for the 8
 	 *         corners of the slab
 	 */
@@ -117,7 +117,7 @@ public class Slab extends Polytube {
 	 * 2 index = 2 right endpoints (start and end) of lines 2 and 3 index = 3 bottom
 	 * endpoints (start and end) of lines 3 and 4 index = 4 left endpoints (start
 	 * and end) of lines 4 and 1 index = 5 back (end points of all 4 lines)
-	 * 
+	 *
 	 * @param index the index
 	 * @param quad  should have at least 4*3 = 12 entries for the 4 corners of the
 	 *              quad
@@ -172,7 +172,7 @@ public class Slab extends Polytube {
 
 		}
 	}
-	
+
 	/**
 	 * Get all six quads at once
 	 * @param quads all the quads in canonical order
@@ -182,7 +182,7 @@ public class Slab extends Polytube {
 		insert(quads, 3, get(1).getP0());
 		insert(quads, 6, get(2).getP0());
 		insert(quads, 9, get(3).getP0());
-		
+
 		insert(quads, 12, get(0).getP0());
 		insert(quads, 15, get(0).getP1());
 		insert(quads, 18, get(1).getP1());
@@ -192,7 +192,7 @@ public class Slab extends Polytube {
 		insert(quads, 27, get(1).getP1());
 		insert(quads, 30, get(2).getP1());
 		insert(quads, 33, get(2).getP0());
-		
+
 		insert(quads, 36, get(2).getP0());
 		insert(quads, 39, get(2).getP1());
 		insert(quads, 42, get(3).getP1());
@@ -202,7 +202,7 @@ public class Slab extends Polytube {
 		insert(quads, 51, get(3).getP1());
 		insert(quads, 54, get(0).getP1());
 		insert(quads, 57, get(0).getP0());
-		
+
 		insert(quads, 60, get(0).getP1());
 		insert(quads, 63, get(1).getP1());
 		insert(quads, 66, get(2).getP1());

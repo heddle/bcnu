@@ -8,7 +8,7 @@ import javax.swing.text.StyledDocument;
 
 /**
  * NonWrappingTextPane Class from "Core Swing: Advanced Programming" page 21
- * 
+ *
  * @author Kim Topley
  */
 

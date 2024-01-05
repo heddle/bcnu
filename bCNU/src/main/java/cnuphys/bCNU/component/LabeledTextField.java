@@ -14,10 +14,10 @@ public class LabeledTextField extends JPanel {
 	private JTextField _textField;
 	private JLabel _jLabel;
 
-	
+
 	/**
 	 * Create a labeled text field.
-	 * 
+	 *
 	 * @param label  the label to serve as a prompt.
 	 * @param numcol the default number of columns in the text field.
 	 * @param font the font for prompt and text field
@@ -25,10 +25,10 @@ public class LabeledTextField extends JPanel {
 	public LabeledTextField(String label, int numcol, Font font) {
 		this(label, null, numcol, font);
 	}
-	
+
 	/**
 	 * Create a labeled text field.
-	 * 
+	 *
 	 * @param label  the label to serve as a prompt.
 	 * @param numcol the default number of columns in the text field.
 	 * @param font the font for prompt and text field
@@ -37,7 +37,7 @@ public class LabeledTextField extends JPanel {
 		this(label, numcol);
 		_textField.setFont(font);
 		_jLabel.setFont(font);
-		
+
 		if (units != null) {
 			JLabel unitLabel = new JLabel(units);
 			unitLabel.setFont(font);
@@ -45,10 +45,10 @@ public class LabeledTextField extends JPanel {
 		}
 	}
 
-		
+
 	/**
 	 * Create a labeled text field.
-	 * 
+	 *
 	 * @param label  the label to serve as a prompt.
 	 * @param numcol the default number of columns in the text field.
 	 */
@@ -60,7 +60,7 @@ public class LabeledTextField extends JPanel {
 		_textField = new JTextField(numcol);
 		add(_textField);
 	}
-	
+
 	/**
 	 * A Labeleled text field with the label given a fixed width to make things line up
 	 * @param label the label
@@ -69,7 +69,7 @@ public class LabeledTextField extends JPanel {
 	 */
 	public LabeledTextField(String label, int labelWidth, int numcol) {
 		this(label, numcol);
-		
+
 		Dimension d = _jLabel.getPreferredSize();
 		d.width = labelWidth;
 		_jLabel.setPreferredSize(d);
@@ -77,7 +77,7 @@ public class LabeledTextField extends JPanel {
 
 	/**
 	 * Set the text in the text field.
-	 * 
+	 *
 	 * @param s the text to place in the text field.
 	 */
 	public void setText(String s) {
@@ -86,7 +86,7 @@ public class LabeledTextField extends JPanel {
 
 	/**
 	 * Get the text from the text field.
-	 * 
+	 *
 	 * @return the text from the text field.
 	 */
 	public String getText() {
@@ -95,13 +95,13 @@ public class LabeledTextField extends JPanel {
 
 	/**
 	 * Get the underlying text field.
-	 * 
+	 *
 	 * @return the underlying text field.
 	 */
 	public JTextField getTextField() {
 		return _textField;
 	}
-	
+
 
 	/**
 	 * Get the prompt label
@@ -110,7 +110,7 @@ public class LabeledTextField extends JPanel {
 	public JLabel getPrompt() {
 		return _jLabel;
 	}
-	
+
 	@Override
 	public void setEnabled(boolean enabled) {
 		_textField.setEnabled(enabled);

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.graphics.container;
 
@@ -54,7 +54,7 @@ public class ScaleDrawer extends DrawableAdapter {
 
 	/**
 	 * Draw the scale object on the lower right
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the container
 	 */

@@ -1,6 +1,11 @@
 package cnuphys.bCNU.eliza;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Eliza main class. Stores the processed script. Does the input
@@ -112,7 +117,7 @@ public class ElizaMain {
 
 	/**
 	 * Process a line of input.
-	 * 
+	 *
 	 * @param s the input string
 	 * @return the response
 	 */
@@ -128,27 +133,31 @@ public class ElizaMain {
 		// Break apart sentences, and do each separately.
 		while (EString.match(s, "*.*", lines)) {
 			reply = sentence(lines[0]);
-			if (reply != null)
+			if (reply != null) {
 				return reply;
+			}
 			s = EString.trim(lines[1]);
 		}
 		if (s.length() != 0) {
 			reply = sentence(s);
-			if (reply != null)
+			if (reply != null) {
 				return reply;
+			}
 		}
 		// Nothing matched, so try memory.
 		String m = mem.get();
-		if (m != null)
+		if (m != null) {
 			return m;
+		}
 
 		// No memory, reply with xnone.
 		Key key = keys.getKey("xnone");
 		if (key != null) {
 			Key dummy = null;
 			reply = decompose(key, s, dummy);
-			if (reply != null)
+			if (reply != null) {
 				return reply;
+			}
 		}
 		// No xnone, just say anything.
 		return "I am at a loss for words.";
@@ -170,13 +179,15 @@ public class ElizaMain {
 		for (int i = 0; i < keyStack.keyTop(); i++) {
 			Key gotoKey = new Key();
 			String reply = decompose(keyStack.key(i), s, gotoKey);
-			if (reply != null)
+			if (reply != null) {
 				return reply;
+			}
 			// If decomposition returned gotoKey, try it
 			while (gotoKey.key() != null) {
 				reply = decompose(gotoKey, s, gotoKey);
-				if (reply != null)
+				if (reply != null) {
 					return reply;
+				}
 			}
 		}
 		return null;
@@ -195,10 +206,12 @@ public class ElizaMain {
 			String pat = d.pattern();
 			if (syns.matchDecomp(s, pat, reply)) {
 				String rep = assemble(d, reply, gotoKey);
-				if (rep != null)
+				if (rep != null) {
 					return rep;
-				if (gotoKey.key() != null)
+				}
+				if (gotoKey.key() != null) {
 					return null;
+				}
 			}
 		}
 		return null;
@@ -215,8 +228,9 @@ public class ElizaMain {
 		if (EString.match(rule, "goto *", lines)) {
 			// goto rule -- set gotoKey and return false.
 			gotoKey.copy(keys.getKey(lines[0]));
-			if (gotoKey.key() != null)
+			if (gotoKey.key() != null) {
 				return null;
+			}
 			System.out.println("Goto rule did not match key: " + lines[0]);
 			return null;
 		}
@@ -247,7 +261,7 @@ public class ElizaMain {
 
 	/**
 	 * Read the script file
-	 * 
+	 *
 	 * @return
 	 */
 	int readScript() {
@@ -265,8 +279,9 @@ public class ElizaMain {
 			while (true) {
 				String s;
 				s = bufferedReader.readLine();
-				if (s == null)
+				if (s == null) {
 					break;
+				}
 				collect(s);
 			}
 			bufferedReader.close();

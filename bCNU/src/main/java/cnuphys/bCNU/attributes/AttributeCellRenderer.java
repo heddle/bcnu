@@ -1,12 +1,14 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
 import java.awt.Color;
 import java.awt.Component;
+
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
+
 import cnuphys.lund.X11Colors;
 
 public class AttributeCellRenderer extends DefaultTableCellRenderer {
@@ -22,7 +24,7 @@ public class AttributeCellRenderer extends DefaultTableCellRenderer {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,

@@ -1,13 +1,13 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.util;
 
 /**
  * Simple class that holds a row and column index.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public final class RowColumnPoint {
 
@@ -30,7 +30,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Construct a RowColumn point.
-	 * 
+	 *
 	 * @param row    the row.
 	 * @param column the column.
 	 */
@@ -41,7 +41,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Generate a useful string represenation.
-	 * 
+	 *
 	 * @see java.lang.Object#toString()
 	 * @return A string representation.
 	 */
@@ -52,7 +52,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Returns the column
-	 * 
+	 *
 	 * @return the column.
 	 */
 	public int getColumn() {
@@ -61,7 +61,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Returns the row
-	 * 
+	 *
 	 * @return the row.
 	 */
 	public int getRow() {
@@ -70,7 +70,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Set the row and column indices.
-	 * 
+	 *
 	 * @param row    the row index.
 	 * @param column the column index.
 	 */
@@ -81,7 +81,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Set just the column index.
-	 * 
+	 *
 	 * @param column the column index.
 	 */
 	public void setColumn(int column) {
@@ -90,7 +90,7 @@ public final class RowColumnPoint {
 
 	/**
 	 * Set just the row index.
-	 * 
+	 *
 	 * @param row the row index.
 	 */
 	public void setRow(int row) {

@@ -6,16 +6,16 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * Refresh button just causes the container to be repainted.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class RefreshButton extends ToolBarButton {
 
 	/**
 	 * Create the Refresh button.
-	 * 
+	 *
 	 * @param container the container this button applies to.
 	 */
 	public RefreshButton(IContainer container) {
@@ -24,7 +24,7 @@ public class RefreshButton extends ToolBarButton {
 
 	/**
 	 * This is what I do if I am pressed
-	 * 
+	 *
 	 * @param e The causal event.
 	 */
 	@Override

@@ -16,9 +16,9 @@ import cnuphys.bCNU.log.Log;
  * This is a convenience class extending JToolBar for the case where all
  * JToggleButtons added form a mutually exclusive set. Note you can still add
  * other buttons.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 @SuppressWarnings("serial")
 public class CommonToolBar extends JToolBar {
@@ -42,7 +42,7 @@ public class CommonToolBar extends JToolBar {
 	/**
 	 * Creates a new tool bar with the specified name. The name is used as the title
 	 * of the undocked tool bar. The default orientation is <code>HORIZONTAL</code>.
-	 * 
+	 *
 	 * @param name the name of the tool bar
 	 */
 	public CommonToolBar(String name) {
@@ -52,7 +52,7 @@ public class CommonToolBar extends JToolBar {
 	/**
 	 * Creates a new tool bar with the specified orientation. The orientation must
 	 * be either <code>HORIZONTAL</code> or <code>VERTICAL</code>.
-	 * 
+	 *
 	 * @param orientation
 	 */
 	public CommonToolBar(int orientation) {
@@ -62,7 +62,7 @@ public class CommonToolBar extends JToolBar {
 	/**
 	 * Creates a new tool bar with a specified name and orientation. All other
 	 * constructors call this constructor.
-	 * 
+	 *
 	 * @param name        the name of the tool bar
 	 * @param orientation the initial orientation -- it must be either
 	 *                    <code>HORIZONTAL</code> or <code>VERTICAL</code>
@@ -73,7 +73,7 @@ public class CommonToolBar extends JToolBar {
 
 	/**
 	 * Add a toggle button to the toolbar.
-	 * 
+	 *
 	 * @param toggleButton the button to add.
 	 */
 	public void add(JToggleButton toggleButton) {
@@ -90,7 +90,7 @@ public class CommonToolBar extends JToolBar {
 
 	/**
 	 * Add a toggle button to the toolbar.
-	 * 
+	 *
 	 * @param toggleButton the button to add.
 	 * @param toGroup      if <code>true</code> and to the primary button group
 	 */
@@ -125,7 +125,7 @@ public class CommonToolBar extends JToolBar {
 
 	/**
 	 * remove a toggle button from the toolbar.
-	 * 
+	 *
 	 * @param toggleButton the button to remove.
 	 */
 	public void remove(JToggleButton toggleButton) {
@@ -141,7 +141,7 @@ public class CommonToolBar extends JToolBar {
 	/**
 	 * Get the default toggle button. This will become active if you click an active
 	 * toggle button to turn it off.
-	 * 
+	 *
 	 * @return the default toggle buton.
 	 */
 	public JToggleButton getDefaultToggleButton() {
@@ -151,7 +151,7 @@ public class CommonToolBar extends JToolBar {
 	/**
 	 * Set the default toggle button. This will become active if you click an active
 	 * toggle button to turn it off.
-	 * 
+	 *
 	 * @param defaultToggleButton the default toggle button.
 	 */
 	public void setDefaultToggleButton(JToggleButton defaultToggleButton) {
@@ -170,7 +170,7 @@ public class CommonToolBar extends JToolBar {
 
 	/**
 	 * Get which tool bar toggle button from the primary button group is active
-	 * 
+	 *
 	 * @return the active toolbar toggle button (from the primary button group), or
 	 *         null.
 	 */

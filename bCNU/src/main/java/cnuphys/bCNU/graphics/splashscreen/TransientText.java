@@ -36,7 +36,7 @@ public class TransientText {
 
 	/**
 	 * Transient text that will be written on the splash screen window.
-	 * 
+	 *
 	 * @param text      the text to be written
 	 * @param textColor the color of the text
 	 * @param startTime the time in milliseconds relative to the splash screen
@@ -61,7 +61,7 @@ public class TransientText {
 
 	/**
 	 * Draw the string if the time is right.
-	 * 
+	 *
 	 * @param g               the graphics context
 	 * @param splashStartTime the system time in millis when the splashscreen
 	 *                        started.

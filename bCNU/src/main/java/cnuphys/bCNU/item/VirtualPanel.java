@@ -28,7 +28,7 @@ public class VirtualPanel extends JPanel {
 
 	/**
 	 * Add the main component to this virtual panel.
-	 * 
+	 *
 	 * @param comp the component to add
 	 */
 	public void addMainComponent(JComponent comp) {
@@ -66,7 +66,7 @@ public class VirtualPanel extends JPanel {
 
 	/**
 	 * Obtain the ofscreen buffer
-	 * 
+	 *
 	 * @return the offscreen buffer
 	 */
 	public BufferedImage getImage() {

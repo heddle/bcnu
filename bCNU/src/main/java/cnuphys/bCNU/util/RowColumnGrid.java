@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.util;
 
@@ -10,7 +10,7 @@ import cnuphys.bCNU.log.Log;
 
 /**
  * @author heddle
- * 
+ *
  */
 public class RowColumnGrid {
 
@@ -39,7 +39,7 @@ public class RowColumnGrid {
 	/**
 	 * Create a grid with the same number of rows and columns. (I.e., a square
 	 * grid).
-	 * 
+	 *
 	 * @param size the number of rows and columns.
 	 */
 	public RowColumnGrid(int size) {
@@ -48,7 +48,7 @@ public class RowColumnGrid {
 
 	/**
 	 * Construct a grid with the given number of rows and columns.
-	 * 
+	 *
 	 * @param numRows    the number of rows.
 	 * @param numColumns the number of columns.
 	 */
@@ -60,7 +60,7 @@ public class RowColumnGrid {
 
 	/**
 	 * Given world coordinates, this returns the row and column indices.
-	 * 
+	 *
 	 * @param bounds an world rectangle defining the physical extent of the grid.
 	 * @param x      the x coordinate.
 	 * @param y      the y coordinate.
@@ -90,7 +90,7 @@ public class RowColumnGrid {
 
 	/**
 	 * Given a RowColumnPoint, and the size of the boundary
-	 * 
+	 *
 	 * @param bounds a world rectangle describing the physical extent of the grid.
 	 * @param p      a world point that will be modified--given the vale of the cell
 	 *               on the logical grid imposed on the world rectangle.
@@ -112,7 +112,7 @@ public class RowColumnGrid {
 
 	/**
 	 * Get the number of rows in this grid.
-	 * 
+	 *
 	 * @return the number of rows.
 	 */
 	public int getNumRows() {
@@ -121,7 +121,7 @@ public class RowColumnGrid {
 
 	/**
 	 * Get the number of columns in this grid.
-	 * 
+	 *
 	 * @return the number of columns.
 	 */
 	public int getNumColumns() {

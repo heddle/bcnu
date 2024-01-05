@@ -48,7 +48,7 @@ public class ItemOrderingMenu extends JMenu implements ActionListener {
 	/**
 	 * Convenience routing to use the same static menu items on a regular menu--for
 	 * example one that might be on the item popup or the main menu.
-	 * 
+	 *
 	 * @param item
 	 * @param insertItemName
 	 */
@@ -88,7 +88,7 @@ public class ItemOrderingMenu extends JMenu implements ActionListener {
 
 	/**
 	 * Set the menu item text every time, since they might include the item name.
-	 * 
+	 *
 	 * @param item
 	 * @param insertItemName
 	 */
@@ -121,7 +121,7 @@ public class ItemOrderingMenu extends JMenu implements ActionListener {
 
 	/**
 	 * A menu item has been selected
-	 * 
+	 *
 	 * @param e
 	 */
 	@Override

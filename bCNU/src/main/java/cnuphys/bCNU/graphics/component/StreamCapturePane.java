@@ -25,7 +25,7 @@ public class StreamCapturePane extends JScrollPane {
 	public static SimpleAttributeSet BLACK_TERMINAL = createStyle(Color.black, transparent, "monospaced", 11, false,
 			false);
 
-	private Vector<CachedText> _cachedText = new Vector<CachedText>();
+	private Vector<CachedText> _cachedText = new Vector<>();
 
 	/**
 	 * The text area that will be on this scroll pane.
@@ -45,7 +45,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Constructor will also create the text pane itself.
-	 * 
+	 *
 	 */
 	public StreamCapturePane() {
 		super();
@@ -110,7 +110,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Set the background, by setting the underlying text pane's background.
-	 * 
+	 *
 	 * @param c the color to use.
 	 */
 	@Override
@@ -123,7 +123,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Create a style, not underlined, no with default spacing.
-	 * 
+	 *
 	 * @param fg         the foreground color.
 	 * @param fontFamily the font family to use,
 	 * @param fontSize   the font size to use,
@@ -138,7 +138,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Create a style, not underlined with default spacing.
-	 * 
+	 *
 	 * @param fg         the foreground color.
 	 * @param bg         the background color.
 	 * @param fontFamily the font family to use,
@@ -154,7 +154,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Create a style
-	 * 
+	 *
 	 * @param fg         the foreground color.
 	 * @param bg         the background color.
 	 * @param fontFamily the font family to use,
@@ -202,7 +202,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Append a message to the underlying text area.
-	 * 
+	 *
 	 * @param text the message to append.
 	 */
 
@@ -212,7 +212,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Append some text with a specific style.
-	 * 
+	 *
 	 * @param text  the text to append.
 	 * @param style the style to use, can be one of the class constants such as
 	 *              BOLD_RED.
@@ -225,18 +225,14 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Append some text with a specific style.
-	 * 
+	 *
 	 * @param text      the text to append.
 	 * @param style     the style to use, can be one of the class constants such as
 	 *                  BOLD_RED.
 	 * @param writeTime if <code>true</code> writes out a time stamp.
 	 */
 	private void baseAppend(final String text, final AttributeSet style) {
-		if (text == null) {
-			return;
-		}
-
-		if (document == null) {
+		if ((text == null) || (document == null)) {
 			return;
 		}
 
@@ -249,7 +245,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Clear all the text.
-	 * 
+	 *
 	 */
 	public void clear() {
 		if (textPane == null) {
@@ -262,7 +258,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Get the current default style.
-	 * 
+	 *
 	 * @return the current default style.
 	 */
 	public SimpleAttributeSet getDefaultStyle() {
@@ -271,7 +267,7 @@ public class StreamCapturePane extends JScrollPane {
 
 	/**
 	 * Set the default style.
-	 * 
+	 *
 	 * @param defaultStyle the new default style
 	 */
 	public void setDefaultStyle(SimpleAttributeSet defaultStyle) {

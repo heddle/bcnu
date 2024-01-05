@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.util;
 
@@ -34,7 +34,7 @@ public class FileUtilities {
 
 	/**
 	 * Fixes a string so that any file separators match the current platform.
-	 * 
+	 *
 	 * @param s the input string.
 	 * @return the string with the correct file separator.
 	 */
@@ -53,7 +53,7 @@ public class FileUtilities {
 
 	/**
 	 * Fixes a string so that any path separators match the current platform.
-	 * 
+	 *
 	 * @param s the input string.
 	 * @return the string with the correct path separator.
 	 */
@@ -72,7 +72,7 @@ public class FileUtilities {
 
 	/**
 	 * Attempt to break a path down into its components.
-	 * 
+	 *
 	 * @param path the path to break down.
 	 * @return an array of components.
 	 */
@@ -87,7 +87,7 @@ public class FileUtilities {
 
 	/*
 	 * Gets the extension of a file.
-	 * 
+	 *
 	 * @return the file extension, converted to lowercase, and assumed to be any
 	 * characters after the last period. If no period, then returns
 	 * <code>null</code>.
@@ -105,7 +105,7 @@ public class FileUtilities {
 
 	/**
 	 * This method breaks a string into an array of tokens.
-	 * 
+	 *
 	 * @param str       the string to decompose.
 	 * @param delimiter the delimiter
 	 * @return an array of tokens
@@ -126,7 +126,7 @@ public class FileUtilities {
 
 	/**
 	 * This method breaks a string into an array of tokens.
-	 * 
+	 *
 	 * @param str the string to decompose.
 	 * @return an array of tokens
 	 */
@@ -146,7 +146,7 @@ public class FileUtilities {
 
 	/**
 	 * Obtain a filter based on file extensions.
-	 * 
+	 *
 	 * @param filterDescription the filter description.
 	 * @param extensions        Variable length list of extensions to filter on. If
 	 *                          no filter, pass null.
@@ -188,7 +188,7 @@ public class FileUtilities {
 
 	/**
 	 * Open a predefined save dialog
-	 * 
+	 *
 	 * @param defaultDirName    the starting directory.
 	 * @param defaultFileName   the default name of the saved file.
 	 * @param filterDescription the filter description.
@@ -203,7 +203,7 @@ public class FileUtilities {
 
 	/**
 	 * Open a predefined save dialog
-	 * 
+	 *
 	 * @param defaultDirName    the starting directory.
 	 * @param defaultFileName   the default name of the saved file.
 	 * @param filterDescription the filter description.
@@ -262,7 +262,7 @@ public class FileUtilities {
 
 	/**
 	 * Open a predefined open file dialog
-	 * 
+	 *
 	 * @param defaultDirName    the starting directory.
 	 * @param filterDescription the filter description.
 	 * @param extensions        Variable length list of extensions to filter on. If
@@ -297,7 +297,7 @@ public class FileUtilities {
 
 	/**
 	 * Open a predefined open file dialog
-	 * 
+	 *
 	 * @param defaultDirName    the starting directory.
 	 * @param filterDescription the filter description.
 	 * @param extensions        Variable length list of extensions to filter on. If
@@ -328,7 +328,7 @@ public class FileUtilities {
 
 	/**
 	 * Strip the leading directory.
-	 * 
+	 *
 	 * @param fullName      the full path name
 	 * @param keepExtension if <code>true</code> keep the extension, otherwise strip
 	 *                      that too.
@@ -357,7 +357,7 @@ public class FileUtilities {
 
 	/**
 	 * Given a search path and a baseName, find a file.
-	 * 
+	 *
 	 * @param searchPath the search path, e.g. "dir1;dir2;..."
 	 * @param baseName   the base file name with extension, e.g., myfile.txt
 	 * @return the first matching file.
@@ -417,7 +417,7 @@ public class FileUtilities {
 	 * Takes an ascii file and returns an array of the non comment strings. Comments
 	 * start with a given character (e.g., "!" or "#".) Inline comments starting
 	 * with the usual "//" are also removed. Blank lines are also removed.
-	 * 
+	 *
 	 * @param file        the file to be parsed.
 	 * @param commentChar if this is the first character the line is a comment line
 	 * @return a string array of the non-comment text
@@ -438,7 +438,7 @@ public class FileUtilities {
 							s = s.trim();
 							if (s.length() > 0) { // remove blank lines too
 								if (strings == null) {
-									strings = new Vector<String>(250, 10);
+									strings = new Vector<>(250, 10);
 								}
 								strings.add(s);
 							}
@@ -489,7 +489,7 @@ public class FileUtilities {
 	 * Converts a base path and some other path to the relative path (for the other
 	 * path) For example if basePath is "/Users/heddle/clax/wd" and otherPath is
 	 * "/Users/heddle/myws" this returns "../../myws"
-	 * 
+	 *
 	 * @param basePath  the base path from which we denote relative paths
 	 * @param otherPath the path that we want to relativize
 	 * @return the relative path
@@ -502,7 +502,7 @@ public class FileUtilities {
 		basePath = basePath.replaceAll("\\\\", "/");
 		otherPath = otherPath.replaceAll("\\\\", "/");
 
-		if (basePath.equals(otherPath) == true) {
+		if (basePath.equals(otherPath)) {
 
 		} else {
 			String[] absoluteDirectories = basePath.split("/");
@@ -546,7 +546,7 @@ public class FileUtilities {
 	/**
 	 * Scan from a root, digging down, looking for a named directory. Hidden
 	 * directories (starting with a ".") are skipped.
-	 * 
+	 *
 	 * @param root     the root dir to start from, if null the home dir is used.
 	 * @param baseName the baseName of the dir you are looking for. It can be a
 	 *                 subpath such as "bankdefs/trunk/clas12".
@@ -603,7 +603,7 @@ public class FileUtilities {
 
 	/**
 	 * Obtain a list of classes found in a jar file
-	 * 
+	 *
 	 * @param jarFile     the jar file to examine
 	 * @param ignoreInner if true, ignore if contains a "$"
 	 * @return list of classes found in a jar file
@@ -618,7 +618,7 @@ public class FileUtilities {
 			return null;
 		}
 
-		Vector<String> classes = new Vector<String>(100, 25);
+		Vector<String> classes = new Vector<>(100, 25);
 		// Getting the files into the jar
 
 		Enumeration<? extends JarEntry> enumeration = jar.entries();

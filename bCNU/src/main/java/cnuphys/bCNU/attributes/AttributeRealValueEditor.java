@@ -26,7 +26,7 @@ public abstract class AttributeRealValueEditor extends AttributeEditor<JFormatte
 
 	/**
 	 * Create an editor for Doubles.
-	 * 
+	 *
 	 * @param propertyData       the attribute being edited.
 	 * @param propertyCellEditor the owner Cell Editor.
 	 */
@@ -46,7 +46,7 @@ public abstract class AttributeRealValueEditor extends AttributeEditor<JFormatte
 
 	/**
 	 * See if a string has changed. If so, fire a notice.
-	 * 
+	 *
 	 * @param eventComponent
 	 */
 

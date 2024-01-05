@@ -12,7 +12,7 @@ import cnuphys.bCNU.util.FileUtilities;
 
 /**
  * Unix fortunes
- * 
+ *
  * @author heddle
  *
  */
@@ -121,7 +121,7 @@ public class FortuneManager {
 
 	/**
 	 * Access to the singleton
-	 * 
+	 *
 	 * @return the singleton FortuneManager
 	 */
 	public static FortuneManager getInstance() {

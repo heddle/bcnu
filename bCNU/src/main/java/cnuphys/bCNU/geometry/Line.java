@@ -5,7 +5,7 @@ package cnuphys.bCNU.geometry;
  * one point and dp = (p1-po) where p1 is another point. If this is an infinite
  * line, the t = [-infinity, infinity]. If this is a directed segment, t = [0,
  * 1]
- * 
+ *
  * @author heddle
  *
  */
@@ -18,7 +18,7 @@ public class Line {
 	/**
 	 * Create a line from two points on the line. If this is a directed line
 	 * segment, the line will go from po to p1.
-	 * 
+	 *
 	 * @param po one point
 	 * @param p1 the other point
 	 */
@@ -31,7 +31,7 @@ public class Line {
 	/**
 	 * Get the po "start" point. This is just an arbitrary point on an infinite
 	 * line, but the starting point if this is a directed line segment
-	 * 
+	 *
 	 * @return the "starting" point.
 	 */
 	public Point getP0() {
@@ -40,7 +40,7 @@ public class Line {
 
 	/**
 	 * Get the p1-po "dP" segment
-	 * 
+	 *
 	 * @return dP = p1 - po
 	 */
 	public Vector getDelP() {
@@ -49,7 +49,7 @@ public class Line {
 
 	/**
 	 * Get one of the endpoints
-	 * 
+	 *
 	 * @param end one of the Constants START or END
 	 * @return the requested endpoint
 	 */
@@ -70,7 +70,7 @@ public class Line {
 	/**
 	 * Get the p1 "end" point. This is just an arbitrary point on an infinite line,
 	 * but the end point if this is a directed line segment
-	 * 
+	 *
 	 * @return the "end" point.
 	 */
 	public Point getP1() {
@@ -79,7 +79,7 @@ public class Line {
 
 	/**
 	 * Get a point on the line
-	 * 
+	 *
 	 * @param t the t parameter. If this is a directed line segment, t should be
 	 *          restricted to [0, 1]
 	 * @return a point on the line
@@ -92,7 +92,7 @@ public class Line {
 
 	/**
 	 * Get a point on the line (in place)
-	 * 
+	 *
 	 * @param t the t parameter. If this is a directed line segment, t should be
 	 *          restricted to [0, 1]
 	 * @param p upon return, a point on the line
@@ -105,7 +105,7 @@ public class Line {
 
 	/**
 	 * Get the shortest distance between two points
-	 * 
+	 *
 	 * @param p a point
 	 * @return the perpendicular distance
 	 */
@@ -117,7 +117,7 @@ public class Line {
 
 	/**
 	 * Decide whether a point is on the line
-	 * 
+	 *
 	 * @param p           the point
 	 * @param maxDistance the max distance it can be off the line and still
 	 *                    considered on the line
@@ -131,7 +131,7 @@ public class Line {
 	/**
 	 * Decide whether a point is on the line using the constant TINY as the max
 	 * distance
-	 * 
+	 *
 	 * @param p the point
 	 * @return <code>true</code> if the point is considered on the line
 	 */
@@ -141,7 +141,7 @@ public class Line {
 
 	/**
 	 * Get a String representation
-	 * 
+	 *
 	 * @return a String representation of the Line
 	 */
 	@Override
@@ -151,7 +151,7 @@ public class Line {
 
 	/**
 	 * Get the center of the line
-	 * 
+	 *
 	 * @return the center of the line
 	 */
 	public Point getCenter() {

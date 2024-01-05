@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.attributes;
 
@@ -14,7 +14,7 @@ public class AttributeBooleanEditor extends AttributeEditor<JCheckBox> implement
 
 	/**
 	 * Create an Boolean editor.
-	 * 
+	 *
 	 * @param attributeTable the owner table.
 	 * @param attribute      the attribute
 	 */
@@ -33,7 +33,7 @@ public class AttributeBooleanEditor extends AttributeEditor<JCheckBox> implement
 
 	/**
 	 * The ItemStateChanges interface method.
-	 * 
+	 *
 	 * @param e the causal event.
 	 */
 	@Override
@@ -47,7 +47,7 @@ public class AttributeBooleanEditor extends AttributeEditor<JCheckBox> implement
 
 	/**
 	 * Render the value for display
-	 * 
+	 *
 	 * @param value the
 	 */
 	@Override

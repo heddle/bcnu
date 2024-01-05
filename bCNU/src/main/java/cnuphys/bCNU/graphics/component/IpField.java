@@ -72,7 +72,7 @@ public class IpField extends JFormattedTextField implements DocumentListener {
 
 	/**
 	 * Is this in its reset state?
-	 * 
+	 *
 	 * @return <code>true</code> if it is in its reset state.
 	 */
 	public boolean inResetState() {
@@ -107,7 +107,7 @@ public class IpField extends JFormattedTextField implements DocumentListener {
 
 	/**
 	 * Is the text valid?
-	 * 
+	 *
 	 * @return <code>true</code> if the text is valid
 	 */
 	public boolean validText() {

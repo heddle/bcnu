@@ -10,7 +10,7 @@ public class ItemPopupManager {
 
 	/**
 	 * prepare for popup. The ight click callback should call this/
-	 * 
+	 *
 	 * @param item      the item being popped up
 	 * @param container the container being rendered
 	 * @param pp        the right click location

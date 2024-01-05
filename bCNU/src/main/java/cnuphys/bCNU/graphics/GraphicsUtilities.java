@@ -5,13 +5,13 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
+import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.RadialGradientPaint;
@@ -21,7 +21,6 @@ import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.Transparency;
 import java.awt.Window;
-import java.awt.MultipleGradientPaint.CycleMethod;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.NoninvertibleTransformException;
@@ -40,21 +39,17 @@ import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.SwingUtilities;
 
-import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Snippet;
-import cnuphys.lund.LundId;
-import cnuphys.lund.LundStyle;
-import cnuphys.swim.SwimTrajectory2D;
 
 /**
  * A class of generic static methods for simple graphics utilities.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class GraphicsUtilities {
 
@@ -103,7 +98,7 @@ public class GraphicsUtilities {
 	 */
 	final public static BasicStroke dash2_2 = new BasicStroke(2.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 8.0f,
 			DASH, DASH[0]);
-	
+
 	/**
 	 * A stroke used for highlight drawing.
 	 */
@@ -131,11 +126,11 @@ public class GraphicsUtilities {
 	 * aren't created over and over again. There should not be many--each linewidth
 	 * and solid or dashed combination--probably no more than six or eight.
 	 */
-	protected static Hashtable<String, Stroke> strokes = new Hashtable<String, Stroke>(47);
+	protected static Hashtable<String, Stroke> strokes = new Hashtable<>(47);
 
 	/**
 	 * Set component to small size variant. Probably only works on Mac.
-	 * 
+	 *
 	 * @param component the component to change size
 	 */
 	public static void setSizeSmall(JComponent component) {
@@ -144,7 +139,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Set component to mini size variant. Probably only works on Mac.
-	 * 
+	 *
 	 * @param component the component to change size
 	 */
 	public static void setSizeMini(JComponent component) {
@@ -154,7 +149,7 @@ public class GraphicsUtilities {
 	/**
 	 * Set button for square style. For mac so you don't have to use those wasteful
 	 * oval buttons when space is tight
-	 * 
+	 *
 	 * @param button the button to change style
 	 */
 	public static void setSquareButton(JButton button) {
@@ -164,7 +159,7 @@ public class GraphicsUtilities {
 	/**
 	 * Set button for textured style. For mac so you don't have to use those
 	 * wasteful oval buttons when space is tight
-	 * 
+	 *
 	 * @param button the button to change style
 	 */
 	public static void setTexturedButton(JButton button) {
@@ -174,17 +169,13 @@ public class GraphicsUtilities {
 	/**
 	 * Compute a minimal clip from the intersection of the bounds of the current
 	 * clip and a rectangle
-	 * 
+	 *
 	 * @param currentClip the current clip
 	 * @param rect        the rectangle of interest
 	 * @return the intersection bounding rect, or <code>null</code>
 	 */
 	public static Rectangle minClip(Shape currentClip, Rectangle rect) {
-		if ((currentClip == null) || (rect == null)) {
-			return null;
-		}
-
-		if ((rect.width == 0) || (rect.height == 0)) {
+		if ((currentClip == null) || (rect == null) || (rect.width == 0) || (rect.height == 0)) {
 			return null;
 		}
 
@@ -201,7 +192,7 @@ public class GraphicsUtilities {
 	 * Gets a stroke appropriate for the line width and line type. Try the hash
 	 * table first, if not found create the Stroke and place it in the hashtable for
 	 * future use.
-	 * 
+	 *
 	 * @param lineWidth the desired line width in pixels.
 	 * @param lineStyle the desired line style.
 	 * @return the appropriate stroke.
@@ -251,7 +242,7 @@ public class GraphicsUtilities {
 	/**
 	 * Create four points corresponding to the corners of a rectangle. Useful for
 	 * item selection points.
-	 * 
+	 *
 	 * @param rect the rectangle in question.
 	 * @return points corresponding to the corners.
 	 */
@@ -272,7 +263,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Obtain a translucent buffer big enough for offscreen drawing.
-	 * 
+	 *
 	 * @param c the component being rendered offscreen.
 	 * @return a translucent buffer big enough for offscreen drawing.
 	 */
@@ -291,7 +282,7 @@ public class GraphicsUtilities {
 	/**
 	 * Obtain a buffer big enough for offscreen drawing. This does not do the
 	 * drawing.
-	 * 
+	 *
 	 * @param c the component to be rendered offscreen.
 	 * @return an image big enough for the job.
 	 */
@@ -310,7 +301,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Paints the component on an existing image.
-	 * 
+	 *
 	 * @param c     the component to paint.
 	 * @param image the image to paint on, already created.
 	 */
@@ -330,7 +321,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * return an image resulting from offscreen drawing.
-	 * 
+	 *
 	 * @param c the component being rendered.
 	 * @return an image upon which the component was drawn.
 	 */
@@ -342,7 +333,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Center a component.
-	 * 
+	 *
 	 * @param component The Component to center
 	 */
 	public static void centerComponent(Component component) {
@@ -392,7 +383,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Center a component.
-	 * 
+	 *
 	 * @param component The Component to center.
 	 * @param dh        offset from horizontal center.
 	 * @param dv        offset from vertical center.
@@ -408,9 +399,9 @@ public class GraphicsUtilities {
 //			GraphicsEnvironment env = GraphicsEnvironment
 //					.getLocalGraphicsEnvironment();
 //			GraphicsDevice[] allScreens = env.getScreenDevices();
-//			
-//			
-//			
+//
+//
+//
 //			GraphicsConfiguration gc = allScreens[0].getDefaultConfiguration();
 //
 //			Rectangle bounds = gc.getBounds();
@@ -439,7 +430,7 @@ public class GraphicsUtilities {
 	/**
 	 * Returns a dimension that is a specified fraction of the screen size. This is
 	 * useful, for example, to make a farme 85% of the screen.
-	 * 
+	 *
 	 * @param fraction the fraction desired, e.g., 0.85. No check for reasonableness
 	 *                 is made.
 	 * @return the requested dimension.
@@ -453,7 +444,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Get the screen size of the biggest display among the devices
-	 * 
+	 *
 	 * @return the screen size of the biggest display among the devices
 	 */
 	public static Dimension getDisplaySize() {
@@ -464,9 +455,9 @@ public class GraphicsUtilities {
 		int maxw = 0;
 		int maxh = 0;
 
-		for (int i = 0; i < devices.length; i++) {
+		for (GraphicsDevice element : devices) {
 //			maxw = Math.max(maxw, devices[i].getDisplayMode().getWidth());
-			maxh = Math.max(maxh, devices[i].getDisplayMode().getHeight());
+			maxh = Math.max(maxh, element.getDisplayMode().getHeight());
 		}
 
 		maxw = (16 * maxh) / 9;
@@ -477,7 +468,7 @@ public class GraphicsUtilities {
 	 * Adjust a second point so that the rectangle it forms with the first point
 	 * matches an aspect ratio of a given rectangle. Useful for rubber banding when
 	 * you want to preserve the aspect ratio.
-	 * 
+	 *
 	 * @param r  the rectangle whose aspect ration will be mayched.
 	 * @param p0 anchor point
 	 * @param p  will be adjusted so that p0, p form a rectangle with the same
@@ -509,7 +500,7 @@ public class GraphicsUtilities {
 	/**
 	 * Get a rectangle with the same apsect ratio. Useful for rubber banding when
 	 * you want to preserve the aspect ratio.
-	 * 
+	 *
 	 * @param r  the rectangle whose aspect ratio you want to match
 	 * @param p0 one point
 	 * @param p  a second point
@@ -522,7 +513,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Given two points, return the rectangle
-	 * 
+	 *
 	 * @param p1 one point
 	 * @param p2 the other point
 	 * @return the rectangle created from two points
@@ -549,7 +540,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Size and center a JFrame relative to the screen.
-	 * 
+	 *
 	 * @param frame          the frame to size.
 	 * @param fractionalSize the fraction desired of the screen--e.g., 0.85 for 85%.
 	 */
@@ -561,7 +552,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw an oval with a 3D etching.
-	 * 
+	 *
 	 * @param g      the Graphics context.
 	 * @param r      the bounding rectangle.
 	 * @param fc     an optional fill color.
@@ -605,7 +596,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a 3d "etching" around a rectangular area..
-	 * 
+	 *
 	 * @param g      the Graphics context.
 	 * @param x      the left of the rectangle.
 	 * @param y      the top of the rectangle.
@@ -620,7 +611,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a 3d rectangle.
-	 * 
+	 *
 	 * @param g      the Graphics context.
 	 * @param x      the left of the rectangle.
 	 * @param y      the top of the rectangle.
@@ -666,7 +657,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a 3d rectangle.
-	 * 
+	 *
 	 * @param g      the Graphics context.
 	 * @param r      the rectangle.
 	 * @param fc     the fill color.
@@ -680,7 +671,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Fill and frame a rectangle
-	 * 
+	 *
 	 * @param g     the Graphics context.
 	 * @param r     the bounding rectangle.
 	 * @param fill  the fill color.
@@ -707,7 +698,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a 3d diamond.
-	 * 
+	 *
 	 * @param g      the Graphics context.
 	 * @param r      the bounding rectangle.
 	 * @param fc     the fill color.
@@ -773,7 +764,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a simple rectangle symbol.
-	 * 
+	 *
 	 * @param g  the Graphics context.
 	 * @param x  the horizontal center.
 	 * @param y  the vertical center.
@@ -802,7 +793,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a simple oval symbol.
-	 * 
+	 *
 	 * @param g  the Graphics context.
 	 * @param x  the horizontal center.
 	 * @param y  the vertical center.
@@ -831,7 +822,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a simple up triangle symbol.
-	 * 
+	 *
 	 * @param g  the Graphics context.
 	 * @param x  the horizontal center.
 	 * @param y  the vertical center.
@@ -867,7 +858,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a simple down triangle symbol.
-	 * 
+	 *
 	 * @param g  the Graphics context.
 	 * @param x  the horizontal center.
 	 * @param y  the vertical center.
@@ -903,7 +894,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a simple cross symbol.
-	 * 
+	 *
 	 * @param g  the Graphics context.
 	 * @param x  the horizontal center.
 	 * @param y  the vertical center.
@@ -922,7 +913,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a simple "X" symbol.
-	 * 
+	 *
 	 * @param g  the Graphics context.
 	 * @param x  the horizontal center.
 	 * @param y  the vertical center.
@@ -941,7 +932,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted rectangle using default colors.
-	 * 
+	 *
 	 * @param g the graphics context.
 	 * @param r the rectangle being highlighted.
 	 */
@@ -952,7 +943,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted rectangle.
-	 * 
+	 *
 	 * @param g      the graphics context.
 	 * @param r      the rectangle being highlighted.
 	 * @param color1 one color for the alternating dash.
@@ -995,8 +986,8 @@ public class GraphicsUtilities {
 		Graphics2D g2 = (Graphics2D) g;
 
 		Stroke oldStroke = g2.getStroke();
-		
-		
+
+
 
 		g2.setStroke(dash1_2);
 		g2.setColor(color1);
@@ -1010,14 +1001,14 @@ public class GraphicsUtilities {
 		g2.setStroke(oldStroke);
 
 	}
-	
+
 	public static void drawThickHighlightedLine(Graphics g, int x1, int y1, int x2, int y2, Color color1, Color color2) {
 
 		Graphics2D g2 = (Graphics2D) g;
 
 		Stroke oldStroke = g2.getStroke();
-		
-		
+
+
 
 		g2.setStroke(dash1_2t);
 		g2.setColor(color1);
@@ -1054,7 +1045,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted rectangle using default colors.
-	 * 
+	 *
 	 * @param g the graphics context.
 	 * @param r the rectangle bounding the oval being highlighted.
 	 */
@@ -1065,7 +1056,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted oval.
-	 * 
+	 *
 	 * @param g      the graphics context.
 	 * @param r      the rectangle bounding the oval being highlighted.
 	 * @param color1 one color for the alternating dash.
@@ -1096,7 +1087,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted polyline (set of unclosed points) using default colors.
-	 * 
+	 *
 	 * @param g the graphics context.
 	 * @param x the x coordinate array.
 	 * @param y the y coordinate array.
@@ -1109,7 +1100,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted polyline (set of unclosed points).
-	 * 
+	 *
 	 * @param g      the graphics context.
 	 * @param x      the x coordinate array.
 	 * @param y      the y coordinate array.
@@ -1139,7 +1130,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted shape using default colors.
-	 * 
+	 *
 	 * @param g     the graphics context.
 	 * @param shape the shape being highlighted.
 	 */
@@ -1150,7 +1141,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws a highlighted shape.
-	 * 
+	 *
 	 * @param g      the graphics context.
 	 * @param shape  the shape being highlighted.
 	 * @param color1 one color for the alternating dash.
@@ -1181,7 +1172,7 @@ public class GraphicsUtilities {
 	/**
 	 * Returns <code>true</code> if the point is on the line, with an amount of slop
 	 * controlled by the class constant <code>SELECTRES</code>.
-	 * 
+	 *
 	 * @param px     the x coordinate of the point to test.
 	 * @param py     the y coordinate of the point to test.
 	 * @param startx the x coordinate of the start of the line.
@@ -1245,7 +1236,7 @@ public class GraphicsUtilities {
 	/**
 	 * Returns <code>true</code> if the point is on the line, with an amount of slop
 	 * controlled by the class constant <code>SELECTRES</code>.
-	 * 
+	 *
 	 * @param p     the point to test.
 	 * @param start the start of the line.
 	 * @param end   the end of the line.
@@ -1260,7 +1251,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a string by breaking it into snippets
-	 * 
+	 *
 	 * @param g         The graphics object
 	 * @param x         the x coordinate
 	 * @param y         the x coordinate
@@ -1282,7 +1273,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw rotated text.
-	 * 
+	 *
 	 * @param g            the Graphics context.
 	 * @param s            the text to draw.
 	 * @param x            the x pixel coordinate of baseline.
@@ -1295,7 +1286,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw rotated text.
-	 * 
+	 *
 	 * @param g            the Graphics context.
 	 * @param s            the text to draw.
 	 * @param xo           the x pixel coordinate of rotation point.
@@ -1338,7 +1329,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws an arrow on the given Graphics2D context
-	 * 
+	 *
 	 * @param g1 The Graphics context to draw on
 	 * @param x  The x location of the "tail" of the arrow
 	 * @param y  The y location of the "tail" of the arrow
@@ -1351,7 +1342,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draws an arrow on the given Graphics2D context
-	 * 
+	 *
 	 * @param g1 The Graphics context to draw on
 	 * @param x  The x location of the "tail" of the arrow
 	 * @param y  The y location of the "tail" of the arrow
@@ -1421,7 +1412,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Get the hex format of the color in the form #rrggbbaa
-	 * 
+	 *
 	 * @param color the color to convert
 	 * @return the hex string for the color
 	 */
@@ -1441,7 +1432,7 @@ public class GraphicsUtilities {
 	/**
 	 * Obtain a color from a hex string in common internet format #rrggbbaa. The "#"
 	 * and the aa are optional
-	 * 
+	 *
 	 * @param hex the hex string
 	 * @return the corresponding color or black on error.
 	 */
@@ -1476,7 +1467,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Get the top level container (JFrame, window, etc) of a component
-	 * 
+	 *
 	 * @param component the component
 	 * @return top level container (JFrame, window, etc) of the component
 	 */
@@ -1487,16 +1478,8 @@ public class GraphicsUtilities {
 
 		Container container = component.getParent();
 		while (container != null) {
-			if (container instanceof JInternalFrame) {
-				return container;
-			}
-			if (container instanceof JFrame) {
-				return container;
-			}
-			if (container instanceof JDialog) {
-				return container;
-			}
-			if (container instanceof Window) {
+			if ((container instanceof JInternalFrame) || (container instanceof JFrame) || (container instanceof JDialog)
+					|| (container instanceof Window)) {
 				return container;
 			}
 
@@ -1508,7 +1491,7 @@ public class GraphicsUtilities {
 
 	/**
 	 * Draw a component as a png graphics file
-	 * 
+	 *
 	 * @param component the component tp draw
 	 */
 	public static void saveAsPng(Component component) {
@@ -1542,7 +1525,7 @@ public class GraphicsUtilities {
 			Log.getInstance().exception(e);
 		}
 	}
-	
+
 	/**
 	 * A gradient 3D looking sphere
 	 * @param g the graphics context
@@ -1550,18 +1533,18 @@ public class GraphicsUtilities {
 	 * @param fillColor the basic fill color (will be converted to a gradient)
 	 * @param frameColor option frame color (null for no frame)
 	 * @param center the center of the sphere
-	 * @param mode 1: best for most colors, with some transparency, 2: best for 
+	 * @param mode 1: best for most colors, with some transparency, 2: best for
 	 * most colors, with opaque, 3: best for light base colors, like yellow or white
 	 */
 	public static void drawGradientCircle(Graphics g, float radius,
 			Color fillColor, Color frameColor, Point2D.Float center, int mode) {
-		
+
 		Graphics2D g2d = (Graphics2D)g;
 		Point2D.Float focus;
 		Color[] colors = new Color[2];
 		float[] dist = { 0f, 1f };
 
-		
+
 		if (mode == 1) {
 			focus = new Point2D.Float(center.x - 0.5f*radius, center.y - 0.5f*radius);
 
@@ -1574,19 +1557,19 @@ public class GraphicsUtilities {
 		}
 		else if (mode == 2) {
 			focus = new Point2D.Float(center.x - 0.5f*radius, center.y - 0.5f*radius);
-			
+
 			colors[0] = Color.white;
 			colors[1] = fillColor;
 
 		}
 		else {
 			focus = new Point2D.Float(center.x - 0.25f*radius, center.y - 0.25f*radius);
-			
+
 			colors[1] = fillColor.darker();
 			colors[0] = fillColor;
 		}
-		
-		
+
+
 		RadialGradientPaint rgp = new RadialGradientPaint(center, radius, focus, dist, colors, CycleMethod.NO_CYCLE);
 		g2d.setPaint(rgp);
 		g2d.fill(new Ellipse2D.Double(center.getX() - radius, center.getY() - radius, radius * 2, radius * 2));

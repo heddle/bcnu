@@ -7,11 +7,13 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
+
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
@@ -31,13 +33,13 @@ public class ScrollableGridView extends BaseView {
 	protected int _cellHeight;
 
 	protected JPanel _gridPanel;
-	
+
 	// status
 	protected JLabel _status;
 
 	/**
 	 * Create a scrollable grid
-	 * 
+	 *
 	 * @param numRow
 	 * @param numCol
 	 * @param cellWidth
@@ -46,8 +48,8 @@ public class ScrollableGridView extends BaseView {
 	 */
 	protected ScrollableGridView(int numRow, int numCol, int cellWidth, int cellHeight, Object... keyVals) {
 		super(keyVals);
-		
-		
+
+
 
 		_gridPanel = new JPanel();
 		_gridPanel.setLayout(new GridLayout(numRow, numCol, 2, 2));
@@ -64,12 +66,12 @@ public class ScrollableGridView extends BaseView {
 
 		addStatusLine();
 	}
-	
+
 	protected void addEastPanel() {
-		
+
 	}
 	protected void addWestPanel() {
-		
+
 	}
 
 
@@ -89,7 +91,7 @@ public class ScrollableGridView extends BaseView {
 
 	/**
 	 * Set the one-line status text
-	 * 
+	 *
 	 * @param s the status text
 	 */
 	public void setStatus(String s) {
@@ -103,7 +105,7 @@ public class ScrollableGridView extends BaseView {
 
 	/**
 	 * Get the number of rows in this grid.
-	 * 
+	 *
 	 * @return the number of rows.
 	 */
 	public int getNumRows() {
@@ -112,7 +114,7 @@ public class ScrollableGridView extends BaseView {
 
 	/**
 	 * Get the number of columns in this grid.
-	 * 
+	 *
 	 * @return the number of columns.
 	 */
 	public int getNumColumns() {
@@ -121,7 +123,7 @@ public class ScrollableGridView extends BaseView {
 
 	/**
 	 * Create a scrollable grid
-	 * 
+	 *
 	 * @param title
 	 * @param numRow
 	 * @param numCol

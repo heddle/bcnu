@@ -19,7 +19,7 @@ public class TextUtilities {
 
 	/**
 	 * Draws "ghosted" text for the specified foreground and background colors.
-	 * 
+	 *
 	 * @param g    the graphics context.
 	 * @param text the string to draw.
 	 * @param x    the horizontal (left) position.
@@ -31,7 +31,7 @@ public class TextUtilities {
 
 	/**
 	 * Draws "ghosted" text for the specified foreground and background colors.
-	 * 
+	 *
 	 * @param g    the graphics context.
 	 * @param text the string to draw.
 	 * @param x    the horizontal (left) position.
@@ -52,7 +52,7 @@ public class TextUtilities {
 
 	/**
 	 * Draw halo text that is black with a white halo.
-	 * 
+	 *
 	 * @param g    the graphics context
 	 * @param text the text to draw
 	 * @param x    the horizontal (left) position.
@@ -64,7 +64,7 @@ public class TextUtilities {
 
 	/**
 	 * Draw halo text (text that is outlined in a halo color)
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param text      the text to draw
 	 * @param x         the horizontal (left) position.
@@ -88,7 +88,7 @@ public class TextUtilities {
 
 	/**
 	 * Return a string's bounding box.
-	 * 
+	 *
 	 * @param c    the component where the string will be rendered.
 	 * @param pp   the pixel location of the base point.
 	 * @param s    the string being rendered.
@@ -105,7 +105,7 @@ public class TextUtilities {
 
 	/**
 	 * Shallow clone of ine string list onto another.
-	 * 
+	 *
 	 * @param src the source list.
 	 * @return the destination list, which is a shallow cioy.
 	 */
@@ -114,7 +114,7 @@ public class TextUtilities {
 			return null;
 		}
 
-		Vector<String> dest = new Vector<String>();
+		Vector<String> dest = new Vector<>();
 		for (String s : src) {
 			dest.add(s);
 		}
@@ -125,7 +125,7 @@ public class TextUtilities {
 	/**
 	 * Check to see if two vectors of strings are equal. Used by feedback to avoid
 	 * redrawing identical strings.
-	 * 
+	 *
 	 * @param list1 the first String vector.
 	 * @param list2 the other String vector.
 	 * @return <code>true</code> if they are equal.
@@ -136,12 +136,8 @@ public class TextUtilities {
 		}
 
 		// if just one is null, not equal
-		if ((list1 == null) || (list2 == null)) {
-			return false;
-		}
-
 		// must have the same size
-		if (list1.size() != list2.size()) {
+		if ((list1 == null) || (list2 == null) || (list1.size() != list2.size())) {
 			return false;
 		}
 
@@ -168,7 +164,7 @@ public class TextUtilities {
 
 	/**
 	 * Get the next smaller font.
-	 * 
+	 *
 	 * @param font     the base font
 	 * @param stepdown the step down (e.g., if the step down is 2 and the font size
 	 *                 is 28, a font of size 26 is returned.
@@ -183,7 +179,7 @@ public class TextUtilities {
 
 	/**
 	 * Get the next bigger font.
-	 * 
+	 *
 	 * @param font   the base font
 	 * @param stepup the step up (e.g., if the step up is 2 and the font size is 28,
 	 *               a font of size 30 is returned.
@@ -198,7 +194,7 @@ public class TextUtilities {
 
 	/**
 	 * This method breaks a string into an array of tokens.
-	 * 
+	 *
 	 * @param str   the string to decompose.
 	 * @param token the token
 	 * @return an array of tokens
@@ -216,7 +212,7 @@ public class TextUtilities {
 
 		return lines;
 	}
-	
+
 	/**
 	 * Convert a comma separated string to an array of strings,
 	 * removing white space
@@ -224,7 +220,7 @@ public class TextUtilities {
 	 * @return the array of strings, no white space
 	 */
 	public static String[] cssToStringArray(String s) {
-		
+
 		if (s == null) {
 			return null;
 		}
@@ -233,10 +229,10 @@ public class TextUtilities {
 		if (s.length() == 0) {
 			return null;
 		}
-		
+
 		return tokens(s, ",");
 	}
-	
+
 	/**
 	 * Convert an array of strings to a single comma separated string
 	 * @param array the string array of matches
@@ -246,14 +242,14 @@ public class TextUtilities {
 		if (array == null) {
 			return "";
 		}
-		
+
 		int len = array.length;
 		if (len == 0) {
 			return "";
 		}
-		
+
 		StringBuffer sb = new StringBuffer(256);
-		
+
 		for (int i = 0; i < (len-1); i++) {
 			sb.append(array[i] + ", ");
 		}

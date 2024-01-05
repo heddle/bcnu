@@ -4,9 +4,9 @@ import java.awt.Color;
 
 /**
  * An adapter for the IStyled interface.
- * 
+ *
  * @author heddle
- * 
+ *
  */
 public class Styled implements IStyled {
 
@@ -36,7 +36,7 @@ public class Styled implements IStyled {
 
 	/**
 	 * Create with all defaults but the given fill color.
-	 * 
+	 *
 	 * @param fillColor the fill color to user.
 	 */
 	public Styled(Color fillColor) {
@@ -46,7 +46,7 @@ public class Styled implements IStyled {
 	/**
 	 * Create with all defaults but the given fill color. The link color is set a
 	 * little darker or lighter.
-	 * 
+	 *
 	 * @param fillColor       the fill color to user.
 	 * @param darkerLineColor if true/false make line color darker/lighter than fill
 	 *                        color.
@@ -113,7 +113,7 @@ public class Styled implements IStyled {
 
 	/**
 	 * Get the symbol size (full width) in pixels.
-	 * 
+	 *
 	 * @return the symbol size (full width) in pixels.
 	 */
 	@Override
@@ -123,7 +123,7 @@ public class Styled implements IStyled {
 
 	/**
 	 * Set symbol size (full width) in pixels.
-	 * 
+	 *
 	 * @param symbolSize symbol size (full width) in pixels.
 	 */
 	@Override

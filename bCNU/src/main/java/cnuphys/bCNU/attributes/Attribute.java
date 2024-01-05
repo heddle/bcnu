@@ -18,7 +18,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Create an attribute
-	 * 
+	 *
 	 * @param key      the key (name)
 	 * @param value    the value
 	 * @param editable whether it is editable
@@ -34,7 +34,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Create an attribute that is not hidden
-	 * 
+	 *
 	 * @param key      the key (name)
 	 * @param value    the value
 	 * @param editable whether it is editable
@@ -45,7 +45,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Create an attribute that is editable and not hidden
-	 * 
+	 *
 	 * @param key   the key (name)
 	 * @param value the value
 	 */
@@ -55,7 +55,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Set whether this is editable
-	 * 
+	 *
 	 * @param editable the editable flag
 	 */
 	public void setEditable(boolean editable) {
@@ -64,7 +64,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Check whether it is editable
-	 * 
+	 *
 	 * @return the editable flag
 	 */
 	public boolean isEditable() {
@@ -73,7 +73,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Set whether this is hidden
-	 * 
+	 *
 	 * @param hidden the hidden flag
 	 */
 	public void setHidden(boolean hidden) {
@@ -82,7 +82,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Check whether it is hidden
-	 * 
+	 *
 	 * @return the hidden flag
 	 */
 	public boolean isHidden() {
@@ -91,7 +91,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Get the value
-	 * 
+	 *
 	 * @return the value
 	 */
 	public Object getValue() {
@@ -100,7 +100,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Set the value to a new object
-	 * 
+	 *
 	 * @param value
 	 */
 	public void setValue(Object value) {
@@ -109,7 +109,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Get the type based on the value
-	 * 
+	 *
 	 * @return the type
 	 */
 	public AttributeType getType() {
@@ -123,7 +123,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Get the key for this attribute
-	 * 
+	 *
 	 * @return the key, which is also kinda the name
 	 */
 	public String getKey() {
@@ -132,7 +132,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a String value
-	 * 
+	 *
 	 * @return the value as a String
 	 * @throws InvalidTargetObjectTypeException if the value is not a String
 	 */
@@ -146,7 +146,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a boolean value
-	 * 
+	 *
 	 * @return the value as a boolean
 	 * @throws InvalidTargetObjectTypeException if the value is not a Boolean
 	 */
@@ -160,7 +160,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a byte value
-	 * 
+	 *
 	 * @return the value as a byte
 	 * @throws InvalidTargetObjectTypeException if the value is not a Byte
 	 */
@@ -174,7 +174,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a short value
-	 * 
+	 *
 	 * @return the value as a short
 	 * @throws InvalidTargetObjectTypeException if the value is not a Short
 	 */
@@ -188,7 +188,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve an int value
-	 * 
+	 *
 	 * @return the value as an int
 	 * @throws InvalidTargetObjectTypeException if the value is not an Integer
 	 */
@@ -202,7 +202,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a long value
-	 * 
+	 *
 	 * @return the value as a long
 	 * @throws InvalidTargetObjectTypeException if the value is not a Long
 	 */
@@ -216,7 +216,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a float value
-	 * 
+	 *
 	 * @return the value as a float
 	 * @throws InvalidTargetObjectTypeException if the value is not a Float
 	 */
@@ -230,7 +230,7 @@ public class Attribute implements Comparable<Attribute> {
 
 	/**
 	 * Retrieve a double value
-	 * 
+	 *
 	 * @return the value as a double
 	 * @throws InvalidTargetObjectTypeException if the value is not a Double
 	 */

@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package cnuphys.bCNU.item;
 
@@ -22,7 +22,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Create an object that is based on a java Path2D object.
-	 * 
+	 *
 	 * @param layer the Layer this item is on.
 	 */
 	public PathBasedItem(LogicalLayer layer) {
@@ -31,7 +31,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Custom drawer for the item.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 */
@@ -47,7 +47,7 @@ public class PathBasedItem extends AItem {
 	 * Checks whether the item should be drawn. This is an additional check, beyond
 	 * the simple visibility flag check. For example, it might check whether the
 	 * item intersects the area being drawn.
-	 * 
+	 *
 	 * @param g         the graphics context.
 	 * @param container the graphical container being rendered.
 	 * @return <code>true</code> if the item passes any and all tests, and should be
@@ -82,7 +82,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Check whether the (rendered) item contains the given screen point.
-	 * 
+	 *
 	 * @param container   the graphical container rendering the item.
 	 * @param screenPoint a pixel location.
 	 * @return <code>true</code> if the item, as rendered on the given container,
@@ -103,7 +103,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * get the bounding rect.
-	 * 
+	 *
 	 * @param container the container being rendered
 	 * @return the bounding box.
 	 */
@@ -130,7 +130,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Get the rotation point
-	 * 
+	 *
 	 * @param container the container bing rendered
 	 * @return the rotation point where rotations are initiated
 	 */
@@ -257,7 +257,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Rotate the item
-	 * 
+	 *
 	 * @param angle the angle in degrees
 	 */
 	public void rotate(double angle) {
@@ -321,7 +321,7 @@ public class PathBasedItem extends AItem {
 	 * vertex (presumable the focus as a pixel point) this computes and angle. Give
 	 * the assumptions above, it is how much the original path will need to be
 	 * rotated.
-	 * 
+	 *
 	 * @param p1     one end point
 	 * @param vertex the vertex point
 	 * @param p2     the other end point
@@ -354,7 +354,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Get the world bounding rectangle of the item.
-	 * 
+	 *
 	 * @return the world box containing the item.
 	 */
 	@Override
@@ -368,7 +368,7 @@ public class PathBasedItem extends AItem {
 
 	/**
 	 * Get the bounds if the path contains only a single point
-	 * 
+	 *
 	 * @param container the container being rendered.
 	 * @return the bounds if the path contains only a single point
 	 */

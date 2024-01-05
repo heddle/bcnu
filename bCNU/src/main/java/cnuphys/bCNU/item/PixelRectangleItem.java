@@ -31,7 +31,7 @@ public class PixelRectangleItem extends AItem {
 	/**
 	 * Create a rectangle whose location is based on world coordinates but whose
 	 * extent is in pixels. And example might be a plot item or image.
-	 * 
+	 *
 	 * @param layer    the Layer this item is on.
 	 * @param location the location of the lower-left in world coordinates
 	 * @param width    the width in pixels
@@ -84,7 +84,7 @@ public class PixelRectangleItem extends AItem {
 
 	/**
 	 * get the bounding rect in pixels.
-	 * 
+	 *
 	 * @param container the container being rendered
 	 * @return the box around the active part of the image.
 	 */
@@ -97,7 +97,7 @@ public class PixelRectangleItem extends AItem {
 
 	/**
 	 * Get the world bounding rectangle of the item.
-	 * 
+	 *
 	 * @return the world box containing the item. For a point item, which has no
 	 *         extent, this is <code>null</code>.
 	 */
@@ -197,7 +197,7 @@ public class PixelRectangleItem extends AItem {
 
 	/**
 	 * Set the current location.
-	 * 
+	 *
 	 * @param currentLocation the new location to set
 	 */
 	@Override
@@ -213,7 +213,7 @@ public class PixelRectangleItem extends AItem {
 
 	/**
 	 * Obtain the selection points used to indicate this item is selected.
-	 * 
+	 *
 	 * @return the selection points used to indicate this item is selected.
 	 */
 	@Override

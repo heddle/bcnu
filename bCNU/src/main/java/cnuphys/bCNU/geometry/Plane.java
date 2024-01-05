@@ -4,7 +4,7 @@ package cnuphys.bCNU.geometry;
  * A plane is defined by the equation (r - ro).norm = 0 Where r is an arbitrary
  * point on the plane, ro is a given point on the plane and norm is the normal
  * to the plane
- * 
+ *
  * @author heddle
  *
  */
@@ -27,7 +27,7 @@ public class Plane {
 
 	/**
 	 * Create a plane from a normal vector and a point on the plane
-	 * 
+	 *
 	 * @param norm the normal vector
 	 * @param p    a point in the plane
 	 * @return the plane that contains p and its normal is norm
@@ -41,7 +41,7 @@ public class Plane {
 		c = norm.z; // C
 		d = a * p0.x + b * p0.y + c * p0.z; // D
 	}
-	
+
 	/**
 	 * Create a plane from a normal vector and a point on the plane
 	 * @param norm the normal vector
@@ -53,7 +53,7 @@ public class Plane {
 		this(anorm, new Point(px, py, pz));
 	}
 
-	
+
 	/**
 	 * Create a plane from the normal vector in an array of doubles and
 	 * a point in the plane in an array, both (x, y, z)
@@ -61,21 +61,21 @@ public class Plane {
 	 * @param point the point in the plane
 	 */
 	public Plane(double norm[], double point[]) {
-		
-		this(new Vector(norm[0], norm[1], norm[2]), 
+
+		this(new Vector(norm[0], norm[1], norm[2]),
 				new Point(point[0], point[1], point[2]));
 	}
 
 	/**
 	 * Distance from a point to the plane
-	 * 
+	 *
 	 * @param p the point in question
 	 * @return the distance to the plane
 	 */
 	public double distance(Point p) {
 		return distance(p.x, p.y, p.z);
 	}
-	
+
 	/**
 	 * Find the point on the plane closest to the given point
 	 * @param p the point in question
@@ -84,7 +84,7 @@ public class Plane {
 	public void closestPoint(Point p, Point cp) {
 		closestPoint(p.x, p.y, p.z, cp);
 	}
-	
+
 	/**
 	 * Find the point on the plane closest to the given point
 	 * @param x the x coordinate of the point in question
@@ -104,7 +104,7 @@ public class Plane {
 
 	/**
 	 * Distance from a point to the plane
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate
@@ -116,7 +116,7 @@ public class Plane {
 
 	/**
 	 * Signed distance from a point to the plane
-	 * 
+	 *
 	 * @param p the point in question
 	 * @return the signed distance (indicates which side you are on where norm
 	 *         defines positive side)
@@ -127,7 +127,7 @@ public class Plane {
 
 	/**
 	 * Signed distance from a point to the plane
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate
@@ -143,7 +143,7 @@ public class Plane {
 
 	/**
 	 * Compute the intersection of an infinite line with the plane
-	 * 
+	 *
 	 * @param line         the line
 	 * @param intersection will hold the point of intersection
 	 * @return the t parameter. If NaN it means the line is parallel to the plane.
@@ -177,7 +177,7 @@ public class Plane {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param line         the line
 	 * @param intersection will hold the point of intersection
 	 * @param lineType     one of the Constants INFINITE or SEGMENT
@@ -202,7 +202,7 @@ public class Plane {
 
 	/**
 	 * Create a plane of constant azimuthal angle phi
-	 * 
+	 *
 	 * @param phi the azimuthal angle in degrees
 	 * @return the plane of constant phi
 	 */
@@ -230,7 +230,7 @@ public class Plane {
 	/**
 	 * Obtain the line resulting from the intersection of this plane and another
 	 * plane
-	 * 
+	 *
 	 * @param plane the other plane
 	 * @return line formed by the intersection
 	 */
@@ -294,7 +294,7 @@ public class Plane {
 
 	/**
 	 * Find some coordinates suitable for drawing the plane as a Quad in 3D
-	 * 
+	 *
 	 * @param scale an arbitrary big number, a couple times bigger than the drawing
 	 *              extent
 	 * @return the jogl coordinates for drawing a Quad
@@ -395,7 +395,7 @@ public class Plane {
 			}
 
 		}
-		
+
 		else { //general case, no small constants
 			for (int k = 0; k < 4; k++) {
 				int j = 3 * k;
@@ -412,17 +412,17 @@ public class Plane {
 
 		return coords;
 	}
-	
+
 	private static void valCheck(Plane p, float[] coords, int index) {
 		int j = 3*index;
 		double x = coords[j];
 		double y = coords[j+1];
 		double z = coords[j+2];
 		double val = p.a*x + p.b*y + p.c*z - p.d;
-		System.out.println(String.format("  coord check [%d] (%-9.5f, %-9.5f, %-9.5f) val = %-9.5f (should be 0)", 
+		System.out.println(String.format("  coord check [%d] (%-9.5f, %-9.5f, %-9.5f) val = %-9.5f (should be 0)",
 				index, x, y, z, val));
 	}
-	
+
 	/**
 	 * Check whether we have a point on the plane
 	 * @param p the point in question
@@ -432,7 +432,7 @@ public class Plane {
 		double val = a*p.x + b*p.y + c*p.z - d;
 		return Math.abs(val) < Constants.TINY;
 	}
-	
+
 	/**
 	 * Given x and y, find the z that puts the point on the plane
 	 * @param x the x coordinate
@@ -443,7 +443,7 @@ public class Plane {
 		if (Math.abs(c) < Constants.TINY) {
 			return Double.NaN;
 		}
-		
+
 		return (d - a*x - b*y)/c;
 	}
 
@@ -453,28 +453,28 @@ public class Plane {
 		Point zero = new Point(0, 0, 0);
 		Vector nn = new Vector(0, 1, 1);
 		Plane zp = new Plane(nn, zero);
-		
-		
-		Point ptest = new Point(2, 3, 5);;
+
+
+		Point ptest = new Point(2, 3, 5);
 		Point cp = new Point();
 		zp.closestPoint(ptest, cp);
-		
+
 		System.out.println("Test point: " + ptest);
 		System.out.println("closest point: " + cp + "   [" +zp.pointOnPlane(cp) + "]");
-		
-		
+
+
 		if (true) {
 			System.out.println("exit");
 			System.exit(0);
 		}
-		
-		
-		
+
+
+
 		float coords[] = zp.planeQuadCoordinates(1000);
 		for (int i = 0; i < 4; i++) {
 			Plane.valCheck(zp, coords, i);
 		}
-		
+
 		System.out.println();
 
 		Point p = new Point(1, 1, 1);
@@ -485,7 +485,7 @@ public class Plane {
 		System.out.println("Init plane: " + plane);
 
 		System.out.println("should be 0: " + plane.distance(p));
-		
+
 		coords = plane.planeQuadCoordinates(1000);
 		for (int i = 0; i < 4; i++) {
 			Plane.valCheck(plane, coords, i);
@@ -506,7 +506,7 @@ public class Plane {
 		t = plane.lineIntersection(line, intersection);
 		System.out.println(" t = " + t + "   intersect: " + intersection + "  phicheck = "
 				+ Math.toDegrees(Math.atan2(intersection.y, intersection.x)));
-		
+
 		coords = plane.planeQuadCoordinates(1000);
 		for (int i = 0; i < 4; i++) {
 			Plane.valCheck(plane, coords, i);

@@ -14,7 +14,7 @@ public class SerialIO {
 
 	/**
 	 * Reads a serializable object from a file.
-	 * 
+	 *
 	 * @param fullfn the full path.
 	 * @return the deserialized object.
 	 */
@@ -55,7 +55,7 @@ public class SerialIO {
 
 	/**
 	 * serialRead reads a serializable object from a byte array
-	 * 
+	 *
 	 * @param bytes the byte array
 	 * @return the deserialized object
 	 */
@@ -99,9 +99,9 @@ public class SerialIO {
 
 	/**
 	 * serialWrite writes out a serializable object to a file.
-	 * 
+	 *
 	 * @param obj    the serializable object.
-	 * 
+	 *
 	 * @param fullfn the full path.
 	 */
 	public static void serialWrite(Serializable obj, String fullfn) {
@@ -144,7 +144,7 @@ public class SerialIO {
 
 	/**
 	 * serialWrite writes out a serializable object to a byte array.
-	 * 
+	 *
 	 * @param obj the serializable object.
 	 * @return the array of bytes.
 	 */

@@ -4,7 +4,7 @@ public interface IValueLabeler {
 
 	/**
 	 * Take a value and convert it to a string
-	 * 
+	 *
 	 * @param value the value
 	 * @return the string for a label.
 	 */

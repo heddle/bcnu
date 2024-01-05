@@ -98,7 +98,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param labels The button labels.
 	 */
 
@@ -108,7 +108,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param labels The button labels.
 	 * @param alist  Optional action listener.
 	 */
@@ -119,7 +119,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param labels  The button labels.
 	 * @param alist   Optional action listener.
 	 * @param spacing The spacing between labels.
@@ -132,7 +132,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * The constructor.
-	 * 
+	 *
 	 * @param labels    the button labels.
 	 * @param alist     optional action listener.
 	 * @param spacing   the spacing between labels.
@@ -162,7 +162,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * Add the buttons to the panel.
-	 * 
+	 *
 	 * @param alist An action listener.
 	 */
 
@@ -185,7 +185,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * Enable or disable a button.
-	 * 
+	 *
 	 * @param index the index of the button. If -1, applies to all.
 	 * @param state if true, enable, else disable.
 	 */
@@ -193,9 +193,9 @@ public class ButtonPanel extends JPanel {
 	public void setEnabled(int index, boolean state) {
 
 		if (index < 0) {
-			for (int i = 0; i < buttons.length; i++) {
-				if (buttons[i] != null) {
-					buttons[i].setEnabled(state);
+			for (JButton button : buttons) {
+				if (button != null) {
+					button.setEnabled(state);
 				}
 			}
 		} else if (index < buttons.length) {
@@ -207,7 +207,7 @@ public class ButtonPanel extends JPanel {
 
 	/**
 	 * Set tooltip
-	 * 
+	 *
 	 * @param index The index of the button.
 	 * @param tip   tooltip string
 	 */
@@ -227,7 +227,7 @@ public class ButtonPanel extends JPanel {
 	/**
 	 * Makes a button panel with combinations of OK, Save, Save As, Cancel, Apply,
 	 * and Delete
-	 * 
+	 *
 	 * @param opt            Bitwise combination of USE_OK, USE_CANCEL, USE_APPLY,
 	 *                       USE_DELETE
 	 * @param actionListener Action listener for button clicks
@@ -236,7 +236,7 @@ public class ButtonPanel extends JPanel {
 
 	public static ButtonPanel closeOutPanel(int opt, ActionListener actionListener, int spacing) {
 
-		Vector<String> vl = new Vector<String>(7);
+		Vector<String> vl = new Vector<>(7);
 
 		if (checkBit(opt, USE_OK)) {
 			vl.addElement(OK_LABEL);

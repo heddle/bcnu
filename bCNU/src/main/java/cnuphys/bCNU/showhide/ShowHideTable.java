@@ -42,7 +42,7 @@ public class ShowHideTable extends JTable {
 
 	/**
 	 * Create a table for toggling visibility (or any check box list)
-	 * 
+	 *
 	 * @param showHideList the objects that can be hidden
 	 * @param colNames     the column names
 	 */
@@ -123,7 +123,7 @@ public class ShowHideTable extends JTable {
 
 	/**
 	 * Get the underlying ShowHideDataModel
-	 * 
+	 *
 	 * @return the underlying ShowHideDataModel
 	 */
 	public ShowHideTableModel getShowHideDataModel() {
@@ -132,7 +132,7 @@ public class ShowHideTable extends JTable {
 
 	/**
 	 * Convenience method to get a scroll pane that controls the table.
-	 * 
+	 *
 	 * @return a scroll pane with the table inside.
 	 */
 	public JScrollPane getScrollPane() {
@@ -200,7 +200,7 @@ public class ShowHideTable extends JTable {
 
 	/**
 	 * Add an <code>IShowHideListener</code>.
-	 * 
+	 *
 	 * @see IShowHideListener
 	 * @param modelListener the <code>IShowHideListener</code> to add.
 	 */
@@ -210,7 +210,7 @@ public class ShowHideTable extends JTable {
 
 	/**
 	 * Convenience method to see if all the visibles are visible.
-	 * 
+	 *
 	 * @return <code>true</code> if all are visible.
 	 */
 	public boolean allVisible() {
