@@ -10,9 +10,6 @@ import java.awt.event.ComponentListener;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
