@@ -15,9 +15,9 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
+import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.event.data.arrays.TOF_ADC_Arrays;
+import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.ftof.FTOFPanel;
@@ -43,7 +43,7 @@ public class FTOFPanelItem extends PolygonItem {
 		_ftofPanel = panel;
 		_sector = sector;
 
-		_name = (panel != null) ? FTOF.name(panel.getPanelType()) : "??";
+		_name = (panel != null) ? DataDrawSupport.panelName((byte)panel.getPanelType()) : "??";
 
 		// _style.setFillColor(X11Colors.getX11Color("Wheat", 128));
 		_style.setFillColor(Color.white);
@@ -97,28 +97,28 @@ public class FTOFPanelItem extends PolygonItem {
 	private void drawHits(Graphics g, IContainer container) {
 
 		if (_view.isSingleEventMode()) {
-			drawSingleModeHits(g, container);
+			drawSingleModeADCBased(g, container);
 		} else {
-			drawAccumulatedHits(g, container);
+			drawAccumulatedADCBased(g, container);
 		}
 	}
 
-	private void drawAccumulatedHits(Graphics g, IContainer container) {
+	private void drawAccumulatedADCBased(Graphics g, IContainer container) {
 		int hits[][] = null;
 
 		int medianHit = 0;
 
 		int panelType = _ftofPanel.getPanelType();
 		switch (panelType) {
-		case FTOF.PANEL_1A:
+		case DataDrawSupport.PANEL_1A:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();
 			break;
-		case FTOF.PANEL_1B:
+		case DataDrawSupport.PANEL_1B:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1BCount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1BData();
 			break;
-		case FTOF.PANEL_2:
+		case DataDrawSupport.PANEL_2:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF2Count();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF2Data();
 			break;
@@ -144,29 +144,31 @@ public class FTOFPanelItem extends PolygonItem {
 
 	}
 
-	// works for both showMcTruth and not
-	private void drawSingleModeHits(Graphics g, IContainer container) {
+	//draw based on data in ADC bank
+	//hits drawn by recondrawer
+	private void drawSingleModeADCBased(Graphics g, IContainer container) {
+		
+		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
+		if (!arrays.hasData()) {
+			return;
+		}
 
-		// draw tdc adc hits
-		TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			byte sect = (byte) _sector;
-			byte layer = (byte) (_ftofPanel.getPanelType() + 1);
-			for (TdcAdcTOFHit hit : hits) {
-				if ((hit.sector == _sector) && (hit.layer == layer)) {
-					Point2D.Double wp[] = getPaddle(_view, hit.component - 1, _ftofPanel, _sector);
+		byte sect = (byte) _sector; //1-based
+		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
+		
+		for (int i = 0; i < arrays.sector.length; i++) {
+			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
+				Point2D.Double wp[] = getPaddle(_view, arrays.component[i] - 1, _ftofPanel, _sector);
 
-					if (wp != null) {
-						Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
-						WorldGraphicsUtilities.drawPath2D(g, container, path, Color.white, _style.getLineColor(), 0,
-								LineStyle.SOLID, true);
-						WorldGraphicsUtilities.drawPath2D(g, container, path, hits.adcColor(hit), _style.getLineColor(),
-								0, LineStyle.SOLID, true);
-					}
+				
+				if (wp != null) {
+					Color fc = arrays.getColor(sect, layer, arrays.component[i]);
+					Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
+					WorldGraphicsUtilities.drawPath2D(g, container, path, fc, _style.getLineColor(), 0,
+							LineStyle.SOLID, true);
 				}
 			}
 		}
-
 	}
 
 	/**
@@ -262,22 +264,22 @@ public class FTOFPanelItem extends PolygonItem {
 				Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
 
 				if (path.contains(worldPoint)) {
+					
+					byte sect = (byte) _sector; //1-based
+					byte layer = (byte) (_ftofPanel.getPanelType() + 1); //1-based
+					short paddle = (short) (index + 1); //1-based
 
-					// have a tdc adc hit?
-					TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
-					byte sect = (byte) _sector;
-					byte layer = (byte) (_ftofPanel.getPanelType() + 1);
-					short paddle = (short) (index + 1);
-					TdcAdcTOFHit hit = hits.get(sect, layer, paddle);
-					if (hit != null) {
-						hit.tdcAdcFeedback(getName(), "paddle", feedbackStrings);
-					} else {
-						feedbackStrings
-								.add("$Orange Red$" + getName() + "  sector " + _sector + " paddle " + (index + 1));
-					}
+					feedbackStrings.add("$Orange Red$" + getName() + "  sector " + _sector + " paddle " + (index + 1));
 					feedbackStrings.add("$Orange Red$paddle length "
 							+ FTOFGeometry.getLength(_ftofPanel.getPanelType(), index) + " cm");
-
+					
+					//any adc data?
+					TOF_ADC_Arrays adcArrays = new TOF_ADC_Arrays("FTOF::adc");
+					adcArrays.addFeedback(sect, layer, paddle, feedbackStrings);
+					
+					//any hit data?
+					XYZ_Hit_Arrays hitArrays = new XYZ_Hit_Arrays("FTOF::hits");
+					hitArrays.addFeedback(sect, layer, paddle, feedbackStrings);
 					break;
 				} // path contains wp
 			} // end wp != null

@@ -95,32 +95,12 @@ public class DC extends DetectorData {
 		_tdcHits = new DCTdcHitList();
 
 		//the reconstructed hits, HB and TB
-		try {
-			_hbHits = new DCReconHitList("HitBasedTrkg::HBHits");
-		} catch (EventDataException e) {
-			_hbHits = null;
-			e.printStackTrace();
-		}
-		try {
-			_tbHits = new DCReconHitList("TimeBasedTrkg::TBHits");
-		} catch (EventDataException e) {
-			_tbHits = null;
-			e.printStackTrace();
-		}
+		_hbHits = new DCReconHitList("HitBasedTrkg::HBHits");
+		_tbHits = new DCReconHitList("TimeBasedTrkg::TBHits");
 
 		//the clusters
-		try {
-			_hbClusters = new DCClusterList("HitBasedTrkg::HBClusters");
-		} catch (EventDataException e) {
-			_hbClusters = null;
-			e.printStackTrace();
-		}
-		try {
-			_tbClusters = new DCClusterList("TimeBasedTrkg::TBClusters");
-		} catch (EventDataException e) {
-			_tbClusters = null;
-			e.printStackTrace();
-		}
+		_hbClusters = new DCClusterList("HitBasedTrkg::HBClusters");
+		_tbClusters = new DCClusterList("TimeBasedTrkg::TBClusters");
 
 	}
 

@@ -57,32 +57,12 @@ public class AIDC extends DetectorData {
 
 
 		//the reconstructed hits, HB and TB
-		try {
-			_hbHits = new DCReconHitList("HitBasedTrkg::AIHits");
-		} catch (EventDataException e) {
-			_hbHits = null;
-			e.printStackTrace();
-		}
-		try {
-			_tbHits = new DCReconHitList("TimeBasedTrkg::AIHits");
-		} catch (EventDataException e) {
-			_tbHits = null;
-			e.printStackTrace();
-		}
+		_hbHits = new DCReconHitList("HitBasedTrkg::AIHits");
+		_tbHits = new DCReconHitList("TimeBasedTrkg::AIHits");
 
 		//the clusters
-		try {
-			_hbClusters = new DCClusterList("HitBasedTrkg::AIClusters");
-		} catch (EventDataException e) {
-			_hbClusters = null;
-			e.printStackTrace();
-		}
-		try {
-			_tbClusters = new DCClusterList("TimeBasedTrkg::AIClusters");
-		} catch (EventDataException e) {
-			_tbClusters = null;
-			e.printStackTrace();
-		}
+		_hbClusters = new DCClusterList("HitBasedTrkg::AIClusters");
+		_tbClusters = new DCClusterList("TimeBasedTrkg::AIClusters");
 
 	}
 

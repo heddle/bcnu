@@ -4,14 +4,13 @@ import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.event.data.DCCluster;
-import cnuphys.ced.event.data.EventDataException;
 
 public class DCClusterList extends Vector<DCCluster> {
 
 	// the bank name
 	private String _bankName;
 
-	public DCClusterList(String bankName) throws EventDataException {
+	public DCClusterList(String bankName) {
 
 		_bankName = bankName;
 
@@ -22,10 +21,6 @@ public class DCClusterList extends Vector<DCCluster> {
 			return;
 		}
 
-//		public DCCluster(byte sector, byte superlayer, short id, byte size, short status,
-//				float avgWire, float fitChisqProb,
-//				float fitInterc, float fitIntercErr, float fitSlope, float fitSlopeErr,
-//				short... hitID) {
 
 		byte superlayer[] = ColumnData.getByteArray(bankName + ".superlayer");
 		short id[] = ColumnData.getShortArray(bankName + ".id");

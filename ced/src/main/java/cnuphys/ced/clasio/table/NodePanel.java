@@ -56,11 +56,8 @@ public class NodePanel extends JPanel
 	/** show ints as hex */
 	protected JCheckBox intsInHexButton;
 
-	/** Used for "goto" sequential event */
+	/** Used for "goto" event */
 	protected JTextField seqEventNumberInput;
-
-	/** Used for "goto" true event */
-	protected JTextField trueEventNumberInput;
 
 	// the table
 	protected NodeTable _nodeTable;
@@ -198,15 +195,11 @@ public class NodePanel extends JPanel
 		prevButton.setFont(Fonts.smallFont);
 		prevButton.addActionListener(this);
 
-		JLabel seqLabel = new JLabel("Goto seq # ");
+		JLabel seqLabel = new JLabel("Goto event # ");
 		GraphicsUtilities.setSizeSmall(seqLabel);
-
-		JLabel trueLabel = new JLabel("Goto true # ");
-		GraphicsUtilities.setSizeSmall(trueLabel);
 
 
 		seqEventNumberInput = new JTextField(7);
-		trueEventNumberInput = new JTextField(7);
 
 		KeyAdapter ka = new KeyAdapter() {
 			@Override
@@ -224,28 +217,9 @@ public class NodePanel extends JPanel
 					}
 				}
 
-				else if (kev.getSource() == trueEventNumberInput) {
-
-					// find the corresponding sequential number
-
-					if (kev.getKeyCode() == KeyEvent.VK_ENTER) {
-						int trueNum = _eventManager.getTrueEventNumber();
-						if (trueNum > -1) {
-							try {
-								int enumber = Integer.parseInt(trueEventNumberInput.getText());
-								_eventManager.gotoTrueEvent(enumber);
-							} catch (Exception e) {
-								seqEventNumberInput.setText("");
-							}
-						}
-
-					}
-				}
-
 			}
 		};
 		seqEventNumberInput.addKeyListener(ka);
-		trueEventNumberInput.addKeyListener(ka);
 
 		intsInHexButton = new JCheckBox("Show ints in hex", false);
 		intsInHexButton.setFont(Fonts.defaultFont);
@@ -279,8 +253,6 @@ public class NodePanel extends JPanel
 		panel.add(seqLabel);
 		panel.add(seqEventNumberInput);
 		panel.add(Box.createHorizontalStrut(6));
-		panel.add(trueLabel);
-		panel.add(trueEventNumberInput);
 
 		numPanel.add(panel, 0);
 	}
@@ -295,7 +267,6 @@ public class NodePanel extends JPanel
 		nextButton.setEnabled(_eventManager.isNextOK());
 		prevButton.setEnabled(_eventManager.isPrevOK());
 		seqEventNumberInput.setEnabled(_eventManager.isGotoOK());
-		trueEventNumberInput.setEnabled(_eventManager.isGotoOK() && (_eventManager.getTrueEventNumber() > -1));
 	}
 
 	/**

@@ -34,6 +34,7 @@ import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.bCNU.util.RingBuffer;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
 import cnuphys.ced.clasio.filter.FilterManager;
@@ -73,13 +74,8 @@ public class ClasIoEventManager {
 	// reset everytime hipo or evio file is opened
 	private int _currentEventIndex;
 
-
 	//a ringbuffer for previous events
 	private RingBuffer<PrevIndexedEvent> _prevEventBuffer;
-
-	//maps sequential event number to true event numbers
-	private long[] _numberMap;
-	private int _numberMapCount = 0;
 
 
 	// sources of events (the type, not the actual source)
@@ -357,6 +353,7 @@ public class ClasIoEventManager {
 		//let the data manager know
 		_schemaFactory = ((HipoDataSource)_dataSource).getReader().getSchemaFactory();
 		DataManager.getInstance().updateSchema(_schemaFactory);
+		DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		//notify the listeners
 		notifyEventListeners(_currentHipoFile);
@@ -381,15 +378,6 @@ public class ClasIoEventManager {
 		_prevIndexedEvent.reset();
 		_currentEventIndex = 0;
 		_prevEventBuffer.clear();
-		resetIndexMap();
-	}
-
-	/**
-	 * Reset the index map
-	 */
-	public void resetIndexMap() {
-		_numberMap = null;
-		_numberMapCount = 0;
 	}
 
 	/**
@@ -674,6 +662,7 @@ public class ClasIoEventManager {
 			_decoder = new CLASDecoder4();
 
 			DataManager.getInstance().updateSchema(_schemaFactory);
+			DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		}
 
@@ -875,50 +864,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-	/**
-	 * Go t the event with the desired true event number
-	 * @param desesiredTrueNumber the desired true event number
-	 * @return the event
-	 */
-	public DataEvent gotoTrueEvent(int desiredTrueNumber) {
-
-		int currentTrueEvent = getTrueEventNumber();
-		if (currentTrueEvent < 0) {
-			return _currentEvent;
-		}
-
-		EventSourceType estype = getEventSourceType();
-		switch (estype) {
-
-		case HIPOFILE:
-			break;
-
-		case EVIOFILE: // assume the event numbers are sequential
-			return gotoEvent(_currentEventIndex + (desiredTrueNumber - currentTrueEvent));
-
-		default:
-			return _currentEvent;
-		}
-
-
-		// only hipo
-
-		if (_numberMap == null) {
-			runThroughEvents(desiredTrueNumber);
-		} else {
-
-			int saveIndex = _currentEventIndex;
-			int seqIndex = getSequentialFromTrue(desiredTrueNumber);
-
-			if (seqIndex >= 0) {
-				gotoEvent(seqIndex);
-			} else {
-				gotoEvent(saveIndex);
-			}
-		}
-
-		return _currentEvent;
-	}
 
 	/**
 	 *
@@ -1217,180 +1162,6 @@ public class ClasIoEventManager {
 	}
 
 
-	/**
-	 * Minimal event getter for running through events as fast as possible
-	 * @return the next event
-	 */
-	public DataEvent bareNextEvent() {
-
-		EventSourceType estype = getEventSourceType();
-
-		boolean done = false;
-
-		switch (estype) {
-
-		case HIPOFILE:
-		case EVIOFILE:
-
-			while (!done) {
-				if (_currentEventIndex >= getEventCount()) {
-					return null;
-				}
-
-				try {
-					if (_dataSource.hasEvent()) {
-						_currentEvent = _dataSource.getNextEvent();
-					} else {
-						_currentEvent = null;
-					}
-				} catch (Exception e) {
-					System.err.println("Exception in bareNextEvent: " + e.getMessage());
-					_currentEvent = null;
-				}
-
-				done = (_currentEvent == null) || FilterManager.getInstance().pass(_currentEvent);
-
-				if ((_currentEvent != null) && (_currentEvent instanceof EvioDataEvent)) {
-					_currentEvent = decodeEvioToHipo((EvioDataEvent) _currentEvent);
-				}
-
-				if (_currentEvent != null) {
-					_currentEventIndex++;
-				}
-
-				else {
-					return null;
-				}
-			}
-			break;
-
-		case ET:
-			break;
-		}
-
-
-		return _currentEvent;
-	}
-
-	//the sequential index is in the lower 32 bits
-	private int getSequentialFromTrue(int trueIndex) {
-		int index =  Arrays.binarySearch(_numberMap, 0, _numberMapCount-1, ((long)trueIndex << 32));
-
-		if (index < 0) {
-			index = -(index + 1); // now the insertion point.
-		}
-
-		int seqIndex = 1;
-		try {
-			seqIndex = (int)(_numberMap[index] & 0xffffffffL);
-		}
-		catch (Exception e ) {
-			System.err.println("Problem in getSequentialFromTrue: " + e.getMessage());
-			System.err.println("Requested true index: " + trueIndex);
-			System.err.println("Index from binary search: " + index);
-			System.err.println("Length of map array: " + _numberMap.length);
-		}
-
-		return seqIndex;
-	}
-
-	//run through the hipo file to make a mapping of sequential to true
-	private void runThroughEvents(int gotoIndex) {
-
-		int saveIndex = _currentEventIndex;
-
-		EventSourceType estype = getEventSourceType();
-		switch (estype) {
-
-		case HIPOFILE:
-			gotoEvent(0);
-
-			int count = getEventCount();
-
-			if (count > 0) {
-				_numberMap = new long[count];
-			} else {
-				_numberMap = null;
-			}
-			break;
-
-		case EVIOFILE:
-			gotoEvent(0);
-			return;
-
-
-			default:
-				return;
-		}
-
-		int trueNum = getTrueEventNumber();
-		_numberMap[0] = ((long)trueNum << 32) + 1;
-
-		IRunThrough rthrough = new IRunThrough() {
-
-			int index = 1;
-
-			@Override
-			public void nextRunthroughEvent(DataEvent event) {
-				if ((event != null) && FilterManager.getInstance().pass(event)) {
-					try {
-						int trueNum = getTrueEventNumber();
-						_numberMap[index] = ((long)trueNum << 32) + index + 1;
-						_numberMapCount++;
-						index++;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
-				else {
-					System.err.println("null event in nextRunthroughEvent");
-				}
-
-			}
-
-			@Override
-			public void runThroughtDone() {
-
-
-				int num = 50;
-
-				System.err.println("Before sort");
-				for (int i = 0; i < num; i++) {
-					long v = _numberMap[i];
-					System.err.println("Seq: [" + (v & 0xffffffffL) + "]  true: " + (v >> 32));
-				}
-
-
-				Arrays.sort(_numberMap, 0, _numberMapCount-1);
-
-				System.err.println("\nAfter sort");
-				for (int i = 0; i < num; i++) {
-					long v = _numberMap[i];
-					System.err.println("Seq: [" + (v & 0xffffffffL) + "]  true: " + (v >> 32));
-				}
-
-
-				int seqIndex = getSequentialFromTrue(gotoIndex);
-
-
-				if (seqIndex >= 0) {
-					gotoEvent(seqIndex);
-				} else {
-					gotoEvent(saveIndex);
-				}
-
-			}
-
-		};
-
-		RunThroughDialog dialog = new RunThroughDialog(rthrough);
-		dialog.setVisible(true);
-		dialog.process();
-
-	}
-
-
 	//inner class for storing previous events in a ring buffer
 	class PrevIndexedEvent {
 		public DataEvent event;
@@ -1409,40 +1180,6 @@ public class ClasIoEventManager {
 			set(null, -1);
 		}
 	}
-
-	//EXPERIMENTAL
-	/**
-	 * Get a single int from a row in the bank of the current event
-	 * @param bankName the name of the bank
-	 * @param columnName the name of the column
-	 * @param index the 0-based index (row)
-	 * @return the int, or Integer.MIN_Value on error (-2147483648)
-	 */
-	public int getInt(String bankName, String columnName, int index) {
-
-		DataBank bank = firstGetBank(bankName, columnName, index);
-
-		if (bank == null) {
-			return Integer.MIN_VALUE;
-		}
-
-		int data[] = bank.getInt(columnName);
-		if ((data == null) || (index >= data.length)) {
-			return Integer.MIN_VALUE;
-		}
-
-
-		return data[index];
-	}
-
-	private DataBank firstGetBank(String bankName, String columnName, int index) {
-		if ((_currentEvent == null) || (bankName == null) || (columnName == null) || (index < 0)) {
-			return null;
-		}
-
-		return _currentEvent.getBank(bankName);
-	}
-
 
 }
 

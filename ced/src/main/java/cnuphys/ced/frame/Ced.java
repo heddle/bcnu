@@ -40,6 +40,7 @@ import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
@@ -76,14 +77,11 @@ import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.CND;
-import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.CVT;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.FMTCrosses;
 import cnuphys.ced.event.data.FTCAL;
-import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.HBCrosses;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.HTCC2;
@@ -121,7 +119,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.5.5";
+	private static final String _release = "1.5.6";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -1094,7 +1092,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static void initDataCollectors() {
 		DC.getInstance();
 		AIDC.getInstance();
-		FTOF.getInstance();
 		BMTCrosses.getInstance();
 		FMTCrosses.getInstance();
 		BSTCrosses.getInstance();
@@ -1109,14 +1106,13 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		AllEC.getInstance();
 		HTCC2.getInstance();
 		FTCAL.getInstance();
-		CTOF.getInstance();
 		CVT.getInstance();
 		BST.getInstance();
 		BMT.getInstance();
-		CND.getInstance();
 		RECCalorimeter.getInstance();
 		Cosmics.getInstance();
 		DataManager.getInstance();
+		DataWarehouse.getInstance();
 	}
 
 	/**

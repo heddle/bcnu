@@ -128,35 +128,6 @@ public class AdcList extends Vector<AdcHit> {
 	}
 
 	/**
-	 * Get a monochrome color with alpha based of relative adc
-	 *
-	 * @param hit    the hit
-	 * @param maxAdc the max adc value
-	 * @return a fill color for adc hits
-	 */
-	public Color adcMonochromeColor(TdcAdcTOFHit hit, int maxAdc) {
-		if (hit == null) {
-			return Color.white;
-		}
-
-		int avgADC = hit.averageADC();
-
-		if (avgADC < 1) {
-			return ASDZERO2;
-		}
-
-		double maxadc = Math.max(1.0, maxAdc);
-
-		double fract = (avgADC) / maxadc;
-		fract = Math.max(0, Math.min(1.0, fract));
-
-		int alpha = 128 + (int) (127 * fract);
-		alpha = Math.min(255, alpha);
-
-		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
-	}
-
-	/**
 	 * Get a color with alpha based of relative adc
 	 *
 	 * @param hit the hit

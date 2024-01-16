@@ -53,10 +53,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 	// for goto sequential
 	private JTextField seqEvNum;
 
-	// for goto true event from RUN::config
-	private JTextField trueEvNum;
-
-
 	// for auto next event
 	private JCheckBox _periodEvent;
 	private float _period = 2f; // sec
@@ -135,10 +131,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		// goto sequential
 		add(createGotoSequentialPanel());
 
-		// goto true
-		add(createGotoTruePanel());
-
-
 		// periodic event
 		add(createEventPeriodPanel());
 
@@ -215,7 +207,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		nextItem.setEnabled(nextOK);
 		prevItem.setEnabled(_eventManager.isPrevOK());
 		seqEvNum.setEnabled(_eventManager.isGotoOK());
-		trueEvNum.setEnabled(_eventManager.isGotoOK() && (_eventManager.getTrueEventNumber() > -1));
 		_periodEvent.setEnabled(nextOK);
 		_periodTF.setEnabled(nextOK);
 
@@ -379,7 +370,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 	private JPanel createGotoSequentialPanel() {
 		JPanel sp = new TransparentPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
 
-		JLabel label = new JLabel("Goto Sequential Event: ");
+		JLabel label = new JLabel("Goto Event: ");
 
 		seqEvNum = new JTextField("1", 10);
 
@@ -405,39 +396,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		return sp;
 	}
 
-	// create the goto true event widget
-	private JPanel createGotoTruePanel() {
-		JPanel sp = new TransparentPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
 
-		JLabel label = new JLabel("Goto True Event: ");
-
-		trueEvNum = new JTextField("1", 10);
-
-		KeyAdapter ka = new KeyAdapter() {
-			@Override
-			public void keyReleased(KeyEvent kev) {
-				if (kev.getKeyCode() == KeyEvent.VK_ENTER) {
-					MenuSelectionManager.defaultManager().clearSelectedPath();
-					int trueNum = _eventManager.getTrueEventNumber();
-					if (trueNum > -1) {
-						try {
-							int enumber = Integer.parseInt(trueEvNum.getText());
-							if (enumber != trueNum) {
-								_eventManager.gotoTrueEvent(enumber);
-							}
-						} catch (Exception e) {
-						}
-					}
-				}
-			}
-		};
-		trueEvNum.addKeyListener(ka);
-
-		sp.add(label);
-		sp.add(trueEvNum);
-		trueEvNum.setEnabled(false);
-		return sp;
-	}
 
 	/**
 	 * Auto select the auto event every two seconds. This is

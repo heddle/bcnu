@@ -40,8 +40,4 @@ public class Hit1 extends BaseHit {
 		return Math.toDegrees(Math.atan2(y, x));
 	}
 
-	public static void main(String arg[]) {
-		new Hit1((byte) 0, (byte) 0, (short) 0, 0.f, 0.f, 0.f, 0.f);
-	}
-
 }

@@ -5,14 +5,13 @@ import java.util.Vector;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DataSupport;
-import cnuphys.ced.event.data.EventDataException;
 
 public class DCReconHitList extends Vector<DCReconHit> {
 
 	//the bank name
 	private String _bankName;
 
-	public DCReconHitList(String bankName) throws EventDataException {
+	public DCReconHitList(String bankName) {
 
 		_bankName = bankName;
 

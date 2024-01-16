@@ -48,14 +48,12 @@ import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
-import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
@@ -114,7 +112,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private CentralXYHitDrawer _hitDrawer;
 
 	//bank matches
-	private static String _defMatches[] = {"BMT", "BST", "CVT", "CTOF"};
+	private static String _defMatches[] = {"BMT", "BST", "CND", "CVT", "CTOF"};
 
 
 	/**
@@ -593,11 +591,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				for (int index = 0; index < 48; index++) {
 					if (_ctofPoly[index].contains(screenPoint)) {
 						int paddle = index + 1;
-						TdcAdcTOFHit hit = null;
-						TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
-						if ((hits != null) && !hits.isEmpty()) {
-							hit = hits.get(0, 0, paddle);
-						}
+						TdcAdcTOFHit hit = _dataWarehouse.getTdcAdcTOFHit((byte)1, (byte)1, (short)paddle, "CTOF");
 
 						if (hit == null) {
 							feedbackStrings.add("$dodger blue$" + "CTOF paddle " + paddle);

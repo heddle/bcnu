@@ -1,12 +1,11 @@
 package cnuphys.ced.event.data.lists;
 
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.event.data.EventDataException;
 import cnuphys.ced.event.data.Hit1;
 
 public class Hit1List extends BaseHitList<Hit1> {
 
-	public Hit1List(String bankName) throws EventDataException {
+	public Hit1List(String bankName) {
 
 		super(bankName);
 

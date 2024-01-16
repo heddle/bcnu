@@ -167,16 +167,7 @@ public class SectorECALItem extends PolygonItem {
 
 								if (wp != null) {
 									Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
-
-									Color fc;
-									// handle monochrome
-									boolean isMono = _view.getControlPanel().isMonochrome();
-									if (isMono) {
-										fc = hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc());
-									} else {
-										fc = hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc());
-									}
-
+									Color fc = hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc());
 									WorldGraphicsUtilities.drawPath2D(g, container, path, fc, fc, 0, LineStyle.SOLID,
 											true);
 								}

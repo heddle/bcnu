@@ -163,17 +163,6 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	}
 
 	/**
-	 * Get a gray scale with apha based of relative adc
-	 *
-	 * @param hit the hit
-	 * @return a fill color for adc hits
-	 */
-	public Color adcMonochromeColor(TdcAdcTOFHit hit) {
-		return adcMonochromeColor(hit, _maxADC);
-	}
-
-
-	/**
 	 * Get a color with apha based of relative adc
 	 *
 	 * @param hit the hit
@@ -181,37 +170,6 @@ public class TdcAdcTOFHitList extends Vector<TdcAdcTOFHit> {
 	 */
 	public Color adcColor(TdcAdcTOFHit hit) {
 		return adcColor(hit, _maxADC);
-	}
-
-
-	/**
-	 * Get a monochrome color with alpha based of relative adc
-	 *
-	 * @param hit    the hit
-	 * @param maxAdc the max adc value
-	 * @return a fill color for adc hits
-	 */
-	public Color adcMonochromeColor(TdcAdcTOFHit hit, int maxAdc) {
-		if (hit == null) {
-			return Color.white;
-		}
-
-		int avgADC = hit.averageADC();
-
-		if(avgADC < 1) {
-			return ASDZERO2;
-		}
-
-
-		double maxadc = Math.max(1.0, maxAdc);
-
-		double fract = (avgADC) / maxadc;
-		fract = Math.max(0, Math.min(1.0, fract));
-
-		int alpha = 128 + (int) (127 * fract);
-		alpha = Math.min(255, alpha);
-
-		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
 	}
 
 	/**

@@ -335,16 +335,6 @@ public class DataManager {
 		return (cd == null) ? null : cd.getDoubleArray(event);
 	}
 
-	/**
-	 * (Approximate) test whether this is a valid column name. Doesn't test whether
-	 * the column exists.
-	 *
-	 * @param name the name to test
-	 * @return <code>true</code> if name is structured as a valid column name.
-	 */
-	public boolean validColumnName(String name) {
-		return ((name != null) && (name.length() > 4) && name.contains(":") && name.contains("."));
-	}
 
 	/**
 	 * Get a list of detector responses
@@ -355,9 +345,6 @@ public class DataManager {
 	 * @return a list of detector responses
 	 */
 	public List<DetectorResponse> getDetectorResponse(DataEvent event, String bankName, DetectorType type) {
-
-		// TODO remove aftergagik fixes
-		// if (true) return null;
 
 		if (event == null) {
 			return null;

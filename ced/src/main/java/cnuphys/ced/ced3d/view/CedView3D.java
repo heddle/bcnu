@@ -17,7 +17,7 @@ public abstract class CedView3D extends PlainView3D
 	private final ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	//for appending event number to the titile
-	private static final String evnumAppend = "  (Seq Event# ";
+	private static final String evnumAppend = "  (Event# ";
 
 	/**
 	 * Create a 3D view

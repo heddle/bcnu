@@ -10,6 +10,7 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.log.Log;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
@@ -21,21 +22,18 @@ import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.CND;
-import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.FTCAL;
-import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.arrays.TOF_ADC_Arrays;
+import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.event.data.lists.RTPCHitList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeoConstants;
@@ -50,7 +48,7 @@ import cnuphys.ced.geometry.ftof.FTOFGeometry;
  */
 public class AccumulationManager implements IAccumulator, IClasIoEventListener, IAccumulationListener {
 
-	/** Indicates hat accumulation has started */
+	/** Indicates that accumulation has started */
 	public static final int ACCUMULATION_STARTED = 0;
 
 	/** Indicates hat accumulation has been cancelled */
@@ -68,11 +66,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// the singleton
 	private static AccumulationManager instance;
-
-	// private static final Color NULLCOLOR = new Color(128, 128, 128);
-	// private static final Color NULLCOLOR = Color.gray;
-
-//	private static final Color HOTCOLOR = X11Colors.getX11Color("red");
+	
+	//the DataWarehouse singleton
+	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// CND accumulated accumulated data indices are sector, layer, order (0 or 1,
 	// adc only)
@@ -652,7 +648,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumRTPC(rtpcList);
 
 		// CND a special case
-		CND.getInstance().updateData();
 		accumCND();
 
 		// htcc data
@@ -668,12 +663,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumDC(dclist);
 
 		// ctof data
-		TdcAdcTOFHitList ctoflist = CTOF.getInstance().updateTdcAdcList();
-		accumCTOF(ctoflist);
+		accumCTOF();
 
 		// ftof data
-		TdcAdcTOFHitList ftoflist = FTOF.getInstance().updateTdcAdcList();
-		accumFTOF(ftoflist);
+		accumFTOF();
 
 		// all ec
 		AdcECALHitList allEClist = AllEC.getInstance().updateAdcList();
@@ -741,12 +734,16 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate CND which is a special case
 	private void accumCND() {
-		CND cnd = CND.getInstance();
-		int adcCount = cnd.getCountAdc();
+		
+		
+	
+		
+		int adcCount = _dataWarehouse.rows("CND::adc");
+		
 		if (adcCount > 0) {
-			byte[] sect = cnd.adc_sect;
-			byte[] layer = cnd.adc_layer;
-			byte[] order = cnd.adc_order;
+			byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
+			byte[] layer = _dataWarehouse.getByte("CND::adc", "layer");
+			byte[] order = _dataWarehouse.getByte("CND::adc", "order");
 
 			for (int i = 0; i < adcCount; i++) {
 
@@ -870,57 +867,46 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// for ctof accumulating
-	private void accumCTOF(TdcAdcTOFHitList list) {
+	private void accumCTOF() {
 
-		if ((list == null) || list.isEmpty()) {
+		//use the adc arrays to accumulate
+		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("CTOF::adc");
+		if (!arrays.hasData()) {
 			return;
 		}
 
-		for (TdcAdcTOFHit hit : list) {
-			if (hit != null) {
-				try {
-					_CTOFAccumulatedData[hit.component - 1] += 1;
-				} catch (ArrayIndexOutOfBoundsException e) {
-					Log.getInstance().warning("In accumulation, CTOF hit has bad indices: " + hit);
-				}
-			}
-
+		for (int comp : arrays.component) {
+			_CTOFAccumulatedData[comp - 1] += 1;
 		}
-
 	}
 
 	// for ftof accumulating
-	private void accumFTOF(TdcAdcTOFHitList list) {
-
-		if ((list == null) || list.isEmpty()) {
+	private void accumFTOF() {
+		
+		//use the adc arrays to accumulate
+		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
+		if (!arrays.hasData()) {
 			return;
 		}
+		
+		for (int i = 0; i < arrays.sector.length; i++) {
+			int sect0 = arrays.sector[i] - 1;
+			int paddle0 = arrays.component[i] - 1;
 
-		for (TdcAdcTOFHit hit : list) {
-			if (hit != null) {
-				try {
-					int sect0 = hit.sector - 1;
-					int paddle0 = hit.component - 1;
-
-					if (hit.layer == 1) {
-						_FTOF1AAccumulatedData[sect0][paddle0] += 1;
-					} else if (hit.layer == 2) {
-						_FTOF1BAccumulatedData[sect0][paddle0] += 1;
-					}
-					if (hit.layer == 3) {
-						_FTOF2AccumulatedData[sect0][paddle0] += 1;
-					}
-				} catch (ArrayIndexOutOfBoundsException e) {
-					Log.getInstance().warning("In accumulation, FTOF hit has bad indices: " + hit);
-				}
+			if (arrays.layer[i] == 1) {
+				_FTOF1AAccumulatedData[sect0][paddle0] += 1;
+			} else if (arrays.layer[i] == 2) {
+				_FTOF1BAccumulatedData[sect0][paddle0] += 1;
 			}
-
+			if (arrays.layer[i] == 3) {
+				_FTOF2AccumulatedData[sect0][paddle0] += 1;
+			}
 		}
-
 	}
 
 	@Override
 	public void openedNewEventFile(String path) {
+		clear();
 	}
 
 	/**
@@ -930,6 +916,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	@Override
 	public void changedEventSource(ClasIoEventManager.EventSourceType source) {
+		clear();
 	}
 
 	/**

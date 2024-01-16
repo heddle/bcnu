@@ -6,7 +6,7 @@ import java.awt.Polygon;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.FTOF;
+import cnuphys.ced.event.data.DataDrawSupport;
 
 public class FTOFAccumulationHandler {
 
@@ -25,15 +25,15 @@ public class FTOFAccumulationHandler {
 		int medianHit = 0;
 
 		switch (_view.displayPanel()) {
-		case FTOF.PANEL_1A:
+		case DataDrawSupport.PANEL_1A:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();
 			break;
-		case FTOF.PANEL_1B:
+		case DataDrawSupport.PANEL_1B:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1BCount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1BData();
 			break;
-		case FTOF.PANEL_2:
+		case DataDrawSupport.PANEL_2:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF2Count();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF2Data();
 			break;

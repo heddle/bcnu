@@ -16,10 +16,10 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.CND;
 import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")
@@ -30,6 +30,9 @@ public class CNDXYPolygon extends Polygon {
 	private Point pp = new Point();
 
 
+	//the data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
+	
 	/**
 	 * The layer, 1..3
 	 */
@@ -131,8 +134,6 @@ public class CNDXYPolygon extends Polygon {
 	public boolean getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 
-		CND cnd = CND.getInstance();
-
 		if (!contains(screenPoint)) {
 			return false;
 		}
@@ -144,21 +145,29 @@ public class CNDXYPolygon extends Polygon {
 
 		if (view.isSingleEventMode()) {
 
-			int adcCount = cnd.getCountAdc();
-			int tdcCount = cnd.getCountTdc();
+			int adcCount = _dataWarehouse.rows("CND::adc");
+			int tdcCount = _dataWarehouse.rows("CND::tdc");
 
 			// adc?
 			if (adcCount > 0) {
+				
+				byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
+				byte lay[] = _dataWarehouse.getByte("CND::adc", "layer");
+				byte order[] = _dataWarehouse.getByte("CND::adc", "order");
+				short ped[] = _dataWarehouse.getShort("CND::adc", "ped");
+				int adc[] = _dataWarehouse.getInt("CND::adc", "ADC");
+				float time[] = _dataWarehouse.getFloat("CND::adc", "time");
+
 				for (int i = 0; i < adcCount; i++) {
-					int hsect = cnd.adc_sect[i];
-					int hlayer = cnd.adc_layer[i];
-					int hleftright = 1 + (cnd.adc_order[i] % 2);
+					int hsect = sect[i];
+					int hlayer = lay[i];
+					int hleftright = 1 + (order[i] % 2);
 
 					if ((sector == hsect) && (layer == hlayer) && (_leftRight == hleftright)) {
-						fbString("cyan", "cnd adc " + cnd.adc_ADC[i], feedbackStrings);
-						fbString("cyan", "cnd ped " + cnd.adc_ped[i], feedbackStrings);
+						fbString("cyan", "cnd adc " + adc[i], feedbackStrings);
+						fbString("cyan", "cnd ped " + ped[i], feedbackStrings);
 
-						String timeStr = String.format("cnd time %-6.1f", cnd.adc_time[i]);
+						String timeStr = String.format("cnd time %-6.1f", time[i]);
 						fbString("cyan", timeStr, feedbackStrings);
 					}
 				}
@@ -166,13 +175,19 @@ public class CNDXYPolygon extends Polygon {
 
 			// tdc?
 			if (tdcCount > 0) {
+				
+				byte sect[] = _dataWarehouse.getByte("CND::tdc", "sector");
+				byte lay[] = _dataWarehouse.getByte("CND::tdc", "layer");
+				byte order[] = _dataWarehouse.getByte("CND::tdc", "order");
+                int tdc[] = _dataWarehouse.getInt("CND::tdc", "TDC");
+                
 				for (int i = 0; i < tdcCount; i++) {
-					int hsect = cnd.tdc_sect[i];
-					int hlayer = cnd.tdc_layer[i];
-					int hleftright = 1 + (cnd.tdc_order[i] % 2);
+					int hsect = sect[i];
+					int hlayer = lay[i];
+					int hleftright = 1 + (order[i] % 2);
 
 					if ((sector == hsect) && (layer == hlayer) && (_leftRight == hleftright)) {
-						fbString("cyan", "cnd tdc " + cnd.tdc_TDC[i], feedbackStrings);
+						fbString("cyan", "cnd tdc " + tdc[i], feedbackStrings);
 					}
 				}
 			}

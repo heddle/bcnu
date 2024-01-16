@@ -204,7 +204,13 @@ public class FTOFView extends HexView {
 
 
 
-	//get the world based polygon for the paddle
+	/**
+	 * Get the world based polygon for the paddle
+	 * @param sector 1-based sector
+	 * @param panel 0, 1, 2 for 1A, 1B, 2
+	 * @param paddleId 1-based paddle id
+	 * @return the world based polygon for the paddle
+	 */
 	private Point2D.Double[] getWorldPoly(int sector, int panel, int paddleId) {
 		String hash = "" + sector + "|" + panel + "|" + paddleId;
 		Point2D.Double wp[] = polyHash.get(hash);
@@ -220,7 +226,14 @@ public class FTOFView extends HexView {
 		return wp;
 	}
 
-	//get the paddle polygon
+	/**
+	 * Get the world based polygon for the paddle
+	 * @param container the container
+	 * @param sector 1-based sector
+	 * @param panel 0, 1, 2 for 1A, 1B, 2
+	 * @param paddleId 1-based paddle id
+	 * @param poly the polygon to fill
+	 */
 	public void getPaddlePolygon(IContainer container,  int sector, int panel, int paddleId, Polygon poly) {
 		Point2D.Double wp[] = getWorldPoly(sector, panel, paddleId);
 		poly.reset();

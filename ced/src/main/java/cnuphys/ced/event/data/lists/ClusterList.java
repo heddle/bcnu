@@ -4,11 +4,15 @@ import java.awt.Point;
 import java.util.List;
 
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.event.data.DataDrawSupport;
 
 @SuppressWarnings("serial")
 public class ClusterList {
 
+	//the data warehouse
+	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
+	
 	private String _bankName;
 
 	public int length;
@@ -61,6 +65,38 @@ public class ClusterList {
 			_ppx = null;
 			_ppy = null;
 		}
+	}
+	
+	/**
+	 * Update the list as a response to a new event
+	 * using the DataWarehouse
+	 */
+	public void fillList() {
+		byte[] sector = _dataWarehouse.getByte(_bankName, "sector");
+		if ((sector != null) && (sector.length > 0)) {
+			length = sector.length;
+			layer = _dataWarehouse.getByte(_bankName, "layer");
+			energy = _dataWarehouse.getFloat(_bankName, "energy");
+			time = _dataWarehouse.getFloat(_bankName, "time");
+			x = _dataWarehouse.getFloat(_bankName, "x");
+			y = _dataWarehouse.getFloat(_bankName, "y");
+			z = _dataWarehouse.getFloat(_bankName, "z");
+			_ppx = new int[length];
+			_ppy = new int[length];
+
+		}
+		else {
+			length = 0;
+			layer = null;
+			energy = null;
+			time = null;
+			x = null;
+			y = null;
+			z = null;
+			_ppx = null;
+			_ppy = null;
+		}
+
 	}
 
 	/**

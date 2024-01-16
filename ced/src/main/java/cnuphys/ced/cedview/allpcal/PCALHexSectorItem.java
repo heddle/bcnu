@@ -139,14 +139,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 							int strip0 = hit.component - 1;
 							Polygon poly = stripPolygon(container, view0, strip0);
 
-							//handle monochrome
-							boolean isMono = _pcalView.getControlPanel().isMonochrome();
-							if (isMono) {
-								g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
-							}
-							else {
-								g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
-							}
+							g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
 							g.fillPolygon(poly);
 							g.drawPolygon(poly);
 

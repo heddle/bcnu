@@ -561,33 +561,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 		refresh();
 	}
 
-	/**
-	 * In the BankDataTable a row was selected. Notify listeners who may want to highlight
-	 * @param bankName the name of the bank
-	 * @param index the 1-based index into the bank
-	 */
-	@Override
-	public void dataSelected(String bankName, int index) {
-		if ("DC::tdc".equals(bankName)) {
-
-			int tdc = ClasIoEventManager.getInstance().getInt(bankName, "TDC", index-1);
-			System.err.println("SELECTED TDC: " + tdc);
-
-//			DCTdcHitList hits = DC.getInstance().getTDCHits();
-//			if ((hits != null) && (hits.size() >= index)) {
-//				DCTdcHit hit = hits.get(index-1);
-//
-//				int sector = hit.sector;
-//				int layer = hit.layer36;
-//				int wire = hit.wire;
-//				int tdc = hit.tdc;
-//
-//				System.err.println(String.format("In AllDCView highlight sect: %d  lay: %d  wire: %d with tdc: %d", sector, layer, wire, tdc));
-//			}
-
-			refresh();
-		}
-	}
 
 
 }

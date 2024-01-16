@@ -215,68 +215,6 @@ public class ColumnData implements Comparable<ColumnData> {
 	}
 
 
-	/**
-	 * Get the array with double values regardless of type
-	 *
-	 * @return the data as a double array
-	 */
-	public double[] getAsDoubleArray(DataEvent event) {
-		double da[] = null;
-
-		if (event != null) {
-			switch (_type) {
-			case INT8:
-				byte b[] = getByteArray(event);
-				int len = (b == null) ? 0 : b.length;
-				if (len > 0) {
-					da = new double[len];
-					for (int j = 0; j < len; j++) {
-						da[j] = b[j];
-					}
-				}
-				break;
-
-			case INT16:
-				short s[] = getShortArray(event);
-				len = (s == null) ? 0 : s.length;
-				if (len > 0) {
-					da = new double[len];
-					for (int j = 0; j < len; j++) {
-						da[j] = s[j];
-					}
-				}
-				break;
-
-			case INT32:
-				int i[] = getIntArray(event);
-				len = (i == null) ? 0 : i.length;
-				if (len > 0) {
-					da = new double[len];
-					for (int j = 0; j < len; j++) {
-						da[j] = i[j];
-					}
-				}
-				break;
-
-			case FLOAT32:
-				float f[] = getFloatArray(event);
-				len = (f == null) ? 0 : f.length;
-				if (len > 0) {
-					da = new double[len];
-					for (int j = 0; j < len; j++) {
-						da[j] = f[j];
-					}
-				}
-				break;
-
-			case FLOAT64:
-				da = getDoubleArray(event);
-				break;
-			}
-		}
-
-		return da;
-	}
 
 	/**
 	 * Get the length of the underlying data array

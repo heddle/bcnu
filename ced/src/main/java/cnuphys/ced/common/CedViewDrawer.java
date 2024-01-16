@@ -7,6 +7,7 @@ import java.util.List;
 
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
@@ -14,6 +15,9 @@ public abstract class CedViewDrawer implements IDrawable {
 
 	// convenient access to the event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	
+	//the DataWarehouse
+	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// the CedView being rendered.
 	protected CedView _view;

@@ -67,6 +67,8 @@ public class CTOFXYPolygon extends Polygon {
 	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
+	 * @param index     the index 1-based
+	 * @param color     the fill color
 	 */
 	public void draw(Graphics g, IContainer container, int index, Color color) {
 		Graphics2D g2 = (Graphics2D)g;

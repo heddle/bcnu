@@ -55,7 +55,7 @@ public class SwimAllMC implements ISwimAll {
 		}
 
 		double stepSize = 1.0e-3;
-		double tolerance = 1.0e-8;
+		double tolerance = 1.0e-6;
 
 		//used to avoid swimming duplicates
 		ArrayList<String> swam = new ArrayList<>();

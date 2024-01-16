@@ -60,7 +60,6 @@ public class TriggerFilter extends AEventFilter {
 	@Override
 	protected void toggleActiveState() {
 		super.toggleActiveState();
-		ClasIoEventManager.getInstance().resetIndexMap();
 		TriggerDialog.getInstance().getTriggerActiveCheckBox().setSelected(isActive());
 	}
 
@@ -137,7 +136,6 @@ public class TriggerFilter extends AEventFilter {
 		}
 
 		public Builder setActive(boolean active) {
-			ClasIoEventManager.getInstance().resetIndexMap();
 			_filter.setActive(active);
 			return this;
 		}

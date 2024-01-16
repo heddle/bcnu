@@ -39,6 +39,7 @@ import cnuphys.bCNU.util.TextUtilities;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
@@ -64,6 +65,8 @@ import cnuphys.swim.Swimming;
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
 		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
 
+	//the data warehouse
+	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	//name used for reading and writing properties
 	//can be different from title
@@ -1616,31 +1619,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	}
 
-
-
-	/**
-	 * Get a monochrome color with alpha based of relative adc
-	 *
-	 * @param hit    the hit
-	 * @param maxAdc the max adc value
-	 * @return a fill color for adc hits
-	 */
-	public Color adcMonochromeColor(int adc, int maxAdc) {
-		if(adc < 1) {
-			return (adc == 0) ? ASDZERO2 : ASDZERO2T;
-		}
-
-
-		double maxadc = Math.max(1, maxAdc);
-
-		double fract = adc / maxadc;
-		fract = Math.max(0, Math.min(1.0, fract));
-
-		int alpha = 128 + (int) (127 * fract);
-		alpha = Math.min(255, alpha);
-
-		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
-	}
 
 	/**
 	 * Get a color with alpha based of relative adc

@@ -24,7 +24,7 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -37,6 +37,8 @@ import cnuphys.ced.item.HexSectorItem;
 
 
 public class UrWELLXYView extends HexView {
+	
+	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	private static int CLONE_COUNT = 0;
 
@@ -224,16 +226,16 @@ public class UrWELLXYView extends HexView {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray("URWELL::crosses.sector");
+			byte sector[] = DataWarehouse.getInstance().getByte("URWELL::crosses", "sector");
 
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
 
-			float x[] = ColumnData.getFloatArray("URWELL::crosses.x");
-			float y[] = ColumnData.getFloatArray("URWELL::crosses.y");
-			float z[] = ColumnData.getFloatArray("URWELL::crosses.z");
+			float x[] = _dataWarehouse.getFloat("URWELL::crosses", "x");
+			float y[] = _dataWarehouse.getFloat("URWELL::crosses", "y");
+			float z[] = _dataWarehouse.getFloat("URWELL::crosses", "z");
 
 
 			//public static void drawSphere(Graphics g, String color, int xc, int yc, int width, int height) {
@@ -260,19 +262,19 @@ public class UrWELLXYView extends HexView {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray("URWELL::clusters.sector");
+			byte sector[] = _dataWarehouse.getByte("URWELL::clusters", "sector");
 
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
 
-			float xo[] = ColumnData.getFloatArray("URWELL::clusters.xo");
-			float yo[] = ColumnData.getFloatArray("URWELL::clusters.yo");
-			float zo[] = ColumnData.getFloatArray("URWELL::clusters.zo");
-			float xe[] = ColumnData.getFloatArray("URWELL::clusters.xe");
-			float ye[] = ColumnData.getFloatArray("URWELL::clusters.ye");
-			float ze[] = ColumnData.getFloatArray("URWELL::clusters.ze");
+			float xo[] = _dataWarehouse.getFloat("URWELL::clusters", "xo");
+			float yo[] = _dataWarehouse.getFloat("URWELL::clusters", "yo");
+			float zo[] = _dataWarehouse.getFloat("URWELL::clusters", "zo");
+			float xe[] = _dataWarehouse.getFloat("URWELL::clusters", "xe");
+			float ye[] = _dataWarehouse.getFloat("URWELL::clusters", "ye");
+			float ze[] = _dataWarehouse.getFloat("URWELL::clusters", "ze");
 
 			for (int i = 0; i < count; i++) {
 				projectLine(container, xo[i], yo[i], zo[i], xe[i], ye[i], ze[i]);
@@ -296,12 +298,12 @@ public class UrWELLXYView extends HexView {
 		if (dataEvent.hasBank("URWELL::clusters") && (_highlightData.cluster >= 0) && showClusters()) {
 			int idx = _highlightData.cluster; //0 based
 
-			float xo = ColumnData.getFloatArray("URWELL::clusters.xo")[idx];
-			float yo = ColumnData.getFloatArray("URWELL::clusters.yo")[idx];
-			float zo = ColumnData.getFloatArray("URWELL::clusters.zo")[idx];
-			float xe = ColumnData.getFloatArray("URWELL::clusters.xe")[idx];
-			float ye = ColumnData.getFloatArray("URWELL::clusters.ye")[idx];
-			float ze = ColumnData.getFloatArray("URWELL::clusters.ze")[idx];
+			float xo = _dataWarehouse.getFloat("URWELL::clusters", "xo")[idx];
+			float yo = _dataWarehouse.getFloat("URWELL::clusters", "yo")[idx];
+			float zo = _dataWarehouse.getFloat("URWELL::clusters", "zo")[idx];
+			float xe = _dataWarehouse.getFloat("URWELL::clusters", "xe")[idx];
+			float ye = _dataWarehouse.getFloat("URWELL::clusters", "ye")[idx];
+			float ze = _dataWarehouse.getFloat("URWELL::clusters", "ze")[idx];
 
 			projectLine(container, xo, yo, zo, xe, ye, ze);
 			GraphicsUtilities.drawThickHighlightedLine(g, _pp1.x, _pp1.y, _pp2.x, _pp2.y, Color.orange, Color.white);
@@ -310,9 +312,9 @@ public class UrWELLXYView extends HexView {
 
 		if (dataEvent.hasBank("URWELL::crosses") && (_highlightData.cross >= 0) && showCrosses()) {
 			int idx = _highlightData.cross; //0 based
-			float x = ColumnData.getFloatArray("URWELL::crosses.x")[idx];
-			float y = ColumnData.getFloatArray("URWELL::crosses.y")[idx];
-			float z = ColumnData.getFloatArray("URWELL::crosses.z")[idx];
+			float x = _dataWarehouse.getFloat("URWELL::crosses", "x")[idx];
+			float y = _dataWarehouse.getFloat("URWELL::crosses", "y")[idx];
+			float z = _dataWarehouse.getFloat("URWELL::crosses", "z")[idx];
 			projectPoint(container, x, y, z);
 			DataDrawSupport.drawBiggerCross(g, _pp1.x, _pp1.y, 5);
 		}
@@ -322,9 +324,9 @@ public class UrWELLXYView extends HexView {
 
 			int idx = _highlightData.hit; //0 based
 
-			byte sector = ColumnData.getByteArray("URWELL::hits.sector")[idx];
-			byte layer = ColumnData.getByteArray("URWELL::hits.layer")[idx];
-			short strip = ColumnData.getShortArray("URWELL::hits.strip")[idx];
+			byte sector = _dataWarehouse.getByte("URWELL::hits", "sector")[idx];
+			byte layer = _dataWarehouse.getByte("URWELL::hits", "layer")[idx];
+			short strip = _dataWarehouse.getShort("URWELL::hits", "strip")[idx];
 
 			int data[] = new int[2];
 
@@ -351,15 +353,15 @@ public class UrWELLXYView extends HexView {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray("URWELL::hits.sector");
+			byte sector[] = _dataWarehouse.getByte("URWELL::hits", "sector");
 
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
 
-			byte layer[] = ColumnData.getByteArray("URWELL::hits.layer");
-			short strip[] = ColumnData.getShortArray("URWELL::hits.strip");
+			byte layer[] = _dataWarehouse.getByte("URWELL::hits", "layer");
+			short strip[] = _dataWarehouse.getShort("URWELL::hits","strip");
 
 			int data[] = new int[2];
 
@@ -482,26 +484,26 @@ public class UrWELLXYView extends HexView {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray("URWELL::crosses.sector");
+			byte sector[] = _dataWarehouse.getByte("URWELL::crosses", "sector");
 
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
 
-			float x[] = ColumnData.getFloatArray("URWELL::crosses.x");
-			float y[] = ColumnData.getFloatArray("URWELL::crosses.y");
-			float z[] = ColumnData.getFloatArray("URWELL::crosses.z");
+			float x[] = _dataWarehouse.getFloat("URWELL::crosses", "x");
+			float y[] = _dataWarehouse.getFloat("URWELL::crosses", "y");
+			float z[] = _dataWarehouse.getFloat("URWELL::crosses", "z");
 
 			for (int i = 0; i < count; i++) {
 				projectPoint(container, x[i], y[i], z[i]);
 				_fbRect.setBounds(_pp1.x-5, _pp1.y-5, 10, 10);
 
 				if (_fbRect.contains(pp)) {
-					short id = ColumnData.getShortArray("URWELL::crosses.id")[i];
-					short cluster1 = ColumnData.getShortArray("URWELL::crosses.cluster1")[i];
-					short cluster2 = ColumnData.getShortArray("URWELL::crosses.cluster2")[i];
-					short status = ColumnData.getShortArray("URWELL::crosses.status")[i];
+					short id = _dataWarehouse.getShort("URWELL::crosses", "id")[i];
+					short cluster1 = _dataWarehouse.getShort("URWELL::crosses", "cluster1")[i];
+					short cluster2 = _dataWarehouse.getShort("URWELL::crosses", "cluster2")[i];
+					short status = _dataWarehouse.getShort("URWELL::crosses", "status")[i];
 
 					String fbs1 = String.format("$cyan$cross: %d  status: %d", id, status);
 					String fbs2 = String.format("$cyan$cross clusters: %d and %d", cluster1, cluster2);

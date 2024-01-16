@@ -179,14 +179,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		return _tabbedPane;
 	}
 
-	/**
-	 * Is monochrome selected?
-	 * @return true if monochrome selected
-	 */
-	public boolean isMonochrome() {
-		return (_colorPanel != null) && _colorPanel.isMonochrome();
-	}
-
 	// use a tabbed pane to save space
 	private JTabbedPane addTabbedPane(CedView view, int controlPanelBits, int displayArrayBits) {
 

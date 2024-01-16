@@ -17,15 +17,14 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.CTOF;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCCluster;
 import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.FTOF;
 import cnuphys.ced.event.data.Hit1;
 import cnuphys.ced.event.data.RECCalorimeter;
+import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
 import cnuphys.ced.event.data.lists.ClusterList;
 import cnuphys.ced.event.data.lists.DCClusterList;
 import cnuphys.ced.event.data.lists.DCReconHitList;
@@ -186,13 +185,13 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw reconstructed clusters
 	private void drawClusters(Graphics g, IContainer container) {
 		drawClusterList(g, container, AllEC.getInstance().getClusters());
-		drawClusterList(g, container, FTOF.getInstance().getClusters());
-		drawClusterList(g, container, CTOF.getInstance().getClusters());
+		drawClusterList(g, container, _dataWarehouse.getClusters("FTOF::clusters"));
+		drawClusterList(g, container, _dataWarehouse.getClusters("CTOF::clusters"));
 	}
 
 	// draw FTOF reconstructed hits
 	private void drawFTOFReconHits(Graphics g, IContainer container) {
-		drawReconHitList(g, container, FTOF.getInstance().getHits());
+		//TODO DRAW HITS
 	}
 
 	// draw reconstructed DC hit Hit based and time based based hits
@@ -215,7 +214,13 @@ public class ReconDrawer extends SectorViewDrawer {
 			List<String> feedbackStrings) {
 
 		if (clusters != null) {
+			
+			if ((clusters.sector == null) || (clusters.sector.length == 0)) {
+				return false;
+			}
+			
 			for (int index = 0; index < clusters.length; index++) {
+				
 				if (_view.containsSector(clusters.sector[index])) {
 					if (clusters.contains(index, screenPoint)) {
 						clusters.getFeedbackStrings(prefix, index, feedbackStrings);
@@ -241,32 +246,16 @@ public class ReconDrawer extends SectorViewDrawer {
 			List<String> feedbackStrings, int option) {
 
 		if (_view.showClusters()) {
-			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings) || clusterListFeedback("FTOF", FTOF.getInstance().getClusters(), screenPoint, feedbackStrings) || clusterListFeedback("CTOF", CTOF.getInstance().getClusters(), screenPoint, feedbackStrings)) {
+			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings)
+					|| clusterListFeedback("FTOF", _dataWarehouse.getClusters("FTOF::clusters"), screenPoint, feedbackStrings)
+					|| clusterListFeedback("CTOF", _dataWarehouse.getClusters("CTOF::clusters"), screenPoint,
+							feedbackStrings)) {
 				return;
 			}
 		}
 
 		if (_view.showReconHits()) {
-			// FTOF
-			Hit1List hits = FTOF.getInstance().getHits();
-			if ((hits != null) && !hits.isEmpty()) {
-				for (Hit1 hit : hits) {
-					if (_view.containsSector(hit.sector)) {
-						if (hit.contains(screenPoint)) {
-							String hitStr1 = String.format("TOF hit sect %d panel %s  paddle %d", hit.sector,
-									FTOF.getInstance().getBriefPanelName(hit.layer), hit.component);
-							feedbackStrings.add("$red$" + hitStr1);
-							String hitStr2 = String.format(
-									"TOF hit energy  %7.3f MeV; hit phi %7.3f" + UnicodeSupport.DEGREE, hit.energy,
-									hit.phi());
-							feedbackStrings.add("$red$" + hitStr2);
-							return;
-						}
-					}
-				}
-
-			}
-
+			//TODO DRAW HITS
 		}
 
 
@@ -437,6 +426,11 @@ public class ReconDrawer extends SectorViewDrawer {
 		if ((clusters == null) || (clusters.length < 1)) {
 			return;
 		}
+		
+		if ((clusters.sector == null) || (clusters.sector.length == 0)) {
+			return;
+		}
+
 
 		Point2D.Double wp = new Point2D.Double();
 		Point pp = new Point();
