@@ -85,7 +85,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// BMT [sector][layer]
 	private BMTSectorItem _bmtItems[][];
-	
+
 	//for highlighting
 	private HighlightData _bstHighlightData = new HighlightData();
 	private HighlightData _bmtHighlightData = new HighlightData();
@@ -103,7 +103,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draws reconstructed crosses
 	private CrossDrawerXY _crossDrawer;
-	
+
 	// draws reconstructed clusters
 	private ClusterDrawerXY _clusterDrawer;
 
@@ -250,7 +250,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 					if (showClusters()) {
 						_clusterDrawer.draw(g, container);
 					}
-					
+
 					//data selected highlight?
 					drawDataSelectedHighlight(g, container);
 
@@ -266,7 +266,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		};
 		getContainer().setAfterDraw(afterDraw);
 	}
-	
+
 	//draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
 
@@ -280,12 +280,12 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 	}
-	
+
 	//draw highlighted clusters
 	private void drawHighlightClusters(Graphics g, IContainer container, DataEvent dataEvent) {
 		// indices are zero based
 		if ((_bstHighlightData.cluster >= 0) && dataEvent.hasBank("BSTRec::Clusters")) {
-			
+
 			if (ColumnData.getFloatArray("BSTRec::Clusters.x1") == null) {
 				return;
 			}
@@ -305,7 +305,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			DataDrawSupport.drawReconClusterHighlight(g, p1);
 			DataDrawSupport.drawReconClusterHighlight(g, p2);
 		}
-		
+
 		if ((_bmtHighlightData.cluster >= 0) && dataEvent.hasBank("BMTRec::Clusters")) {
 			int idx = _bmtHighlightData.cluster; // 0 based
 
@@ -810,7 +810,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		wp.x = x;
 		wp.y = y;
 	}
-	
+
 	/**
 	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank
@@ -819,7 +819,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	@Override
 	public void dataSelected(String bankName, int index) {
 		System.out.println("CentralXY selected [" + bankName + "]  index: " + index);
-		
+
 		if ("BMT::adc".equals(bankName)) {
 		}
 		else if ("BMTRec::Clusters".equals(bankName)) {

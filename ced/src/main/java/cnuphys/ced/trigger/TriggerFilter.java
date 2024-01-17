@@ -4,7 +4,6 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.filter.AEventFilter;
 
 public class TriggerFilter extends AEventFilter {

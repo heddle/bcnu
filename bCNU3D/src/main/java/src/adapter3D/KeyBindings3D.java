@@ -3,6 +3,7 @@ package adapter3D;
 import java.awt.Component;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
+
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -76,11 +77,11 @@ public class KeyBindings3D {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 				Component component = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
-				
+
 				if ((component != null) && (component instanceof JTextComponent)) {
 					return;
 				}
-				
+
 			String command = e.getActionCommand();
 			if ("u".equals(command)) {
 				float dz = _panel3D.getZStep();

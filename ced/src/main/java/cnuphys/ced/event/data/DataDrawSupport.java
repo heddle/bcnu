@@ -1,16 +1,9 @@
 package cnuphys.ced.event.data;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.geom.Point2D;
-
-import javax.swing.JComponent;
-import javax.swing.JFrame;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.SymbolDraw;
@@ -61,13 +54,6 @@ public class DataDrawSupport {
 
 	public static final String[] EC_PLANE_NAMES = { "?", "Inner", "Outer" };
 	public static final String[] EC_VIEW_NAMES = { "?", "U", "V", "W" };
-
-	// ftof constants
-	public static final int PANEL_1A = 0;
-	public static final int PANEL_1B = 1;
-	public static final int PANEL_2 = 2;
-	public static final String panelNames[] = { "Panel 1A", "Panel 1B", "Panel 2" };
-	private static final String briefPNames[] = { "1A", "1B", "2" };
 
 	/**
 	 * Draw the ECAL reconstruction
@@ -267,7 +253,6 @@ public class DataDrawSupport {
 		g.drawOval(pp.x - 8, pp.y - 8, 16, 16);
 	}
 
-
 	/**
 	 * Draw a reconstructed cross
 	 *
@@ -277,7 +262,6 @@ public class DataDrawSupport {
 	 * @param mode the mode (HB, TB, etc)
 	 */
 	public static void drawCross(Graphics g, int x, int y, int mode) {
-//		SymbolDraw.drawOval(g, x, y, CROSSHALF, CROSSHALF, Color.black, transColors[mode]);
 
 		int opt = 2;
 		if ((mode == 0) || (mode == 4)) {
@@ -288,9 +272,8 @@ public class DataDrawSupport {
 		SymbolDraw.drawCross(g, x, y, CROSSHALF, Color.black);
 	}
 
-
 	/**
-	 * Draw a #D sphere icon
+	 * Draw a 3D sphere icon
 	 *
 	 * @param g    the graphics context
 	 * @param name
@@ -301,11 +284,6 @@ public class DataDrawSupport {
 	public static void drawSphere(Graphics g, Color baseColor, int xc, int yc, float radius, int opt) {
 		GraphicsUtilities.drawGradientCircle(g, radius, baseColor, Color.black, new Point2D.Float(xc, yc), opt);
 	}
-
-
-
-
-
 
 	/**
 	 * Draw a bigger reconstructed cross for highlighting
@@ -326,131 +304,5 @@ public class DataDrawSupport {
 		SymbolDraw.drawCross(g, x, y, CROSSHALF+3, Color.black);
 	}
 
-
-	/**
-	 * Get a string representing the id array
-	 *
-	 * @param ids variable length ids
-	 * @return a string representing the id array
-	 */
-	public static String getIDString(int... ids) {
-		if ((ids == null) || (ids.length < 1)) {
-			return "???";
-		}
-		StringBuilder sb = new StringBuilder(50);
-		sb.append("]");
-		for (int i = 0; i < ids.length; i++) {
-			sb.append(ids[i]);
-			if (i < (ids.length - 1)) {
-				sb.append(", ");
-			}
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * Get the brief panel name
-	 *
-	 * @param layer the 1-based layer 1..3
-	 * @return the brif panel name
-	 */
-	public static String getBriefPanelName(byte layer) {
-		if ((layer < 1) || (layer > 3)) {
-			return "" + layer;
-		} else {
-			return briefPNames[layer - 1];
-		}
-	}
-	
-	/**
-	 * Get the name from the panel type
-	 *
-	 * @param panelType one of the constants (PANEL_1A, PANEL_1B, PANEL_2)
-	 * @return the name of the panel type
-	 */
-	public static String panelName(int panelType) {
-		if ((panelType < 0) || (panelType > 2)) {
-			return "???";
-		} else {
-			return panelNames[panelType];
-		}
-	}
-
-
-	public static void main(String arg[]) {
-		JFrame testFrame = new JFrame("Attributes");
-
-		Color baseColors[] = {
-				Color.black,
-				Color.red,
-				Color.green,
-				Color.yellow,
-				Color.cyan,
-				Color.DARK_GRAY,
-				Color.gray,
-				Color.magenta,
-				Color.orange,
-				Color.pink,
-				X11Colors.getX11Color("Dark Green"),
-				X11Colors.getX11Color("Deep Sky Blue"),
-				X11Colors.getX11Color("Medium Purple"),
-				X11Colors.getX11Color("Wheat"),
-				X11Colors.getX11Color("Gold"),
-				Color.white,
-		};
-
-		final float radius = 80;
-
-
-		JComponent component = new JComponent() {
-
-			@Override
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-
-
-				Point2D.Float center = new Point2D.Float();
-
-				int index =  0;
-				for (int col = 0; col < 4; col++) {
-					float x = 10 + radius +  col * (2*radius + 20);
-					for (int row = 0; row < 4; row++) {
-						float y = 10 + radius +  row * (2*radius + 20);
-						center.setLocation(x, y);
-						Color baseColor = baseColors[index++];
-						GraphicsUtilities.drawGradientCircle(g, radius, baseColor, Color.black, center, 2);
-					}
-				}
-
-			}
-
-			@Override
-			public Dimension getPreferredSize() {
-				return new Dimension(800, 800);
-			}
-		};
-
-
-		testFrame.setLayout(new BorderLayout(8, 8));
-		testFrame.add(component, BorderLayout.CENTER);
-
-		// set up what to do if the window is closed
-		WindowAdapter windowAdapter = new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				System.err.println("Done");
-				System.exit(1);
-			}
-		};
-
-		testFrame.addWindowListener(windowAdapter);
-		testFrame.pack();
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				testFrame.setVisible(true);
-			}
-		});
-	}
 
 }

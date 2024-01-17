@@ -5,58 +5,57 @@ import java.util.List;
 
 import cnuphys.ced.event.data.AdcColorScale;
 
-public final class TOF_ADC_Arrays extends ADC_Arrays {
+public final class LR_ADCArrays extends ADCArrays {
 
 	//color used for feedback
 	private static final String _fbColor = "$Orange Red$";
-	
+
 	/** the left-right array */
 	private static final String leftRight[] = {"L", "R"};
 
-	//max adc for current event
-	private int _maxADC = -1;
+	/** the order array */
+	public byte order[];
+	
 	
 	/**
 	 * Create the data arrays
-	 * 
+	 *
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 */
-	public TOF_ADC_Arrays(String bankName) {
+	public LR_ADCArrays(String bankName) {
 		super(bankName);
+		if (hasData()) {
+			order = bank.getByte("order");
+		}
 	}
-
-	@Override
-	public Color getColor(byte sector, byte layer, short component) {
+	
+	/**
+	 * Get the adc color for a given sector, layer, component, and order
+	 * @param sector the 1-based sector	
+	 * @param layer the 1-based layer
+	 * @param component the 1-based component
+	 * @param order the order, 0 or 1 for left/right
+	 * @return the color, or null if no data
+	 */
+	public Color getColor(byte sector, byte layer, short component, byte order) {
 		computeMaxADC();
-		
-		int adc = getComponentAverageADC(sector, layer, component);
+
+		int adc = getComponentAverageADC(sector, layer, component, order);
 		if (adc > 0) {
 			double fract = ((double) adc) / _maxADC;
 			fract = Math.max(0, Math.min(1.0, fract));
 			return AdcColorScale.getInstance().getAlphaColor(fract, 255);
-		} 
+		}
 		return null;
 	}
-	
-	//compute and cache the max ADC
-	private void computeMaxADC() {
-		if (_maxADC < 0) {
-			_maxADC = 0;
-			for (int i = 0; i < ADC.length; i++) {
-				if (ADC[i] > _maxADC) {
-					_maxADC = ADC[i];
-				}
-			}
-		}
-		
-	}
-	
-	//gets the average ADC for a given sector, layer, component
-	private int getComponentAverageADC(byte sector, byte layer, short component) {
+
+	//gets the average ADC for a given sector, layer, component, and order
+	private int getComponentAverageADC(byte sector, byte layer, short component, short order) {
 		int count = 0;
 		int sum = 0;
 		for (int i = 0; i < this.sector.length; i++) {
-			if ((this.sector[i] == sector) && (this.layer[i] == layer) && (this.component[i] == component)) {
+			if ((this.sector[i] == sector) && (this.layer[i] == layer) 
+					&& (this.component[i] == component) && (this.order[i] == order)) {
 				sum += ADC[i];
 				count++;
 			}
@@ -64,15 +63,16 @@ public final class TOF_ADC_Arrays extends ADC_Arrays {
 
 		return (count > 0) ? sum / count : 0;
 	}
-	
+
+
 	@Override
 	public void addFeedback(byte sector, byte layer, short component, List<String> feedback) {
 		if (hasData()) {
 			for (int i = 0; i < this.sector.length; i++) {
 				if ((this.sector[i] == sector) && (this.layer[i] == layer) && (this.component[i] == component)) {
-					String s = String.format("%s adc: %d, time: %8.3f, ped: %d", 
+					String s = String.format("%s adc: %d time: %8.3f, ped: %d",
 							leftRight[order[i]], ADC[i], time[i], ped[i]);
-					
+
 					feedback.add(_fbColor + s);
 				}
 			}
@@ -81,5 +81,5 @@ public final class TOF_ADC_Arrays extends ADC_Arrays {
 		}
 	}
 
-	
+
 }

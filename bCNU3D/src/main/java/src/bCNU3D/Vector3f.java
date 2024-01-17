@@ -16,7 +16,7 @@ public class Vector3f {
 
 	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate
@@ -29,7 +29,7 @@ public class Vector3f {
 
 	/**
 	 * Constructor using a set of coordinates
-	 * 
+	 *
 	 * @param coords [x, y, z, x, y, z, etc]
 	 * @param index  start at 3*index for the x coordinate
 	 */
@@ -42,7 +42,7 @@ public class Vector3f {
 
 	/**
 	 * Obtain a vector that is the mispoint of two other vectors
-	 * 
+	 *
 	 * @param v1 one vector
 	 * @param v2 the other vector
 	 * @return the midpoint

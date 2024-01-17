@@ -55,7 +55,7 @@ public class SwimAllRecon implements ISwimAll {
 
 		double stepSize = 1.0e-3;
 		double tolerance = 1.0e-6;
-		
+
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 

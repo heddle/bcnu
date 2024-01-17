@@ -11,7 +11,6 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
-
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.ced3d.PlainPanel3D;

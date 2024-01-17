@@ -12,7 +12,7 @@ public class ClusterList {
 
 	//the data warehouse
 	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
-	
+
 	private String _bankName;
 
 	public int length;
@@ -66,7 +66,7 @@ public class ClusterList {
 			_ppy = null;
 		}
 	}
-	
+
 	/**
 	 * Update the list as a response to a new event
 	 * using the DataWarehouse

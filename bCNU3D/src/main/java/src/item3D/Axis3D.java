@@ -4,11 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 
-import bCNU3D.DoubleFormat;
-import bCNU3D.Panel3D;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.util.awt.TextRenderer;
+
+import bCNU3D.DoubleFormat;
+import bCNU3D.Panel3D;
 
 public class Axis3D extends Line3D {
 
@@ -38,7 +39,7 @@ public class Axis3D extends Line3D {
 	/** possible types of axes */
 	public enum AxisType {
 		X_AXIS, Y_AXIS, Z_AXIS
-	};
+	}
 
 	/** text renderer */
 	private TextRenderer _renderer;
@@ -48,9 +49,9 @@ public class Axis3D extends Line3D {
 
 	/**
 	 * Create a coordinate axis
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
-	 * 
+	 *
 	 * @param type      the type
 	 * @param vmin      the minimum value
 	 * @param vmax      the maximum value
@@ -69,9 +70,9 @@ public class Axis3D extends Line3D {
 
 	/**
 	 * Create a coordinate axis
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
-	 * 
+	 *
 	 * @param type      the type
 	 * @param vmin      the minimum value
 	 * @param vmax      the maximum value
@@ -252,7 +253,7 @@ public class Axis3D extends Line3D {
 
 	/**
 	 * Get the type of axis
-	 * 
+	 *
 	 * @return the type of axis
 	 */
 	public AxisType getType() {

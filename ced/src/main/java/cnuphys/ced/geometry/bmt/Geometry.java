@@ -71,19 +71,23 @@ public class Geometry {
 
 		int num_region = (layer + 1) / 2 - 1; // region index (0...2) 0=layers 1&2, 1=layers 3&4, 2=layers 5&6
 		int num_detector = isInDetector(layer, angle);
-		if (num_detector == -1)
+		if (num_detector == -1) {
 			return -1;
+		}
 
 		if (angle < 0)
+		 {
 			angle += 2 * Math.PI; // from 0 to 2Pi
+		}
 
 		if (num_detector == 1) {
 			double angle_f = Constants.getCRCEDGE1()[num_region][1]
 					+ (Constants.getCRCXPOS()[num_region] + Constants.getCRCLENGTH()[num_region])
 							/ Constants.getCRCRADIUS()[num_region]
 					- 2 * Math.PI;
-			if (angle >= 0 && angle <= angle_f)
+			if (angle >= 0 && angle <= angle_f) {
 				angle += 2 * Math.PI;
+			}
 		}
 		double strip_calc = ((angle - Constants.getCRZEDGE1()[num_region][num_detector])
 				* Constants.getCRZRADIUS()[num_region] - Constants.getCRZXPOS()[num_region]
@@ -95,8 +99,9 @@ public class Geometry {
 
 		int value = strip_num + 1;
 
-		if (value < 1 || value > Constants.getCRZNSTRIPS()[num_region])
+		if (value < 1 || value > Constants.getCRZNSTRIPS()[num_region]) {
 			value = -1;
+		}
 
 		return value;
 	}
@@ -145,8 +150,9 @@ public class Geometry {
 		// strips
 		double angle = Constants.getCRCEDGE1()[num_region][num_detector]
 				+ Constants.getCRCXPOS()[num_region] / Constants.getCRCRADIUS()[num_region];
-		if (angle > 2 * Math.PI)
+		if (angle > 2 * Math.PI) {
 			angle -= 2 * Math.PI;
+		}
 		return angle; // in rad
 	}
 
@@ -167,8 +173,9 @@ public class Geometry {
 		double angle = Constants.getCRCEDGE1()[num_region][num_detector]
 				+ (Constants.getCRCXPOS()[num_region] + Constants.getCRCLENGTH()[num_region])
 						/ Constants.getCRCRADIUS()[num_region];
-		if (angle > 2 * Math.PI)
+		if (angle > 2 * Math.PI) {
 			angle -= 2 * Math.PI;
+		}
 		return angle; // in rad
 	}
 
@@ -359,9 +366,13 @@ public class Geometry {
 		double R_i = 0; // inner radius init
 		double R_f = 0; // outer radius init for a C or Z detector
 		if (layer % 2 == 1)
+		 {
 			R_i = Constants.getCRZRADIUS()[num_region]; // Z layer
+		}
 		if (layer % 2 == 0)
+		 {
 			R_i = Constants.getCRCRADIUS()[num_region]; // outer radius
+		}
 
 		R_f = R_i + Constants.hDrift;
 
@@ -377,13 +388,15 @@ public class Geometry {
 		}
 		// the hit parameters
 		double angle = Math.atan2(x[1], x[0]);
-		if (angle > 2 * Math.PI)
+		if (angle > 2 * Math.PI) {
 			angle -= 2 * Math.PI;
+		}
 		double R = Math.sqrt(x[0] * x[0] + x[1] * x[1]);
 		double z = x[2];
 
-		if ((angle_i - angle) < (angle_f - angle_i) && (R - R_i) < (R_f - R_i) && (z - z_i) < (z_f - z_i))
+		if ((angle_i - angle) < (angle_f - angle_i) && (R - R_i) < (R_f - R_i) && (z - z_i) < (z_f - z_i)) {
 			isInFid = true;
+		}
 
 		return isInFid;
 	}
@@ -393,7 +406,9 @@ public class Geometry {
 
 		int num_region = (layer + 1) / 2 - 1; // region index (0...2) 0=layers 1&2, 1=layers 3&4, 2=layers 5&6
 		if (angle < 0)
+		 {
 			angle += 2 * Math.PI; // from 0 to 2Pi
+		}
 		double angle_pr = angle + 2 * Math.PI;
 
 		double angle_i = 0; // first angular boundary init
@@ -408,8 +423,9 @@ public class Geometry {
 					+ (Constants.getCRCXPOS()[num_region] + Constants.getCRCLENGTH()[num_region])
 							/ Constants.getCRCRADIUS()[num_region];
 
-			if ((angle >= angle_i && angle <= angle_f) || (angle_pr >= angle_i && angle_pr <= angle_f))
+			if ((angle >= angle_i && angle <= angle_f) || (angle_pr >= angle_i && angle_pr <= angle_f)) {
 				num_detector = i;
+			}
 		}
 		return num_detector;
 	}
@@ -418,12 +434,15 @@ public class Geometry {
 
 		int value = -1;
 		int num_det = this.isInDetector(layer, angle);
-		if (num_det == 0)
+		if (num_det == 0) {
 			value = 2;
-		if (num_det == 2)
+		}
+		if (num_det == 2) {
 			value = 3;
-		if (num_det == 1)
+		}
+		if (num_det == 1) {
 			value = 1;
+		}
 
 		return value;
 	}
@@ -479,7 +498,9 @@ public class Geometry {
 	public static final synchronized int getZorC(int layer) {
 		int axis = 0; // C
 		if (layer == 2 || layer == 3 || layer == 5)
+		 {
 			axis = 1; // Z
+		}
 		return axis;
 	}
 

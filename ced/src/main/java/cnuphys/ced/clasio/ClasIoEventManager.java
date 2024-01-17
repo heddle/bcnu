@@ -1047,8 +1047,8 @@ public class ClasIoEventManager {
 				((CedView) jif).getContainer().redoFeedback();
 			}
 		}
-		
-		
+
+
 		//refresh
 		//Ced.refresh();
 	}

@@ -241,7 +241,7 @@ public class BSTGeometry {
 	 * @return the strip midpoint units are mm
 	 */
 	public static Vector3d getStripMidpoint(int sector, int layer, int strip) {
-		
+
 		Line3d line = getStrip(sector, layer, strip);
 		Vector3d p0 = line.origin();
 		Vector3d p1 = line.end();

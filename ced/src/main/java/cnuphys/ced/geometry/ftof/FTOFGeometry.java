@@ -26,6 +26,10 @@ public class FTOFGeometry {
 	public static final int PANEL_1B = 1;
 	public static final int PANEL_2 = 2;
 
+	private static final String panelNames[] = { "Panel 1A", "Panel 1B", "Panel 2" };
+	private static final String briefPNames[] = { "1A", "1B", "2" };
+
+
 	// the overall detector
 	private static FTOFDetector _ftofDetector;
 
@@ -336,6 +340,37 @@ public class FTOFGeometry {
 		}
 		return length;
 	}
+
+
+	/**
+	 * Get the brief panel name
+	 *
+	 * @param layer the 1-based layer 1..3
+	 * @return the brief panel name
+	 */
+	public static String getBriefPanelName(byte layer) {
+		if ((layer < 1) || (layer > 3)) {
+			return "" + layer;
+		} else {
+			return briefPNames[layer - 1];
+		}
+	}
+
+	/**
+	 * Get the name from the panel type
+	 *
+	 * @param panelType one of the constants (PANEL_1A, PANEL_1B, PANEL_2)
+	 * @return the name of the panel type
+	 */
+	public static String panelName(int panelType) {
+		if ((panelType < 0) || (panelType > 2)) {
+			return "???";
+		} else {
+			return panelNames[panelType];
+		}
+	}
+
+
 
 	public static void main(String arg[]) {
 		// this is supposed to create less pounding of ccdb

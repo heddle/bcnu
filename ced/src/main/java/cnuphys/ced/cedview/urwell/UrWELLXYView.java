@@ -37,7 +37,7 @@ import cnuphys.ced.item.HexSectorItem;
 
 
 public class UrWELLXYView extends HexView {
-	
+
 	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	private static int CLONE_COUNT = 0;

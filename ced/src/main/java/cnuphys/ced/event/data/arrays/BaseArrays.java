@@ -11,61 +11,61 @@ import cnuphys.ced.clasio.ClasIoEventManager;
  * Base array container for event data. Just a convenience container,
  * no data are copied.
  */
-public abstract class Base_Arrays {
+public abstract class BaseArrays {
 
 	/** the sector array */
 	public byte sector[];
-	
+
 	/** the layer array */
 	public byte layer[];
-	
+
 	/** the component array */
 	public short component[];
-	
+
 	/** the bank name */
 	public final String bankName;
-	
+
 	/** the event manager */
 	protected static ClasIoEventManager eventManager = ClasIoEventManager.getInstance();
-	
+
 	/** the current event */
 	protected DataEvent event = eventManager.getCurrentEvent();
-	
+
 	/** the backing bank */
 	protected DataBank bank;
-	
+
 	/**
 	 * Create the data array references from the current event
-	 * 
+	 *
 	 * @param bankName the bank name
 	 */
-	public Base_Arrays(String bankName) {
+	public BaseArrays(String bankName) {
 		this.bankName = bankName;
-		
+
 		event = eventManager.getCurrentEvent();
 		if (event != null) {
 			bank = event.getBank(bankName);
 			sector = bank.getByte("sector");
-			
+
 			if (sector != null) {
 				layer = bank.getByte("layer");
 				component = bank.getShort("component");
 			}
 		}
 	}
-	
+
 	/**
 	 * Does this array container have data?
-	 * 
+	 *
 	 * @return <code>true</code> if this array container has data
 	 */
 	public boolean hasData() {
 		return (sector != null);
 	}
-	
+
 	/**
 	 * Find the index of the given sector, layer, component
-	 * 
+	 *
 	 * @param sector    the sector [1..6]
 	 * @param layer     the layer [1..3]
 	 * @param component the component [1..]
@@ -81,7 +81,7 @@ public abstract class Base_Arrays {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Add to the feedback strings assuming the mouse is pointing to the given sector, layer, component.
 	 * @param sector the 1-based sector
@@ -90,5 +90,5 @@ public abstract class Base_Arrays {
 	 * @param feedback the List of feedback strings to add to.
 	 */
 	public abstract void addFeedback(byte sector, byte layer, short component, List<String> feedback);
-			
+
 }

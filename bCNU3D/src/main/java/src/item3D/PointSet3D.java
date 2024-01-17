@@ -2,10 +2,10 @@ package item3D;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Panel3D;
 import bCNU3D.Support3D;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class PointSet3D extends Item3D {
 
@@ -23,7 +23,7 @@ public class PointSet3D extends Item3D {
 
 	/**
 	 * Create a set of same color and size points for use on a Panel3D.
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param coords    the points as [x1, y1, z1, ..., xn, yn, zn]
 	 * @param color     the color of the points

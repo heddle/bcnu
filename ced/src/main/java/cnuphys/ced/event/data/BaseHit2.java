@@ -56,7 +56,7 @@ public class BaseHit2 {
 		return ((Math.abs(_screenLocation.x - pp.x) <= DataDrawSupport.HITHALF)
 				&& (Math.abs(_screenLocation.y - pp.y) <= DataDrawSupport.HITHALF));
 	}
-	
+
 	@Override
 	public String toString() {
 		return String.format("Base Hit sector = %d  layer = %d  component = %d", sector, layer, component);

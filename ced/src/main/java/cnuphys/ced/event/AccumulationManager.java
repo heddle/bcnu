@@ -29,8 +29,7 @@ import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.arrays.TOF_ADC_Arrays;
-import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.event.data.lists.RTPCHitList;
@@ -66,7 +65,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// the singleton
 	private static AccumulationManager instance;
-	
+
 	//the DataWarehouse singleton
 	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -734,12 +733,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate CND which is a special case
 	private void accumCND() {
+
+        // use the adc arrays to accumulate
 		
-		
-	
-		
+
+
 		int adcCount = _dataWarehouse.rows("CND::adc");
-		
+
 		if (adcCount > 0) {
 			byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
 			byte[] layer = _dataWarehouse.getByte("CND::adc", "layer");
@@ -870,7 +870,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumCTOF() {
 
 		//use the adc arrays to accumulate
-		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("CTOF::adc");
+		LR_ADCArrays arrays = new LR_ADCArrays("CTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -882,13 +882,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// for ftof accumulating
 	private void accumFTOF() {
-		
+
 		//use the adc arrays to accumulate
-		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
+		LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
-		
+
 		for (int i = 0; i < arrays.sector.length; i++) {
 			int sect0 = arrays.sector[i] - 1;
 			int paddle0 = arrays.component[i] - 1;

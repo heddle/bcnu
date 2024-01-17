@@ -26,8 +26,6 @@ import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.frame.Ced;
 
 public class ClasIoAccumulationDialog extends JDialog {
 

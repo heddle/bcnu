@@ -1,12 +1,5 @@
 package bCNU3D;
 
-import item3D.Axes3D;
-import item3D.Cube;
-import item3D.Cylinder;
-import item3D.Item3D;
-import item3D.PointSet3D;
-import item3D.Triangle3D;
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -17,10 +10,6 @@ import java.util.Vector;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
-import adapter3D.KeyAdapter3D;
-import adapter3D.KeyBindings3D;
-import adapter3D.MouseAdapter3D;
 
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -37,13 +26,23 @@ import com.jogamp.opengl.fixedfunc.GLLightingFunc;
 import com.jogamp.opengl.fixedfunc.GLMatrixFunc;
 import com.jogamp.opengl.glu.GLU;
 
+import adapter3D.KeyAdapter3D;
+import adapter3D.KeyBindings3D;
+import adapter3D.MouseAdapter3D;
+import item3D.Axes3D;
+import item3D.Cube;
+import item3D.Cylinder;
+import item3D.Item3D;
+import item3D.PointSet3D;
+import item3D.Triangle3D;
+
 
 @SuppressWarnings("serial")
 public class Panel3D extends JPanel implements GLEventListener {
-	
+
 	//background default color used for r, g and b
 	public static final float BGFEFAULT = 0.9804f;
-	
+
 	//the actual components of the background
 	private float _bgRed = BGFEFAULT;
 	private float _bgGreen = BGFEFAULT;
@@ -78,7 +77,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	private float _ydist;
 
 	// the list of 3D items to be drawn
-	protected Vector<Item3D> _itemList = new Vector<Item3D>();
+	protected Vector<Item3D> _itemList = new Vector<>();
 
 	// listen for mouse events
 	protected MouseAdapter3D _mouseAdapter;
@@ -90,36 +89,36 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/*
 	 * The panel that holds the 3D objects
-	 * 
+	 *
 	 * @param angleX the initial x rotation angle in degrees
-	 * 
+	 *
 	 * @param angleY the initial y rotation angle in degrees
-	 * 
+	 *
 	 * @param angleZ the initial z rotation angle in degrees
-	 * 
+	 *
 	 * @param xdist move viewpoint left/right
-	 * 
+	 *
 	 * @param ydist move viewpoint up/down
-	 * 
+	 *
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public Panel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist) {
 		this(angleX, angleY, angleZ, xDist, yDist, zDist, BGFEFAULT, BGFEFAULT, BGFEFAULT);
 	}
-	
+
 	/*
 	 * The panel that holds the 3D objects
-	 * 
+	 *
 	 * @param angleX the initial x rotation angle in degrees
-	 * 
+	 *
 	 * @param angleY the initial y rotation angle in degrees
-	 * 
+	 *
 	 * @param angleZ the initial z rotation angle in degrees
-	 * 
+	 *
 	 * @param xdist move viewpoint left/right
-	 * 
+	 *
 	 * @param ydist move viewpoint up/down
-	 * 
+	 *
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public Panel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist, float bgRed,
@@ -130,13 +129,13 @@ public class Panel3D extends JPanel implements GLEventListener {
 		_xdist = xDist;
 		_ydist = yDist;
 		_zdist = zDist;
-		
+
 		_bgRed = bgRed;
 		_bgGreen = bgGreen;
 		_bgBlue = bgBlue;
 
 		setLayout(new BorderLayout(0, 0));
-		
+
 //		System.err.println(Thread.currentThread().getName());
 		glprofile = GLProfile.getDefault();
 
@@ -208,7 +207,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Get the opengl panel
-	 * 
+	 *
 	 * @return the opengl panel
 	 */
 	public GLJPanel getGLJPanel() {
@@ -226,7 +225,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 
 		GL2 gl = drawable.getGL().getGL2();
-		
+
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 
 		gl.glLoadIdentity(); // reset the model-view matrix
@@ -339,7 +338,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Set rotation angle about x
-	 * 
+	 *
 	 * @param angle about x (degrees)
 	 */
 	public void setRotationX(float angle) {
@@ -348,7 +347,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Set rotation angle about y
-	 * 
+	 *
 	 * @param angle about y (degrees)
 	 */
 	public void setRotationY(float angle) {
@@ -358,7 +357,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Set rotation angle about z
-	 * 
+	 *
 	 * @param angle about z (degrees)
 	 */
 	public void setRotationZ(float angle) {
@@ -368,7 +367,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Get the rotation about x
-	 * 
+	 *
 	 * @return the rotation about x (degrees)
 	 */
 	public float getRotationX() {
@@ -377,7 +376,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Get the rotation about y
-	 * 
+	 *
 	 * @return the rotation about y (degrees)
 	 */
 	public float getRotationY() {
@@ -386,7 +385,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Get the rotation about z
-	 * 
+	 *
 	 * @return the rotation about z (degrees)
 	 */
 	public float getRotationZ() {
@@ -395,7 +394,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Change the x distance to move in or out
-	 * 
+	 *
 	 * @param dx the change in x
 	 */
 	public void deltaX(float dx) {
@@ -405,7 +404,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Change the y distance to move in or out
-	 * 
+	 *
 	 * @param dy the change in y
 	 */
 	public void deltaY(float dy) {
@@ -415,27 +414,27 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Change the z distance to move in or out
-	 * 
+	 *
 	 * @param dz the change in z
 	 */
 	public void deltaZ(float dz) {
 		_zdist += dz;
 		// refresh();
 	}
-	
+
 	/**
 	 * Refresh the drawing
 	 */
 	public void refreshQueued() {
 //		refreshPending = true;
 	}
-	
+
 
 	/**
 	 * Refresh the drawing
 	 */
 	public void refresh() {
-		
+
 		if (gljpanel == null) {
 			return;
 		}
@@ -446,7 +445,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Add an item to the list. Note that this does not initiate a redraw.
-	 * 
+	 *
 	 * @param item the item to add.
 	 */
 	public void addItem(Item3D item) {
@@ -458,7 +457,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Add an item to the list. Note that this does not initiate a redraw.
-	 * 
+	 *
 	 * @param item the item to add.
 	 */
 	public void addItem(int index, Item3D item) {
@@ -470,7 +469,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Remove an item from the list. Note that this does not initiate a redraw.
-	 * 
+	 *
 	 * @param item the item to remove.
 	 */
 	public void removeItem(Item3D item) {
@@ -482,7 +481,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Conver GL coordinates to screen coordinates
-	 * 
+	 *
 	 * @param gl     graphics context
 	 * @param objX   GL x coordinate
 	 * @param objY   GL y coordinate
@@ -509,7 +508,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * This gets the z step used by the mouse and key adapters, to see how fast we
 	 * move in or in in response to mouse wheel or up/down arrows. It should be
 	 * overridden to give something sensible. like the scale/100;
-	 * 
+	 *
 	 * @return the z step (changes to zDist) for moving in and out
 	 */
 	public float getZStep() {
@@ -518,7 +517,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	/**
 	 * Main program for testing. Put the panel on JFrame,
-	 * 
+	 *
 	 * @param arg
 	 */
 	public static void main(String arg[]) {
@@ -596,9 +595,9 @@ public class Panel3D extends JPanel implements GLEventListener {
 						new Color(0, 255, 0, 64), 2f, true));
 
 				addItem(new Cylinder(this, 0f, 0f, 0f, 300f, 300f, 300f, 50f, new Color(0, 255, 255, 128)));
-				
+
 				addItem(new Cube(this, 0f, 0f, 0f, 600, new Color(0, 0, 255, 32), true));
-				
+
 
 				// Cube cube = new Cube(this, 0.25f, 0.25f, 0.25f, 0.5f,
 				// Color.yellow);
@@ -631,7 +630,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 			 * This gets the z step used by the mouse and key adapters, to see how fast we
 			 * move in or in in response to mouse wheel or up/down arrows. It should be
 			 * overridden to give something sensible. like the scale/100;
-			 * 
+			 *
 			 * @return the z step (changes to zDist) for moving in and out
 			 */
 			@Override

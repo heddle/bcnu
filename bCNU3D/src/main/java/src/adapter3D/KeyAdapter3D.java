@@ -33,13 +33,13 @@ public class KeyAdapter3D implements KeyListener {
 
 	/**
 	 * Respond to a key stroke or mimic a key stroke
-	 * 
+	 *
 	 * @param panel3D the owner panel
 	 * @param keyCode the key code
 	 * @param shifted whether it was shifted (e.g., capitalized)
 	 */
 	public static void handleVK(Panel3D panel3D, int keyCode, boolean shifted) {
-		
+
 
         if (keyCode == KeyEvent.VK_L) {
 			int factor = (shifted ? 3 : 1);

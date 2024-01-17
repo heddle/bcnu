@@ -3,6 +3,7 @@ package cnuphys.ced.item;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -16,8 +17,9 @@ import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.TOF_ADC_Arrays;
-import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.TOF_ClusterArrays;
+import cnuphys.ced.event.data.arrays.TOF_HitArrays;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.ftof.FTOFPanel;
@@ -43,7 +45,7 @@ public class FTOFPanelItem extends PolygonItem {
 		_ftofPanel = panel;
 		_sector = sector;
 
-		_name = (panel != null) ? DataDrawSupport.panelName((byte)panel.getPanelType()) : "??";
+		_name = (panel != null) ? FTOFGeometry.panelName((byte)panel.getPanelType()) : "??";
 
 		// _style.setFillColor(X11Colors.getX11Color("Wheat", 128));
 		_style.setFillColor(Color.white);
@@ -73,8 +75,8 @@ public class FTOFPanelItem extends PolygonItem {
 		setPath(path);
 		super.drawItem(g, container);
 
-		// hits
-		drawHits(g, container);
+		// adc data
+		drawFTOFData(g, container);
 
 		Point2D.Double wp[] = GeometryManager.allocate(4);
 
@@ -93,16 +95,19 @@ public class FTOFPanelItem extends PolygonItem {
 
 	}
 
-	// draw any hits
-	private void drawHits(Graphics g, IContainer container) {
+	// draw any adc based data and hits
+	private void drawFTOFData(Graphics g, IContainer container) {
 
 		if (_view.isSingleEventMode()) {
 			drawSingleModeADCBased(g, container);
+			drawSingleModeHits(g, container);
+			drawSingleModeClusters(g, container);
 		} else {
 			drawAccumulatedADCBased(g, container);
 		}
 	}
 
+	//draw based on accumulated data
 	private void drawAccumulatedADCBased(Graphics g, IContainer container) {
 		int hits[][] = null;
 
@@ -110,15 +115,15 @@ public class FTOFPanelItem extends PolygonItem {
 
 		int panelType = _ftofPanel.getPanelType();
 		switch (panelType) {
-		case DataDrawSupport.PANEL_1A:
+		case FTOFGeometry.PANEL_1A:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();
 			break;
-		case DataDrawSupport.PANEL_1B:
+		case FTOFGeometry.PANEL_1B:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1BCount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1BData();
 			break;
-		case DataDrawSupport.PANEL_2:
+		case FTOFGeometry.PANEL_2:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF2Count();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF2Data();
 			break;
@@ -145,22 +150,21 @@ public class FTOFPanelItem extends PolygonItem {
 	}
 
 	//draw based on data in ADC bank
-	//hits drawn by recondrawer
 	private void drawSingleModeADCBased(Graphics g, IContainer container) {
-		
-		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
+
+		LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
 
 		byte sect = (byte) _sector; //1-based
 		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
-		
+
 		for (int i = 0; i < arrays.sector.length; i++) {
 			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
 				Point2D.Double wp[] = getPaddle(_view, arrays.component[i] - 1, _ftofPanel, _sector);
 
-				
+
 				if (wp != null) {
 					Color fc = arrays.getColor(sect, layer, arrays.component[i]);
 					Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
@@ -170,6 +174,74 @@ public class FTOFPanelItem extends PolygonItem {
 			}
 		}
 	}
+	
+	//draw based on data in hits bank
+	private void drawSingleModeClusters(Graphics g, IContainer container) {
+
+		if (!_view.showClusters()) {
+			return;
+		}
+		
+		TOF_ClusterArrays arrays = new TOF_ClusterArrays("FTOF::clusters");
+		if (!arrays.hasData()) {
+			return;
+		}
+
+		byte sect = (byte) _sector; //1-based
+		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
+
+		Point.Double wp = new Point.Double();
+		Point pp = new Point();
+
+		for (int i = 0; i < arrays.sector.length; i++) {
+			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
+				double x = arrays.x[i];
+				double y = arrays.y[i];
+				double z = arrays.z[i];
+
+				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+
+				DataDrawSupport.drawReconCluster(g, pp);
+
+ 			}
+		}
+
+	}
+
+	//draw based on data in hits bank
+	private void drawSingleModeHits(Graphics g, IContainer container) {
+
+		if (!_view.showReconHits()) {
+			return;
+		}
+
+		TOF_HitArrays arrays = new TOF_HitArrays("FTOF::hits");
+		if (!arrays.hasData()) {
+			return;
+		}
+
+		byte sect = (byte) _sector; //1-based
+		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
+
+		Point.Double wp = new Point.Double();
+		Point pp = new Point();
+
+		for (int i = 0; i < arrays.sector.length; i++) {
+			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
+				double x = arrays.x[i];
+				double y = arrays.y[i];
+				double z = arrays.z[i];
+
+				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+
+				DataDrawSupport.drawReconHit(g, pp);
+
+ 			}
+		}
+	}
+
 
 	/**
 	 * Get the FTOFPanel which contains the geometry
@@ -264,26 +336,85 @@ public class FTOFPanelItem extends PolygonItem {
 				Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
 
 				if (path.contains(worldPoint)) {
-					
-					byte sect = (byte) _sector; //1-based
-					byte layer = (byte) (_ftofPanel.getPanelType() + 1); //1-based
-					short paddle = (short) (index + 1); //1-based
+
+					byte sect = (byte) _sector; // 1-based
+					byte layer = (byte) (_ftofPanel.getPanelType() + 1); // 1-based
+					short paddle = (short) (index + 1); // 1-based
 
 					feedbackStrings.add("$Orange Red$" + getName() + "  sector " + _sector + " paddle " + (index + 1));
 					feedbackStrings.add("$Orange Red$paddle length "
 							+ FTOFGeometry.getLength(_ftofPanel.getPanelType(), index) + " cm");
-					
-					//any adc data?
-					TOF_ADC_Arrays adcArrays = new TOF_ADC_Arrays("FTOF::adc");
+
+					// any adc data?
+					LR_ADCArrays adcArrays = new LR_ADCArrays("FTOF::adc");
 					adcArrays.addFeedback(sect, layer, paddle, feedbackStrings);
-					
-					//any hit data?
-					XYZ_Hit_Arrays hitArrays = new XYZ_Hit_Arrays("FTOF::hits");
-					hitArrays.addFeedback(sect, layer, paddle, feedbackStrings);
+
+					// any hit data?
 					break;
 				} // path contains wp
 			} // end wp != null
-		} // end which paddle
+		} // end for loop
+
+		// hit feedback
+		if (_view.showReconHits()) {
+			TOF_HitArrays hitArrays = new TOF_HitArrays("FTOF::hits");
+			if (hitArrays.hasData()) {
+
+				Point.Double wp = new Point.Double();
+				Point pp = new Point();
+				Rectangle r = new Rectangle();
+
+				for (int index = 0; index < hitArrays.sector.length; index++) {
+					if ((hitArrays.sector[index] == _sector)
+							&& (hitArrays.layer[index] == _ftofPanel.getPanelType() + 1)) {
+						double x = hitArrays.x[index];
+						double y = hitArrays.y[index];
+						double z = hitArrays.z[index];
+
+						_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+						container.worldToLocal(pp, wp);
+						r.setBounds(pp.x - 3, pp.y - 3, 6, 6);
+
+						if (r.contains(screenPoint)) {
+							hitArrays.addFeedback(index, feedbackStrings);
+							break;
+						}
+
+					}
+				} //end for loop
+			} //end has hit data
+		} //end recon hits shown
+		
+		// hit feedback
+		if (_view.showClusters()) {
+			TOF_ClusterArrays clusterArrays = new TOF_ClusterArrays("FTOF::clusters");
+			if (clusterArrays.hasData()) {
+
+				Point.Double wp = new Point.Double();
+				Point pp = new Point();
+				Rectangle r = new Rectangle();
+
+				for (int index = 0; index < clusterArrays.sector.length; index++) {
+					if ((clusterArrays.sector[index] == _sector)
+							&& (clusterArrays.layer[index] == _ftofPanel.getPanelType() + 1)) {
+						double x = clusterArrays.x[index];
+						double y = clusterArrays.y[index];
+						double z = clusterArrays.z[index];
+
+						_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+						container.worldToLocal(pp, wp);
+						r.setBounds(pp.x - 3, pp.y - 3, 6, 6);
+
+						if (r.contains(screenPoint)) {
+							clusterArrays.addFeedback(index, feedbackStrings);
+							break;
+						}
+
+					}
+				} //end for loop
+			} //end has cluster data
+		} //end recon clusters shown
+	
 	}
 
 }

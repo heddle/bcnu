@@ -1124,7 +1124,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-		
+
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 

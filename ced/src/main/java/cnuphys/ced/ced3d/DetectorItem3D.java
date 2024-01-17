@@ -23,7 +23,7 @@ public abstract class DetectorItem3D extends Item3D {
 
 	// the event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//the data warehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 

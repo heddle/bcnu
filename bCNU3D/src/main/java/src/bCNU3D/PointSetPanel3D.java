@@ -20,17 +20,17 @@ public class PointSetPanel3D extends Panel3D {
 
 	/*
 	 * The panel that holds the 3D objects
-	 * 
+	 *
 	 * @param angleX the initial x rotation angle in degrees
-	 * 
+	 *
 	 * @param angleY the initial y rotation angle in degrees
-	 * 
+	 *
 	 * @param angleZ the initial z rotation angle in degrees
-	 * 
+	 *
 	 * @param xdist move viewpoint left/right
-	 * 
+	 *
 	 * @param ydist move viewpoint up/down
-	 * 
+	 *
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public PointSetPanel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist) {
@@ -42,7 +42,7 @@ public class PointSetPanel3D extends Panel3D {
 
 	/**
 	 * Get the point set item
-	 * 
+	 *
 	 * @return the point set item
 	 */
 	public GrowablePointSets3D getPointSetItem() {
@@ -63,7 +63,7 @@ public class PointSetPanel3D extends Panel3D {
 
 	/**
 	 * Get the collection of point sets
-	 * 
+	 *
 	 * @return the collection of point sets
 	 */
 	public ArrayList<GrowablePointSet> getPointSets() {
@@ -102,7 +102,7 @@ public class PointSetPanel3D extends Panel3D {
 			 * This gets the z step used by the mouse and key adapters, to see how fast we
 			 * move in or in in response to mouse wheel or up/down arrows. It should be
 			 * overridden to give something sensible. like the scale/100;
-			 * 
+			 *
 			 * @return the z step (changes to zDist) for moving in and out
 			 */
 			@Override

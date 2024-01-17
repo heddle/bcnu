@@ -3,10 +3,10 @@ package item3D;
 import java.awt.Color;
 import java.awt.Font;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Panel3D;
 import bCNU3D.Support3D;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class Axes3D extends Item3D {
 
@@ -16,7 +16,7 @@ public class Axes3D extends Item3D {
 
 	/**
 	 * A set of Cartesian axes
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param limits    the limits as [xmin, xmax, ymin, ymax, zmin, zmax]
 	 * @param color     the color
@@ -37,7 +37,7 @@ public class Axes3D extends Item3D {
 
 	/**
 	 * A set of Cartesian axes
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param limits    the limits as [xmin, xmax, ymin, ymax, zmin, zmax]
 	 * @param zoff      a z offset
@@ -79,7 +79,7 @@ public class Axes3D extends Item3D {
 
 	/**
 	 * A set of Cartesian axes
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param xmin      the minimum value for x
 	 * @param xmax      the maximum value for x
@@ -106,7 +106,7 @@ public class Axes3D extends Item3D {
 
 	/**
 	 * A set of Cartesian axes
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param xmin      the minimum value for x
 	 * @param xmax      the maximum value for x

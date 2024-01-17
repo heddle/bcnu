@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import java.util.Vector;
 
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.lund.X11Colors;
 
 public class AdcList extends Vector<AdcHit> {

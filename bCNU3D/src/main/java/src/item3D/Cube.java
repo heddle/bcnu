@@ -1,13 +1,11 @@
 package item3D;
 
 import java.awt.Color;
+
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Panel3D;
 import bCNU3D.Support3D;
-
-import com.jogamp.opengl.GL;
-import com.jogamp.opengl.GL2;
-import com.jogamp.opengl.GL2ES3;
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class Cube extends Item3D {
 
@@ -22,10 +20,10 @@ public class Cube extends Item3D {
 
 	// half length
 	private float _halfLength;
-	
+
 	// frame?
 	protected boolean _frame;
-	
+
 	public Cube(Panel3D panel3D, float xc, float yc, float zc, float length, Color color) {
 		this(panel3D, xc, yc, zc, length, color, false);
 	}
@@ -44,7 +42,7 @@ public class Cube extends Item3D {
 	public void draw(GLAutoDrawable drawable) {
 		float w = 2*_halfLength;
 		Support3D.drawRectangularSolid(drawable, _xc, _yc, _zc, w, w, w, getFillColor(), 1, _frame);
-		
+
 //		GL2 gl = drawable.getGL().getGL2();
 //
 //		float xm = _xc - _halfLength;
@@ -96,7 +94,7 @@ public class Cube extends Item3D {
 //		gl.glVertex3f(xm, ym, zp);
 //		gl.glVertex3f(xm, ym, zm);
 //		gl.glEnd();
-//		
+//
 //		if (_frame) {
 //			Support3D.setColor(gl, Color.gray);
 //
@@ -108,7 +106,7 @@ public class Cube extends Item3D {
 //			gl.glVertex3f(xm, yp, zm);
 //			gl.glEnd();
 //
-//			
+//
 //			gl.glBegin(GL.GL_LINE_STRIP);
 //			gl.glVertex3f(xm, ym, zm);
 //			gl.glVertex3f(xm, yp, zm);
@@ -116,8 +114,8 @@ public class Cube extends Item3D {
 //			gl.glVertex3f(xp, ym, zm);
 //			gl.glVertex3f(xm, ym, zm);
 //			gl.glEnd();
-//		
-//			
+//
+//
 //			gl.glBegin(GL.GL_LINE_STRIP);
 //			gl.glVertex3f(xm, yp, zm);
 //			gl.glVertex3f(xm, yp, zp);
@@ -125,7 +123,7 @@ public class Cube extends Item3D {
 //			gl.glVertex3f(xp, yp, zm);
 //			gl.glVertex3f(xm, yp, zm);
 //			gl.glEnd();
-//		
+//
 //			gl.glBegin(GL.GL_LINE_STRIP);
 //			gl.glVertex3f(xm, ym, zm);
 //			gl.glVertex3f(xm, ym, zp);

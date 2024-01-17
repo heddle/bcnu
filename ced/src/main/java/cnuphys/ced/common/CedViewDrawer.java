@@ -15,7 +15,7 @@ public abstract class CedViewDrawer implements IDrawable {
 
 	// convenient access to the event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//the DataWarehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 

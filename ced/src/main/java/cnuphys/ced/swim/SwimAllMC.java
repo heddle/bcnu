@@ -60,7 +60,7 @@ public class SwimAllMC implements ISwimAll {
 		//used to avoid swimming duplicates
 		ArrayList<String> swam = new ArrayList<>();
 
-		
+
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 

@@ -79,7 +79,7 @@ public final class Desktop extends JDesktopPane {
 		initializeLookAndFeel();
 
 		setDragMode(JDesktopPane.OUTLINE_DRAG_MODE); // faster
-	//	setDoubleBuffered(true);
+		setDoubleBuffered(true);
 
 		if (background != null) {
 			setBackground(background);

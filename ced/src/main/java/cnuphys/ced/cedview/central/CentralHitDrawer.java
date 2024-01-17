@@ -23,8 +23,8 @@ import cnuphys.ced.event.data.CVT;
 public abstract class CentralHitDrawer implements IDrawable {
 
 	private boolean _visible = true;
-	
-	//the DataWarehouse 
+
+	//the DataWarehouse
 	protected  DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// the event manager

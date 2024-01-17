@@ -19,7 +19,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 
 public class ClusterDrawerXY extends CentralXYViewDrawer {
-	
+
 	private static final Stroke THICKLINE = new BasicStroke(1.5f);
 
 	// cached rectangles for feedback
@@ -28,7 +28,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 	// cached rectangles for feedback
 	private Rectangle _bmtFBRects[];
 
-	
+
 	public ClusterDrawerXY(CentralXYView view) {
 		super(view);
 	}
@@ -59,7 +59,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 
 		g2.setClip(oldClip);
 	}
-	
+
 	/**
 	 * Draw BST clusters
 	 *
@@ -67,7 +67,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 	 * @param container the drawing container
 	 */
 	public void drawBSTClusters(Graphics g, IContainer container) {
-		
+
 		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
 		if (event == null) {
 			return;
@@ -79,7 +79,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 		if (count == 0) {
 			return;
 		}
-		
+
 		float x1[] = ColumnData.getFloatArray("BSTRec::Clusters.x1");
 		if (x1 != null) {
 			float y1[] = ColumnData.getFloatArray("BSTRec::Clusters.y1");
@@ -100,7 +100,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 		}
 
 	}
-	
+
 	/**
 	 * Draw BMT clusters
 	 *
@@ -145,7 +145,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 
 	@Override
 	public void feedback(IContainer container, Point screenPoint, Double worldPoint, List<String> feedbackStrings) {
-		
+
 	}
 
 }

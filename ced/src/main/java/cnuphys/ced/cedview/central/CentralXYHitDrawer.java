@@ -16,20 +16,18 @@ import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.splot.plot.X11Colors;
-import eu.mihosoft.vrl.v3d.Vector3d;
 
 public class CentralXYHitDrawer extends CentralHitDrawer {
 
 	private static Color _baseColor = new Color(255, 0, 0, 60);
-	
+
 	//common adc color scale
 	private AdcColorScale _adcColorScale = AdcColorScale.getInstance();
 
@@ -99,7 +97,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw CTOF accumulated hits
 	@Override
 	protected void drawCTOFAccumulatedHits(Graphics g, IContainer container) {
-		
+
 		//sector and layer always == 1 only worry about component
 		int medianHit = AccumulationManager.getInstance().getMedianCTOFCount();
 
@@ -135,87 +133,35 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {
 
-		int adcCount = _dataWarehouse.rows("CND::adc");
-		int tdcCount = _dataWarehouse.rows("CND::tdc");
-
-		// tdc?
-		if (tdcCount > 0) {
-			
-			byte sect[] = _dataWarehouse.getByte("CND::tdc", "sector");
-			byte layer[] = _dataWarehouse.getByte("CND::tdc", "layer");
-			byte order[] = _dataWarehouse.getByte("CND::tdc", "order");
-			
-			for (int i = 0; i < tdcCount; i++) {
-				int hsect = sect[i];
-				int hlayer = layer[i];
-				int hleftright = 1 + (order[i] % 2);
-
-				CNDXYPolygon poly = _view.getCNDPolygon(hsect, hlayer, hleftright);
-
-				poly.draw(g, container, Color.lightGray, Color.black);
+		//draw based on adc data
+		LR_ADCArrays arrays = new LR_ADCArrays("CND::adc");
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				CNDXYPolygon poly = _view.getCNDPolygon(arrays.sector[i], arrays.layer[i], arrays.order[i] + 1);
+				if (poly != null) {
+					Color color = arrays.getColor(arrays.sector[i], arrays.layer[i], (short)1, arrays.order[i]);
+					poly.draw(g, container, color, Color.black);
+				}
 			}
 		}
-
-		// adc?
-		if (adcCount > 0) {
-			
-			byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
-			byte layer[] = _dataWarehouse.getByte("CND::adc", "layer");
-			byte order[] = _dataWarehouse.getByte("CND::adc", "order");
-
-			for (int i = 0; i < adcCount; i++) {
-				byte hsect = sect[i];
-				byte hlayer = layer[i];
-				int hleftright = 1 + (order[i] % 2);
-
-				CNDXYPolygon poly = _view.getCNDPolygon(hsect, hlayer, hleftright);
-
-				Color color = _adcColorScale.getCNDADCColor(hsect, hlayer, order[i]);
-				poly.draw(g, container, color, Color.black);
-
-			}
-		}
-
-		// tdc again?
-		if (tdcCount > 0) {
-			
-			byte sect[] = _dataWarehouse.getByte("CND::tdc", "sector");
-			byte layer[] = _dataWarehouse.getByte("CND::tdc", "layer");
-			byte order[] = _dataWarehouse.getByte("CND::tdc", "order");
-
-			for (int i = 0; i < tdcCount; i++) {
-				int hsect = sect[i];
-				int hlayer = layer[i];
-				int hleftright = 1 + (order[i] % 2);
-
-				CNDXYPolygon poly = _view.getCNDPolygon(hsect, hlayer, hleftright);
-
-				g.setColor(Color.black);
-				g.drawLine(poly.xpoints[0], poly.ypoints[0], poly.xpoints[2], poly.ypoints[2]);
-				g.drawLine(poly.xpoints[1], poly.ypoints[1], poly.xpoints[3], poly.ypoints[3]);
-			}
-		}
-
 	}
-	
+
 
 	// draw CTOF hits
 	@Override
 	protected void drawCTOFSingleHitsMode(Graphics g, IContainer container) {
 		
-		short comp[] = _dataWarehouse.getShort("CTOF::hits", "component");
-
-		if (comp != null) {
-			for (int i = 0; i < comp.length; i++) {
-				short component = comp[i];
-				CTOFXYPolygon poly = _view.getCTOFPolygon(component);
+		//draw based on adc data
+		LR_ADCArrays arrays = new LR_ADCArrays("CTOF::adc");
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				CTOFXYPolygon poly = _view.getCTOFPolygon(arrays.component[i]);
 				if (poly != null) {
-					Color color = _adcColorScale.getCTOFADCColor(component);
-					poly.draw(g, container,component, color);
+					Color color = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
+					poly.draw(g, container, arrays.component[i], color);
 				}
 			}
 		}
-
 	}
 
 	// draw BMT hits
@@ -350,7 +296,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			Point2D.Double wp = new Point2D.Double();
 
 			BaseHit2List recHits = BST.getInstance().getRecHits();
-			
+
 			if (recHits != null) {
 
 				for (BaseHit2 bhit2 : recHits) {

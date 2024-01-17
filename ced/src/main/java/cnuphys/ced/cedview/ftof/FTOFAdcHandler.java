@@ -13,9 +13,7 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.arrays.TOF_ADC_Arrays;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 
 /**
  * Handles drawing and feedback for the adc (and tdc) bank
@@ -38,8 +36,8 @@ public class FTOFAdcHandler {
 	// draw the adc data
 	public void draw(Graphics g, IContainer container) {
 		if (_view.isSingleEventMode()) {
-			
-			TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
+
+			LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
 			if (!arrays.hasData()) {
 				return;
 			}
@@ -48,20 +46,37 @@ public class FTOFAdcHandler {
 			if (event == null) {
 				return;
 			}
-			
+
 			Polygon poly = new Polygon();
 			for (int i = 0; i < arrays.sector.length; i++) {
-				int panel = arrays.layer[i] - 1; //nasty -- this is zero based
-				_view.getPaddlePolygon(container, arrays.sector[i], panel, arrays.component[i], poly);
-				Color fc = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
-				g.setColor(fc);
-				g.fillPolygon(poly);
-				g.setColor(Color.red);
-				g.drawPolygon(poly);
+				int panel = arrays.layer[i] - 1; // nasty -- this is zero based
+				if (panel == _view.displayPanel()) {
 
+					_view.getPaddlePolygon(container, arrays.sector[i], panel, arrays.component[i], poly);
+					Color colorL = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i], (byte) 0);
+					Color colorR = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i], (byte) 1);
+
+					if (colorL == null) {
+						colorL = Color.white;
+					}
+					if (colorR == null) {
+						colorR = Color.white;
+					}
+
+//					if ((colorL == null) && (colorR == null)) {
+//						continue;
+//					}
+					
+					
+					GradientPaint gpaint = new GradientPaint(poly.xpoints[0], poly.ypoints[0], colorL, poly.xpoints[2],
+							poly.ypoints[2], colorR);
+
+					((Graphics2D) g).setPaint(gpaint);
+					((Graphics2D) g).fillPolygon(poly);
+
+					g.fillPolygon(poly);
+				}
 			}
-			
-
 
 		} else {
 			// drawAccumulatedHits(g, container);
@@ -71,8 +86,8 @@ public class FTOFAdcHandler {
 
 	public void getFeedbackStrings(IContainer container, int sect, int layer, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
-		
-		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
+
+		LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
 		arrays.addFeedback((byte) sect, (byte) layer, (short) paddleId, feedbackStrings);
 	}
 

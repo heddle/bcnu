@@ -198,7 +198,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER
-						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND 
+						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
 						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_NN

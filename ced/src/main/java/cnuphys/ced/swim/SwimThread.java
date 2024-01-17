@@ -14,38 +14,38 @@ public class SwimThread extends Thread {
 
 	//holds the trajectory info
 	private final TrajectoryRowData _trd;
-	
+
 	//the swimmer
 	private final CLAS12Swimmer _swimmer;
-	
+
 	//the max path length
 	private final double _sMax;
-	
+
 	private final double _h;
-	
+
 	private final double _tolerance;
 
 	/**
 	 * @param trd the trajectory row data
 	 * @param sMax the max path length
 	 * @param h the initial step size
-	 * @param tolerance the tolerance	
+	 * @param tolerance the tolerance
 	 */
 	public SwimThread(TrajectoryRowData trd, double sMax, double h, double tolerance) {
 		_swimmer = new CLAS12Swimmer();
 		_trd = trd;
-		_sMax = sMax;	
+		_sMax = sMax;
 		_h = h;
 		_tolerance = tolerance;
 	}
 
 	@Override
 	public void run() {
-		
+
 		LundId lid = LundSupport.getInstance().get(_trd.getId());
 
 		CLAS12SwimResult result = null;
-		
+
 		//have to convert trd momentum to GeV
 		result = _swimmer.swim(lid.getCharge(), _trd.getXo(), _trd.getYo(), _trd.getZo(),
 				_trd.getMomentum() / 1000, _trd.getTheta(), _trd.getPhi(), _sMax, _h, _tolerance);
@@ -71,5 +71,5 @@ public class SwimThread extends Thread {
 
 	}
 }
-	
+
 

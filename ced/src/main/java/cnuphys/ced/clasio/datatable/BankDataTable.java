@@ -68,8 +68,9 @@ public class BankDataTable extends JTable {
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
-		   if (e.getValueIsAdjusting())
-		        return;
+		   if (e.getValueIsAdjusting()) {
+			return;
+		}
 
 		super.valueChanged(e);
 

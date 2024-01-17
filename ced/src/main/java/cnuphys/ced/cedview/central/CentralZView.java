@@ -941,7 +941,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		return view;
 
 	}
-	
+
 	/**
 	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank

@@ -11,7 +11,6 @@ import java.util.List;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.FBData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -24,7 +23,6 @@ import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.Hit1;
 import cnuphys.ced.event.data.RECCalorimeter;
-import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
 import cnuphys.ced.event.data.lists.ClusterList;
 import cnuphys.ced.event.data.lists.DCClusterList;
 import cnuphys.ced.event.data.lists.DCReconHitList;
@@ -69,10 +67,6 @@ public class ReconDrawer extends SectorViewDrawer {
 			drawNeuralNetOverlays(g, container);
 		}
 
-		// Reconstructed FTOF hits
-		if (_view.showReconHits()) {
-			drawFTOFReconHits(g, container);
-		}
 
 		// Reconstructed clusters
 		if (_view.showClusters()) {
@@ -185,13 +179,7 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw reconstructed clusters
 	private void drawClusters(Graphics g, IContainer container) {
 		drawClusterList(g, container, AllEC.getInstance().getClusters());
-		drawClusterList(g, container, _dataWarehouse.getClusters("FTOF::clusters"));
 		drawClusterList(g, container, _dataWarehouse.getClusters("CTOF::clusters"));
-	}
-
-	// draw FTOF reconstructed hits
-	private void drawFTOFReconHits(Graphics g, IContainer container) {
-		//TODO DRAW HITS
 	}
 
 	// draw reconstructed DC hit Hit based and time based based hits
@@ -214,13 +202,13 @@ public class ReconDrawer extends SectorViewDrawer {
 			List<String> feedbackStrings) {
 
 		if (clusters != null) {
-			
+
 			if ((clusters.sector == null) || (clusters.sector.length == 0)) {
 				return false;
 			}
-			
+
 			for (int index = 0; index < clusters.length; index++) {
-				
+
 				if (_view.containsSector(clusters.sector[index])) {
 					if (clusters.contains(index, screenPoint)) {
 						clusters.getFeedbackStrings(prefix, index, feedbackStrings);
@@ -423,11 +411,7 @@ public class ReconDrawer extends SectorViewDrawer {
 
 	// draw a reconstructed cluster list
 	private void drawClusterList(Graphics g, IContainer container, ClusterList clusters) {
-		if ((clusters == null) || (clusters.length < 1)) {
-			return;
-		}
-		
-		if ((clusters.sector == null) || (clusters.sector.length == 0)) {
+		if ((clusters == null) || (clusters.length < 1) || (clusters.sector == null) || (clusters.sector.length == 0)) {
 			return;
 		}
 

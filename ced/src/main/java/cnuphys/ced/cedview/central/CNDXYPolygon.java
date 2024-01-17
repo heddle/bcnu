@@ -32,7 +32,7 @@ public class CNDXYPolygon extends Polygon {
 
 	//the data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
-	
+
 	/**
 	 * The layer, 1..3
 	 */
@@ -150,7 +150,7 @@ public class CNDXYPolygon extends Polygon {
 
 			// adc?
 			if (adcCount > 0) {
-				
+
 				byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
 				byte lay[] = _dataWarehouse.getByte("CND::adc", "layer");
 				byte order[] = _dataWarehouse.getByte("CND::adc", "order");
@@ -175,12 +175,12 @@ public class CNDXYPolygon extends Polygon {
 
 			// tdc?
 			if (tdcCount > 0) {
-				
+
 				byte sect[] = _dataWarehouse.getByte("CND::tdc", "sector");
 				byte lay[] = _dataWarehouse.getByte("CND::tdc", "layer");
 				byte order[] = _dataWarehouse.getByte("CND::tdc", "order");
                 int tdc[] = _dataWarehouse.getInt("CND::tdc", "TDC");
-                
+
 				for (int i = 0; i < tdcCount; i++) {
 					int hsect = sect[i];
 					int hlayer = lay[i];

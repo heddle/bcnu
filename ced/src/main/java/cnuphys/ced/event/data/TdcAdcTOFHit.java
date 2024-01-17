@@ -55,13 +55,16 @@ public class TdcAdcTOFHit implements Comparable<TdcAdcTOFHit> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if ((obj == null) || (getClass() != obj.getClass()))
+		}
+		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
+		}
 		TdcAdcTOFHit other = (TdcAdcTOFHit) obj;
-		if ((sector != other.sector) || (layer != other.layer) || (component != other.component))
+		if ((sector != other.sector) || (layer != other.layer) || (component != other.component)) {
 			return false;
+		}
 		return true;
 	}
 

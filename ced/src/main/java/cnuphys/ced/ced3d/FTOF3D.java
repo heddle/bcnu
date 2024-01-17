@@ -47,24 +47,6 @@ public class FTOF3D extends DetectorItem3D {
 			}
 		}
 
-		// gl.glCallList(drawList);
-
-		// if (drawList < 0) {
-		// System.err.println("Creating drawlist for FTOF sector " + _sector);
-		// drawList = gl.glGenLists(1);
-		// gl.glNewList(drawList, GL2.GL_COMPILE);
-		// for (FTOFPanel3D panel : _panels) {
-		// for (int paddleId = 1; paddleId <= panel.getPaddleCount();
-		// paddleId++) {
-		// panel.getPaddle(paddleId)
-		// .drawPaddle(drawable, outlineColor);
-		// }
-		// }
-		// gl.glEndList();
-		// }
-		//
-		// gl.glCallList(drawList);
-
 	}
 
 	/**

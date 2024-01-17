@@ -4,10 +4,7 @@ import java.awt.Color;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.arrays.TOF_ADC_Arrays;
-import cnuphys.ced.event.data.arrays.XYZ_Hit_Arrays;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class FTOFPanel3D extends DetectorItem3D {
@@ -64,19 +61,18 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
-		//draw based on ADC data
-		TOF_ADC_Arrays arrays = new TOF_ADC_Arrays("FTOF::adc");
-		if (!arrays.hasData()) {
-			return;
-		}
+		// draw based on ADC data
+		LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
+		if (arrays.hasData()) {
 
-		byte layer = (byte) (_panelId + 1);
-		for (int i = 0; i < arrays.sector.length; i++) {
-			if ((arrays.sector[i] == _sector) && (arrays.layer[i] == layer)) {
-				Color fc = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
-				getPaddle(arrays.component[i]).drawPaddle(drawable, fc);
+			byte layer = (byte) (_panelId + 1);
+			for (int i = 0; i < arrays.sector.length; i++) {
+				if ((arrays.sector[i] == _sector) && (arrays.layer[i] == layer)) {
+					Color fc = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
+					getPaddle(arrays.component[i]).drawPaddle(drawable, fc);
+				}
 			}
-		}
+		} //end has data
 
 	}
 

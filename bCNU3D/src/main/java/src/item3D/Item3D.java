@@ -7,6 +7,7 @@ import java.util.Properties;
 import java.util.Vector;
 
 import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Bad3DPropertyException;
 import bCNU3D.Panel3D;
 
@@ -17,7 +18,7 @@ public abstract class Item3D {
 
 	/** property for fill color. Default is defined below */
 	public static final String FILLCOLOR = "FILLCOLOR";
-	
+
 	/** property for fill alpha. Default is defined below */
 	public static final String FILLALPHA = "FILLALPHA";
 
@@ -60,7 +61,7 @@ public abstract class Item3D {
 
 	/**
 	 * Create a 3D item for use on a Panel3D.
-	 * 
+	 *
 	 * @param panel3D the owner panel 3D object
 	 */
 	public Item3D(Panel3D panel3D) {
@@ -84,7 +85,7 @@ public abstract class Item3D {
 
 	/**
 	 * set a property
-	 * 
+	 *
 	 * @param key   the key
 	 * @param value the value
 	 */
@@ -94,7 +95,7 @@ public abstract class Item3D {
 
 	/**
 	 * Called by the panel3D. Do not overrwrite.
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 */
 	public final void drawItem(GLAutoDrawable drawable) {
@@ -111,14 +112,14 @@ public abstract class Item3D {
 
 	/**
 	 * The custom drawing method
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 */
 	public abstract void draw(GLAutoDrawable drawable);
 
 	/**
 	 * Get a 3D property
-	 * 
+	 *
 	 * @param key the name of the property
 	 * @return the object corresponding to that key, or null
 	 * @throws Bad3DPropertyException
@@ -133,7 +134,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get a String 3D property
-	 * 
+	 *
 	 * @param key the name of the property
 	 * @return the String corresponding to that key, or null
 	 * @throws Bad3DPropertyException
@@ -150,7 +151,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get an AWT color 3D property
-	 * 
+	 *
 	 * @param key the name of the property
 	 * @return the (AWT) Color corresponding to that key, or null
 	 * @throws Bad3DPropertyException
@@ -167,7 +168,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get an a Font 3D property
-	 * 
+	 *
 	 * @param key the name of the property
 	 * @return the Font corresponding to that key, or null
 	 * @throws Bad3DPropertyException
@@ -184,7 +185,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get a integer 3D property
-	 * 
+	 *
 	 * @param key the name of the property
 	 * @return the Integer corresponding to that key, or null
 	 * @throws Bad3DPropertyException
@@ -201,7 +202,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get a float 3D property
-	 * 
+	 *
 	 * @param key the name of the property
 	 * @return the Float corresponding to that key, or null
 	 * @throws Bad3DPropertyException
@@ -218,7 +219,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to get the line width for this item
-	 * 
+	 *
 	 * @return the line width. (Default is 1f)
 	 */
 	public float getLineWidth() {
@@ -231,7 +232,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to set the line width
-	 * 
+	 *
 	 * @param lineWidth the line width.
 	 */
 	public void setLineWidth(float lineWidth) {
@@ -240,7 +241,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to get the fill color for this item
-	 * 
+	 *
 	 * @return the fill color.
 	 */
 	public Color getFillColor() {
@@ -252,10 +253,10 @@ public abstract class Item3D {
 			return _defaultFillColor;
 		}
 	}
-	
+
 	/**
 	 * Convenience method to get the fill alpha for this item
-	 * 
+	 *
 	 * @return the fill aplha.
 	 */
 	public int getFillAlpha() {
@@ -268,7 +269,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to get the line (frame) alpha for this item
-	 * 
+	 *
 	 * @return the line (frame) alpha.
 	 */
 	public int getLineAlpha() {
@@ -281,7 +282,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to get the line (and frame)color for this item
-	 * 
+	 *
 	 * @return the line (frame) color.
 	 */
 	public Color getLineColor() {
@@ -296,7 +297,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to get the text color for this item
-	 * 
+	 *
 	 * @return the text color.
 	 */
 	public Color getTextColor() {
@@ -309,7 +310,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to get the fontr for this item
-	 * 
+	 *
 	 * @return the font.
 	 */
 	public Font getFont() {
@@ -322,7 +323,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to set the fill color
-	 * 
+	 *
 	 * @param color the fill color.
 	 */
 	public void setFillColor(Color color) {
@@ -332,17 +333,17 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to set the line (frame) color
-	 * 
+	 *
 	 * @param color the line (frame) color.
 	 */
 	public void setLineColor(Color color) {
 		put(LINEALPHA, color.getAlpha());
 		put(LINECOLOR, color);
 	}
-	
+
 	/**
 	 * Convenience method to set the fill alpha
-	 * 
+	 *
 	 * @param alpha the fill alpha [0..255].
 	 */
 	public void setFillAlpha(int alpha) {
@@ -352,7 +353,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to set the line (frame) alpha
-	 * 
+	 *
 	 * @param alpha the line (frame) alpha [0..255].
 	 */
 	public void setLineAlpha(int alpha) {
@@ -362,7 +363,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to set the text color
-	 * 
+	 *
 	 * @param textColor the text color.
 	 */
 	public void setTextColor(Color textColor) {
@@ -371,7 +372,7 @@ public abstract class Item3D {
 
 	/**
 	 * Convenience method to set the font
-	 * 
+	 *
 	 * @param font the text font.
 	 */
 	public void setFont(Font font) {
@@ -382,7 +383,7 @@ public abstract class Item3D {
 	 * Controls whether we want the item to be drawn. That is, drawing is skipped if
 	 * this is false. Whether or not the item is actually visible when drawn is not
 	 * controlled by this flag. This does NOT initiate a redraw,
-	 * 
+	 *
 	 * @param visible the visibility flag.
 	 */
 	public void setVisible(boolean visible) {
@@ -393,7 +394,7 @@ public abstract class Item3D {
 	 * Checks whether we want the item to be drawn. That is, drawing is skipped if
 	 * this is false. Whether or not the item is actually visible when drawn is not
 	 * controlled by this flag.
-	 * 
+	 *
 	 * @return the visibility flag.
 	 */
 	public boolean isVisible() {
@@ -402,7 +403,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get a list of the item's children, can be <code>null</code>
-	 * 
+	 *
 	 * @return a list of the item's children
 	 */
 	public List<Item3D> getChildren() {
@@ -411,7 +412,7 @@ public abstract class Item3D {
 
 	/**
 	 * Get the parent item (might be null)
-	 * 
+	 *
 	 * @return the parent
 	 */
 	public Item3D getParent() {
@@ -420,13 +421,13 @@ public abstract class Item3D {
 
 	/**
 	 * Add a child item
-	 * 
+	 *
 	 * @param item the child item
 	 */
 	public void addChild(Item3D item) {
 		if (item != null) {
 			if (_children == null) {
-				_children = new Vector<Item3D>();
+				_children = new Vector<>();
 			}
 			_children.remove(item);
 			_children.addElement(item);
@@ -436,7 +437,7 @@ public abstract class Item3D {
 
 	/**
 	 * Remove a child item
-	 * 
+	 *
 	 * @param item the chold item
 	 */
 	public void removeChild(Item3D item) {
@@ -447,13 +448,13 @@ public abstract class Item3D {
 
 	/**
 	 * Get the parent Panel3D object
-	 * 
+	 *
 	 * @return the parent Panel3D object
 	 */
 	public Panel3D getPanel3D() {
 		return _panel3D;
 	}
-	
+
 	/**
 	 * Set the alpha of a color. If it already has the given alpha
 	 * it just returns the color. If not, it makes a new color
@@ -463,13 +464,13 @@ public abstract class Item3D {
 	 * @return the color
 	 */
 	public Color setAlpha(Color color, int alpha) {
-		
+
 		alpha = Math.max(0,  Math.min(255, alpha));
 		int a = color.getAlpha();
 		if (a == alpha) {
 			return color;
 		}
-		
+
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
 

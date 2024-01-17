@@ -17,7 +17,7 @@ import bCNU3D.Panel3D;
 /**
  * This is for making a label to show what a key stroke does, e.g., R for move
  * right
- * 
+ *
  * @author heddle
  *
  */

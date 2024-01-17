@@ -6,11 +6,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-import bCNU3D.Panel3D;
-
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
+
+import bCNU3D.Panel3D;
 
 public class MouseAdapter3D implements MouseListener, MouseMotionListener, MouseWheelListener {
 
