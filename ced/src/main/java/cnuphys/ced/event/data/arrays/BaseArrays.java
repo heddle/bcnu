@@ -5,6 +5,7 @@ import java.util.List;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 /**
@@ -24,9 +25,15 @@ public abstract class BaseArrays {
 
 	/** the bank name */
 	public final String bankName;
+	
+	/** the detector name */
+	public String detectorName;
 
 	/** the event manager */
 	protected static ClasIoEventManager eventManager = ClasIoEventManager.getInstance();
+	
+	/** the data warehouse */
+	protected static DataWarehouse dataWarehouse = DataWarehouse.getInstance();
 
 	/** the current event */
 	protected DataEvent event = eventManager.getCurrentEvent();
@@ -36,11 +43,17 @@ public abstract class BaseArrays {
 
 	/**
 	 * Create the data array references from the current event
-	 *
 	 * @param bankName the bank name
 	 */
 	public BaseArrays(String bankName) {
+
 		this.bankName = bankName;
+		
+		//get the detector name from the bank name
+		int index = bankName.indexOf("::");
+		if (index > 0) {
+			detectorName = bankName.substring(0, index);
+		}
 
 		event = eventManager.getCurrentEvent();
 		if (event != null) {

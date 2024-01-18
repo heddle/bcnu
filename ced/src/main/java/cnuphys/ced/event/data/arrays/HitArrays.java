@@ -33,7 +33,7 @@ public abstract class HitArrays extends BaseArrays {
 
 	/**
 	 * Base array for hits
-	 * @param bankName
+	 * @param bankName 
 	 */
 	public HitArrays(String bankName) {
 		super(bankName);

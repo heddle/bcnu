@@ -28,7 +28,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 	protected  DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// the event manager
-	private final ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	protected final ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// cached rectangles for feedback
 	protected Vector<FeedbackRect> _fbRects = new Vector<>();

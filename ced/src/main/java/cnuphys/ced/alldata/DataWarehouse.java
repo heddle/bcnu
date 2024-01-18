@@ -2,6 +2,7 @@ package cnuphys.ced.alldata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jlab.io.base.DataBank;
@@ -10,10 +11,12 @@ import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
 
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
+import cnuphys.ced.clasio.IClasIoEventListener;
+import cnuphys.ced.event.data.arrays.BaseArrays;
 import cnuphys.ced.event.data.lists.ClusterList;
 
-public class DataWarehouse {
+public class DataWarehouse implements IClasIoEventListener {
 
 	//the singleton
 	private static DataWarehouse _instance;
@@ -24,7 +27,13 @@ public class DataWarehouse {
 	//the current schema factory (dictionary)
 	private SchemaFactory _schemaFactory;
 
+    //the arrays for every event
+	private HashMap<String, BaseArrays> _arrays = new HashMap<>();
 
+	private DataWarehouse() {
+		ClasIoEventManager.getInstance().addClasIoEventListener(this, 0);
+	}
+	
 	/**
 	 * Public access to the singleton
 	 *
@@ -255,92 +264,44 @@ public class DataWarehouse {
 		clusters.fillList();
 		return clusters;
 	}
-
-
+	
 	/**
-	 * Get the TdcAdcTOFHit for the given sector, layer, and component
-	 * This could be CTOF or FTOF depending on the base name
-	 *
-	 * @return the TdcAdcTOFHit or null
+	 * Get the arrays for the given bank name from the cache
+	 * 
+	 * @param bankName the bank name
+	 * @return the arrays
 	 */
-	public TdcAdcTOFHit getTdcAdcTOFHit(byte sector, byte layer, short component, String base) {
-
-
-		//is there an event?
-		DataEvent event = getCurrentEvent();
-		if (event == null) {
-			return null;
-		}
-
-		//are there hits?
-		String hitBankName = base + "::hits";
-		DataBank hitBank = event.getBank(hitBankName);
-		if (hitBank == null) {
-			return null;
-		}
-
-		TdcAdcTOFHit hit = null;
-
-		//get data columns from hit bank
-		byte hsect[] = getByte(hitBankName, "sector");
-		byte hlay[] = getByte(hitBankName, "layer");
-		short hcomp[] = getShort(hitBankName, "component");
-
-		//adc and tdc banks will not be the same size as the hit bank
-		String adcBankName = base + "::adc";
-		String tdcBankName = base + "::tdc";
-
-		for (int i = 0; i < hsect.length; i++) {
-			if ((hsect[i] == sector) && (hlay[i] == layer) && (hcomp[i] == component)) {
-				hit = new TdcAdcTOFHit(sector, layer, component);
-
-				//ADC
-				byte sect[] = getByte(adcBankName, "sector");
-				byte lay[] = getByte(adcBankName, "layer");
-				short comp[] = getShort(adcBankName, "component");
-				int adc[] = getInt(adcBankName, "ADC");
-				byte order[] = getByte(adcBankName, "order");
-				short ped[] = getShort(adcBankName, "ped");
-				float time[] = getFloat(adcBankName, "time");
-
-				for (int j = 0; j < sect.length; j++) {
-					if ((sect[j] == sector) && (lay[j] == layer) && (comp[j] == component)) {
-						if (order[j] == 0) {
-							hit.adcL = adc[j];
-							hit.pedL = ped[j];
-							hit.timeL = time[j];
-						} else {
-							hit.adcR = adc[j];
-							hit.pedR = ped[j];
-							hit.timeR = time[j];
-						}
-					}
-				}
-
-				//TDC
-				sect = getByte(tdcBankName, "sector");
-				lay = getByte(tdcBankName, "layer");
-				comp = getShort(tdcBankName, "component");
-				int tdc[] = getInt(tdcBankName, "TDC");
-				order = getByte(adcBankName, "order");
-
-				for (int j = 0; j < sect.length; j++) {
-					if ((sect[j] == sector) && (lay[j] == layer) && (comp[j] == component)) {
-						if (order[j] == 2) {
-							hit.tdcL = tdc[j];
-						} else {
-							hit.tdcR = tdc[j];
-						}
-					}
-				}
-
-
-			}
-		}
-
-
-		return hit;
+	public BaseArrays getArrays(String bankName) {
+		return _arrays.get(bankName);
+	}
+	
+	/**
+	 * Put the arrays for the given bank name into the cache
+	 * @param bankName
+	 * @param arrays
+	 */
+	public void putArrays(String bankName, BaseArrays arrays) {
+		_arrays.put(bankName, arrays);
 	}
 
+	@Override
+	public void newClasIoEvent(DataEvent event) {
+		_arrays.clear();
+	}
+
+	@Override
+	public void openedNewEventFile(String path) {
+		_arrays.clear();
+	}
+
+	@Override
+	public void changedEventSource(EventSourceType source) {
+		_arrays.clear();
+	}
+
+	@Override
+	public boolean ignoreIfAccumulating() {
+		return false;
+	}
 
 }

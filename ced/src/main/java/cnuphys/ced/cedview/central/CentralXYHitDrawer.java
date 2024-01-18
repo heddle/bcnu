@@ -132,9 +132,13 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw CTOF hits
 	@Override
 	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {
+		
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
 
 		//draw based on adc data
-		LR_ADCArrays arrays = new LR_ADCArrays("CND::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CND::adc");
 		if (arrays.hasData()) {
 			for (int i = 0; i < arrays.sector.length; i++) {
 				CNDXYPolygon poly = _view.getCNDPolygon(arrays.sector[i], arrays.layer[i], arrays.order[i] + 1);
@@ -151,8 +155,13 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawCTOFSingleHitsMode(Graphics g, IContainer container) {
 		
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
+
+		
 		//draw based on adc data
-		LR_ADCArrays arrays = new LR_ADCArrays("CTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
 		if (arrays.hasData()) {
 			for (int i = 0; i < arrays.sector.length; i++) {
 				CTOFXYPolygon poly = _view.getCTOFPolygon(arrays.component[i]);

@@ -8,7 +8,7 @@ import cnuphys.ced.event.data.AdcColorScale;
 public final class LR_ADCArrays extends ADCArrays {
 
 	//color used for feedback
-	private static final String _fbColor = "$Orange Red$";
+	private static final String _fbColor = "$cyan$";
 
 	/** the left-right array */
 	private static final String leftRight[] = {"L", "R"};
@@ -22,11 +22,31 @@ public final class LR_ADCArrays extends ADCArrays {
 	 *
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 */
-	public LR_ADCArrays(String bankName) {
+	private LR_ADCArrays(String bankName) {
 		super(bankName);
 		if (hasData()) {
 			order = bank.getByte("order");
 		}
+	}
+	
+	/**
+	 * Get the left-right adc arrays for a given bank name
+	 * 
+	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @return the arrays, either created or from cache
+	 */
+	public static LR_ADCArrays getLR_ADCArrays(String bankName) {
+		//try to get from cache
+		BaseArrays arrays = dataWarehouse.getArrays(bankName);
+		if (arrays != null) {
+			System.err.println("got arrays from cache");
+			return (LR_ADCArrays) arrays;
+		}
+		
+		LR_ADCArrays lrArrays = new LR_ADCArrays(bankName);
+		System.err.println("created new arrays object");
+		dataWarehouse.putArrays(bankName, lrArrays);
+		return lrArrays;
 	}
 	
 	/**
@@ -70,8 +90,8 @@ public final class LR_ADCArrays extends ADCArrays {
 		if (hasData()) {
 			for (int i = 0; i < this.sector.length; i++) {
 				if ((this.sector[i] == sector) && (this.layer[i] == layer) && (this.component[i] == component)) {
-					String s = String.format("%s adc: %d time: %8.3f, ped: %d",
-							leftRight[order[i]], ADC[i], time[i], ped[i]);
+					String s = String.format("%s %s adc: %d time: %8.3f, ped: %d",
+							detectorName, leftRight[order[i]], ADC[i], time[i], ped[i]);
 
 					feedback.add(_fbColor + s);
 				}

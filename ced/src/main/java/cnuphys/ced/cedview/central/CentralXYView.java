@@ -52,6 +52,7 @@ import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.TdcAdcTOFHit;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -555,7 +556,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		if (_closestPanel != null) {
-
 			int region = (_closestPanel.getLayer() + 1) / 2;
 			fbString("red", "BST layer " + _closestPanel.getLayer(), feedbackStrings);
 			fbString("red", "BST region " + region, feedbackStrings);
@@ -585,26 +585,24 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				}
 			}
 
-			// ctof
+			// ctof ?
 			else if ((rad > CTOFGeometry.RINNER) && (rad < CTOFGeometry.ROUTER)) {
+				
 
-				for (int index = 0; index < 48; index++) {
+				for (short index = 0; index < 48; index++) {
 					if (_ctofPoly[index].contains(screenPoint)) {
-						int paddle = index + 1;
-						TdcAdcTOFHit hit = _dataWarehouse.getTdcAdcTOFHit((byte)1, (byte)1, (short)paddle, "CTOF");
+						short paddle = (short) (index + 1); //now 1-based
+						feedbackStrings.add("$cyan$CTOF paddle: " + paddle);
 
-						if (hit == null) {
-							feedbackStrings.add("$dodger blue$" + "CTOF paddle " + paddle);
-						} else {
-							hit.tdcAdcFeedback("CTOF paddle", feedbackStrings);
-						}
-
+						if (_eventManager.getCurrentEvent() != null) {
+							LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
+							arrays.addFeedback((byte)1, (byte)1, paddle, feedbackStrings);
 						break;
-					}
+					} //end paddle contains point
 
 				}
+				}
 			}
-
 		}
 
 		// hits data

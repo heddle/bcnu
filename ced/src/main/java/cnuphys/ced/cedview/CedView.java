@@ -67,7 +67,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	//the data warehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
-
+	
 	//name used for reading and writing properties
 	//can be different from title
 	protected String VIEWPROPNAME = "???";

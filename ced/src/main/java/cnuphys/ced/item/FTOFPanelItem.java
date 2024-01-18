@@ -33,6 +33,9 @@ public class FTOFPanelItem extends PolygonItem {
 
 	// the container sector view
 	private SectorView _view;
+	
+	//the event manager
+	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	/**
 	 * Create a FTOFPanelItem
@@ -151,8 +154,13 @@ public class FTOFPanelItem extends PolygonItem {
 
 	//draw based on data in ADC bank
 	private void drawSingleModeADCBased(Graphics g, IContainer container) {
+		
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
 
-		LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
+
+		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -163,7 +171,6 @@ public class FTOFPanelItem extends PolygonItem {
 		for (int i = 0; i < arrays.sector.length; i++) {
 			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
 				Point2D.Double wp[] = getPaddle(_view, arrays.component[i] - 1, _ftofPanel, _sector);
-
 
 				if (wp != null) {
 					Color fc = arrays.getColor(sect, layer, arrays.component[i]);
@@ -177,6 +184,10 @@ public class FTOFPanelItem extends PolygonItem {
 	
 	//draw based on data in hits bank
 	private void drawSingleModeClusters(Graphics g, IContainer container) {
+		
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
 
 		if (!_view.showClusters()) {
 			return;
@@ -211,6 +222,10 @@ public class FTOFPanelItem extends PolygonItem {
 
 	//draw based on data in hits bank
 	private void drawSingleModeHits(Graphics g, IContainer container) {
+		
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
 
 		if (!_view.showReconHits()) {
 			return;
@@ -346,7 +361,7 @@ public class FTOFPanelItem extends PolygonItem {
 							+ FTOFGeometry.getLength(_ftofPanel.getPanelType(), index) + " cm");
 
 					// any adc data?
-					LR_ADCArrays adcArrays = new LR_ADCArrays("FTOF::adc");
+					LR_ADCArrays adcArrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
 					adcArrays.addFeedback(sect, layer, paddle, feedbackStrings);
 
 					// any hit data?
@@ -354,6 +369,11 @@ public class FTOFPanelItem extends PolygonItem {
 				} // path contains wp
 			} // end wp != null
 		} // end for loop
+		
+		//rest of feedback depends on having an event
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
 
 		// hit feedback
 		if (_view.showReconHits()) {

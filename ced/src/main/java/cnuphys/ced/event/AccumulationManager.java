@@ -870,7 +870,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumCTOF() {
 
 		//use the adc arrays to accumulate
-		LR_ADCArrays arrays = new LR_ADCArrays("CTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -884,7 +884,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumFTOF() {
 
 		//use the adc arrays to accumulate
-		LR_ADCArrays arrays = new LR_ADCArrays("FTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
