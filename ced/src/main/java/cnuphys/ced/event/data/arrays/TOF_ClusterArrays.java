@@ -6,10 +6,29 @@ import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class TOF_ClusterArrays extends TOF_HitArrays {
 
-	public TOF_ClusterArrays(String bankName) {
+	protected TOF_ClusterArrays(String bankName) {
 		super(bankName);
 	}
-	
+
+	/**
+	 * Get the tof cluster arrays for a given bank name
+	 * 
+	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @return the cluster arrays, either created or from cache
+	 */
+	public static TOF_ClusterArrays getTOF_ClusterArrays(String bankName) {
+		//try to get from cache
+		BaseArrays arrays = dataWarehouse.getArrays(bankName);
+		if (arrays != null) {
+			return (TOF_ClusterArrays) arrays;
+		}
+		
+		TOF_ClusterArrays clusterArrays = new TOF_ClusterArrays(bankName);
+		dataWarehouse.putArrays(bankName, clusterArrays);
+		return clusterArrays;
+	}
+
+
 	/**
 	 * Add feedback for the given hit index
 	 *

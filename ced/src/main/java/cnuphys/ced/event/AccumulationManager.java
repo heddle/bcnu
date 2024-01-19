@@ -24,11 +24,11 @@ import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.FTCAL;
 import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
+import cnuphys.ced.event.data.arrays.ADCArrays;
 import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
@@ -639,8 +639,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_eventCount++;
 
 		// FTCal Data
-		AdcLRHitList ftcalList = FTCAL.getInstance().updateAdcList();
-		accumFTCAL(ftcalList);
+		accumFTCAL();
 
 		//RTPCData
 		RTPCHitList rtpcList = RTPC.getInstance().updateAdcList();
@@ -708,13 +707,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate ftcal
-	private void accumFTCAL(AdcLRHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+	private void accumFTCAL() {
+		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
 
-		for (AdcLRHit hit : list) {
-			_FTCALAccumulatedData[hit.component] += 1;
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				_FTCALAccumulatedData[arrays.component[i]] += 1;
+			}
 		}
 	}
 
@@ -733,25 +732,14 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate CND which is a special case
 	private void accumCND() {
-
-        // use the adc arrays to accumulate
 		
-
-
-		int adcCount = _dataWarehouse.rows("CND::adc");
-
-		if (adcCount > 0) {
-			byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
-			byte[] layer = _dataWarehouse.getByte("CND::adc", "layer");
-			byte[] order = _dataWarehouse.getByte("CND::adc", "order");
-
-			for (int i = 0; i < adcCount; i++) {
-
-				int sect0 = sect[i] - 1;
-				int lay0 = layer[i] - 1;
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CND::adc");
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				int sect0 = arrays.sector[i] - 1;
+				int lay0 = arrays.layer[i] - 1;
 				// note order is already a zero based quantity
-				int ord0 = order[i];
-
+				int ord0 = arrays.order[i];
 				_CNDAccumulatedData[sect0][lay0][ord0] += 1;
 			}
 		}
@@ -870,7 +858,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumCTOF() {
 
 		//use the adc arrays to accumulate
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -884,7 +872,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumFTOF() {
 
 		//use the adc arrays to accumulate
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}

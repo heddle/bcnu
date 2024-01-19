@@ -226,7 +226,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	 * @param bankName the bank name
 	 * @return the number of rows
 	 */
-	public int rows(String bankName) {
+	public int rowCount(String bankName) {
 		if (bankName == null) {
 			return 0;
 		}

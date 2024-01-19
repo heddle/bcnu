@@ -16,10 +16,11 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.TDCArrays;
 import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")
@@ -28,10 +29,6 @@ public class CNDXYPolygon extends Polygon {
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();
-
-
-	//the data warehouse
-	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	/**
 	 * The layer, 1..3
@@ -142,55 +139,23 @@ public class CNDXYPolygon extends Polygon {
 				feedbackStrings);
 
 		CedView view = (CedView) (container.getView());
+		
+		byte order;
 
 		if (view.isSingleEventMode()) {
-
-			int adcCount = _dataWarehouse.rows("CND::adc");
-			int tdcCount = _dataWarehouse.rows("CND::tdc");
-
-			// adc?
-			if (adcCount > 0) {
-
-				byte sect[] = _dataWarehouse.getByte("CND::adc", "sector");
-				byte lay[] = _dataWarehouse.getByte("CND::adc", "layer");
-				byte order[] = _dataWarehouse.getByte("CND::adc", "order");
-				short ped[] = _dataWarehouse.getShort("CND::adc", "ped");
-				int adc[] = _dataWarehouse.getInt("CND::adc", "ADC");
-				float time[] = _dataWarehouse.getFloat("CND::adc", "time");
-
-				for (int i = 0; i < adcCount; i++) {
-					int hsect = sect[i];
-					int hlayer = lay[i];
-					int hleftright = 1 + (order[i] % 2);
-
-					if ((sector == hsect) && (layer == hlayer) && (_leftRight == hleftright)) {
-						fbString("cyan", "cnd adc " + adc[i], feedbackStrings);
-						fbString("cyan", "cnd ped " + ped[i], feedbackStrings);
-
-						String timeStr = String.format("cnd time %-6.1f", time[i]);
-						fbString("cyan", timeStr, feedbackStrings);
-					}
-				}
+			
+			LR_ADCArrays adcArrays = LR_ADCArrays.getArrays("CND::adc");
+			if (adcArrays.hasData()) {
+				order = (byte) (_leftRight-1); //0 or 1
+				adcArrays.addFeedback((byte) sector, (byte) layer, (short)1, order, feedbackStrings);
+			}
+			
+			TDCArrays tdcArrays = TDCArrays.getArrays("CND::tdc");
+			if (tdcArrays.hasData()) {
+				order = (byte) (_leftRight+1); //2 or 3
+				tdcArrays.addFeedback((byte) sector, (byte) layer, (short)1, order, feedbackStrings);
 			}
 
-			// tdc?
-			if (tdcCount > 0) {
-
-				byte sect[] = _dataWarehouse.getByte("CND::tdc", "sector");
-				byte lay[] = _dataWarehouse.getByte("CND::tdc", "layer");
-				byte order[] = _dataWarehouse.getByte("CND::tdc", "order");
-                int tdc[] = _dataWarehouse.getInt("CND::tdc", "TDC");
-
-				for (int i = 0; i < tdcCount; i++) {
-					int hsect = sect[i];
-					int hlayer = lay[i];
-					int hleftright = 1 + (order[i] % 2);
-
-					if ((sector == hsect) && (layer == hlayer) && (_leftRight == hleftright)) {
-						fbString("cyan", "cnd tdc " + tdc[i], feedbackStrings);
-					}
-				}
-			}
 		} else { // accumulated
 
 			int[][][] cndAccumData = AccumulationManager.getInstance().getAccumulatedCNDData();

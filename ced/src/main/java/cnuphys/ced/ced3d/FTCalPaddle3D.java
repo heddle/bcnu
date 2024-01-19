@@ -7,7 +7,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.AdcLRHit;
 import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.FTCAL;
+import cnuphys.ced.event.data.arrays.ADCArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -33,20 +33,25 @@ public class FTCalPaddle3D extends DetectorItem3D {
 	public void drawShape(GLAutoDrawable drawable) {
 		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
 		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
-
-		AdcLRHitList hits = FTCAL.getInstance().getHits();
-		AdcLRHit hit = null;
-		if ((hits != null) && !hits.isEmpty()) {
-			hit = hits.get(1, 0, _id);
+		
+		// draw based on adc values
+		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
+		if (arrays.hasData()) {
 		}
 
-		Color color = (hit == null) ? noHitColor : hitColor;
-		Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
-		Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);
-		Support3D.drawQuad(drawable, _coords, 0, 4, 7, 3, color, 1f, _frame);
-		Support3D.drawQuad(drawable, _coords, 0, 4, 5, 1, color, 1f, _frame);
-		Support3D.drawQuad(drawable, _coords, 1, 5, 6, 2, color, 1f, _frame);
-		Support3D.drawQuad(drawable, _coords, 4, 5, 6, 7, color, 1f, _frame);
+//		AdcLRHitList hits = FTCAL.getInstance().getHits();
+//		AdcLRHit hit = null;
+//		if ((hits != null) && !hits.isEmpty()) {
+//			hit = hits.get(1, 0, _id);
+//		}
+//
+//		Color color = (hit == null) ? noHitColor : hitColor;
+//		Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
+//		Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);
+//		Support3D.drawQuad(drawable, _coords, 0, 4, 7, 3, color, 1f, _frame);
+//		Support3D.drawQuad(drawable, _coords, 0, 4, 5, 1, color, 1f, _frame);
+//		Support3D.drawQuad(drawable, _coords, 1, 5, 6, 2, color, 1f, _frame);
+//		Support3D.drawQuad(drawable, _coords, 4, 5, 6, 7, color, 1f, _frame);
 	}
 
 	@Override

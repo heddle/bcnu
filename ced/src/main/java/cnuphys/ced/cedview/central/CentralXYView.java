@@ -51,7 +51,6 @@ import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
 import cnuphys.ced.event.data.arrays.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
@@ -595,7 +594,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 						feedbackStrings.add("$cyan$CTOF paddle: " + paddle);
 
 						if (_eventManager.getCurrentEvent() != null) {
-							LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
+							LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
 							arrays.addFeedback((byte)1, (byte)1, paddle, feedbackStrings);
 						break;
 					} //end paddle contains point

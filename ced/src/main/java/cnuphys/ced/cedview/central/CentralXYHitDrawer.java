@@ -138,7 +138,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		}
 
 		//draw based on adc data
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CND::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CND::adc");
 		if (arrays.hasData()) {
 			for (int i = 0; i < arrays.sector.length; i++) {
 				CNDXYPolygon poly = _view.getCNDPolygon(arrays.sector[i], arrays.layer[i], arrays.order[i] + 1);
@@ -161,7 +161,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 		
 		//draw based on adc data
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
 		if (arrays.hasData()) {
 			for (int i = 0; i < arrays.sector.length; i++) {
 				CTOFXYPolygon poly = _view.getCTOFPolygon(arrays.component[i]);

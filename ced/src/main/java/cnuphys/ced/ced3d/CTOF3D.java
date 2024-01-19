@@ -38,7 +38,7 @@ public class CTOF3D extends DetectorItem3D {
 
 		
 		//draw based on ADC data
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("CTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
 		if (arrays.hasData()) {
 			for (int index = 0; index < arrays.sector.length; index++) {
 				short paddleId = arrays.component[index];

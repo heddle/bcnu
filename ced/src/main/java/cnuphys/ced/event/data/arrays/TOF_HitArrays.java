@@ -6,9 +6,28 @@ import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class TOF_HitArrays extends HitArrays {
 
-	public TOF_HitArrays(String bankName) {
+	protected TOF_HitArrays(String bankName) {
 		super(bankName);
 	}
+	
+	/**
+	 * Get the tof hit arrays for a given bank name
+	 * 
+	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @return the hit arrays, either created or from cache
+	 */
+	public static TOF_HitArrays getTOF_HitArrays(String bankName) {
+		//try to get from cache
+		BaseArrays arrays = dataWarehouse.getArrays(bankName);
+		if (arrays != null) {
+			return (TOF_HitArrays) arrays;
+		}
+		
+		TOF_HitArrays hitArrays = new TOF_HitArrays(bankName);
+		dataWarehouse.putArrays(bankName, hitArrays);
+		return hitArrays;
+	}
+
 	
 	/**
 	 * Add feedback for the given hit index

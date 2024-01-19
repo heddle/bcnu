@@ -24,7 +24,7 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcLRHit;
 import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.FTCAL;
+import cnuphys.ced.event.data.arrays.ADCArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 
 public class FTCalXYView extends CedXYView {
@@ -201,23 +201,21 @@ public class FTCalXYView extends CedXYView {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
-		AdcLRHitList hits = FTCAL.getInstance().getHits();
-
-		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcLRHit hit : hits) {
-				if (hit != null) {
-					short id = hit.component;
-					short index = indices[id];
-					if (index >= 0) {
-						FTCalXYPolygon poly = ftCalPoly[index];
-						Color color = hits.adcColor(hit);
-						g.setColor(color);
-						g.fillPolygon(poly);
-						g.setColor(Color.black);
-						g.drawPolygon(poly);
-					} else {
-						System.err.println("indexing problem in FT");
-					}
+		// draw based on adc values
+		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				short id = arrays.component[i];
+				short index = indices[id];
+				if (index >= 0) {
+					FTCalXYPolygon poly = ftCalPoly[index];
+					Color color = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
+					g.setColor(color);
+					g.fillPolygon(poly);
+					g.setColor(Color.black);
+					g.drawPolygon(poly);
+				} else {
+					System.err.println("indexing problem in FT");
 				}
 			}
 		}
@@ -272,39 +270,39 @@ public class FTCalXYView extends CedXYView {
 
 		basicFeedback(container, screenPoint, worldPoint, "cm", feedbackStrings);
 
-		int xindex = FTCALGeometry.valToIndex(worldPoint.x);
-		if (xindex != 0) {
-			int yindex = FTCALGeometry.valToIndex(worldPoint.y);
-			if (yindex != 0) {
-
-				boolean found = false;
-
-				for (int index = 0; index < ftCalPoly.length; index++) {
-					FTCalXYPolygon poly = ftCalPoly[index];
-					found = poly.getFeedbackStrings(container, screenPoint, worldPoint, feedbackStrings);
-
-					if (found) {
-
-						AdcLRHitList hits = FTCAL.getInstance().getHits();
-						if ((hits != null) && !hits.isEmpty()) {
-							short component = FTCALGeometry.getGoodId(index);
-							AdcLRHit hit = hits.get(1, 1, component);
-
-							// hack
-							if (hit == null) {
-								hit = hits.get(0, 0, component);
-							}
-							if (hit != null) {
-								hit.tdcAdcFeedback(feedbackStrings);
-							}
-						}
-
-						break;
-					}
-				} // end for index
-
-			}
-		}
+//		int xindex = FTCALGeometry.valToIndex(worldPoint.x);
+//		if (xindex != 0) {
+//			int yindex = FTCALGeometry.valToIndex(worldPoint.y);
+//			if (yindex != 0) {
+//
+//				boolean found = false;
+//
+//				for (int index = 0; index < ftCalPoly.length; index++) {
+//					FTCalXYPolygon poly = ftCalPoly[index];
+//					found = poly.getFeedbackStrings(container, screenPoint, worldPoint, feedbackStrings);
+//
+//					if (found) {
+//
+//						AdcLRHitList hits = FTCAL.getInstance().getHits();
+//						if ((hits != null) && !hits.isEmpty()) {
+//							short component = FTCALGeometry.getGoodId(index);
+//							AdcLRHit hit = hits.get(1, 1, component);
+//
+//							// hack
+//							if (hit == null) {
+//								hit = hits.get(0, 0, component);
+//							}
+//							if (hit != null) {
+//								hit.tdcAdcFeedback(feedbackStrings);
+//							}
+//						}
+//
+//						break;
+//					}
+//				} // end for index
+//
+//			}
+//		}
 
 	}
 

@@ -7,26 +7,16 @@ import cnuphys.ced.event.data.AdcColorScale;
 
 public final class LR_ADCArrays extends ADCArrays {
 
-	//color used for feedback
-	private static final String _fbColor = "$cyan$";
-
 	/** the left-right array */
 	private static final String leftRight[] = {"L", "R"};
-
-	/** the order array */
-	public byte order[];
-	
 	
 	/**
 	 * Create the data arrays
 	 *
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 */
-	private LR_ADCArrays(String bankName) {
+	protected LR_ADCArrays(String bankName) {
 		super(bankName);
-		if (hasData()) {
-			order = bank.getByte("order");
-		}
 	}
 	
 	/**
@@ -35,16 +25,14 @@ public final class LR_ADCArrays extends ADCArrays {
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 * @return the arrays, either created or from cache
 	 */
-	public static LR_ADCArrays getLR_ADCArrays(String bankName) {
+	public static LR_ADCArrays getArrays(String bankName) {
 		//try to get from cache
 		BaseArrays arrays = dataWarehouse.getArrays(bankName);
 		if (arrays != null) {
-			System.err.println("got arrays from cache");
 			return (LR_ADCArrays) arrays;
 		}
 		
 		LR_ADCArrays lrArrays = new LR_ADCArrays(bankName);
-		System.err.println("created new arrays object");
 		dataWarehouse.putArrays(bankName, lrArrays);
 		return lrArrays;
 	}
@@ -70,7 +58,7 @@ public final class LR_ADCArrays extends ADCArrays {
 	}
 
 	//gets the average ADC for a given sector, layer, component, and order
-	private int getComponentAverageADC(byte sector, byte layer, short component, short order) {
+	private int getComponentAverageADC(byte sector, byte layer, short component, byte order) {
 		int count = 0;
 		int sum = 0;
 		for (int i = 0; i < this.sector.length; i++) {

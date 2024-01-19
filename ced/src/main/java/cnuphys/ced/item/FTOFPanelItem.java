@@ -160,7 +160,7 @@ public class FTOFPanelItem extends PolygonItem {
 		}
 
 
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -193,7 +193,7 @@ public class FTOFPanelItem extends PolygonItem {
 			return;
 		}
 		
-		TOF_ClusterArrays arrays = new TOF_ClusterArrays("FTOF::clusters");
+		TOF_ClusterArrays arrays = TOF_ClusterArrays.getTOF_ClusterArrays("FTOF::clusters");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -231,7 +231,7 @@ public class FTOFPanelItem extends PolygonItem {
 			return;
 		}
 
-		TOF_HitArrays arrays = new TOF_HitArrays("FTOF::hits");
+		TOF_HitArrays arrays = TOF_HitArrays.getTOF_HitArrays("FTOF::hits");
 		if (!arrays.hasData()) {
 			return;
 		}
@@ -361,7 +361,7 @@ public class FTOFPanelItem extends PolygonItem {
 							+ FTOFGeometry.getLength(_ftofPanel.getPanelType(), index) + " cm");
 
 					// any adc data?
-					LR_ADCArrays adcArrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
+					LR_ADCArrays adcArrays = LR_ADCArrays.getArrays("FTOF::adc");
 					adcArrays.addFeedback(sect, layer, paddle, feedbackStrings);
 
 					// any hit data?
@@ -377,7 +377,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 		// hit feedback
 		if (_view.showReconHits()) {
-			TOF_HitArrays hitArrays = new TOF_HitArrays("FTOF::hits");
+			TOF_HitArrays hitArrays = TOF_HitArrays.getTOF_HitArrays("FTOF::hits");
 			if (hitArrays.hasData()) {
 
 				Point.Double wp = new Point.Double();
@@ -407,7 +407,7 @@ public class FTOFPanelItem extends PolygonItem {
 		
 		// hit feedback
 		if (_view.showClusters()) {
-			TOF_ClusterArrays clusterArrays = new TOF_ClusterArrays("FTOF::clusters");
+			TOF_ClusterArrays clusterArrays = TOF_ClusterArrays.getTOF_ClusterArrays("FTOF::clusters");
 			if (clusterArrays.hasData()) {
 
 				Point.Double wp = new Point.Double();

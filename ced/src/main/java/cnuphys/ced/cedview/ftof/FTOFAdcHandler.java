@@ -37,7 +37,7 @@ public class FTOFAdcHandler {
 	public void draw(Graphics g, IContainer container) {
 		if (_view.isSingleEventMode()) {
 
-			LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
+			LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
 			if (!arrays.hasData()) {
 				return;
 			}
@@ -87,7 +87,7 @@ public class FTOFAdcHandler {
 	public void getFeedbackStrings(IContainer container, int sect, int layer, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
 
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
 		arrays.addFeedback((byte) sect, (byte) layer, (short) paddleId, feedbackStrings);
 	}
 

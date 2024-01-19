@@ -62,7 +62,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
 		// draw based on ADC data
-		LR_ADCArrays arrays = LR_ADCArrays.getLR_ADCArrays("FTOF::adc");
+		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
 		if (arrays.hasData()) {
 
 			byte layer = (byte) (_panelId + 1);
