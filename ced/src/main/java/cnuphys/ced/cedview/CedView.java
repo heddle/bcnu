@@ -1495,17 +1495,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return true;
-	}
-
-	/**
 	 * Get the median setting used in accumulation drawing
 	 *
 	 * @return the median setting used in accumulation drawing

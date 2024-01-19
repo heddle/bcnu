@@ -22,9 +22,9 @@ import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
+import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.arrays.ADCArrays;
+import cnuphys.ced.event.data.arrays.HitArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 
 public class FTCalXYView extends CedXYView {
@@ -41,7 +41,15 @@ public class FTCalXYView extends CedXYView {
 	// the CND xy polygons
 	FTCalXYPolygon ftCalPoly[] = new FTCalXYPolygon[332];
 
-	private short[] indices = new short[476];
+	//the reverse mappings
+	private short[] componentToIndex = new short[476];
+	
+	//bank matches
+	private static String _defMatches[] = {"FTCAL"};
+	
+	//good ids are the 332 component ids
+	private static final short[] goodIds = FTCALGeometry.getGoodIds();
+
 
 	/**
 	 * Create a FTCalXYView View
@@ -50,15 +58,13 @@ public class FTCalXYView extends CedXYView {
 	public FTCalXYView(Object... keyVals) {
 		super(keyVals);
 
-		for (int i = 0; i < indices.length; i++) {
-			indices[i] = -1;
+		for (int i = 0; i < componentToIndex.length; i++) {
+			componentToIndex[i] = -1;
 		}
 
-		// good IDs are the component ids
-		short goodIds[] = FTCALGeometry.getGoodIds();
 		for (int i = 0; i < 332; i++) {
 			int id = goodIds[i];
-			indices[id] = (short) i; // reverse mapping
+			componentToIndex[id] = (short) i; // reverse mapping
 			ftCalPoly[i] = new FTCalXYPolygon(id);
 		}
 
@@ -90,11 +96,18 @@ public class FTCalXYView extends CedXYView {
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,
-				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
+				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH + DisplayBits.RECONHITS, 3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
+		
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+		view._controlPanel.getMatchedBankPanel().update();
+
 
 		return view;
 	}
@@ -202,20 +215,40 @@ public class FTCalXYView extends CedXYView {
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
 		// draw based on adc values
-		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				short id = arrays.component[i];
-				short index = indices[id];
+		ADCArrays adcArrays = ADCArrays.getArrays("FTCAL::adc");
+		if (adcArrays.hasData()) {
+			for (int i = 0; i < adcArrays.sector.length; i++) {
+				short component = adcArrays.component[i];
+				short index = componentToIndex[component];
 				if (index >= 0) {
 					FTCalXYPolygon poly = ftCalPoly[index];
-					Color color = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
+					Color color = adcArrays.getColor(adcArrays.sector[i], adcArrays.layer[i], adcArrays.component[i]);
 					g.setColor(color);
 					g.fillPolygon(poly);
 					g.setColor(Color.black);
 					g.drawPolygon(poly);
 				} else {
 					System.err.println("indexing problem in FT");
+				}
+			}
+		}
+
+		// draw based on hits, but the FTCal hit data doesn't map to
+		// one of out hit arrays because therer is no sector, layer, component
+		// so go directly to the bank
+
+		if (this.showReconHits()) {
+			int hitCount = _dataWarehouse.rowCount("FTCAL::hits");
+			if (hitCount > 0) {
+				float x[] = _dataWarehouse.getFloat("FTCAL::hits", "x");
+				float y[] = _dataWarehouse.getFloat("FTCAL::hits", "y");
+				Point pp = new Point();
+				Point2D.Double wp = new Point2D.Double();
+
+				for (int i = 0; i < hitCount; i++) {
+					wp.setLocation(x[i], y[i]);
+					container.worldToLocal(pp, wp);
+					DataDrawSupport.drawReconHit(g, pp);
 				}
 			}
 		}
@@ -227,9 +260,11 @@ public class FTCalXYView extends CedXYView {
 		int medianHit = AccumulationManager.getInstance().getMedianFTCALCount();
 
 		int acchits[] = AccumulationManager.getInstance().getAccumulatedFTCALData();
+		
+		//loop will be 0 to 475
 		for (int i = 0; i < acchits.length; i++) {
 			if (acchits[i] > 0) {
-				int index = indices[i];
+				int index = componentToIndex[i];
 				if (index >= 0) {
 					FTCalXYPolygon poly = ftCalPoly[index];
 					double fract = getMedianSetting() * (((double) acchits[i]) / (1 + medianHit));
@@ -269,42 +304,77 @@ public class FTCalXYView extends CedXYView {
 			List<String> feedbackStrings) {
 
 		basicFeedback(container, screenPoint, worldPoint, "cm", feedbackStrings);
+		
+		int xindex = FTCALGeometry.valToIndex(worldPoint.x);
+		if (xindex != 0) {
+			int yindex = FTCALGeometry.valToIndex(worldPoint.y);
+			if (yindex != 0) {
 
-//		int xindex = FTCALGeometry.valToIndex(worldPoint.x);
-//		if (xindex != 0) {
-//			int yindex = FTCALGeometry.valToIndex(worldPoint.y);
-//			if (yindex != 0) {
-//
-//				boolean found = false;
-//
-//				for (int index = 0; index < ftCalPoly.length; index++) {
-//					FTCalXYPolygon poly = ftCalPoly[index];
-//					found = poly.getFeedbackStrings(container, screenPoint, worldPoint, feedbackStrings);
-//
-//					if (found) {
-//
-//						AdcLRHitList hits = FTCAL.getInstance().getHits();
-//						if ((hits != null) && !hits.isEmpty()) {
-//							short component = FTCALGeometry.getGoodId(index);
-//							AdcLRHit hit = hits.get(1, 1, component);
-//
-//							// hack
-//							if (hit == null) {
-//								hit = hits.get(0, 0, component);
-//							}
-//							if (hit != null) {
-//								hit.tdcAdcFeedback(feedbackStrings);
-//							}
-//						}
-//
-//						break;
-//					}
-//				} // end for index
-//
-//			}
-//		}
+				boolean found = false;
 
+				// loop of the polygons 1-332
+				for (int index = 0; index < ftCalPoly.length; index++) {
+					FTCalXYPolygon poly = ftCalPoly[index];
+					found = poly.contains(screenPoint);
+					if (found) {
+						short component = goodIds[index];
+						feedbackStrings.add("FTCal index: " + component);
+
+						ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
+						if (arrays.hasData()) {
+							arrays.addFeedback((byte) 1, (byte) 1, component, feedbackStrings);
+						}
+					}
+
+					if (found) {
+						break;
+					}
+
+				}
+			} // end for index
+
+		}
+		
+
+		// draw based on hits, but the FTCal hit data doesn't map to
+		// one of out hit arrays because therer is no sector, layer, component
+		// so go directly to the bank
+
+		if (this.showReconHits()) {
+			int hitCount = _dataWarehouse.rowCount("FTCAL::hits");
+			if (hitCount > 0) {
+				Point pp = new Point();
+				Point2D.Double wp = new Point2D.Double();
+				Rectangle r = new Rectangle();
+
+				for (int i = 0; i < hitCount; i++) {
+					float x = _dataWarehouse.getFloat("FTCAL::hits", "x")[i];
+					float y = _dataWarehouse.getFloat("FTCAL::hits", "y")[i];
+					wp.setLocation(x, y);
+					container.worldToLocal(pp, wp);
+					r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
+					if (r.contains(screenPoint)) {
+						
+						byte xid = _dataWarehouse.getByte("FTCAL::hits", "idx")[i];
+						byte yid = _dataWarehouse.getByte("FTCAL::hits", "idy")[i];
+						float z = _dataWarehouse.getFloat("FTCAL::hits", "z")[i];
+						float energy = _dataWarehouse.getFloat("FTCAL::hits", "energy")[i];
+						float time = _dataWarehouse.getFloat("FTCAL::hits", "time")[i];
+						
+						
+						String s = String.format("FTCal hit idXY: (%d, %d)", xid, yid);
+						feedbackStrings.add("$cyan$" + s);
+						s = String.format("FTCal hit loc: (%5.3f, %5.3f, %5.3f)", x, y, z);
+						feedbackStrings.add("$cyan$" + s);
+						s = String.format("FTCal energy: %6.4f time: %6.4f", energy, time);
+						feedbackStrings.add("$cyan$" + s);
+						break;
+					}
+				}
+			}
+		}
 	}
+
 
 	/**
 	 * Clone the view.

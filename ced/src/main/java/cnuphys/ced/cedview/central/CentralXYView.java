@@ -172,7 +172,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
+				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
 						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
 						+ DisplayBits.GLOBAL_TB,

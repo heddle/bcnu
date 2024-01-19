@@ -33,15 +33,5 @@ public abstract class ClasIoTrajectoryInfoView extends BaseView implements IClas
 	 */
 	protected abstract Vector<TrajectoryRowData> getRowData();
 
-	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return true;
-	}
 
 }

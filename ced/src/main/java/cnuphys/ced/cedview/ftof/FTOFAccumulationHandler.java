@@ -24,7 +24,7 @@ public class FTOFAccumulationHandler {
 
 		int medianHit = 0;
 
-		switch (_view.displayPanel() + 1) {
+		switch (_view.displayPanel()) {
 		case FTOFGeometry.PANEL_1A:
 			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();

@@ -266,6 +266,13 @@ public class DataWarehouse implements IClasIoEventListener {
 	}
 	
 	/**
+	 * Clear the arrays cache
+	 */
+	public void clearCache() {
+		_arrays.clear();
+	}
+	
+	/**
 	 * Get the arrays for the given bank name from the cache
 	 * 
 	 * @param bankName the bank name
@@ -286,22 +293,17 @@ public class DataWarehouse implements IClasIoEventListener {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_arrays.clear();
+		clearCache();
 	}
 
 	@Override
 	public void openedNewEventFile(String path) {
-		_arrays.clear();
+		clearCache();
 	}
 
 	@Override
 	public void changedEventSource(EventSourceType source) {
-		_arrays.clear();
-	}
-
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return false;
+		clearCache();
 	}
 
 }

@@ -27,8 +27,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** property for tof panel */
 	public static final String TOFPANEL_PROPERTY = "DisplayInner";
-
-
+	
 	/** Label and access to the monte carlo truth checkbox */
 	public static final String MCTRUTH_LABEL = "Truth";
 
@@ -340,7 +339,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 					.getCheckBox();
 
 		}
-
+		
 		// display mc truth?
 		if (Bits.checkBit(bits, DisplayBits.MCTRUTH)) {
 			_mcTruthButton = add(MCTRUTH_LABEL, true, true, this, Color.black).getCheckBox();
@@ -350,12 +349,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.COSMICS)) {
 			_cosmicButton = add(COSMIC_LABEL, true, true, this, Color.black).getCheckBox();
 		}
-
-		// display scale?
-//		if (Bits.checkBit(bits, DisplayBits.SCALE)) {
-//			_showScaleButton = add(SCALE_LABEL, show_scale, true, this,
-//					Color.black).getCheckBox();
-//		}
 
 		// global hit based data
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_HB)) {

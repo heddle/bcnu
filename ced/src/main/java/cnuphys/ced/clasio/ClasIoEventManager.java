@@ -1014,14 +1014,7 @@ public class ClasIoEventManager {
 				for (int i = listeners.length - 2; i >= 0; i -= 2) {
 					IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
 					if (listeners[i] == IClasIoEventListener.class) {
-						boolean notify = true;
-						if (isAccumulating()) {
-							notify = !listener.ignoreIfAccumulating();
-						}
-
-						if (notify) {
-							listener.newClasIoEvent(_currentEvent);
-						}
+						listener.newClasIoEvent(_currentEvent);
 					}
 				}
 			}

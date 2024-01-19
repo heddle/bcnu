@@ -635,6 +635,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if (!_eventManager.isAccumulating() || (event == null)) {
 			return;
 		}
+		
+		_dataWarehouse.clearCache();
 
 		_eventCount++;
 
@@ -885,9 +887,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 				_FTOF1AAccumulatedData[sect0][paddle0] += 1;
 			} else if (arrays.layer[i] == 2) {
 				_FTOF1BAccumulatedData[sect0][paddle0] += 1;
-			}
-			if (arrays.layer[i] == 3) {
+			} else if (arrays.layer[i] == 3) {
 				_FTOF2AccumulatedData[sect0][paddle0] += 1;
+			}
+			else {
+				System.out.println("ERROR:  accumFTOF layer out of bounds: " + arrays.layer[i]);
 			}
 		}
 	}
@@ -1035,16 +1039,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		return 100.0 * (_DCAccumulatedData[sect0][supl0][lay0][wire0] / (double) _eventCount);
 	}
 
-	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return false;
-	}
 
 	// get the median of a 1D array of ints
 	private int getMedian(int[] data) {
