@@ -16,7 +16,7 @@ import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
@@ -47,7 +47,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw accumulated BST hits (panels)
 	@Override
 	protected void drawCNDAccumulatedHits(Graphics g, IContainer container) {
-		int medianHit = AccumulationManager.getInstance().getMedianCNDCount();
+		int maxHit = AccumulationManager.getInstance().getMaxCNDCount();
 
 		int cndData[][][] = AccumulationManager.getInstance().getAccumulatedCNDData();
 
@@ -58,7 +58,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 					int hitCount = cndData[sect0][lay0][order];
 
 					CNDXYPolygon poly = _view.getCNDPolygon(sect0 + 1, lay0 + 1, order + 1);
-					double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
+					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 
 					poly.draw(g, container, color, Color.black);
@@ -73,7 +73,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {
 		// panels
 
-		int medianHit = AccumulationManager.getInstance().getMedianBSTCount();
+		int maxHit = AccumulationManager.getInstance().getMaxBSTCount();
 
 		// first index is layer 0..5, second is sector 0..23
 		int bstData[][] = AccumulationManager.getInstance().getAccumulatedBSTData();
@@ -85,7 +85,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				if (panel != null) {
 					int hitCount = bstData[lay0][sect0];
 
-					double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
+					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 					_view.drawBSTPanel((Graphics2D) g, container, panel, color);
 
@@ -99,7 +99,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	protected void drawCTOFAccumulatedHits(Graphics g, IContainer container) {
 
 		//sector and layer always == 1 only worry about component
-		int medianHit = AccumulationManager.getInstance().getMedianCTOFCount();
+		int maxHit = AccumulationManager.getInstance().getMaxCTOFCount();
 
 		int ctofData[] = AccumulationManager.getInstance().getAccumulatedCTOFData();
 
@@ -108,8 +108,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			if (poly != null) {
 				int hitCount = ctofData[index];
 
-				double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 				Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 
 				poly.draw(g, container, index + 1, color);
@@ -132,7 +131,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw CTOF hits
 	@Override
 	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {
-		
+
 		if (_eventManager.getCurrentEvent() == null) {
 			return;
 		}
@@ -154,12 +153,12 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw CTOF hits
 	@Override
 	protected void drawCTOFSingleHitsMode(Graphics g, IContainer container) {
-		
+
 		if (_eventManager.getCurrentEvent() == null) {
 			return;
 		}
 
-		
+
 		//draw based on adc data
 		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
 		if (arrays.hasData()) {

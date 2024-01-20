@@ -51,7 +51,7 @@ import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.geometry.BSTxyPanel;

@@ -8,7 +8,7 @@ public class AdcColorScale extends ColorScaleModel {
 	private static AdcColorScale _instance;
 
 	private AdcColorScale() {
-		super(getScaleValues(), ColorScaleModel.getWeatherMapColors(8));
+		super(getScaleValues(), ColorScaleModel.getSimpleMapColors(8));
 	}
 
 	public static AdcColorScale getInstance() {

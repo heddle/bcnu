@@ -13,7 +13,7 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 
 /**
  * Handles drawing and feedback for the adc (and tdc) bank

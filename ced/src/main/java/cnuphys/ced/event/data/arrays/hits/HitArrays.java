@@ -1,6 +1,8 @@
-package cnuphys.ced.event.data.arrays;
+package cnuphys.ced.event.data.arrays.hits;
 
 import java.util.List;
+
+import cnuphys.ced.event.data.arrays.BaseArrays;
 
 /**
  * Base array for hits with x,y,z locations

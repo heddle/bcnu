@@ -1,7 +1,8 @@
-package cnuphys.ced.event.data.arrays;
+package cnuphys.ced.event.data.arrays.hits;
 
 import java.util.List;
 
+import cnuphys.ced.event.data.arrays.BaseArrays;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class TOF_HitArrays extends HitArrays {

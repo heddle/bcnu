@@ -7,7 +7,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import bCNU3D.Support3D;
 import cnuphys.ced.event.data.AdcLRHit;
 import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.arrays.ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.ADCArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 import cnuphys.lund.X11Colors;
 

@@ -78,14 +78,9 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
-	// for accumulation drawing
-	private double _medianRelSetting = 0.25;
-
 	//for 0 adc values
 	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
-	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
 	private static final Color ASDZERO1T = new Color(0, 0, 0, 0);
-	private static final Color ASDZERO2T = X11Colors.getX11Color("Light Sky Blue", 0);
 
 
 	// are we showing single events or are we showing accumulated data
@@ -1492,24 +1487,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		wp.x = pisect.z();
 		wp.y = Math.hypot(pisect.x(), pisect.y());
 		return pisect;
-	}
-
-	/**
-	 * Get the median setting used in accumulation drawing
-	 *
-	 * @return the median setting used in accumulation drawing
-	 */
-	public double getMedianSetting() {
-		return _medianRelSetting;
-	}
-
-	/**
-	 * Set the median setting used in accumulation drawing
-	 *
-	 * @param medianSetting the median setting used in accumulation drawing
-	 */
-	public void setMedianSetting(double medianSetting) {
-		_medianRelSetting = Math.max(0, Math.min(1, medianSetting));
 	}
 
 	/**

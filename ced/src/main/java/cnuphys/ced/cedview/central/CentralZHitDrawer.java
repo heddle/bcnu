@@ -36,7 +36,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {
 
-		int medianHit = AccumulationManager.getInstance().getMedianFullBSTCount();
+		int maxHit = AccumulationManager.getInstance().getMaxFullBSTCount();
 
 		// first index is layer 0..7, second is sector 0..23
 		int bstFullData[][][] = AccumulationManager.getInstance().getAccumulatedBSTFullData();
@@ -46,9 +46,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 					int hitCount = bstFullData[lay0][sect0][strip0];
 
 					if (hitCount > 1) {
-
-						double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+						double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 						Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 						_view.drawBSTStrip((Graphics2D) g, container, color, sect0 + 1, lay0 + 1, strip0 + 1);
 					}

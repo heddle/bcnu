@@ -1,6 +1,8 @@
-package cnuphys.ced.event.data.arrays;
+package cnuphys.ced.event.data.arrays.tdc;
 
 import java.util.List;
+
+import cnuphys.ced.event.data.arrays.BaseArrays;
 
 public class TDCArrays extends BaseArrays {
 	

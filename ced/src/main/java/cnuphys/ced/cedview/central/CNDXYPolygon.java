@@ -19,8 +19,8 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
-import cnuphys.ced.event.data.arrays.TDCArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.tdc.TDCArrays;
 import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")

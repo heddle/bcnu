@@ -23,8 +23,8 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.ADCArrays;
-import cnuphys.ced.event.data.arrays.HitArrays;
+import cnuphys.ced.event.data.arrays.adc.ADCArrays;
+import cnuphys.ced.event.data.arrays.hits.HitArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 
 public class FTCalXYView extends CedXYView {
@@ -257,7 +257,7 @@ public class FTCalXYView extends CedXYView {
 	// accumulated hits drawer
 	private void drawAccumulatedHits(Graphics g, IContainer container) {
 
-		int medianHit = AccumulationManager.getInstance().getMedianFTCALCount();
+		int maxHit = AccumulationManager.getInstance().getMaxFTCALCount();
 
 		int acchits[] = AccumulationManager.getInstance().getAccumulatedFTCALData();
 		
@@ -267,8 +267,8 @@ public class FTCalXYView extends CedXYView {
 				int index = componentToIndex[i];
 				if (index >= 0) {
 					FTCalXYPolygon poly = ftCalPoly[index];
-					double fract = getMedianSetting() * (((double) acchits[i]) / (1 + medianHit));
-
+					int hitCount = acchits[i];
+					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color color = AccumulationManager.getInstance().getColor(getColorScaleModel(), fract);
 					g.setColor(color);
 					g.fillPolygon(poly);

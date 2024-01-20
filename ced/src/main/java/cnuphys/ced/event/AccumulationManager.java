@@ -24,12 +24,12 @@ import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.HTCC2;
 import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.arrays.ADCArrays;
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.HTCC_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.event.data.lists.RTPCHitList;
@@ -61,7 +61,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// common colorscale
 	public static ColorScaleModel colorScaleModel = new ColorScaleModel(getAccumulationValues(),
-			ColorScaleModel.getWeatherMapColors(8));
+			ColorScaleModel.getSimpleMapColors(8));
 
 	// the singleton
 	private static AccumulationManager instance;
@@ -141,7 +141,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_CNDAccumulatedData = new int[24][3][2];
 
 		// htcc data
-		_HTCCAccumulatedData = new int[GeoConstants.NUM_SECTOR][4][2];
+		_HTCCAccumulatedData = new int[GeoConstants.NUM_SECTOR][2][4];
 
 		// ltcc data NOTICE THE DIFFERENT ORDER FROM HTCC
 		_LTCCAccumulatedData = new int[GeoConstants.NUM_SECTOR][2][18];
@@ -212,9 +212,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		// clear accumulated HTCC
 		for (int sector = 0; sector < GeoConstants.NUM_SECTOR; sector++) {
-			for (int ring = 0; ring < 4; ring++) {
-				for (int half = 0; half < 2; half++) {
-					_HTCCAccumulatedData[sector][ring][half] = 0;
+			for (int half = 0; half < 2; half++) {
+				for (int ring = 0; ring < 4; ring++) {
+					_HTCCAccumulatedData[sector][half][ring] = 0;
 				}
 			}
 		}
@@ -395,68 +395,63 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// private int _BSTFullAccumulatedData[][][];
 
 	/**
-	 * Get the median counts on any bst panel
+	 * Get the Max counts on any bst panel
 	 *
-	 * @return the median counts for any bst panel.
+	 * @return the Max counts for any bst panel.
 	 */
-	public int getMedianBSTCount() {
-		return getMedian(_BSTAccumulatedData);
+	public int getMaxBSTCount() {
+		return getMax(_BSTAccumulatedData);
 	}
 
-	public int getMedianCTOFCount() {
-		return getMedian(_CTOFAccumulatedData);
-	}
-
-	/**
-	 * Get the median counts on any BST strip
-	 *
-	 * @return the median counts for any BST strip.
-	 */
-	public int getMedianFullBSTCount() {
-		return getMedian(_BSTFullAccumulatedData);
+	public int getMaxCTOFCount() {
+		return getMax(_CTOFAccumulatedData);
 	}
 
 	/**
-	 * Get the median count of accumulated hits
+	 * Get the Max counts on any BST strip
 	 *
-	 * @return the median count of accumulated hits
+	 * @return the Max counts for any BST strip.
 	 */
-	public int getMedianPCALCount() {
-		return getMedian(_PCALAccumulatedData);
+	public int getMaxFullBSTCount() {
+		return getMax(_BSTFullAccumulatedData);
+	}
+
+	/**
+	 * Get the Max count of accumulated hits
+	 *
+	 * @return the Max count of accumulated hits
+	 */
+	public int getMaxPCALCount() {
+		return getMax(_PCALAccumulatedData);
 	}
 
 	// _ECALAccumulatedData = new int[6][2][3][36];
 
-	public int getMedianECALCount(int plane) {
-		return getMedian(_ECALAccumulatedData);
+	public int getMaxECALCount(int plane) {
+		return getMax(_ECALAccumulatedData);
 	}
 
 	/**
-	 * Get the median count for a given superlayer across all sectors
+	 * Get the Max count for a given superlayer across all sectors
 	 *
 	 * @param suplay the superlayer 0..5
-	 * @return the median count for a given superlayer across all sectors
+	 * @return the Max count for a given superlayer across all sectors
 	 */
-	public int getMedianDCCount(int suplay) {
-		ArrayList<Integer> v = new ArrayList<>(24192);
-
-		// specialized because of the suplay fixed
+	public int getMaxDCCount(int suplay) {
+		
+		int max = 0;
 		for (int sect = 0; sect < 6; sect++) {
 			for (int lay = 0; lay < 6; lay++) {
 				for (int wire = 0; wire < 12; wire++) {
 					int count = _DCAccumulatedData[sect][suplay][lay][wire];
-					v.add(count);
+					if (count > max) {
+						max = count;
+					}
 				}
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-
-		Collections.sort(v);
-		return v.get(size / 2);
+		
+		return max;
 	}
 
 	/**
@@ -478,48 +473,48 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the median counts for FTCAL
+	 * Get the Max counts for FTCAL
 	 *
-	 * @return the median counts for FTCAL
+	 * @return the Max counts for FTCAL
 	 */
-	public int getMedianFTCALCount() {
-		return getMedian(_FTCALAccumulatedData);
+	public int getMaxFTCALCount() {
+		return getMax(_FTCALAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for RTPC
+	 * Get the Max counts for RTPC
 	 *
-	 * @return the median counts for RTPC
+	 * @return the Max counts for RTPC
 	 */
-	public int getMedianRTPCCount() {
-		return getMedian(_RTPCAccumulatedData);
+	public int getMaxRTPCCount() {
+		return getMax(_RTPCAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for CND
+	 * Get the Max counts for CND
 	 *
-	 * @return the median counts for CND
+	 * @return the Max counts for CND
 	 */
-	public int getMedianCNDCount() {
-		return getMedian(_CNDAccumulatedData);
+	public int getMaxCNDCount() {
+		return getMax(_CNDAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for HTCC
+	 * Get the Max counts for HTCC
 	 *
-	 * @return the median counts for HTCC
+	 * @return the Max counts for HTCC
 	 */
-	public int getMedianHTCCCount() {
-		return getMedian(_HTCCAccumulatedData);
+	public int getMaxHTCCCount() {
+		return getMax(_HTCCAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for LTCC
+	 * Get the Max counts for LTCC
 	 *
-	 * @return the median counts for LTCC
+	 * @return the Max counts for LTCC
 	 */
-	public int getMedianLTCCCount() {
-		return getMedian(_LTCCAccumulatedData);
+	public int getMaxLTCCCount() {
+		return getMax(_LTCCAccumulatedData);
 	}
 
 	/**
@@ -550,30 +545,30 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the median counts on any ftof1a panel
+	 * Get the Max counts on any ftof1a panel
 	 *
-	 * @return the median counts for any ftof1a panel.
+	 * @return the Max counts for any ftof1a panel.
 	 */
-	public int getMedianFTOF1ACount() {
-		return getMedian(_FTOF1AAccumulatedData);
+	public int getMaxFTOF1ACount() {
+		return getMax(_FTOF1AAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts on any ftof1b panel
+	 * Get the Max counts on any ftof1b panel
 	 *
-	 * @return the median counts for any ftof1b panel.
+	 * @return the Max counts for any ftof1b panel.
 	 */
-	public int getMedianFTOF1BCount() {
-		return getMedian(_FTOF1BAccumulatedData);
+	public int getMaxFTOF1BCount() {
+		return getMax(_FTOF1BAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts on any ftof2 panel
+	 * Get the Max counts on any ftof2 panel
 	 *
-	 * @return the median counts for any ftof2 panel.
+	 * @return the Max counts for any ftof2 panel.
 	 */
-	public int getMedianFTOF2Count() {
-		return getMedian(_FTOF2AccumulatedData);
+	public int getMaxFTOF2Count() {
+		return getMax(_FTOF2AccumulatedData);
 	}
 
 	/**
@@ -584,11 +579,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	public Color getColor(ColorScaleModel model, double fract) {
 		fract = Math.max(0.0001f, Math.min(fract, 0.9999f));
-//		if (fract < 1.0e-6) {
-//			return NULLCOLOR;
-//		} else if (fract > 1.0) {
-//			return model.getHotColor();
-//		}
 		return model.getColor(fract);
 	}
 
@@ -651,8 +641,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumCND();
 
 		// htcc data
-		AdcList htccList = HTCC2.getInstance().updateAdcList();
-		accumHTCC(htccList);
+		accumHTCC();
 
 		// ltcc data
 		AdcLRHitList ltccList = LTCC.getInstance().updateAdcList();
@@ -748,29 +737,23 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate htcc
-	private void accumHTCC(AdcList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+	private void accumHTCC() {
+		
+		//use the adc arrays to accumulate
+		HTCC_ADCArrays arrays = HTCC_ADCArrays.getArrays("HTCC::adc");
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				int sect0 = arrays.sector[i] - 1; // make 0 based
 
-		for (AdcHit hit : list) {
-			if (hit != null) {
-				int sect0 = hit.sector - 1; // make 0 based
-				int ring0 = hit.component - 1; // make 0 based
-				int half0 = hit.layer - 1; // make 0 based
-
-				if (sect0 >= 0) {
-					try {
-						_HTCCAccumulatedData[sect0][ring0][half0] += 1;
-					} catch (ArrayIndexOutOfBoundsException e) {
-						String msg = String.format("HTCC index out of bounds. Event# %d sect %d ring %d half %d",
-								_eventManager.getSequentialEventNumber(), hit.sector, hit.layer, hit.component);
-						Log.getInstance().warning(msg);
-						System.err.println(msg);
-					}
+				//sometimes happens
+				if (sect0 < 0) {
+					continue;
 				}
+				int half0 = arrays.layer[i] - 1; // make 0 based so (0-1) (layer)
+				int ring0 = arrays.component[i] - 1; // make 0 based so (0-3) (component)
+				_HTCCAccumulatedData[sect0][half0][ring0] += 1;
 			}
-		}
+		} // end has data
 	}
 
 	// accumulate ltcc
@@ -844,11 +827,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		for (DCTdcHit hit : list) {
 			if (hit.inRange()) {
 				_DCAccumulatedData[hit.sector - 1][hit.superlayer - 1][hit.layer6 - 1][hit.wire - 1] += 1;
-
-				// _maxDCCount = Math.max(
-				// _DCAccumulatedData[hit.sector - 1][hit.superlayer - 1][hit.layer6 -
-				// 1][hit.wire - 1],
-				// _maxDCCount);
 			} else {
 				Log.getInstance().warning("In accumulation, DC hit has bad indices: " + hit);
 			}
@@ -919,7 +897,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	private static double getAccumulationValues()[] {
 
-		int len = ColorScaleModel.getWeatherMapColors(8).length + 1;
+		int len = ColorScaleModel.getSimpleMapColors(8).length + 1;
 
 		double values[] = new double[len];
 
@@ -1041,108 +1019,80 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 
 	// get the median of a 1D array of ints
-	private int getMedian(int[] data) {
+	private int getMax(int[] data) {
 
 		if ((data == null) || (data.length < 1)) {
 			return 0;
 		}
-
-		ArrayList<Integer> v = new ArrayList<>(data.length);
-
+		
+		int max = 0;
 		for (int val : data) {
-			if (val != 0) {
-				v.add(val);
+			if (val > max) {
+				max = val;
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
-	// get the median of a 2D array of ints
-	private int getMedian(int[][] data) {
+	// get the max of a 2D array of ints
+	private int getMax(int[][] data) {
 
 		if (data == null) {
 			return 0;
 		}
-
-		ArrayList<Integer> v = new ArrayList<>(1000);
-
+		
+		int max = 0;
 		for (int iarry[] : data) {
 			for (int val : iarry) {
-				if (val != 0) {
-					v.add(val);
+				if (val > max) {
+					max = val;
 				}
-
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
-	// get the median of a 3D array of ints
-	private int getMedian(int[][][] data) {
+	// get the max of a 3D array of ints
+	private int getMax(int[][][] data) {
 
 		if (data == null) {
 			return 0;
 		}
-
-		ArrayList<Integer> v = new ArrayList<>(1000);
-
+		
+		int max = 0;
+		
 		for (int iarry1[][] : data) {
 			for (int iarray2[] : iarry1) {
 				for (int val : iarray2) {
-					if (val != 0) {
-						v.add(val);
+					if (val > max) {
+						max = val;
 					}
 				}
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
-	// get the median of a 4D array of ints
-	private int getMedian(int[][][][] data) {
+	// get the max of a 4D array of ints
+	private int getMax(int[][][][] data) {
 
 		if (data == null) {
 			return 0;
 		}
-
-		ArrayList<Integer> v = new ArrayList<>(1000);
-
+		
+		int max = 0;
 		for (int iarry1[][][] : data) {
 			for (int iarray2[][] : iarry1) {
 				for (int iarray3[] : iarray2) {
 					for (int val : iarray3) {
-						v.add(val);
+						if (val > max) {
+							max = val;
+						}
 					}
 				}
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
 }

@@ -287,13 +287,13 @@ public class SuperLayerDrawing {
 		int dcAccumulatedData[][][][] = AccumulationManager.getInstance().getAccumulatedDCData();
 		int sect0 = _iSupl.sector() - 1;
 		int supl0 = _iSupl.superlayer() - 1;
-		int medianHit = AccumulationManager.getInstance().getMedianDCCount(supl0);
+		int maxHit = AccumulationManager.getInstance().getMaxDCCount(supl0);
 
 		for (int lay0 = 0; lay0 < 6; lay0++) {
 			for (int wire0 = 0; wire0 < 112; wire0++) {
 
-				int hit = dcAccumulatedData[sect0][supl0][lay0][wire0];
-				double fract = _view.getMedianSetting() * (((double) hit) / (1 + medianHit));
+				int hitCount = dcAccumulatedData[sect0][supl0][lay0][wire0];
+				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 				Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 
 				g.setColor(color);

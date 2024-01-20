@@ -1,9 +1,10 @@
-package cnuphys.ced.event.data.arrays;
+package cnuphys.ced.event.data.arrays.adc;
 
 import java.awt.Color;
 import java.util.List;
 
 import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.event.data.arrays.BaseArrays;
 
 public class ADCArrays extends BaseArrays {
 
@@ -105,7 +106,7 @@ public class ADCArrays extends BaseArrays {
 			fract = Math.max(0, Math.min(1.0, fract));
 			return AdcColorScale.getInstance().getAlphaColor(fract, 255);
 		}
-		return null;
+		return Color.lightGray;
 	}
 	
 	/**

@@ -17,9 +17,9 @@ import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
-import cnuphys.ced.event.data.arrays.TOF_ClusterArrays;
-import cnuphys.ced.event.data.arrays.TOF_HitArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.clusters.TOF_ClusterArrays;
+import cnuphys.ced.event.data.arrays.hits.TOF_HitArrays;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.ftof.FTOFPanel;
@@ -114,20 +114,20 @@ public class FTOFPanelItem extends PolygonItem {
 	private void drawAccumulatedADCBased(Graphics g, IContainer container) {
 		int hits[][] = null;
 
-		int medianHit = 0;
+		int maxHit = 0;
 
 		int panelType = _ftofPanel.getPanelType();
 		switch (panelType) {
 		case FTOFGeometry.PANEL_1A:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
+			maxHit = AccumulationManager.getInstance().getMaxFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();
 			break;
 		case FTOFGeometry.PANEL_1B:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF1BCount();
+			maxHit = AccumulationManager.getInstance().getMaxFTOF1BCount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1BData();
 			break;
 		case FTOFGeometry.PANEL_2:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF2Count();
+			maxHit = AccumulationManager.getInstance().getMaxFTOF2Count();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF2Data();
 			break;
 		}
@@ -137,8 +137,7 @@ public class FTOFPanelItem extends PolygonItem {
 			for (int paddle0 = 0; paddle0 < hits[sect0].length; paddle0++) {
 
 				int hitCount = hits[sect0][paddle0];
-				double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 				Color fc = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 				Point2D.Double wp[] = getPaddle(_view, paddle0, _ftofPanel, _sector);
 

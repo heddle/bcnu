@@ -570,15 +570,14 @@ public class AllDCSuperLayer extends RectangleItem {
 		Rectangle2D.Double wr = new Rectangle2D.Double(); // used over and over
 		int dcAccumulatedData[][][][] = AccumulationManager.getInstance().getAccumulatedDCData();
 
-		int medianHit = AccumulationManager.getInstance().getMedianDCCount(_superLayer - 1);
+		int maxHit = AccumulationManager.getInstance().getMaxDCCount(_superLayer - 1);
 
 		for (int layer = 0; layer < GeoConstants.NUM_LAYER; layer++) {
 			for (int wire = 0; wire < GeoConstants.NUM_WIRE; wire++) {
 				int hitCount = dcAccumulatedData[_sector - 1][_superLayer - 1][layer][wire];
 				getCell(layer + 1, wire + 1, wr);
 
-				double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 				AccumulationManager.getInstance();
 				Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 

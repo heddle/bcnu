@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
-import cnuphys.ced.event.data.arrays.LR_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.lund.X11Colors;
 
 public class CTOF3D extends DetectorItem3D {

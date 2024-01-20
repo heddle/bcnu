@@ -362,7 +362,7 @@ public class DCXYView extends HexView {
 		for (int sect0 = 0; sect0 < 6; sect0++) {
 			for (int supl0 = 0; supl0 < 6; supl0++) {
 
-				int medianHit = AccumulationManager.getInstance().getMedianDCCount(supl0);
+				int maxHit = AccumulationManager.getInstance().getMaxDCCount(supl0);
 
 				for (int lay0 = 0; lay0 < 6; lay0++) {
 					for (int wire0 = 0; wire0 < 112; wire0++) {
@@ -370,8 +370,7 @@ public class DCXYView extends HexView {
 						int hitCount = dcAccumulatedData[sect0][supl0][lay0][wire0];
 
 						if (hitCount > 0) {
-							double fract = getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+							double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 							Color color = AccumulationManager.getInstance().getAlphaColor(getColorScaleModel(), fract,
 									128);
 

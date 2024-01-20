@@ -1,9 +1,10 @@
-package cnuphys.ced.event.data.arrays;
+package cnuphys.ced.event.data.arrays.adc;
 
 import java.awt.Color;
 import java.util.List;
 
 import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.event.data.arrays.BaseArrays;
 
 public final class LR_ADCArrays extends ADCArrays {
 
