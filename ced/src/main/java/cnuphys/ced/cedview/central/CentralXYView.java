@@ -586,7 +586,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 			// ctof ?
 			else if ((rad > CTOFGeometry.RINNER) && (rad < CTOFGeometry.ROUTER)) {
-				
+
 
 				for (short index = 0; index < 48; index++) {
 					if (_ctofPoly[index].contains(screenPoint)) {

@@ -35,7 +35,7 @@ public abstract class HitArrays extends BaseArrays {
 
 	/**
 	 * Base array for hits
-	 * @param bankName 
+	 * @param bankName
 	 */
 	public HitArrays(String bankName) {
 		super(bankName);
@@ -67,19 +67,13 @@ public abstract class HitArrays extends BaseArrays {
 	public void addFeedback(int hitIndex, List<String> feedback) {
 		if (hitIndex >= 0) {
 
-			if (hitIndex >= 0) {
-				feedback.add(_fbColor + detectorIdentityString(hitIndex));
-				feedback.add(_fbColor + "hit index " + hitIndex);
-				feedback.add(_fbColor + "hit energy " + energy[hitIndex]);
+			feedback.add(_fbColor + detectorIdentityString(hitIndex));
+			feedback.add(_fbColor + "hit index " + hitIndex);
+			feedback.add(_fbColor + "hit energy " + energy[hitIndex]);
 
-				String locStr = String.format("hit location (%6.4f, %6.4f, %6.4f) cm", x[hitIndex], y[hitIndex], z[hitIndex]);
+			String locStr = String.format("hit location (%6.4f, %6.4f, %6.4f) cm", x[hitIndex], y[hitIndex], z[hitIndex]);
 
-				feedback.add(_fbColor + locStr);
-
-			} else {
-				feedback.add(_fbColor + "no hit");
-			}
-
+			feedback.add(_fbColor + locStr);
 
 		} else {
 			feedback.add(_fbColor + "no hit");

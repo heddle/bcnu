@@ -49,7 +49,7 @@ public class AdcHit implements Comparable<AdcHit> {
 		if ((obj == null) || (getClass() != obj.getClass())) {
 			return false;
 		}
-		AdcLRHit other = (AdcLRHit) obj;
+		AdcHit other = (AdcHit) obj;
 		if ((sector != other.sector) || (layer != other.layer) || (component != other.component)) {
 			return false;
 		}

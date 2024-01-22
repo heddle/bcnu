@@ -55,7 +55,6 @@ import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.properties.PropertiesManager;
 import cnuphys.lund.SwimTrajectoryListener;
-import cnuphys.lund.X11Colors;
 import cnuphys.magfield.FieldProbe;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
@@ -67,10 +66,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	//the data warehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
-	
-	//name used for reading and writing properties
-	//can be different from title
-	protected String VIEWPROPNAME = "???";
 
 	//to speed up by suppressing refreshes
 	public static boolean SUPPRESSREFRESH = false;
@@ -341,6 +336,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 		if ((matches == null) || (matches.length == 0)) {
 			_matches = _noMatches;
+			return;
 		}
 
 		_matches = new String[matches.length];

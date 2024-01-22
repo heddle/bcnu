@@ -125,6 +125,7 @@ public class Jar {
 		try {
 			JarFile jarFile = new JarFile(jarPath);
 			Manifest mf = jarFile.getManifest();
+			jarFile.close();
 			if (mf == null) {
 				return null;
 			}
@@ -132,7 +133,6 @@ public class Jar {
 			return mf.getMainAttributes().getValue(attributeName);
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

@@ -25,13 +25,13 @@ public abstract class BaseArrays {
 
 	/** the bank name */
 	public final String bankName;
-	
+
 	/** the detector name */
 	public String detectorName;
 
 	/** the event manager */
 	protected static ClasIoEventManager eventManager = ClasIoEventManager.getInstance();
-	
+
 	/** the data warehouse */
 	protected static DataWarehouse dataWarehouse = DataWarehouse.getInstance();
 
@@ -48,7 +48,7 @@ public abstract class BaseArrays {
 	public BaseArrays(String bankName) {
 
 		this.bankName = bankName;
-		
+
 		//get the detector name from the bank name
 		int index = bankName.indexOf("::");
 		if (index > 0) {

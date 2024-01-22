@@ -24,7 +24,6 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
-import cnuphys.ced.event.data.arrays.hits.HitArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 
 public class FTCalXYView extends CedXYView {
@@ -43,10 +42,10 @@ public class FTCalXYView extends CedXYView {
 
 	//the reverse mappings
 	private short[] componentToIndex = new short[476];
-	
+
 	//bank matches
 	private static String _defMatches[] = {"FTCAL"};
-	
+
 	//good ids are the 332 component ids
 	private static final short[] goodIds = FTCALGeometry.getGoodIds();
 
@@ -101,7 +100,7 @@ public class FTCalXYView extends CedXYView {
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
-		
+
 		//i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);
@@ -260,7 +259,7 @@ public class FTCalXYView extends CedXYView {
 		int maxHit = AccumulationManager.getInstance().getMaxFTCALCount();
 
 		int acchits[] = AccumulationManager.getInstance().getAccumulatedFTCALData();
-		
+
 		//loop will be 0 to 475
 		for (int i = 0; i < acchits.length; i++) {
 			if (acchits[i] > 0) {
@@ -304,7 +303,7 @@ public class FTCalXYView extends CedXYView {
 			List<String> feedbackStrings) {
 
 		basicFeedback(container, screenPoint, worldPoint, "cm", feedbackStrings);
-		
+
 		int xindex = FTCALGeometry.valToIndex(worldPoint.x);
 		if (xindex != 0) {
 			int yindex = FTCALGeometry.valToIndex(worldPoint.y);
@@ -334,7 +333,7 @@ public class FTCalXYView extends CedXYView {
 			} // end for index
 
 		}
-		
+
 
 		// draw based on hits, but the FTCal hit data doesn't map to
 		// one of out hit arrays because therer is no sector, layer, component
@@ -354,14 +353,14 @@ public class FTCalXYView extends CedXYView {
 					container.worldToLocal(pp, wp);
 					r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
 					if (r.contains(screenPoint)) {
-						
+
 						byte xid = _dataWarehouse.getByte("FTCAL::hits", "idx")[i];
 						byte yid = _dataWarehouse.getByte("FTCAL::hits", "idy")[i];
 						float z = _dataWarehouse.getFloat("FTCAL::hits", "z")[i];
 						float energy = _dataWarehouse.getFloat("FTCAL::hits", "energy")[i];
 						float time = _dataWarehouse.getFloat("FTCAL::hits", "time")[i];
-						
-						
+
+
 						String s = String.format("FTCal hit idXY: (%d, %d)", xid, yid);
 						feedbackStrings.add("$cyan$" + s);
 						s = String.format("FTCal hit loc: (%5.3f, %5.3f, %5.3f)", x, y, z);

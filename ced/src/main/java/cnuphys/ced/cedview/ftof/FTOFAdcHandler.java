@@ -66,8 +66,8 @@ public class FTOFAdcHandler {
 //					if ((colorL == null) && (colorR == null)) {
 //						continue;
 //					}
-					
-					
+
+
 					GradientPaint gpaint = new GradientPaint(poly.xpoints[0], poly.ypoints[0], colorL, poly.xpoints[2],
 							poly.ypoints[2], colorR);
 

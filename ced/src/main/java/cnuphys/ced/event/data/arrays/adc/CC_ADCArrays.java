@@ -4,34 +4,34 @@ import java.util.List;
 
 import cnuphys.ced.event.data.arrays.BaseArrays;
 
-public class HTCC_ADCArrays extends ADCArrays {
+public class CC_ADCArrays extends ADCArrays {
 
 	//the HTCC adc array
-	private HTCC_ADCArrays(String bankName) {
+	private CC_ADCArrays(String bankName) {
 		super(bankName);
 	}
-	
-	
+
+
 	/**
 	 * Get the  adc arrays for a given bank name
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return the arrays, either created or from cache
 	 */
-	public static HTCC_ADCArrays getArrays(String bankName) {
+	public static CC_ADCArrays getArrays(String bankName) {
 		//try to get from cache
 		BaseArrays arrays = dataWarehouse.getArrays(bankName);
 		if (arrays != null) {
-			return (HTCC_ADCArrays) arrays;
+			return (CC_ADCArrays) arrays;
 		}
-		
-		HTCC_ADCArrays adcArrays = new HTCC_ADCArrays(bankName);
+
+		CC_ADCArrays adcArrays = new CC_ADCArrays(bankName);
 		dataWarehouse.putArrays(bankName, adcArrays);
 		return adcArrays;
 	}
 
-	
-	
+
+
 	/**
 	 * Add to the feedback strings assuming the mouse is pointing to the given sector, layer, component.
 	 * @param sector the 1-based sector
@@ -53,7 +53,7 @@ public class HTCC_ADCArrays extends ADCArrays {
 		} else {
 			feedback.add(_fbColor + "no adc data");
 		}
-		
+
 	}
 
 

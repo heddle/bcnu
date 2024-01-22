@@ -241,23 +241,23 @@ public class SectorView extends SliceView implements ChangeListener {
 		new BeamLineItem(detectorLayer);
 
 		// add the ltcc items
-		for (int ring = 1; ring <= 18; ring++) {
-			for (int half = 1; half <= 2; half++) {
+		for (short ring = 1; ring <= 18; ring++) {
+			for (byte half = 1; half <= 2; half++) {
 
 				switch (_displaySectors) {
 				case SECTORS14:
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 1, ring, half);
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 4, ring, half);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)1, half, ring);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)4, half, ring);
 					break;
 
 				case SECTORS25:
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 2, ring, half);
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 5, ring, half);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)2, half, ring);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)5, half, ring);
 					break;
 
 				case SECTORS36:
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 3, ring, half);
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 6, ring, half);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)3, half, ring);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)6, half, ring);
 					break;
 				}
 

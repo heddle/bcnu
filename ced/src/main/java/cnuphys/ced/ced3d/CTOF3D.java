@@ -29,14 +29,14 @@ public class CTOF3D extends DetectorItem3D {
 
 	@Override
 	public void drawShape(GLAutoDrawable drawable) {
-		
+
 		Color color = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
 
 		for (int paddleId = 1; paddleId <= 48; paddleId++) {
 			_paddles[paddleId - 1].drawPaddle(drawable, color);
 		}
 
-		
+
 		//draw based on ADC data
 		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
 		if (arrays.hasData()) {

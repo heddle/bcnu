@@ -139,17 +139,17 @@ public class CNDXYPolygon extends Polygon {
 				feedbackStrings);
 
 		CedView view = (CedView) (container.getView());
-		
+
 		byte order;
 
 		if (view.isSingleEventMode()) {
-			
+
 			LR_ADCArrays adcArrays = LR_ADCArrays.getArrays("CND::adc");
 			if (adcArrays.hasData()) {
 				order = (byte) (_leftRight-1); //0 or 1
 				adcArrays.addFeedback((byte) sector, (byte) layer, (short)1, order, feedbackStrings);
 			}
-			
+
 			TDCArrays tdcArrays = TDCArrays.getArrays("CND::tdc");
 			if (tdcArrays.hasData()) {
 				order = (byte) (_leftRight+1); //2 or 3

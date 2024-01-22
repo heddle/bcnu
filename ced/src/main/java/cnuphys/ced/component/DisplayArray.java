@@ -27,7 +27,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** property for tof panel */
 	public static final String TOFPANEL_PROPERTY = "DisplayInner";
-	
+
 	/** Label and access to the monte carlo truth checkbox */
 	public static final String MCTRUTH_LABEL = "Truth";
 
@@ -339,7 +339,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 					.getCheckBox();
 
 		}
-		
+
 		// display mc truth?
 		if (Bits.checkBit(bits, DisplayBits.MCTRUTH)) {
 			_mcTruthButton = add(MCTRUTH_LABEL, true, true, this, Color.black).getCheckBox();

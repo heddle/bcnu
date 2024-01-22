@@ -10,7 +10,7 @@ public final class LR_ADCArrays extends ADCArrays {
 
 	/** the left-right array */
 	private static final String leftRight[] = {"L", "R"};
-	
+
 	/**
 	 * Create the data arrays
 	 *
@@ -19,10 +19,10 @@ public final class LR_ADCArrays extends ADCArrays {
 	protected LR_ADCArrays(String bankName) {
 		super(bankName);
 	}
-	
+
 	/**
 	 * Get the left-right adc arrays for a given bank name
-	 * 
+	 *
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 * @return the arrays, either created or from cache
 	 */
@@ -32,15 +32,15 @@ public final class LR_ADCArrays extends ADCArrays {
 		if (arrays != null) {
 			return (LR_ADCArrays) arrays;
 		}
-		
+
 		LR_ADCArrays lrArrays = new LR_ADCArrays(bankName);
 		dataWarehouse.putArrays(bankName, lrArrays);
 		return lrArrays;
 	}
-	
+
 	/**
 	 * Get the adc color for a given sector, layer, component, and order
-	 * @param sector the 1-based sector	
+	 * @param sector the 1-based sector
 	 * @param layer the 1-based layer
 	 * @param component the 1-based component
 	 * @param order the order, 0 or 1 for left/right
@@ -63,7 +63,7 @@ public final class LR_ADCArrays extends ADCArrays {
 		int count = 0;
 		int sum = 0;
 		for (int i = 0; i < this.sector.length; i++) {
-			if ((this.sector[i] == sector) && (this.layer[i] == layer) 
+			if ((this.sector[i] == sector) && (this.layer[i] == layer)
 					&& (this.component[i] == component) && (this.order[i] == order)) {
 				sum += ADC[i];
 				count++;

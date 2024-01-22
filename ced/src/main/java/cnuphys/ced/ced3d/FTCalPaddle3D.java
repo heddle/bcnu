@@ -5,8 +5,6 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
 import cnuphys.ced.geometry.FTCALGeometry;
 import cnuphys.lund.X11Colors;
@@ -24,7 +22,7 @@ public class FTCalPaddle3D extends DetectorItem3D {
 
 	/**
 	 * Create a FTCAL paddle
-	 * 
+	 *
 	 * @param panel3D the 3D panel this is associated with
 	 * @param id      the paddle ID which is sparse, the first one is 8
 	 */
@@ -40,7 +38,7 @@ public class FTCalPaddle3D extends DetectorItem3D {
 		//hits use adc data
 		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
 		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
-		
+
 		// draw "hit" based on adc values
 		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
 		int adcIndex = arrays.find((byte)1, (byte)1, _id);

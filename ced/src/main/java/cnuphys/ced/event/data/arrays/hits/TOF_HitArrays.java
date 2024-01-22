@@ -10,10 +10,10 @@ public class TOF_HitArrays extends HitArrays {
 	protected TOF_HitArrays(String bankName) {
 		super(bankName);
 	}
-	
+
 	/**
 	 * Get the tof hit arrays for a given bank name
-	 * 
+	 *
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 * @return the hit arrays, either created or from cache
 	 */
@@ -23,13 +23,13 @@ public class TOF_HitArrays extends HitArrays {
 		if (arrays != null) {
 			return (TOF_HitArrays) arrays;
 		}
-		
+
 		TOF_HitArrays hitArrays = new TOF_HitArrays(bankName);
 		dataWarehouse.putArrays(bankName, hitArrays);
 		return hitArrays;
 	}
 
-	
+
 	/**
 	 * Add feedback for the given hit index
 	 *
@@ -39,21 +39,13 @@ public class TOF_HitArrays extends HitArrays {
 	@Override
 	public void addFeedback(int hitIndex, List<String> feedback) {
 		if (hitIndex >= 0) {
+			feedback.add(_fbColor + detectorIdentityString(hitIndex));
+			feedback.add(_fbColor + "hit index " + hitIndex);
+			feedback.add(_fbColor + "hit energy " + energy[hitIndex]);
 
-			if (hitIndex >= 0) {
-				feedback.add(_fbColor + detectorIdentityString(hitIndex));
-				feedback.add(_fbColor + "hit index " + hitIndex);
-				feedback.add(_fbColor + "hit energy " + energy[hitIndex]);
+			String locStr = String.format("hit location (%6.4f, %6.4f, %6.4f) cm", x[hitIndex], y[hitIndex], z[hitIndex]);
 
-				String locStr = String.format("hit location (%6.4f, %6.4f, %6.4f) cm", x[hitIndex], y[hitIndex], z[hitIndex]);
-
-				feedback.add(_fbColor + locStr);
-
-			} else {
-				feedback.add(_fbColor + "no hit");
-			}
-
-
+			feedback.add(_fbColor + locStr);
 		} else {
 			feedback.add(_fbColor + "no hit");
 		}

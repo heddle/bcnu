@@ -198,7 +198,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 					int hitCount = hits[sect0][plane][view0][strip0];
 					if (hitCount > 0) {
-						
+
 						double fract = (maxHit == 0) ? 0 : (((double) hitCount) / (1 + maxHit));
 						Color color = _ecView.getColorScaleModel().getAlphaColor(fract, 128);
 

@@ -5,10 +5,10 @@ import java.util.List;
 import cnuphys.ced.event.data.arrays.BaseArrays;
 
 public class TDCArrays extends BaseArrays {
-	
+
 	/** the TDC array */
 	public int TDC[];
-	
+
 	/** the order array */
 	public byte order[];
 
@@ -29,10 +29,10 @@ public class TDCArrays extends BaseArrays {
 			order = bank.getByte("order");
 		}
 	}
-	
+
 	/**
 	 * Get the tdc arrays for a given bank name
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return the arrays, either created or from cache
 	 */
@@ -42,12 +42,12 @@ public class TDCArrays extends BaseArrays {
 		if (arrays != null) {
 			return (TDCArrays) arrays;
 		}
-		
+
 		TDCArrays tdcArrays = new TDCArrays(bankName);
 		dataWarehouse.putArrays(bankName, tdcArrays);
 		return tdcArrays;
 	}
-	
+
 	/**
 	 * Add to the feedback strings assuming the mouse is pointing to the given sector, layer, component.
 	 * @param sector the 1-based sector
@@ -68,9 +68,9 @@ public class TDCArrays extends BaseArrays {
 		} else {
 			feedback.add(_fbColor + "no adc data");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Add to the feedback strings assuming the mouse is pointing to the given sector, layer, component.
 	 * @param sector the 1-based sector
@@ -92,7 +92,7 @@ public class TDCArrays extends BaseArrays {
 		} else {
 			feedback.add(_fbColor + "no adc data");
 		}
-		
+
 	}
 
 

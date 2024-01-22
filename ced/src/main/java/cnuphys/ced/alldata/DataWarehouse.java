@@ -33,7 +33,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	private DataWarehouse() {
 		ClasIoEventManager.getInstance().addClasIoEventListener(this, 0);
 	}
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -264,24 +264,24 @@ public class DataWarehouse implements IClasIoEventListener {
 		clusters.fillList();
 		return clusters;
 	}
-	
+
 	/**
 	 * Clear the arrays cache
 	 */
 	public void clearCache() {
 		_arrays.clear();
 	}
-	
+
 	/**
 	 * Get the arrays for the given bank name from the cache
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return the arrays
 	 */
 	public BaseArrays getArrays(String bankName) {
 		return _arrays.get(bankName);
 	}
-	
+
 	/**
 	 * Put the arrays for the given bank name into the cache
 	 * @param bankName

@@ -16,10 +16,10 @@ public class ADCArrays extends BaseArrays {
 
 	/** the time array */
 	public float time[];
-	
+
 	/** the order array */
 	public byte order[];
-	
+
 	//max adc for current event
 	protected int _maxADC = -1;
 
@@ -42,10 +42,10 @@ public class ADCArrays extends BaseArrays {
 			order = bank.getByte("order");
 		}
 	}
-	
+
 	/**
 	 * Get the  adc arrays for a given bank name
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return the arrays, either created or from cache
 	 */
@@ -55,13 +55,13 @@ public class ADCArrays extends BaseArrays {
 		if (arrays != null) {
 			return (ADCArrays) arrays;
 		}
-		
+
 		ADCArrays adcArrays = new ADCArrays(bankName);
 		dataWarehouse.putArrays(bankName, adcArrays);
 		return adcArrays;
 	}
 
-	
+
 	//compute and cache the max ADC
 	protected void computeMaxADC() {
 		if (_maxADC < 0) {
@@ -108,7 +108,7 @@ public class ADCArrays extends BaseArrays {
 		}
 		return Color.lightGray;
 	}
-	
+
 	/**
 	 * Add to the feedback strings assuming the mouse is pointing to the given sector, layer, component.
 	 * @param sector the 1-based sector
@@ -130,13 +130,13 @@ public class ADCArrays extends BaseArrays {
 		} else {
 			feedback.add(_fbColor + "no adc data");
 		}
-		
+
 	}
-	
+
 	/**
 	 * Add to the feedback strings assuming the mouse is pointing to the given
 	 * sector, layer, component.
-	 * 
+	 *
 	 * @param sector    the 1-based sector
 	 * @param layer     the 1-based layer
 	 * @param component the 1-based component

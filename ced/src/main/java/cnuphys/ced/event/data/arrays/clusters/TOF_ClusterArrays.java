@@ -14,7 +14,7 @@ public class TOF_ClusterArrays extends TOF_HitArrays {
 
 	/**
 	 * Get the tof cluster arrays for a given bank name
-	 * 
+	 *
 	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
 	 * @return the cluster arrays, either created or from cache
 	 */
@@ -24,7 +24,7 @@ public class TOF_ClusterArrays extends TOF_HitArrays {
 		if (arrays != null) {
 			return (TOF_ClusterArrays) arrays;
 		}
-		
+
 		TOF_ClusterArrays clusterArrays = new TOF_ClusterArrays(bankName);
 		dataWarehouse.putArrays(bankName, clusterArrays);
 		return clusterArrays;
@@ -59,8 +59,8 @@ public class TOF_ClusterArrays extends TOF_HitArrays {
 			feedback.add(_fbColor + "no cluster");
 		}
 	}
-	
-	
+
+
 	/**
 	 * Return a detector specific identity string
 	 * @param hitIndex the hit index

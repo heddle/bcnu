@@ -33,7 +33,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 	// the container sector view
 	private SectorView _view;
-	
+
 	//the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
@@ -153,11 +153,10 @@ public class FTOFPanelItem extends PolygonItem {
 
 	//draw based on data in ADC bank
 	private void drawSingleModeADCBased(Graphics g, IContainer container) {
-		
+
 		if (_eventManager.getCurrentEvent() == null) {
 			return;
 		}
-
 
 		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
 		if (!arrays.hasData()) {
@@ -180,18 +179,14 @@ public class FTOFPanelItem extends PolygonItem {
 			}
 		}
 	}
-	
+
 	//draw based on data in hits bank
 	private void drawSingleModeClusters(Graphics g, IContainer container) {
-		
-		if (_eventManager.getCurrentEvent() == null) {
+
+		if ((_eventManager.getCurrentEvent() == null) || !_view.showClusters()) {
 			return;
 		}
 
-		if (!_view.showClusters()) {
-			return;
-		}
-		
 		TOF_ClusterArrays arrays = TOF_ClusterArrays.getTOF_ClusterArrays("FTOF::clusters");
 		if (!arrays.hasData()) {
 			return;
@@ -221,12 +216,8 @@ public class FTOFPanelItem extends PolygonItem {
 
 	//draw based on data in hits bank
 	private void drawSingleModeHits(Graphics g, IContainer container) {
-		
-		if (_eventManager.getCurrentEvent() == null) {
-			return;
-		}
 
-		if (!_view.showReconHits()) {
+		if ((_eventManager.getCurrentEvent() == null) || !_view.showReconHits()) {
 			return;
 		}
 
@@ -368,7 +359,7 @@ public class FTOFPanelItem extends PolygonItem {
 				} // path contains wp
 			} // end wp != null
 		} // end for loop
-		
+
 		//rest of feedback depends on having an event
 		if (_eventManager.getCurrentEvent() == null) {
 			return;
@@ -392,7 +383,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 						_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
 						container.worldToLocal(pp, wp);
-						r.setBounds(pp.x - 3, pp.y - 3, 6, 6);
+						r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
 
 						if (r.contains(screenPoint)) {
 							hitArrays.addFeedback(index, feedbackStrings);
@@ -403,7 +394,7 @@ public class FTOFPanelItem extends PolygonItem {
 				} //end for loop
 			} //end has hit data
 		} //end recon hits shown
-		
+
 		// hit feedback
 		if (_view.showClusters()) {
 			TOF_ClusterArrays clusterArrays = TOF_ClusterArrays.getTOF_ClusterArrays("FTOF::clusters");
@@ -422,7 +413,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 						_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
 						container.worldToLocal(pp, wp);
-						r.setBounds(pp.x - 3, pp.y - 3, 6, 6);
+						r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
 
 						if (r.contains(screenPoint)) {
 							clusterArrays.addFeedback(index, feedbackStrings);
@@ -433,7 +424,7 @@ public class FTOFPanelItem extends PolygonItem {
 				} //end for loop
 			} //end has cluster data
 		} //end recon clusters shown
-	
+
 	}
 
 }

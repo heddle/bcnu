@@ -1,8 +1,6 @@
 package cnuphys.ced.event;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.event.EventListenerList;
 
@@ -17,18 +15,15 @@ import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
 import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.LTCC;
 import cnuphys.ced.event.data.RTPC;
 import cnuphys.ced.event.data.RTPCHit;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
-import cnuphys.ced.event.data.arrays.adc.HTCC_ADCArrays;
+import cnuphys.ced.event.data.arrays.adc.CC_ADCArrays;
 import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
@@ -73,11 +68,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// adc only)
 	private int _CNDAccumulatedData[][][];
 
-	// HTCC accumulated accumulated data indices are sector, ring, half
+	// HTCC accumulated accumulated data indices are sector, half, ring
 	private int _HTCCAccumulatedData[][][];
 
 	// LTCC accumulated accumulated data indices are sector, half, ring
-	// NOTICE THE DIFFERENT ORDER FROM HTCC
 	private int _LTCCAccumulatedData[][][];
 
 	// ftcc accumulated data
@@ -438,7 +432,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 * @return the Max count for a given superlayer across all sectors
 	 */
 	public int getMaxDCCount(int suplay) {
-		
+
 		int max = 0;
 		for (int sect = 0; sect < 6; sect++) {
 			for (int lay = 0; lay < 6; lay++) {
@@ -450,7 +444,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 				}
 			}
 		}
-		
+
 		return max;
 	}
 
@@ -625,7 +619,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if (!_eventManager.isAccumulating() || (event == null)) {
 			return;
 		}
-		
+
 		_dataWarehouse.clearCache();
 
 		_eventCount++;
@@ -644,8 +638,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumHTCC();
 
 		// ltcc data
-		AdcLRHitList ltccList = LTCC.getInstance().updateAdcList();
-		accumLTCC(ltccList);
+		accumLTCC();
 
 		// dc data
 		DCTdcHitList dclist = DC.getInstance().updateTdcAdcList();
@@ -723,7 +716,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate CND which is a special case
 	private void accumCND() {
-		
+
 		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CND::adc");
 		if (arrays.hasData()) {
 			for (int i = 0; i < arrays.sector.length; i++) {
@@ -738,9 +731,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate htcc
 	private void accumHTCC() {
-		
+
 		//use the adc arrays to accumulate
-		HTCC_ADCArrays arrays = HTCC_ADCArrays.getArrays("HTCC::adc");
+		CC_ADCArrays arrays = CC_ADCArrays.getArrays("HTCC::adc");
 		if (arrays.hasData()) {
 			for (int i = 0; i < arrays.sector.length; i++) {
 				int sect0 = arrays.sector[i] - 1; // make 0 based
@@ -757,30 +750,23 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate ltcc
-	private void accumLTCC(AdcLRHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+	private void accumLTCC() {
 
-		for (AdcLRHit hit : list) {
-			if (hit != null) {
-				int sect0 = hit.sector - 1; // make 0 based
+		//use the adc arrays to accumulate
+		CC_ADCArrays arrays = CC_ADCArrays.getArrays("LTCC::adc");
+		if (arrays.hasData()) {
+			for (int i = 0; i < arrays.sector.length; i++) {
+				int sect0 = arrays.sector[i] - 1; // make 0 based
 
-				int half0 = hit.layer - 1; // make 0 based
-				int ring0 = hit.component - 1; // make 0 based
-
-				if (sect0 >= 0) {
-					try {
-						_LTCCAccumulatedData[sect0][half0][ring0] += 1;
-					} catch (ArrayIndexOutOfBoundsException e) {
-						String msg = String.format("LTCC index out of bounds. Event# %d sect %d ring %d half %d",
-								_eventManager.getSequentialEventNumber(), hit.sector, hit.layer, hit.component);
-						Log.getInstance().warning(msg);
-						System.err.println(msg);
-					}
+				//sometimes happens
+				if (sect0 < 0) {
+					continue;
 				}
+				int half0 = arrays.layer[i] - 1; // make 0 based so (0-1) (layer)
+				int ring0 = arrays.component[i] - 1; // make 0 based so (0-17) (component)
+				_LTCCAccumulatedData[sect0][half0][ring0] += 1;
 			}
-		}
+		} // end has data
 	}
 
 	// accumulate all ec
@@ -1024,7 +1010,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if ((data == null) || (data.length < 1)) {
 			return 0;
 		}
-		
+
 		int max = 0;
 		for (int val : data) {
 			if (val > max) {
@@ -1040,7 +1026,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if (data == null) {
 			return 0;
 		}
-		
+
 		int max = 0;
 		for (int iarry[] : data) {
 			for (int val : iarry) {
@@ -1058,9 +1044,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if (data == null) {
 			return 0;
 		}
-		
+
 		int max = 0;
-		
+
 		for (int iarry1[][] : data) {
 			for (int iarray2[] : iarry1) {
 				for (int val : iarray2) {
@@ -1079,7 +1065,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if (data == null) {
 			return 0;
 		}
-		
+
 		int max = 0;
 		for (int iarry1[][][] : data) {
 			for (int iarray2[][] : iarry1) {
