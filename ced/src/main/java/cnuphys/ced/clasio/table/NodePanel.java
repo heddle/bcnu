@@ -195,7 +195,7 @@ public class NodePanel extends JPanel
 		prevButton.setFont(Fonts.smallFont);
 		prevButton.addActionListener(this);
 
-		JLabel seqLabel = new JLabel("Goto event # ");
+		JLabel seqLabel = new JLabel("Go To event # ");
 		GraphicsUtilities.setSizeSmall(seqLabel);
 
 

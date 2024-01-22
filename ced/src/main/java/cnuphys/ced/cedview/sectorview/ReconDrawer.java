@@ -235,9 +235,7 @@ public class ReconDrawer extends SectorViewDrawer {
 
 		if (_view.showClusters()) {
 			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings)
-					|| clusterListFeedback("FTOF", _dataWarehouse.getClusters("FTOF::clusters"), screenPoint, feedbackStrings)
-					|| clusterListFeedback("CTOF", _dataWarehouse.getClusters("CTOF::clusters"), screenPoint,
-							feedbackStrings)) {
+					|| clusterListFeedback("FTOF", _dataWarehouse.getClusters("FTOF::clusters"), screenPoint, feedbackStrings)) {
 				return;
 			}
 		}

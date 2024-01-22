@@ -31,7 +31,6 @@ import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.bCNU.util.RingBuffer;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
@@ -73,11 +72,7 @@ public class ClasIoEventManager {
 
 	// reset everytime hipo or evio file is opened
 	private int _currentEventIndex;
-
-	//a ringbuffer for previous events
-	private RingBuffer<PrevIndexedEvent> _prevEventBuffer;
-
-
+	
 	// sources of events (the type, not the actual source)
 	public enum EventSourceType {
 		HIPOFILE, ET, EVIOFILE
@@ -135,14 +130,9 @@ public class ClasIoEventManager {
 	// the current event
 	private DataEvent _currentEvent;
 
-	// the previous event and index
-	private PrevIndexedEvent _prevIndexedEvent = new PrevIndexedEvent(null, -1);
-
-
 	// private constructor for singleton
 	private ClasIoEventManager() {
 		_dataSource = new HipoDataSource();
-		_prevEventBuffer = new RingBuffer<>(10);
 	}
 
 	/**
@@ -375,9 +365,7 @@ public class ClasIoEventManager {
 	private void reset() {
 		_runData.reset();
 		_currentEvent = null;
-		_prevIndexedEvent.reset();
 		_currentEventIndex = 0;
-		_prevEventBuffer.clear();
 	}
 
 	/**
@@ -620,7 +608,7 @@ public class ClasIoEventManager {
 	 * @return <code>true</code> if any prev event control should be enabled.
 	 */
 	public boolean isPrevOK() {
-		return (_prevEventBuffer.size() > 0);
+		return isGotoOK() && (_currentEventIndex > 1);
 	}
 
 	/**
@@ -692,25 +680,22 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Get the next event from the current  reader
+	 * Get the previous event from the current  reader
 	 * @return the next event, if possible
 	 */
-	public DataEvent getNextEvent() {
-		return getNextEvent(true);
+	public DataEvent getPreviousEvent() {
+		return gotoEvent(_currentEventIndex - 1);
 	}
+
 
 	/**
 	 * Get the next event from the current  reader
 	 * @return the next event, if possible
 	 */
-	private DataEvent getNextEvent(boolean addToBuffer) {
+	public DataEvent getNextEvent() {
 
 		EventSourceType estype = getEventSourceType();
 		boolean done = false; //for filters
-
-		if (addToBuffer) {
-			_prevIndexedEvent.set(_currentEvent, _currentEventIndex);
-		}
 
 		switch (estype) {
 
@@ -775,12 +760,6 @@ public class ClasIoEventManager {
 
 		} // end switch
 
-		if (addToBuffer) {
-			if ((_prevIndexedEvent.event != null) && (_prevIndexedEvent.event != _currentEvent)) {
-				_prevEventBuffer.add(new PrevIndexedEvent(_prevIndexedEvent.event, _prevIndexedEvent.index));
-			}
-		}
-
 		setCurrentEvent();
 		return _currentEvent;
 	}
@@ -804,24 +783,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-	/**
-	 * Get the previous event from the current compact reader
-	 *
-	 * @return the previous event, if possible.
-	 */
-	public DataEvent getPreviousEvent() {
-
-		PrevIndexedEvent prev = _prevEventBuffer.previous();
-		if ((prev == null) || (prev.event == _currentEvent)) {
-			return _currentEvent;
-		}
-
-		_currentEvent = prev.event;
-		_currentEventIndex = prev.index;
-
-		setCurrentEvent();
-		return _currentEvent;
-	}
 
 	// skip a number of events
 	private void skipEvents(int n) {
@@ -830,11 +791,6 @@ public class ClasIoEventManager {
 		}
 
 		EventSourceType estype = getEventSourceType();
-
-		if (_currentEvent != null) {
-			_prevEventBuffer.add(new PrevIndexedEvent(_currentEvent, _currentEventIndex));
-		}
-
 
 		switch (estype) {
 		case HIPOFILE:
@@ -883,7 +839,7 @@ public class ClasIoEventManager {
 			if (eventNumber > _currentEventIndex) {
 				int numToSkip = (eventNumber - _currentEventIndex) - 1;
 				skipEvents(numToSkip);
-				getNextEvent(false);
+				getNextEvent();
 			} else {
 				_dataSource.close();
 				_currentEvent = null;
@@ -937,7 +893,6 @@ public class ClasIoEventManager {
 			_dataSource.close();
 			_currentEvent = null;
 			_currentEventIndex = 0;
-			_prevEventBuffer.clear();
 		}
 
 		for (int index = 0; index < 3; index++) {
@@ -1153,27 +1108,6 @@ public class ClasIoEventManager {
 		int index = Arrays.binarySearch(allBanks, bankName);
 		return index >= 0;
 	}
-
-
-	//inner class for storing previous events in a ring buffer
-	class PrevIndexedEvent {
-		public DataEvent event;
-		public int index;
-
-		public PrevIndexedEvent(DataEvent event, int index) {
-			set(event, index);
-		}
-
-		public void set(DataEvent event, int index) {
-			this.event = event;
-			this.index = index;
-		}
-
-		public void reset() {
-			set(null, -1);
-		}
-	}
-
 }
 
 
