@@ -28,6 +28,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.component.TransparentPanel;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.ScanManager;
 import cnuphys.ced.frame.Ced;
 import cnuphys.splot.plot.ImageManager;
 
@@ -52,6 +53,10 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	// for goto sequential
 	private JTextField seqEvNum;
+	
+	// for goto true
+	private JTextField trueEvNum;
+
 
 	// for auto next event
 	private JCheckBox _periodEvent;
@@ -130,6 +135,10 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 		// goto sequential
 		add(createGotoSequentialPanel());
+		
+		// goto true
+		add(createGotoTruePanel());
+
 
 		// periodic event
 		add(createEventPeriodPanel());
@@ -207,6 +216,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		nextItem.setEnabled(nextOK);
 		prevItem.setEnabled(_eventManager.isPrevOK());
 		seqEvNum.setEnabled(_eventManager.isGotoOK());
+		trueEvNum.setEnabled(_eventManager.isGotoOK());
 		_periodEvent.setEnabled(nextOK);
 		_periodTF.setEnabled(nextOK);
 
@@ -370,7 +380,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 	private JPanel createGotoSequentialPanel() {
 		JPanel sp = new TransparentPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
 
-		JLabel label = new JLabel("Goto Event: ");
+		JLabel label = new JLabel("Go to Sequential Event: ");
 
 		seqEvNum = new JTextField("1", 10);
 
@@ -395,6 +405,37 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		seqEvNum.setEnabled(false);
 		return sp;
 	}
+	
+	// create the goto true event widget
+	private JPanel createGotoTruePanel() {
+		JPanel sp = new TransparentPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));
+
+		JLabel label = new JLabel("Go to True Event: ");
+
+		trueEvNum = new JTextField("1", 10);
+
+		KeyAdapter ka = new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent kev) {
+				if (kev.getKeyCode() == KeyEvent.VK_ENTER) {
+					MenuSelectionManager.defaultManager().clearSelectedPath();
+					try {
+						int trueNum = Integer.parseInt(trueEvNum.getText());
+						ScanManager.getInstance().gotoTrue(trueNum);
+					} catch (Exception e) {
+
+					}
+				}
+			}
+		};
+		trueEvNum.addKeyListener(ka);
+
+		sp.add(label);
+		sp.add(trueEvNum);
+		trueEvNum.setEnabled(false);
+		return sp;
+	}
+
 
 
 

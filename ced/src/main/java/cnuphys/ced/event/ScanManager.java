@@ -1,6 +1,7 @@
 package cnuphys.ced.event;
 
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 import org.jlab.io.base.DataEvent;
 
@@ -17,28 +18,108 @@ public class ScanManager implements IClasIoEventListener {
 	// event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
+	// singleton
+	private static ScanManager _instance;
 	
-	//the map 
-	ArrayList<Integer> _eventIndexToEventNumber = new ArrayList<Integer>();
 	
-	public ScanManager() {
+	//private constructor for singleton
+	private ScanManager() {
 		_eventManager.addClasIoEventListener(this, 1);
+	}
+	
+	//the map. Keys are true even numbers, values are sequential numbers
+	private TreeMap<Integer, Integer> _map = new TreeMap<>();
+	
+	//return to the current event using index
+	public int _saveIndex = -1;
+	
+	
+	private void scan() {
+		
+		//do we already have a map?
+		if (!_map.isEmpty() || !_eventManager.isGotoOK()) {
+			return;
+		}
+		
+		int count = _eventManager.getEventCount();
+		if (count < 2) {
+			return;
+		}
+		
+		System.err.println("Scanning to create true-sequential map");
+		
+		//hold the current index;
+		
+		if (_eventManager.getEventSourceType() != EventSourceType.HIPOFILE) {
+			return;
+		}
+		
+		
+		_saveIndex = _eventManager.getSequentialEventNumber();
+		
+		_eventManager.setScanning(true);
+		
+		_eventManager.gotoEvent(1);
+		
+		for (int i = 1; i < count; i++) {
+			_eventManager.getNextEvent();
+			if ((i % 100) == 0) {
+				System.err.println("Scanning " + i + "/" + count);
+			}
+		}
+		
+		_eventManager.setScanning(false);
+	//	_eventManager.gotoEvent(_saveIndex);
+		
+	}
+	
+	
+	public void gotoTrue(int trueEventNumber) {
+		scan();
+		Integer enumber = _map.get(trueEventNumber);
+		
+		if (enumber == null) {
+			System.err.println("No event with true number " + trueEventNumber);
+			_eventManager.gotoEvent(_saveIndex);
+			return;
+		}
+		
+		_eventManager.gotoEvent(enumber);
+	}
+	
+	/**
+	 * Get the singleton
+	 * 
+	 * @return the singleton
+	 */
+	public static ScanManager getInstance() {
+		return _instance == null ? (_instance = new ScanManager()) : _instance;
 	}
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
+		// only care if I am scanning
+		if (!_eventManager.isScanning() || (event == null)) {
+			return;
+		}
+
+		int seqNum = _eventManager.getSequentialEventNumber();
+		int trueNum = _eventManager.getTrueEventNumber();
+		
+		_map.put(trueNum, seqNum);
 	}
 
 	@Override
 	public void openedNewEventFile(String path) {
-		_eventIndexToEventNumber.clear();
+		_map.clear();
+		_saveIndex = -1;
 	}
 
 	@Override
 	public void changedEventSource(EventSourceType source) {
-		_eventIndexToEventNumber.clear();
+		_map.clear();
+		_saveIndex = -1;
 	}
-	
 	
 
 }

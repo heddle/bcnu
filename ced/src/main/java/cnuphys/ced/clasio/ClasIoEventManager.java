@@ -38,6 +38,7 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
 import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.ScanManager;
 import cnuphys.ced.frame.Ced;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -90,6 +91,10 @@ public class ClasIoEventManager {
 
 	// flag that set set to <code>true</code> if we are accumulating events
 	private boolean _accumulating = false;
+	
+	// flag that set set to <code>true</code> if we are quickly scanning events events
+	private boolean _scanning = false;
+
 
 	// list of view listeners. There are actually three lists. Those in index 0
 	// are notified first. Then those in index 1. Finally those in index 2. The
@@ -155,7 +160,11 @@ public class ClasIoEventManager {
 
 				if (isAccumulating()) {
 					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
-				} else {
+				} 
+				else if (isScanning()) {
+                    ScanManager.getInstance().newClasIoEvent(_currentEvent);
+                }
+				else {
 					CedView.suppressRefresh(true);
 					_runData.set(_currentEvent);
 					notifyEventListeners();
@@ -279,18 +288,38 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * @return the accumulating
+	 * Are we accumulating?
+	 * @return the accumulating flag
 	 */
 	public boolean isAccumulating() {
 		return _accumulating;
 	}
 
 	/**
+	 * Set whether we are accumulating
 	 * @param accumulating the accumulating to set
 	 */
 	public void setAccumulating(boolean accumulating) {
 		_accumulating = accumulating;
 	}
+	
+	/**
+	 * Are we scanning?
+	 * 
+	 * @return the scanning flag
+	 */
+	public boolean isScanning() {
+		return _scanning;
+	}
+
+	/**
+	 * Set whether we are scanning
+	 * @param scanning the scanning to set
+	 */
+	public void setScanning(boolean scanning) {
+		_scanning = scanning;
+	}
+
 
 	/**
 	 * Get the current event
@@ -981,7 +1010,7 @@ public class ClasIoEventManager {
 
 	// final steps
 	private void finalSteps() {
-		if (isAccumulating()) {
+		if (isAccumulating() || isScanning()) {
 			return;
 		}
 
