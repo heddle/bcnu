@@ -447,7 +447,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 						AdcECALHit hit = hits.get(getSector(), layer, component);
 						if (hit != null) {
-							hit.adcFeedback(AllEC.layerNames[layer], "strip", feedbackStrings);
+							hit.adcFeedback(ECGeometry.layerNames[layer], "strip", feedbackStrings);
 						}
 					}
 

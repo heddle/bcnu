@@ -15,7 +15,7 @@ import cnuphys.lund.TrajectoryTableModel;
 public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 
 	// singleton
-	private static ClasIoReconEventView instance;
+	private static volatile ClasIoReconEventView instance;
 
 	// one row for each reconstructed trajectory
 	private static Vector<TrajectoryRowData> _trajData = new Vector<>();
@@ -31,7 +31,11 @@ public class ClasIoReconEventView extends ClasIoTrajectoryInfoView {
 	 */
 	public static ClasIoReconEventView getInstance() {
 		if (instance == null) {
-			instance = new ClasIoReconEventView();
+			synchronized (ClasIoReconEventView.class) {
+				if (instance == null) {
+					instance = new ClasIoReconEventView();
+				}
+			}
 		}
 		return instance;
 	}

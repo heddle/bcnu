@@ -11,7 +11,7 @@ import cnuphys.ced.clasio.filter.FilterManager;
 public class TriggerManager implements IClasIoEventListener {
 
 	// singleton
-	private static TriggerManager _instance;
+	private static volatile TriggerManager _instance;
 
 	// the bank name
 	private static String _bankName = "RUN::trigger";
@@ -34,12 +34,17 @@ public class TriggerManager implements IClasIoEventListener {
 	 * @return the TriggerManager singleton
 	 */
 	public static TriggerManager getInstance() {
+		
 		if (_instance == null) {
-			_instance = new TriggerManager();
-
-			_filter = new TriggerFilter.Builder().setActive(false).setBits(new Long(0xFFFFFFFF).intValue())
-					.setType(TriggerMatch.ANY).setName("Trigger Filter").build();
+			synchronized (TriggerManager.class) {
+				if (_instance == null) {
+					_instance = new TriggerManager();
+					_filter = new TriggerFilter.Builder().setActive(false).setBits(new Long(0xFFFFFFFF).intValue())
+							.setType(TriggerMatch.ANY).setName("Trigger Filter").build();
+				}
+			}
 		}
+		
 
 		FilterManager.getInstance().add(_filter);
 		return _instance;

@@ -271,7 +271,7 @@ public class SectorECALItem extends PolygonItem {
 
 						AdcECALHit hit = hits.get(_sector, layer, stripId + 1);
 						if (hit != null) {
-							hit.adcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
+							hit.adcFeedback(ECGeometry.layerNames[hit.layer], "strip", feedbackStrings);
 						}
 
 					}

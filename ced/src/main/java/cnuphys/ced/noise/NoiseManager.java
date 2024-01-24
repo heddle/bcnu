@@ -23,7 +23,7 @@ public class NoiseManager implements IClasIoEventListener {
 	public static final Color maskFillRight = new Color(0, 128, 255, 48);
 
 	// singleton
-	private static NoiseManager instance;
+	private static volatile NoiseManager instance;
 
 	// The analysis package
 	private Clas12NoiseAnalysis noisePackage = new Clas12NoiseAnalysis(SNRAnalysisLevel.TWOSTAGE);
@@ -47,7 +47,11 @@ public class NoiseManager implements IClasIoEventListener {
 	 */
 	public static NoiseManager getInstance() {
 		if (instance == null) {
-			instance = new NoiseManager();
+			synchronized (NoiseManager.class) {
+				if (instance == null) {
+					instance = new NoiseManager();
+				}
+			}
 		}
 		return instance;
 	}

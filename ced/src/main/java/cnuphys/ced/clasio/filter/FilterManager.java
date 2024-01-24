@@ -10,10 +10,7 @@ public class FilterManager extends ArrayList<IEventFilter> {
 
 
 	// singleton
-	private static FilterManager _instance;
-
-	// the bank name
-	private static String _bankName = "RUN::trigger";
+	private static volatile FilterManager _instance;
 
 	// private constructor for singleton
 	private FilterManager() {
@@ -29,7 +26,11 @@ public class FilterManager extends ArrayList<IEventFilter> {
 	 */
 	public static FilterManager getInstance() {
 		if (_instance == null) {
-			_instance = new FilterManager();
+			synchronized (FilterManager.class) {
+				if (_instance == null) {
+					_instance = new FilterManager();
+				}
+			}
 		}
 		return _instance;
 	}

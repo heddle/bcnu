@@ -16,7 +16,7 @@ import cnuphys.lund.TrajectoryTableModel;
 public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 	// singleton
-	private static ClasIoMonteCarloView instance;
+	private static volatile ClasIoMonteCarloView instance;
 
 	// one row for each reconstructed trajectory
 	private static Vector<TrajectoryRowData> _trajData = new Vector<>();
@@ -33,7 +33,11 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 	 */
 	public static ClasIoMonteCarloView getInstance() {
 		if (instance == null) {
-			instance = new ClasIoMonteCarloView();
+			synchronized (ClasIoMonteCarloView.class) {
+				if (instance == null) {
+					instance = new ClasIoMonteCarloView();
+				}
+			}
 		}
 		return instance;
 	}

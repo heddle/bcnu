@@ -130,7 +130,7 @@ public class ClasIoEventManager {
 	private DataSource _dataSource;
 
 	// singleton
-	private static ClasIoEventManager instance;
+	private static volatile ClasIoEventManager instance;
 
 	// the current event
 	private DataEvent _currentEvent;
@@ -230,7 +230,11 @@ public class ClasIoEventManager {
 	 */
 	public static ClasIoEventManager getInstance() {
 		if (instance == null) {
-			instance = new ClasIoEventManager();
+			synchronized (ClasIoEventManager.class) {
+				if (instance == null) {
+					instance = new ClasIoEventManager();
+				}
+			}
 		}
 		return instance;
 	}

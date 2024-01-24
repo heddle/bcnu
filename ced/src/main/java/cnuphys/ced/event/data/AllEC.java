@@ -7,19 +7,6 @@ import cnuphys.ced.event.data.lists.ClusterList;
 
 public class AllEC extends DetectorData {
 
-	// EC "layer" constants
-	public static final int PCAL_U = 1;
-	public static final int PCAL_V = 2;
-	public static final int PCAL_W = 3;
-	public static final int ECAL_IN_U = 4;
-	public static final int ECAL_IN_V = 5;
-	public static final int ECAL_IN_W = 6;
-	public static final int ECAL_OUT_U = 7;
-	public static final int ECAL_OUT_V = 8;
-	public static final int ECAL_OUT_W = 9;
-
-	public static final String layerNames[] = { "???", "PCAL_U", "PCAL_V", "PCAL_W", "ECAL_IN_U", "ECAL_IN_V",
-			"ECAL_IN_W", "ECAL_OUT_U", "ECAL_OUT_V", "ECAL_OUTW" };
 
 //	bank name: [ECAL::adc] column name: [ADC] full name: [ECAL::adc.ADC] data type: int
 //	bank name: [ECAL::adc] column name: [component] full name: [ECAL::adc.component] data type: short
@@ -56,20 +43,6 @@ public class AllEC extends DetectorData {
 			_instance = new AllEC();
 		}
 		return _instance;
-	}
-
-	/**
-	 * Get the layer name
-	 *
-	 * @param layer the 1-based layer 1..9
-	 * @return the brief layer name
-	 */
-	public String getLayerName(byte layer) {
-		if ((layer < 1) || (layer > 9)) {
-			return "" + layer;
-		} else {
-			return layerNames[layer];
-		}
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 public class AdcColorScale extends ColorScaleModel {
 
 
-	private static AdcColorScale _instance;
+	private static volatile AdcColorScale _instance;
 
 	private AdcColorScale() {
 		super(getScaleValues(), ColorScaleModel.getSimpleMapColors(8));
@@ -13,7 +13,11 @@ public class AdcColorScale extends ColorScaleModel {
 
 	public static AdcColorScale getInstance() {
 		if (_instance == null) {
-			_instance = new AdcColorScale();
+			synchronized (AdcColorScale.class) {
+				if (_instance == null) {
+					_instance = new AdcColorScale();
+				}
+			}
 		}
 		return _instance;
 	}

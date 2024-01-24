@@ -19,7 +19,7 @@ import cnuphys.ced.event.data.lists.ClusterList;
 public class DataWarehouse implements IClasIoEventListener {
 
 	//the singleton
-	private static DataWarehouse _instance;
+	private static volatile DataWarehouse _instance;
 
 	// all the known banks in the current evenr
 	private ArrayList<String> _knownBanks = new ArrayList<>();
@@ -41,8 +41,12 @@ public class DataWarehouse implements IClasIoEventListener {
 	 */
 	public static DataWarehouse getInstance() {
 		if (_instance == null) {
-			_instance = new DataWarehouse();
-		}
+			synchronized (DataWarehouse.class) {
+                if (_instance == null) {
+                    _instance = new DataWarehouse();
+                }
+            }
+        }
 		return _instance;
 	}
 

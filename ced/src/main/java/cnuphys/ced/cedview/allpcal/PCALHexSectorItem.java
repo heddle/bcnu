@@ -18,6 +18,7 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.ced.item.HexSectorItem;
@@ -413,7 +414,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 						int component = uvw[stype];
 						AdcECALHit hit = hits.get(getSector(), stype + 1, component);
 						if (hit != null) {
-							hit.adcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
+							hit.adcFeedback(ECGeometry.layerNames[hit.layer], "strip", feedbackStrings);
 						}
 					}
 				}

@@ -14,7 +14,8 @@ import cnuphys.bCNU.util.SerialIO;
  */
 public class PropertiesManager {
 
-	private static PropertiesManager _instance;
+	// singleton
+	private static volatile PropertiesManager _instance;
 
 	private static Properties _userPref;
 
@@ -29,9 +30,14 @@ public class PropertiesManager {
 	 * @return the PropertiesManager singleton.
 	 */
 	public static PropertiesManager getInstance() {
+		
 		if (_instance == null) {
-			_instance = new PropertiesManager();
-			_instance.getPropertiesFromDisk();
+			synchronized (PropertiesManager.class) {
+				if (_instance == null) {
+					_instance = new PropertiesManager();
+					_instance.getPropertiesFromDisk();
+				}
+			}
 		}
 		return _instance;
 	}

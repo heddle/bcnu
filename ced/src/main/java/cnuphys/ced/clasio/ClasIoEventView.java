@@ -14,7 +14,7 @@ public class ClasIoEventView extends BaseView {
 	protected NodePanel _nodePanel;
 
 	// singleton
-	private static ClasIoEventView instance;
+	private static volatile ClasIoEventView instance;
 
 	/**
 	 * Constructor for the Event view, which manages events from an event file.
@@ -43,7 +43,11 @@ public class ClasIoEventView extends BaseView {
 	public static ClasIoEventView createEventView() {
 
 		if (instance == null) {
-			instance = new ClasIoEventView();
+			synchronized (ClasIoEventView.class) {
+				if (instance == null) {
+					instance = new ClasIoEventView();
+				}
+			}
 		}
 		return instance;
 	}

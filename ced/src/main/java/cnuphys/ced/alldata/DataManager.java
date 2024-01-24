@@ -33,7 +33,7 @@ public class DataManager {
 	private Hashtable<String, String[]> _banks;
 
 	// singleton
-	private static DataManager _instance;
+	private static volatile DataManager _instance;
 
 
 
@@ -127,7 +127,11 @@ public class DataManager {
 	 */
 	public static DataManager getInstance() {
 		if (_instance == null) {
-			_instance = new DataManager();
+            synchronized (DataManager.class) {
+                if (_instance == null) {
+                    _instance = new DataManager();
+                }
+            }
 		}
 		return _instance;
 	}

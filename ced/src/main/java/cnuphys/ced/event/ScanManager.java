@@ -19,7 +19,7 @@ public class ScanManager implements IClasIoEventListener {
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// singleton
-	private static ScanManager _instance;
+	private static volatile ScanManager _instance;
 	
 	
 	//private constructor for singleton
@@ -93,7 +93,15 @@ public class ScanManager implements IClasIoEventListener {
 	 * @return the singleton
 	 */
 	public static ScanManager getInstance() {
-		return _instance == null ? (_instance = new ScanManager()) : _instance;
+		
+		if (_instance == null) {
+			synchronized (ScanManager.class) {
+				if (_instance == null) {
+					_instance = new ScanManager();
+				}
+			}
+		}
+		return _instance;
 	}
 
 	@Override

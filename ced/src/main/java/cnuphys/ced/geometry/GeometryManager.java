@@ -27,7 +27,7 @@ public class GeometryManager {
 	/**
 	 * Singleton
 	 */
-	private static GeometryManager instance;
+	private static volatile GeometryManager instance;
 
 	// BSTxy panels
 	private static Vector<BSTxyPanel> _bstXYpanelsLayers = new Vector<>(); // new
@@ -105,7 +105,11 @@ public class GeometryManager {
 	 */
 	public static GeometryManager getInstance() {
 		if (instance == null) {
-			instance = new GeometryManager();
+			synchronized (GeometryManager.class) {
+				if (instance == null) {
+					instance = new GeometryManager();
+				}
+			}
 		}
 		return instance;
 	}

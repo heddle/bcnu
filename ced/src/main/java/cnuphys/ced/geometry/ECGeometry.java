@@ -41,6 +41,21 @@ public class ECGeometry {
 
 	/** there are 36 strips for u, v and w */
 	public static final int EC_NUMSTRIP = 36;
+	
+	// EC "layer" constants
+	public static final int PCAL_U = 1;
+	public static final int PCAL_V = 2;
+	public static final int PCAL_W = 3;
+	public static final int ECAL_IN_U = 4;
+	public static final int ECAL_IN_V = 5;
+	public static final int ECAL_IN_W = 6;
+	public static final int ECAL_OUT_U = 7;
+	public static final int ECAL_OUT_V = 8;
+	public static final int ECAL_OUT_W = 9;
+
+	public static final String layerNames[] = { "???", "PCAL_U", "PCAL_V", "PCAL_W", "ECAL_IN_U", "ECAL_IN_V",
+			"ECAL_IN_W", "ECAL_OUT_U", "ECAL_OUT_V", "ECAL_OUTW" };
+
 
 	public static double TRI_XMIN;
 	public static double TRI_XMAX;
