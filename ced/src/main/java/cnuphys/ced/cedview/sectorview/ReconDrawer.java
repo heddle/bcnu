@@ -21,13 +21,11 @@ import cnuphys.ced.event.data.DCCluster;
 import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.Hit1;
 import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.event.data.lists.ClusterList;
 import cnuphys.ced.event.data.lists.DCClusterList;
 import cnuphys.ced.event.data.lists.DCReconHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
-import cnuphys.ced.event.data.lists.Hit1List;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.lund.LundId;
 
@@ -425,26 +423,6 @@ public class ReconDrawer extends SectorViewDrawer {
 				DataDrawSupport.drawReconCluster(g, pp);
 			}
 		}
-	}
-
-	// draw a reconstructed hit list
-	private void drawReconHitList(Graphics g, IContainer container, Hit1List hits) {
-		if ((hits == null) || hits.isEmpty()) {
-			return;
-		}
-
-		Point2D.Double wp = new Point2D.Double();
-		Point pp = new Point();
-
-		for (Hit1 hit : hits) {
-			if (_view.containsSector(hit.sector)) {
-				_view.projectClasToWorld(hit.x, hit.y, hit.z, _view.getProjectionPlane(), wp);
-				container.worldToLocal(pp, wp);
-				hit.setLocation(pp);
-				DataDrawSupport.drawReconHit(g, pp);
-			}
-		}
-
 	}
 
 	// draw a reconstructed hit list

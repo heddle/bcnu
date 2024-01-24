@@ -27,5 +27,12 @@ public class GeoConstants {
 	 * Constant indicating the number of wires per layer.
 	 */
 	public static final int NUM_WIRE = 112;
+	
+	//for rtpc
+	public static final int RTPC_NUMLAYER = 96;
+	public static final int RTPC_NUMCOMPONENT =  180;
+
+
+
 
 }

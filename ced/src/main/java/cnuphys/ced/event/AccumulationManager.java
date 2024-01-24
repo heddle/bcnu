@@ -20,14 +20,11 @@ import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.RTPC;
-import cnuphys.ced.event.data.RTPCHit;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
 import cnuphys.ced.event.data.arrays.adc.CC_ADCArrays;
 import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
-import cnuphys.ced.event.data.lists.RTPCHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeoConstants;
@@ -129,7 +126,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_FTCALAccumulatedData = new int[476];
 
 		// RTPC Data
-		_RTPCAccumulatedData = new int[RTPC.NUMCOMPONENT][RTPC.NUMLAYER];
+		_RTPCAccumulatedData = new int[GeoConstants.RTPC_NUMCOMPONENT][GeoConstants.RTPC_NUMLAYER];
 
 		// cnd data (24 sectors, 3 layers, left and right)
 		_CNDAccumulatedData = new int[24][3][2];
@@ -189,8 +186,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 
 		//clear RTPC
-		for (int i = 0; i < RTPC.NUMCOMPONENT; i++) {
-			for (int j = 0; j < RTPC.NUMLAYER; j++) {
+		for (int i = 0; i < GeoConstants.RTPC_NUMCOMPONENT; i++) {
+			for (int j = 0; j < GeoConstants.RTPC_NUMLAYER; j++) {
 				_RTPCAccumulatedData[i][j] = 0;
 			}
 		}
@@ -628,8 +625,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumFTCAL();
 
 		//RTPCData
-		RTPCHitList rtpcList = RTPC.getInstance().updateAdcList();
-		accumRTPC(rtpcList);
+		accumRTPC();
 
 		// CND a special case
 		accumCND();
@@ -702,16 +698,19 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate rtpc
-		private void accumRTPC(RTPCHitList list) {
-			if ((list == null) || list.isEmpty()) {
-				return;
+		private void accumRTPC() {
+			
+			ADCArrays arrays = ADCArrays.getArrays("RTPC::adc");
+
+			
+			if (arrays.hasData()) {
+				for (int i = 0; i < arrays.sector.length; i++) {
+					int cm1 = arrays.component[i] - 1;
+					int lm1 = arrays.layer[i] - 1;
+					_RTPCAccumulatedData[cm1][lm1] += 1;
+				}
 			}
 
-			for (RTPCHit hit : list) {
-				int cm1 = hit.component-1;
-				int lm1 = hit.layer-1;
-				_RTPCAccumulatedData[cm1][lm1] += 1;
-			}
 		}
 
 	// accumulate CND which is a special case

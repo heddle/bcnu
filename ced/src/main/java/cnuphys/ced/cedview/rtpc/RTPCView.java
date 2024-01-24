@@ -12,7 +12,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.ChangeEvent;
@@ -33,9 +32,8 @@ import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.RTPC;
-import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.lists.RTPCHitList;
+import cnuphys.ced.event.data.arrays.adc.ADCArrays;
+import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.lund.X11Colors;
 
 
@@ -168,7 +166,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 				Point p1 = new Point();
 
 				//horizontal lines
-				for (int i = 0; i <= RTPC.NUMLAYER; i++) {
+				for (int i = 0; i <= GeoConstants.RTPC_NUMLAYER; i++) {
 					double z = ZMIN + i*DELZ;
 
 
@@ -184,7 +182,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 				}
 
 				// vertical lines
-				for (int i = 0; i <= RTPC.NUMCOMPONENT; i++) {
+				for (int i = 0; i <= GeoConstants.RTPC_NUMCOMPONENT; i++) {
 					double phi = PHIMIN + i * DELPHI;
 
 
@@ -232,32 +230,30 @@ public class RTPCView extends CedXYView implements ChangeListener {
 
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
-		RTPCHitList hits = RTPC.getInstance().getHits();
-//		System.err.println("DRAWING RTPC HITS count " + ((hits == null) ? 0 : hits.size()));
+		//use the ADC data
 
-		if ((hits != null) && !hits.isEmpty()) {
+		ADCArrays adcArrays =ADCArrays.getArrays("RTPC::adc");
 
-			Rectangle hr = new Rectangle();
-			Point p0 = new Point();
-			Point p1 = new Point();
+		if (adcArrays.hasData()) {
 
-			for (RTPCHit hit : hits) {
-				if (hit != null) {
+			int adc[] = adcArrays.ADC;
+			for (int i = 0; i < adc.length; i++) {
 
-					if (hit.adc >= getAdcThreshold()) {
-						// component and layer are 1-based
-						short component = hit.component;
-						byte layer = hit.layer;
+				if (adc[i] >= getAdcThreshold()) {
+					// component and layer are 1-based
+					short component = adcArrays.component[i];
+					byte layer = adcArrays.layer[i];
 
-						setRect(container, component, layer, hr, p0, p1);
-						g.setColor(Color.red);
-						g.fillRect(hr.x, hr.y, hr.width, hr.height);
-					}
+					Rectangle hr = new Rectangle();
+					Point p0 = new Point();
+					Point p1 = new Point();
 
+					setRect(container, component, layer, hr, p0, p1);
+					g.setColor(Color.red);
+					g.fillRect(hr.x, hr.y, hr.width, hr.height);
 				}
-			}
+		     }
 		}
-
 	}
 
 	//set the rect based on component and layer
@@ -283,8 +279,8 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		Point p1 = new Point();
 
 		int counts[][] = AccumulationManager.getInstance().getAccumulatedRTPCData();
-		for (short cm1 = 0; cm1 < RTPC.NUMCOMPONENT; cm1++) {
-			for (byte lm1 = 0; lm1 < RTPC.NUMLAYER; lm1++) {
+		for (short cm1 = 0; cm1 < GeoConstants.RTPC_NUMCOMPONENT; cm1++) {
+			for (byte lm1 = 0; lm1 < GeoConstants.RTPC_NUMLAYER; lm1++) {
 				if (counts[cm1][lm1] > 0) {
 
 					short component =  (short)(cm1 + 1);
@@ -312,28 +308,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	protected void addItems() {
 	}
 
-
-	//find the matching hits
-	private ArrayList<RTPCHit> matchingHits(short component, byte layer) {
-		ArrayList<RTPCHit> list =  new ArrayList<>();
-
-		RTPCHitList hits = RTPC.getInstance().getHits();
-//		System.err.println("DRAWING RTPC HITS count " + ((hits == null) ? 0 : hits.size()));
-
-		if ((hits != null) && !hits.isEmpty()) {
-
-			for (RTPCHit hit : hits) {
-				if (hit != null) {
-					if ((component ==  hit.component) && (layer == hit.layer)) {
-						list.add(hit);
-					}
-				}
-			}
-		}
-
-
-		return list;
-	}
 
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
@@ -382,21 +356,31 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		Point pp = new Point();
 		worldToComponentLayer(container, pp, wp);
 
-		short component = (short)(pp.x);
-		byte layer = (byte)(pp.y);
+		short component = (short)(pp.x); //1-based
+		byte layer = (byte)(pp.y); //1-based
 
 		String clStr = "component " + pp.x + ", layer " + pp.y;
 		feedbackStrings.add(clStr);
 
-		//hits
-		ArrayList<RTPCHit> list = matchingHits(component, layer);
-		if ((list != null) && !list.isEmpty()) {
-			feedbackStrings.add("num hits: " + list.size());
-			for (RTPCHit hit : list) {
 
-				String s = String.format("  adc %d ped %d time %-7.2f", hit.adc, hit.ped, hit.time);
-				feedbackStrings.add(s);
-			}
+		ADCArrays adcArrays =ADCArrays.getArrays("RTPC::adc");
+
+		if (adcArrays.hasData()) {
+
+			int adc[] = adcArrays.ADC;
+			for (int i = 0; i < adc.length; i++) {
+
+				if (adc[i] >= getAdcThreshold()) {
+					// component and layer are 1-based
+
+					if ((component == adcArrays.component[i]) && (layer == adcArrays.layer[i])) {
+						String s = String.format("  adc %d ped %d time %-7.2f",
+								adc[i], adcArrays.ped[i], adcArrays.time[i]);
+						feedbackStrings.add(s);
+
+					}
+				}
+		     }
 		}
 
 	}
