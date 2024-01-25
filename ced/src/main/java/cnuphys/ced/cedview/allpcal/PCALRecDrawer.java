@@ -28,9 +28,6 @@ import cnuphys.lund.LundId;
  */
 public class PCALRecDrawer extends PCALViewDrawer {
 
-	// the event manager
-	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-
 	//the current event
 	private DataEvent _currentEvent;
 

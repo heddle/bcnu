@@ -1049,10 +1049,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	/**
 	 * Should we show the strips
 	 *
-	 * @param stripType U, V or W
-	 * @return <code>true</code> if thebstrips of that type should be shown
+	 * @param stripType (view) U, V or W
+	 * @return <code>true</code> if the strips of that type should be shown
 	 */
-	public boolean showStrips(int stripType) {
+	public boolean showView(int stripType) {
 		if (stripType == ECGeometry.EC_U) {
 			return showUStrips();
 		} else if (stripType == ECGeometry.EC_V) {

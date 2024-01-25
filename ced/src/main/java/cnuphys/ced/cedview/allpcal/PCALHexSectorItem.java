@@ -12,6 +12,7 @@ import org.jlab.geom.prim.Point3D;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
+import cnuphys.ced.alldata.datacontainer.PCalData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -33,6 +34,10 @@ public class PCALHexSectorItem extends HexSectorItem {
 	public static final Color transYellow = new Color(255, 255, 0, 200);
 
 	private static int[] _stripCounts = PCALGeometry.PCAL_NUMSTRIP; // u,v,w
+	
+	//the EC data container
+	private static PCalData _pcalData = PCalData.getInstance();
+
 
 	/**
 	 * Get a hex sector item
@@ -61,7 +66,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 
 		for (int stripType = 0; stripType < 3; stripType++) {
-			if (_pcalView.showStrips(stripType)) {
+			if (_pcalView.showView(stripType)) {
 				for (int stripIndex = 0; stripIndex < PCALGeometry.PCAL_NUMSTRIP[stripType]; stripIndex++) {
 					Polygon poly = stripPolygon(container, stripType, stripIndex);
 
@@ -91,7 +96,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 	// draw strip outlines
 	private void drawOutlines(Graphics g, IContainer container, Color color) {
 		for (int stripType = 0; stripType < 3; stripType++) {
-			if (_pcalView.showStrips(stripType)) {
+			if (_pcalView.showView(stripType)) {
 				for (int stripIndex = 0; stripIndex < PCALGeometry.PCAL_NUMSTRIP[stripType]; stripIndex++) {
 					// g.drawPolygon(_stripPoly[stripType][stripIndex]);
 
@@ -128,44 +133,34 @@ public class PCALHexSectorItem extends HexSectorItem {
 	// draw single event hit
 	private void drawSingleEvent(Graphics g, IContainer container) {
 
-		AdcECALHitList hits = AllEC.getInstance().getHits();
-		if ((hits != null) && !hits.isEmpty()) {
+		// use the adc values
+		for (int i = 0; i < _pcalData.rawCount(); i++) {
+			if (_sector == _pcalData.sector.get(i)) {
+				if (_pcalView.showView(_pcalData.view.get(i))) {
+					int strip0 = _pcalData.strip.get(i) - 1;
+					Polygon poly = stripPolygon(container, _pcalData.view.get(i), strip0);
 
-			for (AdcECALHit hit : hits) {
-				if (hit != null) {
+					g.setColor(_pcalData.getADCColor(_pcalData.adc.get(i)));
+					g.fillPolygon(poly);
 
-					try {
-						if (isThisPC(hit.sector, hit.layer)) {
-							int view0 = hit.layer - 1; // uvw
-							int strip0 = hit.component - 1;
-							Polygon poly = stripPolygon(container, view0, strip0);
+					g.setColor(Color.black);
+					g.drawPolygon(poly);
 
-							g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
-							g.fillPolygon(poly);
-							g.drawPolygon(poly);
+					// extension
 
-							int adcmax = Math.max(1, AllEC.getInstance().getMaxPCALAdc());
-							double fract = ((double) hit.averageADC() / (double) adcmax);
-							fract = Math.max(0.15, Math.min(1.0, fract));
+					int adcmax = Math.max(1, _pcalData.maxADC);
+					double fract = ((double) _pcalData.adc.get(i) / (double) adcmax);
+					fract = Math.max(0.15, Math.min(1.0, fract));
 
-							// extension
-							poly = extensionPolygon(container, view0, strip0, fract);
-							g.setColor(transYellow);
-							g.fillPolygon(poly);
-							g.setColor(X11Colors.getX11Color("dark red"));
-							g.drawPolygon(poly);
+					poly = extensionPolygon(container, _pcalData.view.get(i), strip0, fract);
+					g.setColor(Color.yellow);
+					g.fillPolygon(poly);
+					g.setColor(X11Colors.getX11Color("dark red"));
+					g.drawPolygon(poly);
 
-						}
-					} catch (Exception e) {
-						Log.getInstance().exception(e);
-					}
-				} // hit not null
-				else {
-					Log.getInstance().warning("[PCALHexSectorItem] null hit in ECAll hit list");
 				}
 			}
 		}
-
 	}
 
 	// draw accumulated hits
@@ -179,7 +174,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 		for (int view0 = 0; view0 < 3; view0++) {
 			for (int strip0 = 0; strip0 < _stripCounts[view0]; strip0++) {
-				if (_pcalView.showStrips(view0)) {
+				if (_pcalView.showView(view0)) {
 					Polygon poly = stripPolygon(container, view0, strip0);
 
 					int hitCount = hits[sect0][view0][strip0];

@@ -41,19 +41,14 @@ public class TOF_ClusterArrays extends TOF_HitArrays {
 	public void addFeedback(int clusterIndex, List<String> feedback) {
 		if (clusterIndex >= 0) {
 
-			if (clusterIndex >= 0) {
-				feedback.add(_fbColor + detectorIdentityString(clusterIndex));
-				feedback.add(_fbColor + "cluster index " + clusterIndex);
-				feedback.add(_fbColor + "cluster energy " + energy[clusterIndex]);
+			feedback.add(_fbColor + detectorIdentityString(clusterIndex));
+			feedback.add(_fbColor + "cluster index " + clusterIndex);
+			feedback.add(_fbColor + "cluster energy " + energy[clusterIndex]);
 
-				String locStr = String.format("cluster location (%6.4f, %6.4f, %6.4f) cm", x[clusterIndex], y[clusterIndex], z[clusterIndex]);
+			String locStr = String.format("cluster location (%6.4f, %6.4f, %6.4f) cm", x[clusterIndex], y[clusterIndex],
+					z[clusterIndex]);
 
-				feedback.add(_fbColor + locStr);
-
-			} else {
-				feedback.add(_fbColor + "no cluster");
-			}
-
+			feedback.add(_fbColor + locStr);
 
 		} else {
 			feedback.add(_fbColor + "no cluster");

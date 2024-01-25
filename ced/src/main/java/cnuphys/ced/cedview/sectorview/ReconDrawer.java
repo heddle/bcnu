@@ -31,9 +31,6 @@ import cnuphys.lund.LundId;
 
 public class ReconDrawer extends SectorViewDrawer {
 
-	// the event manager
-	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
 

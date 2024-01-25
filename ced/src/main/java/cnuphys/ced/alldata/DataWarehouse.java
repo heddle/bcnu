@@ -5,14 +5,18 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.swing.event.EventListenerList;
+
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
 
+import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
+import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.ced.event.data.arrays.BaseArrays;
 import cnuphys.ced.event.data.lists.ClusterList;
 
@@ -30,9 +34,14 @@ public class DataWarehouse implements IClasIoEventListener {
     //the arrays for every event
 	private HashMap<String, BaseArrays> _arrays = new HashMap<>();
 
+	// private constructor for singleton
 	private DataWarehouse() {
 		ClasIoEventManager.getInstance().addClasIoEventListener(this, 0);
 	}
+	
+	// list of data container listeners
+	private static EventListenerList _listeners;
+
 
 	/**
 	 * Public access to the singleton
@@ -285,6 +294,71 @@ public class DataWarehouse implements IClasIoEventListener {
 	public BaseArrays getArrays(String bankName) {
 		return _arrays.get(bankName);
 	}
+	
+	/**
+	 * Notify the data containers of a new event
+	 *
+	 * @param event the new event they should use to update themselves.
+	 *
+	 */
+	public void notifyListeners(DataEvent event) {
+
+		if (_listeners != null) {
+
+			// Guaranteed to return a non-null array
+			Object[] listeners = _listeners.getListenerList();
+
+			// This weird loop is the bullet proof way of notifying all
+			// listeners.
+			for (int i = listeners.length - 2; i >= 0; i -= 2) {
+				if (listeners[i] == IDataContainer.class) {
+					((IDataContainer) listeners[i + 1]).update(event);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Notify the data containers to clear their data
+	 *
+	 */
+	public void notifyListeners() {
+
+		if (_listeners != null) {
+
+			// Guaranteed to return a non-null array
+			Object[] listeners = _listeners.getListenerList();
+
+			// This weird loop is the bullet proof way of notifying all
+			// listeners.
+			for (int i = listeners.length - 2; i >= 0; i -= 2) {
+				if (listeners[i] == IDataContainer.class) {
+					((IDataContainer) listeners[i + 1]).clear();
+				}
+			}
+		}
+	}
+
+
+	
+	/**
+	 * Add an data container listener.
+	 *
+	 * @param listener the data container listener to add.
+	 */
+	public void addDataContainerListener(IDataContainer listener) {
+
+		if (listener == null) {
+			return;
+		}
+
+		if (_listeners == null) {
+			_listeners = new EventListenerList();
+		}
+
+		_listeners.add(IDataContainer.class, listener);
+	}
+	
 
 	/**
 	 * Put the arrays for the given bank name into the cache
@@ -298,16 +372,20 @@ public class DataWarehouse implements IClasIoEventListener {
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		clearCache();
+		notifyListeners(); //clear previous data
+		notifyListeners(event);
 	}
 
 	@Override
 	public void openedNewEventFile(String path) {
 		clearCache();
+		notifyListeners();
 	}
 
 	@Override
 	public void changedEventSource(EventSourceType source) {
 		clearCache();
+		notifyListeners();
 	}
 
 }
