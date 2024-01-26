@@ -8,12 +8,10 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 import org.jlab.geom.prim.Point3D;
-import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
@@ -25,7 +23,6 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayArray;
 import cnuphys.ced.component.DisplayBits;
@@ -94,6 +91,14 @@ public class ECView extends HexView {
 	 */
 	public boolean displayInner() {
 		return checkBooleanProperty(DisplayArray.SHOWINNER_PROPERTY);
+	}
+	
+	/**
+	 * Get the plane being displayed (0, 1) for (inner, outer)
+	 * @return the plane being displayed
+	 */
+	public int getDisplayPlane() {
+		return displayInner() ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
 	}
 
 	// add the control panel
@@ -216,22 +221,6 @@ public class ECView extends HexView {
 		_recDrawer.feedback(container, pp, wp, feedbackStrings);
 
 	}
-
-	// /**
-	// * Convert the sector xy coordinates to IJK
-	// * @param sectorXY sector xy coordinates
-	// * @param pijk ijk coordinates
-	// */
-	// public void sectorXYToIJK(Point2D.Double sectorXY, PointIJK pijk) {
-	// boolean inner = displayInner();
-	//
-	// double r0[] = inner ? ECGeometry.getR0(0) : ECGeometry.getR0(1);
-	//
-	// pijk.k = inner ? 0 : ECGeometry.getDeltaK();
-	// pijk.j = sectorXY.y;
-	// pijk.i = sectorXY.x - r0[0];
-	//
-	// }
 
 	/**
 	 * Convert ijk coordinates to sector xyz

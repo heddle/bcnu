@@ -168,6 +168,10 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			break;
 
 		}
+		
+		if ((component == null) || (button == null)) {
+			return null;
+		}
 
 		Dimension dim = new Dimension(w, h);
 		component.setPreferredSize(dim);

@@ -10,7 +10,6 @@ public interface IDataContainer extends EventListener {
 	//color for zero adc value
 	public static final Color ADCZERO = new Color(230, 230, 230, 64);
 
-	
 	/**
 	 * Clear the data
 	 */
@@ -35,4 +34,17 @@ public interface IDataContainer extends EventListener {
 	 * @return the color for the adc value
 	 */
 	public Color getADCColor(int adc);
+	
+	/** 
+	 * Get the count of clusters, from a clusters bank
+	 * @return the count of raw data
+	 */
+	public int clusterCount();
+	
+	/** 
+	 * Get the count of a rec bank, as appropriate
+	 * @return the count of rec data
+	 */
+	public int recCount();
+
 }

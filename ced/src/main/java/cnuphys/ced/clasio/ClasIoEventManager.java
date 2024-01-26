@@ -384,8 +384,7 @@ public class ClasIoEventManager {
 
 		reset();
 
-		// TODO check if I need to skip the first event
-
+		// auto go to first event
 		try {
 			getNextEvent();
 		} catch (Exception e) {

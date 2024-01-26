@@ -66,7 +66,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 		super.drawItem(g, container);
 
-		int plane = getPlane(); // 0 or 1 for inner or outer
+		int plane = _ecView.getDisplayPlane(); // 0 or 1 for inner or outer
 
 		for (int stripType = 0; stripType < 3; stripType++) {
 			if (_ecView.showView(stripType)) {
@@ -96,14 +96,6 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	}
 	
-	/**
-	 * Get the plane being displayed (0, 1) for (inner, outer)
-	 * @return the plane being displayed
-	 */
-	public int getPlane() {
-		boolean inner = _ecView.displayInner();
-		return inner ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
-	}
 
 	// draw strip outlines
 	private void drawOutlines(Graphics g, IContainer container, int plane, Color color) {
@@ -138,14 +130,14 @@ public class ECHexSectorItem extends HexSectorItem {
 		}
 	}
 
-	//is this for this sector and ECAL, not PCAL
-	private boolean isThisEC(byte sector, byte layer) {
-		return (sector == getSector()) && (layer > 3);
-	}
 
 	// draw single event hit
 	private void drawSingleEvent(Graphics g, IContainer container, int plane) {
-		
+		drawRawData(g, container, plane);
+		drawRecBank(g, container, plane);
+	}
+	
+	private void drawRawData(Graphics g, IContainer container, int plane) {
 		//use the adc values
 		for (int i = 0; i < _ecData.rawCount(); i++) {
 			if (_sector == _ecData.sector.get(i)) {
@@ -177,8 +169,21 @@ public class ECHexSectorItem extends HexSectorItem {
 				}
 			}
 		}
-
 	}
+	
+	private void drawRecBank(Graphics g, IContainer container, int plane) {
+		//use the adc values
+		for (int i = 0; i < _ecData.recCount(); i++) {
+			if (_sector == _ecData.recSector.get(i)) {
+				if (plane == _ecData.recPlane.get(i)) {
+					if (_ecView.showView(_ecData.view.get(i))) {
+					}
+				}
+			}
+		}
+	}
+
+	
 
 	// draw accumulated hits
 	private void drawAccumulatedHits(Graphics g, IContainer container, int plane) {
