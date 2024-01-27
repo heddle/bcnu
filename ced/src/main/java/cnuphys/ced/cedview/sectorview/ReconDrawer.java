@@ -12,8 +12,9 @@ import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
+import cnuphys.ced.alldata.datacontainer.cal.ECalReconData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalReconData;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.DC;
@@ -21,13 +22,12 @@ import cnuphys.ced.event.data.DCCluster;
 import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.event.data.lists.ClusterList;
 import cnuphys.ced.event.data.lists.DCClusterList;
 import cnuphys.ced.event.data.lists.DCReconHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.frame.CedColors;
-import cnuphys.lund.LundId;
+import cnuphys.ced.geometry.ECGeometry;
 
 public class ReconDrawer extends SectorViewDrawer {
 
@@ -100,57 +100,82 @@ public class ReconDrawer extends SectorViewDrawer {
 
 	// draw data from the REC::Calorimeter bank
 	private void drawRecCal(Graphics g, IContainer container) {
-
-		RECCalorimeter recCal = RECCalorimeter.getInstance();
-		if (recCal.isEmpty()) {
-			return;
-		}
+		
+		ECalReconData ecRecData = ECalReconData.getInstance();
+		PCalReconData pcalRecData = PCalReconData.getInstance();
 
 
 		Point pp = new Point();
 		Point2D.Double wp = new Point2D.Double();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
+		
+		//draw ECAL
+		for (int i = 0; i < ecRecData.count(); i++) {
+			if (_view.containsSector(ecRecData.sector.get(i))) {
 
+				float x = ecRecData.x.get(i);
+				float y = ecRecData.y.get(i);
+				float z = ecRecData.z.get(i);
+				
+                _view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+                container.worldToLocal(pp, wp);
+                DataDrawSupport.drawECALRec(g, pp, false);
 
-		for (int i = 0; i < recCal.count; i++) {
-			if (_view.containsSector(recCal.sector[i])) {
-
-				_view.projectClasToWorld(recCal.x[i], recCal.y[i], recCal.z[i], _view.getProjectionPlane(), wp);
-				container.worldToLocal(pp, wp);
-				DataDrawSupport.drawECALRec(g, pp, false);
-
-				double r = Math.sqrt(recCal.x[i]*recCal.x[i] + recCal.y[i]*recCal.y[i] + recCal.z[i]*recCal.z[i]);
-				double theta = Math.toDegrees(Math.acos(recCal.z[i]/r));
-				double phi = Math.toDegrees(Math.atan2(recCal.y[i], recCal.x[i]));
-
-
-				float radius = recCal.getRadius(recCal.energy[i]);
-				if (radius > 0) {
+                double r = Math.sqrt(x*x + y*y + z*z);
+                double theta = Math.toDegrees(Math.acos(z/r));
+                double phi = Math.toDegrees(Math.atan2(y, x));
+                
+                float radius = ecRecData.getRadius(ecRecData.energy.get(i));
+                if (radius > 0) {
 					container.localToWorld(pp, wp);
 					wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-
-					LundId lid = recCal.getLundId(i);
-
-
-					if (recCal.layer[i] < 4) { // pcal
-						Color color = (lid == null) ? CedColors.RECPcalFill : lid.getStyle().getTransparentFillColor();
-						WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
-					} else {
-						Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-						WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
-					}
-				}
-
+					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);            	
+                }
+                
 				_fbData.add(new FBData(pp,
-						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", recCal.x[i], recCal.y[i],
-								recCal.z[i]),
+						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
 						String.format("$magenta$REC %s (%-6.3f, %-6.3f, %-6.3f)", CedView.rThetaPhi, r, theta, phi),
-						String.format("$magenta$REC layer %d", recCal.layer[i]),
-						String.format("$magenta$%s", recCal.getPIDStr(i)),
-						String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[i])));
+						String.format("$magenta$REC plane %s", ECGeometry.PLANE_NAMES[ecRecData.plane.get(i)]),
+						String.format("$magenta$REC view %s", ECGeometry.VIEW_NAMES[ecRecData.view.get(i)]),
+						String.format("$magenta$%s", ecRecData.getPIDStr(i)),
+						String.format("$magenta$REC Energy %-7.4f GeV", ecRecData.energy.get(i))));
 
 			}
 		} //for i
+		
+		//draw PCAL
+		for (int i = 0; i < pcalRecData.count(); i++) {
+			if (_view.containsSector(pcalRecData.sector.get(i))) {
+
+				float x = pcalRecData.x.get(i);
+				float y = pcalRecData.y.get(i);
+				float z = pcalRecData.z.get(i);
+				
+                _view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+                container.worldToLocal(pp, wp);
+                DataDrawSupport.drawECALRec(g, pp, false);
+
+                double r = Math.sqrt(x*x + y*y + z*z);
+                double theta = Math.toDegrees(Math.acos(z/r));
+                double phi = Math.toDegrees(Math.atan2(y, x));
+                
+                float radius = pcalRecData.getRadius(pcalRecData.energy.get(i));
+                if (radius > 0) {
+					container.localToWorld(pp, wp);
+					wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
+					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);            	
+                }
+                
+				_fbData.add(new FBData(pp,
+						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
+						String.format("$magenta$REC %s (%-6.3f, %-6.3f, %-6.3f)", CedView.rThetaPhi, r, theta, phi),
+						String.format("$magenta$REC view %s", ECGeometry.VIEW_NAMES[pcalRecData.view.get(i)]),
+						String.format("$magenta$%s", pcalRecData.getPIDStr(i)),
+						String.format("$magenta$REC Energy %-7.4f GeV", pcalRecData.energy.get(i))));
+
+			}
+		} //for i
+
 
 	}
 

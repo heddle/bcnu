@@ -159,6 +159,7 @@ public class ClasIoEventManager {
 			if (_currentEvent != null) {
 
 				if (isAccumulating()) {
+					DataWarehouse.getInstance().newClasIoEvent(_currentEvent);
 					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
 				} 
 				else if (isScanning()) {

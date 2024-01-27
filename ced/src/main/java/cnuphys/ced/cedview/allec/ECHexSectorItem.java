@@ -11,8 +11,7 @@ import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
-import cnuphys.ced.alldata.datacontainer.ECalData;
+import cnuphys.ced.alldata.datacontainer.cal.ECalRawData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -37,8 +36,8 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
 	
-	//the EC data container
-	private static ECalData _ecData = ECalData.getInstance();
+	//the EC raw data container
+	private static ECalRawData _ecRawData = ECalRawData.getInstance();
 
 	/**
 	 * Get a hex sector item
@@ -134,56 +133,42 @@ public class ECHexSectorItem extends HexSectorItem {
 	// draw single event hit
 	private void drawSingleEvent(Graphics g, IContainer container, int plane) {
 		drawRawData(g, container, plane);
-		drawRecBank(g, container, plane);
 	}
 	
 	private void drawRawData(Graphics g, IContainer container, int plane) {
 		//use the adc values
-		for (int i = 0; i < _ecData.rawCount(); i++) {
-			if (_sector == _ecData.sector.get(i)) {
-				if (plane == _ecData.plane.get(i)) {
-					if (_ecView.showView(_ecData.view.get(i))) {
-						int strip0 = _ecData.strip.get(i) - 1;
-						Polygon poly = stripPolygon(container, plane, _ecData.view.get(i), strip0);
-						
-						g.setColor(_ecData.getADCColor(_ecData.adc.get(i)));
+		
+		for (int i = 0; i < _ecRawData.count(); i++) {
+			if (_sector == _ecRawData.sector.get(i)) {
+				if (plane == _ecRawData.plane.get(i)) {
+					if (_ecView.showView(_ecRawData.view.get(i))) {
+						int strip0 = _ecRawData.strip.get(i) - 1;
+						Polygon poly = stripPolygon(container, plane, _ecRawData.view.get(i), strip0);
+
+						g.setColor(_ecRawData.getADCColor(_ecRawData.adc.get(i)));
 						g.fillPolygon(poly);
-						
+
 						g.setColor(Color.black);
 						g.drawPolygon(poly);
-						
-						//extension
-						
-						int adcmax = Math.max(1, _ecData.maxADC);
-						double fract = ((double) _ecData.adc.get(i)/ (double) adcmax);
-						fract = Math.max(0.15, Math.min(1.0, fract));
 
-						poly = extensionPolygon(container, plane, _ecData.view.get(i), strip0, fract);
-						g.setColor(Color.yellow);
-						g.fillPolygon(poly);
-						g.setColor(X11Colors.getX11Color("dark red"));
-						g.drawPolygon(poly);
+						// extension
+						if (_ecRawData.adc.get(i) > 0) {
+							int adcmax = Math.max(1, _ecRawData.maxADC);
+							double fract = ((double) _ecRawData.adc.get(i) / (double) adcmax);
+							fract = Math.max(0.15, Math.min(1.0, fract));
 
+							poly = extensionPolygon(container, plane, _ecRawData.view.get(i), strip0, fract);
+							g.setColor(Color.yellow);
+							g.fillPolygon(poly);
+							g.setColor(X11Colors.getX11Color("dark red"));
+							g.drawPolygon(poly);
+						}
 
 					}
 				}
 			}
 		}
 	}
-	
-	private void drawRecBank(Graphics g, IContainer container, int plane) {
-		//use the adc values
-		for (int i = 0; i < _ecData.recCount(); i++) {
-			if (_sector == _ecData.recSector.get(i)) {
-				if (plane == _ecData.recPlane.get(i)) {
-					if (_ecView.showView(_ecData.view.get(i))) {
-					}
-				}
-			}
-		}
-	}
-
-	
 
 	// draw accumulated hits
 	private void drawAccumulatedHits(Graphics g, IContainer container, int plane) {

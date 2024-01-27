@@ -5,11 +5,9 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.bCNU.log.Log;
-import cnuphys.ced.event.data.AdcECALHit;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.alldata.datacontainer.cal.ECalRawData;
 import cnuphys.ced.geometry.ECGeometry;
+import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.X11Colors;
 
 public class ECViewPlane3D extends DetectorItem3D {
@@ -17,8 +15,8 @@ public class ECViewPlane3D extends DetectorItem3D {
 	// sector is 1..6
 	private final int _sector;
 
-	// [1,2] for inner/outer like geometry "superlayer"
-	private final int _stack;
+	// [1,2] for inner/outer 
+	private final int _plane;
 
 	// [1, 2, 3] for [u, v, w] like geometry "layer+1"
 	private final int _view;
@@ -29,7 +27,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 	public ECViewPlane3D(PlainPanel3D panel3D, int sector, int stack, int view) {
 		super(panel3D);
 		_sector = sector;
-		_stack = stack;
+		_plane = stack;
 		_view = view;
 		_coords = new float[9];
 		ECGeometry.getViewTriangle(sector, stack, view, _coords);
@@ -39,7 +37,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 	public void drawShape(GLAutoDrawable drawable) {
 
 		Color color = null;
-		if (_stack == 1) {
+		if (_plane == 1) {
 			color = X11Colors.getX11Color("tan", getVolumeAlpha());
 		} else {
 			color = X11Colors.getX11Color("Light Green", getVolumeAlpha());
@@ -47,11 +45,6 @@ public class ECViewPlane3D extends DetectorItem3D {
 
 		Support3D.drawTriangles(drawable, _coords, color, 1f, true);
 
-		// float coords[] = new float[24];
-		// for (int strip = 1; strip <= 36; strip++) {
-		// ECGeometry.getStrip(_sector, _stack, _view, strip, coords);
-		// drawStrip(drawable, outlineColor, coords);
-		// }
 	}
 
 	// draw a single strip
@@ -68,39 +61,28 @@ public class ECViewPlane3D extends DetectorItem3D {
 
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
+		
+		ECalRawData ecRawData = ECalRawData.getInstance();
+		int count = ecRawData.count();
+		if (count == 0) {
+			return;
+		}
 
-		AdcECALHitList hits = AllEC.getInstance().getHits();
-		if ((hits != null) && !hits.isEmpty()) {
+		float coords[] = new float[24];
 
-			float coords[] = new float[24];
-
-			for (AdcECALHit hit : hits) {
-				if (hit != null) {
-					try {
-						if (hit.layer > 3) {
-							int layer = hit.layer - 4; // 0..5
-
-							int stack = 1 + layer / 3; // 111/222 for inner outer
-							int view = 1 + (layer % 3); // 123123 for uvwuvw
-
-							if ((_sector == hit.sector) && (_view == view) && (_stack == stack)) {
-								int strip = hit.component;
-
-								Color color = hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc());
-
-								ECGeometry.getStrip(_sector, _stack, _view, strip, coords);
-								drawStrip(drawable, color, coords);
-							}
-						}
-					} catch (Exception e) {
-						Log.getInstance().exception(e);
+		for (int i = 0; i < count; i++) {
+			if (ecRawData.sector.get(i) == _sector) {
+				if (ecRawData.plane.get(i) == (_plane - 1)) {
+					if (ecRawData.view.get(i) == (_view - 1)) {
+						int adc = ecRawData.adc.get(i);
+						int strip = ecRawData.strip.get(i);
+						Color color = ecRawData.getADCColor(adc);
+						PCALGeometry.getStrip(_sector, _view, strip, coords);
+						drawStrip(drawable, color, coords);
 					}
-				} // hit not null
-			} // hit loop
-		} // have hits
-
-
-
+				}
+			}
+		}
 	}
 
 	// show ECs?

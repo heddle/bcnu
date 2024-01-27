@@ -9,6 +9,8 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.cal.ECalRawData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalRawData;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
@@ -160,9 +162,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_FTOF1BAccumulatedData = new int[6][FTOFGeometry.numPaddles[1]];
 		_FTOF2AccumulatedData = new int[6][FTOFGeometry.numPaddles[2]];
 
-		// ec and pcal storage
+		// ec and pcal storage  sector, stack (inner, outer), view (uvw), strip
 		_ECALAccumulatedData = new int[6][2][3][36];
 
+		// PCAL [sector, view (uvw), strip]
 		_PCALAccumulatedData = new int[6][3][];
 		for (int sect0 = 0; sect0 < 6; sect0++) {
 			for (int view0 = 0; view0 < 3; view0++) {
@@ -646,9 +649,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		// ftof data
 		accumFTOF();
 
-		// all ec
-		AdcECALHitList allEClist = AllEC.getInstance().updateAdcList();
-		accumAllEC(allEClist);
+		// ecal
+		accumECal();
+		
+		//pcal		
+		accumPCal();
 
 		// BST
 		AdcList bstList = BST.getInstance().updateAdcList();
@@ -767,40 +772,36 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			}
 		} // end has data
 	}
+	
+	// accumulate ecal data
+	private void accumECal() {
 
-	// accumulate all ec
-	private void accumAllEC(AdcECALHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
-
-		for (AdcECALHit hit : list) {
-			if (hit != null) {
-				try {
-					int sect0 = hit.sector - 1;
-					int layer = hit.layer;
-					int strip0 = hit.component - 1;
-
-					if (layer < 4) { // pcal
-						int view0 = layer - 1;
-						_PCALAccumulatedData[sect0][view0][strip0] += 1;
-					} else { // ec
-						layer -= 4; // convert to 0..5
-						int stack0 = layer / 3; // 000,111
-						int view0 = layer % 3; // 012012
-
-						_ECALAccumulatedData[sect0][stack0][view0][strip0] += 1;
-
-					}
-
-				} catch (ArrayIndexOutOfBoundsException e) {
-					e.printStackTrace();
-					Log.getInstance().warning("In accumulation, ECAL hit has bad indices: " + hit);
-				}
+		ECalRawData ecRawData = ECalRawData.getInstance();
+		for (int i = 0; i < ecRawData.count(); i++) {
+			if (ecRawData.adc.get(i) > 0) {
+				int sect0 = ecRawData.sector.get(i) - 1;
+				int plane0 = ecRawData.plane.get(i); // already zero based
+				int view0 = ecRawData.view.get(i); // already zero based
+				int strip0 = ecRawData.strip.get(i) - 1;
+				_ECALAccumulatedData[sect0][plane0][view0][strip0] += 1;
 			}
-
 		}
+	}
 
+
+	// accumulate pcal data
+	private void accumPCal() {
+		
+		PCalRawData pcRawData = PCalRawData.getInstance();
+
+		for (int i = 0; i < pcRawData.count(); i++) {
+			if (pcRawData.adc.get(i) > 0) {
+				int sect0 = pcRawData.sector.get(i) - 1;
+				int view0 = pcRawData.view.get(i); // already zero based
+				int strip0 = pcRawData.strip.get(i) - 1;
+				_PCALAccumulatedData[sect0][view0][strip0] += 1;
+			}
+		}
 	}
 
 	// accumulate dc data

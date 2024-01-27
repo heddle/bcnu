@@ -14,7 +14,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
-import cnuphys.ced.alldata.datacontainer.ECalData;
+import cnuphys.ced.alldata.datacontainer.cal.ECalReconData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.frame.CedColors;
@@ -30,7 +30,7 @@ import cnuphys.lund.LundId;
 public class ECRecDrawer extends ECViewDrawer {
 	
 	//the EC data container
-	private static ECalData _ecData = ECalData.getInstance();
+	private static ECalReconData _ecReconData = ECalReconData.getInstance();
 
 	// the current event
 	private DataEvent _currentEvent;
@@ -64,7 +64,7 @@ public class ECRecDrawer extends ECViewDrawer {
 			return;
 		}
 
-		for (int index = 0; index < _ecData.recCount(); index++) {
+		for (int index = 0; index < _ecReconData.count(); index++) {
 			drawRecCal(g, container, index, false);
 		}
 
@@ -84,13 +84,13 @@ public class ECRecDrawer extends ECViewDrawer {
 		Point2D.Double wp = new Point2D.Double();
 
 
-		int plane = _ecData.recPlane.get(index);
+		int plane = _ecReconData.plane.get(index);
 		if (plane != _view.getDisplayPlane()) {
 			return;
 		}
-		float x = _ecData.recX.get(index);
-		float y = _ecData.recY.get(index);
-		float z = _ecData.recZ.get(index);
+		float x = _ecReconData.x.get(index);
+		float y = _ecReconData.y.get(index);
+		float z = _ecReconData.z.get(index);
 
 		Point3D clasP = new Point3D(x, y, z);
 		Point3D localP = new Point3D();
@@ -99,30 +99,25 @@ public class ECRecDrawer extends ECViewDrawer {
 		localP.setZ(0);
 
 		// get the right item
-		_view.getHexSectorItem(_ecData.recSector.get(index)).ijkToScreen(container, localP, pp);
+		_view.getHexSectorItem(_ecReconData.sector.get(index)).ijkToScreen(container, localP, pp);
 
 		DataDrawSupport.drawECALRec(g, pp, highlight);
 
-		float radius = _ecData.getRadius(_ecData.recEnergy.get(index));
+		float radius = _ecReconData.getRadius(_ecReconData.energy.get(index));
 		if (radius > 0) {
 			container.localToWorld(pp, wp);
 			wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-
-			LundId lid = _ecData.getLundId(index);
-			Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-
-
-			WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, highlight ? Color.red : null);
+			WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, highlight ? Color.red : null);
 		}
 
 
 		_fbData.add(new FBData(pp,
 				String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
-				String.format("$magenta$REC sector: %d", _ecData.recSector.get(index)),
-				String.format("$magenta$REC plane %s", ECGeometry.PLANE_NAMES[_ecData.recPlane.get(index)]),
-				String.format("$magenta$REC view %s", ECGeometry.STACK_NAMES[_ecData.recView.get(index)]),
-				String.format("$magenta$%s", _ecData.getPIDStr(index)),
-				String.format("$magenta$REC Energy %-7.4f", _ecData.recEnergy.get(index))));
+				String.format("$magenta$REC sector: %d", _ecReconData.sector.get(index)),
+				String.format("$magenta$REC plane %s", ECGeometry.PLANE_NAMES[_ecReconData.plane.get(index)]),
+				String.format("$magenta$REC view %s", ECGeometry.VIEW_NAMES[_ecReconData.view.get(index)]),
+				String.format("$magenta$%s", _ecReconData.getPIDStr(index)),
+				String.format("$magenta$REC Energy %-7.4f", _ecReconData.energy.get(index))));
 
 	}
 

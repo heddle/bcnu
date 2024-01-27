@@ -34,10 +34,10 @@ public class ECGeometry {
 	public static final int EC_W = 2;
 
 	// ** stack names names */
-	public static final String STACK_NAMES[] = { "Inner", "Outer" };
+	public static final String PLANE_NAMES[] = { "Inner", "Outer" };
 
 	// ** plane or "view" names */
-	public static final String PLANE_NAMES[] = { "U", "V", "W" };
+	public static final String VIEW_NAMES[] = { "U", "V", "W" };
 
 	/** there are 36 strips for u, v and w */
 	public static final int EC_NUMSTRIP = 36;
@@ -54,7 +54,7 @@ public class ECGeometry {
 	public static final int ECAL_OUT_W = 9;
 
 	public static final String layerNames[] = { "???", "PCAL_U", "PCAL_V", "PCAL_W", "ECAL_IN_U", "ECAL_IN_V",
-			"ECAL_IN_W", "ECAL_OUT_U", "ECAL_OUT_V", "ECAL_OUTW" };
+			"ECAL_IN_W", "ECAL_OUT_U", "ECAL_OUT_V", "ECAL_OUT_W" };
 
 
 	public static double TRI_XMIN;

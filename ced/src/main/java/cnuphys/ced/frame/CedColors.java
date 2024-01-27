@@ -85,8 +85,6 @@ public class CedColors {
 	public static final Color CVTP1_COLOR = X11Colors.getX11Color("coral");
 
 	//REC::Calorimeter
-	public static final Color RECEcalFill = new Color(255, 0, 0, 48);
-	public static final Color RECPcalFill = new Color(196, 64, 0, 48);
-
+	public static final Color RECCalFill = new Color(255, 0, 0, 64);
 
 }
