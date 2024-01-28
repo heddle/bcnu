@@ -13,11 +13,9 @@ import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
+import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcECALHit;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.X11Colors;
@@ -31,9 +29,9 @@ public class SectorPCALItem extends PolygonItem {
 	private SectorView _view;
 
 	// should be PCALGeometry.PCAL_U, PCAL_V, or PCAL_W
-	private int _stripType; // 0,1,2
+	private int _viewType; // 0,1,2
 
-	private static final String _stripNames[] = { "U", "V", "W" };
+	private static final String _pcalViews[] = { "U", "V", "W" };
 	private static final Color _pcalFill = X11Colors.getX11Color("mint cream");
 	private static final Color _pcalLine = new Color(140, 140, 140);
 
@@ -51,9 +49,9 @@ public class SectorPCALItem extends PolygonItem {
 
 		setRightClickable(false);
 		_sector = sector;
-		_stripType = stripIndex;
+		_viewType = stripIndex;
 
-		_name = "PCAL " + _stripNames[stripIndex] + " sector " + _sector;
+		_name = "PCAL " + _pcalViews[stripIndex] + " sector " + _sector;
 
 		_style.setFillColor(_pcalFill);
 		_style.setLineColor(_pcalLine);
@@ -70,14 +68,12 @@ public class SectorPCALItem extends PolygonItem {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
-		// TODO use dirty. If the item is not dirty, should be able to draw
-		// the _lastDrawnPolygon directly;
 
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
 
-		Point2D.Double path[] = getShell(_view, _stripType, _sector);
+		Point2D.Double path[] = getShell(_view, _viewType, _sector);
 
 		if (path == null) {
 			return;
@@ -85,7 +81,7 @@ public class SectorPCALItem extends PolygonItem {
 
 		setPath(path);
 
-		for (int stripIndex = 0; stripIndex < PCALGeometry.PCAL_NUMSTRIP[_stripType]; stripIndex++) {
+		for (int stripIndex = 0; stripIndex < PCALGeometry.PCAL_NUMSTRIP[_viewType]; stripIndex++) {
 			Point2D.Double wp[] = getStrip(stripIndex);
 
 			if (wp != null) {
@@ -96,14 +92,9 @@ public class SectorPCALItem extends PolygonItem {
 			}
 		}
 
-		// hits
-		drawHits(g, container);
+		// draw ADC data
+		drawADCData(g, container);
 
-	}
-
-	@Override
-	public boolean shouldDraw(Graphics g, IContainer container) {
-		return true;
 	}
 
 
@@ -111,15 +102,15 @@ public class SectorPCALItem extends PolygonItem {
 	 * Get a strip outline
 	 *
 	 * @param stripIndex the 0-based index
-	 * @return
+	 * @return the strip outline
 	 */
 	private Point2D.Double[] getStrip(int stripId) {
 
-		if (!PCALGeometry.doesProjectedPolyFullyIntersect(_stripType, stripId, _view.getProjectionPlane())) {
+		if (!PCALGeometry.doesProjectedPolyFullyIntersect(_viewType, stripId, _view.getProjectionPlane())) {
 			return null;
 		}
 
-		Point2D.Double wp[] = PCALGeometry.getIntersections(_stripType, stripId, _view.getProjectionPlane(), true);
+		Point2D.Double wp[] = PCALGeometry.getIntersections(_viewType, stripId, _view.getProjectionPlane(), true);
 
 		if (wp == null) {
 			return null;
@@ -136,42 +127,31 @@ public class SectorPCALItem extends PolygonItem {
 	}
 
 	// draw any hits
-	private void drawHits(Graphics g, IContainer container) {
+	private void drawADCData(Graphics g, IContainer container) {
 
 		if (_view.isSingleEventMode()) {
-			drawSingleEventHits(g, container);
+			drawSingleEventADC(g, container);
 		} else {
 			drawAccumulatedHits(g, container);
 		}
 	}
 
 	// single event drawer
-	private void drawSingleEventHits(Graphics g, IContainer container) {
+	private void drawSingleEventADC(Graphics g, IContainer container) {
+		
+		PCalADCData pcalData = PCalADCData.getInstance();
+		for (int i = 0; i < pcalData.count(); i++) {
+			byte sector = pcalData.sector.get(i);
+			byte view = pcalData.view.get(i);
+			
+			if ((sector == _sector) &&  (view == _viewType)) {
+				int strip0 = pcalData.strip.get(i) - 1;
+				Point2D.Double wp[] = getStrip(strip0);
 
-		AdcECALHitList hits = AllEC.getInstance().getHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcECALHit hit : hits) {
-				if (hit != null) {
-
-					try {
-						if ((hit.sector == _sector) && (hit.layer == (_stripType + 1))) {
-							int strip0 = hit.component - 1;
-
-							Point2D.Double wp[] = getStrip(strip0);
-
-							if (wp != null) {
-								Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
-								Color fc = hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc());
-								WorldGraphicsUtilities.drawPath2D(g, container, path, fc, fc, 0, LineStyle.SOLID, true);
-							}
-
-						}
-					} catch (Exception e) {
-						Log.getInstance().exception(e);
-					}
-				} // hit not null
-				else {
-					Log.getInstance().warning("[SectorPCalItem] null hit in ECAll hit list");
+				if (wp != null) {
+					Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
+					Color fc = pcalData.getADCColor(pcalData.adc.get(i));
+					WorldGraphicsUtilities.drawPath2D(g, container, path, fc, fc, 0, LineStyle.SOLID, true);
 				}
 			}
 		}
@@ -183,8 +163,8 @@ public class SectorPCALItem extends PolygonItem {
 		int maxHit = AccumulationManager.getInstance().getMaxPCALCount();
 
 		int hits[][][] = AccumulationManager.getInstance().getAccumulatedPCALData();
-		for (int strip0 = 0; strip0 < _stripCounts[_stripType]; strip0++) {
-			int hitCount = hits[_sector - 1][_stripType][strip0];
+		for (int strip0 = 0; strip0 < _stripCounts[_viewType]; strip0++) {
+			int hitCount = hits[_sector - 1][_viewType][strip0];
 			double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 
 			Point2D.Double wp[] = getStrip(strip0);
@@ -244,29 +224,34 @@ public class SectorPCALItem extends PolygonItem {
 		}
 
 		// which strip?
-
-		for (int stripId = 0; stripId < PCALGeometry.PCAL_NUMSTRIP[_stripType]; stripId++) {
-			Point2D.Double wp[] = getStrip(stripId);
+		for (int strip0 = 0; strip0 < PCALGeometry.PCAL_NUMSTRIP[_viewType]; strip0++) {
+			Point2D.Double wp[] = getStrip(strip0);
 			if (wp != null) {
 				Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
 
 				if (path.contains(worldPoint)) {
-					feedbackStrings.add("$white$type " + _stripNames[_stripType] + " strip " + (stripId + 1));
+					feedbackStrings.add("$white$view " + _pcalViews[_viewType]
+							+ " strip " + (strip0 + 1));
 
-					// on a hit?
-					AdcECALHitList hits = AllEC.getInstance().getHits();
-					if ((hits != null) && !hits.isEmpty()) {
-						AdcECALHit hit = hits.get(_sector, _stripType + 1, stripId + 1);
-						if (hit != null) {
-							hit.adcFeedback(ECGeometry.layerNames[hit.layer], "strip", feedbackStrings);
+					PCalADCData pcalData = PCalADCData.getInstance();
+					for (int i = 0; i < pcalData.count(); i++) {
+						byte sector = pcalData.sector.get(i);
+						byte view = pcalData.view.get(i);
+						int strip = pcalData.strip.get(i);
+						
+						if ((sector == _sector) && (view == _viewType) && (strip == (strip0+1))) {
+							String str = String.format("%s strip %d adc %d time %-7.3f", 
+									ECGeometry.VIEW_NAMES[view], strip,
+									pcalData.adc.get(i), pcalData.time.get(i));
+							
+							feedbackStrings.add("$coral$" + str);
+
+							break;
 						}
-
 					}
-
 					return;
 				}
 			} // wp != null
-		}
-
-	}
+		} // strip loop
+	} // getFeedbackStrings
 }

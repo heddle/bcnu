@@ -72,7 +72,6 @@ import cnuphys.ced.event.data.AIHBCrosses;
 import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBCrosses;
 import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.BST;
@@ -1100,7 +1099,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		HBSegments.getInstance();
 		AITBSegments.getInstance();
 		AIHBSegments.getInstance();
-		AllEC.getInstance();
 		CVT.getInstance();
 		BST.getInstance();
 		BMT.getInstance();

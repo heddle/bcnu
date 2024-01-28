@@ -15,17 +15,14 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.data.AdcECALHit;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
 import cnuphys.ced.event.data.arrays.adc.CC_ADCArrays;
 import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -651,8 +648,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		// ecal
 		accumECal();
-		
-		//pcal		
+
+		//pcal
 		accumPCal();
 
 		// BST
@@ -704,10 +701,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate rtpc
 		private void accumRTPC() {
-			
+
 			ADCArrays arrays = ADCArrays.getArrays("RTPC::adc");
 
-			
+
 			if (arrays.hasData()) {
 				for (int i = 0; i < arrays.sector.length; i++) {
 					int cm1 = arrays.component[i] - 1;
@@ -772,7 +769,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			}
 		} // end has data
 	}
-	
+
 	// accumulate ecal data
 	private void accumECal() {
 

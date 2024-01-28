@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class ECalADCData extends ACalADCDataContainer {
+public class ECalADCData extends ACalADCData {
 
 	// singleton
 	private static volatile ECalADCData _instance;

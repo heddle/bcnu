@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import cnuphys.ced.event.data.AdcColorScale;
 
-public abstract class ACalADCDataContainer extends ACalDataContainer {
+public abstract class ACalADCData extends ACalData {
 
 	/** 1-based strips */
 	public ArrayList<Short> strip = new ArrayList<>();

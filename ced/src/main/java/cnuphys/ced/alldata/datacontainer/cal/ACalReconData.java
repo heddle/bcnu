@@ -8,7 +8,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
 
-public abstract class ACalReconDataContainer extends ACalDataContainer {
+public abstract class ACalReconData extends ACalData {
 
 	/** the time column for the REC::Calorimeter */
 	public ArrayList<Float> time = new ArrayList<>();

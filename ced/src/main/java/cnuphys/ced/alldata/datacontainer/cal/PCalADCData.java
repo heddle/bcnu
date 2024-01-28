@@ -3,7 +3,7 @@ package cnuphys.ced.alldata.datacontainer.cal;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class PCalADCData extends ACalADCDataContainer {
+public class PCalADCData extends ACalADCData {
 
 	// singleton
 	private static volatile PCalADCData _instance;

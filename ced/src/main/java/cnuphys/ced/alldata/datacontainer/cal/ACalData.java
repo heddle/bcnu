@@ -7,7 +7,7 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
-public abstract class ACalDataContainer implements IDataContainer {
+public abstract class ACalData implements IDataContainer {
 	
 	
 	// the data warehouse
@@ -28,7 +28,7 @@ public abstract class ACalDataContainer implements IDataContainer {
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
      */
-	public ACalDataContainer() {
+	public ACalData() {
 		_dataWarehouse.addDataContainerListener(this);
 	}
 

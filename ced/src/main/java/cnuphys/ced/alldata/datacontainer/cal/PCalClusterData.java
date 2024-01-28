@@ -5,38 +5,27 @@ import java.util.ArrayList;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class ECalReconData extends ACalReconData {
+public class PCalClusterData extends ACalClusterData {
 
 	// singleton
-	private static volatile  ECalReconData _instance;
-	
-
-	/** 0-based planes (0, 1) for (inner, outer) */
-	public ArrayList<Byte> plane = new ArrayList<>();
+	private static volatile  PCalClusterData _instance;
 	
 	/**
 	 * Public access to the singleton
 	 *
 	 * @return the singleton
 	 */
-	public static ECalReconData getInstance() {
+	public static PCalClusterData getInstance() {
 		if (_instance == null) {
-			synchronized (ECalReconData.class) {
+			synchronized (PCalClusterData.class) {
 				if (_instance == null) {
-					_instance = new ECalReconData();
+					_instance = new PCalClusterData();
 				}
 			}
 		}
 		return _instance;
 	}
-
-	@Override
-	public void clear() {
-		super.clear();
-		plane.clear();
-	}
-
-	// update the reconstructed data
+	
 	@Override
 	public void update(DataEvent event) {
 		
@@ -45,12 +34,11 @@ public class ECalReconData extends ACalReconData {
 			return;
 		}
 		
-		DataBank bank = event.getBank("REC::Calorimeter");
+		DataBank bank = event.getBank("ECAL::clusters");
 		if (bank == null) {
 			return;
 		}
-
-
+		
 		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC
@@ -60,17 +48,14 @@ public class ECalReconData extends ACalReconData {
 			float xArray[] = bank.getFloat("x");
 			float yArray[] = bank.getFloat("y");
 			float zArray[] = bank.getFloat("z");
-			short pindexArray[] = bank.getShort("pindex");
-
+	
 			for (int i = 0; i < sectorArray.length; i++) {
 
-				if (layerArray[i] > 3) { // means it is ECAL, not PCAL
-					byte layer = (byte) (layerArray[i] - 4); // 0..5
-					byte plane0 = (byte) (layer / 3); // 0, 1, for inner, outer
+				if (layerArray[i] < 4) { // means it is PCAL, not ECAL
+					byte layer = (byte) (layerArray[i] - 1); // 0..2
 					byte view0 = (byte) (layer % 3); // 0, 1, 2 for U, V, W
 
 					sector.add(sectorArray[i]);
-					plane.add(plane0);
 					view.add(view0);
 					
 					time.add(timeArray[i]);
@@ -78,15 +63,11 @@ public class ECalReconData extends ACalReconData {
 					x.add(xArray[i]);
 					y.add(yArray[i]);
 					z.add(zArray[i]);
-					
-					pIndex.add(pindexArray[i]);
-						
 				}
 			}
-			
-			//get the pids from the REC::Particle bank
-			getPIDArray(event);
-		} // end sectorArray not null
+			ppx = new int[sectorArray.length];
+			ppy = new int[sectorArray.length];
+		} // end sectorArray not null	
 	} // end update
 
 }

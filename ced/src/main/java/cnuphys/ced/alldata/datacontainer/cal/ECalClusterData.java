@@ -5,10 +5,11 @@ import java.util.ArrayList;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class ECalReconData extends ACalReconData {
+public class ECalClusterData extends ACalClusterData {
 
+	
 	// singleton
-	private static volatile  ECalReconData _instance;
+	private static volatile  ECalClusterData _instance;
 	
 
 	/** 0-based planes (0, 1) for (inner, outer) */
@@ -19,11 +20,11 @@ public class ECalReconData extends ACalReconData {
 	 *
 	 * @return the singleton
 	 */
-	public static ECalReconData getInstance() {
+	public static ECalClusterData getInstance() {
 		if (_instance == null) {
-			synchronized (ECalReconData.class) {
+			synchronized (ECalClusterData.class) {
 				if (_instance == null) {
-					_instance = new ECalReconData();
+					_instance = new ECalClusterData();
 				}
 			}
 		}
@@ -36,16 +37,15 @@ public class ECalReconData extends ACalReconData {
 		plane.clear();
 	}
 
-	// update the reconstructed data
 	@Override
 	public void update(DataEvent event) {
 		
-		//don't need recon data if accumulating
+		//don't need cluster data if accumulating
 		if (_eventManager.isAccumulating()) {
 			return;
 		}
 		
-		DataBank bank = event.getBank("REC::Calorimeter");
+		DataBank bank = event.getBank("ECAL::clusters");
 		if (bank == null) {
 			return;
 		}
@@ -60,7 +60,6 @@ public class ECalReconData extends ACalReconData {
 			float xArray[] = bank.getFloat("x");
 			float yArray[] = bank.getFloat("y");
 			float zArray[] = bank.getFloat("z");
-			short pindexArray[] = bank.getShort("pindex");
 
 			for (int i = 0; i < sectorArray.length; i++) {
 
@@ -78,15 +77,11 @@ public class ECalReconData extends ACalReconData {
 					x.add(xArray[i]);
 					y.add(yArray[i]);
 					z.add(zArray[i]);
-					
-					pIndex.add(pindexArray[i]);
-						
 				}
 			}
-			
-			//get the pids from the REC::Particle bank
-			getPIDArray(event);
-		} // end sectorArray not null
+			ppx = new int[sectorArray.length];
+			ppy = new int[sectorArray.length];
+		} // end sectorArray not null	}
+		
 	} // end update
-
 }

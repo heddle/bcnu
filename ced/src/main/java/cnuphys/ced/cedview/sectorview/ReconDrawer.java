@@ -12,11 +12,12 @@ import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
+import cnuphys.ced.alldata.datacontainer.cal.ECalClusterData;
 import cnuphys.ced.alldata.datacontainer.cal.ECalReconData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalClusterData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalReconData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.event.data.AIDC;
-import cnuphys.ced.event.data.AllEC;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCCluster;
 import cnuphys.ced.event.data.DCReconHit;
@@ -198,8 +199,42 @@ public class ReconDrawer extends SectorViewDrawer {
 
 	// draw reconstructed clusters
 	private void drawClusters(Graphics g, IContainer container) {
-		drawClusterList(g, container, AllEC.getInstance().getClusters());
+		drawCalClusters(g, container);
 		drawClusterList(g, container, _dataWarehouse.getClusters("CTOF::clusters"));
+	}
+	
+	//draw calorimeter clusters
+	private void drawCalClusters(Graphics g, IContainer container) {
+
+		Point2D.Double wp = new Point2D.Double();
+		Point pp = new Point();
+
+		//ECal
+		ECalClusterData ecClusterData = ECalClusterData.getInstance();
+		for (int i = 0; i < ecClusterData.count(); i++) {
+			if (_view.containsSector(ecClusterData.sector.get(i))) {
+
+				_view.projectClasToWorld(ecClusterData.x.get(i), ecClusterData.y.get(i), ecClusterData.z.get(i),
+						_view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+				ecClusterData.setLocation(i, pp);
+				DataDrawSupport.drawReconCluster(g, pp);
+			}
+		} // for i
+
+		
+        //PCal
+		PCalClusterData pcalClusterData = PCalClusterData.getInstance();
+		for (int i = 0; i < pcalClusterData.count(); i++) {
+			if (_view.containsSector(pcalClusterData.sector.get(i))) {
+
+				_view.projectClasToWorld(pcalClusterData.x.get(i), pcalClusterData.y.get(i), pcalClusterData.z.get(i),
+						_view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+				pcalClusterData.setLocation(i, pp);
+				DataDrawSupport.drawReconCluster(g, pp);
+			}
+		} // for i
 	}
 
 	// draw reconstructed DC hit Hit based and time based based hits
@@ -218,6 +253,7 @@ public class ReconDrawer extends SectorViewDrawer {
 		}
 	}
 
+	//feedback for clusters
 	private boolean clusterListFeedback(String prefix, ClusterList clusters, Point screenPoint,
 			List<String> feedbackStrings) {
 
@@ -239,6 +275,62 @@ public class ReconDrawer extends SectorViewDrawer {
 		}
 		return false;
 	}
+	
+	//feedback for calorimeter clusters
+	private boolean CalClusterFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
+			List<String> feedbackStrings) {
+		if (_view.showClusters()) {
+			
+			//ECal
+			ECalClusterData ecClusterData = ECalClusterData.getInstance();
+			for (int i = 0; i < ecClusterData.count(); i++) {
+				if (_view.containsSector(ecClusterData.sector.get(i))) {
+					if (ecClusterData.contains(i, screenPoint)) {
+
+						float x = ecClusterData.x.get(i);
+						float y = ecClusterData.y.get(i);
+						float z = ecClusterData.z.get(i);
+
+						feedbackStrings
+								.add(String.format("$magenta$EC cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z));
+						feedbackStrings.add(String.format("$magenta$EC cluster plane %s",
+								ECGeometry.PLANE_NAMES[ecClusterData.plane.get(i)]));
+						feedbackStrings.add(String.format("$magenta$EC cluster view %s",
+								ECGeometry.VIEW_NAMES[ecClusterData.view.get(i)]));
+						feedbackStrings.add(
+								String.format("$magenta$EC cluster Energy %-7.4f GeV", ecClusterData.energy.get(i)));
+
+						return true;
+					}
+				}
+			} // for i
+
+			// PCal
+			PCalClusterData pcalClusterData = PCalClusterData.getInstance();
+			for (int i = 0; i < pcalClusterData.count(); i++) {
+				if (_view.containsSector(pcalClusterData.sector.get(i))) {
+					if (pcalClusterData.contains(i, screenPoint)) {
+
+						float x = pcalClusterData.x.get(i);
+						float y = pcalClusterData.y.get(i);
+						float z = pcalClusterData.z.get(i);
+
+						feedbackStrings
+								.add(String.format("$magenta$PCAL cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z));
+						feedbackStrings.add(String.format("$magenta$PCAL cluster view %s",
+								ECGeometry.VIEW_NAMES[pcalClusterData.view.get(i)]));
+						feedbackStrings.add(String.format("$magenta$PCAL cluster Energy %-7.4f GeV",
+								pcalClusterData.energy.get(i)));
+
+						return true;
+					}
+				}
+			} // for i
+
+		}
+
+		return false;
+	}
 
 	/**
 	 * Use what was drawn to generate feedback strings
@@ -252,10 +344,13 @@ public class ReconDrawer extends SectorViewDrawer {
 	@Override
 	public void vdrawFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings, int option) {
+		
+		if (CalClusterFeedback(container, screenPoint, worldPoint, feedbackStrings)) {
+			return;
+		}
 
 		if (_view.showClusters()) {
-			if (clusterListFeedback("EC", AllEC.getInstance().getClusters(), screenPoint, feedbackStrings)
-					|| clusterListFeedback("FTOF", _dataWarehouse.getClusters("FTOF::clusters"), screenPoint, feedbackStrings)) {
+			if (clusterListFeedback("FTOF", _dataWarehouse.getClusters("FTOF::clusters"), screenPoint, feedbackStrings)) {
 				return;
 			}
 		}
