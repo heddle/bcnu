@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import cnuphys.ced.event.data.AdcColorScale;
 
-public abstract class ACalRawDataContainer extends ACalDataContainer {
+public abstract class ACalADCDataContainer extends ACalDataContainer {
 
 	/** 1-based strips */
 	public ArrayList<Short> strip = new ArrayList<>();
@@ -13,9 +13,6 @@ public abstract class ACalRawDataContainer extends ACalDataContainer {
 	/** adc values */
 	public ArrayList<Integer> adc = new ArrayList<>();
 
-	/** tdc values */
-	public ArrayList<Integer> tdc = new ArrayList<>();
-	
 	/** time values */
 	public ArrayList<Float> time = new ArrayList<>();
 
@@ -28,7 +25,6 @@ public abstract class ACalRawDataContainer extends ACalDataContainer {
 		super.clear();
 		strip.clear();
 		adc.clear();
-		tdc.clear();
 		time.clear();
 	}
 

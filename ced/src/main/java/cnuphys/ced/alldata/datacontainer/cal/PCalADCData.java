@@ -1,22 +1,23 @@
 package cnuphys.ced.alldata.datacontainer.cal;
 
+import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class PCalRawData extends ACalRawDataContainer {
+public class PCalADCData extends ACalADCDataContainer {
 
 	// singleton
-	private static volatile PCalRawData _instance;
+	private static volatile PCalADCData _instance;
 
 	/**
 	 * Public access to the singleton
 	 * 
 	 * @return the singleton
 	 */
-	public static PCalRawData getInstance() {
+	public static PCalADCData getInstance() {
 		if (_instance == null) {
-			synchronized (PCalRawData.class) {
+			synchronized (PCalADCData.class) {
 				if (_instance == null) {
-					_instance = new PCalRawData();
+					_instance = new PCalADCData();
 				}
 			}
 		}
@@ -25,14 +26,20 @@ public class PCalRawData extends ACalRawDataContainer {
 
 	@Override
 	public void update(DataEvent event) {
-		byte[] sectorArray = event.getBank("ECAL::adc").getByte("sector");
+		
+		DataBank bank = event.getBank("ECAL::adc");
+		
+		if (bank == null) {
+			return;
+		}
+		
+		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC
-			byte layerArray[] = event.getBank("ECAL::adc").getByte("layer");
-			short componentArray[] = event.getBank("ECAL::adc").getShort("component");
-			int adcArray[] = event.getBank("ECAL::adc").getInt("ADC");
-			int tdcArray[] = event.getBank("ECAL::tdc").getInt("TDC");
-			float timeArray[] = event.getBank("ECAL::adc").getFloat("time");
+			byte layerArray[] = bank.getByte("layer");
+			short componentArray[] = bank.getShort("component");
+			int adcArray[] = bank.getInt("ADC");
+			float timeArray[] = bank.getFloat("time");
 
 			for (int i = 0; i < sectorArray.length; i++) {
 
@@ -44,9 +51,7 @@ public class PCalRawData extends ACalRawDataContainer {
 					view.add(view0);
 					strip.add(componentArray[i]);
 					adc.add(adcArray[i]);
-					tdc.add(tdcArray[i]);
 					time.add(timeArray[i]);
-
 				}
 
 			} // end loop over sector array

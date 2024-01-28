@@ -11,7 +11,7 @@ import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.ced.alldata.datacontainer.cal.PCalRawData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -32,7 +32,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 	private static int[] _stripCounts = PCALGeometry.PCAL_NUMSTRIP; // u,v,w
 	
 	//the EC data container
-	private static PCalRawData _pcalRawData = PCalRawData.getInstance();
+	private static PCalADCData _pcalADCData = PCalADCData.getInstance();
 
 
 	/**
@@ -82,11 +82,8 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 
 		drawOutlines(g, container, Color.lightGray);
-
-		drawPCALHits(g, container);
-
+		drawPCALData(g, container);
 		drawIJKOrigin(g, container);
-
 	}
 
 	// draw strip outlines
@@ -111,8 +108,8 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 	}
 
-	// draw the hits
-	private void drawPCALHits(Graphics g, IContainer container) {
+	// draw the data
+	private void drawPCALData(Graphics g, IContainer container) {
 		if (_pcalView.isSingleEventMode()) {
 			drawSingleEvent(g, container);
 		} else {
@@ -120,34 +117,34 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 	}
 	
-	// draw single event hit
+	// draw single event data
 	private void drawSingleEvent(Graphics g, IContainer container) {
-		drawRawData(g, container);
+		drawADCData(g, container);
 	}
 
-	// draw single event hit
-	private void drawRawData(Graphics g, IContainer container) {
+	// draw data from adc bank
+	private void drawADCData(Graphics g, IContainer container) {
 
 		// use the adc values
-		for (int i = 0; i < _pcalRawData.count(); i++) {
-			if (_sector == _pcalRawData.sector.get(i)) {
-				if (_pcalView.showView(_pcalRawData.view.get(i))) {
-					int strip0 = _pcalRawData.strip.get(i) - 1;
-					Polygon poly = stripPolygon(container, _pcalRawData.view.get(i), strip0);
+		for (int i = 0; i < _pcalADCData.count(); i++) {
+			if (_sector == _pcalADCData.sector.get(i)) {
+				if (_pcalView.showView(_pcalADCData.view.get(i))) {
+					int strip0 = _pcalADCData.strip.get(i) - 1;
+					Polygon poly = stripPolygon(container, _pcalADCData.view.get(i), strip0);
 
-					g.setColor(_pcalRawData.getADCColor(_pcalRawData.adc.get(i)));
+					g.setColor(_pcalADCData.getADCColor(_pcalADCData.adc.get(i)));
 					g.fillPolygon(poly);
 
 					g.setColor(Color.black);
 					g.drawPolygon(poly);
 
 					// extension
-					if (_pcalRawData.adc.get(i) > 0) {
-						int adcmax = Math.max(1, _pcalRawData.maxADC);
-						double fract = ((double) _pcalRawData.adc.get(i) / (double) adcmax);
+					if (_pcalADCData.adc.get(i) > 0) {
+						int adcmax = Math.max(1, _pcalADCData.maxADC);
+						double fract = ((double) _pcalADCData.adc.get(i) / (double) adcmax);
 						fract = Math.max(0.15, Math.min(1.0, fract));
 
-						poly = extensionPolygon(container, _pcalRawData.view.get(i), strip0, fract);
+						poly = extensionPolygon(container, _pcalADCData.view.get(i), strip0, fract);
 						g.setColor(Color.yellow);
 						g.fillPolygon(poly);
 						g.setColor(X11Colors.getX11Color("dark red"));
@@ -392,21 +389,18 @@ public class PCALHexSectorItem extends HexSectorItem {
 				String uvwStr = "$lime green$U V W [" + uvw[0] + ", " + uvw[1] + ", " + uvw[2] + "]";
 				feedbackStrings.add(uvwStr);
 
-				// any hits?
-				
-				for (int i = 0; i < _pcalRawData.count(); i++) {
-					byte sect = _pcalRawData.sector.get(i);
+				// any hits?		
+				for (int i = 0; i < _pcalADCData.count(); i++) {
+					byte sect = _pcalADCData.sector.get(i);
 					if (sect == getSector()) {
-						byte view = _pcalRawData.view.get(i);
-						short component = _pcalRawData.strip.get(i);
+						byte view = _pcalADCData.view.get(i);
+						short component = _pcalADCData.strip.get(i);
 						if (uvw[view] == component) {
-							String str1 = String.format("sect %d %s strip %d", 
-									sect, ECGeometry.VIEW_NAMES[view], component);
+							String str = String.format("%s strip %d adc %d time %-7.3f", 
+									ECGeometry.VIEW_NAMES[view], component,
+									_pcalADCData.adc.get(i), _pcalADCData.time.get(i));
 							
-							String str2 = String.format("adc %d tdc %d time: %-7.3f",
-									_pcalRawData.adc.get(i), _pcalRawData.tdc.get(i), _pcalRawData.time.get(i));
-							feedbackStrings.add("$coral$" + str1);
-							feedbackStrings.add("$coral$" + str2);
+							feedbackStrings.add("$coral$" + str);
 						}
 					}
 				}

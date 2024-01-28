@@ -1,5 +1,6 @@
 package cnuphys.ced.alldata.datacontainer.cal;
 
+import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 public class PCalReconData extends ACalReconDataContainer {
@@ -31,16 +32,21 @@ public class PCalReconData extends ACalReconDataContainer {
 			return;
 		}
 		
-		byte[] sectorArray = event.getBank("REC::Calorimeter").getByte("sector");
+		DataBank bank = event.getBank("REC::Calorimeter");
+		if (bank == null) {
+			return;
+		}
+		
+		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC
-			byte layerArray[] = event.getBank("REC::Calorimeter").getByte("layer");
-			float timeArray[] = event.getBank("REC::Calorimeter").getFloat("time");
-			float energyArray[] = event.getBank("REC::Calorimeter").getFloat("energy");
-			float xArray[] = event.getBank("REC::Calorimeter").getFloat("x");
-			float yArray[] = event.getBank("REC::Calorimeter").getFloat("y");
-			float zArray[] = event.getBank("REC::Calorimeter").getFloat("z");
-			short pindexArray[] = event.getBank("REC::Calorimeter").getShort("pindex");
+			byte layerArray[] = bank.getByte("layer");
+			float timeArray[] = bank.getFloat("time");
+			float energyArray[] = bank.getFloat("energy");
+			float xArray[] = bank.getFloat("x");
+			float yArray[] = bank.getFloat("y");
+			float zArray[] = bank.getFloat("z");
+			short pindexArray[] = bank.getShort("pindex");
 
 			for (int i = 0; i < sectorArray.length; i++) {
 

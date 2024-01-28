@@ -5,7 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.alldata.datacontainer.cal.ECalRawData;
+import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.lund.X11Colors;
@@ -62,8 +62,9 @@ public class ECViewPlane3D extends DetectorItem3D {
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
 		
-		ECalRawData ecRawData = ECalRawData.getInstance();
-		int count = ecRawData.count();
+		//use ADC data
+		ECalADCData ecADCData = ECalADCData.getInstance();
+		int count = ecADCData.count();
 		if (count == 0) {
 			return;
 		}
@@ -71,12 +72,12 @@ public class ECViewPlane3D extends DetectorItem3D {
 		float coords[] = new float[24];
 
 		for (int i = 0; i < count; i++) {
-			if (ecRawData.sector.get(i) == _sector) {
-				if (ecRawData.plane.get(i) == (_plane - 1)) {
-					if (ecRawData.view.get(i) == (_view - 1)) {
-						int adc = ecRawData.adc.get(i);
-						int strip = ecRawData.strip.get(i);
-						Color color = ecRawData.getADCColor(adc);
+			if (ecADCData.sector.get(i) == _sector) {
+				if (ecADCData.plane.get(i) == (_plane - 1)) {
+					if (ecADCData.view.get(i) == (_view - 1)) {
+						int adc = ecADCData.adc.get(i);
+						int strip = ecADCData.strip.get(i);
+						Color color = ecADCData.getADCColor(adc);
 						PCALGeometry.getStrip(_sector, _view, strip, coords);
 						drawStrip(drawable, color, coords);
 					}

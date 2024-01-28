@@ -6,7 +6,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 
-import cnuphys.ced.alldata.datacontainer.cal.PCalRawData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.geometry.PCALGeometry;
 
 public class PCALViewPlane3D extends DetectorItem3D {
@@ -56,8 +56,9 @@ public class PCALViewPlane3D extends DetectorItem3D {
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
 
-		PCalRawData pcalRawData = PCalRawData.getInstance();
-		int count = pcalRawData.count();
+		//draw adc data
+		PCalADCData pcalADCData = PCalADCData.getInstance();
+		int count = pcalADCData.count();
 		if (count == 0) {
 			return;
 		}
@@ -65,11 +66,11 @@ public class PCALViewPlane3D extends DetectorItem3D {
 		float coords[] = new float[24];
 
 		for (int i = 0; i < count; i++) {
-			if (pcalRawData.sector.get(i) == _sector) {
-				if (pcalRawData.view.get(i) == (_view - 1)) {
-					int adc = pcalRawData.adc.get(i);
-					int strip = pcalRawData.strip.get(i);
-					Color color = pcalRawData.getADCColor(adc);
+			if (pcalADCData.sector.get(i) == _sector) {
+				if (pcalADCData.view.get(i) == (_view - 1)) {
+					int adc = pcalADCData.adc.get(i);
+					int strip = pcalADCData.strip.get(i);
+					Color color = pcalADCData.getADCColor(adc);
 					PCALGeometry.getStrip(_sector, _view, strip, coords);
 					drawStrip(drawable, color, coords);
 				}

@@ -2,12 +2,13 @@ package cnuphys.ced.alldata.datacontainer.cal;
 
 import java.util.ArrayList;
 
+import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class ECalRawData extends ACalRawDataContainer {
+public class ECalADCData extends ACalADCDataContainer {
 
 	// singleton
-	private static volatile ECalRawData _instance;
+	private static volatile ECalADCData _instance;
 	
 
 	/** 0-based planes (0, 1) for (inner, outer) */
@@ -18,11 +19,11 @@ public class ECalRawData extends ACalRawDataContainer {
 	 * 
 	 * @return the singleton
 	 */
-	public static ECalRawData getInstance() {
+	public static ECalADCData getInstance() {
 		if (_instance == null) {
-			synchronized (ECalRawData.class) {
+			synchronized (ECalADCData.class) {
 				if (_instance == null) {
-					_instance = new ECalRawData();
+					_instance = new ECalADCData();
 				}
 			}
 		}
@@ -38,15 +39,19 @@ public class ECalRawData extends ACalRawDataContainer {
 	@Override
 	public void update(DataEvent event) {
 		
-		byte[] sectorArray = event.getBank("ECAL::adc").getByte("sector");
+		DataBank bank = event.getBank("ECAL::adc");
+		
+		if (bank == null) {
+			return;
+		}
+		
+		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC
-			byte layerArray[] = event.getBank("ECAL::adc").getByte("layer");
-			short componentArray[] = event.getBank("ECAL::adc").getShort("component");
-			int adcArray[] = event.getBank("ECAL::adc").getInt("ADC");
-			int tdcArray[] = event.getBank("ECAL::tdc").getInt("TDC");
-			float timeArray[] = event.getBank("ECAL::tdc").getFloat("time");
-			
+			byte layerArray[] = bank.getByte("layer");
+			short componentArray[] = bank.getShort("component");
+			int adcArray[] = bank.getInt("ADC");
+			float timeArray[] = bank.getFloat("time");
 
 			for (int i = 0; i < sectorArray.length; i++) {
 
@@ -60,7 +65,6 @@ public class ECalRawData extends ACalRawDataContainer {
 					view.add(view0);
 					strip.add(componentArray[i]);
 					adc.add(adcArray[i]);
-					tdc.add(tdcArray[i]);
 					time.add(timeArray[i]);
 
 				}

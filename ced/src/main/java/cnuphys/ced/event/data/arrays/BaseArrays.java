@@ -58,9 +58,9 @@ public abstract class BaseArrays {
 		event = eventManager.getCurrentEvent();
 		if (event != null) {
 			bank = event.getBank(bankName);
-			sector = bank.getByte("sector");
-
-			if (sector != null) {
+			
+			if (bank != null) {
+				sector = bank.getByte("sector");
 				layer = bank.getByte("layer");
 				component = bank.getShort("component");
 			}

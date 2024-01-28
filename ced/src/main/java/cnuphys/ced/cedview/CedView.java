@@ -1197,7 +1197,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		else {
 			int seqNum = ClasIoEventManager.getInstance().getSequentialEventNumber();
 			int trueNum = ClasIoEventManager.getInstance().getTrueEventNumber();
-			feedbackStrings.add(String.format("$orange red$Event number  Sequential %d  True %d", seqNum, trueNum));
+			feedbackStrings.add(String.format("$orange red$Event Sequential %d  True %d", seqNum, trueNum));
 
 		}
 
