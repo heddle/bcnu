@@ -37,6 +37,7 @@ import cnuphys.ced.clasio.ClasIoPresentBankPanel;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
+import cnuphys.ced.event.ScanManager;
 
 public class NodePanel extends JPanel
 		implements ActionListener, ListSelectionListener, IClasIoEventListener, IAccumulationListener {
@@ -59,6 +60,9 @@ public class NodePanel extends JPanel
 	/** Used for "goto" event */
 	protected JTextField seqEventNumberInput;
 
+	/** Used for "goto" event */
+	protected JTextField trueEventNumberInput;
+	
 	// the table
 	protected NodeTable _nodeTable;
 
@@ -195,11 +199,15 @@ public class NodePanel extends JPanel
 		prevButton.setFont(Fonts.smallFont);
 		prevButton.addActionListener(this);
 
-		JLabel seqLabel = new JLabel("Go To event # ");
+		JLabel seqLabel = new JLabel("goto event   seq: ");
 		GraphicsUtilities.setSizeSmall(seqLabel);
+
+		JLabel trueLabel = new JLabel(" true: ");
+		GraphicsUtilities.setSizeSmall(trueLabel);
 
 
 		seqEventNumberInput = new JTextField(7);
+		trueEventNumberInput = new JTextField(7);
 
 		KeyAdapter ka = new KeyAdapter() {
 			@Override
@@ -216,10 +224,23 @@ public class NodePanel extends JPanel
 						}
 					}
 				}
+				else if (kev.getSource() == trueEventNumberInput) {
+					if (kev.getKeyCode() == KeyEvent.VK_ENTER) {
+						MenuSelectionManager.defaultManager().clearSelectedPath();
+						try {
+							int enumber = Integer.parseInt(trueEventNumberInput.getText());
+							ScanManager.getInstance().gotoTrue(enumber);						} catch (Exception e) {
+							trueEventNumberInput.setText("");
+						}
+					}
+				}
+
 
 			}
 		};
 		seqEventNumberInput.addKeyListener(ka);
+		trueEventNumberInput.addKeyListener(ka);
+
 
 		intsInHexButton = new JCheckBox("Show ints in hex", false);
 		intsInHexButton.setFont(Fonts.defaultFont);
@@ -252,6 +273,8 @@ public class NodePanel extends JPanel
 
 		panel.add(seqLabel);
 		panel.add(seqEventNumberInput);
+		panel.add(trueLabel);
+		panel.add(trueEventNumberInput);
 		panel.add(Box.createHorizontalStrut(6));
 
 		numPanel.add(panel, 0);
@@ -267,6 +290,7 @@ public class NodePanel extends JPanel
 		nextButton.setEnabled(_eventManager.isNextOK());
 		prevButton.setEnabled(_eventManager.isPrevOK());
 		seqEventNumberInput.setEnabled(_eventManager.isGotoOK());
+        trueEventNumberInput.setEnabled(_eventManager.isGotoOK());
 	}
 
 	/**

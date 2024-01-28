@@ -772,15 +772,15 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 *
 	 * @param num the event number
 	 */
-	public static void setEventNumberLabel(int num) {
+	public static void setEventNumberLabel(int seqnum, int truenum) {
 
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
-		if (num < 0) {
-			_eventNumberLabel.setText("  Event Num:      ");
+		if (seqnum < 0) {
+			_eventNumberLabel.setText("  Event      ");
 		} else {
-			_eventNumberLabel.setText("  Event Num: " + num);
+			_eventNumberLabel.setText("  Event Seq: " + seqnum + "  True: " + truenum);
 		}
 	}
 
@@ -911,13 +911,13 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// create the event number label
 	private void createEventNumberLabel() {
-		_eventNumberLabel = new JLabel("  Event Num:      is GEMC: false");
+		_eventNumberLabel = new JLabel("  Event:     ");
 		_eventNumberLabel.setOpaque(true);
 		_eventNumberLabel.setBackground(Color.black);
 		_eventNumberLabel.setForeground(Color.yellow);
 		_eventNumberLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		_eventNumberLabel.setBorder(BorderFactory.createLineBorder(Color.cyan, 1));
-		setEventNumberLabel(-1);
+		setEventNumberLabel(-1, -1);
 
 		getJMenuBar().add(Box.createHorizontalGlue());
 		getJMenuBar().add(_eventNumberLabel);

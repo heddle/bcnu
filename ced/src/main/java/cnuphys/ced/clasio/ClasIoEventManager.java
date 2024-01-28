@@ -1021,7 +1021,7 @@ public class ClasIoEventManager {
 
 		swimAllMC();
 		swimAllRecon();
-		Ced.setEventNumberLabel(getSequentialEventNumber());
+		Ced.setEventNumberLabel(getSequentialEventNumber(), getTrueEventNumber());
 
 		for (JInternalFrame jif : Desktop.getInstance().getAllFrames()) {
 			if (jif instanceof CedView) {
