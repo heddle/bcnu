@@ -16,7 +16,6 @@ public abstract class ACalADCData extends ACalData {
 	/** time values */
 	public ArrayList<Float> time = new ArrayList<>();
 
-
 	/** max adc value */
 	public int maxADC;
 	
@@ -28,7 +27,7 @@ public abstract class ACalADCData extends ACalData {
 		time.clear();
 	}
 
-		/**
+	/**
 	 * Get the color for a given adc value
 	 * @param adc the adc value
 	 * @return the color

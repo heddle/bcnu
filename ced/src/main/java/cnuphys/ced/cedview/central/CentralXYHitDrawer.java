@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.datacontainer.CNDADCData;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.AdcHit;
@@ -137,14 +138,14 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		}
 
 		//draw based on adc data
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CND::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				CNDXYPolygon poly = _view.getCNDPolygon(arrays.sector[i], arrays.layer[i], arrays.order[i] + 1);
-				if (poly != null) {
-					Color color = arrays.getColor(arrays.sector[i], arrays.layer[i], (short)1, arrays.order[i]);
-					poly.draw(g, container, color, Color.black);
-				}
+		
+		CNDADCData cndADCData = CNDADCData.getInstance();
+		for (int i = 0; i < cndADCData.count(); i++) {
+			CNDXYPolygon poly = _view.getCNDPolygon(cndADCData.sector[i], cndADCData.layer[i],
+					cndADCData.order[i] + 1);
+			if (poly != null) {
+				Color color = cndADCData.getADCColor(cndADCData.adc[i]);
+				poly.draw(g, container, color, Color.black);
 			}
 		}
 	}

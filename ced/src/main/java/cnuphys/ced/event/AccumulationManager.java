@@ -9,6 +9,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.cedview.central.CentralXYView;
@@ -717,14 +718,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate CND which is a special case
 	private void accumCND() {
-
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CND::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				int sect0 = arrays.sector[i] - 1;
-				int lay0 = arrays.layer[i] - 1;
-				// note order is already a zero based quantity
-				int ord0 = arrays.order[i];
+		
+		CNDADCData cndADCData = CNDADCData.getInstance();
+		for (int i = 0; i < cndADCData.count(); i++) {
+			if (cndADCData.adc[i] > 0) {
+				int sect0 = cndADCData.sector[i] - 1;
+				int lay0 = cndADCData.layer[i] - 1;
+				int ord0 = cndADCData.order[i];
 				_CNDAccumulatedData[sect0][lay0][ord0] += 1;
 			}
 		}

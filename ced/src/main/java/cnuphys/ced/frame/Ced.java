@@ -115,7 +115,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.5.6";
+	private static final String _release = "1.6.0";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -777,7 +777,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			return;
 		}
 		if (seqnum < 0) {
-			_eventNumberLabel.setText("  Event      ");
+			_eventNumberLabel.setText("  No Event           ");
 		} else {
 			_eventNumberLabel.setText("  Event Seq: " + seqnum + "  True: " + truenum);
 		}

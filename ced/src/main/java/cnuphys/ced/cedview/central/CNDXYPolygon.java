@@ -143,6 +143,8 @@ public class CNDXYPolygon extends Polygon {
 		byte order;
 
 		if (view.isSingleEventMode()) {
+			
+			
 
 			LR_ADCArrays adcArrays = LR_ADCArrays.getArrays("CND::adc");
 			if (adcArrays.hasData()) {
