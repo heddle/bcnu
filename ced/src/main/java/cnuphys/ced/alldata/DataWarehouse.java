@@ -42,6 +42,47 @@ public class DataWarehouse implements IClasIoEventListener {
 	// list of data container listeners
 	private static EventListenerList _listeners;
 
+	/** type is unknown */
+	public static final int UNKNOWN = 0;
+
+	/** type is a byte */
+	public static final int INT8 = 1;
+
+	/** type is a short */
+	public static final int INT16 = 2;
+
+	/** type is an int */
+	public static final int INT32 = 3;
+
+	/** type is a float */
+	public static final int FLOAT32 = 4;
+
+	/** type is a double */
+	public static final int FLOAT64 = 5;
+
+	/** type is a string */
+	public static final int STRING = 6;
+
+	/** type is a group */
+	public static final int GROUP = 7;
+
+	/** type is a long int */
+	public static final int INT64 = 8;
+
+	/** type is a vector3f */
+	public static final int VECTOR3F = 9;
+
+	/** type is a composite */
+	public static final int COMPOSITE = 10;
+
+	/** type is a table */
+	public static final int TABLE = 11;
+
+	/** type is a branch */
+	public static final int BRANCH = 12;
+
+	/** type names */
+	public static String[] typeNames = { "Unknown", "byte", "short", "int", "float", "double", "string", "group", "long", "vector3f", "composite", "table", "branch"};
 
 	/**
 	 * Public access to the singleton
@@ -94,6 +135,29 @@ public class DataWarehouse implements IClasIoEventListener {
 		_knownBanks.sort(null);
 	}
 
+	
+	/**
+	 * Get the type of a column
+	 * @param bankName the bank name
+	 * @param columnName the column name
+	 * @return the data type of the column, or UNKNOWN if not found
+	 */
+	public int getType(String bankName, String columnName) {
+		Schema schema = _schemaFactory.getSchema(bankName);
+		return (schema == null) ? UNKNOWN : schema.getType(columnName);
+	}
+	
+	/**
+	 * Get the data type name of a column
+	 * @param bankName the bank name
+	 * @param columnName the column name
+	 * @return the data type name of the column, or "Unknown" if not found
+	 */
+	public String getTypeName(String bankName, String columnName) {
+		int type = getType(bankName, columnName);
+		return typeNames[type];
+	}
+		
 	/**
 	 * Get the list of column names for a bank name
 	 *
@@ -111,6 +175,8 @@ public class DataWarehouse implements IClasIoEventListener {
 	private DataEvent getCurrentEvent() {
 		return ClasIoEventManager.getInstance().getCurrentEvent();
 	}
+	
+	
 
 	/**
 	 * Get a list of the banks in the current event

@@ -302,8 +302,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
 			g.setColor(Color.black);
 			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-			DataDrawSupport.drawReconClusterHighlight(g, p1);
-			DataDrawSupport.drawReconClusterHighlight(g, p2);
+			DataDrawSupport.drawClusterHighlight(g, p1);
+			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
 
 		if ((_bmtHighlightData.cluster >= 0) && dataEvent.hasBank("BMTRec::Clusters")) {
@@ -320,8 +320,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
 			g.setColor(Color.black);
 			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-			DataDrawSupport.drawReconClusterHighlight(g, p1);
-			DataDrawSupport.drawReconClusterHighlight(g, p2);
+			DataDrawSupport.drawClusterHighlight(g, p1);
+			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
 
 	}
@@ -674,9 +674,12 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				_lastTrajStr = traj2D.summaryString();
 			}
 		}
+		
+		//cluster feedback
+		if (showClusters()) {
+			_clusterDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
+		}
 
-		// see if any feedback from simulated data
-		getGemcFeedback(container, screenPoint, worldPoint, feedbackStrings);
 
 		// reconstructed feedback?
 		_crossDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
@@ -711,11 +714,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		return closest;
 	}
 
-	// feedback from simulated data
-	private void getGemcFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
-			List<String> feedbackStrings) {
-
-	}
 
 	/**
 	 * Get a CTOF scintillator polygon

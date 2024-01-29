@@ -218,7 +218,7 @@ public class ReconDrawer extends SectorViewDrawer {
 						_view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
 				ecClusterData.setLocation(i, pp);
-				DataDrawSupport.drawReconCluster(g, pp);
+				DataDrawSupport.drawCluster(g, pp);
 			}
 		} // for i
 
@@ -232,7 +232,7 @@ public class ReconDrawer extends SectorViewDrawer {
 						_view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
 				pcalClusterData.setLocation(i, pp);
-				DataDrawSupport.drawReconCluster(g, pp);
+				DataDrawSupport.drawCluster(g, pp);
 			}
 		} // for i
 	}
@@ -319,7 +319,7 @@ public class ReconDrawer extends SectorViewDrawer {
 								.add(String.format("$magenta$PCAL cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z));
 						feedbackStrings.add(String.format("$magenta$PCAL cluster view %s",
 								ECGeometry.VIEW_NAMES[pcalClusterData.view.get(i)]));
-						feedbackStrings.add(String.format("$magenta$PCAL cluster Energy %-7.4f GeV",
+						feedbackStrings.add(String.format("$magenta$PCAL cluster Energy %-6.3f GeV",
 								pcalClusterData.energy.get(i)));
 
 						return true;
@@ -537,7 +537,7 @@ public class ReconDrawer extends SectorViewDrawer {
 				_view.projectClasToWorld(clusters.x[index], clusters.y[index], clusters.z[index], _view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
 				clusters.setLocation(index, pp);
-				DataDrawSupport.drawReconCluster(g, pp);
+				DataDrawSupport.drawCluster(g, pp);
 			}
 		}
 	}

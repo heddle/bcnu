@@ -12,6 +12,7 @@ import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
@@ -104,18 +105,18 @@ public class SectorLTCCItem extends PolygonItem {
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
 		//use the adc arrays
-		CC_ADCArrays arrays = CC_ADCArrays.getArrays("LTCC::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				if ((arrays.sector[i] == _sector) && (arrays.layer[i] == _half) && (arrays.component[i] == _ring)) {
-					g.setColor(arrays.getColor(_sector, _half, _ring));
-					g.fillPolygon(_lastDrawnPolygon);
-					g.setColor(Color.black);
-					g.drawPolygon(_lastDrawnPolygon);
-				}
+		LTCCADCData adcData = LTCCADCData.getInstance();
+		for (int i = 0; i < adcData.count(); i++) {
+			if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {
+				g.setColor(adcData.getADCColor(i));
+				g.fillPolygon(_lastDrawnPolygon);
+				g.setColor(Color.black);
+				g.drawPolygon(_lastDrawnPolygon);
 			}
 		} // end has data
 		
+		
+				
 		//the LTCC.rec data straight from the source
 		if (_view.showReconHits()) {
 			float x[] = _dataWarehouse.getFloat("LTCC::rec", "x");

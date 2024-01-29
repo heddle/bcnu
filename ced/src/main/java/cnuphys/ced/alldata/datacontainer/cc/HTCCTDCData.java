@@ -1,14 +1,14 @@
-package cnuphys.ced.alldata.datacontainer.cnd;
+package cnuphys.ced.alldata.datacontainer.cc;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonTDCData;
 
-public class CNDTDCData extends ACommonTDCData {
+public class HTCCTDCData extends ACommonTDCData {
 	
 	// singleton
-	private static volatile CNDTDCData _instance;
+	private static volatile HTCCTDCData _instance;
 	
 
 	/**
@@ -16,11 +16,11 @@ public class CNDTDCData extends ACommonTDCData {
 	 * 
 	 * @return the singleton
 	 */
-	public static CNDTDCData getInstance() {
+	public static HTCCTDCData getInstance() {
 		if (_instance == null) {
-			synchronized (CNDTDCData.class) {
+			synchronized (HTCCTDCData.class) {
 				if (_instance == null) {
-					_instance = new CNDTDCData();
+					_instance = new HTCCTDCData();
 				}
 			}
 		}
@@ -30,7 +30,7 @@ public class CNDTDCData extends ACommonTDCData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("CND::tdc");
+		DataBank bank = event.getBank("HTCC::tdc");
 		
 		if (bank == null) {
 			return;

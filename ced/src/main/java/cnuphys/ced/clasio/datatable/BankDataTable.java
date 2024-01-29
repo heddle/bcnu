@@ -3,11 +3,15 @@ package cnuphys.ced.clasio.datatable;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
+import java.awt.Point;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumn;
 
 import org.jlab.io.base.DataEvent;
@@ -34,7 +38,6 @@ public class BankDataTable extends JTable {
 	public BankDataTable(String bankName) {
 		super(new BankTableModel(bankName));
 		_bankName = bankName;
-		getBankTableModel().setTable(this);
 
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -63,8 +66,21 @@ public class BankDataTable extends JTable {
 		getTableHeader().setResizingAllowed(true);
 		setShowGrid(true);
 		setGridColor(Color.gray);
-
+		
+		//detect clicks on header for sorting
+		MouseAdapter mouseAdapter = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				Point point = e.getPoint();
+				int column = columnAtPoint(point);
+				getBankTableModel().sort(column);
+			}
+			
+		};
+		JTableHeader header = getTableHeader();
+		header.addMouseListener(mouseAdapter);
 	}
+	
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

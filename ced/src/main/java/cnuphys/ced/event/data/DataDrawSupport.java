@@ -228,7 +228,7 @@ public class DataDrawSupport {
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
-	public static void drawReconCluster(Graphics g, Point pp) {
+	public static void drawCluster(Graphics g, Point pp) {
 		g.setColor(cluster_lineColor);
 		g.drawLine(pp.x, pp.y - 5, pp.x, pp.y + 5);
 		g.drawLine(pp.x - 5, pp.y, pp.x + 5, pp.y);
@@ -243,10 +243,10 @@ public class DataDrawSupport {
 	 * @param g  the graphics context
 	 * @param pp the screen location
 	 */
-	public static void drawReconClusterHighlight(Graphics g, Point pp) {
+	public static void drawClusterHighlight(Graphics g, Point pp) {
 		g.setColor(HIGHLIGHTFILL);
 		g.fillOval(pp.x - 8, pp.y - 8, 16, 16);
-		drawReconCluster(g, pp);
+		drawCluster(g, pp);
 		g.setColor(Color.white);
 		g.drawOval(pp.x - 7, pp.y - 7, 16, 16);
 		g.setColor(Color.black);

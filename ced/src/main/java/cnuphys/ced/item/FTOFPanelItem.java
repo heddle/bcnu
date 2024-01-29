@@ -207,7 +207,7 @@ public class FTOFPanelItem extends PolygonItem {
 				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
 
-				DataDrawSupport.drawReconCluster(g, pp);
+				DataDrawSupport.drawCluster(g, pp);
 
  			}
 		}

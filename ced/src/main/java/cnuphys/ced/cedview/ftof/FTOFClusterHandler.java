@@ -55,7 +55,7 @@ public class FTOFClusterHandler {
 				if (panel == _view.displayPanel()) {
 					_wp.setLocation(x[i], y[i]);
 					container.worldToLocal(_pp, _wp);
-					DataDrawSupport.drawReconCluster(g, _pp);
+					DataDrawSupport.drawCluster(g, _pp);
 
 				}
 			}

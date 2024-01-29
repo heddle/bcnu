@@ -11,6 +11,8 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
+import cnuphys.ced.alldata.datacontainer.cc.HTCCRecData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
@@ -98,6 +100,18 @@ public class SectorHTCCItem extends PolygonItem {
 
 	// single event drawer using adc bank
 	private void drawSingleEventHits(Graphics g, IContainer container) {
+		
+		//use the adc arrays
+		HTCCADCData adcData = HTCCADCData.getInstance();
+		for (int i = 0; i < adcData.count(); i++) {
+			if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {
+				g.setColor(adcData.getADCColor(i));
+				g.fillPolygon(_lastDrawnPolygon);
+				g.setColor(Color.black);
+				g.drawPolygon(_lastDrawnPolygon);
+			}
+		} // end has data
+
 
 		//use the adc arrays
 		CC_ADCArrays arrays = CC_ADCArrays.getArrays("HTCC::adc");
@@ -114,6 +128,15 @@ public class SectorHTCCItem extends PolygonItem {
 		
 		//the HTCC.rec data straight from the source
 		if (_view.showReconHits()) {
+			
+			HTCCRecData recData = HTCCRecData.getInstance();
+			int count = recData.count();
+
+			if (count > 0) {
+				for (int i = 0; i < count; i++) {
+				} // end has data
+			}
+
 			float x[] = _dataWarehouse.getFloat("HTCC::rec", "x");
 			if (x != null) {
 				Point.Double wp = new Point.Double();

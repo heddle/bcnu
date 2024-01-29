@@ -28,6 +28,14 @@ public abstract class ACommonTDCData implements IDataContainer {
 	/** tdc value */
 	public int tdc[];
 
+	/**
+	 * Create a data container and notify the data warehouse that it wants to be
+	 * notified of data events.
+     */
+	public ACommonTDCData() {
+		_dataWarehouse.addDataContainerListener(this);
+	}
+
 
 	@Override
 	public void clear() {

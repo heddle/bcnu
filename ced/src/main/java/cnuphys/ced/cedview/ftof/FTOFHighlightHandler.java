@@ -57,7 +57,7 @@ public class FTOFHighlightHandler {
 				double y = ColumnData.getFloatArray("FTOF::clusters.y")[row];
 				_wp.setLocation(x, y);
 				container.worldToLocal(_pp, _wp);
-				DataDrawSupport.drawReconClusterHighlight(g, _pp);
+				DataDrawSupport.drawClusterHighlight(g, _pp);
 
 			}
 

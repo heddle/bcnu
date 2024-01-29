@@ -15,8 +15,10 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.datacontainer.cnd.CNDClusterData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.geometry.ECGeometry;
 
 public class ClusterDrawerXY extends CentralXYViewDrawer {
 
@@ -52,12 +54,39 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 		Stroke oldStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
 
+		drawCNDClusters(g, container);
 		drawBSTClusters(g, container);
 		drawBMTClusters(g, container);
 
 		g2.setStroke(oldStroke);
 
 		g2.setClip(oldClip);
+	}
+	
+	/**
+	 * Draw CND clusters
+	 *
+	 * @param g         the graphics context
+	 * @param container the drawing container
+	 */
+	public void drawCNDClusters(Graphics g, IContainer container) {
+		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
+		if (event == null) {
+			return;
+		}
+
+		CNDClusterData cndClusterData = CNDClusterData.getInstance();
+		int count = cndClusterData.count();
+		if (count > 0) {
+			Point p = new Point();
+			for (int i = 0; i < count; i++) {
+				float x = cndClusterData.x[i];
+				float y = cndClusterData.y[i];
+				container.worldToLocal(p, 10 * x, 10 * y);
+				DataDrawSupport.drawCluster(g, p);
+				cndClusterData.setLocation(i, p);
+			}
+		}
 	}
 
 	/**
@@ -94,8 +123,8 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
 				g.setColor(Color.black);
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
-				DataDrawSupport.drawReconCluster(g, p1);
-				DataDrawSupport.drawReconCluster(g, p2);
+				DataDrawSupport.drawCluster(g, p1);
+				DataDrawSupport.drawCluster(g, p2);
 			}
 		}
 
@@ -135,17 +164,31 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
 				g.setColor(Color.black);
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
-				DataDrawSupport.drawReconCluster(g, p1);
-				DataDrawSupport.drawReconCluster(g, p2);
+				DataDrawSupport.drawCluster(g, p1);
+				DataDrawSupport.drawCluster(g, p2);
 			}
 		}
 
 	}
 
-
 	@Override
 	public void feedback(IContainer container, Point screenPoint, Double worldPoint, List<String> feedbackStrings) {
 
+		// CND
+		CNDClusterData cndClusterData = CNDClusterData.getInstance();
+		for (int i = 0; i < cndClusterData.count(); i++) {
+			if (cndClusterData.contains(i, screenPoint)) {
+
+				float x = cndClusterData.x[i];
+				float y = cndClusterData.y[i];
+				float z = cndClusterData.z[i];
+
+				feedbackStrings.add(String.format("$magenta$CND cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z));
+				feedbackStrings.add(String.format("$magenta$CND cluster Energy %-6.3f GeV", cndClusterData.energy[i]));
+				feedbackStrings.add(String.format("$magenta$CND cluster ID %d  status %d", cndClusterData.id[i], cndClusterData.status[i]));
+				break;
+			}
+		}
 	}
 
 }

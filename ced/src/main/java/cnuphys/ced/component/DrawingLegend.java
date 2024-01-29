@@ -227,7 +227,7 @@ public class DrawingLegend extends JPanel {
 				super.paintComponent(g);
 				Point pp = new Point();
 				pp.setLocation(X, Y);
-				DataDrawSupport.drawReconCluster(g, pp);
+				DataDrawSupport.drawCluster(g, pp);
 				quickString(g, X+8, Y, "Recon Cluster ");
 			}
 		};
@@ -242,7 +242,7 @@ public class DrawingLegend extends JPanel {
 				super.paintComponent(g);
 				Point pp = new Point();
 				pp.setLocation(X+3, Y);
-				DataDrawSupport.drawReconClusterHighlight(g, pp);
+				DataDrawSupport.drawClusterHighlight(g, pp);
 				quickString(g, X+15, Y, "Highlight Cluster ");
 			}
 		};

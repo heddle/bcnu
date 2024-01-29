@@ -11,6 +11,8 @@ import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
+import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
+import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -732,42 +734,44 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate htcc
 	private void accumHTCC() {
-
+		
 		//use the adc arrays to accumulate
-		CC_ADCArrays arrays = CC_ADCArrays.getArrays("HTCC::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				int sect0 = arrays.sector[i] - 1; // make 0 based
-
+		HTCCADCData htccADCData = HTCCADCData.getInstance();
+		for (int i = 0; i < htccADCData.count(); i++) {
+			if (htccADCData.adc[i] > 0) {
+				int sect0 = htccADCData.sector[i] - 1;
+				
 				//sometimes happens
 				if (sect0 < 0) {
 					continue;
 				}
-				int half0 = arrays.layer[i] - 1; // make 0 based so (0-1) (layer)
-				int ring0 = arrays.component[i] - 1; // make 0 based so (0-3) (component)
+
+				int half0 = htccADCData.layer[i] - 1;
+				int ring0 = htccADCData.component[i] - 1;
 				_HTCCAccumulatedData[sect0][half0][ring0] += 1;
 			}
-		} // end has data
+		}
 	}
 
 	// accumulate ltcc
 	private void accumLTCC() {
 
 		//use the adc arrays to accumulate
-		CC_ADCArrays arrays = CC_ADCArrays.getArrays("LTCC::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				int sect0 = arrays.sector[i] - 1; // make 0 based
-
+		LTCCADCData ltccADCData = LTCCADCData.getInstance();
+		for (int i = 0; i < ltccADCData.count(); i++) {
+			if (ltccADCData.adc[i] > 0) {
+				int sect0 = ltccADCData.sector[i] - 1;
+				
 				//sometimes happens
 				if (sect0 < 0) {
 					continue;
 				}
-				int half0 = arrays.layer[i] - 1; // make 0 based so (0-1) (layer)
-				int ring0 = arrays.component[i] - 1; // make 0 based so (0-17) (component)
+
+				int half0 = ltccADCData.layer[i] - 1;
+				int ring0 = ltccADCData.component[i] - 1;
 				_LTCCAccumulatedData[sect0][half0][ring0] += 1;
 			}
-		} // end has data
+		}
 	}
 
 	// accumulate ecal data
