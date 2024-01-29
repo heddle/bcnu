@@ -16,6 +16,8 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
+import cnuphys.ced.alldata.datacontainer.cnd.CNDTDCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.event.AccumulationManager;
@@ -135,7 +137,7 @@ public class CNDXYPolygon extends Polygon {
 			return false;
 		}
 
-		fbString("cyan", "cnd sect " + sector + " layer " + layer + (_leftRight == 1 ? " [left]" : " [right]"),
+		fbString("cyan", "CND sect " + sector + " layer " + layer + (_leftRight == 1 ? " [left]" : " [right]"),
 				feedbackStrings);
 
 		CedView view = (CedView) (container.getView());
@@ -144,12 +146,25 @@ public class CNDXYPolygon extends Polygon {
 
 		if (view.isSingleEventMode()) {
 			
-			
+			CNDADCData adcData = CNDADCData.getInstance();
+			for (int i = 0; i < adcData.count(); i++) {
+				if ((adcData.sector[i] == sector) && (adcData.layer[i] == layer)
+						&& (adcData.order[i] == (_leftRight - 1))) {
+					if (adcData.adc[i] > 0) {
+						feedbackStrings
+								.add(String.format("$cyan$CND adc %d time %6.3f", adcData.adc[i], adcData.time[i]));
+					}
+					break;
+				}
+			}
 
-			LR_ADCArrays adcArrays = LR_ADCArrays.getArrays("CND::adc");
-			if (adcArrays.hasData()) {
-				order = (byte) (_leftRight-1); //0 or 1
-				adcArrays.addFeedback((byte) sector, (byte) layer, (short)1, order, feedbackStrings);
+			CNDTDCData tdcData = CNDTDCData.getInstance();
+			for (int i = 0; i < tdcData.count(); i++) {
+				if ((tdcData.sector[i] == sector) && (tdcData.layer[i] == layer)
+						&& (tdcData.order[i] == (_leftRight - 1))) {
+					feedbackStrings.add(String.format("$cyan$CND tdc %d", tdcData.tdc[i]));
+					break;
+				}
 			}
 
 			TDCArrays tdcArrays = TDCArrays.getArrays("CND::tdc");

@@ -1,29 +1,28 @@
-package cnuphys.ced.alldata.datacontainer;
+package cnuphys.ced.alldata.datacontainer.cnd;
 
 import java.util.ArrayList;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-public class CNDADCData extends ACommonADCData {
+import cnuphys.ced.alldata.datacontainer.ACommonTDCData;
+
+public class CNDTDCData extends ACommonTDCData {
 	
 	// singleton
-	private static volatile CNDADCData _instance;
+	private static volatile CNDTDCData _instance;
 	
-
-	/** 0-based planes (0, 1) for (inner, outer) */
-	public ArrayList<Byte> plane = new ArrayList<>();
 
 	/**
 	 * Public access to the singleton
 	 * 
 	 * @return the singleton
 	 */
-	public static CNDADCData getInstance() {
+	public static CNDTDCData getInstance() {
 		if (_instance == null) {
-			synchronized (CNDADCData.class) {
+			synchronized (CNDTDCData.class) {
 				if (_instance == null) {
-					_instance = new CNDADCData();
+					_instance = new CNDTDCData();
 				}
 			}
 		}
@@ -33,7 +32,7 @@ public class CNDADCData extends ACommonADCData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("CND::adc");
+		DataBank bank = event.getBank("CND::tdc");
 		
 		if (bank == null) {
 			return;
@@ -43,10 +42,7 @@ public class CNDADCData extends ACommonADCData {
         layer = bank.getByte("layer");
         component = bank.getShort("component");
         order = bank.getByte("order");
-        adc = bank.getInt("ADC");
-        time = bank.getFloat("time");
-        
-        computeMaxADC();
+        tdc = bank.getInt("TDC");
 	}
 
 }
