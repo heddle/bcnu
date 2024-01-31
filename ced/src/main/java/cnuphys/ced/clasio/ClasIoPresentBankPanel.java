@@ -13,6 +13,7 @@ import java.util.Hashtable;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 import org.jlab.io.base.DataEvent;
 
@@ -54,6 +55,9 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	//if a cedview owns this
 	private CedView _view;
+	
+	//scroll pane
+	private JScrollPane _scrollPane;
 
 	/**
 	 * This panel holds all the known banks in a grid of buttons. Banks present will
@@ -62,7 +66,7 @@ public class ClasIoPresentBankPanel extends JPanel
 	 * @param nodeTable the table
 	 */
 	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable) {
-		this(view, nodeTable, 40, 4);
+		this(view, nodeTable, 45);
 	}
 
 	/**
@@ -71,15 +75,14 @@ public class ClasIoPresentBankPanel extends JPanel
 	 * @param view the view owner
 	 * @param nodeTable the table
 	 * @param numRows the number of rows for banks
-	 * @param numCols the number of columns for banks
 	 */
-	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows, int numCols) {
+	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows) {
 
 		_view = (view instanceof CedView) ? (CedView)view: null;
 
 		_nodeTable = nodeTable;
 		_eventManager.addClasIoEventListener(this, 1);
-		setLayout(new GridLayout(numRows, numCols, 2, 0));
+		setLayout(new GridLayout(numRows, 0, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 		AccumulationManager.getInstance().addAccumulationListener(this);
 
@@ -292,6 +295,19 @@ public class ClasIoPresentBankPanel extends JPanel
 	@Override
 	public void changedEventSource(ClasIoEventManager.EventSourceType source) {
 	}
+	
+	/**
+	 * Get the table's scroll pane
+	 *
+	 * @return te table's scroll pane
+	 */
+	public JScrollPane getScrollPane() {
+		if (_scrollPane == null) {
+			_scrollPane = new JScrollPane(this);
+		}
+		return _scrollPane;
+	}
+
 
 
 }

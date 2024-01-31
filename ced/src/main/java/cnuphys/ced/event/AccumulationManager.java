@@ -24,7 +24,6 @@ import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
-import cnuphys.ced.event.data.arrays.adc.CC_ADCArrays;
 import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
@@ -116,6 +115,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// list of accumulation listeners
 	private EventListenerList _listeners;
+	
+	//data containers
+	private CNDADCData cndADCData = CNDADCData.getInstance();
+	private HTCCADCData htccADCData = HTCCADCData.getInstance();
+	private LTCCADCData ltccADCData = LTCCADCData.getInstance();
+	private ECalADCData ecADCData = ECalADCData.getInstance();
+	private PCalADCData pcADCData = PCalADCData.getInstance();
 
 	/**
 	 * private constructor for singleton.
@@ -721,7 +727,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// accumulate CND which is a special case
 	private void accumCND() {
 		
-		CNDADCData cndADCData = CNDADCData.getInstance();
 		for (int i = 0; i < cndADCData.count(); i++) {
 			if (cndADCData.adc[i] > 0) {
 				int sect0 = cndADCData.sector[i] - 1;
@@ -736,7 +741,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumHTCC() {
 		
 		//use the adc arrays to accumulate
-		HTCCADCData htccADCData = HTCCADCData.getInstance();
 		for (int i = 0; i < htccADCData.count(); i++) {
 			if (htccADCData.adc[i] > 0) {
 				int sect0 = htccADCData.sector[i] - 1;
@@ -757,7 +761,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumLTCC() {
 
 		//use the adc arrays to accumulate
-		LTCCADCData ltccADCData = LTCCADCData.getInstance();
 		for (int i = 0; i < ltccADCData.count(); i++) {
 			if (ltccADCData.adc[i] > 0) {
 				int sect0 = ltccADCData.sector[i] - 1;
@@ -778,7 +781,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumECal() {
 
 		//use ADC data
-		ECalADCData ecADCData = ECalADCData.getInstance();
 		for (int i = 0; i < ecADCData.count(); i++) {
 			if (ecADCData.adc.get(i) > 0) {
 				int sect0 = ecADCData.sector.get(i) - 1;
@@ -794,7 +796,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// accumulate pcal data
 	private void accumPCal() {
 		//use ADC data
-		PCalADCData pcADCData = PCalADCData.getInstance();
 
 		for (int i = 0; i < pcADCData.count(); i++) {
 			if (pcADCData.adc.get(i) > 0) {

@@ -3,7 +3,6 @@ package cnuphys.ced.cedview.sectorview;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.List;
 
@@ -13,13 +12,13 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
+import cnuphys.ced.alldata.datacontainer.cc.LTCCRecData;
+import cnuphys.ced.alldata.datacontainer.cc.LTCCTDCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.DataSupport;
-import cnuphys.ced.event.data.arrays.adc.CC_ADCArrays;
-import cnuphys.ced.event.data.arrays.tdc.TDCArrays;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.LTCCGeometry;
 
@@ -108,7 +107,7 @@ public class SectorLTCCItem extends PolygonItem {
 		LTCCADCData adcData = LTCCADCData.getInstance();
 		for (int i = 0; i < adcData.count(); i++) {
 			if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {
-				g.setColor(adcData.getADCColor(i));
+				g.setColor(adcData.getADCColor(adcData.adc[i]));
 				g.fillPolygon(_lastDrawnPolygon);
 				g.setColor(Color.black);
 				g.drawPolygon(_lastDrawnPolygon);
@@ -117,29 +116,30 @@ public class SectorLTCCItem extends PolygonItem {
 		
 		
 				
-		//the LTCC.rec data straight from the source
+		//the LTCC.rec data 
 		if (_view.showReconHits()) {
-			float x[] = _dataWarehouse.getFloat("LTCC::rec", "x");
-			if (x != null) {
-				Point.Double wp = new Point.Double();
-				Point pp = new Point();
-
-				float y[] = _dataWarehouse.getFloat("LTCC::rec", "y");
-				float z[] = _dataWarehouse.getFloat("LTCC::rec", "z");
+			
+			Point.Double wp = new Point.Double();
+			Point pp = new Point();
+			
+			LTCCRecData recData = LTCCRecData.getInstance();
+			for (int i = 0; i < recData.count(); i++) {
+				float x = recData.x[i];
+				float y = recData.y[i];
+				float z = recData.z[i];
 				
-				for (int i = 0; i < x.length; i++) {
-					int sect = GeometryManager.getSector(x[i], y[i]);
-					if (sect == _sector) {
-						_view.projectClasToWorld(x[i], y[i], z[i], _view.getProjectionPlane(), wp);
-						container.worldToLocal(pp, wp);
+				int sect = GeometryManager.getSector(x, y);
+				if (sect == _sector) {
+					_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+					container.worldToLocal(pp, wp);
 
-						DataDrawSupport.drawReconHit(g, pp);
+					DataDrawSupport.drawReconHit(g, pp);
+					recData.setLocation(i, pp);
 
-					}
 				}
-				
-			}
-		}
+
+			} // end loop over rec data		
+		} // end show recon hits		
 	}
 
 	// accumulated drawer
@@ -170,59 +170,51 @@ public class SectorLTCCItem extends PolygonItem {
 	@Override
 	public void getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
-		
 		if (contains(container, screenPoint)) {
 			
 			feedbackStrings.add(DataSupport.prelimColor + "LTCC sect " + _sector + " ring " + _ring + " half " + _half);
 
+			LTCCADCData adcData = LTCCADCData.getInstance();
+			LTCCTDCData tdcData = LTCCTDCData.getInstance();
 			
-			//adc feedback
-			CC_ADCArrays adcArrays = CC_ADCArrays.getArrays("LTCC::adc");
-			if (adcArrays.hasData()) {
-				adcArrays.addFeedback(_sector, _half, _ring, feedbackStrings);
+			for (int i = 0; i < adcData.count(); i++) {
+				if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {
+					String s = String.format("LTCC adc: %d time: %8.3f", adcData.adc[i], adcData.time[i]);
+					feedbackStrings.add(s);
+					break;
+				}
 			} // end has data
 			
-			//tdc feedback
-			TDCArrays tdcArrays = TDCArrays.getArrays("LTCC::tdc");
-			if (tdcArrays.hasData()) {
-				tdcArrays.addFeedback(_sector, _half, _ring, feedbackStrings);
+			for (int i = 0; i < tdcData.count(); i++) {
+				if ((tdcData.sector[i] == _sector) && (tdcData.layer[i] == _half) && (tdcData.component[i] == _ring)) {
+					String s = String.format("LTCC tdc: %d", tdcData.tdc[i]);
+					feedbackStrings.add(s);
+					break;
+				}
 			} // end has data
 		}
 
 		// hit feedback
-		// the LTCC.rec data straight from the source
 		if (_view.showReconHits()) {
-			float x[] = _dataWarehouse.getFloat("LTCC::rec", "x");
-			if (x != null) {
-				Point.Double wp = new Point.Double();
-				Point pp = new Point();
-				Rectangle r = new Rectangle();
 
-				float y[] = _dataWarehouse.getFloat("LTCC::rec", "y");
-				float z[] = _dataWarehouse.getFloat("LTCC::rec", "z");
+			LTCCRecData recData = LTCCRecData.getInstance();
+			for (int i = 0; i < recData.count(); i++) {
 
-				for (int i = 0; i < x.length; i++) {
-					int sect = GeometryManager.getSector(x[i], y[i]);
-					if (sect == _sector) {
-						_view.projectClasToWorld(x[i], y[i], z[i], _view.getProjectionPlane(), wp);
-						container.worldToLocal(pp, wp);
-						r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
+				float x = recData.x[i];
+				float y = recData.y[i];
 
-						if (r.contains(screenPoint)) {
-							String s = String.format("$Orange Red$LTCC hit loc: (%6.3f, %6.3f, %6.3f) cm", x[i], y[i],
-									z[i]);
-							if (!feedbackStrings.contains(s)) {
-							feedbackStrings.add(s);
-							}
-							break;
-						}
+				int sect = GeometryManager.getSector(x, y);
+				if (sect == _sector) {
 
+					if (recData.contains(i, screenPoint)) {
+						recData.recFeedback("LTTC", i, feedbackStrings);
+						break;
 					}
-
 				}
-			} // end has data
 
-		} // end show recon hits		
+			} // end loop over rec data	
+		} // end show recon hits
+
 	}
 
 	// get the world polygon corresponding to the boundary of the superlayer

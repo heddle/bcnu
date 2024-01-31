@@ -1,6 +1,7 @@
 package cnuphys.ced.alldata.datacontainer;
 
 import java.awt.Color;
+import java.util.List;
 
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -93,6 +94,16 @@ public abstract class ACommonADCData implements IDataContainer {
 			}
 		}
 
+	}
+	
+	/**
+	 * Common feedback format for ADC values
+	 * @param detectorName the name of the detector
+	 * @param index the index of the data
+	 * @param feedbackStrings the list of feedback strings
+	 */
+	public void adcFeedback(String detectorName, int index, List<String> feedbackStrings) {
+		feedbackStrings.add(String.format("$cyan$%s adc %d time %6.3f", detectorName, adc[index], time[index]));
 	}
 
 }

@@ -1,6 +1,7 @@
 package cnuphys.ced.alldata.datacontainer;
 
 import java.awt.Point;
+import java.util.List;
 
 import org.jlab.io.base.DataEvent;
 
@@ -89,6 +90,24 @@ public abstract class ACommonRecData implements IDataContainer {
 		return ((Math.abs(ppx[index] - pp.x) <= DataDrawSupport.HITHALF)
 				&& (Math.abs(ppy[index] - pp.y) <= DataDrawSupport.HITHALF));
 	}
+	
+	/**
+	 * Common feedback format for Rec hits
+	 * @param detectorName the name of the detector
+	 * @param index the index of the data
+	 * @param feedbackStrings the list of feedback strings
+	 */
+	public void recFeedback(String detectorName, int index, List<String> feedbackStrings) {
+		
+		int idv = (id == null) ? 0 : id[index];
+		String s = String.format("$Orange Red$%s id %d hit loc (%5.2f, %5.2f, %5.2f) cm", 
+				detectorName, idv, x[index], y[index], z[index]);
+		
+		if (!feedbackStrings.contains(s)) {
+			feedbackStrings.add(s);
+		}
+	}
+
 
 
 }

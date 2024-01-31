@@ -21,8 +21,6 @@ import cnuphys.ced.alldata.datacontainer.cnd.CNDTDCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
-import cnuphys.ced.event.data.arrays.tdc.TDCArrays;
 import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")
@@ -31,6 +29,10 @@ public class CNDXYPolygon extends Polygon {
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();
+	
+	//data containers
+	CNDADCData adcData = CNDADCData.getInstance();
+	CNDTDCData tdcData = CNDTDCData.getInstance();
 
 	/**
 	 * The layer, 1..3
@@ -142,36 +144,25 @@ public class CNDXYPolygon extends Polygon {
 
 		CedView view = (CedView) (container.getView());
 
-		byte order;
-
 		if (view.isSingleEventMode()) {
 			
-			CNDADCData adcData = CNDADCData.getInstance();
 			for (int i = 0; i < adcData.count(); i++) {
 				if ((adcData.sector[i] == sector) && (adcData.layer[i] == layer)
 						&& (adcData.order[i] == (_leftRight - 1))) {
-					if (adcData.adc[i] > 0) {
-						feedbackStrings
-								.add(String.format("$cyan$CND adc %d time %6.3f", adcData.adc[i], adcData.time[i]));
-					}
+					
+					adcData.adcFeedback("CND", i, feedbackStrings);
 					break;
 				}
 			}
 
-			CNDTDCData tdcData = CNDTDCData.getInstance();
 			for (int i = 0; i < tdcData.count(); i++) {
 				if ((tdcData.sector[i] == sector) && (tdcData.layer[i] == layer)
-						&& (tdcData.order[i] == (_leftRight - 1))) {
+						&& (tdcData.order[i] == (_leftRight + 1))) {
 					feedbackStrings.add(String.format("$cyan$CND tdc %d", tdcData.tdc[i]));
 					break;
 				}
 			}
 
-			TDCArrays tdcArrays = TDCArrays.getArrays("CND::tdc");
-			if (tdcArrays.hasData()) {
-				order = (byte) (_leftRight+1); //2 or 3
-				tdcArrays.addFeedback((byte) sector, (byte) layer, (short)1, order, feedbackStrings);
-			}
 
 		} else { // accumulated
 

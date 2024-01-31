@@ -33,7 +33,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
 	
-	//the EC raw data container
+	//the EC ac data container
 	private static ECalADCData _ecADCData = ECalADCData.getInstance();
 
 	/**
@@ -143,8 +143,10 @@ public class ECHexSectorItem extends HexSectorItem {
 						g.setColor(_ecADCData.getADCColor(_ecADCData.adc.get(i)));
 						g.fillPolygon(poly);
 
-						g.setColor(Color.black);
-						g.drawPolygon(poly);
+						if (_ecADCData.adc.get(i) > 0) {
+							g.setColor(X11Colors.getX11Color("dark red"));
+							g.drawPolygon(poly);
+						}
 
 						// extension
 						if (_ecADCData.adc.get(i) > 0) {

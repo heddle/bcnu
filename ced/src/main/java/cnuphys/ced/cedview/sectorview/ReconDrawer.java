@@ -35,7 +35,11 @@ public class ReconDrawer extends SectorViewDrawer {
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
 
+    //data containers
+	ECalReconData ecRecData = ECalReconData.getInstance();
+	PCalReconData pcalRecData = PCalReconData.getInstance();
 
+	
 	/**
 	 * Reconstructed hits drawer
 	 *
@@ -102,8 +106,6 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw data from the REC::Calorimeter bank
 	private void drawRecCal(Graphics g, IContainer container) {
 		
-		ECalReconData ecRecData = ECalReconData.getInstance();
-		PCalReconData pcalRecData = PCalReconData.getInstance();
 
 
 		Point pp = new Point();

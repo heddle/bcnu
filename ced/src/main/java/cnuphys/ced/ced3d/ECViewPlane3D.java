@@ -23,6 +23,10 @@ public class ECViewPlane3D extends DetectorItem3D {
 
 	// the triangle coordinates
 	private float _coords[];
+	
+	//data container
+	private ECalADCData ecADCData = ECalADCData.getInstance();
+
 
 	public ECViewPlane3D(PlainPanel3D panel3D, int sector, int stack, int view) {
 		super(panel3D);
@@ -63,7 +67,6 @@ public class ECViewPlane3D extends DetectorItem3D {
 	public void drawData(GLAutoDrawable drawable) {
 		
 		//use ADC data
-		ECalADCData ecADCData = ECalADCData.getInstance();
 		int count = ecADCData.count();
 		if (count == 0) {
 			return;

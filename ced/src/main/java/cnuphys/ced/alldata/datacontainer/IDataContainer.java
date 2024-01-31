@@ -8,7 +8,7 @@ import org.jlab.io.base.DataEvent;
 public interface IDataContainer extends EventListener {
 	
 	//color for zero adc value
-	public static final Color ADCZERO = new Color(230, 230, 230, 64);
+	public static final Color ADCZERO = new Color(40, 40, 120, 18);
 
 	/**
 	 * Clear the data

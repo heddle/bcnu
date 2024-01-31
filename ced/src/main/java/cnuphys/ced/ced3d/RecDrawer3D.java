@@ -26,6 +26,9 @@ public class RecDrawer3D extends Item3D {
 	private static final float POINTSIZE = 5f;
 	private CedPanel3D _cedPanel3D;
 
+//data containers
+	ECalReconData ecRecData = ECalReconData.getInstance();
+	PCalReconData pcalRecData = PCalReconData.getInstance();
 
 
 	public RecDrawer3D(CedPanel3D panel3D) {
@@ -55,7 +58,6 @@ public class RecDrawer3D extends Item3D {
 	private void showReconCalorimeter(GLAutoDrawable drawable) {
 		
 		if (_cedPanel3D.showECAL()) {
-			ECalReconData ecRecData = ECalReconData.getInstance();
 			for (int i = 0; i < ecRecData.count(); i++) {
 				float x = ecRecData.x.get(i);
 				float y = ecRecData.y.get(i);
@@ -69,7 +71,6 @@ public class RecDrawer3D extends Item3D {
 		}
 
 		if (_cedPanel3D.showPCAL()) {
-			PCalReconData pcalRecData = PCalReconData.getInstance();
 			for (int i = 0; i < pcalRecData.count(); i++) {
 				float x = pcalRecData.x.get(i);
 				float y = pcalRecData.y.get(i);

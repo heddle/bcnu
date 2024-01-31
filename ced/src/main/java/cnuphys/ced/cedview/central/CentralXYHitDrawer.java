@@ -34,6 +34,13 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 	// owner view
 	private CentralXYView _view;
+	
+	//data containers
+	CNDADCData adcData = CNDADCData.getInstance();
+	
+	//accumulation manager
+	private  AccumulationManager _accumManager = AccumulationManager.getInstance();
+
 
 	public CentralXYHitDrawer(CentralXYView view) {
 		super(view);
@@ -48,9 +55,9 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw accumulated BST hits (panels)
 	@Override
 	protected void drawCNDAccumulatedHits(Graphics g, IContainer container) {
-		int maxHit = AccumulationManager.getInstance().getMaxCNDCount();
+		int maxHit = _accumManager.getMaxCNDCount();
 
-		int cndData[][][] = AccumulationManager.getInstance().getAccumulatedCNDData();
+		int cndData[][][] = _accumManager.getAccumulatedCNDData();
 
 		for (int sect0 = 0; sect0 < 24; sect0++) {
 			for (int lay0 = 0; lay0 < 3; lay0++) {
@@ -60,7 +67,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 					CNDXYPolygon poly = _view.getCNDPolygon(sect0 + 1, lay0 + 1, order + 1);
 					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
-					Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
+					Color color = _accumManager.getColor(_view.getColorScaleModel(), fract);
 
 					poly.draw(g, container, color, Color.black);
 
@@ -74,10 +81,10 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {
 		// panels
 
-		int maxHit = AccumulationManager.getInstance().getMaxBSTCount();
+		int maxHit = _accumManager.getMaxBSTCount();
 
 		// first index is layer 0..5, second is sector 0..23
-		int bstData[][] = AccumulationManager.getInstance().getAccumulatedBSTData();
+		int bstData[][] = _accumManager.getAccumulatedBSTData();
 
 		for (int lay0 = 0; lay0 < 6; lay0++) {
 			for (int sect0 = 0; sect0 < BSTGeometry.sectorsPerLayer[lay0]; sect0++) {
@@ -87,7 +94,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 					int hitCount = bstData[lay0][sect0];
 
 					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
-					Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
+					Color color = _accumManager.getColor(_view.getColorScaleModel(), fract);
 					_view.drawBSTPanel((Graphics2D) g, container, panel, color);
 
 				}
@@ -100,9 +107,9 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	protected void drawCTOFAccumulatedHits(Graphics g, IContainer container) {
 
 		//sector and layer always == 1 only worry about component
-		int maxHit = AccumulationManager.getInstance().getMaxCTOFCount();
+		int maxHit = _accumManager.getMaxCTOFCount();
 
-		int ctofData[] = AccumulationManager.getInstance().getAccumulatedCTOFData();
+		int ctofData[] = _accumManager.getAccumulatedCTOFData();
 
 		for (int index = 0; index < 48; index++) {
 			CTOFXYPolygon poly = _view.getCTOFPolygon(index + 1);
@@ -110,7 +117,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				int hitCount = ctofData[index];
 
 				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
-				Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
+				Color color = _accumManager.getColor(_view.getColorScaleModel(), fract);
 
 				poly.draw(g, container, index + 1, color);
 			}

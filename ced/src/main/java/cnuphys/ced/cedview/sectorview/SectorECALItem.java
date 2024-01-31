@@ -37,6 +37,10 @@ public class SectorECALItem extends PolygonItem {
 	private static final Color _ecFill[] = { new Color(225, 215, 215), new Color(215, 215, 225) };
 	private static final Color _ecLine[] = { Color.gray, Color.gray };
 
+	//data containers
+	ECalADCData ecData = ECalADCData.getInstance();
+
+	
 	/**
 	 * Create a world polygon item
 	 *
@@ -147,7 +151,6 @@ public class SectorECALItem extends PolygonItem {
 	// single event drawer
 	private void drawSingleEventADC(Graphics g, IContainer container) {
 		
-		ECalADCData ecData = ECalADCData.getInstance();
 		for (int i = 0; i < ecData.count(); i++) {
 			byte sector = ecData.sector.get(i);
 			byte plane = ecData.plane.get(i);
@@ -244,7 +247,6 @@ public class SectorECALItem extends PolygonItem {
 					feedbackStrings.add("$white$plane " + _ecPlanes[_plane] + " view " + _ecViews[_viewType]
 							+ " strip " + (strip0 + 1));
 
-					ECalADCData ecData = ECalADCData.getInstance();
 					for (int i = 0; i < ecData.count(); i++) {
 						byte sector = ecData.sector.get(i);
 						byte plane = ecData.plane.get(i);
