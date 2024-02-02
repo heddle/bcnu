@@ -31,7 +31,7 @@ public class SplashWindow extends JWindow {
 
 	private StreamCapturePane _scp;
 
-	public static final String[] animatedGifs = { "images/anicat.gif", "images/anir2d2.gif", "images/coffee.gif",
+	public static final String[] animatedGifs = { "images/anicat.gif", "images/anir2d2.gif", "images/atom.gif", "images/coffee.gif",
 			"images/sun.gif", "images/rubik80.gif", "images/bee.gif", "images/loading.gif", "images/progress33.gif",
 			"images/saucer.gif", "images/spinglobe.gif", "images/runner.gif", "images/sun2.gif", "images/push.gif",
 			"images/walker.gif", "images/rooftop.gif", "images/bee2.gif", "images/stickdancer.gif",
