@@ -14,6 +14,9 @@ import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
+import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
@@ -122,6 +125,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private LTCCADCData ltccADCData = LTCCADCData.getInstance();
 	private ECalADCData ecADCData = ECalADCData.getInstance();
 	private PCalADCData pcADCData = PCalADCData.getInstance();
+	private FTOFADCData ftofADCData = FTOFADCData.getInstance();
+	private CTOFADCData ctofADCData = CTOFADCData.getInstance();
+	private FTCalADCData ftcalADCData = FTCalADCData.getInstance();
 
 	/**
 	 * private constructor for singleton.
@@ -699,12 +705,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate ftcal
 	private void accumFTCAL() {
-		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
-
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				_FTCALAccumulatedData[arrays.component[i]] += 1;
-			}
+        //use the adc arrays to accumulate
+		for (int i = 0; i < ftcalADCData.count(); i++) {
+			_FTCALAccumulatedData[ftcalADCData.component[i]] += 1;
 		}
 	}
 
@@ -825,42 +828,32 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// for ctof accumulating
 	private void accumCTOF() {
-
-		//use the adc arrays to accumulate
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
-		if (!arrays.hasData()) {
-			return;
-		}
-
-		for (int comp : arrays.component) {
-			_CTOFAccumulatedData[comp - 1] += 1;
+		
+		CTOFADCData ctofData = CTOFADCData.getInstance();
+		for (int i = 0; i < ctofData.count(); i++) {
+			_CTOFAccumulatedData[ctofData.component[i] - 1] += 1;
 		}
 	}
 
 	// for ftof accumulating
 	private void accumFTOF() {
+		
+		FTOFADCData ftofData = FTOFADCData.getInstance();
+		for (int i = 0; i < ftofData.count(); i++) {
+			int sect0 = ftofData.sector[i] - 1;
+			int paddle0 = ftofData.component[i] - 1;
 
-		//use the adc arrays to accumulate
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
-		if (!arrays.hasData()) {
-			return;
-		}
-
-		for (int i = 0; i < arrays.sector.length; i++) {
-			int sect0 = arrays.sector[i] - 1;
-			int paddle0 = arrays.component[i] - 1;
-
-			if (arrays.layer[i] == 1) {
+			if (ftofData.layer[i] == 1) {
 				_FTOF1AAccumulatedData[sect0][paddle0] += 1;
-			} else if (arrays.layer[i] == 2) {
+			} else if (ftofData.layer[i] == 2) {
 				_FTOF1BAccumulatedData[sect0][paddle0] += 1;
-			} else if (arrays.layer[i] == 3) {
+			} else if (ftofData.layer[i] == 3) {
 				_FTOF2AccumulatedData[sect0][paddle0] += 1;
-			}
-			else {
-				System.out.println("ERROR:  accumFTOF layer out of bounds: " + arrays.layer[i]);
+			} else {
+				System.out.println("ERROR:  accumFTOF layer out of bounds: " + ftofData.layer[i]);
 			}
 		}
+
 	}
 
 	@Override

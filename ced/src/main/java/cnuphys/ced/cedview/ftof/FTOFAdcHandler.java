@@ -12,6 +12,7 @@ import java.util.List;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 
@@ -22,11 +23,12 @@ import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
  */
 public class FTOFAdcHandler {
 
-	private static final String fbcolor = "$medium spring green$";
-
 
 	// the parent view
 	private FTOFView _view;
+	
+	//data containers
+	private FTOFADCData _adcData = FTOFADCData.getInstance();
 
 	public FTOFAdcHandler(FTOFView view) {
 		_view = view;
@@ -36,25 +38,20 @@ public class FTOFAdcHandler {
 	// draw the adc data
 	public void draw(Graphics g, IContainer container) {
 		if (_view.isSingleEventMode()) {
-
-			LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
-			if (!arrays.hasData()) {
-				return;
-			}
-
-			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
-			if (event == null) {
+			
+			int count = _adcData.count();
+			if (count == 1) {
 				return;
 			}
 
 			Polygon poly = new Polygon();
-			for (int i = 0; i < arrays.sector.length; i++) {
-				int panel = arrays.layer[i] - 1; // nasty -- this is zero based
+			for (int i = 0; i < count; i++) {
+				int panel = _adcData.layer[i] - 1; // nasty -- this is zero based
 				if (panel == _view.displayPanel()) {
 
-					_view.getPaddlePolygon(container, arrays.sector[i], panel, arrays.component[i], poly);
-					Color colorL = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i], (byte) 0);
-					Color colorR = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i], (byte) 1);
+					_view.getPaddlePolygon(container, _adcData.sector[i], panel, _adcData.component[i], poly);
+					Color colorL = _adcData.getColor(_adcData.sector[i], _adcData.layer[i], _adcData.component[i], (byte) 0);
+					Color colorR = _adcData.getColor(_adcData.sector[i], _adcData.layer[i], _adcData.component[i], (byte) 1);
 
 					if (colorL == null) {
 						colorL = Color.white;
@@ -62,12 +59,6 @@ public class FTOFAdcHandler {
 					if (colorR == null) {
 						colorR = Color.white;
 					}
-
-//					if ((colorL == null) && (colorR == null)) {
-//						continue;
-//					}
-
-
 					GradientPaint gpaint = new GradientPaint(poly.xpoints[0], poly.ypoints[0], colorL, poly.xpoints[2],
 							poly.ypoints[2], colorR);
 
