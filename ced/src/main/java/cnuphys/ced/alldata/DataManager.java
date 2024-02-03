@@ -24,8 +24,7 @@ public class DataManager {
 	private String[] _knownBanks;
 
 	// the full set of column data. ALL columns for a full bank name key
-	// key is something like DET::NAME.COLUMN e.g.
-	// FTOF::hits.adc
+	// key is something like DET::NAME.COLUMN 
 	// this maps bank name to a ColumnData object
 	private Hashtable<String, ColumnData> _columnData;
 
@@ -34,8 +33,6 @@ public class DataManager {
 
 	// singleton
 	private static volatile DataManager _instance;
-
-
 
 	/**
 	 * Create a DataManager
@@ -46,8 +43,6 @@ public class DataManager {
 		_columnData = new Hashtable<>();
 		_banks = new Hashtable<>();
 	}
-
-
 
 	/**
 	 * Update the schema factory and the columa dataobjects

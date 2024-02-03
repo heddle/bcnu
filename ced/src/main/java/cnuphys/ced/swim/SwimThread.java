@@ -47,8 +47,18 @@ public class SwimThread extends Thread {
 		CLAS12SwimResult result = null;
 
 		//have to convert trd momentum to GeV
+		double p = _trd.getMomentum() / 1000;
+		double sMax = _sMax;
+	
+		if ((p < 0.4) && (p > 0.25)) {
+			sMax = 500;
+		} else if (p < 0.25) {
+			sMax = 300;
+		}
+
+		
 		result = _swimmer.swim(lid.getCharge(), _trd.getXo(), _trd.getYo(), _trd.getZo(),
-				_trd.getMomentum() / 1000, _trd.getTheta(), _trd.getPhi(), _sMax, _h, _tolerance);
+				p, _trd.getTheta(), _trd.getPhi(), sMax, _h, _tolerance);
 		result.getTrajectory().setLundId(lid);
 		result.getTrajectory().setSource(_trd.getSource());
 

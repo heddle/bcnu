@@ -9,12 +9,8 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
-import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 
 /**
  * Handles drawing and feedback for the adc (and tdc) bank
@@ -75,11 +71,24 @@ public class FTOFAdcHandler {
 
 	}
 
+	/**
+	 * Get the feedback strings for the adc bank
+	 * @param container the drawing container
+	 * @param sect the 1-based sector
+	 * @param layer the 1-based layer
+	 * @param paddleId the 1-based paddle
+	 * @param pp the pixel point
+	 * @param wp the world point
+	 * @param feedbackStrings the list to add feedback strings to
+	 */
 	public void getFeedbackStrings(IContainer container, int sect, int layer, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
-
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
-		arrays.addFeedback((byte) sect, (byte) layer, (short) paddleId, feedbackStrings);
+		
+		for (int i = 0; i < _adcData.count(); i++) {
+			if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer) && (_adcData.component[i] == paddleId)) {
+				_adcData.adcFeedback("FTOF", i, feedbackStrings);
+			}
+		}
 	}
 
 

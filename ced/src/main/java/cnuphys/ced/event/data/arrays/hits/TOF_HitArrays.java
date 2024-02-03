@@ -14,7 +14,7 @@ public class TOF_HitArrays extends HitArrays {
 	/**
 	 * Get the tof hit arrays for a given bank name
 	 *
-	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @param bankName the bank name
 	 * @return the hit arrays, either created or from cache
 	 */
 	public static TOF_HitArrays getTOF_HitArrays(String bankName) {

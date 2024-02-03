@@ -13,11 +13,11 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.arrays.clusters.TOF_ClusterArrays;
 import cnuphys.ced.event.data.arrays.hits.TOF_HitArrays;
 import cnuphys.ced.geometry.GeometryManager;
@@ -36,6 +36,10 @@ public class FTOFPanelItem extends PolygonItem {
 
 	//the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	
+	//data containers
+	private FTOFADCData _adcData = FTOFADCData.getInstance();
+
 
 	/**
 	 * Create a FTOFPanelItem
@@ -158,26 +162,23 @@ public class FTOFPanelItem extends PolygonItem {
 			return;
 		}
 
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("FTOF::adc");
-		if (!arrays.hasData()) {
-			return;
-		}
 
 		byte sect = (byte) _sector; //1-based
 		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
-
-		for (int i = 0; i < arrays.sector.length; i++) {
-			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
-				Point2D.Double wp[] = getPaddle(_view, arrays.component[i] - 1, _ftofPanel, _sector);
+		
+		for (int i = 0; i < _adcData.count(); i++) {
+			if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer)) {
+				Point2D.Double wp[] = getPaddle(_view, _adcData.component[i] - 1, _ftofPanel, _sector);
 
 				if (wp != null) {
-					Color fc = arrays.getColor(sect, layer, arrays.component[i]);
+					Color fc = _adcData.getADCColor(i);
 					Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
-					WorldGraphicsUtilities.drawPath2D(g, container, path, fc, _style.getLineColor(), 0,
-							LineStyle.SOLID, true);
+					WorldGraphicsUtilities.drawPath2D(g, container, path, fc, _style.getLineColor(), 0, LineStyle.SOLID,
+							true);
 				}
 			}
 		}
+
 	}
 
 	//draw based on data in hits bank
@@ -350,10 +351,14 @@ public class FTOFPanelItem extends PolygonItem {
 					feedbackStrings.add("$Orange Red$paddle length "
 							+ FTOFGeometry.getLength(_ftofPanel.getPanelType(), index) + " cm");
 
-					// any adc data?
-					LR_ADCArrays adcArrays = LR_ADCArrays.getArrays("FTOF::adc");
-					adcArrays.addFeedback(sect, layer, paddle, feedbackStrings);
-
+					for (int i = 0; i < _adcData.count(); i++) {
+						if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer)
+								&& (_adcData.component[i] == paddle)) {
+							_adcData.adcFeedback("FTOF", i, feedbackStrings);
+							break;
+						}
+					}
+					
 					// any hit data?
 					break;
 				} // path contains wp

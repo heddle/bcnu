@@ -14,7 +14,7 @@ public final class LR_ADCArrays extends ADCArrays {
 	/**
 	 * Create the data arrays
 	 *
-	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @param bankName the bank name
 	 */
 	protected LR_ADCArrays(String bankName) {
 		super(bankName);
@@ -23,7 +23,7 @@ public final class LR_ADCArrays extends ADCArrays {
 	/**
 	 * Get the left-right adc arrays for a given bank name
 	 *
-	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @param bankName the bank name
 	 * @return the arrays, either created or from cache
 	 */
 	public static LR_ADCArrays getArrays(String bankName) {

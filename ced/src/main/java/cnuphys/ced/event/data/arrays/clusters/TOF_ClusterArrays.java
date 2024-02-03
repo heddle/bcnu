@@ -15,7 +15,7 @@ public class TOF_ClusterArrays extends TOF_HitArrays {
 	/**
 	 * Get the tof cluster arrays for a given bank name
 	 *
-	 * @param bankName the bank name, either "CTOF::adc" or "FTOF::adc"
+	 * @param bankName the bank nam
 	 * @return the cluster arrays, either created or from cache
 	 */
 	public static TOF_ClusterArrays getTOF_ClusterArrays(String bankName) {

@@ -19,13 +19,10 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.bCNU.view.ViewManager;
-import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.cedwindow.CedDataWindow;
 import cnuphys.ced.clasio.table.NodeTable;
-import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.IAccumulationListener;
 
 /**
  * Panel that shows which banks are present in an event
@@ -35,7 +32,7 @@ import cnuphys.ced.event.IAccumulationListener;
  */
 @SuppressWarnings("serial")
 public class ClasIoPresentBankPanel extends JPanel
-		implements ActionListener, IClasIoEventListener, IAccumulationListener {
+		implements ActionListener, IClasIoEventListener {
 
 	//try to set a reasonable height
 	private int preferredHeight;
@@ -49,9 +46,6 @@ public class ClasIoPresentBankPanel extends JPanel
 	// the node table
 	private NodeTable _nodeTable;
 
-
-	//cache to allow only single creation
-	private static Hashtable<String, ClasIoBankView> _dataBanks = new Hashtable<>(193);
 
 	//if a cedview owns this
 	private CedView _view;
@@ -84,7 +78,6 @@ public class ClasIoPresentBankPanel extends JPanel
 		_eventManager.addClasIoEventListener(this, 1);
 		setLayout(new GridLayout(numRows, 0, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
-		AccumulationManager.getInstance().addAccumulationListener(this);
 
 		FontMetrics gm = getFontMetrics(ActionLabel.enabledFontLarge);
 		preferredHeight = numRows * (gm.getHeight() + 2);
@@ -109,17 +102,19 @@ public class ClasIoPresentBankPanel extends JPanel
 	}
 
 
-
-	//replace all the bank action labels as result of new event
+	// replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
 
 		removeAll();
-		String[] allBanks = event.getBankList();
-		Arrays.sort(allBanks);
-		if (allBanks != null) {
-			for (String s : allBanks) {
-				if (match(s)) {
-					makeLabel(s);
+
+		if (event != null) {
+			String[] allBanks = event.getBankList();
+			Arrays.sort(allBanks);
+			if (allBanks != null) {
+				for (String s : allBanks) {
+					if (match(s)) {
+						makeLabel(s);
+					}
 				}
 			}
 		}
@@ -167,15 +162,6 @@ public class ClasIoPresentBankPanel extends JPanel
 
 				boolean inCurrent = _eventManager.isBankInCurrentEvent(s);
 				alabel.setEnabled(inCurrent);
-
-				ClasIoBankView bankView = _dataBanks.get(s);
-				if (bankView != null) {
-					if (inCurrent) {
-						bankView.update();
-					} else {
-						bankView.clear();
-					}
-				}
 			}
 		}
 	}
@@ -194,32 +180,14 @@ public class ClasIoPresentBankPanel extends JPanel
 
 					if ((_nodeTable != null) && (clickCount == 1)) {
 						_nodeTable.makeNameVisible(label);
-						if (e.isAltDown() || e.isControlDown()) {
-					//		System.err.println("MODIFIER");
-						}
 
 					} else if (clickCount == 2) {
-						ClasIoBankView bankView = _dataBanks.get(label);
-
-						if (bankView == null) {
-							if (_dataBanks.isEmpty()) {
-								ViewManager.getInstance().getViewMenu().addSeparator();
-							}
-
-							bankView = new ClasIoBankView(label);
-							_dataBanks.put(label, bankView);
-						}
-						bankView.update();
-						bankView.toFront();
-
-
-						if (!bankView.isVisible()) {
-							bankView.setVisible(true);
-						}
-
-						//move to current virtual view?
-						VirtualView.getInstance().moveToCurrentColumn(bankView);
-
+						
+						// open a new window
+						CedDataWindow dw = CedDataWindow.getBankWindow(label);
+						dw.update();
+						dw.setVisible(true);
+						
 					}
 				}
 			}
@@ -270,22 +238,9 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	@Override
 	public void openedNewEventFile(String path) {
+		replaceBankLabels(null);
 	}
 
-	@Override
-	public void accumulationEvent(int reason) {
-		switch (reason) {
-		case AccumulationManager.ACCUMULATION_STARTED:
-			break;
-
-		case AccumulationManager.ACCUMULATION_CANCELLED:
-			break;
-
-		case AccumulationManager.ACCUMULATION_FINISHED:
-			update();
-			break;
-		}
-	}
 
 	/**
 	 * Change the event source type
@@ -294,6 +249,7 @@ public class ClasIoPresentBankPanel extends JPanel
 	 */
 	@Override
 	public void changedEventSource(ClasIoEventManager.EventSourceType source) {
+		replaceBankLabels(null);
 	}
 	
 	/**

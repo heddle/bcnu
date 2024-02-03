@@ -61,9 +61,6 @@ public class FTOFView extends HexView {
 	//for handling highlight data
 	private FTOFHighlightHandler _highlightHandler;
 
-	//the max adc in the current event
-	private int _maxAdc;
-
 	//world limits
 	protected static Rectangle2D.Double _defaultWorld = new Rectangle2D.Double(_xsize, -_ysize, -2 * _xsize,
 			2 * _ysize);
@@ -344,14 +341,6 @@ public class FTOFView extends HexView {
 	}
 
 	/**
-	 * Get the max adc in the current event for color scaling
-	 * @return
-	 */
-	public int getMaxADC() {
-		return _maxAdc;
-	}
-
-	/**
 	 * A new event has arrived.
 	 *
 	 * @param event the new event.
@@ -359,15 +348,6 @@ public class FTOFView extends HexView {
 	@Override
 	public void newClasIoEvent(final DataEvent event) {
 		super.newClasIoEvent(event);
-
-		//useful to cache the max adc
-		_maxAdc = 0;
-		int adc[] = ColumnData.getIntArray("FTOF::adc.ADC");
-		if (adc != null) {
-			for (int adcval : adc) {
-				_maxAdc = Math.max(_maxAdc, adcval);
-			}
-		}
 	}
 
 	/**
