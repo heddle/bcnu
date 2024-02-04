@@ -9,6 +9,7 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
 import org.jlab.detector.decode.CLASDecoder4;
@@ -976,40 +977,55 @@ public class ClasIoEventManager {
 	 * along.
 	 */
 	protected void notifyEventListeners() {
-
-		Swimming.setNotifyOn(false); // prevent refreshes
-		Swimming.clearAllTrajectories();
-		Swimming.setNotifyOn(true); // prevent refreshes
-
-		_uniqueLundIds = null;
-
-		Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
-
-		_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
-
-
-		if (_currentBanks != null) {
-			Arrays.sort(_currentBanks);
+		
+		if (_currentEvent == null) {
+			return;
 		}
+		
+		Runnable runner = new Runnable() {
 
-		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
+			@Override
+			public void run() {
+				Swimming.setNotifyOn(false); // prevent refreshes
+				Swimming.clearAllTrajectories();
+				Swimming.setNotifyOn(true); // prevent refreshes
 
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
-					if (listeners[i] == IClasIoEventListener.class) {
-						listener.newClasIoEvent(_currentEvent);
-					}
+				_uniqueLundIds = null;
+
+				Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
+
+				_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
+
+
+				if (_currentBanks != null) {
+					Arrays.sort(_currentBanks);
 				}
+
+				for (int index = 0; index < 3; index++) {
+					if (_viewListenerList[index] != null) {
+						// Guaranteed to return a non-null array
+						Object[] listeners = _viewListenerList[index].getListenerList();
+
+						// This weird loop is the bullet proof way of notifying all
+						// listeners.
+						for (int i = listeners.length - 2; i >= 0; i -= 2) {
+							IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
+							if (listeners[i] == IClasIoEventListener.class) {
+								listener.newClasIoEvent(_currentEvent);
+							}
+						}
+					}
+
+				} // index loop
+
+				finalSteps();
 			}
 
-		} // index loop
+		};
+		
+		new Thread(runner).start();
 
-		finalSteps();
+
 	}
 
 	// final steps
