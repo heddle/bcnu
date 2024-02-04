@@ -371,9 +371,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// make sure noise listener is instantiated
 		NoiseManager.getInstance();
 
-		// make sure Timed refresh manager is instantiated
-//		TimedRefreshManager.getInstance();
-
 		// add an object that can respond to a "swim all MC" request.
 
 		ClasIoEventManager.getInstance().setAllMCSwimmer(new SwimAllMC());

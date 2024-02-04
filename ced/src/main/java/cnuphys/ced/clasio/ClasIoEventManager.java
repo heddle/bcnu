@@ -9,7 +9,6 @@ import java.util.Vector;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.event.EventListenerList;
 
 import org.jlab.detector.decode.CLASDecoder4;
@@ -74,7 +73,7 @@ public class ClasIoEventManager {
 
 	// reset everytime hipo or evio file is opened
 	private int _currentEventIndex;
-	
+
 	// sources of events (the type, not the actual source)
 	public enum EventSourceType {
 		HIPOFILE, ET, EVIOFILE
@@ -92,7 +91,7 @@ public class ClasIoEventManager {
 
 	// flag that set set to <code>true</code> if we are accumulating events
 	private boolean _accumulating = false;
-	
+
 	// flag that set set to <code>true</code> if we are quickly scanning events events
 	private boolean _scanning = false;
 
@@ -162,7 +161,7 @@ public class ClasIoEventManager {
 				if (isAccumulating()) {
 					DataWarehouse.getInstance().newClasIoEvent(_currentEvent);
 					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
-				} 
+				}
 				else if (isScanning()) {
                     ScanManager.getInstance().newClasIoEvent(_currentEvent);
                 }
@@ -308,10 +307,10 @@ public class ClasIoEventManager {
 	public void setAccumulating(boolean accumulating) {
 		_accumulating = accumulating;
 	}
-	
+
 	/**
 	 * Are we scanning?
-	 * 
+	 *
 	 * @return the scanning flag
 	 */
 	public boolean isScanning() {
@@ -977,11 +976,11 @@ public class ClasIoEventManager {
 	 * along.
 	 */
 	protected void notifyEventListeners() {
-		
+
 		if (_currentEvent == null) {
 			return;
 		}
-		
+
 		Runnable runner = new Runnable() {
 
 			@Override
@@ -991,11 +990,8 @@ public class ClasIoEventManager {
 				Swimming.setNotifyOn(true); // prevent refreshes
 
 				_uniqueLundIds = null;
-
 				Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
-
 				_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
-
 
 				if (_currentBanks != null) {
 					Arrays.sort(_currentBanks);
@@ -1015,18 +1011,20 @@ public class ClasIoEventManager {
 							}
 						}
 					}
-
 				} // index loop
-
 				finalSteps();
 			}
-
 		};
-		
-		new Thread(runner).start();
 
-
+		Thread t = new Thread(runner);
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
+
 
 	// final steps
 	private void finalSteps() {

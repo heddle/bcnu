@@ -5,7 +5,6 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class FTOFPanel3D extends DetectorItem3D {

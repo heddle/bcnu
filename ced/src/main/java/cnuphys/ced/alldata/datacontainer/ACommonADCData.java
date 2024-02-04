@@ -103,7 +103,7 @@ public abstract class ACommonADCData implements IDataContainer {
 	 * @param feedbackStrings the list of feedback strings
 	 */
 	public void adcFeedback(String detectorName, int index, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("$cyan$%s adc %d time %6.3f", detectorName, adc[index], time[index]));
+		feedbackStrings.add(String.format("$cyan$%s adc %d time %6.3f order %d", detectorName, adc[index], time[index], order[index]));
 	}
 
 }

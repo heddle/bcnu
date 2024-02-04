@@ -1081,7 +1081,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public void magneticFieldChanged() {
 		_activeProbe = FieldProbe.factory();
 		refresh();
-//		TimedRefreshManager.getInstance().add(this);
 	}
 
 	/**
@@ -1304,7 +1303,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void trajectoriesChanged() {
 		if (!_eventManager.isAccumulating()) {
-//			TimedRefreshManager.getInstance().add(this);
 			refresh();
 		}
 	}

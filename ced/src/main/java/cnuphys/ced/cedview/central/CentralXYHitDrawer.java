@@ -9,6 +9,7 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.AdcHit;
@@ -17,7 +18,6 @@ import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
@@ -29,18 +29,18 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 	private static Color _baseColor = new Color(255, 0, 0, 60);
 
-	//common adc color scale
+	// common adc color scale
 	private AdcColorScale _adcColorScale = AdcColorScale.getInstance();
 
 	// owner view
 	private CentralXYView _view;
-	
-	//data containers
-	CNDADCData adcData = CNDADCData.getInstance();
-	
-	//accumulation manager
-	private  AccumulationManager _accumManager = AccumulationManager.getInstance();
 
+	// data containers
+	CNDADCData adcData = CNDADCData.getInstance();
+	CTOFADCData adcCTOFData = CTOFADCData.getInstance();
+
+	// accumulation manager
+	private AccumulationManager _accumManager = AccumulationManager.getInstance();
 
 	public CentralXYHitDrawer(CentralXYView view) {
 		super(view);
@@ -106,7 +106,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawCTOFAccumulatedHits(Graphics g, IContainer container) {
 
-		//sector and layer always == 1 only worry about component
+		// sector and layer always == 1 only worry about component
 		int maxHit = _accumManager.getMaxCTOFCount();
 
 		int ctofData[] = _accumManager.getAccumulatedCTOFData();
@@ -135,7 +135,6 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		drawCVTRecTraj(g, container);
 	}
 
-
 	// draw CTOF hits
 	@Override
 	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {
@@ -144,19 +143,17 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			return;
 		}
 
-		//draw based on adc data
-		
+		// draw based on adc data
+
 		CNDADCData cndADCData = CNDADCData.getInstance();
 		for (int i = 0; i < cndADCData.count(); i++) {
-			CNDXYPolygon poly = _view.getCNDPolygon(cndADCData.sector[i], cndADCData.layer[i],
-					cndADCData.order[i] + 1);
+			CNDXYPolygon poly = _view.getCNDPolygon(cndADCData.sector[i], cndADCData.layer[i], cndADCData.order[i] + 1);
 			if (poly != null) {
 				Color color = cndADCData.getADCColor(cndADCData.adc[i]);
 				poly.draw(g, container, color, Color.black);
 			}
 		}
 	}
-
 
 	// draw CTOF hits
 	@Override
@@ -166,18 +163,16 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			return;
 		}
 
-
-		//draw based on adc data
-		LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
-		if (arrays.hasData()) {
-			for (int i = 0; i < arrays.sector.length; i++) {
-				CTOFXYPolygon poly = _view.getCTOFPolygon(arrays.component[i]);
-				if (poly != null) {
-					Color color = arrays.getColor(arrays.sector[i], arrays.layer[i], arrays.component[i]);
-					poly.draw(g, container, arrays.component[i], color);
-				}
+		// draw based on adc data
+		for (int i = 0; i < adcCTOFData.count(); i++) {
+			CTOFXYPolygon poly = _view.getCTOFPolygon(adcCTOFData.component[i]);
+			if (poly != null) {
+				Color color = adcCTOFData.getColor(adcCTOFData.sector[i], adcCTOFData.layer[i],
+						adcCTOFData.component[i], adcCTOFData.order[i]);
+				poly.draw(g, container, adcCTOFData.component[i], color);
 			}
 		}
+
 	}
 
 	// draw BMT hits
@@ -187,7 +182,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		drawBMTReconHits(g, container);
 	}
 
-	//draw BMT adc data
+	// draw BMT adc data
 	private void drawBMTADCData(Graphics g, IContainer container) {
 		if (_view.showADCHits()) {
 
@@ -219,7 +214,8 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 							Color color = hits.adcColor(hit);
 
-							double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(hit.sector, hit.layer, hit.component);
+							double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(hit.sector, hit.layer,
+									hit.component);
 
 							double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
 							wp.x = rad * Math.cos(phi);
@@ -229,7 +225,6 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 							hit.setLocation(pp);
 							DataDrawSupport.drawAdcHit(g, pp, color);
 						}
-
 
 					}
 				}
@@ -245,7 +240,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			Point pp = new Point();
 			Point2D.Double wp = new Point2D.Double();
 
-	//		DataManager.getInstance().
+			// DataManager.getInstance().
 
 			BaseHit2List recHits = BMT.getInstance().getRecHits();
 			if (recHits != null) {
@@ -280,7 +275,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		drawBSTReconHits(g, container);
 	}
 
-	//draw BST adc data
+	// draw BST adc data
 	private void drawBSTADCData(Graphics g, IContainer container) {
 		if (_view.showADCHits()) {
 			AdcList hits = BST.getInstance().getADCHits();
@@ -304,7 +299,6 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		}
 	}
 
-
 	// draw bst reconstructed hits
 	private void drawBSTReconHits(Graphics g, IContainer container) {
 		if (_view.showReconHits()) {
@@ -317,14 +311,16 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 				for (BaseHit2 bhit2 : recHits) {
 					if (bhit2.sector > 0 && bhit2.layer > 0 && bhit2.component > 0 && bhit2.layer < 7
-							&& bhit2.component < 257 && (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
+							&& bhit2.component < 257
+							&& (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
 						BSTGeometry.getStripMidpointXY(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1, wp);
 						container.worldToLocal(pp, wp);
 						bhit2.setLocation(pp);
 						DataDrawSupport.drawReconHit(g, pp);
 
 					} else {
-	//					System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits   " + bhit2);
+						// System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits " +
+						// bhit2);
 					}
 
 				}

@@ -73,7 +73,7 @@ public class SplashWindowCED extends JWindow {
 			}
 		}
 
-		addTimer(2500);
+		addTimer(3000);
 
 		addSouth();
 		addCenter(bg, (_cnu2 != null) ? _cnu2.getIconWidth() : width);

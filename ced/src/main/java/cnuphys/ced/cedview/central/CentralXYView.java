@@ -36,6 +36,7 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
@@ -51,7 +52,6 @@ import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -90,6 +90,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private HighlightData _bstHighlightData = new HighlightData();
 	private HighlightData _bmtHighlightData = new HighlightData();
 
+	// data containers
+	private CTOFADCData _ctofADCData = CTOFADCData.getInstance();
 
 	// units are mm
 	// private static Rectangle2D.Double _defaultWorldRectangle = new
@@ -587,19 +589,19 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			// ctof ?
 			else if ((rad > CTOFGeometry.RINNER) && (rad < CTOFGeometry.ROUTER)) {
 
-
 				for (short index = 0; index < 48; index++) {
 					if (_ctofPoly[index].contains(screenPoint)) {
-						short paddle = (short) (index + 1); //now 1-based
+						short paddle = (short) (index + 1); // now 1-based
 						feedbackStrings.add("$cyan$CTOF paddle: " + paddle);
+						
+						for (int i = 0; i < _ctofADCData.count(); i++) {
+                            if (_ctofADCData.component[i] == paddle) {
+                                _ctofADCData.adcFeedback("CTOF", i, feedbackStrings);
+                            }
+                        }
 
-						if (_eventManager.getCurrentEvent() != null) {
-							LR_ADCArrays arrays = LR_ADCArrays.getArrays("CTOF::adc");
-							arrays.addFeedback((byte)1, (byte)1, paddle, feedbackStrings);
 						break;
-					} //end paddle contains point
-
-				}
+					}
 				}
 			}
 		}

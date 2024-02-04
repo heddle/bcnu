@@ -27,7 +27,6 @@ import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.arrays.adc.ADCArrays;
-import cnuphys.ced.event.data.arrays.adc.LR_ADCArrays;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -829,28 +828,26 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// for ctof accumulating
 	private void accumCTOF() {
 		
-		CTOFADCData ctofData = CTOFADCData.getInstance();
-		for (int i = 0; i < ctofData.count(); i++) {
-			_CTOFAccumulatedData[ctofData.component[i] - 1] += 1;
+		for (int i = 0; i < ctofADCData.count(); i++) {
+			_CTOFAccumulatedData[ctofADCData.component[i] - 1] += 1;
 		}
 	}
 
 	// for ftof accumulating
 	private void accumFTOF() {
 		
-		FTOFADCData ftofData = FTOFADCData.getInstance();
-		for (int i = 0; i < ftofData.count(); i++) {
-			int sect0 = ftofData.sector[i] - 1;
-			int paddle0 = ftofData.component[i] - 1;
+		for (int i = 0; i < ftofADCData.count(); i++) {
+			int sect0 = ftofADCData.sector[i] - 1;
+			int paddle0 = ftofADCData.component[i] - 1;
 
-			if (ftofData.layer[i] == 1) {
+			if (ftofADCData.layer[i] == 1) {
 				_FTOF1AAccumulatedData[sect0][paddle0] += 1;
-			} else if (ftofData.layer[i] == 2) {
+			} else if (ftofADCData.layer[i] == 2) {
 				_FTOF1BAccumulatedData[sect0][paddle0] += 1;
-			} else if (ftofData.layer[i] == 3) {
+			} else if (ftofADCData.layer[i] == 3) {
 				_FTOF2AccumulatedData[sect0][paddle0] += 1;
 			} else {
-				System.out.println("ERROR:  accumFTOF layer out of bounds: " + ftofData.layer[i]);
+				System.out.println("ERROR:  accumFTOF layer out of bounds: " + ftofADCData.layer[i]);
 			}
 		}
 
