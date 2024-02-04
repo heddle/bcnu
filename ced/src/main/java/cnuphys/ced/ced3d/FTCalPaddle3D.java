@@ -5,7 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.arrays.adc.ADCArrays;
+import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
 import cnuphys.ced.geometry.FTCALGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -19,7 +19,10 @@ public class FTCalPaddle3D extends DetectorItem3D {
 
 	// frame the paddle?
 	private static boolean _frame = true;
-
+	
+	//data container
+	private FTCalADCData adcData = FTCalADCData.getInstance();
+	
 	/**
 	 * Create a FTCAL paddle
 	 *
@@ -36,14 +39,19 @@ public class FTCalPaddle3D extends DetectorItem3D {
 	@Override
 	public void drawShape(GLAutoDrawable drawable) {
 		//hits use adc data
-		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
-		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
+		Color color = X11Colors.getX11Color("white", getVolumeAlpha());
 
 		// draw "hit" based on adc values
-		ADCArrays arrays = ADCArrays.getArrays("FTCAL::adc");
-		int adcIndex = arrays.find((byte)1, (byte)1, _id);
-		Color color = (adcIndex < 0) ? noHitColor : hitColor;
+		for (int i = 0; i < adcData.count(); i++) {
+			if (adcData.component[i] == _id) {
+				int adc = adcData.adc[i];
 
+				color = adcData.getADCColor(adc);
+				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), getVolumeAlpha());
+				break;
+			}
+		}
+	
 		Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
 		Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);
 		Support3D.drawQuad(drawable, _coords, 0, 4, 7, 3, color, 1f, _frame);

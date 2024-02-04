@@ -109,18 +109,6 @@ public class VirtualView extends BaseView
 
 		_instance = this;
 
-//		ActionListener taskPerformer = new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent evt) {
-//				if (_refreshPending) {
-//					getContainer().refresh();
-//					_refreshPending = false;
-//				}
-//			}
-//		};
-//		new Timer(1500, taskPerformer).start();
-
-
 	}
 
 	/**

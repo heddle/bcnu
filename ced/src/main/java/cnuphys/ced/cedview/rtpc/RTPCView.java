@@ -25,6 +25,7 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -32,7 +33,6 @@ import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.arrays.adc.ADCArrays;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.lund.X11Colors;
 
@@ -52,10 +52,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	private static final double PHIMIN = 0;
 	private static final double ZMAX = 192;
 	private static final double PHIMAX = 360;
-//	private static final double STRETCHZMIN = 1.005*ZMIN;
-//	private static final double STRETCHPHIMIN = 1.005*PHIMIN;
-//	private static final double STRETCHZMAX = 1.005*ZMAX;
-//	private static final double STRETCHPHIMAX = 1.005*PHIMAX;
 
 	//the local screen rect
 	private Rectangle screenRect;
@@ -66,11 +62,11 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	// base title
 	private static final String _baseTitle = "RTPC";
 
-	// units are
-//	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(STRETCHPHIMIN, STRETCHZMIN,
-//			(STRETCHPHIMAX - STRETCHPHIMIN), (STRETCHZMAX - STRETCHZMIN));
 
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-10, -200, 380, 400);
+
+	// the adc data container
+	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
 
 	/**
 	 * Create an RTPC view
@@ -132,14 +128,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-
-				Component component = container.getComponent();
-//				Rectangle b = component.getBounds();
-//
-//				// ignore b.x and b.y as usual
-//
-//				b.x = 0;
-//				b.y = 0;
 
 				screenRect = container.getInsetRectangle();
 				g.setColor(X11Colors.getX11Color("alice blue"));
@@ -231,29 +219,23 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 		//use the ADC data
+		
+		for (int i = 0; i < rtpcADCData.count(); i++) {
+			if (rtpcADCData.adc[i] >= getAdcThreshold()) {
+				// component and layer are 1-based
+				short component = rtpcADCData.component[i];
+				byte layer = rtpcADCData.layer[i];
 
-		ADCArrays adcArrays =ADCArrays.getArrays("RTPC::adc");
+				Rectangle hr = new Rectangle();
+				Point p0 = new Point();
+				Point p1 = new Point();
 
-		if (adcArrays.hasData()) {
-
-			int adc[] = adcArrays.ADC;
-			for (int i = 0; i < adc.length; i++) {
-
-				if (adc[i] >= getAdcThreshold()) {
-					// component and layer are 1-based
-					short component = adcArrays.component[i];
-					byte layer = adcArrays.layer[i];
-
-					Rectangle hr = new Rectangle();
-					Point p0 = new Point();
-					Point p1 = new Point();
-
-					setRect(container, component, layer, hr, p0, p1);
-					g.setColor(Color.red);
-					g.fillRect(hr.x, hr.y, hr.width, hr.height);
-				}
-		     }
+				setRect(container, component, layer, hr, p0, p1);
+				g.setColor(Color.red);
+				g.fillRect(hr.x, hr.y, hr.width, hr.height);
+			}
 		}
+
 	}
 
 	//set the rect based on component and layer
@@ -266,8 +248,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		container.worldToLocal(p1, phi+DELPHI, z+DELZ);
 
 		hr.setBounds(p0.x, p1.y, p1.x -  p0.x, p0.y - p1.y);
-
-//		System.err.println("RTPC hit rect: " +  hr);
 	}
 
 	// accumulated hits drawer
@@ -356,33 +336,20 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		Point pp = new Point();
 		worldToComponentLayer(container, pp, wp);
 
-		short component = (short)(pp.x); //1-based
-		byte layer = (byte)(pp.y); //1-based
+		short component = (short) (pp.x); // 1-based
+		byte layer = (byte) (pp.y); // 1-based
 
 		String clStr = "component " + pp.x + ", layer " + pp.y;
 		feedbackStrings.add(clStr);
 
+		for (int i = 0; i < rtpcADCData.count(); i++) {
+			if (rtpcADCData.adc[i] >= getAdcThreshold()) {
 
-		ADCArrays adcArrays =ADCArrays.getArrays("RTPC::adc");
-
-		if (adcArrays.hasData()) {
-
-			int adc[] = adcArrays.ADC;
-			for (int i = 0; i < adc.length; i++) {
-
-				if (adc[i] >= getAdcThreshold()) {
-					// component and layer are 1-based
-
-					if ((component == adcArrays.component[i]) && (layer == adcArrays.layer[i])) {
-						String s = String.format("  adc %d ped %d time %-7.2f",
-								adc[i], adcArrays.ped[i], adcArrays.time[i]);
-						feedbackStrings.add(s);
-
-					}
+				if ((component == rtpcADCData.component[i]) && (layer == rtpcADCData.layer[i])) {
+					rtpcADCData.adcFeedback("RTPC", i, feedbackStrings);
 				}
-		     }
+			}
 		}
-
 	}
 
 	//after return, p.x is the components 1..180 and p.y is layer 1..96

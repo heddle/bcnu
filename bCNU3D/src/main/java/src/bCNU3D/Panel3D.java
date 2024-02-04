@@ -63,12 +63,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 	private float _view_roty;
 	private float _view_rotz;
 
-	// maintenance timer
-//	private Timer _timer;
-//	boolean _enableMaintenance;
-//	boolean _doingMaintenance;
-//	public boolean refreshPending;
-
 	// distance in front of the screen
 	private float _zdist;
 

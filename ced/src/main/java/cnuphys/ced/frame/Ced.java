@@ -45,7 +45,6 @@ import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmingTestView3D;
-import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
@@ -54,7 +53,6 @@ import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.ftof.FTOFView;
-import cnuphys.ced.cedview.rtpc.RTPCView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.cedview.urwell.UrWELLXYView;
@@ -171,9 +169,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private CentralXYView _centralXYView;
 	private CentralZView _centralZView;
 
-	private AlertXYView _alertXYView;
+//	private AlertXYView _alertXYView;
 
-	private RTPCView _rtpcView;
+//	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
 	private UrWELLXYView _urwellXyView;
@@ -303,21 +301,21 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// note no constraint means "center"
 		_virtualView.moveTo(_dcXyView, 6);
 
-		_virtualView.moveTo(_rtpcView, 7);
-		_virtualView.moveTo(_urwellXyView, 8, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_ftofView, 9, VirtualView.UPPERRIGHT);
-		_virtualView.moveTo(_ftcalXyView, 10, VirtualView.CENTER);
-		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
+//		_virtualView.moveTo(_rtpcView, 7);
+		_virtualView.moveTo(_urwellXyView, 7, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_ftofView, 8, VirtualView.UPPERRIGHT);
+		_virtualView.moveTo(_ftcalXyView, 9, VirtualView.CENTER);
+//		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_logView, 10, VirtualView.CENTER);
 
 
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 14, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_forward3DView, 11, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 12, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 12, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 13, VirtualView.CENTER);
 			}
 		}
 
@@ -381,7 +379,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a virtual view
 
-		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 11 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -429,7 +427,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		//add and ALERT XY view
-		_alertXYView = AlertXYView.createAlertXYView();
+		//_alertXYView = AlertXYView.createAlertXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
@@ -440,7 +438,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		// add an RTPC vie
-		_rtpcView = RTPCView.createRTPCView();
+		//_rtpcView = RTPCView.createRTPCView();
 
         //FTOF
 		_ftofView = FTOFView.createFTOFView();

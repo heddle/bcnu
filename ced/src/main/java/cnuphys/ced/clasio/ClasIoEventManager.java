@@ -1025,7 +1025,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-
 	// final steps
 	private void finalSteps() {
 		if (isAccumulating() || isScanning()) {
@@ -1042,10 +1041,6 @@ public class ClasIoEventManager {
 				((CedView) jif).getContainer().redoFeedback();
 			}
 		}
-
-
-		//refresh
-		//Ced.refresh();
 	}
 
 	private void swimAllMC() {

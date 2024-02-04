@@ -15,6 +15,7 @@ import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
+import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.cedview.central.CentralXYView;
@@ -26,7 +27,6 @@ import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.arrays.adc.ADCArrays;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -127,6 +127,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private FTOFADCData ftofADCData = FTOFADCData.getInstance();
 	private CTOFADCData ctofADCData = CTOFADCData.getInstance();
 	private FTCalADCData ftcalADCData = FTCalADCData.getInstance();
+	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
 
 	/**
 	 * private constructor for singleton.
@@ -712,16 +713,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate rtpc
 		private void accumRTPC() {
-
-			ADCArrays arrays = ADCArrays.getArrays("RTPC::adc");
-
-
-			if (arrays.hasData()) {
-				for (int i = 0; i < arrays.sector.length; i++) {
-					int cm1 = arrays.component[i] - 1;
-					int lm1 = arrays.layer[i] - 1;
-					_RTPCAccumulatedData[cm1][lm1] += 1;
-				}
+			
+			for (int i = 0; i < rtpcADCData.count(); i++) {
+				int cm1 = rtpcADCData.component[i] - 1;
+				int lm1 = rtpcADCData.layer[i] - 1;
+				_RTPCAccumulatedData[cm1][lm1] += 1;
 			}
 
 		}

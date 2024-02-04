@@ -16,7 +16,6 @@ import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.IAccumulationListener;
 import cnuphys.ced.event.data.arrays.BaseArrays;
 import cnuphys.ced.event.data.lists.ClusterList;
 

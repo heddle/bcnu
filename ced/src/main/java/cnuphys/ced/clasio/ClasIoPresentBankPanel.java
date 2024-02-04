@@ -8,12 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Hashtable;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 import org.jlab.io.base.DataEvent;
 
@@ -22,6 +25,7 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedwindow.CedDataWindow;
+import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.table.NodeTable;
 
 /**
@@ -31,14 +35,13 @@ import cnuphys.ced.clasio.table.NodeTable;
  *
  */
 @SuppressWarnings("serial")
-public class ClasIoPresentBankPanel extends JPanel
-		implements ActionListener, IClasIoEventListener {
+public class ClasIoPresentBankPanel extends JPanel {
 
-	//try to set a reasonable height
+	// try to set a reasonable height
 	private int preferredHeight;
 
 	// the event manager
-	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	private static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// hash table
 	private Hashtable<String, ActionLabel> _alabels = new Hashtable<>(193);
@@ -46,36 +49,32 @@ public class ClasIoPresentBankPanel extends JPanel
 	// the node table
 	private NodeTable _nodeTable;
 
+	// all the panels
+	private static List<ClasIoPresentBankPanel> _pbPanels = new ArrayList<ClasIoPresentBankPanel>();
 
-	//if a cedview owns this
+	// the single event listaner
+	private static IClasIoEventListener _eventListener;
+
+	// if a cedview owns this
 	private CedView _view;
-	
-	//scroll pane
+
+	// scroll pane
 	private JScrollPane _scrollPane;
 
 	/**
 	 * This panel holds all the known banks in a grid of buttons. Banks present will
-	 * be clickable, and will cause the table to scroll to that name
-	 * @param view the view owner
+	 * be clickable, and will cause the table to scroll to that name * @param
+	 * nodeTable
+	 * 
+	 * @param view      the view owner
 	 * @param nodeTable the table
+	 * @param numRows   the number of rows for banks
 	 */
-	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable) {
-		this(view, nodeTable, 45);
-	}
+	private ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows) {
 
-	/**
-     *This panel holds all the known banks in a grid of buttons. Banks present will
-	 * be clickable, and will cause the table to scroll to that name	 * @param nodeTable
-	 * @param view the view owner
-	 * @param nodeTable the table
-	 * @param numRows the number of rows for banks
-	 */
-	public ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows) {
-
-		_view = (view instanceof CedView) ? (CedView)view: null;
+		_view = (view instanceof CedView) ? (CedView) view : null;
 
 		_nodeTable = nodeTable;
-		_eventManager.addClasIoEventListener(this, 1);
 		setLayout(new GridLayout(numRows, 0, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 
@@ -84,6 +83,72 @@ public class ClasIoPresentBankPanel extends JPanel
 
 	}
 
+	/**
+	 * Create a present bank panel
+	 * 
+	 * @param view      the view owner
+	 * @param nodeTable the table
+	 * @param numRows   the number of rows for banks
+	 * @return the present bank panel
+	 */
+	public static ClasIoPresentBankPanel createPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows) {
+
+		if (_eventListener == null) {
+			createEventListener();
+		}
+
+		ClasIoPresentBankPanel pbPanel = new ClasIoPresentBankPanel(view, nodeTable, numRows);
+		_pbPanels.add(pbPanel);
+
+		return pbPanel;
+
+	}
+
+	// create the event listener
+	private static void createEventListener() {
+		_eventListener = new IClasIoEventListener() {
+			@Override
+			public void newClasIoEvent(DataEvent event) {
+				if (!_eventManager.isAccumulating()) {
+					SwingUtilities.invokeLater(new Runnable() {
+						@Override
+						public void run() {
+							for (ClasIoPresentBankPanel pbPanel : _pbPanels) {
+								pbPanel.replaceBankLabels(event);
+								pbPanel.update();
+							}
+						}
+					});
+				}
+			}
+
+			@Override
+			// TODO Auto-generated method stub
+			public void openedNewEventFile(String path) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						for (ClasIoPresentBankPanel pbPanel : _pbPanels) {
+							pbPanel.replaceBankLabels(null);
+						}
+					}
+				});
+			}
+
+			@Override
+			public void changedEventSource(EventSourceType source) {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						for (ClasIoPresentBankPanel pbPanel : _pbPanels) {
+							pbPanel.replaceBankLabels(null);
+						}
+					}
+				});
+			}
+		};
+		ClasIoEventManager.getInstance().addClasIoEventListener(_eventListener, 1);
+	}
 
 	@Override
 	public Dimension getMinimumSize() {
@@ -100,7 +165,6 @@ public class ClasIoPresentBankPanel extends JPanel
 		return d;
 
 	}
-
 
 	// replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
@@ -120,8 +184,6 @@ public class ClasIoPresentBankPanel extends JPanel
 		}
 	}
 
-
-
 	// must match
 	private boolean match(String s) {
 
@@ -131,13 +193,11 @@ public class ClasIoPresentBankPanel extends JPanel
 
 		String[] matchList = _view.getBanksMatches();
 
-
-		if (matchList == null) { //accept all
+		if (matchList == null) { // accept all
 			return true;
-		}
-		else {
+		} else {
 			for (String ms : matchList) {
-					if (s.contains(ms)) {
+				if (s.contains(ms)) {
 					return true;
 				}
 			}
@@ -182,12 +242,12 @@ public class ClasIoPresentBankPanel extends JPanel
 						_nodeTable.makeNameVisible(label);
 
 					} else if (clickCount == 2) {
-						
+
 						// open a new window
 						CedDataWindow dw = CedDataWindow.getBankWindow(label);
 						dw.update();
 						dw.setVisible(true);
-						
+
 					}
 				}
 			}
@@ -223,35 +283,6 @@ public class ClasIoPresentBankPanel extends JPanel
 		return alabel;
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent ae) {
-	}
-
-	@Override
-	public void newClasIoEvent(DataEvent event) {
-
-		if (!_eventManager.isAccumulating()) {
-			replaceBankLabels(event);
-			update();
-		}
-	}
-
-	@Override
-	public void openedNewEventFile(String path) {
-		replaceBankLabels(null);
-	}
-
-
-	/**
-	 * Change the event source type
-	 *
-	 * @param source the new source: File, ET
-	 */
-	@Override
-	public void changedEventSource(ClasIoEventManager.EventSourceType source) {
-		replaceBankLabels(null);
-	}
-	
 	/**
 	 * Get the table's scroll pane
 	 *
@@ -263,7 +294,5 @@ public class ClasIoPresentBankPanel extends JPanel
 		}
 		return _scrollPane;
 	}
-
-
 
 }

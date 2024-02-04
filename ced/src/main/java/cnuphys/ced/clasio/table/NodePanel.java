@@ -104,7 +104,7 @@ public class NodePanel extends JPanel
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		// shows which banks are present
-		_presentPanel = new ClasIoPresentBankPanel(_view, _nodeTable);
+		_presentPanel = ClasIoPresentBankPanel.createPresentBankPanel(_view, _nodeTable, 45);
 
 		panel.add(_presentPanel.getScrollPane());
 		panel.add(Box.createVerticalGlue());

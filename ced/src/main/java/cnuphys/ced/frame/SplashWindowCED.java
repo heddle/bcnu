@@ -124,13 +124,6 @@ public class SplashWindowCED extends JWindow {
 
 		JLabel label = new JLabel("") {
 
-//        	@Override
-//        	public Insets getInsets() {
-//        		Insets def = super.getInsets();
-//        		return new Insets(def.top + 4, def.left + 4, def.bottom + 4,
-//        				def.right + 4);
-//        	}
-
 			@Override
 			public Dimension getPreferredSize() {
 				return size;
