@@ -11,7 +11,7 @@ public class LTCCRecData extends ACommonRecData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static LTCCRecData getInstance() {
@@ -29,23 +29,23 @@ public class LTCCRecData extends ACommonRecData {
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("LTCC::rec");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
 		id = bank.getShort("id");
 		x = bank.getFloat("x");
 		y = bank.getFloat("y");
 		z = bank.getFloat("z");
-		
+
         int n = (x != null) ? x.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
 
-		
+
 	}
 
 }

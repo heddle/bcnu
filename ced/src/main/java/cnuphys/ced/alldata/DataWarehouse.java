@@ -2,7 +2,6 @@ package cnuphys.ced.alldata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.swing.event.EventListenerList;
@@ -16,8 +15,6 @@ import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.data.arrays.BaseArrays;
-import cnuphys.ced.event.data.lists.ClusterList;
 
 public class DataWarehouse implements IClasIoEventListener {
 
@@ -30,14 +27,11 @@ public class DataWarehouse implements IClasIoEventListener {
 	//the current schema factory (dictionary)
 	private SchemaFactory _schemaFactory;
 
-    //the arrays for every event
-	private HashMap<String, BaseArrays> _arrays = new HashMap<>();
-
 	// private constructor for singleton
 	private DataWarehouse() {
 		ClasIoEventManager.getInstance().addClasIoEventListener(this, 0);
 	}
-	
+
 	// list of data container listeners
 	private static EventListenerList _listeners;
 
@@ -108,7 +102,6 @@ public class DataWarehouse implements IClasIoEventListener {
 		return _knownBanks;
 	}
 
-
 	/**
 	 * Update the schema factory and the columa dataobjects
 	 * @param schemaFactory
@@ -134,7 +127,7 @@ public class DataWarehouse implements IClasIoEventListener {
 		_knownBanks.sort(null);
 	}
 
-	
+
 	/**
 	 * Get the type of a column
 	 * @param bankName the bank name
@@ -145,7 +138,7 @@ public class DataWarehouse implements IClasIoEventListener {
 		Schema schema = _schemaFactory.getSchema(bankName);
 		return (schema == null) ? UNKNOWN : schema.getType(columnName);
 	}
-	
+
 	/**
 	 * Get the data type name of a column
 	 * @param bankName the bank name
@@ -156,7 +149,7 @@ public class DataWarehouse implements IClasIoEventListener {
 		int type = getType(bankName, columnName);
 		return typeNames[type];
 	}
-		
+
 	/**
 	 * Get the list of column names for a bank name
 	 *
@@ -174,8 +167,8 @@ public class DataWarehouse implements IClasIoEventListener {
 	private DataEvent getCurrentEvent() {
 		return ClasIoEventManager.getInstance().getCurrentEvent();
 	}
-	
-	
+
+
 
 	/**
 	 * Get a list of the banks in the current event
@@ -300,67 +293,6 @@ public class DataWarehouse implements IClasIoEventListener {
 	}
 
 	/**
-	 * Get the number of rows (length) of a given bank
-	 * @param bankName the bank name
-	 * @return the number of rows
-	 */
-	public int rowCount(String bankName) {
-		if (bankName == null) {
-			return 0;
-		}
-
-		DataEvent event = getCurrentEvent();
-		if (event == null) {
-			return 0;
-		}
-
-		DataBank bank = event.getBank(bankName);
-		if (bank == null) {
-			return 0;
-		}
-		return bank.rows();
-	}
-
-	/**
-	 * Get a cluster list for the given bank name
-	 * @param bankName
-	 * @return
-	 */
-	public ClusterList getClusters(String bankName) {
-
-		DataEvent event = getCurrentEvent();
-		if (event == null) {
-			return null;
-		}
-
-		DataBank bank = event.getBank(bankName);
-		if (bank == null) {
-			return null;
-		}
-
-		ClusterList clusters = new ClusterList(bankName);
-		clusters.fillList();
-		return clusters;
-	}
-
-	/**
-	 * Clear the arrays cache
-	 */
-	public void clearCache() {
-		_arrays.clear();
-	}
-
-	/**
-	 * Get the arrays for the given bank name from the cache
-	 *
-	 * @param bankName the bank name
-	 * @return the arrays
-	 */
-	public BaseArrays getArrays(String bankName) {
-		return _arrays.get(bankName);
-	}
-	
-	/**
 	 * Notify the data containers of a new event
 	 *
 	 * @param event the new event they should use to update themselves.
@@ -382,7 +314,7 @@ public class DataWarehouse implements IClasIoEventListener {
 			}
 		}
 	}
-	
+
 	/**
 	 * Notify the data containers to clear their data
 	 *
@@ -405,7 +337,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	}
 
 
-	
+
 	/**
 	 * Add an data container listener.
 	 *
@@ -423,33 +355,21 @@ public class DataWarehouse implements IClasIoEventListener {
 
 		_listeners.add(IDataContainer.class, listener);
 	}
-	
 
-	/**
-	 * Put the arrays for the given bank name into the cache
-	 * @param bankName
-	 * @param arrays
-	 */
-	public void putArrays(String bankName, BaseArrays arrays) {
-		_arrays.put(bankName, arrays);
-	}
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		clearCache();
 		notifyListeners(); //clear previous data
 		notifyListeners(event);
 	}
 
 	@Override
 	public void openedNewEventFile(String path) {
-		clearCache();
 		notifyListeners();
 	}
 
 	@Override
 	public void changedEventSource(EventSourceType source) {
-		clearCache();
 		notifyListeners();
 	}
 

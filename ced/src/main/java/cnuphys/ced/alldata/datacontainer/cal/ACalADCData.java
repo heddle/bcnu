@@ -18,7 +18,7 @@ public abstract class ACalADCData extends ACalData {
 
 	/** max adc value */
 	public int maxADC;
-	
+
 	@Override
 	public void clear() {
 		super.clear();
@@ -43,7 +43,7 @@ public abstract class ACalADCData extends ACalData {
 		}
 		return ADCZERO;
 	}
-	
+
 	//compute the max adc
 	protected void computeMaxADC() {
 		// get the max adc
@@ -58,8 +58,8 @@ public abstract class ACalADCData extends ACalData {
 				}
 			}
 
-		} 
-		
+		}
+
 	}
 
 

@@ -1121,7 +1121,7 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Checks if a bank, identified by a string such as "FTOF::hits", is in the
+	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
 	 * current event.
 	 *
 	 * @param bankName the bank name

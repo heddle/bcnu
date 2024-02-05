@@ -19,10 +19,10 @@ public class FTCalPaddle3D extends DetectorItem3D {
 
 	// frame the paddle?
 	private static boolean _frame = true;
-	
+
 	//data container
 	private FTCalADCData adcData = FTCalADCData.getInstance();
-	
+
 	/**
 	 * Create a FTCAL paddle
 	 *
@@ -51,7 +51,7 @@ public class FTCalPaddle3D extends DetectorItem3D {
 				break;
 			}
 		}
-	
+
 		Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
 		Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);
 		Support3D.drawQuad(drawable, _coords, 0, 4, 7, 3, color, 1f, _frame);

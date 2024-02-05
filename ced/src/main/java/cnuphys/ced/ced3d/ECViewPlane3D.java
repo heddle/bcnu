@@ -15,7 +15,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 	// sector is 1..6
 	private final int _sector;
 
-	// [1,2] for inner/outer 
+	// [1,2] for inner/outer
 	private final int _plane;
 
 	// [1, 2, 3] for [u, v, w] like geometry "layer+1"
@@ -23,7 +23,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 
 	// the triangle coordinates
 	private float _coords[];
-	
+
 	//data container
 	private ECalADCData ecADCData = ECalADCData.getInstance();
 
@@ -65,7 +65,7 @@ public class ECViewPlane3D extends DetectorItem3D {
 
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
-		
+
 		//use ADC data
 		int count = ecADCData.count();
 		if (count == 0) {

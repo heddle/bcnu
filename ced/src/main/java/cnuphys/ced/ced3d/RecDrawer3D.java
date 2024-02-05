@@ -56,7 +56,7 @@ public class RecDrawer3D extends Item3D {
 
 	//show data from REC::Calorimeter
 	private void showReconCalorimeter(GLAutoDrawable drawable) {
-		
+
 		if (_cedPanel3D.showECAL()) {
 			for (int i = 0; i < ecRecData.count(); i++) {
 				float x = ecRecData.x.get(i);

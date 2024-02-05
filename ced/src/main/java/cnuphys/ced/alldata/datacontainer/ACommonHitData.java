@@ -7,7 +7,7 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 
-public abstract class ACommonClusterData implements IDataContainer {
+public abstract class ACommonHitData implements IDataContainer {
 
 
 	// the data warehouse
@@ -16,36 +16,32 @@ public abstract class ACommonClusterData implements IDataContainer {
 	// event manager
 	protected static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-
 	/** 1-based sectors */
 	public byte[] sector;
 
 	/** 1-based layer*/
 	public byte layer[];
 
-	/** 1-based component */
+	/** 1-based component*/
 	public short component[];
 
 	/** 1-based id */
 	public short id[];
 
-	/** a status value */
-	public short status[];
-
-	/** the cluster energy */
-	public float energy[];
-
-	/** the cluster time */
-	public float time[];
-
-	/** the cluster x */
+	/** the hit x */
 	public float x[];
 
-	/** the cluster y */
+	/** the hit y */
 	public float y[];
 
-	/** the cluster z */
+	/** the hit z */
 	public float z[];
+
+	/** the hit energy */
+	public float energy[];
+
+	/** the hit time */
+	public float time[];
 
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
@@ -53,35 +49,33 @@ public abstract class ACommonClusterData implements IDataContainer {
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
 
-
 	/**
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
      */
-	public ACommonClusterData() {
+	public ACommonHitData() {
 		_dataWarehouse.addDataContainerListener(this);
 	}
-
 
 	@Override
 	public void clear() {
 		sector = null;
 		layer = null;
-		component = null;
+	    component = null;
 		id = null;
-		status = null;
-		energy = null;
-		time = null;
 		x = null;
 		y = null;
 		z = null;
 		ppx = null;
 		ppy = null;
+		energy = null;
+		time = null;
 	}
+
 
 	@Override
 	public int count() {
-        return (sector == null) ? 0 : sector.length;
+        return (x == null) ? 0 : x.length;
     }
 
 	/**
@@ -91,7 +85,7 @@ public abstract class ACommonClusterData implements IDataContainer {
 	 */
 	public void setLocation(int index, Point pp) {
 
-		int n = (sector == null) ? 0 : sector.length;
+		int n = (x == null) ? 0 : x.length;
 		if (n == 0) {
 			return;
 		}
@@ -107,7 +101,7 @@ public abstract class ACommonClusterData implements IDataContainer {
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index
-	 * @param pp rge screen point
+	 * @param pp the screen point
 	 * @return true if the screen point is in the cluster
 	 */
 	public boolean contains(int index, Point pp) {
@@ -115,11 +109,23 @@ public abstract class ACommonClusterData implements IDataContainer {
 				&& (Math.abs(ppy[index] - pp.y) <= DataDrawSupport.HITHALF));
 	}
 
-	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("$magenta$%s cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", detectorName, x[index], y[index], z[index]));
-		feedbackStrings.add(String.format("$magenta$%s cluster Energy %-6.3f GeV", detectorName, energy[index]));
-		feedbackStrings.add(String.format("$magenta$%s cluster ID %d  status %d", detectorName, id[index], status[index]));
+	/**
+	 * Common feedback format for hits
+	 * @param detectorName the name of the detector
+	 * @param index the index of the data
+	 * @param feedbackStrings the list of feedback strings
+	 */
+	public void hitFeedback(String detectorName, int index, List<String> feedbackStrings) {
+
+		int idv = (id == null) ? 0 : id[index];
+		String s = String.format("$wheat$%s id %d hit loc (%5.2f, %5.2f, %5.2f) cm",
+				detectorName, idv, x[index], y[index], z[index]);
+
+		if (!feedbackStrings.contains(s)) {
+			feedbackStrings.add(s);
+		}
 	}
+
 
 
 }

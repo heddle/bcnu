@@ -24,12 +24,12 @@ public class SectorHTCCItem extends PolygonItem {
 
 	// convenient access to the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//data containers
 	private HTCCADCData adcData = HTCCADCData.getInstance();
 	private HTCCTDCData tdcData = HTCCTDCData.getInstance();
 	private HTCCRecData recData = HTCCRecData.getInstance();
-    
+
 
 	// sector 1-based 1..6
 	private byte _sector;
@@ -100,7 +100,7 @@ public class SectorHTCCItem extends PolygonItem {
 
 	// single event drawer using adc bank
 	private void drawSingleEventHits(Graphics g, IContainer container) {
-		
+
 		//use the adc arrays
 		for (int i = 0; i < adcData.count(); i++) {
 			if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {
@@ -111,18 +111,18 @@ public class SectorHTCCItem extends PolygonItem {
 			}
 		} // end has data
 
-		
-		//the HTCC.rec data 
+
+		//the HTCC.rec data
 		if (_view.showReconHits()) {
-			
+
 			Point.Double wp = new Point.Double();
 			Point pp = new Point();
-			
+
 			for (int i = 0; i < recData.count(); i++) {
 				float x = recData.x[i];
 				float y = recData.y[i];
 				float z = recData.z[i];
-				
+
 				int sect = GeometryManager.getSector(x, y);
 				if (sect == _sector) {
 					_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
@@ -133,8 +133,8 @@ public class SectorHTCCItem extends PolygonItem {
 
 				}
 
-			} // end loop over rec data		
-		} // end show recon hits		
+			} // end loop over rec data
+		} // end show recon hits
 	}
 
 
@@ -169,7 +169,7 @@ public class SectorHTCCItem extends PolygonItem {
 	public void getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 		if (contains(container, screenPoint)) {
-			
+
 			feedbackStrings.add(DataSupport.prelimColor + "HTCC sect " + _sector + " ring " + _ring + " half " + _half);
 
 			for (int i = 0; i < adcData.count(); i++) {
@@ -179,7 +179,7 @@ public class SectorHTCCItem extends PolygonItem {
 					break;
 				}
 			} // end has data
-			
+
 			for (int i = 0; i < tdcData.count(); i++) {
 				if ((tdcData.sector[i] == _sector) && (tdcData.layer[i] == _half) && (tdcData.component[i] == _ring)) {
 					String s = String.format("HTCC tdc: %d", tdcData.tdc[i]);
@@ -206,7 +206,7 @@ public class SectorHTCCItem extends PolygonItem {
 					}
 				}
 
-			} // end loop over rec data	
+			} // end loop over rec data
 		} // end show recon hits
 
 	}

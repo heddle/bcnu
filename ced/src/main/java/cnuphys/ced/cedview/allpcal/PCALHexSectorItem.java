@@ -30,7 +30,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 	public static final Color transYellow = new Color(255, 255, 0, 200);
 
 	private static int[] _stripCounts = PCALGeometry.PCAL_NUMSTRIP; // u,v,w
-	
+
 	//the EC data container
 	private static PCalADCData _pcalADCData = PCalADCData.getInstance();
 
@@ -116,7 +116,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 			drawAccumulatedHits(g, container);
 		}
 	}
-	
+
 	// draw single event data
 	private void drawSingleEvent(Graphics g, IContainer container) {
 		drawADCData(g, container);
@@ -389,17 +389,17 @@ public class PCALHexSectorItem extends HexSectorItem {
 				String uvwStr = "$lime green$U V W [" + uvw[0] + ", " + uvw[1] + ", " + uvw[2] + "]";
 				feedbackStrings.add(uvwStr);
 
-				// any hits?		
+				// any hits?
 				for (int i = 0; i < _pcalADCData.count(); i++) {
 					byte sect = _pcalADCData.sector.get(i);
 					if (sect == getSector()) {
 						byte view = _pcalADCData.view.get(i);
 						short component = _pcalADCData.strip.get(i);
 						if (uvw[view] == component) {
-							String str = String.format("%s strip %d adc %d time %-7.3f", 
+							String str = String.format("%s strip %d adc %d time %-7.3f",
 									ECGeometry.VIEW_NAMES[view], component,
 									_pcalADCData.adc.get(i), _pcalADCData.time.get(i));
-							
+
 							feedbackStrings.add("$coral$" + str);
 						}
 					}

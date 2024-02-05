@@ -39,7 +39,7 @@ public class ReconDrawer extends SectorViewDrawer {
 	ECalReconData ecRecData = ECalReconData.getInstance();
 	PCalReconData pcalRecData = PCalReconData.getInstance();
 
-	
+
 	/**
 	 * Reconstructed hits drawer
 	 *
@@ -105,13 +105,13 @@ public class ReconDrawer extends SectorViewDrawer {
 
 	// draw data from the REC::Calorimeter bank
 	private void drawRecCal(Graphics g, IContainer container) {
-		
+
 
 
 		Point pp = new Point();
 		Point2D.Double wp = new Point2D.Double();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
-		
+
 		//draw ECAL
 		for (int i = 0; i < ecRecData.count(); i++) {
 			if (_view.containsSector(ecRecData.sector.get(i))) {
@@ -119,7 +119,7 @@ public class ReconDrawer extends SectorViewDrawer {
 				float x = ecRecData.x.get(i);
 				float y = ecRecData.y.get(i);
 				float z = ecRecData.z.get(i);
-				
+
                 _view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
                 container.worldToLocal(pp, wp);
                 DataDrawSupport.drawECALRec(g, pp, false);
@@ -127,14 +127,14 @@ public class ReconDrawer extends SectorViewDrawer {
                 double r = Math.sqrt(x*x + y*y + z*z);
                 double theta = Math.toDegrees(Math.acos(z/r));
                 double phi = Math.toDegrees(Math.atan2(y, x));
-                
+
                 float radius = ecRecData.getRadius(ecRecData.energy.get(i));
                 if (radius > 0) {
 					container.localToWorld(pp, wp);
 					wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);            	
+					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);
                 }
-                
+
 				_fbData.add(new FBData(pp,
 						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
 						String.format("$magenta$REC %s (%-6.3f, %-6.3f, %-6.3f)", CedView.rThetaPhi, r, theta, phi),
@@ -145,7 +145,7 @@ public class ReconDrawer extends SectorViewDrawer {
 
 			}
 		} //for i
-		
+
 		//draw PCAL
 		for (int i = 0; i < pcalRecData.count(); i++) {
 			if (_view.containsSector(pcalRecData.sector.get(i))) {
@@ -153,7 +153,7 @@ public class ReconDrawer extends SectorViewDrawer {
 				float x = pcalRecData.x.get(i);
 				float y = pcalRecData.y.get(i);
 				float z = pcalRecData.z.get(i);
-				
+
                 _view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
                 container.worldToLocal(pp, wp);
                 DataDrawSupport.drawECALRec(g, pp, false);
@@ -161,14 +161,14 @@ public class ReconDrawer extends SectorViewDrawer {
                 double r = Math.sqrt(x*x + y*y + z*z);
                 double theta = Math.toDegrees(Math.acos(z/r));
                 double phi = Math.toDegrees(Math.atan2(y, x));
-                
+
                 float radius = pcalRecData.getRadius(pcalRecData.energy.get(i));
                 if (radius > 0) {
 					container.localToWorld(pp, wp);
 					wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);            	
+					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);
                 }
-                
+
 				_fbData.add(new FBData(pp,
 						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
 						String.format("$magenta$REC %s (%-6.3f, %-6.3f, %-6.3f)", CedView.rThetaPhi, r, theta, phi),
@@ -202,9 +202,8 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw reconstructed clusters
 	private void drawClusters(Graphics g, IContainer container) {
 		drawCalClusters(g, container);
-		drawClusterList(g, container, _dataWarehouse.getClusters("CTOF::clusters"));
 	}
-	
+
 	//draw calorimeter clusters
 	private void drawCalClusters(Graphics g, IContainer container) {
 
@@ -224,7 +223,7 @@ public class ReconDrawer extends SectorViewDrawer {
 			}
 		} // for i
 
-		
+
         //PCal
 		PCalClusterData pcalClusterData = PCalClusterData.getInstance();
 		for (int i = 0; i < pcalClusterData.count(); i++) {
@@ -277,12 +276,12 @@ public class ReconDrawer extends SectorViewDrawer {
 		}
 		return false;
 	}
-	
+
 	//feedback for calorimeter clusters
 	private boolean CalClusterFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 		if (_view.showClusters()) {
-			
+
 			//ECal
 			ECalClusterData ecClusterData = ECalClusterData.getInstance();
 			for (int i = 0; i < ecClusterData.count(); i++) {
@@ -346,19 +345,13 @@ public class ReconDrawer extends SectorViewDrawer {
 	@Override
 	public void vdrawFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings, int option) {
-		
+
 		if (CalClusterFeedback(container, screenPoint, worldPoint, feedbackStrings)) {
 			return;
 		}
 
-		if (_view.showClusters()) {
-			if (clusterListFeedback("FTOF", _dataWarehouse.getClusters("FTOF::clusters"), screenPoint, feedbackStrings)) {
-				return;
-			}
-		}
 
 		if (_view.showReconHits()) {
-			//TODO DRAW HITS
 		}
 
 

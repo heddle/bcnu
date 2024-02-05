@@ -5,7 +5,6 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.geometry.PCALGeometry;
 

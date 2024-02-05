@@ -138,12 +138,12 @@ public class SectorPCALItem extends PolygonItem {
 
 	// single event drawer
 	private void drawSingleEventADC(Graphics g, IContainer container) {
-		
+
 		PCalADCData pcalData = PCalADCData.getInstance();
 		for (int i = 0; i < pcalData.count(); i++) {
 			byte sector = pcalData.sector.get(i);
 			byte view = pcalData.view.get(i);
-			
+
 			if ((sector == _sector) &&  (view == _viewType)) {
 				int strip0 = pcalData.strip.get(i) - 1;
 				Point2D.Double wp[] = getStrip(strip0);
@@ -238,12 +238,12 @@ public class SectorPCALItem extends PolygonItem {
 						byte sector = pcalData.sector.get(i);
 						byte view = pcalData.view.get(i);
 						int strip = pcalData.strip.get(i);
-						
+
 						if ((sector == _sector) && (view == _viewType) && (strip == (strip0+1))) {
-							String str = String.format("%s strip %d adc %d time %-7.3f", 
+							String str = String.format("%s strip %d adc %d time %-7.3f",
 									ECGeometry.VIEW_NAMES[view], strip,
 									pcalData.adc.get(i), pcalData.time.get(i));
-							
+
 							feedbackStrings.add("$coral$" + str);
 
 							break;

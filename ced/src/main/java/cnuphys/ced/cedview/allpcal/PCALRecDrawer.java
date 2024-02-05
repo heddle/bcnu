@@ -20,7 +20,6 @@ import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
-import cnuphys.lund.LundId;
 
 /**
  * Rec drawer for the AllPCALView
@@ -28,7 +27,7 @@ import cnuphys.lund.LundId;
  *
  */
 public class PCALRecDrawer extends PCALViewDrawer {
-	
+
 	//the EC data container
 	private static PCalReconData _pcReconData = PCalReconData.getInstance();
 
@@ -83,7 +82,7 @@ public class PCALRecDrawer extends PCALViewDrawer {
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();
-		
+
 		float x = _pcReconData.x.get(index);
 		float y = _pcReconData.y.get(index);
 		float z = _pcReconData.z.get(index);

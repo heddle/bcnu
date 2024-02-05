@@ -1,25 +1,25 @@
-package cnuphys.ced.alldata.datacontainer.ftcal;
+package cnuphys.ced.alldata.datacontainer.bmt;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonADCData;
 
-public class FTCalADCData extends ACommonADCData {
+public class BMTADCData extends ACommonADCData {
 
 	// singleton
-	private static volatile FTCalADCData _instance;
+	private static volatile BMTADCData _instance;
 
 	/**
 	 * Public access to the singleton
 	 *
 	 * @return the singleton
 	 */
-	public static FTCalADCData getInstance() {
+	public static BMTADCData getInstance() {
 		if (_instance == null) {
-			synchronized (FTCalADCData.class) {
+			synchronized (BMTADCData.class) {
 				if (_instance == null) {
-					_instance = new FTCalADCData();
+					_instance = new BMTADCData();
 				}
 			}
 		}
@@ -29,7 +29,7 @@ public class FTCalADCData extends ACommonADCData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("FTCAL::adc");
+		DataBank bank = event.getBank("BMT::adc");
 
 		if (bank == null) {
 			return;

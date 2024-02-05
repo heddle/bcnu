@@ -1,7 +1,5 @@
 package cnuphys.ced.alldata.datacontainer.cal;
 
-import java.util.ArrayList;
-
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
@@ -9,7 +7,7 @@ public class PCalClusterData extends ACalClusterData {
 
 	// singleton
 	private static volatile  PCalClusterData _instance;
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -25,20 +23,20 @@ public class PCalClusterData extends ACalClusterData {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public void update(DataEvent event) {
-		
+
 		//don't need recon data if accumulating
 		if (_eventManager.isAccumulating()) {
 			return;
 		}
-		
+
 		DataBank bank = event.getBank("ECAL::clusters");
 		if (bank == null) {
 			return;
 		}
-		
+
 		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC
@@ -48,7 +46,7 @@ public class PCalClusterData extends ACalClusterData {
 			float xArray[] = bank.getFloat("x");
 			float yArray[] = bank.getFloat("y");
 			float zArray[] = bank.getFloat("z");
-	
+
 			for (int i = 0; i < sectorArray.length; i++) {
 
 				if (layerArray[i] < 4) { // means it is PCAL, not ECAL
@@ -57,7 +55,7 @@ public class PCalClusterData extends ACalClusterData {
 
 					sector.add(sectorArray[i]);
 					view.add(view0);
-					
+
 					time.add(timeArray[i]);
 					energy.add(energyArray[i]);
 					x.add(xArray[i]);
@@ -67,7 +65,7 @@ public class PCalClusterData extends ACalClusterData {
 			}
 			ppx = new int[sectorArray.length];
 			ppy = new int[sectorArray.length];
-		} // end sectorArray not null	
+		} // end sectorArray not null
 	} // end update
 
 }

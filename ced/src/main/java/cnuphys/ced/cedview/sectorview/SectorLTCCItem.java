@@ -28,7 +28,7 @@ public class SectorLTCCItem extends PolygonItem {
 
 	// convenient access to the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//the data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -113,21 +113,21 @@ public class SectorLTCCItem extends PolygonItem {
 				g.drawPolygon(_lastDrawnPolygon);
 			}
 		} // end has data
-		
-		
-				
-		//the LTCC.rec data 
+
+
+
+		//the LTCC.rec data
 		if (_view.showReconHits()) {
-			
+
 			Point.Double wp = new Point.Double();
 			Point pp = new Point();
-			
+
 			LTCCRecData recData = LTCCRecData.getInstance();
 			for (int i = 0; i < recData.count(); i++) {
 				float x = recData.x[i];
 				float y = recData.y[i];
 				float z = recData.z[i];
-				
+
 				int sect = GeometryManager.getSector(x, y);
 				if (sect == _sector) {
 					_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
@@ -138,8 +138,8 @@ public class SectorLTCCItem extends PolygonItem {
 
 				}
 
-			} // end loop over rec data		
-		} // end show recon hits		
+			} // end loop over rec data
+		} // end show recon hits
 	}
 
 	// accumulated drawer
@@ -171,12 +171,12 @@ public class SectorLTCCItem extends PolygonItem {
 	public void getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 		if (contains(container, screenPoint)) {
-			
+
 			feedbackStrings.add(DataSupport.prelimColor + "LTCC sect " + _sector + " ring " + _ring + " half " + _half);
 
 			LTCCADCData adcData = LTCCADCData.getInstance();
 			LTCCTDCData tdcData = LTCCTDCData.getInstance();
-			
+
 			for (int i = 0; i < adcData.count(); i++) {
 				if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {
 					String s = String.format("LTCC adc: %d time: %8.3f", adcData.adc[i], adcData.time[i]);
@@ -184,7 +184,7 @@ public class SectorLTCCItem extends PolygonItem {
 					break;
 				}
 			} // end has data
-			
+
 			for (int i = 0; i < tdcData.count(); i++) {
 				if ((tdcData.sector[i] == _sector) && (tdcData.layer[i] == _half) && (tdcData.component[i] == _ring)) {
 					String s = String.format("LTCC tdc: %d", tdcData.tdc[i]);
@@ -212,7 +212,7 @@ public class SectorLTCCItem extends PolygonItem {
 					}
 				}
 
-			} // end loop over rec data	
+			} // end loop over rec data
 		} // end show recon hits
 
 	}

@@ -36,7 +36,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	// check boxes
 	private JPanel _checkboxPanel;
 	private JCheckBox _cbarray[];
-	
+
 	// set true when constructor finished
 	private boolean _isReady;
 
@@ -75,7 +75,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 		addNorth();
 		addCenter();
 		addSouth();
-		
+
 		readVisibility();
 		pack();
 		// set true when constructor finished
@@ -161,29 +161,30 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 
 	/**
 	 * Get a bank window. If it does not exist, create it.
-	 * 
+	 *
 	 * @param bankName the name of the bank
 	 * @return the bank window
 	 */
 	public static CedDataWindow getBankWindow(String bankName) {
 		CedDataWindow dataWindow = _dataBanks.get(bankName);
+		
 		if (dataWindow == null) {
 			dataWindow = new CedDataWindow(bankName);
+			// set the location
+			int x = 40 + (count % 5) * 10 + (count / 5) * 40;
+			int y = 40 + (count % 5) * 30;
+			dataWindow.setLocation(x, y);
+			count++;
+
 			_dataBanks.put(bankName, dataWindow);
 		}
-
-		// set the location
-		int x = 40 + (count % 5) * 10 + (count / 5) * 40;
-		int y = 40 + (count % 5) * 30;
-		dataWindow.setLocation(x, y);
-		count++;
 
 		dataWindow.setVisible(true);
 		dataWindow.toFront();
 		dataWindow.requestFocus();
 		return dataWindow;
 	}
-	
+
 	/**
 	 * Set the list to the columns of the given bank
 	 *
@@ -215,8 +216,6 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 		if (vs != null) {
 			try {
 				long val = Long.parseLong(vs);
-				 System.out.println("bankName = [" + _bankName + "] val in = " +
-				 Long.toBinaryString(val));
 
 				for (int i = 0; i < Math.min(_cbarray.length, 63); i++) {
 					int bit = i + 1; // because of index column
@@ -306,7 +305,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 			writeVisibility();
 		}
 	}
-	
+
 	/**
 	 * Set the selectability of the buttons
 	 */
@@ -347,7 +346,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 		}
 	}
 
-	   
+
 		@Override
 		public void openedNewEventFile(String path) {
 		}

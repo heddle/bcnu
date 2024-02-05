@@ -2,30 +2,28 @@ package cnuphys.ced.cedview.ftof;
 
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.List;
 
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFClusterData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 
 public class FTOFClusterHandler {
 
-	private static final String fbcolor = "$salmon$";
-	private static final int _fbrSize = 16;
-
 	// work space
-	private Rectangle _rect = new Rectangle();
 	private Point _pp = new Point();
 	private Point2D.Double _wp = new Point2D.Double();
 
 
-	// the parent view
+	// the parent FTOF xy view
 	private FTOFView _view;
+
+	// cluster data
+	private FTOFClusterData _clusterData = FTOFClusterData.getInstance();
 
 	public FTOFClusterHandler(FTOFView view) {
 		_view = view;
@@ -39,27 +37,15 @@ public class FTOFClusterHandler {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray("FTOF::clusters.sector");
-
-			int count = (sector == null) ? 0 : sector.length;
-			if (count == 0) {
-				return;
-			}
-
-			byte layer[] = ColumnData.getByteArray("FTOF::clusters.layer");
-			float x[] = ColumnData.getFloatArray("FTOF::clusters.x");
-			float y[] = ColumnData.getFloatArray("FTOF::clusters.y");
-
-			for (int i = 0; i < count; i++) {
-				int panel = layer[i] - 1;
+			for (int i = 0; i < _clusterData.count(); i++) {
+				int panel = _clusterData.layer[i] - 1;
 				if (panel == _view.displayPanel()) {
-					_wp.setLocation(x[i], y[i]);
+					_wp.setLocation(_clusterData.x[i], _clusterData.y[i]);
 					container.worldToLocal(_pp, _wp);
 					DataDrawSupport.drawCluster(g, _pp);
-
+					_clusterData.setLocation(i, _pp);
 				}
 			}
-
 
 		} else {
 			// drawAccumulatedHits(g, container);
@@ -67,48 +53,33 @@ public class FTOFClusterHandler {
 
 	}
 
+	/**
+	 * Get feedback strings for the clusters
+	 * @param container the drawing container
+	 * @param sect the sector [1,6]
+	 * @param panel the panel [0,2]
+	 * @param paddleId the paddle id [1,23]
+	 * @param pp the pixel point
+	 * @param wp the world point
+	 * @param feedbackStrings the list of feedback strings
+	 */
 	public void getFeedbackStrings(IContainer container, int sect, int panel, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
 
 		if (_view.isSingleEventMode() && _view.showClusters()) {
 
-			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
-			if (event == null) {
-				return;
-			}
+			for (int i = 0; i < _clusterData.count(); i++) {
+			if ((sect == _clusterData.sector[i]) && (panel == (_clusterData.layer[i] - 1))) {
+				_wp.setLocation(_clusterData.x[i], _clusterData.y[i]);
 
-			byte sector[] = ColumnData.getByteArray("FTOF::clusters.sector");
+				container.worldToLocal(_pp, _wp);
 
-			int count = (sector == null) ? 0 : sector.length;
-			if (count == 0) {
-				return;
-			}
-
-			byte layer[] = ColumnData.getByteArray("FTOF::clusters.layer");
-			float x[] = ColumnData.getFloatArray("FTOF::clusters.x");
-			float y[] = ColumnData.getFloatArray("FTOF::clusters.y");
-			float z[] = ColumnData.getFloatArray("FTOF::clusters.z");
-			float energy[] = ColumnData.getFloatArray("FTOF::clusters.energy");
-			float time[] = ColumnData.getFloatArray("FTOF::clusters.time");
-			short status[] = ColumnData.getShortArray("FTOF::clusters.status");
-
-			for (int i = 0; i < count; i++) {
-				if ((sect == sector[i]) && (panel == (layer[i] - 1))) {
-					// FTOFGeometry.clasToWorld(sect, panel, x[i], y[i], z[i], _wp);
-					_wp.setLocation(x[i], y[i]);
-
-					container.worldToLocal(_pp, _wp);
-
-					_rect.setBounds(_pp.x - _fbrSize / 2, _pp.y - _fbrSize / 2, _fbrSize, _fbrSize);
-					if (_rect.contains(pp)) {
-						feedbackStrings
-								.add(String.format("%scluster loc (%7.3f, %7.3f, %7.3f)", fbcolor, x[i], y[i], z[i]));
-						feedbackStrings.add(String.format("%scluster energy %7.3f time %7.3f status %d", fbcolor, energy[i],
-								time[i], status[i]));
-						break;
-					}
+				if (_clusterData.contains(i, pp)) {
+					_clusterData.feedback("FTOF", i, feedbackStrings);
+					break;
 				}
 			}
+		}
 
 		} else { // accum mode
 		}

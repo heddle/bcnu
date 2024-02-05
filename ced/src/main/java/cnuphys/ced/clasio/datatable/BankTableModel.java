@@ -12,19 +12,19 @@ import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
 
 public class BankTableModel extends DefaultTableModel {
-	
+
 	// the data warehouse
 	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	private String _bankName;
 	private String _columnNames[];
-	
+
 	//index array for first column
 	private int _index[];
 
 	// the data
 	private DataEvent _event;
-	
+
 	//used in sorting
 	private boolean _ascending = true;
 	private int _lastSortColumn = -1;
@@ -55,7 +55,7 @@ public class BankTableModel extends DefaultTableModel {
 		_index = null;
 		_ascending = true;
 		_lastSortColumn = -1;
-		
+
 		if (event != null) {
 			DataBank bank = event.getBank(_bankName);
 			if (bank != null) {
@@ -65,8 +65,8 @@ public class BankTableModel extends DefaultTableModel {
 				}
 			}
 		}
-		
-		
+
+
 		fireTableDataChanged();
 	}
 
@@ -80,15 +80,15 @@ public class BankTableModel extends DefaultTableModel {
 		if (_event == null) {
 			return 0;
 		}
-		
+
 		DataBank bank = _event.getBank(_bankName);
 		if (bank == null) {
 			return 0;
 		}
-		
+
 		return bank.rows();
 	}
-	
+
 
 	/**
 	 * Sort the table by a given column. Uses an index array to keep track of the
@@ -100,14 +100,14 @@ public class BankTableModel extends DefaultTableModel {
 		if (n < 2) {
 			return;
 		}
-		
+
 		if (column == _lastSortColumn) {
 			_ascending = !_ascending;
 		} else {
 			_ascending = true;
 			_lastSortColumn = column;
 		}
-		
+
 		//1st column is easy
 		if (column == 0) {
 			if (_ascending) {
@@ -152,13 +152,13 @@ public class BankTableModel extends DefaultTableModel {
 			default:
 				break;
 			}
-			
+
 			if (newIndex != null) {
 				_index = newIndex;
 			}
 
 		}
-		fireTableDataChanged();		
+		fireTableDataChanged();
 	}
 
 	/**
@@ -173,19 +173,19 @@ public class BankTableModel extends DefaultTableModel {
 		if ((row < 0) || (col < 0)) {
 			return null;
 		}
-		
+
 		//to account for sorting
 		row = _index[row];
 
 		if (col == 0) {
 			return row;   //0-based index
 		}
-		
+
 		DataBank bank = _event.getBank(_bankName);
 		if (bank == null) {
 			return null;
 		}
-		
+
 		String columnName = _columnNames[col];
 		int type = _dataWarehouse.getType(_bankName, columnName);
 

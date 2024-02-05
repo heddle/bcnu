@@ -23,7 +23,6 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.component.ControlPanel;

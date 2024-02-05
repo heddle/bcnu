@@ -6,14 +6,14 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.ced.alldata.datacontainer.ACommonTDCData;
 
 public class HTCCTDCData extends ACommonTDCData {
-	
+
 	// singleton
 	private static volatile HTCCTDCData _instance;
-	
+
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static HTCCTDCData getInstance() {
@@ -31,11 +31,11 @@ public class HTCCTDCData extends ACommonTDCData {
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("HTCC::tdc");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
         sector = bank.getByte("sector");
         layer = bank.getByte("layer");
         component = bank.getShort("component");

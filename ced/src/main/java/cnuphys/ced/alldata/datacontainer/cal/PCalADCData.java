@@ -10,7 +10,7 @@ public class PCalADCData extends ACalADCData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static PCalADCData getInstance() {
@@ -26,13 +26,13 @@ public class PCalADCData extends ACalADCData {
 
 	@Override
 	public void update(DataEvent event) {
-		
+
 		DataBank bank = event.getBank("ECAL::adc");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
 		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC

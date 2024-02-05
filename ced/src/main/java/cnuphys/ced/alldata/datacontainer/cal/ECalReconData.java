@@ -9,11 +9,11 @@ public class ECalReconData extends ACalReconData {
 
 	// singleton
 	private static volatile  ECalReconData _instance;
-	
+
 
 	/** 0-based planes (0, 1) for (inner, outer) */
 	public ArrayList<Byte> plane = new ArrayList<>();
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -39,12 +39,12 @@ public class ECalReconData extends ACalReconData {
 	// update the reconstructed data
 	@Override
 	public void update(DataEvent event) {
-		
+
 		//don't need recon data if accumulating
 		if (_eventManager.isAccumulating()) {
 			return;
 		}
-		
+
 		DataBank bank = event.getBank("REC::Calorimeter");
 		if (bank == null) {
 			return;
@@ -72,18 +72,18 @@ public class ECalReconData extends ACalReconData {
 					sector.add(sectorArray[i]);
 					plane.add(plane0);
 					view.add(view0);
-					
+
 					time.add(timeArray[i]);
 					energy.add(energyArray[i]);
 					x.add(xArray[i]);
 					y.add(yArray[i]);
 					z.add(zArray[i]);
-					
+
 					pIndex.add(pindexArray[i]);
-						
+
 				}
 			}
-			
+
 			//get the pids from the REC::Particle bank
 			getPIDArray(event);
 		} // end sectorArray not null

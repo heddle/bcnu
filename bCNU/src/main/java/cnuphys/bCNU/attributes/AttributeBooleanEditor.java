@@ -9,7 +9,6 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
 
-@SuppressWarnings("serial")
 public class AttributeBooleanEditor extends AttributeEditor<JCheckBox> implements ItemListener {
 
 	/**

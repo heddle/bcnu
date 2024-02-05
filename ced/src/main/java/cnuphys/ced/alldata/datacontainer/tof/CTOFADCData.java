@@ -14,7 +14,7 @@ public class CTOFADCData extends ACommonADCData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static CTOFADCData getInstance() {
@@ -32,21 +32,21 @@ public class CTOFADCData extends ACommonADCData {
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("CTOF::adc");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
         sector = bank.getByte("sector");
         layer = bank.getByte("layer");
         component = bank.getShort("component");
         order = bank.getByte("order");
         adc = bank.getInt("ADC");
         time = bank.getFloat("time");
-        
+
         computeMaxADC();
 	}
-	
+
 	/**
 	 * Get the adc color for a given sector, layer, component, and order
 	 * @param sector the 1-based sector
@@ -66,7 +66,7 @@ public class CTOFADCData extends ACommonADCData {
 		}
 		return null;
 	}
-	
+
 	//gets the average ADC for a given sector, layer, component, and order
 	private int getComponentAverageADC(byte sector, byte layer, short component, byte order) {
 		int count = 0;

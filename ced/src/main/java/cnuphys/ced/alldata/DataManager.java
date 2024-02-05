@@ -24,7 +24,7 @@ public class DataManager {
 	private String[] _knownBanks;
 
 	// the full set of column data. ALL columns for a full bank name key
-	// key is something like DET::NAME.COLUMN 
+	// key is something like DET::NAME.COLUMN
 	// this maps bank name to a ColumnData object
 	private Hashtable<String, ColumnData> _columnData;
 

@@ -10,6 +10,7 @@ import java.awt.geom.Point2D;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.AdcHit;
@@ -38,6 +39,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// data containers
 	CNDADCData adcData = CNDADCData.getInstance();
 	CTOFADCData adcCTOFData = CTOFADCData.getInstance();
+	CTOFClusterData clusterCTOFData = CTOFClusterData.getInstance();
 
 	// accumulation manager
 	private AccumulationManager _accumManager = AccumulationManager.getInstance();
@@ -170,6 +172,16 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				Color color = adcCTOFData.getColor(adcCTOFData.sector[i], adcCTOFData.layer[i],
 						adcCTOFData.component[i], adcCTOFData.order[i]);
 				poly.draw(g, container, adcCTOFData.component[i], color);
+			}
+		}
+
+		if (_view.showClusters()) {
+			Point pp = new Point();
+			for (int i = 0; i < clusterCTOFData.count(); i++) {
+				//convert to mm
+				container.worldToLocal(pp, 10*clusterCTOFData.x[i], 10*clusterCTOFData.y[i]);
+				DataDrawSupport.drawCluster(g, pp);
+				clusterCTOFData.setLocation(i, pp);
 			}
 		}
 

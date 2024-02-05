@@ -7,14 +7,14 @@ import org.jlab.io.base.DataEvent;
 
 public class ECalClusterData extends ACalClusterData {
 
-	
+
 	// singleton
 	private static volatile  ECalClusterData _instance;
-	
+
 
 	/** 0-based planes (0, 1) for (inner, outer) */
 	public ArrayList<Byte> plane = new ArrayList<>();
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -39,12 +39,12 @@ public class ECalClusterData extends ACalClusterData {
 
 	@Override
 	public void update(DataEvent event) {
-		
+
 		//don't need cluster data if accumulating
 		if (_eventManager.isAccumulating()) {
 			return;
 		}
-		
+
 		DataBank bank = event.getBank("ECAL::clusters");
 		if (bank == null) {
 			return;
@@ -71,7 +71,7 @@ public class ECalClusterData extends ACalClusterData {
 					sector.add(sectorArray[i]);
 					plane.add(plane0);
 					view.add(view0);
-					
+
 					time.add(timeArray[i]);
 					energy.add(energyArray[i]);
 					x.add(xArray[i]);
@@ -82,6 +82,6 @@ public class ECalClusterData extends ACalClusterData {
 			ppx = new int[sectorArray.length];
 			ppy = new int[sectorArray.length];
 		} // end sectorArray not null	}
-		
+
 	} // end update
 }

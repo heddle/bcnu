@@ -1,25 +1,25 @@
-package cnuphys.ced.alldata.datacontainer.cnd;
+package cnuphys.ced.alldata.datacontainer.tof;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.ced.alldata.datacontainer.ACommonClusterData;
+import cnuphys.ced.alldata.datacontainer.ACommonHitData;
 
-public class CNDClusterData extends ACommonClusterData {
+public class FTOFHitData extends ACommonHitData {
 
 	// singleton
-	private static volatile CNDClusterData _instance;
+	private static volatile FTOFHitData _instance;
 
 	/**
 	 * Public access to the singleton
 	 *
 	 * @return the singleton
 	 */
-	public static CNDClusterData getInstance() {
+	public static FTOFHitData getInstance() {
 		if (_instance == null) {
-			synchronized (CNDClusterData.class) {
+			synchronized (FTOFHitData.class) {
 				if (_instance == null) {
-					_instance = new CNDClusterData();
+					_instance = new FTOFHitData();
 				}
 			}
 		}
@@ -29,7 +29,7 @@ public class CNDClusterData extends ACommonClusterData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("CND::clusters");
+		DataBank bank = event.getBank("FTOF::hits");
 
 		if (bank == null) {
 			return;
@@ -37,19 +37,20 @@ public class CNDClusterData extends ACommonClusterData {
 
         sector = bank.getByte("sector");
         layer = bank.getByte("layer");
-        energy = bank.getFloat("energy");
-        time = bank.getFloat("time");
+        component = bank.getShort("component");
         id = bank.getShort("id");
-        status = bank.getShort("status");
         x = bank.getFloat("x");
         y = bank.getFloat("y");
         z = bank.getFloat("z");
+        energy = bank.getFloat("energy");
+        time = bank.getFloat("time");
 
         int n = (sector != null) ? sector.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
-	}
+
+ 	}
 
 }

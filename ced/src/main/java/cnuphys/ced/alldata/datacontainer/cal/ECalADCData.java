@@ -9,14 +9,14 @@ public class ECalADCData extends ACalADCData {
 
 	// singleton
 	private static volatile ECalADCData _instance;
-	
+
 
 	/** 0-based planes (0, 1) for (inner, outer) */
 	public ArrayList<Byte> plane = new ArrayList<>();
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static ECalADCData getInstance() {
@@ -38,13 +38,13 @@ public class ECalADCData extends ACalADCData {
 
 	@Override
 	public void update(DataEvent event) {
-		
+
 		DataBank bank = event.getBank("ECAL::adc");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
 		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC

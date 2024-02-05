@@ -1,25 +1,25 @@
-package cnuphys.ced.alldata.datacontainer.cnd;
+package cnuphys.ced.alldata.datacontainer.tof;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonClusterData;
 
-public class CNDClusterData extends ACommonClusterData {
+public class CTOFClusterData extends ACommonClusterData {
 
 	// singleton
-	private static volatile CNDClusterData _instance;
+	private static volatile CTOFClusterData _instance;
 
 	/**
 	 * Public access to the singleton
 	 *
 	 * @return the singleton
 	 */
-	public static CNDClusterData getInstance() {
+	public static CTOFClusterData getInstance() {
 		if (_instance == null) {
-			synchronized (CNDClusterData.class) {
+			synchronized (CTOFClusterData.class) {
 				if (_instance == null) {
-					_instance = new CNDClusterData();
+					_instance = new CTOFClusterData();
 				}
 			}
 		}
@@ -29,7 +29,7 @@ public class CNDClusterData extends ACommonClusterData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("CND::clusters");
+		DataBank bank = event.getBank("CTOF::clusters");
 
 		if (bank == null) {
 			return;
@@ -37,6 +37,7 @@ public class CNDClusterData extends ACommonClusterData {
 
         sector = bank.getByte("sector");
         layer = bank.getByte("layer");
+        component = bank.getShort("component");
         energy = bank.getFloat("energy");
         time = bank.getFloat("time");
         id = bank.getShort("id");
@@ -51,5 +52,4 @@ public class CNDClusterData extends ACommonClusterData {
 			ppy = new int[n];
 		}
 	}
-
 }

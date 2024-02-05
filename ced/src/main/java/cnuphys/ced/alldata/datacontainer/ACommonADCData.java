@@ -9,36 +9,36 @@ import cnuphys.ced.event.data.AdcColorScale;
 
 public abstract class ACommonADCData implements IDataContainer {
 
-	
+
 	// the data warehouse
 	protected static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// event manager
 	protected static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-	
+
 	/** 1-based sectors */
 	public byte[] sector;
 
 	/** 1-based layer*/
 	public byte layer[];
-	
+
 	/** 1-based component*/
 	public short component[];
 
 	/** Used for subdivisions like left/right */
 	public byte order[];
-	
+
 	/** adc value */
 	public int adc[];
 
 	/** time value */
 	public float time[];
-	
+
 	/** max adc value */
 	public int maxADC;
 
-	
+
 	/**
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
@@ -62,7 +62,7 @@ public abstract class ACommonADCData implements IDataContainer {
 	public int count() {
 		return (sector == null) ? 0 : sector.length;
 	}
-	
+
 
 	/**
 	 * Get the color for a given adc value
@@ -95,7 +95,7 @@ public abstract class ACommonADCData implements IDataContainer {
 		}
 
 	}
-	
+
 	/**
 	 * Common feedback format for ADC values
 	 * @param detectorName the name of the detector

@@ -7,7 +7,7 @@ public class PCalReconData extends ACalReconData {
 
 	// singleton
 	private static volatile  PCalReconData _instance;
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -23,20 +23,20 @@ public class PCalReconData extends ACalReconData {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public void update(DataEvent event) {
-		
+
 		//don't need recon data if accumulating
 		if (_eventManager.isAccumulating()) {
 			return;
 		}
-		
+
 		DataBank bank = event.getBank("REC::Calorimeter");
 		if (bank == null) {
 			return;
 		}
-		
+
 		byte[] sectorArray = bank.getByte("sector");
 		if (sectorArray != null) {
 			// layers are 1..3 for PCAL and 4..9 for EC
@@ -56,21 +56,21 @@ public class PCalReconData extends ACalReconData {
 
 					sector.add(sectorArray[i]);
 					view.add(view0);
-					
+
 					time.add(timeArray[i]);
 					energy.add(energyArray[i]);
 					x.add(xArray[i]);
 					y.add(yArray[i]);
 					z.add(zArray[i]);
-					
+
 					pIndex.add(pindexArray[i]);
-						
+
 				}
 			}
-			
+
 			//get the pids from the REC::Particle bank
 			getPIDArray(event);
-		} // end sectorArray not null	
+		} // end sectorArray not null
 	} // end update
 
 }

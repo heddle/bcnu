@@ -24,7 +24,7 @@ import cnuphys.splot.plot.X11Colors;
  * A table for the node data
  * This is on the Current Event View. It is the big table
  * that shows all the banks for the current event.
- * 
+ *
  */
 public class NodeTable extends JTable {
 

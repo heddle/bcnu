@@ -14,7 +14,7 @@ public class FTOFADCData extends ACommonADCData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static FTOFADCData getInstance() {
@@ -32,22 +32,22 @@ public class FTOFADCData extends ACommonADCData {
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("FTOF::adc");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
         sector = bank.getByte("sector");
         layer = bank.getByte("layer");
         component = bank.getShort("component");
         order = bank.getByte("order");
         adc = bank.getInt("ADC");
         time = bank.getFloat("time");
-        
+
         computeMaxADC();
 	}
-	
-	
+
+
 
 	/**
 	 * Get the adc color for a given sector, layer, component, and order

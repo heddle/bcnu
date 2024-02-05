@@ -42,7 +42,6 @@ import cnuphys.ced.cedview.SliceView;
 import cnuphys.ced.cedview.central.CentralSupport;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.CrossDrawer;
-import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
@@ -104,10 +103,6 @@ public class SectorView extends SliceView implements ChangeListener {
 	// reconstructed cross drawer for DC (and feedback handler)
 	private CrossDrawer _dcCrossDrawer;
 
-	// for fmt
-	private FMTCrossDrawer _fmtCrossDrawer;
-
-
 	//redraw the segments?
 	private boolean segmentsOnTop = true;
 
@@ -131,9 +126,6 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		// dc cross drawer
 		_dcCrossDrawer = new CrossDrawer(this);
-
-		// fmt cross drawer
-		_fmtCrossDrawer = new FMTCrossDrawer(this);
 
 		// Recon drawer
 		_reconDrawer = new ReconDrawer(this);
@@ -479,12 +471,6 @@ public class SectorView extends SliceView implements ChangeListener {
 					_dcCrossDrawer.draw(g, container);
 				}
 
-
-				// Other (not DC) Crosses
-				if (showCrosses()) {
-					_fmtCrossDrawer.draw(g, container);
-				}
-
 				// scale
 				if ((_scaleDrawer != null) && showScale()) {
 					_scaleDrawer.draw(g, container);
@@ -613,15 +599,8 @@ public class SectorView extends SliceView implements ChangeListener {
 			_dcCrossDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
 		}
 
-
-		// Other (not DC) Crosses
-		if (showCrosses()) {
-			_fmtCrossDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
-		}
-
 		//draws HB hits and segs, TB hits and segs, and nn overlays
 		_reconDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
-
 	}
 
 

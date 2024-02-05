@@ -66,7 +66,7 @@ public class BankDataTable extends JTable {
 		getTableHeader().setResizingAllowed(true);
 		setShowGrid(true);
 		setGridColor(Color.gray);
-		
+
 		//detect clicks on header for sorting
 		MouseAdapter mouseAdapter = new MouseAdapter() {
 			@Override
@@ -75,12 +75,12 @@ public class BankDataTable extends JTable {
 				int column = columnAtPoint(point);
 				getBankTableModel().sort(column);
 			}
-			
+
 		};
 		JTableHeader header = getTableHeader();
 		header.addMouseListener(mouseAdapter);
 	}
-	
+
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

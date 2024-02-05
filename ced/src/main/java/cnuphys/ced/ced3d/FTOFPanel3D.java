@@ -17,7 +17,7 @@ public class FTOFPanel3D extends DetectorItem3D {
 
 	// "superlayer" [PANEL_1A, PANEL_1B, PANEL_2] (0, 1, 2)
 	private final int _panelId;
-	
+
 	//data containers
 	private FTOFADCData _adcData = FTOFADCData.getInstance();
 

@@ -92,7 +92,7 @@ public class ECView extends HexView {
 	public boolean displayInner() {
 		return checkBooleanProperty(DisplayArray.SHOWINNER_PROPERTY);
 	}
-	
+
 	/**
 	 * Get the plane being displayed (0, 1) for (inner, outer)
 	 * @return the plane being displayed
@@ -316,7 +316,7 @@ public class ECView extends HexView {
 		refresh();
 
 	}
-	
+
 
 	/**
 	 * Opened a new event file

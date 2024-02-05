@@ -34,7 +34,7 @@ public class TriggerManager implements IClasIoEventListener {
 	 * @return the TriggerManager singleton
 	 */
 	public static TriggerManager getInstance() {
-		
+
 		if (_instance == null) {
 			synchronized (TriggerManager.class) {
 				if (_instance == null) {
@@ -44,7 +44,7 @@ public class TriggerManager implements IClasIoEventListener {
 				}
 			}
 		}
-		
+
 
 		FilterManager.getInstance().add(_filter);
 		return _instance;

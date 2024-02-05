@@ -40,7 +40,7 @@ public class SectorECALItem extends PolygonItem {
 	//data containers
 	ECalADCData ecData = ECalADCData.getInstance();
 
-	
+
 	/**
 	 * Create a world polygon item
 	 *
@@ -150,12 +150,12 @@ public class SectorECALItem extends PolygonItem {
 
 	// single event drawer
 	private void drawSingleEventADC(Graphics g, IContainer container) {
-		
+
 		for (int i = 0; i < ecData.count(); i++) {
 			byte sector = ecData.sector.get(i);
 			byte plane = ecData.plane.get(i);
 			byte view = ecData.view.get(i);
-			
+
 			if ((sector == _sector) && (plane == _plane) && (view == _viewType)) {
 				int strip0 = ecData.strip.get(i) - 1;
 				Point2D.Double wp[] = getStrip(strip0);
@@ -167,7 +167,7 @@ public class SectorECALItem extends PolygonItem {
 				}
 			}
 		}
-		
+
 	}
 
 	// accumulated drawer
@@ -252,12 +252,12 @@ public class SectorECALItem extends PolygonItem {
 						byte plane = ecData.plane.get(i);
 						byte view = ecData.view.get(i);
 						int strip = ecData.strip.get(i);
-						
+
 						if ((sector == _sector) && (plane == _plane) && (view == _viewType) && (strip == (strip0+1))) {
-							String str = String.format("%s %s strip %d adc %d time %-7.3f", 
+							String str = String.format("%s %s strip %d adc %d time %-7.3f",
 									ECGeometry.PLANE_NAMES[plane], ECGeometry.VIEW_NAMES[view], strip,
 									ecData.adc.get(i), ecData.time.get(i));
-							
+
 							feedbackStrings.add("$coral$" + str);
 
 							break;

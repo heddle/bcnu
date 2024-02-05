@@ -30,7 +30,7 @@ public class PropertiesManager {
 	 * @return the PropertiesManager singleton.
 	 */
 	public static PropertiesManager getInstance() {
-		
+
 		if (_instance == null) {
 			synchronized (PropertiesManager.class) {
 				if (_instance == null) {

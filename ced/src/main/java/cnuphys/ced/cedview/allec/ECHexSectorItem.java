@@ -32,7 +32,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	private ECView _ecView;
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
-	
+
 	//the EC ac data container
 	private static ECalADCData _ecADCData = ECalADCData.getInstance();
 
@@ -88,7 +88,7 @@ public class ECHexSectorItem extends HexSectorItem {
 		drawECData(g, container, plane);
 		drawIJKOrigin(g, container);
 	}
-	
+
 
 	// draw strip outlines
 	private void drawOutlines(Graphics g, IContainer container, int plane, Color color) {
@@ -128,7 +128,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	private void drawSingleEvent(Graphics g, IContainer container, int plane) {
 		drawADCData(g, container, plane);
 	}
-	
+
 	// draw data from adc bank
 	private void drawADCData(Graphics g, IContainer container, int plane) {
 
@@ -416,18 +416,18 @@ public class ECHexSectorItem extends HexSectorItem {
 
 				int pixel = ECGeometry.pixelFromUVW(uvw[0], uvw[1], uvw[2]);
 				feedbackStrings.add("$lime green$pixel " + pixel);
-				
-				// any hits?		
+
+				// any hits?
 				for (int i = 0; i < _ecADCData.count(); i++) {
 					byte sect = _ecADCData.sector.get(i);
 					if (sect == getSector()) {
 						byte view = _ecADCData.view.get(i);
 						short component = _ecADCData.strip.get(i);
 						if (uvw[view] == component) {
-							String str = String.format("%s strip %d adc %d time %-7.3f", 
+							String str = String.format("%s strip %d adc %d time %-7.3f",
 									ECGeometry.VIEW_NAMES[view], component,
 									_ecADCData.adc.get(i), _ecADCData.time.get(i));
-							
+
 							feedbackStrings.add("$coral$" + str);
 						}
 					}

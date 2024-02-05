@@ -38,7 +38,7 @@ public class CTOF3D extends DetectorItem3D {
 		for (int paddleId = 1; paddleId <= 48; paddleId++) {
 			_paddles[paddleId - 1].drawPaddle(drawable, color);
 		}
-		
+
 		for (int i = 0; i < _adcData.count(); i++) {
 			short paddleId = _adcData.component[i];
 			byte order = _adcData.order[i];

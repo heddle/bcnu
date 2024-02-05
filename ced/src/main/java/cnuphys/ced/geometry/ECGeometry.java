@@ -41,7 +41,7 @@ public class ECGeometry {
 
 	/** there are 36 strips for u, v and w */
 	public static final int EC_NUMSTRIP = 36;
-	
+
 	// EC "layer" constants
 	public static final int PCAL_U = 1;
 	public static final int PCAL_V = 2;

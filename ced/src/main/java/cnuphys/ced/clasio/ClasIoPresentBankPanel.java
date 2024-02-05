@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -50,7 +48,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 	private NodeTable _nodeTable;
 
 	// all the panels
-	private static List<ClasIoPresentBankPanel> _pbPanels = new ArrayList<ClasIoPresentBankPanel>();
+	private static List<ClasIoPresentBankPanel> _pbPanels = new ArrayList<>();
 
 	// the single event listaner
 	private static IClasIoEventListener _eventListener;
@@ -65,7 +63,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 	 * This panel holds all the known banks in a grid of buttons. Banks present will
 	 * be clickable, and will cause the table to scroll to that name * @param
 	 * nodeTable
-	 * 
+	 *
 	 * @param view      the view owner
 	 * @param nodeTable the table
 	 * @param numRows   the number of rows for banks
@@ -85,7 +83,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 	/**
 	 * Create a present bank panel
-	 * 
+	 *
 	 * @param view      the view owner
 	 * @param nodeTable the table
 	 * @param numRows   the number of rows for banks

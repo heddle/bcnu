@@ -2,7 +2,6 @@ package cnuphys.ced.cedview.rtpc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -219,7 +218,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 		//use the ADC data
-		
+
 		for (int i = 0; i < rtpcADCData.count(); i++) {
 			if (rtpcADCData.adc[i] >= getAdcThreshold()) {
 				// component and layer are 1-based

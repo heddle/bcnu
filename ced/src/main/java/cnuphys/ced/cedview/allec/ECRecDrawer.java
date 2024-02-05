@@ -19,7 +19,6 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.geometry.ECGeometry;
-import cnuphys.lund.LundId;
 
 /**
  * Rec drawer for the AllECView
@@ -28,7 +27,7 @@ import cnuphys.lund.LundId;
  *
  */
 public class ECRecDrawer extends ECViewDrawer {
-	
+
 	//the EC data container
 	private static ECalReconData _ecReconData = ECalReconData.getInstance();
 
@@ -78,7 +77,7 @@ public class ECRecDrawer extends ECViewDrawer {
 	 * @param highlight
 	 */
 	public void drawRecCal(Graphics g, IContainer container, int index, boolean highlight) {
-		
+
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();

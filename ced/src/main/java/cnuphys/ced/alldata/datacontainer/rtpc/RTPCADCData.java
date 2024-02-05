@@ -12,7 +12,7 @@ public class RTPCADCData extends ACommonADCData {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static RTPCADCData getInstance() {
@@ -30,18 +30,18 @@ public class RTPCADCData extends ACommonADCData {
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("RTPC::adc");
-		
+
 		if (bank == null) {
 			return;
 		}
-		
+
         sector = bank.getByte("sector");
         layer = bank.getByte("layer");
         component = bank.getShort("component");
         order = bank.getByte("order");
         adc = bank.getInt("ADC");
         time = bank.getFloat("time");
-        
+
         computeMaxADC();
 	}
 

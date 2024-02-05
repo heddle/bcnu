@@ -18,7 +18,6 @@ import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDClusterData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.geometry.ECGeometry;
 
 public class ClusterDrawerXY extends CentralXYViewDrawer {
 
@@ -62,7 +61,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 
 		g2.setClip(oldClip);
 	}
-	
+
 	/**
 	 * Draw CND clusters
 	 *
@@ -174,18 +173,11 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 	@Override
 	public void feedback(IContainer container, Point screenPoint, Double worldPoint, List<String> feedbackStrings) {
 
-		// CND
+		// CND clusters
 		CNDClusterData cndClusterData = CNDClusterData.getInstance();
 		for (int i = 0; i < cndClusterData.count(); i++) {
 			if (cndClusterData.contains(i, screenPoint)) {
-
-				float x = cndClusterData.x[i];
-				float y = cndClusterData.y[i];
-				float z = cndClusterData.z[i];
-
-				feedbackStrings.add(String.format("$magenta$CND cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z));
-				feedbackStrings.add(String.format("$magenta$CND cluster Energy %-6.3f GeV", cndClusterData.energy[i]));
-				feedbackStrings.add(String.format("$magenta$CND cluster ID %d  status %d", cndClusterData.id[i], cndClusterData.status[i]));
+				cndClusterData.feedback("CND", i, feedbackStrings);
 				break;
 			}
 		}

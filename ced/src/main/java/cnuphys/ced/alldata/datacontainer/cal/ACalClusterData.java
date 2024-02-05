@@ -18,13 +18,13 @@ public abstract class ACalClusterData extends ACalData {
 
 	/** the y column for the REC::Calorimeter */
 	public ArrayList<Float> y = new ArrayList<>();
-	
+
 	/** the z column for the REC::Calorimeter */
 	public ArrayList<Float> z = new ArrayList<>();
-	
+
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
-	
+
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
 
@@ -39,7 +39,7 @@ public abstract class ACalClusterData extends ACalData {
 		ppx = null;
 		ppy = null;
 	}
-	
+
 	/**
 	 * Set the location where the cluster was last drawn
 	 * @param index the index of the cluster
@@ -53,7 +53,7 @@ public abstract class ACalClusterData extends ACalData {
 		ppx[index] = pp.x;
 		ppy[index] = pp.y;
 	}
-	
+
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index

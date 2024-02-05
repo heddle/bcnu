@@ -22,7 +22,7 @@ public class FTOFAdcHandler {
 
 	// the parent view
 	private FTOFView _view;
-	
+
 	//data containers
 	private FTOFADCData _adcData = FTOFADCData.getInstance();
 
@@ -34,7 +34,7 @@ public class FTOFAdcHandler {
 	// draw the adc data
 	public void draw(Graphics g, IContainer container) {
 		if (_view.isSingleEventMode()) {
-			
+
 			int count = _adcData.count();
 			if (count == 1) {
 				return;
@@ -83,7 +83,7 @@ public class FTOFAdcHandler {
 	 */
 	public void getFeedbackStrings(IContainer container, int sect, int layer, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
-		
+
 		for (int i = 0; i < _adcData.count(); i++) {
 			if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer) && (_adcData.component[i] == paddleId)) {
 				_adcData.adcFeedback("FTOF", i, feedbackStrings);

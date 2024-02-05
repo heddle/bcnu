@@ -62,7 +62,7 @@ public class NodePanel extends JPanel
 
 	/** Used for "goto" event */
 	protected JTextField trueEventNumberInput;
-	
+
 	// the table
 	protected NodeTable _nodeTable;
 

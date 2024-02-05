@@ -53,7 +53,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 	// for goto sequential
 	private JTextField seqEvNum;
-	
+
 	// for goto true
 	private JTextField trueEvNum;
 
@@ -135,7 +135,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 		// goto sequential
 		add(createGotoSequentialPanel());
-		
+
 		// goto true
 		add(createGotoTruePanel());
 
@@ -405,7 +405,7 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 		seqEvNum.setEnabled(false);
 		return sp;
 	}
-	
+
 	// create the goto true event widget
 	private JPanel createGotoTruePanel() {
 		JPanel sp = new TransparentPanel(new FlowLayout(FlowLayout.LEFT, 4, 0));

@@ -21,16 +21,16 @@ public abstract class ACalReconData extends ACalData {
 
 	/** the y column for the REC::Calorimeter */
 	public ArrayList<Float> y = new ArrayList<>();
-	
+
 	/** the z column for the REC::Calorimeter */
 	public ArrayList<Float> z = new ArrayList<>();
 
 	/** the pindex into the REC:Particle bank */
 	public ArrayList<Short> pIndex = new ArrayList<>();
-	
+
 	/** Lund particle ids */
 	public int pid[];
-	
+
 	@Override
 	public void clear() {
 		super.clear();
@@ -42,7 +42,7 @@ public abstract class ACalReconData extends ACalData {
 		pIndex.clear();
 		pid = null;
 	}
-	
+
 	/**
 	 * Get the cluster drawing radius from the energy
 	 * @param energy the energy in GeV
@@ -74,7 +74,7 @@ public abstract class ACalReconData extends ACalData {
 		}
 
 	}
-	
+
 	/**
 	 * Get the feedback string for the PID
 	 * @param index the row
@@ -96,7 +96,7 @@ public abstract class ACalReconData extends ACalData {
 		}
 	}
 
-	
+
 	/**
 	 * Try to get a pid associated with this index
 	 * @param index the index of the row in the REC::Calorimeter table
@@ -106,12 +106,12 @@ public abstract class ACalReconData extends ACalData {
 		if ((pid == null) || (index < 0) || (index >= count())) {
 			return NOPID;
 		}
-		
+
 		int pidx = pIndex.get(index);
 		return pid[pidx];
 	}
 
-	
+
 	/**
 	 * Get the LundId object
 	 * @param index the index (row)

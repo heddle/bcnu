@@ -3,7 +3,6 @@ package cnuphys.ced.item;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -14,12 +13,12 @@ import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFClusterData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFHitData;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.arrays.clusters.TOF_ClusterArrays;
-import cnuphys.ced.event.data.arrays.hits.TOF_HitArrays;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.ftof.FTOFPanel;
@@ -36,10 +35,11 @@ public class FTOFPanelItem extends PolygonItem {
 
 	//the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//data containers
 	private FTOFADCData _adcData = FTOFADCData.getInstance();
-
+	private FTOFClusterData _clusterData = FTOFClusterData.getInstance();
+	private FTOFHitData _hitData = FTOFHitData.getInstance();
 
 	/**
 	 * Create a FTOFPanelItem
@@ -165,7 +165,7 @@ public class FTOFPanelItem extends PolygonItem {
 
 		byte sect = (byte) _sector; //1-based
 		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
-		
+
 		for (int i = 0; i < _adcData.count(); i++) {
 			if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer)) {
 				Point2D.Double wp[] = getPaddle(_view, _adcData.component[i] - 1, _ftofPanel, _sector);
@@ -188,64 +188,51 @@ public class FTOFPanelItem extends PolygonItem {
 			return;
 		}
 
-		TOF_ClusterArrays arrays = TOF_ClusterArrays.getTOF_ClusterArrays("FTOF::clusters");
-		if (!arrays.hasData()) {
-			return;
-		}
-
-		byte sect = (byte) _sector; //1-based
 		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
-
 		Point.Double wp = new Point.Double();
 		Point pp = new Point();
 
-		for (int i = 0; i < arrays.sector.length; i++) {
-			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
-				double x = arrays.x[i];
-				double y = arrays.y[i];
-				double z = arrays.z[i];
 
-				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+		for (int i = 0; i < _clusterData.count(); i++) {
+			if ((_clusterData.sector[i] == _sector) && (_clusterData.layer[i] == layer)) {
+				_view.projectClasToWorld(_clusterData.x[i], _clusterData.y[i], _clusterData.z[i],
+						_view.getProjectionPlane(), wp);
 				container.worldToLocal(pp, wp);
-
 				DataDrawSupport.drawCluster(g, pp);
-
- 			}
+				_clusterData.setLocation(i, pp);
+			}
 		}
+
 
 	}
 
-	//draw based on data in hits bank
+	// draw based on data in hits bank
 	private void drawSingleModeHits(Graphics g, IContainer container) {
 
 		if ((_eventManager.getCurrentEvent() == null) || !_view.showReconHits()) {
 			return;
 		}
 
-		TOF_HitArrays arrays = TOF_HitArrays.getTOF_HitArrays("FTOF::hits");
-		if (!arrays.hasData()) {
-			return;
+		int count = _hitData.count();
+
+		if (count > 0) {
+			byte sect = (byte) _sector; // 1-based
+			byte layer = (byte) (_ftofPanel.getPanelType() + 1); // (now) 1-based
+
+			Point.Double wp = new Point.Double();
+			Point pp = new Point();
+
+			for (int i = 0; i < count; i++) {
+				if ((_hitData.sector[i] == sect) && (_hitData.layer[i] == layer)) {
+					_view.projectClasToWorld(_hitData.x[i], _hitData.y[i], _hitData.z[i], _view.getProjectionPlane(),
+							wp);
+					container.worldToLocal(pp, wp);
+					DataDrawSupport.drawReconHit(g, pp);
+					_hitData.setLocation(i, pp);
+				}
+			}
 		}
 
-		byte sect = (byte) _sector; //1-based
-		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
-
-		Point.Double wp = new Point.Double();
-		Point pp = new Point();
-
-		for (int i = 0; i < arrays.sector.length; i++) {
-			if ((arrays.sector[i] == sect) && (arrays.layer[i] == layer)) {
-				double x = arrays.x[i];
-				double y = arrays.y[i];
-				double z = arrays.z[i];
-
-				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
-				container.worldToLocal(pp, wp);
-
-				DataDrawSupport.drawReconHit(g, pp);
-
- 			}
-		}
 	}
 
 
@@ -358,7 +345,7 @@ public class FTOFPanelItem extends PolygonItem {
 							break;
 						}
 					}
-					
+
 					// any hit data?
 					break;
 				} // path contains wp
@@ -372,63 +359,36 @@ public class FTOFPanelItem extends PolygonItem {
 
 		// hit feedback
 		if (_view.showReconHits()) {
-			TOF_HitArrays hitArrays = TOF_HitArrays.getTOF_HitArrays("FTOF::hits");
-			if (hitArrays.hasData()) {
 
-				Point.Double wp = new Point.Double();
-				Point pp = new Point();
-				Rectangle r = new Rectangle();
+			int count = _hitData.count();
+			if (count > 0) {
+				byte sect = (byte) _sector; // 1-based
+				byte layer = (byte) (_ftofPanel.getPanelType() + 1); // 1-based
 
-				for (int index = 0; index < hitArrays.sector.length; index++) {
-					if ((hitArrays.sector[index] == _sector)
-							&& (hitArrays.layer[index] == _ftofPanel.getPanelType() + 1)) {
-						double x = hitArrays.x[index];
-						double y = hitArrays.y[index];
-						double z = hitArrays.z[index];
-
-						_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
-						container.worldToLocal(pp, wp);
-						r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
-
-						if (r.contains(screenPoint)) {
-							hitArrays.addFeedback(index, feedbackStrings);
+				for (int i = 0; i < count; i++) {
+					if ((_hitData.sector[i] == sect) && (_hitData.layer[i] == layer)) {
+						if (_hitData.contains(i, screenPoint)) {
+							_hitData.hitFeedback("FTOF", i, feedbackStrings);
 							break;
 						}
-
 					}
-				} //end for loop
-			} //end has hit data
+				}
+			}
+
 		} //end recon hits shown
 
-		// hit feedback
+		// cluster feedback
 		if (_view.showClusters()) {
-			TOF_ClusterArrays clusterArrays = TOF_ClusterArrays.getTOF_ClusterArrays("FTOF::clusters");
-			if (clusterArrays.hasData()) {
 
-				Point.Double wp = new Point.Double();
-				Point pp = new Point();
-				Rectangle r = new Rectangle();
-
-				for (int index = 0; index < clusterArrays.sector.length; index++) {
-					if ((clusterArrays.sector[index] == _sector)
-							&& (clusterArrays.layer[index] == _ftofPanel.getPanelType() + 1)) {
-						double x = clusterArrays.x[index];
-						double y = clusterArrays.y[index];
-						double z = clusterArrays.z[index];
-
-						_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
-						container.worldToLocal(pp, wp);
-						r.setBounds(pp.x - 4, pp.y - 4, 8, 8);
-
-						if (r.contains(screenPoint)) {
-							clusterArrays.addFeedback(index, feedbackStrings);
-							break;
-						}
-
+			for (int i = 0; i < _clusterData.count(); i++) {
+				if ((_clusterData.sector[i] == _sector) && (_clusterData.layer[i] == _ftofPanel.getPanelType() + 1)) {
+					if (_clusterData.contains(i, screenPoint)) {
+						_clusterData.feedback("FTOF", i, feedbackStrings);
+						break;
 					}
-				} //end for loop
-			} //end has cluster data
-		} //end recon clusters shown
+				}
+			}
+		}
 
 	}
 

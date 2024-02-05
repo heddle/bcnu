@@ -216,7 +216,7 @@ public class FTCalXYView extends CedXYView {
 
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
-		
+
 		for (int i = 0; i < adcData.count(); i++) {
 			short component = adcData.component[i];
 			short index = componentToIndex[component];
@@ -228,7 +228,7 @@ public class FTCalXYView extends CedXYView {
 				g.fillPolygon(poly);
 				g.setColor(Color.black);
 				g.drawPolygon(poly);
-			} 
+			}
 		}
 
 		// draw based on hits, but the FTCal hit data doesn't map to
@@ -272,7 +272,7 @@ public class FTCalXYView extends CedXYView {
 					g.fillPolygon(poly);
 					g.setColor(Color.black);
 					g.drawPolygon(poly);
-				} 
+				}
 			}
 		}
 
@@ -300,9 +300,9 @@ public class FTCalXYView extends CedXYView {
 			List<String> feedbackStrings) {
 
 		basicFeedback(container, screenPoint, worldPoint, "cm", feedbackStrings);
-		
+
 		int inIndex = -1;
-		
+
 		for (int index = 0; index < ftCalPoly.length; index++) {
 			FTCalXYPolygon poly = ftCalPoly[index];
             if (poly.contains(screenPoint)) {
@@ -330,8 +330,8 @@ public class FTCalXYView extends CedXYView {
 		// so go directly to the bank
 
 		if (showReconHits()) {
-			
-			
+
+
 			int count = hitData.count();
 			if (count > 0) {
 				for (int i = 0; i < count; i++) {

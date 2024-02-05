@@ -3,15 +3,13 @@ package cnuphys.ced.alldata.datacontainer;
 import java.awt.Point;
 import java.util.List;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 
 public abstract class ACommonRecData implements IDataContainer {
 
-	
+
 	// the data warehouse
 	protected static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -20,19 +18,19 @@ public abstract class ACommonRecData implements IDataContainer {
 
 	/** 1-based id */
 	public short id[];
-		
+
 	/** the cluster x */
 	public float x[];
-	
+
 	/** the cluster y */
 	public float y[];
-	
+
 	/** the cluster z */
 	public float z[];
-	
+
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
-	
+
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
 
@@ -43,7 +41,7 @@ public abstract class ACommonRecData implements IDataContainer {
 	public ACommonRecData() {
 		_dataWarehouse.addDataContainerListener(this);
 	}
-	
+
 	@Override
 	public void clear() {
 		id = null;
@@ -57,9 +55,9 @@ public abstract class ACommonRecData implements IDataContainer {
 
 	@Override
 	public int count() {
-        return (x == null) ? 0 : x.length;	
+        return (x == null) ? 0 : x.length;
     }
-	
+
 	/**
 	 * Set the location where the cluster was last drawn
 	 * @param index the index of the cluster
@@ -71,7 +69,7 @@ public abstract class ACommonRecData implements IDataContainer {
 		if (n == 0) {
 			return;
 		}
-		
+
 		if ((ppx == null) || (ppy == null)) {
 			ppx = new int[n];
 			ppy = new int[n];
@@ -79,7 +77,7 @@ public abstract class ACommonRecData implements IDataContainer {
 		ppx[index] = pp.x;
 		ppy[index] = pp.y;
 	}
-	
+
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index
@@ -90,7 +88,7 @@ public abstract class ACommonRecData implements IDataContainer {
 		return ((Math.abs(ppx[index] - pp.x) <= DataDrawSupport.HITHALF)
 				&& (Math.abs(ppy[index] - pp.y) <= DataDrawSupport.HITHALF));
 	}
-	
+
 	/**
 	 * Common feedback format for Rec hits
 	 * @param detectorName the name of the detector
@@ -98,11 +96,11 @@ public abstract class ACommonRecData implements IDataContainer {
 	 * @param feedbackStrings the list of feedback strings
 	 */
 	public void recFeedback(String detectorName, int index, List<String> feedbackStrings) {
-		
+
 		int idv = (id == null) ? 0 : id[index];
-		String s = String.format("$Orange Red$%s id %d hit loc (%5.2f, %5.2f, %5.2f) cm", 
+		String s = String.format("$Orange Red$%s id %d hit loc (%5.2f, %5.2f, %5.2f) cm",
 				detectorName, idv, x[index], y[index], z[index]);
-		
+
 		if (!feedbackStrings.contains(s)) {
 			feedbackStrings.add(s);
 		}

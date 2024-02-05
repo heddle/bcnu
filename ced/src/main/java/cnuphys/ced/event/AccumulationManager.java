@@ -117,7 +117,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// list of accumulation listeners
 	private EventListenerList _listeners;
-	
+
 	//data containers
 	private CNDADCData cndADCData = CNDADCData.getInstance();
 	private HTCCADCData htccADCData = HTCCADCData.getInstance();
@@ -632,8 +632,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			return;
 		}
 
-		_dataWarehouse.clearCache();
-
 		_eventCount++;
 
 		// FTCal Data
@@ -713,7 +711,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate rtpc
 		private void accumRTPC() {
-			
+
 			for (int i = 0; i < rtpcADCData.count(); i++) {
 				int cm1 = rtpcADCData.component[i] - 1;
 				int lm1 = rtpcADCData.layer[i] - 1;
@@ -724,7 +722,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate CND which is a special case
 	private void accumCND() {
-		
+
 		for (int i = 0; i < cndADCData.count(); i++) {
 			if (cndADCData.adc[i] > 0) {
 				int sect0 = cndADCData.sector[i] - 1;
@@ -737,12 +735,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate htcc
 	private void accumHTCC() {
-		
+
 		//use the adc arrays to accumulate
 		for (int i = 0; i < htccADCData.count(); i++) {
 			if (htccADCData.adc[i] > 0) {
 				int sect0 = htccADCData.sector[i] - 1;
-				
+
 				//sometimes happens
 				if (sect0 < 0) {
 					continue;
@@ -762,7 +760,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		for (int i = 0; i < ltccADCData.count(); i++) {
 			if (ltccADCData.adc[i] > 0) {
 				int sect0 = ltccADCData.sector[i] - 1;
-				
+
 				//sometimes happens
 				if (sect0 < 0) {
 					continue;
@@ -823,7 +821,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// for ctof accumulating
 	private void accumCTOF() {
-		
+
 		for (int i = 0; i < ctofADCData.count(); i++) {
 			_CTOFAccumulatedData[ctofADCData.component[i] - 1] += 1;
 		}
@@ -831,7 +829,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// for ftof accumulating
 	private void accumFTOF() {
-		
+
 		for (int i = 0; i < ftofADCData.count(); i++) {
 			int sect0 = ftofADCData.sector[i] - 1;
 			int paddle0 = ftofADCData.component[i] - 1;

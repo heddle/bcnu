@@ -29,7 +29,7 @@ public class CNDXYPolygon extends Polygon {
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();
-	
+
 	//data containers
 	CNDADCData adcData = CNDADCData.getInstance();
 	CNDTDCData tdcData = CNDTDCData.getInstance();
@@ -145,11 +145,11 @@ public class CNDXYPolygon extends Polygon {
 		CedView view = (CedView) (container.getView());
 
 		if (view.isSingleEventMode()) {
-			
+
 			for (int i = 0; i < adcData.count(); i++) {
 				if ((adcData.sector[i] == sector) && (adcData.layer[i] == layer)
 						&& (adcData.order[i] == (_leftRight - 1))) {
-					
+
 					adcData.adcFeedback("CND", i, feedbackStrings);
 					break;
 				}

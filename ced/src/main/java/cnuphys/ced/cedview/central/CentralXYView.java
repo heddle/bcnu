@@ -37,6 +37,7 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
@@ -92,6 +93,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// data containers
 	private CTOFADCData _ctofADCData = CTOFADCData.getInstance();
+	private CTOFClusterData _clusterCTOFData = CTOFClusterData.getInstance();
+
 
 	// units are mm
 	// private static Rectangle2D.Double _defaultWorldRectangle = new
@@ -593,16 +596,26 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 					if (_ctofPoly[index].contains(screenPoint)) {
 						short paddle = (short) (index + 1); // now 1-based
 						feedbackStrings.add("$cyan$CTOF paddle: " + paddle);
-						
+
 						for (int i = 0; i < _ctofADCData.count(); i++) {
-                            if (_ctofADCData.component[i] == paddle) {
-                                _ctofADCData.adcFeedback("CTOF", i, feedbackStrings);
-                            }
-                        }
+							if (_ctofADCData.component[i] == paddle) {
+								_ctofADCData.adcFeedback("CTOF", i, feedbackStrings);
+							}
+						}
 
 						break;
 					}
 				}
+
+				if (showClusters()) {
+					for (int i = 0; i < _clusterCTOFData.count(); i++) {
+						if (_clusterCTOFData.contains(i, screenPoint)) {
+							_clusterCTOFData.feedback("CTOF", i, feedbackStrings);
+							break;
+						}
+					}
+				}
+
 			}
 		}
 
@@ -676,7 +689,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				_lastTrajStr = traj2D.summaryString();
 			}
 		}
-		
+
 		//cluster feedback
 		if (showClusters()) {
 			_clusterDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
@@ -815,7 +828,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
-		System.out.println("CentralXY selected [" + bankName + "]  index: " + index);
 
 		if ("BMT::adc".equals(bankName)) {
 		}

@@ -30,7 +30,7 @@ public class ClusterList {
 
 	/**
 	 * Create a cluster list
-	 * @param bankName, e.g. FTOF::clusters
+	 * @param bankName, e.g. XXXXS::clusters
 	 */
 	public ClusterList(String bankName) {
 		_bankName = bankName;
