@@ -1,5 +1,7 @@
 package cnuphys.ced.alldata.datacontainer.bst;
 
+import java.util.List;
+
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
@@ -43,6 +45,17 @@ public class BSTADCData  extends ACommonADCData {
         time = bank.getFloat("time");
 
         computeMaxADC();
+	}
+	
+	
+	/**
+	 * Common feedback format for ADC values
+	 * @param index the index of the data
+	 * @param feedbackStrings the list of feedback strings
+	 */
+	public void adcFeedback(int index, List<String> feedbackStrings) {
+		feedbackStrings.add(String.format("$cyan$BST strip %d adc %d time %6.3f order %d", 
+				component[index], adc[index], time[index], order[index]));
 	}
 
 }

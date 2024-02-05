@@ -8,11 +8,11 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
@@ -30,16 +30,14 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 	private static Color _baseColor = new Color(255, 0, 0, 60);
 
-	// common adc color scale
-	private AdcColorScale _adcColorScale = AdcColorScale.getInstance();
-
 	// owner view
 	private CentralXYView _view;
 
 	// data containers
-	CNDADCData adcData = CNDADCData.getInstance();
-	CTOFADCData adcCTOFData = CTOFADCData.getInstance();
-	CTOFClusterData clusterCTOFData = CTOFClusterData.getInstance();
+	private CNDADCData adcCNDData = CNDADCData.getInstance();
+	private CTOFADCData adcCTOFData = CTOFADCData.getInstance();
+	private CTOFClusterData clusterCTOFData = CTOFClusterData.getInstance();
+	private BSTADCData adcBSTData = BSTADCData.getInstance();
 
 	// accumulation manager
 	private AccumulationManager _accumManager = AccumulationManager.getInstance();
@@ -147,11 +145,10 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 		// draw based on adc data
 
-		CNDADCData cndADCData = CNDADCData.getInstance();
-		for (int i = 0; i < cndADCData.count(); i++) {
-			CNDXYPolygon poly = _view.getCNDPolygon(cndADCData.sector[i], cndADCData.layer[i], cndADCData.order[i] + 1);
+		for (int i = 0; i < adcCNDData.count(); i++) {
+			CNDXYPolygon poly = _view.getCNDPolygon(adcCNDData.sector[i], adcCNDData.layer[i], adcCNDData.order[i] + 1);
 			if (poly != null) {
-				Color color = cndADCData.getADCColor(cndADCData.adc[i]);
+				Color color = adcCNDData.getADCColor(adcCNDData.adc[i]);
 				poly.draw(g, container, color, Color.black);
 			}
 		}
@@ -289,26 +286,18 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 	// draw BST adc data
 	private void drawBSTADCData(Graphics g, IContainer container) {
+		
+		
 		if (_view.showADCHits()) {
-			AdcList hits = BST.getInstance().getADCHits();
-			if ((hits != null) && !hits.isEmpty()) {
-				Graphics2D g2 = (Graphics2D) g;
-
-				for (AdcHit hit : hits) {
-					if (hit != null) {
-
-						BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hit.sector);
-
-						if (panel != null) {
-							_view.drawBSTPanel(g2, container, panel, _baseColor);
-							_view.drawBSTPanel(g2, container, panel, hits.adcColor(hit));
-						}
-
-					}
+			for (int i = 0; i < adcBSTData.count(); i++) {
+				BSTxyPanel panel = CentralXYView.getPanel(adcBSTData.layer[i], adcBSTData.sector[i]);
+				if (panel != null) {
+					_view.drawBSTPanel((Graphics2D) g, container, panel, _baseColor);
+					_view.drawBSTPanel((Graphics2D) g, container, panel, adcBSTData.getADCColor(i));
 				}
-
 			}
 		}
+		
 	}
 
 	// draw bst reconstructed hits

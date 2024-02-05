@@ -9,6 +9,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
@@ -60,9 +61,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// the singleton
 	private static AccumulationManager instance;
-
-	//the DataWarehouse singleton
-	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// CND accumulated accumulated data indices are sector, layer, order (0 or 1,
 	// adc only)
@@ -128,6 +126,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private CTOFADCData ctofADCData = CTOFADCData.getInstance();
 	private FTCalADCData ftcalADCData = FTCalADCData.getInstance();
 	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
+	private BSTADCData bstADCData = BSTADCData.getInstance();
 
 	/**
 	 * private constructor for singleton.
@@ -666,24 +665,19 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumPCal();
 
 		// BST
-		AdcList bstList = BST.getInstance().updateAdcList();
-		accumBST(bstList);
-
+		accumBST();
 
 	}
 
 	// accumulate bst
-	private void accumBST(AdcList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
-
-		for (AdcHit hit : list) {
-			BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hit.sector);
+	private void accumBST() {
+		
+		for (int i = 0; i < bstADCData.count(); i++) {
+			BSTxyPanel panel = CentralXYView.getPanel(bstADCData.layer[i], bstADCData.sector[i]);
 			if (panel != null) {
-				int lay0 = hit.layer - 1;
-				int sect0 = hit.sector - 1;
-				int strip0 = hit.component - 1;
+				int lay0 = bstADCData.layer[i] - 1;
+				int sect0 =  bstADCData.sector[i] - 1;
+				int strip0 = bstADCData.component[i] - 1;
 				try {
 					_BSTAccumulatedData[lay0][sect0] += 1;
 
@@ -693,12 +687,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 				} catch (ArrayIndexOutOfBoundsException e) {
 					String msg = String.format("Index out of bounds (BST). Event# %d lay %d sect %d  strip %d",
-							_eventManager.getSequentialEventNumber(), hit.layer, hit.sector, hit.component);
+							_eventManager.getSequentialEventNumber(), bstADCData.layer[i], bstADCData.sector[i], bstADCData.component[i]);
 					Log.getInstance().warning(msg);
 				}
 
 			}
 		}
+		
 	}
 
 	// accumulate ftcal

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AdcHit;
 import cnuphys.ced.event.data.AdcList;
@@ -22,6 +23,10 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 
 	// owner view
 	private CentralZView _view;
+	
+	//data containers
+	private BSTADCData adcBSTData = BSTADCData.getInstance();
+
 
 	public CentralZHitDrawer(CentralZView view) {
 		super(view);
@@ -64,23 +69,23 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 		drawBSTReconHits(g, container);
 	}
 
-	//draw BST adc data
+	// draw BST adc data
 	private void drawBSTADCData(Graphics g, IContainer container) {
 		if (_view.showADCHits()) {
-			AdcList hits = BST.getInstance().getADCHits();
-			if ((hits != null) && !hits.isEmpty()) {
-				Graphics2D g2 = (Graphics2D) g;
+			for (int i = 0; i < adcBSTData.count(); i++) {
+				int sector = adcBSTData.sector[i];
 
-				for (AdcHit hit : hits) {
-					if (hit != null) {
-						BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hit.sector);
-						if (panel != null) {
-							_view.drawBSTStrip(g2, container, Color.red, hit.sector, hit.layer, hit.component);
-						}
-					}
+				int layer = adcBSTData.layer[i];
+				BSTxyPanel panel = CentralXYView.getPanel(layer, sector);
+				if (panel != null) {
+
+					int strip = adcBSTData.component[i];
+					int adc = adcBSTData.adc[i];
+					_view.drawBSTStrip((Graphics2D) g, container, adcBSTData.getADCColor(adc), sector, layer, strip);
 				}
 			}
 		}
+
 	}
 
 	// draw bst reconstructed hits

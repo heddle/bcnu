@@ -5,9 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.BST;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.Cosmic;
 import cnuphys.ced.event.data.Cosmics;
@@ -23,6 +21,10 @@ public class BSTPanel3D extends DetectorItem3D {
 
 	protected static final float CROSS_LEN = 3f; // in cm
 	protected static final Color crossColor = X11Colors.getX11Color("dark green");
+	
+	//bst adc data
+	private BSTADCData _bstADCData = BSTADCData.getInstance();
+
 
 	// the 1-based sect
 	private int _sector;
@@ -53,26 +55,15 @@ public class BSTPanel3D extends DetectorItem3D {
 		float coords6[] = new float[6];
 		float coords36[] = new float[36];
 		boolean drawOutline = false;
-
-		AdcList hits = BST.getInstance().getADCHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcHit hit : hits) {
-				if (hit != null) {
-					int sector = hit.sector;
-					int layer = hit.layer;
-					if ((_sector == sector) && (_layer == layer)) {
-						drawOutline = true;
-						int strip = hit.component;
-						BSTGeometry.getStripCM(sector, layer, strip, coords6);
-
-						if (showHits()) {
-							Support3D.drawLine(drawable, coords6, hitColor, STRIPLINEWIDTH);
-						}
-
-					} // match sector and layer
-				} // hit not null
-			} // loop on hits
-		} // hits not null
+		
+		for(int i = 0; i < _bstADCData.count(); i++ ) {
+			if (_bstADCData.sector[i] == _sector && _bstADCData.layer[i] == _layer) {
+				drawOutline = true;
+				int strip = _bstADCData.component[i];
+				BSTGeometry.getStripCM(_sector-1, _layer-1, strip-1, coords6);
+				Support3D.drawLine(drawable, coords6, _bstADCData.adc[i] > 0 ? Color.red : Color.blue, STRIPLINEWIDTH);
+			}
+		}
 
 		if (drawOutline) { // if any hits, draw it once
 			BSTGeometry.getLayerQuads(_sector-1, _layer-1, coords36);
