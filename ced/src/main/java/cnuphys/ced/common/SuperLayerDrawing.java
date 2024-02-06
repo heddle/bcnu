@@ -20,7 +20,6 @@ import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.MathUtilities;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.cedview.CedView;
@@ -745,8 +744,6 @@ public class SuperLayerDrawing {
 
 				String wmsg = "Very large doca radius: " + radius + " cm. Sect: " + _iSupl.sector() + " supl: "
 						+ _iSupl.superlayer() + "lay: " + hit.layer + " wire: " + hit.wire;
-
-				Log.getInstance().warning(wmsg);
 				System.err.println(wmsg);
 				return;
 			}

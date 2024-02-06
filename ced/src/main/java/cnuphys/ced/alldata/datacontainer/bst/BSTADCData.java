@@ -1,5 +1,6 @@
 package cnuphys.ced.alldata.datacontainer.bst;
 
+import java.awt.Point;
 import java.util.List;
 
 import org.jlab.io.base.DataBank;
@@ -43,7 +44,6 @@ public class BSTADCData  extends ACommonADCData {
         order = bank.getByte("order");
         adc = bank.getInt("ADC");
         time = bank.getFloat("time");
-
         computeMaxADC();
 	}
 	

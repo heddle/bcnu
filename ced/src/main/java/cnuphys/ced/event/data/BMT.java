@@ -13,8 +13,6 @@ import cnuphys.ced.event.data.lists.BaseHit2List;
 
 public class BMT extends DetectorData {
 
-	// list of BMT adc hits
-	AdcList _adcHits = new AdcList("BMT::adc");
 
 	// list of BMT reconstructed hits
 	BaseHit2List _bmtRecHits;
@@ -35,27 +33,7 @@ public class BMT extends DetectorData {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		_adcHits = new AdcList("BMT::adc");
 		_bmtRecHits = new BaseHit2List("BMTRec::Hits", "strip");
-	}
-
-	/**
-	 * Update the list. This is probably needed only during accumulation
-	 *
-	 * @return the updated list
-	 */
-	public AdcList updateAdcList() {
-		_adcHits = new AdcList("BMT::adc");
-		return _adcHits;
-	}
-
-	/**
-	 * Get the adc hit list
-	 *
-	 * @return the adc hit list
-	 */
-	public AdcList getADCHits() {
-		return _adcHits;
 	}
 
 	/**

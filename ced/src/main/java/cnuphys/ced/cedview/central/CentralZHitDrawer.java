@@ -8,8 +8,6 @@ import java.awt.Point;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;

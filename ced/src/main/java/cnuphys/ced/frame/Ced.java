@@ -28,14 +28,12 @@ import cnuphys.bCNU.dialog.TextDisplayDialog;
 import cnuphys.bCNU.eliza.ElizaDialog;
 import cnuphys.bCNU.fortune.FortuneManager;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.menu.MenuManager;
 import cnuphys.bCNU.ping.Ping;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Jar;
 import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
@@ -177,7 +175,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	private ECView _ecView;
 	private PCALView _pcalView;
-	private LogView _logView;
 	private ForwardView3D _forward3DView;
 
 	private SwimmingTestView3D _swimming3DView;
@@ -305,7 +302,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_ftofView, 8, VirtualView.UPPERRIGHT);
 		_virtualView.moveTo(_ftcalXyView, 9, VirtualView.CENTER);
 //		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_logView, 10, VirtualView.CENTER);
 
 
 		if (_use3D) {
@@ -317,9 +313,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 				_virtualView.moveTo(_swimming3DView, 13, VirtualView.CENTER);
 			}
 		}
-
-		Log.getInstance().config("reset views on virtual dekstop");
-
 	}
 
 
@@ -460,8 +453,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		_plotView = new PlotView();
 
-		_logView = new LogView();
-
 		// the trigger bit "view"
 		ActionListener al3 = new ActionListener() {
 			@Override
@@ -474,8 +465,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		menuItem.addActionListener(al3);
 		ViewManager.getInstance().getViewMenu().add(menuItem, 1);
 
-		// log some environment info
-		Log.getInstance().config(Environment.getInstance().toString());
 
 		// use config file info
 		// Desktop.getInstance().configureViews();
@@ -1017,7 +1006,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
 			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
 			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
@@ -1030,7 +1018,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
 			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
 			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
@@ -1042,7 +1029,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
 			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
 			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
@@ -1056,7 +1042,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			if (_clasDir.exists() && _clasDir.isDirectory()) {
 				System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 				System.setProperty("CLAS12DIR", clas12dir);
-				Log.getInstance().config("CLAS12DIR: " + clas12dir);
 				return;
 			}
 			else {
@@ -1210,21 +1195,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 				// initialize data columns
 //				DataManager.getInstance();
 
-				System.out.println(String.format("ced %s us ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
+				System.out.println(String.format("ced %s is ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
 			}
 
 		});
-		Log.getInstance().info(Environment.getInstance().toString());
-
-		// try to update the log for fun
-//		try {
-//			updateCedLog();
-//		}
-//		catch (Exception e) {
-//		}
-
-		Log.getInstance().info("ced is ready.");
-//		Environment.getInstance().say("c e d is ready");
 
 	} // end main
 

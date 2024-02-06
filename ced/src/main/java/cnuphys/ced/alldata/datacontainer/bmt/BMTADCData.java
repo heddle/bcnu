@@ -1,14 +1,26 @@
 package cnuphys.ced.alldata.datacontainer.bmt;
 
+import java.awt.Point;
+
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonADCData;
+import cnuphys.ced.event.data.DataDrawSupport;
 
 public class BMTADCData extends ACommonADCData {
 
 	// singleton
 	private static volatile BMTADCData _instance;
+	
+	
+	/** cached x coordinate of drawing locations */
+	public int ppx[];
+
+	/** cached y coordinate of drawing locations */
+	public int ppy[];
+
+
 
 	/**
 	 * Public access to the singleton
@@ -26,6 +38,12 @@ public class BMTADCData extends ACommonADCData {
 		return _instance;
 	}
 
+	@Override
+	public void clear() {
+		super.clear();
+		ppx = null;
+		ppy = null;
+	}
 
 	@Override
 	public void update(DataEvent event) {
@@ -41,8 +59,47 @@ public class BMTADCData extends ACommonADCData {
         order = bank.getByte("order");
         adc = bank.getInt("ADC");
         time = bank.getFloat("time");
-
         computeMaxADC();
+        
+        int n = (sector != null) ? sector.length : 0;
+ 		if (n > 0) {
+ 			ppx = new int[n];
+ 			ppy = new int[n];
+ 		}
+	}
+	
+	
+	/**
+	 * Used for hit detection
+	 * @param index the cluster index
+	 * @param pp the screen point
+	 * @return true if the screen point is in the cluster
+	 */
+	public boolean contains(int index, Point pp) {
+		return ((Math.abs(ppx[index] - pp.x) <= DataDrawSupport.HITHALF)
+				&& (Math.abs(ppy[index] - pp.y) <= DataDrawSupport.HITHALF));
+	}
+
+
+	/**
+	 * Set the location where the cluster was last drawn
+	 * 
+	 * @param index the index of the cluster
+	 * @param pp    the location
+	 */
+	public void setLocation(int index, Point pp) {
+
+		int n = (sector == null) ? 0 : sector.length;
+		if (n == 0) {
+			return;
+		}
+
+		if ((ppx == null) || (ppy == null)) {
+			ppx = new int[n];
+			ppy = new int[n];
+		}
+		ppx[index] = pp.x;
+		ppy[index] = pp.y;
 	}
 
 }

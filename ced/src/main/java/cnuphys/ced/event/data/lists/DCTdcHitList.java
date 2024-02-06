@@ -3,7 +3,6 @@ package cnuphys.ced.event.data.lists;
 import java.util.Collections;
 import java.util.Vector;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.event.data.DCTdcHit;
 
@@ -14,8 +13,6 @@ import cnuphys.ced.event.data.DCTdcHit;
  */
 public class DCTdcHitList extends Vector<DCTdcHit> {
 
-	// used to log erors
-	private String _error;
 
 	private String DCBank = "DC::tdc";
 	private String DocaBank = "DC::doca"; // only in sim data
@@ -63,7 +60,7 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 			stime = ColumnData.getFloatArray(DocaBank + ".stime");
 
 			if (docalen != length) {
-				Log.getInstance().warning(
+				System.err.println(
 						"[" + DocaBank + "] " + "doca length " + docalen + " does not match tdc length: " + length);
 				docalen = -1;
 			}

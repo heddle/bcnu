@@ -17,7 +17,6 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.RectangleItem;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.cedview.CedView;
@@ -357,7 +356,6 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		if (wire > GeoConstants.NUM_WIRE) {
 			String msg = "Bad wire number in drawDCHit " + wire + " seq event number " + _eventManager.getSequentialEventNumber();
-			Log.getInstance().warning(msg);
 			System.err.println(msg);
 			return;
 		}
@@ -426,7 +424,6 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		if (wire > GeoConstants.NUM_WIRE) {
 			String msg = "Bad wire number in drawDCHit " + wire + " seq event number " + _eventManager.getSequentialEventNumber();
-			Log.getInstance().warning(msg);
 			System.err.println(msg);
 			return;
 		}
@@ -484,7 +481,6 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		if (wire > GeoConstants.NUM_WIRE) {
 			String msg = "Bad wire number in drawDCNNHit " + wire + " event number " + _eventManager.getSequentialEventNumber();
-			Log.getInstance().warning(msg);
 			System.err.println(msg);
 			return;
 		}

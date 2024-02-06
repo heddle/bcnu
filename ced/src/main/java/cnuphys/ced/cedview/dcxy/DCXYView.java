@@ -26,7 +26,6 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
@@ -451,7 +450,7 @@ public class DCXYView extends HexView {
 	 */
 	public HexSectorItem getHexSectorItem(int sector) {
 		if ((sector < 1) || (sector > 6)) {
-			Log.getInstance().warning("Bad sector in DCXYView getHexSectorItem, sector = " + sector);
+			System.err.println("Bad sector in DCXYView getHexSectorItem, sector = " + sector);
 			return null;
 		}
 		return _hexItems[sector - 1];

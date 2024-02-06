@@ -2,7 +2,6 @@ package cnuphys.ced.cedview.central;
 
 import java.util.List;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.geometry.BSTxyPanel;
 
@@ -25,7 +24,7 @@ public class CentralSupport {
 				panel.hit[1] = false;
 				panel.hit[2] = false;
 			} else {
-				Log.getInstance().warning("Unexpected null panel in CentralSupport.markPanelHits.");
+				System.err.println("Unexpected null panel in CentralSupport.markPanelHits.");
 			}
 		}
 

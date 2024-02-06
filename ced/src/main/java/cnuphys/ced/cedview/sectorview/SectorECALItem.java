@@ -12,7 +12,6 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -205,7 +204,7 @@ public class SectorECALItem extends PolygonItem {
 		Point2D.Double wp[] = ECGeometry.getShell(planeIndex, stripType, view.getProjectionPlane());
 
 		if (wp == null) {
-			Log.getInstance().warning("null shell in SectorECItem planeIndex = " + planeIndex + " stripType = "
+			System.err.println("null shell in SectorECItem planeIndex = " + planeIndex + " stripType = "
 					+ stripType + "  sector = " + sector);
 			return null;
 		}

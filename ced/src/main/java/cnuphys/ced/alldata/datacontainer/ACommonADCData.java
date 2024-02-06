@@ -5,7 +5,6 @@ import java.util.List;
 
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.AdcColorScale;
 
 public abstract class ACommonADCData implements IDataContainer {
 

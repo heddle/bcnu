@@ -35,6 +35,7 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
@@ -45,8 +46,6 @@ import cnuphys.ced.cedview.urwell.HighlightData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
@@ -95,6 +94,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private CTOFADCData _ctofADCData = CTOFADCData.getInstance();
 	private CTOFClusterData _clusterCTOFData = CTOFClusterData.getInstance();
 	private BSTADCData _bstADCData = BSTADCData.getInstance();
+	private BMTADCData _bmtADCData = BMTADCData.getInstance();
 
 	// units are mm
 	// private static Rectangle2D.Double _defaultWorldRectangle = new
@@ -613,30 +613,30 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			}
 		}
 
-		// BST ADC?
-		if (_closestPanel != null) {
-
-			for (int i = 0; i < _bstADCData.count(); i++) {
-				if ((_bstADCData.sector[i] == _closestPanel.getSector())
-						&& (_bstADCData.layer[i] == _closestPanel.getLayer())) {
-					_bstADCData.adcFeedback(i, feedbackStrings);
-				}
-			}
-
-		}
 
 		// BMT?
 
 		if (showADCHits()) {
-			AdcList adcHits = BMT.getInstance().getADCHits();
-			if ((adcHits != null) && !adcHits.isEmpty()) {
-				for (AdcHit adcHit : adcHits) {
-					if (adcHit.contains(screenPoint)) {
-						adcHit.adcFeedback("layer", "strip", feedbackStrings);
-						break;
+			// BST ADC?
+			if (_closestPanel != null) {
+
+				for (int i = 0; i < _bstADCData.count(); i++) {
+					if ((_bstADCData.sector[i] == _closestPanel.getSector())
+							&& (_bstADCData.layer[i] == _closestPanel.getLayer())) {
+						_bstADCData.adcFeedback(i, feedbackStrings);
 					}
 				}
+
 			}
+			
+			
+			// BMT ADC?
+			for (int i = 0; i < _bmtADCData.count(); i++) {
+				if (_bmtADCData.contains(i, screenPoint)) {
+					_bmtADCData.adcFeedback("BMT", i, feedbackStrings);
+				}
+			}
+			
 		}
 
 		boolean foundHit = false;

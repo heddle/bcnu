@@ -16,7 +16,6 @@ import org.jlab.geom.prim.Plane3D;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Vector3D;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
@@ -243,7 +242,7 @@ public class GeometryManager {
 		int sector = clasToSectorNumber(clasP);
 		if ((sector < 1) || (sector > 6)) {
 			String wstr = "Bad sector: " + sector + " in clasToSector";
-			Log.getInstance().error(wstr);
+			System.err.println(wstr);
 			return;
 		}
 
@@ -289,7 +288,7 @@ public class GeometryManager {
 
 		if ((sector < 1) || (sector > 6)) {
 			String wstr = "Bad sector: " + sector + " in sectorToClas";
-			Log.getInstance().error(wstr);
+			System.err.println(wstr);
 			return;
 		}
 
@@ -338,7 +337,7 @@ public class GeometryManager {
 		int sector = labXYZToSectorNumber(labXYZ);
 		if ((sector < 1) || (sector > 6)) {
 			String wstr = "Bad sector: " + sector + " in labXYZToSectorXYZ";
-			Log.getInstance().error(wstr);
+			System.err.println(wstr);
 			return;
 		}
 
@@ -370,7 +369,7 @@ public class GeometryManager {
 
 		if ((sector < 1) || (sector > 6)) {
 			String wstr = "Bad sector: " + sector + " in sectorXYZToLabXYZ";
-			Log.getInstance().error(wstr);
+			System.err.println(wstr);
 			return;
 		}
 

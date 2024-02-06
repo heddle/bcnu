@@ -16,7 +16,6 @@ import cnuphys.bCNU.dialog.SimpleDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Environment;
 
 @SuppressWarnings("serial")
@@ -102,7 +101,7 @@ public class ConnectETDialog extends SimpleDialog {
 		} catch (Exception e) {
 			String msg = "Bad text in ET Connect Dialog port field: \"" + pstr + "\" using default port "
 					+ DEFAULT_PORT;
-			Log.getInstance().warning(msg);
+			System.err.println(msg);
 			return DEFAULT_PORT;
 		}
 	}

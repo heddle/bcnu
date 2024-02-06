@@ -18,7 +18,6 @@ import javax.swing.table.TableColumn;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
@@ -231,7 +230,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 					}
 				}
 			} catch (Exception e) {
-				Log.getInstance().warning("ClasIoBankDialog could not parse: [" + vs + "]");
+				e.printStackTrace();
 			}
 		}
 	}  //readvis

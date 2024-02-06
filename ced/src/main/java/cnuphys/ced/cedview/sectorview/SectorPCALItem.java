@@ -12,7 +12,6 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -192,7 +191,7 @@ public class SectorPCALItem extends PolygonItem {
 		Point2D.Double wp[] = PCALGeometry.getShell(stripType, view.getProjectionPlane());
 
 		if (wp == null) {
-			Log.getInstance().warning("null shell in SectorPCALItem stripType = " + stripType + "  sector = " + sector);
+			System.err.println("null shell in SectorPCALItem stripType = " + stripType + "  sector = " + sector);
 			return null;
 		}
 

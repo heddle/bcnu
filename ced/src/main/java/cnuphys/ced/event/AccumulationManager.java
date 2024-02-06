@@ -7,8 +7,6 @@ import javax.swing.event.EventListenerList;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
-import cnuphys.bCNU.log.Log;
-import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
@@ -23,9 +21,6 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.lists.DCTdcHitList;
@@ -688,7 +683,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 				} catch (ArrayIndexOutOfBoundsException e) {
 					String msg = String.format("Index out of bounds (BST). Event# %d lay %d sect %d  strip %d",
 							_eventManager.getSequentialEventNumber(), bstADCData.layer[i], bstADCData.sector[i], bstADCData.component[i]);
-					Log.getInstance().warning(msg);
+					System.err.println(msg);
 				}
 
 			}
@@ -808,7 +803,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			if (hit.inRange()) {
 				_DCAccumulatedData[hit.sector - 1][hit.superlayer - 1][hit.layer6 - 1][hit.wire - 1] += 1;
 			} else {
-				Log.getInstance().warning("In accumulation, DC hit has bad indices: " + hit);
+				System.err.println("In accumulation, DC hit has bad indices: " + hit);
 			}
 
 		}

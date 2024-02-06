@@ -3,7 +3,6 @@ package cnuphys.ced.alldata;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public class ColumnData implements Comparable<ColumnData> {
@@ -79,8 +78,6 @@ public class ColumnData implements Comparable<ColumnData> {
 		_fullName = bankName + "." + columnName;
 
 		if ((type < 1) || (type > 6) || (type == 24)) {
-			Log.getInstance().warning("Bank: [" + _bankName + "] Column: [" + columnName
-					+ "] bad data type in ColumnData constructor: [" + type + "]");
 			type = 0;
 		}
 		_type = type;

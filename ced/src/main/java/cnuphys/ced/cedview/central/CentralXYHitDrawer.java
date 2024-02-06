@@ -8,13 +8,12 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
@@ -38,6 +37,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	private CTOFADCData adcCTOFData = CTOFADCData.getInstance();
 	private CTOFClusterData clusterCTOFData = CTOFClusterData.getInstance();
 	private BSTADCData adcBSTData = BSTADCData.getInstance();
+	private BMTADCData adcBMTData = BMTADCData.getInstance();
 
 	// accumulation manager
 	private AccumulationManager _accumManager = AccumulationManager.getInstance();
@@ -195,45 +195,41 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	private void drawBMTADCData(Graphics g, IContainer container) {
 		if (_view.showADCHits()) {
 
-			Point pp = new Point();
-			Point2D.Double wp = new Point2D.Double();
+			int count = adcBMTData.count();
+			if (count > 0) {
+				Point pp = new Point();
+				Point2D.Double wp = new Point2D.Double();
 
-			AdcList hits = BMT.getInstance().getADCHits();
-			if ((hits != null) && !hits.isEmpty()) {
+				for (int i = 0; i < count; i++) {
+					BMTSectorItem bmtItem = _view.getBMTSectorItem(adcBMTData.sector[i], adcBMTData.layer[i]);
+					if (bmtItem.getLastDrawnPolygon() != null) {
+						g.setColor(X11Colors.getX11Color("tan"));
+						g.fillPolygon(bmtItem.getLastDrawnPolygon());
+						g.setColor(Color.red);
+						g.drawPolygon(bmtItem.getLastDrawnPolygon());
+					}
+					Polygon poly = bmtItem.getStripPolygon(container, adcBMTData.component[i]);
+					if (poly != null) {
+						g.setColor(Color.black);
+						g.fillPolygon(poly);
+						g.setColor(adcBMTData.getADCColor(i));
+						g.drawPolygon(poly);
+					}
 
-				for (AdcHit hit : hits) {
-					if (hit != null) {
-						BMTSectorItem bmtItem = _view.getBMTSectorItem(hit.sector, hit.layer);
-						if (bmtItem.getLastDrawnPolygon() != null) {
-							g.setColor(X11Colors.getX11Color("tan"));
-							g.fillPolygon(bmtItem.getLastDrawnPolygon());
-							g.setColor(Color.red);
-							g.drawPolygon(bmtItem.getLastDrawnPolygon());
-						}
-						Polygon poly = bmtItem.getStripPolygon(container, hit.component);
-						if (poly != null) {
-							g.setColor(Color.black);
-							g.fillPolygon(poly);
-							g.setColor(Color.yellow);
-							g.drawPolygon(poly);
+					if (bmtItem.isZLayer()) {
 
-						}
+						Color color = adcBMTData.getADCColor(adcBMTData.adc[i]);
 
-						if (bmtItem.isZLayer()) {
+						double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(adcBMTData.sector[i],
+								adcBMTData.layer[i], adcBMTData.component[i]);
 
-							Color color = hits.adcColor(hit);
+						double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
+						wp.x = rad * Math.cos(phi);
+						wp.y = rad * Math.sin(phi);
 
-							double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(hit.sector, hit.layer,
-									hit.component);
-
-							double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
-							wp.x = rad * Math.cos(phi);
-							wp.y = rad * Math.sin(phi);
-
-							container.worldToLocal(pp, wp);
-							hit.setLocation(pp);
-							DataDrawSupport.drawAdcHit(g, pp, color);
-						}
+						container.worldToLocal(pp, wp);
+						adcBMTData.setLocation(i, pp);
+						DataDrawSupport.drawAdcHit(g, pp, color);
 
 					}
 				}

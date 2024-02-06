@@ -29,8 +29,8 @@ import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
+import cnuphys.bCNU.util.MethodName;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
@@ -457,18 +457,13 @@ public class ClasIoEventManager {
 
 			// does the file exist?
 
-			Log.getInstance().info("Attempting to connect to ET ring");
-			Log.getInstance().info("ET Filename: [" + _currentETFile + "]");
-			Log.getInstance().info("ET Station Name: [" + _currentStation + "]");
 			System.err.println("ET File Name:_currentETFile [" + _currentETFile + "]");
 
 			try {
-				Log.getInstance().info("Attempting to create EvioETSource.");
 
 				_dataSource = new EvioETSource(_currentMachine, _currentPort, _currentStation);
 
 				if (_dataSource == null) {
-					Log.getInstance().error("null EvioETSource.  Cannot connect to ET.");
 					JOptionPane.showMessageDialog(null, "The ET Data Source is null, used Machine: " + _currentMachine,
 							"ET null Data Source", JOptionPane.INFORMATION_MESSAGE, ImageManager.cnuIcon);
 					return;
@@ -476,14 +471,13 @@ public class ClasIoEventManager {
 
 				System.err.println("trying to connect using et file: " + _currentETFile);
 				setEventSourceType(EventSourceType.ET);
-				Log.getInstance().info("Attempting to open EvioETSource.");
 				_dataSource.open(_currentETFile);
 
 				//auto select events every 2 sec
 				Ced.getCed().getEventMenu().autoCheckAuto();
 			} catch (Exception e) {
 				String message = "Could not connect to ET Ring [" + e.getMessage() + "]";
-				Log.getInstance().error(message);
+				System.err.println(message);
 			}
 
 		} // end ok
@@ -948,23 +942,39 @@ public class ClasIoEventManager {
 
 	// new event file notification
 	private void notifyEventListeners(File file) {
+		
+		Runnable runner = new Runnable() {
 
-		Swimming.clearAllTrajectories();
+			@Override
+			public void run() {
+				Swimming.clearAllTrajectories();
+				for (int index = 0; index < 3; index++) {
+					if (_viewListenerList[index] != null) {
+						// Guaranteed to return a non-null array
+						Object[] listeners = _viewListenerList[index].getListenerList();
 
-		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
-
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					if (listeners[i] == IClasIoEventListener.class) {
-						((IClasIoEventListener) listeners[i + 1]).openedNewEventFile(file.getAbsolutePath());
+						// This weird loop is the bullet proof way of notifying all
+						// listeners.
+						for (int i = listeners.length - 2; i >= 0; i -= 2) {
+							if (listeners[i] == IClasIoEventListener.class) {
+								((IClasIoEventListener) listeners[i + 1]).openedNewEventFile(file.getAbsolutePath());
+							}
+						}
 					}
 				}
+
 			}
+		};
+
+		Thread t = new Thread(runner);
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+
+
 		Ced.getCed().fixTitle();
 
 	}

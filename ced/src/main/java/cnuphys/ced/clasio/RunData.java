@@ -2,7 +2,6 @@ package cnuphys.ced.clasio;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.magfield.MagneticFields;
 
@@ -83,7 +82,7 @@ public class RunData {
 			}
 			return true;
 		} catch (Exception e) {
-			Log.getInstance().warning("Exception in RunData det method");
+			e.printStackTrace();
 		}
 
 		return false;

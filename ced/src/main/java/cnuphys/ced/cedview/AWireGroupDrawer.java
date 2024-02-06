@@ -4,7 +4,6 @@ import java.awt.Graphics;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public abstract class AWireGroupDrawer extends DrawableAdapter {
@@ -26,7 +25,7 @@ public abstract class AWireGroupDrawer extends DrawableAdapter {
 		if ((array != null) && (array.length == expectedLength)) {
 			return false;
 		}
-		Log.getInstance().warning("Bad int Array in a Wire Group Drawer. Drawing Aborted.");
+		System.err.println("Bad int Array in a Wire Group Drawer. Drawing Aborted.");
 		return true;
 	}
 

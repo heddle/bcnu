@@ -5,9 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.BMT;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.Cross2;
 import cnuphys.ced.event.data.lists.CrossList2;
@@ -27,6 +25,10 @@ public class BMTLayer3D extends DetectorItem3D {
 
 	// the 1-based layer
 	private int _layer;
+	
+	//bmt adc data
+	private BMTADCData _bmtADCData = BMTADCData.getInstance();
+
 
 	public BMTLayer3D(CedPanel3D panel3D, int sector, int layer) {
 		super(panel3D);
@@ -57,39 +59,17 @@ public class BMTLayer3D extends DetectorItem3D {
 	public void drawData(GLAutoDrawable drawable) {
 
 		float coords6[] = new float[6];
-//		float coords36[] = new float[36];
-//		boolean drawOutline = false;
-
-		AdcList hits = BMT.getInstance().getADCHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcHit hit : hits) {
-				if (hit != null) {
-					int sector = hit.sector;
-					int layer = hit.layer;
-					if ((_sector == sector) && (_layer == layer)) {
-//						drawOutline = true;
-						int strip = hit.component;
-
-						if (showHits()) {
-							if (BMTGeometry.getGeometry().isZLayer(layer)) {
-								BMTGeometry.getGeometry().getCRZEndPoints(sector, layer, strip, coords6);
-
-								if (!Float.isNaN(coords6[0])) {
-									Support3D.drawLine(drawable, coords6, hitColor, STRIPLINEWIDTH);
-								}
-							}
-						}
-
-					} // match sector and layer
-				} // hit not null
-			} // loop on hits
-		} // hits not null
-
-//
-//		if (drawOutline) { // if any hits, draw it once
-//			BSTGeometry.getLayerQuads(_sector, _layer, coords36);
-//			Support3D.drawQuads(drawable, coords36, outlineHitColor, 1f, true);
-//		}
+		
+		for (int i = 0; i < _bmtADCData.count(); i++) {
+			if (_bmtADCData.sector[i] == _sector && _bmtADCData.layer[i] == _layer) {
+				int strip = _bmtADCData.component[i];
+				BMTGeometry.getGeometry().getCRZEndPoints(_sector, _layer, strip, coords6);
+				if (!Float.isNaN(coords6[0])) {
+					Support3D.drawLine(drawable, coords6, _bmtADCData.adc[i] > 0 ? Color.red : Color.blue,
+							STRIPLINEWIDTH);
+				}
+			}
+		}
 
 		// reconstructed crosses?
 		if (_cedPanel3D.showReconCrosses()) {

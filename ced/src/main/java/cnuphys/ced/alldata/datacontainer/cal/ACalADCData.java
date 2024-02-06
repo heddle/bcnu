@@ -3,7 +3,7 @@ package cnuphys.ced.alldata.datacontainer.cal;
 import java.awt.Color;
 import java.util.ArrayList;
 
-import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.alldata.datacontainer.AdcColorScale;
 
 public abstract class ACalADCData extends ACalData {
 

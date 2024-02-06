@@ -6,7 +6,7 @@ import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonADCData;
-import cnuphys.ced.event.data.AdcColorScale;
+import cnuphys.ced.alldata.datacontainer.AdcColorScale;
 
 public class CTOFADCData extends ACommonADCData {
 	// singleton

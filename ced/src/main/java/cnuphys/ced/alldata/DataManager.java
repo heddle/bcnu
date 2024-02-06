@@ -12,9 +12,6 @@ import org.jlab.io.base.DataEvent;
 import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
 
-import cnuphys.bCNU.log.Log;
-
-
 public class DataManager {
 
 	// the data dictionary
@@ -171,7 +168,7 @@ public class DataManager {
 					for (String columnName : columns) {
 						ColumnData cd = getColumnData(bankName, columnName);
 						if (cd == null) {
-							Log.getInstance().warning("Dictionary does not seem to know about bank named [" + bankName
+							System.err.println("Dictionary does not seem to know about bank named [" + bankName
 									+ "." + columnName + "] May be a disconnect with json files");
 						} else {
 							list.add(cd);

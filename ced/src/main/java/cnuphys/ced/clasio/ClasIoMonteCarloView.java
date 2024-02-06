@@ -5,7 +5,6 @@ import java.util.Vector;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.adaptiveSwim.SwimType;
-import cnuphys.bCNU.log.Log;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -128,7 +127,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 			}
 		} catch (Exception e) {
 			String warning = "[ClasIoMonteCarloEventView.addTracks] " + e.getMessage();
-			Log.getInstance().warning(warning);
+			System.err.println(warning);
 		}
 	}
 
