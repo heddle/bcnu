@@ -267,50 +267,6 @@ public class AllDCSuperLayer extends RectangleItem {
 			}
 		}
 
-		// draw nn hits
-		if (_view.showNNHits()) {
-			DCTdcHitList hits = DC.getInstance().getTDCHits();
-			if ((hits != null) && !hits.isEmpty()) {
-
-				for (DCTdcHit hit : hits) {
-					if ((hit.sector == _sector) && (hit.superlayer == _superLayer) && hit.nnHit) {
-						drawDCNNHit(g, container, hit.layer6, hit.wire, wr);
-					}
-				}
-			}
-		}
-
-
-//		int hitCount = DC.hitCount();
-//
-//		if (hitCount > 0)  {
-//			byte sector[] = DC.sector();
-//			byte superlayer[] = DC.superlayer();
-//			byte layer[] = DC.layer();
-//			short wire[] = DC.wire();
-//			int pid[] = DC.pid();
-//
-//			for (int i = 0; i < hitCount; i++) {
-//				int sect1 = sector[i]; // 1 based
-//				int supl1 = superlayer[i]; // 1 based
-//
-//				if ((sect1 == _sector) && (supl1 == _superLayer)) {
-//					int lay1 = layer[i]; // 1 based
-//					int wire1 = wire[i]; // 1 based
-//
-//					boolean noise = false;
-//					if (_noiseManager.getNoise() != null) {
-//						noise = _noiseManager.getNoise()[i];
-//					}
-//
-//					int pdgid = (pid == null) ? -1
-//							: pid[i];
-//					drawDCHit(g, container, lay1, wire1, noise, pdgid, wr);
-//				}
-//			} // for
-//
-//		}
-
 	}
 
 	/**
@@ -465,31 +421,6 @@ public class AllDCSuperLayer extends RectangleItem {
 		_lastColor  = color;
 	}
 
-	/**
-	 * Draw a single nn marked hit
-	 *
-	 * @param g         the graphics context
-	 * @param container the rendering container
-	 * @param dcHit     a dc hit object
-	 * @param wire      the 1-based wire
-	 * @param noise     is this marked as a noise hit
-	 * @param pid       the gemc pid
-	 * @param nn        is this a hit also marked by nnet?
-	 * @param wr        workspace
-	 */
-	private void drawDCNNHit(Graphics g, IContainer container, int layer, int wire, Rectangle2D.Double wr) {
-
-		if (wire > GeoConstants.NUM_WIRE) {
-			String msg = "Bad wire number in drawDCNNHit " + wire + " event number " + _eventManager.getSequentialEventNumber();
-			System.err.println(msg);
-			return;
-		}
-
-		getCell(layer, wire, wr);
-
-
-		WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.NN_COLOR, _lastColor);
-	}
 
 
 	/**

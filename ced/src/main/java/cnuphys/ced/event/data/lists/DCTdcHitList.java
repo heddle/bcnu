@@ -16,7 +16,6 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 
 	private String DCBank = "DC::tdc";
 	private String DocaBank = "DC::doca"; // only in sim data
-	private String DCNNBank = "nn::dchits"; //neural net hits
 
 	public int[] sectorCounts = { -1, 0, 0, 0, 0, 0, 0 }; // use 7 no off by one
 
@@ -37,10 +36,6 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 		byte[] order = ColumnData.getByteArray(DCBank + ".order");
 
 
-		//see if there is a nnhits bank
-		byte[] nntrackid = ColumnData.getByteArray(DCNNBank + ".id");
-		short[] nnindex = ColumnData.getShortArray(DCNNBank + ".index");
-		int nnlen = (nntrackid == null) ? 0 : nntrackid.length;
 
 		// see if there are doca arrays of the same length
 		byte[] lr = ColumnData.getByteArray(DocaBank + ".LR");
@@ -80,16 +75,6 @@ public class DCTdcHitList extends Vector<DCTdcHit> {
 			hitArray[i] = hit;
 			add(hit);
 		}
-
-		if (nnlen > 0) {
-			for (int j = 0; j < nnlen; j++) {
-				int idx = nnindex[j] - 1;
-				DCTdcHit hit = hitArray[idx];
-				hit.nnHit = true;
-				hit.nnTrackId = nntrackid[j];
-			}
-		}
-
 
 
 		if (size() > 1) {

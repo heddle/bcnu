@@ -62,11 +62,6 @@ public class ReconDrawer extends SectorViewDrawer {
 		// DC HB and TB Hits
 		drawDCReconAndDOCA(g, container);
 
-		// neural net overlays
-		if (_view.showNN()) {
-			drawNeuralNetOverlays(g, container);
-		}
-
 
 		// Reconstructed clusters
 		if (_view.showClusters()) {
@@ -181,23 +176,6 @@ public class ReconDrawer extends SectorViewDrawer {
 
 
 	}
-
-	// draw neural net overlays
-	private void drawNeuralNetOverlays(Graphics g, IContainer container) {
-		DCTdcHitList hits = DC.getInstance().getTDCHits();
-		if ((hits != null) && !hits.isEmpty()) {
-
-			for (DCTdcHit hit : hits) {
-				if (hit.nnHit) {
-					if (_view.containsSector(hit.sector)) {
-						_view.drawDCRawHit(g, container, CedColors.NN_TRANS, Color.black, hit);				}
-				}
-			}
-		}
-	}
-
-
-
 
 	// draw reconstructed clusters
 	private void drawClusters(Graphics g, IContainer container) {

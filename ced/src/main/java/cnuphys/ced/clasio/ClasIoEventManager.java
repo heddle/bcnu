@@ -79,10 +79,6 @@ public class ClasIoEventManager {
 		HIPOFILE, ET, EVIOFILE
 	}
 
-	// for firing property changes
-	public static final String SWIM_ALL_MC_PROP = "SWIM ALL MC";
-	public static final String SWIM_ALL_RECON_PROP = "SWIM ALL RECON";
-
 	// the current source type
 	private EventSourceType _sourceType = EventSourceType.HIPOFILE;
 
@@ -166,10 +162,8 @@ public class ClasIoEventManager {
                     ScanManager.getInstance().newClasIoEvent(_currentEvent);
                 }
 				else {
-					CedView.suppressRefresh(true);
 					_runData.set(_currentEvent);
 					notifyEventListeners();
-					CedView.suppressRefresh(false);
 					Ced.refresh();
 				}
 			}

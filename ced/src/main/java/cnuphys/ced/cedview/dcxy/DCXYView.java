@@ -33,6 +33,7 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.cedview.SwimTrajectoryDrawerXY;
+import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
@@ -63,6 +64,9 @@ public class DCXYView extends HexView {
 
 	// draws mc hits
 	private McHitDrawer _mcHitDrawer;
+
+	// for fmt
+	private FMTCrossDrawer _fmtCrossDrawer;
 
 	//bank matches
 	private static String _defMatches[] = {"DC:"};
@@ -105,6 +109,8 @@ public class DCXYView extends HexView {
 		_crossDrawer = new CrossDrawer(this);
 		_mcHitDrawer = new McHitDrawer(this);
 
+		// fmt cross drawer
+		_fmtCrossDrawer = new FMTCrossDrawer(this);
 
 		setBeforeDraw();
 		setAfterDraw();
@@ -252,6 +258,10 @@ public class DCXYView extends HexView {
 						_crossDrawer.draw(g, container);
 					}
 
+					// Other (not DC) Crosses
+					if (showCrosses()) {
+						_fmtCrossDrawer.draw(g, container);
+					}
 
 					drawCoordinateSystem(g, container);
 					drawSectorNumbers(g, container, 400);
@@ -423,6 +433,12 @@ public class DCXYView extends HexView {
 		if (showAIDCTBCrosses()) {
 			_crossDrawer.setMode(CrossDrawer.AITB);
 			_crossDrawer.feedback(container, pp, wp, feedbackStrings);
+		}
+
+
+		// Other (not DC) Crosses
+		if (showCrosses()) {
+			_fmtCrossDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
 		}
 
 		if (showMcTruth()) {

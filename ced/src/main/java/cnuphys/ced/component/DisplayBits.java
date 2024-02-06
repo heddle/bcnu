@@ -59,8 +59,8 @@ public class DisplayBits {
 	/** sector change diamonds */
     public static final int SECTORCHANGE = 01000000;
 
-    /** global nn data */
-    public static final int GLOBAL_NN = 02000000;
+    /** TOF panels */
+	public static final int TOFPANELS = 02000000;
 
     /** global nn data */
     public static final int GLOBAL_AIHB = 04000000;
@@ -82,15 +82,6 @@ public class DisplayBits {
 
 	/** cvt pass 1 traj */
 	public static final int CVTP1TRAJ = 0400000000;
-
-	public static final int TOFPANELS = 01000000000;
-
-
-
-//last one: 20000000000
-
-	/** Distance scale */
-	// public static final int SCALE = 04;
 
 	// max octal for ints 20000000000
 

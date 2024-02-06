@@ -33,8 +33,6 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 	private JCheckBox _aihbHitsButton;
 	private JCheckBox _aitbHitsButton;
 
-	private JCheckBox _nnHitsButton;
-
 	public AllDCDisplayPanel(CedView view) {
 		_view = (AllDCView) view;
 		setup();
@@ -52,11 +50,10 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 		}
 
 		_rawHitsButton = createButton(panels[0], 0);
-		_nnHitsButton = createButton(panels[1], 1);
-		_hbHitsButton = createButton(panels[2], 2);
-		_tbHitsButton = createButton(panels[3], 3);
-		_aihbHitsButton = createButton(panels[4], 4);
-		_aitbHitsButton = createButton(panels[5], 5);
+		_hbHitsButton = createButton(panels[1], 1);
+		_tbHitsButton = createButton(panels[2], 2);
+		_aihbHitsButton = createButton(panels[3], 3);
+		_aitbHitsButton = createButton(panels[4], 4);
 
 
 		for (JPanel panel : panels) {
@@ -88,21 +85,8 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			button = new JCheckBox("Raw ", true);
 			break;
 
+
 		case 1:
-			component =  new JComponent() {
-				@Override
-				public void paintComponent(Graphics g) {
-					Rectangle b = getBounds();
-					g.setColor(CedColors.NN_COLOR);
-					g.fillOval(0, 0, w, h);
-				}
-
-			};
-
-			button = new JCheckBox("NN ", false);
-			break;
-
-		case 2:
 			component =  new JComponent() {
 				@Override
 				public void paintComponent(Graphics g) {
@@ -115,7 +99,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			button = new JCheckBox("Reg HB ", false);
 			break;
 
-		case 3:
+		case 2:
 			component =  new JComponent() {
 				@Override
 				public void paintComponent(Graphics g) {
@@ -129,7 +113,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			button = new JCheckBox("Reg TB ", false);
 			break;
 
-		case 4:
+		case 3:
 			component =  new JComponent() {
 				@Override
 				public void paintComponent(Graphics g) {
@@ -148,7 +132,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			button = new JCheckBox("AI HB ", false);
 			break;
 
-		case 5:
+		case 4:
 			component =  new JComponent() {
 				@Override
 				public void paintComponent(Graphics g) {
@@ -229,15 +213,6 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 		return _aitbHitsButton.isSelected();
 	}
 
-
-	/**
-	 * Display neural net marked hits?
-	 *
-	 * @return <code> if we should display neural net marked hits
-	 */
-	public boolean showNNHits() {
-		return _nnHitsButton.isSelected();
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {

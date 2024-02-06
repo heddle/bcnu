@@ -91,7 +91,7 @@ public abstract class ACommonClusterData implements IDataContainer {
 	 */
 	public void setLocation(int index, Point pp) {
 
-		int n = (sector == null) ? 0 : sector.length;
+		int n = (energy == null) ? 0 : energy.length;
 		if (n == 0) {
 			return;
 		}

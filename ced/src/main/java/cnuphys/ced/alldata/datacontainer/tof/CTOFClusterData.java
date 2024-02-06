@@ -35,8 +35,6 @@ public class CTOFClusterData extends ACommonClusterData {
 			return;
 		}
 
-        sector = bank.getByte("sector");
-        layer = bank.getByte("layer");
         component = bank.getShort("component");
         energy = bank.getFloat("energy");
         time = bank.getFloat("time");
@@ -46,10 +44,16 @@ public class CTOFClusterData extends ACommonClusterData {
         y = bank.getFloat("y");
         z = bank.getFloat("z");
 
-        int n = (sector != null) ? sector.length : 0;
+        int n = (energy != null) ? energy.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
 	}
+	
+	@Override
+	public int count() {
+        return (energy == null) ? 0 : energy.length;
+    }
+
 }

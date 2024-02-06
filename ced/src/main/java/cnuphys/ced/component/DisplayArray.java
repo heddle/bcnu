@@ -134,9 +134,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** Global show TB */
 	private static final String GLOBAL_TB_LABEL = "Reg TB";
 
-	/** Global show Neural Net data */
-	private static final String GLOBAL_NN_LABEL = "NN Data";
-
 	/** Global show AI HB */
 	private static final String GLOBAL_AIHB_LABEL = "AI HB";
 
@@ -368,11 +365,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		// global time based AI data
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_AITB)) {
 			_showAITBButton = add(GLOBAL_AITB_LABEL, true, true, this, _buttonColor).getCheckBox();
-		}
-
-		// global neural data
-		if (Bits.checkBit(bits, DisplayBits.GLOBAL_NN)) {
-			_showNNButton = add(GLOBAL_NN_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
 		// reonstructed crosses?
@@ -668,25 +660,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		return (_showAITBButton != null) && _showAITBButton.isSelected();
 	}
 
-
-	/**
-	 * Convenience method global neural net based display
-	 *
-	 * @return <code>true</code> if we are to show nn globally
-	 */
-	public boolean showNN() {
-		return (_showNNButton != null) && _showNNButton.isSelected();
-	}
-
-
-	/**
-	 * Convenience method to see if we show the dc neural net hits.
-	 *
-	 * @return <code>true</code> if we are to show dc neural net hits.
-	 */
-	public boolean showDCNNHits() {
-		return showNN() && (_dcHitsButton != null) && _dcHitsButton.isSelected();
-	}
 
 	/**
 	 * Convenience method to see if we show the dc HB reconstructed hits.

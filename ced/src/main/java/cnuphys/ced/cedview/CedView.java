@@ -67,9 +67,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	//the data warehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
-	//to speed up by suppressing refreshes
-	public static boolean SUPPRESSREFRESH = false;
-
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
@@ -267,16 +264,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_activeProbe = FieldProbe.factory();
 		}
 	}
-
-	/**
-	 * Suppress refresh to avoid unnecessary drawing.
-	 * USE CAUTIOUSLY!!
-	 * @param suppress if true, refreshes will be suppressed until set back
-	 */
-	public static void suppressRefresh(boolean suppress) {
-		SUPPRESSREFRESH = suppress;
-	}
-
 
 	/**
 	 * Accessor for the control panel
@@ -625,18 +612,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			return false;
 		}
 		return _controlPanel.getDisplayArray().showAITB();
-	}
-
-	/**
-	 * Convenience method global neural net data
-	 *
-	 * @return <code>true</code> if we are to show neural net globally
-	 */
-	public boolean showNN() {
-		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
-			return false;
-		}
-		return _controlPanel.getDisplayArray().showNN();
 	}
 
 
@@ -1088,10 +1063,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 */
 	@Override
 	public void refresh() {
-
-		if (SUPPRESSREFRESH) {
-			return;
-		}
 		super.refresh();
 	}
 

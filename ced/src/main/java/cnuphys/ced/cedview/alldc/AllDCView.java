@@ -492,16 +492,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 		return _controlPanel.getAllDCDisplayPanel().showAITBHits();
 	}
 
-	/**
-	 * Display neural net marked hits?
-	 *
-	 * @return <code> if we should display neural net marked hits
-	 */
-	public boolean showNNHits() {
-		return _controlPanel.getAllDCDisplayPanel().showNNHits();
-	}
-
-
 
 	@Override
 	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
