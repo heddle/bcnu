@@ -12,6 +12,8 @@ public class Wordle extends JDialog {
 	// Singleton
 	private static volatile Wordle _instance;
 	
+	private static final Brain _brain = Brain.getInstance();
+	
 	//where messages are sent
 	private JTextArea _messageArea;
 
@@ -19,7 +21,7 @@ public class Wordle extends JDialog {
     private Wordle() {
         super(new JFrame(), "Wordle", false); // Modeless dialog
         initializeComponents();
-    }
+      }
     
     /**
      * Get the singleton instance
@@ -45,7 +47,7 @@ public class Wordle extends JDialog {
         // Create and add the main panel
         add(createMainPanel(), BorderLayout.CENTER);
         
-        add(new Keyboard(28), BorderLayout.SOUTH);
+        add(Keyboard.getInstance(), BorderLayout.SOUTH);
         
         // Pack the components
         pack();

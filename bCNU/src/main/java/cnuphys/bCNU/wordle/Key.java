@@ -26,24 +26,26 @@ public class Key extends JComponent {
 	public Key(int width, char label) {
 		this.label = label;
 		this.width = width;
-		
+
 		MouseAdapter ml = new MouseAdapter() {
 			public void mousePressed(MouseEvent me) {
-				System.err.println("Pressed " + label);
-				
-		                isPressed = true;
-		                repaint(); // Request a repaint to update the visual appearance
 
-		                // Timer to simulate the button being pressed for a short duration
-		                new Timer(250, ae -> { // 250ms delay
-		                    isPressed = false;
-		                    repaint(); // After delay, repaint to "out" state
-		                }).start();
-		            }
-	
-		
+				isPressed = true;
+				repaint(); // Request a repaint to update the visual appearance
+
+				// Timer to simulate the button being pressed for a short duration
+				new Timer(250, ae -> { // 250ms delay
+					isPressed = false;
+					repaint(); // After delay, repaint to "out" state
+				}).start();
+				
+				// Notify the Brain
+				Brain brain = Brain.getInstance();
+				brain.processCharacterEntry(label);
+			}
+
 		};
-		
+
 		addMouseListener(ml);
 	}
 	
