@@ -11,7 +11,7 @@ public class LetterGrid extends JPanel {
 	
 	protected static int _dh = 2;
 	protected static int _dv = 1;
-	protected int _rectSize = 50;
+	protected int _rectSize = 60;
 	private Dimension _size;
 	
 	private Word _word[] = new Word[6];
