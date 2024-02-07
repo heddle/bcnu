@@ -6,6 +6,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 public class LetterGrid extends JPanel {
 	
@@ -19,14 +20,14 @@ public class LetterGrid extends JPanel {
 	public LetterGrid() {
 		setLayout(new GridLayout(6, 1, 0, 2));
 		
-		int w = 5 * (_rectSize + 2*_dh);
+		int w = 5 *_rectSize + 10*_dh;
 		int h = 6 * (_rectSize + _dv);
 	
 		_size = new Dimension(w, h);
 		
 		for (int i = 0; i < 6; i++) {
 			_word[i] = new Word(w, _rectSize-2);
-			add(_word[i]);
+			add(_word[i], SwingConstants.CENTER);
 		}
 		
 		setBackground(Color.white);

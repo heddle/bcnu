@@ -36,7 +36,7 @@ public class Keyboard extends JPanel {
 	
 	private Keyboard(int keyWidth) {
 		this.keyWidth = keyWidth;
-		setLayout(new GridLayout(3, 1, 4, 6));
+		setLayout(new GridLayout(3, 1, 3, 4));
 		createRows(keyWidth);
 	}
 	
@@ -53,7 +53,7 @@ public class Keyboard extends JPanel {
 	}
 	
 	public Dimension getPreferredSize() {
-		return new Dimension(11*(keyWidth + 4), 3*(keyWidth + 6));
+		return new Dimension(11*(keyWidth + 3), 3*(keyWidth + 4));
 	}
 	
 	@Override

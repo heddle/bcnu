@@ -14,14 +14,20 @@ public class Brain {
 
 	private static final String TANAME = "data/wordle-Ta.txt";
 	
+	
+	
 	//list of game words
 	private List<String> _laList;
 	
 	//list of real words not used as game words
 	private List<String> _taList;
 	
-	//which word are we on? [0..5]
+	//which word guess are we on? [0..5]
 	private int _currentWordIndex = 0;
+	
+	private String _currentWord;
+	
+	
 	
 	//the Keyboard
 	//private Keyboard _keyboard = Keyboard.getInstance();	
@@ -29,16 +35,21 @@ public class Brain {
 	private Brain() {
 		_laList = readFileIntoList(LANAME);        
 		_taList = readFileIntoList(TANAME);	
-		System.out.println("La list size: " + _laList.size());
-		System.out.println("Ta list size: " + _taList.size());
-		
-		String testWord1 = "steam";
-		String testWord2 = "xyzzy";
-		
-		System.out.println("Good word " + testWord1 + " " + goodWord(testWord1));
-		System.out.println("Good word " + testWord2 + " " + goodWord(testWord2));
+//		System.out.println("La list size: " + _laList.size());
+//		System.out.println("Ta list size: " + _taList.size());
+//		
+//		String testWord1 = "steam";
+//		String testWord2 = "xyzzy";
+//		
+//		System.out.println("Good word " + testWord1 + " " + goodWord(testWord1));
+//		System.out.println("Good word " + testWord2 + " " + goodWord(testWord2));
 	}
 
+	/**
+	 * Get the singleton instance
+	 * 
+	 * @return the singleton instance
+	 */
 	public static Brain getInstance() {
 		if (_instance == null) {
 			_instance = new Brain();
@@ -46,7 +57,20 @@ public class Brain {
 		return _instance;
 	}
 	
-	// try from the jar
+	/**
+	 * Reset everything for a new game
+	 */
+	public void newGame() {
+		System.out.println("New Game!");
+		_currentWord = (new String(randomWord())).toUpperCase();
+		
+		System.err.println("Current word: " + _currentWord);
+		_currentWordIndex = 0;
+		
+		System.out.println("Current word: " + _currentWord + "  " + submitGuess(_currentWord.toCharArray()));
+	}
+	
+	// try reading word lists from the jar
 	private BufferedReader bufferedReaderFromResource(String resourceName) {
 		InputStream inStream = getClass().getClassLoader().getResourceAsStream(resourceName);
 		return new BufferedReader(new InputStreamReader(inStream));
@@ -77,7 +101,7 @@ public class Brain {
      * Get a random word from the game list
      * @return a word for playing the game
      */
-    public char[] randomWord() {
+    private char[] randomWord() {
 		char word[] = new char[5];
 		String s = _laList.get((int) (Math.random() * _laList.size()));
 		for (int i = 0; i < 5; i++) {
@@ -119,6 +143,18 @@ public class Brain {
 	 */
 	public void processCharacterEntry(char c) {
 		System.out.println("Got " + c);
+	}
+	
+	/**
+	 * Submit a guess
+	 * 
+	 * @param chars the characters of the guess
+	 * @return <code>true</code> if the guess is correct
+	 */
+	public boolean submitGuess(char chars[]) {
+		String guess = new String(chars);
+		System.out.println("Guess: " + guess);
+		return _currentWord.equals(guess);
 	}
 	
 

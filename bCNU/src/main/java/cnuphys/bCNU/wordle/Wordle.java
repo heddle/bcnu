@@ -12,7 +12,10 @@ public class Wordle extends JDialog {
 	// Singleton
 	private static volatile Wordle _instance;
 	
+	//the brain
 	private static final Brain _brain = Brain.getInstance();
+	
+	private JMenuItem _newGameItem;
 	
 	//where messages are sent
 	private JTextArea _messageArea;
@@ -49,6 +52,8 @@ public class Wordle extends JDialog {
         
         add(Keyboard.getInstance(), BorderLayout.SOUTH);
         
+        makeMenu();
+        
         // Pack the components
         pack();
         setLocationRelativeTo(null); // Center on screen
@@ -62,6 +67,7 @@ public class Wordle extends JDialog {
 
 	}
     
+	//create the main panel
     private JPanel createMainPanel() {
     	JPanel p = new JPanel();
     	
@@ -78,6 +84,37 @@ public class Wordle extends JDialog {
 
     	return p;
     }
+    
+    //make the menu from which you can start a new game
+	private JMenu makeMenu() {
+		JMenu menu = new JMenu("File");
+		_newGameItem = new JMenuItem("New Game");
+		_newGameItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				_brain.newGame();
+			}
+		});
+		
+		JMenuBar mb = new JMenuBar();
+		setJMenuBar(mb);
+		menu.add(_newGameItem);
+		enableNewGame(false);
+		mb.add(menu);
+		return menu;
+	}
+	
+	/**
+	 * Enable or disable the new game menu item
+	 * @param enable true to enable, false to disable
+	 */
+	public void enableNewGame(boolean enable) {
+		_newGameItem.setEnabled(enable);
+	}
+
+	public void setNewGameAction(ActionListener actionListener) {
+		_newGameItem.addActionListener(actionListener);
+	}
 
     public void setMessage(String message) {
     	_messageArea.setText(message);
@@ -94,6 +131,7 @@ public class Wordle extends JDialog {
         SwingUtilities.invokeLater(() -> {
             Wordle wordle = getInstance();
             wordle.setMessage("Welcome to Wordle!\nI'm sure you know how to play.");
+            Brain.getInstance().newGame();
             wordle.setVisible(true);
         });
     }

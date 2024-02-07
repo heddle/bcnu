@@ -25,7 +25,6 @@ import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.dialog.TextDisplayDialog;
-import cnuphys.bCNU.eliza.ElizaDialog;
 import cnuphys.bCNU.fortune.FortuneManager;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.menu.MenuManager;
@@ -184,10 +183,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	private FTOFView _ftofView;
 
-	// magfield testing views
-//	private MagfieldView _magfieldView14;
-//	private MagfieldView _magfieldView25;
-//	private MagfieldView _magfieldView36;
 
 	// sector views
 	private SectorView _sectorView14;
@@ -579,8 +574,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		String weirdTitle = "w" + "\u018e" + "i" + "\u1d19" + "d";
 		_weirdMenu = new JMenu(weirdTitle);
 
-		// eliza!
-		final JMenuItem elizaItem = new JMenuItem("Eliza...");
 		final JMenuItem fortuneItem = new JMenuItem("Fortune...");
 		final JMenuItem tsItem = new JMenuItem("Traveling Salesperson ...");
 		final JMenuItem i2dItem = new JMenuItem("2D Ising Model ...");
@@ -590,9 +583,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 
-				if (source == elizaItem) {
-					ElizaDialog.showEliza(_instance);
-				} else if (source == fortuneItem) {
+				if (source == fortuneItem) {
 					FortuneManager.getInstance().showDialog();
 				} else if (source == tsItem) {
 					if (_tsDialog == null) {
@@ -608,11 +599,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			}
 		};
 
-		elizaItem.addActionListener(al1);
 		fortuneItem.addActionListener(al1);
 		tsItem.addActionListener(al1);
 		i2dItem.addActionListener(al1);
-		_weirdMenu.add(elizaItem);
 		_weirdMenu.add(fortuneItem);
 		_weirdMenu.add(tsItem);
 		_weirdMenu.add(i2dItem);
