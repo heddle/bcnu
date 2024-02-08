@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -17,7 +18,9 @@ public class LetterGrid extends JPanel {
 	
 	private Word _word[] = new Word[6];
 	
-	public LetterGrid() {
+	private static volatile LetterGrid _instance;
+	
+	private LetterGrid() {
 		setLayout(new GridLayout(6, 1, 0, 2));
 		
 		int w = 5 *_rectSize + 10*_dh;
@@ -27,12 +30,93 @@ public class LetterGrid extends JPanel {
 		
 		for (int i = 0; i < 6; i++) {
 			_word[i] = new Word(w, _rectSize-2);
+		}
+		
+		for (int i = 5; i >= 0; i--) {
 			add(_word[i], SwingConstants.CENTER);
 		}
+
 		
 		setBackground(Color.white);
 		
 	}
+	
+	public void processLetter(int index, char c) {
+        _word[index].insetChar(c);
+    }
+	
+	/**
+	 * Set the list of used letters
+	 */
+	public void fillUsedLetters(List<Character> usedLetters) {
+		for (int i = 0; i < 6; i++) {
+			char letters[] = _word[i].getWord();
+			
+			for (int j = 0; j < 5; j++) {
+				if (letters[j] != Word.nullChar) {
+					if (!usedLetters.contains(letters[j])) {
+						usedLetters.add(letters[j]);
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Refresh the drawing
+	 */
+	public void refresh() {
+		for (int i = 0; i < 6; i++) {
+			_word[i].repaint();
+		}
+	}
+	
+	/**
+	 * Get the singleton instance
+	 * 
+	 * @return the singleton instance
+	 */
+	public static LetterGrid getInstance() {
+		if (_instance == null) {
+			_instance = new LetterGrid();
+		}
+		return _instance;
+	}
+	
+	/**
+	 * Get the current char array for word at the index
+	 * @param index the word index
+	 * @return the current char array for 
+	 */
+	public char[] getWord(int index) {
+		return _word[index].getWord();
+	}
+	
+	/**
+	 * Insert a char into the first null space of the word
+	 * at the index. Do nothing if no null space
+	 * @param index the word index
+	 * @param c the char to insert
+	 */
+	public void insetChar(int index, char c) {
+		_word[index].insetChar(c);
+	}
+	
+	/**
+	 * There was a bad guess for the word at the index
+	 */
+	public void badGuess(int index) {
+		//TODO bad guess effect
+	}
+	
+	/**
+	 * Delete the last non-null char of the word at the index
+	 * @param index the word index
+	 */
+	public void delete(int index) {
+		_word[index].delete();
+	}
+
 	
 	@Override
 	public Insets getInsets() {

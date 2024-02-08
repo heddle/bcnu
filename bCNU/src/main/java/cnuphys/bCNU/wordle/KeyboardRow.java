@@ -4,17 +4,35 @@ import java.awt.FlowLayout;
 
 import javax.swing.JPanel;
 
-public class ButtonRow extends JPanel {
+public class KeyboardRow extends JPanel {
 	
 	private Key keys[];
 
-	public ButtonRow(int width, char...labels) {
+	public KeyboardRow(int width, char...labels) {
 		setLayout(new FlowLayout(FlowLayout.CENTER, 4, 0));
 		
 		keys = new Key[labels.length];
 		for (int i = 0; i < labels.length; i++) {
 			keys[i] = new Key(width, labels[i]);
 			add(keys[i]);
+		}
+	}
+	
+	/**
+	 * Reset to start of game conditions
+	 */
+	public void reset() {
+		for (Key key : keys) {
+			key.reset();
+		}
+	}
+	
+	/**
+	 * Refresh the drawing
+	 */
+	public void refresh() {
+		for (Key key : keys) {
+			key.repaint();
 		}
 	}
 	

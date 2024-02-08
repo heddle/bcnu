@@ -21,13 +21,14 @@ public class Word extends JComponent {
 	
 	private  int _rectHeight;
 	
-	private static final char nullChar = '\0';
+	/** the null char */
+	public static final char nullChar = '\0';
 	
 	//chars for each block
-	private char _letters[] = {nullChar, nullChar, 'J', nullChar, 'G'};
+	private char _letters[] = {nullChar, nullChar, nullChar, nullChar, nullChar};
 	
 	//values for each block
-	private int _values[] = {0, 0, 1, 0, 2};
+	private int _values[] = {0, 0, 0, 0, 0};
 	
 	// The letter rectangles
 	private Rectangle _rect[] = new Rectangle[5];
@@ -43,6 +44,40 @@ public class Word extends JComponent {
 		}
 	}
 	
+	/**
+	 * Get the current char array
+	 * @return 
+	 */
+	public char[] getWord() {
+		return _letters;
+	}
+	
+	/**
+	 * Insert a char into the first null space. Do nothing if no null space
+	 * @param c the char to insert
+	 */
+	public void insetChar(char c) {
+		for (int i = 0; i < 5; i++) {
+			if (_letters[i] == nullChar) {
+				_letters[i] = c;
+				break;
+			}
+		}
+	}
+	
+	/**
+	 * Delete the last non-null char
+	 */
+	public void delete() {
+		for (int i = 4; i >= 0; i--) {
+			if (_letters[i] != nullChar) {
+				_letters[i] = nullChar;
+				break;
+			}
+		}
+	}
+
+	
 	//reset the word as in start of a new game
 	public void reset() {
 		for (int i = 0; i < 5; i++) {
@@ -54,6 +89,11 @@ public class Word extends JComponent {
 	@Override
 	public void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
+		
+		String s = new String(_letters);
+		String answer = Brain.getInstance().getCurrentWord();
+		Scorer.scoreGuess(answer, s, _values);
+		
 
 		Rectangle r = getBounds();
 

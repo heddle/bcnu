@@ -33,6 +33,7 @@ public class Wordle extends JDialog {
 	public static Wordle getInstance() {
 		if (_instance == null) {
 			_instance = new Wordle();
+			Brain.getInstance().newGame();
 		}
 		return _instance;
 	}
@@ -44,9 +45,6 @@ public class Wordle extends JDialog {
         setLayout(new BorderLayout());
         setResizable(false);
         
-        // Add window listener
-        addWindowListener(new CustomWindowListener());
-
         // Create and add the main panel
         add(createMainPanel(), BorderLayout.CENTER);
         
@@ -74,7 +72,7 @@ public class Wordle extends JDialog {
     	p.setLayout(new BorderLayout(0, 6));
     	
         // Create and configure the center component
-        JComponent centerComponent = new LetterGrid();
+        JComponent centerComponent = LetterGrid.getInstance();
         centerComponent.setFocusable(true); // To receive keyboard events
         p.add(centerComponent, BorderLayout.CENTER);
 
@@ -116,22 +114,26 @@ public class Wordle extends JDialog {
 		_newGameItem.addActionListener(actionListener);
 	}
 
+	/**
+	 * Change the message text
+	 * @param message the new message
+	 */
     public void setMessage(String message) {
     	_messageArea.setText(message);
-    }
-
-    private class CustomWindowListener extends WindowAdapter {
-        @Override
-        public void windowClosing(WindowEvent e) {
-            // Handle window closing event here
-        }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Wordle wordle = getInstance();
-            wordle.setMessage("Welcome to Wordle!\nI'm sure you know how to play.");
-            Brain.getInstance().newGame();
+            
+			WindowAdapter windowAdapter = new WindowAdapter() {
+				@Override
+				public void windowClosing(WindowEvent e) {
+					System.exit(0);
+				}
+			};
+			wordle.addWindowListener(windowAdapter);
+            
             wordle.setVisible(true);
         });
     }

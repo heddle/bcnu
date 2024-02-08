@@ -15,16 +15,21 @@ import cnuphys.splot.plot.GraphicsUtilities;
 
 public class Key extends JComponent {
 
+	private static final Color _unusedColor = new Color(210, 210, 210);
+	
 	private int state = Colors.NEUTRAL;
 	
-	public char label;
+	//the label on the key
+	private char _char;
 	
+	//the pixel width of the key
 	public int width;
 	
+	//for a press effect
 	boolean isPressed = false;
 	
 	public Key(int width, char label) {
-		this.label = label;
+		this._char = label;
 		this.width = width;
 
 		MouseAdapter ml = new MouseAdapter() {
@@ -61,18 +66,21 @@ public class Key extends JComponent {
 		int w = getWidth();
 		int h = getHeight();
 
-		g.setColor(Colors.colors[state]);
-		g.fillRect(0, 0, w-1, h-1);
+		//has this letter been tried?
+		boolean unused = Brain.getInstance().unused(_char);
 
+		g.setColor(unused ? _unusedColor : Colors.colors[state]);
+		g.fillRect(0, 0, w-1, h-1);
+		
 		g.setColor(Color.darkGray);
 		GraphicsUtilities.drawSimple3DRect(g, 0, 0, w-2, h-2, !isPressed);
 
 		FontMetrics fm = g.getFontMetrics();
-		int cw = fm.charWidth(label);
+		int cw = fm.charWidth(_char);
 		
 		g.setFont(Fonts.defaultLargeFont);
-		g.setColor(Color.white);
-		g.drawString("" + label, (w-cw)/2 - 2, h / 2 + 5);
+		g.setColor(unused ? Color.black : Color.white);
+		g.drawString("" + _char, (w-cw)/2 - 2, h / 2 + 5);
 	}
 	
 	public void setState(int state) {
@@ -81,5 +89,11 @@ public class Key extends JComponent {
 	
 	public int getState() {
 		return state;
+	}
+	
+	/**
+	 * Reset to start of game conditions
+	 */
+	public void reset() {
 	}
 }

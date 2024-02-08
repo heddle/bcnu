@@ -18,7 +18,7 @@ public class Keyboard extends JPanel {
 	private int keyWidth;
 	
 	//the three rows of keys
-	private ButtonRow rows[] = new ButtonRow[3];
+	private KeyboardRow rows[] = new KeyboardRow[3];
 	
 	//the enter key
 	public Key enterKey;
@@ -52,6 +52,24 @@ public class Keyboard extends JPanel {
 		return _instance;
 	}
 	
+	/**
+	 * Reset to start of game conditions
+	 */
+	public void reset() {
+		for (KeyboardRow row : rows) {
+			row.reset();
+		}
+	}
+	
+	/**
+	 * Refresh the drawing
+	 */
+	public void refresh() {
+		for (KeyboardRow row : rows) {
+			row.refresh();
+		}
+	}
+	
 	public Dimension getPreferredSize() {
 		return new Dimension(11*(keyWidth + 3), 3*(keyWidth + 4));
 	}
@@ -64,14 +82,14 @@ public class Keyboard extends JPanel {
 
 	//create the three rows of keys
 	private void createRows(int keyWidth) {
-		rows[0] = new ButtonRow(keyWidth, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P');
-		rows[1] = new ButtonRow(keyWidth, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L');
-		rows[2] = new ButtonRow(keyWidth, ENTER, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', BACKSPACE);
+		rows[0] = new KeyboardRow(keyWidth, 'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P');
+		rows[1] = new KeyboardRow(keyWidth, 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L');
+		rows[2] = new KeyboardRow(keyWidth, ENTER, 'Z', 'X', 'C', 'V', 'B', 'N', 'M', BACKSPACE);
 		
 		enterKey = rows[2].getKey(0);
 		deleteKey = rows[2].getKey(8);
 		
-		for (ButtonRow row : rows) {
+		for (KeyboardRow row : rows) {
 			add(row);
 		}
 	}
