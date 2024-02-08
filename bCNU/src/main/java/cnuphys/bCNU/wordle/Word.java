@@ -21,6 +21,8 @@ public class Word extends JComponent {
 	
 	private  int _rectHeight;
 	
+	private int _index;
+	
 	/** the null char */
 	public static final char nullChar = '\0';
 	
@@ -32,9 +34,12 @@ public class Word extends JComponent {
 	
 	// The letter rectangles
 	private Rectangle _rect[] = new Rectangle[5];
+	
+	private boolean _completed = false;
 
-	public Word(int w, int rectH) {
+	public Word(int index, int w, int rectH) {
 		setLayout(new GridLayout(1, 5, LetterGrid._dh, LetterGrid._dv));
+		_index = index;
 		_rectHeight = rectH;
 		
 		_size = new Dimension(w, rectH + LetterGrid._dh);
@@ -80,10 +85,28 @@ public class Word extends JComponent {
 	
 	//reset the word as in start of a new game
 	public void reset() {
+		_completed = false;
 		for (int i = 0; i < 5; i++) {
 			_letters[i] = nullChar;
 			_values[i] = 0;
 		}
+	}
+	
+	/**
+	 * Is the word completed?
+	 * @return
+	 */
+	public boolean isCompleted() {
+		return _completed;
+	}
+	
+	/**
+	 * Set the completed flag
+	 * 
+	 * @param completed
+	 */
+	public void setCompleted(boolean completed) {
+		_completed = completed;
 	}
 
 	@Override
@@ -92,8 +115,10 @@ public class Word extends JComponent {
 		
 		String s = new String(_letters);
 		String answer = Brain.getInstance().getCurrentWord();
-		Scorer.scoreGuess(answer, s, _values);
-		
+
+		if (_completed) {
+			Scorer.scoreGuess(answer, s, _values);
+		}
 
 		Rectangle r = getBounds();
 
@@ -104,10 +129,17 @@ public class Word extends JComponent {
 			_rect[i].setBounds(x, _dh/2, w, _rectHeight - _dh/2);
 		}
 		
+		int _currentWordIndex = Brain.getInstance().getCurrentWordIndex();
+		int firstNull = firstNull();
+		
 		for (int i = 0; i < 5; i++) {
+			
+			boolean hot = ((_index == _currentWordIndex) && (i == firstNull));
+			
+			
 			g.setColor(Colors.colors[_values[i]]);
 			g.fillRect(_rect[i].x, _rect[i].y, _rect[i].width, _rect[i].height);
-			g.setColor(Color.lightGray);
+			g.setColor(hot ? Color.red : Color.lightGray);
 			g.drawRect(_rect[i].x, _rect[i].y, _rect[i].width, _rect[i].height);
 		}
 		
@@ -125,6 +157,16 @@ public class Word extends JComponent {
 			}
 		}
 		
+	}
+	
+	//get index of first null character
+	private int firstNull() {
+		for (int i = 0; i < 5; i++) {
+			if (_letters[i] == nullChar) {
+				return i;
+			}
+		}
+		return -1;
 	}
 	
 	@Override

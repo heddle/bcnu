@@ -29,7 +29,7 @@ public class LetterGrid extends JPanel {
 		_size = new Dimension(w, h);
 		
 		for (int i = 0; i < 6; i++) {
-			_word[i] = new Word(w, _rectSize-2);
+			_word[i] = new Word(i, w, _rectSize-2);
 		}
 		
 		for (int i = 5; i >= 0; i--) {
@@ -41,6 +41,12 @@ public class LetterGrid extends JPanel {
 		
 	}
 	
+	/**
+	 * Process a letter
+	 * 
+	 * @param index the index of the word
+	 * @param c     the letter to process
+	 */
 	public void processLetter(int index, char c) {
         _word[index].insetChar(c);
     }
@@ -83,6 +89,15 @@ public class LetterGrid extends JPanel {
 		return _instance;
 	}
 	
+	/**
+	 * Set the completed flag for word at the index
+	 * 
+	 * @param completed the completed flag
+	 */
+	public void setCompleted(int index, boolean completed) {
+		_word[index].setCompleted(completed);
+	}
+
 	/**
 	 * Get the current char array for word at the index
 	 * @param index the word index
