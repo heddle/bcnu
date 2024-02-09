@@ -5,9 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -25,6 +23,9 @@ public class DCSuperLayer3D extends DetectorItem3D {
 
 	// the vertices
 	private float[] coords = new float[18];
+	
+	//data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
 	/**
 	 * The owner panel
@@ -57,17 +58,13 @@ public class DCSuperLayer3D extends DetectorItem3D {
 	public void drawData(GLAutoDrawable drawable) {
 
 		float coords[] = new float[6];
-
-		DCTdcHitList hits = DC.getInstance().getTDCHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			for (DCTdcHit hit : hits) {
-				if ((hit.sector == _sector) && (hit.superlayer == _superLayer)) {
-					getWire(hit.layer6, hit.wire, coords);
-					Support3D.drawLine(drawable, coords, hitColor, WIRELINEWIDTH);
-				}
+		
+		for (int i = 0; i < _dcData.count(); i++) {
+			if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
+				getWire(_dcData.layer6[i], _dcData.component[i], coords);
+				Support3D.drawLine(drawable, coords, docaColor, WIRELINEWIDTH);
 			}
 		}
-
 
 		drawTBData(drawable);
 	}

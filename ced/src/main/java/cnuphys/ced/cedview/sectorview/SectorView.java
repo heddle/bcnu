@@ -37,6 +37,7 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
 import cnuphys.ced.cedview.central.CentralSupport;
@@ -46,9 +47,7 @@ import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeometryManager;
@@ -117,6 +116,10 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	private static Color plotColors[] = { X11Colors.getX11Color("Dark Red"), X11Colors.getX11Color("Dark Blue"),
 			X11Colors.getX11Color("Dark Green"), Color.black, Color.gray, X11Colors.getX11Color("wheat") };
+	
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+
 
 	/**
 	 * Create a sector view
@@ -589,8 +592,8 @@ public class SectorView extends SliceView implements ChangeListener {
 		// DC Occupancy
 		int sector = getSector(container, pp, wp);
 
-		double totalOcc = 100. * DC.getInstance().totalOccupancy();
-		double sectorOcc = 100. * DC.getInstance().totalSectorOccupancy(sector);
+		double totalOcc = 100. * _dcData.totalOccupancy();
+		double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
 		String occStr = "Total DC occ " + DoubleFormat.doubleFormat(totalOcc, 2) + "%" + " sector " + sector + " occ "
 				+ DoubleFormat.doubleFormat(sectorOcc, 2) + "%";
 		feedbackStrings.add("$aqua$" + occStr);
@@ -944,22 +947,6 @@ public class SectorView extends SliceView implements ChangeListener {
 		sectSL.drawDCReconHit(g, container, fillColor, frameColor, hit, isTimeBased);
 
 	}
-
-	/**
-	 * Draw a raw dc hit (and also used for NN overlays) from hit based or time based tracking
-	 *
-	 * @param g the Graphics context
-	 * @param container the drawing container
-	 * @param fillColor the fill color
-	 * @param frameColor the border color
-	 * @param hit the  hit to  draw
-	 */
-	public void drawDCRawHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCTdcHit hit) {
-		SectorSuperLayer sectSL = _superLayers[(hit.sector < 4) ? 0 : 1][hit.superlayer - 1];
-		sectSL.drawDCRawHit(g, container, fillColor, frameColor, hit);
-
-	}
-
 
 	/**
 	 * Clone the view.

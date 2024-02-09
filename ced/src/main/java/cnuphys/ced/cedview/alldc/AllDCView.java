@@ -31,10 +31,10 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.DC;
 import cnuphys.ced.geometry.GeoConstants;
 
 /**
@@ -125,6 +125,8 @@ public class AllDCView extends CedView implements IRollOverListener {
 	//bank matches
 	private static String _defMatches[] = {"DC:", "HitBased", "TimeBased"};
 
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
 	/**
 	 * Create an allDCView
@@ -383,8 +385,8 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 		int sector = getSector(container, screenPoint, worldPoint);
 
-		double totalOcc = 100. * DC.getInstance().totalOccupancy();
-		double sectorOcc = 100. * DC.getInstance().totalSectorOccupancy(sector);
+		double totalOcc = 100. * _dcData.totalOccupancy();
+		double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
 		String occStr = "Total DC occ " + DoubleFormat.doubleFormat(totalOcc, 2) + "%" + " sector " + sector + " occ "
 				+ DoubleFormat.doubleFormat(sectorOcc, 2) + "%";
 		feedbackStrings.add("$aqua$" + occStr);

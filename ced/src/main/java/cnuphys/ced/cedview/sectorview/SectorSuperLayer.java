@@ -15,7 +15,6 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.ISuperLayer;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 
@@ -85,19 +84,6 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 			boolean isTimeBased) {
 
 		_superlayerDrawer.drawReconDCHitAndDOCA(g, container, fillColor, frameColor, hit, isTimeBased);
-	}
-
-	/**
-	 * Draw a single raw dc hit, also used for the neural net overlays
-	 *
-	 * @param g          graphics context
-	 * @param container  drawing container
-	 * @param fillColor  cell fill color
-	 * @param frameColor cell frame color
-	 * @param hit        the reconstructed hit
-	 */
-	public void drawDCRawHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCTdcHit hit) {
-		_superlayerDrawer.drawRawDCHit(g, container, fillColor, frameColor, hit);
 	}
 
 

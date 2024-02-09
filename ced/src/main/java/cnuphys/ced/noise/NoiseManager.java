@@ -4,11 +4,9 @@ import java.awt.Color;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.snr.NoiseReductionParameters;
 import cnuphys.snr.SNRAnalysisLevel;
 import cnuphys.snr.clas12.Clas12NoiseAnalysis;
@@ -33,6 +31,10 @@ public class NoiseManager implements IClasIoEventListener {
 
 	// event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+
 
 	// private constructor
 	private NoiseManager() {
@@ -66,29 +68,29 @@ public class NoiseManager implements IClasIoEventListener {
 	public NoiseReductionParameters getParameters(int sect0, int supl0) {
 		return noisePackage.getParameters(sect0, supl0);
 	}
+	
+
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		noisePackage.clear();
 		_noiseResults.clear();
-
-		DCTdcHitList hits = DC.getInstance().getTDCHits();
-
-		if ((hits != null) && !hits.isEmpty()) {
-			int sector[] = hits.sectorArray();
-			int superlayer[] = hits.superlayerArray();
-			int layer[] = hits.layer6Array();
-			int wire[] = hits.wireArray();
-
+		
+		int count = _dcData.count();
+		if (count > 0) {
+			int sector[] = toIntArray(_dcData.sector);
+			int superlayer[] = toIntArray(_dcData.superlayer);
+			int layer[] = toIntArray(_dcData.layer6);
+			int wire[] = toIntArray(_dcData.component);
+			
 			noisePackage.findNoise(sector, superlayer, layer, wire, _noiseResults);
-
-			// mark the hits
-			int index = 0;
-			for (DCTdcHit hit : hits) {
-				hit.noise = _noiseResults.noise[index];
-				index++;
+			
+			for (int i = 0; i < count; i++) {
+				_dcData.noise[i] = _noiseResults.noise[i];
 			}
+
 		}
+
 	}
 
 	// HACK

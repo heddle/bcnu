@@ -79,6 +79,11 @@ public class DataManager {
 			size = columns.size();
 			String[] colArray = new String[size];
 			for (int i = 0; i < size; i++) {
+				
+				if (columns.get(i).contains("LayerTrackIn")) {
+					System.err.println("LayerTrackIn from bankname [" + bankName + "]");
+				}
+				
 				colArray[i] = columns.get(i);
 			}
 

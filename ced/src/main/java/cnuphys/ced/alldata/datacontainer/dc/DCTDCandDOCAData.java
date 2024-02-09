@@ -6,8 +6,13 @@ import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonTDCData;
+import cnuphys.lund.DoubleFormat;
 
 public class DCTDCandDOCAData extends ACommonTDCData {
+	
+	private static final int TOTALNUMWIRE = 24192;
+	private static final int TOTALNUMWIRESECTOR = 4032;
+
 	
 	// for feedback strings
 	private static final String _fbColor = "$Orange$";
@@ -40,7 +45,6 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 	/** does snr think this is noise? */
 	public boolean noise[];
 	
-	
 	/**left right value */
 	public byte LR[];
 	
@@ -56,6 +60,9 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 	/** stime value */
 	public float stime[];
 	
+	//counts hits in each sector
+	private int _sectorCounts[] = new int[6];
+	
 	@Override
 	public void clear() {
 		super.clear();
@@ -67,6 +74,10 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 		sdoca = null;
 		time = null;
 		stime = null;
+		
+		for (int i = 0; i < 6; i++) {
+			_sectorCounts[i] = 0;
+		}
 		
 	}
 
@@ -98,6 +109,8 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 				layer6[i] = (byte) (((layer36 - 1) % 6) + 1);
 				
 				noise[i] = false;
+				
+				_sectorCounts[sector[i] - 1]++;
 			}
         }
         
@@ -111,19 +124,103 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 		sdoca = docaBank.getFloat("sdoca");
 		time = docaBank.getFloat("time");
 		stime = docaBank.getFloat("stime");
+		
+		
 	}
 	
+	/**
+	 * Get a string for just the tdc data
+	 *
+	 * @return a string for just the tdc data
+	 */
+	public String tdcString(int index) {
+		if (tdc[index] < 0) {
+			return "";
+		} else {
+			return "tdc: " + tdc[index] + "  order: " + order[index];
+		}
+	}
+	
+	// make a sensible doca string
+	private String docaString(float d, float t) {
+		if (Float.isNaN(d) || Float.isNaN(t)) {
+			return "";
+		}
+		String dStr = DoubleFormat.doubleFormat(d, 3);
+		String tStr = DoubleFormat.doubleFormat(t, 3);
+		return "DC (" + dStr + " mm, " + tStr + ")";
+	}
+
+
 	/**
 	 * Common feedback 
 	 * @param index the index of the data
 	 * @param feedbackStrings the list of feedback strings
 	 */
-	public void adcFeedback(int index, List<String> feedbackStrings) {
+	public void tdcFeedback(int index, List<String> feedbackStrings) {
 		feedbackStrings.add(_fbColor + "sect " + sector[index] +
 				" suplay " + superlayer[index] + " layer " + layer6[index] + " wire " + component[index]);
 		
-		feedbackStrings.add(_fbColor + "tdc: " + tdc[index] + "  order: " + order[index]);
+		feedbackStrings.add(_fbColor + "DC tdc " + tdc[index] + "  order " + order[index]);
 	}
 
+
+	/**
+	 * Add to the feedback list
+	 *
+	 * @param showNoise       if <code>true<code> add string for noise status
+	 * @param showDoca        if <code>true<code> add string for doca data (if
+	 *                        present)
+	 * @param feedbackStrings
+	 */
+	public void tdcFeedback(int index, boolean showNoise, boolean showDoca, List<String> feedbackStrings) {
+
+
+		feedbackStrings.add(_fbColor + "DC sector " + sector[index] +
+				" suplay " + superlayer[index] + " layer " + layer6[index] + " wire " + component[index]);
+
+		String tdcStr = tdcString(index);
+		if (tdcStr.length() > 3) {
+			feedbackStrings.add(_fbColor + tdcStr);
+		}
+
+		if (showNoise && (noise != null) && (noise.length > index)) {
+			feedbackStrings.add(_fbColor + "DC Noise guess " + (noise[index] ? "noise" : "not noise"));
+		}
+
+		if (showDoca && (doca != null) && (doca.length > index) && (time != null)) {
+			String dstr = docaString(doca[index], time[index]);
+			if (dstr.length() > 3) {
+				feedbackStrings.add(_fbColor + "DC SIM (doca, time) " + dstr);
+			}
+			String sdstr = docaString(sdoca[index], stime[index]);
+			if (dstr.length() > 3) {
+				feedbackStrings.add(_fbColor + "DC SIM (sdoca, stime) " + sdstr);
+			}
+		}
+
+	}
+	
+	/**
+	 * total DC occupancy all sectors all layers
+	 *
+	 * @return total DC occupancy
+	 */
+	public double totalOccupancy() {
+		return ((double) count()) / TOTALNUMWIRE;
+	}
+
+	/**
+	 * total DC occupancy for a sector
+	 *
+	 * @return total DC occupancy for a sector
+	 */
+	public double totalSectorOccupancy(int sector) {
+		if ((sector > 0) && (sector < 7)) {
+			return ((double) _sectorCounts[sector-1]) / TOTALNUMWIRESECTOR;
+		} else {
+			return 0.;
+		}
+	}
 
 }

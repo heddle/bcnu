@@ -13,6 +13,7 @@ import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
 import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
@@ -21,9 +22,6 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeoConstants;
@@ -122,6 +120,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private FTCalADCData ftcalADCData = FTCalADCData.getInstance();
 	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
 	private BSTADCData bstADCData = BSTADCData.getInstance();
+	private DCTDCandDOCAData dcTDCData = DCTDCandDOCAData.getInstance();
 
 	/**
 	 * private constructor for singleton.
@@ -644,8 +643,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		accumLTCC();
 
 		// dc data
-		DCTdcHitList dclist = DC.getInstance().updateTdcAdcList();
-		accumDC(dclist);
+		accumDC();
 
 		// ctof data
 		accumCTOF();
@@ -794,19 +792,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	// accumulate dc data
-	private void accumDC(DCTdcHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
-
-		for (DCTdcHit hit : list) {
-			if (hit.inRange()) {
-				_DCAccumulatedData[hit.sector - 1][hit.superlayer - 1][hit.layer6 - 1][hit.wire - 1] += 1;
-			} else {
-				System.err.println("In accumulation, DC hit has bad indices: " + hit);
-			}
-
-		}
+	private void accumDC() {
+		
+		for (int i = 0; i < dcTDCData.count(); i++) {
+             _DCAccumulatedData[dcTDCData.sector[i] - 1][dcTDCData.superlayer[i] - 1][dcTDCData.layer6[i] - 1][dcTDCData.component[i] - 1] += 1;
+ 		}
 	}
 
 	// for ctof accumulating

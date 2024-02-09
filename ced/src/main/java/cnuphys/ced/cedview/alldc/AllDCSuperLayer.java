@@ -19,6 +19,7 @@ import cnuphys.bCNU.item.RectangleItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 //import cnuphys.ced.dcnoise.NoiseEventListener;
@@ -28,10 +29,8 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.event.data.lists.DCReconHitList;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.frame.OrderColors;
@@ -53,8 +52,6 @@ public class AllDCSuperLayer extends RectangleItem {
 
 	// font for label text
 	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
-
-	private Color _lastColor;
 
 	// the sector [1..6]
 	private int _sector;
@@ -86,6 +83,10 @@ public class AllDCSuperLayer extends RectangleItem {
 	// cell
 	// is the intersection of the layer rect and the position rect
 	private Rectangle2D.Double _positionWorldRects[];
+	
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+
 
 	/**
 	 * Constructor for a geometrically unfaithful "all dc" superlayer.
@@ -208,13 +209,12 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		// draw raw hits
 		if (_view.showRawHits()) {
-			DCTdcHitList hits = DC.getInstance().getTDCHits();
-			if ((hits != null) && !hits.isEmpty()) {
 
-				for (DCTdcHit hit : hits) {
-					if ((hit.sector == _sector) && (hit.superlayer == _superLayer)) {
-						drawDCRawHit(g, container, hit.layer6, hit.wire, hit.noise, -1, hit.order, wr);
-					}
+			for (int i = 0; i < _dcData.count(); i++) {
+				// draw the hit
+				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
+					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1,
+							_dcData.order[i], wr);
 				}
 			}
 		}
@@ -356,8 +356,6 @@ public class AllDCSuperLayer extends RectangleItem {
 			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, hitFill, hitLine);
 		}
 
-		_lastColor = hitFill;
-
 	}
 
 
@@ -418,7 +416,6 @@ public class AllDCSuperLayer extends RectangleItem {
 		} else {
 			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, color, _defaultHitCellLine);
 		}
-		_lastColor  = color;
 	}
 
 
@@ -568,7 +565,7 @@ public class AllDCSuperLayer extends RectangleItem {
 	/**
 	 * Get the feedback strings for single event mode
 	 *
-	 * @param wire            [1..6]
+	 * @param wire            [1..112]
 	 * @param layer           [1..6]
 	 * @param feedbackStrings
 	 */
@@ -577,22 +574,19 @@ public class AllDCSuperLayer extends RectangleItem {
 		// some occupancy numbers
 		NoiseReductionParameters parameters = _noiseManager.getParameters(_sector - 1, _superLayer - 1);
 
-		feedbackStrings.add(DataSupport.prelimColor + "Raw Superlayer Occ "
+		feedbackStrings.add(DataSupport.prelimColor + "Raw superlayer occ "
 				+ DoubleFormat.doubleFormat(100.0 * parameters.getRawOccupancy(), 2) + "%");
-		feedbackStrings.add(DataSupport.prelimColor + "Reduced Superlayer Occ "
+		feedbackStrings.add(DataSupport.prelimColor + "Reduced superlayer occ "
 				+ DoubleFormat.doubleFormat(100.0 * parameters.getNoiseReducedOccupancy(), 2) + "%");
 
-		DCTdcHitList hits = DC.getInstance().getTDCHits();
-
-		DCTdcHit hit = null;
-		if ((hits != null) && !hits.isEmpty()) {
-			hit = hits.getHit(_sector, _superLayer, layer, wire);
-		}
-
-		if (hit == null) {
-			feedbackStrings.add("superlayer " + _superLayer + "  layer " + layer + "  wire " + wire);
-		} else {
-			hit.tdcAdcFeedback(_view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);
+		for (int i = 0; i < _dcData.count(); i++) {
+			// draw the hit
+			if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)
+					&& (_dcData.layer6[i] == layer) && (_dcData.component[i] == wire)) {
+				_dcData.tdcFeedback(i, _view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);
+				
+				break;
+			}
 		}
 	}
 
@@ -613,13 +607,13 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		int hitCount = dcAccumulatedData[_sector - 1][_superLayer - 1][layer - 1][wire - 1];
 
-		feedbackStrings.add(AccumulationManager.accumulationFBColor + "accumulated event count: "
+		feedbackStrings.add(AccumulationManager.accumulationFBColor + "accumulated event count "
 				+ AccumulationManager.getInstance().getAccumulationEventCount());
-		feedbackStrings.add(AccumulationManager.accumulationFBColor + "avg occupancy superlayer: " + _superLayer
+		feedbackStrings.add(AccumulationManager.accumulationFBColor + "avg occupancy superlayer " + _superLayer
 				+ " is " + DoubleFormat.doubleFormat(100 * avgOccupancy, 3) + "%");
-		feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit rate layer: " + layer + ", wire: " + wire
+		feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit rate layer " + layer + ", wire " + wire
 				+ " is " + DoubleFormat.doubleFormat(wireRate, 3) + "%");
-		feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit count layer: " + layer + ", wire: " + wire
+		feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit count layer " + layer + ", wire " + wire
 				+ " is " + hitCount);
 
 	}

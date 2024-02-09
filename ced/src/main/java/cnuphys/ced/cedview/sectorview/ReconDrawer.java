@@ -21,12 +21,10 @@ import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCCluster;
 import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.lists.ClusterList;
 import cnuphys.ced.event.data.lists.DCClusterList;
 import cnuphys.ced.event.data.lists.DCReconHitList;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.geometry.ECGeometry;
 

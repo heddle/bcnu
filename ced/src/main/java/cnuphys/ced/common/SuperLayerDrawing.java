@@ -22,19 +22,17 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.MathUtilities;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.Segment;
 import cnuphys.ced.event.data.TBSegments;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.event.data.lists.SegmentList;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
@@ -72,6 +70,10 @@ public class SuperLayerDrawing {
 	// dirction,
 	// as a unit vector, of any of the wires
 	private double[] _direction;
+	
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+
 
 	/**
 	 * Constructor
@@ -316,20 +318,18 @@ public class SuperLayerDrawing {
 	private void drawSingleModeHits(Graphics g, IContainer container, boolean reallyClose, boolean segmentsOnly) {
 
 		if (!segmentsOnly) {
-			DCTdcHitList hits = DC.getInstance().getTDCHits();
-			if ((hits != null) && !hits.isEmpty()) {
+			
+			Point pp = new Point();
 
-				Point pp = new Point();
-				for (DCTdcHit hit : hits) {
-					if ((hit.sector == _iSupl.sector()) && (hit.superlayer == _iSupl.superlayer())) {
-						drawBasicDCHit(g, container, hit.layer6, hit.wire, hit.noise, -1, hit.order);
-
-						// just draw the wire again
-						drawOneWire(g, container, hit.layer6, hit.wire, reallyClose, pp);
-
-					}
+			for (int i = 0; i < _dcData.count(); i++) {
+				if ((_dcData.sector[i] == _iSupl.sector()) && (_dcData.superlayer[i] == _iSupl.superlayer())) {
+					drawBasicDCHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1, _dcData.order[i]);
+					// just draw the wire again
+					drawOneWire(g, container, _dcData.layer6[i], _dcData.component[i], reallyClose, pp);
 				}
 			}
+			
+			
 		}
 
 		// draw track based hits (docas) and segments
@@ -477,20 +477,6 @@ public class SuperLayerDrawing {
 	}
 
 	/**
-	 * Draw a single raw dc hit (also used for NN overlays)
-	 *
-	 * @param g           the graphics context
-	 * @param container   the rendering container
-	 * @param fillColor   the fill clor
-	 * @param frameColor  the border color
-	 * @param hit         the hit to draw
-	 */
-	public void drawRawDCHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCTdcHit hit) {
-		drawSingleDCHit(g, container, fillColor, frameColor, hit.layer6, hit.wire, null);
-	}
-
-
-	/**
 	 * Obtain a crude outline of a sense wire layer
 	 *
 	 * @param container the container being rendered
@@ -570,7 +556,6 @@ public class SuperLayerDrawing {
 			int ymax = poly.ypoints[13];
 			double fract = (pp.y - ymin) / (ymax - ymin + 1.);
 			int wguess = 1 + (int) ((1. - fract) * 112);
-			// System.err.println("WIRE GUESS: " + wguess);
 
 			int minLay = Math.max(data[0] - 1, 1);
 			int maxLay = Math.min(data[0] + 1, 6);
@@ -987,7 +972,7 @@ public class SuperLayerDrawing {
 					_iSupl.superlayer() - 1);
 
 			// wire direction
-			String wds = "wire dir: " + VectorSupport.toString(getWireDirection(), 3);
+			String wds = "wire dir " + VectorSupport.toString(getWireDirection(), 3);
 			feedbackStrings.add(wds);
 
 			// getLayer returns a 1 based index (-1 on failure)
@@ -999,9 +984,9 @@ public class SuperLayerDrawing {
 			int wire = data[1];
 
 			if (_view.isSingleEventMode()) {
-				feedbackStrings.add(DataSupport.prelimColor + "Raw Superlayer Occ "
+				feedbackStrings.add(DataSupport.prelimColor + "Raw superlayer occ "
 						+ DoubleFormat.doubleFormat(100.0 * parameters.getRawOccupancy(), 2) + "%");
-				feedbackStrings.add(DataSupport.prelimColor + "Reduced Superlayer Occ "
+				feedbackStrings.add(DataSupport.prelimColor + "Reduced superlayer occ "
 						+ DoubleFormat.doubleFormat(100.0 * parameters.getNoiseReducedOccupancy(), 2) + "%");
 
 			} else {
@@ -1015,37 +1000,35 @@ public class SuperLayerDrawing {
 
 					int hitCount = dcAccumulatedData[_iSupl.sector() - 1][_iSupl.superlayer() - 1][layer - 1][wire - 1];
 
-					feedbackStrings.add(AccumulationManager.accumulationFBColor + "accumulated event count: "
+					feedbackStrings.add(AccumulationManager.accumulationFBColor + "accumulated event count "
 							+ AccumulationManager.getInstance().getAccumulationEventCount());
-					feedbackStrings.add(AccumulationManager.accumulationFBColor + "avg occupancy superlayer: "
+					feedbackStrings.add(AccumulationManager.accumulationFBColor + "avg occupancy superlayer "
 							+ _iSupl.superlayer() + " is " + DoubleFormat.doubleFormat(100 * avgOccupancy, 3) + "%");
-					feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit rate layer: " + layer
-							+ ", wire: " + wire + " is " + DoubleFormat.doubleFormat(wireRate, 3) + "%");
+					feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit rate layer " + layer
+							+ ", wire " + wire + " is " + DoubleFormat.doubleFormat(wireRate, 3) + "%");
 
-					feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit count layer: " + layer
-							+ ", wire: " + wire + " is " + hitCount);
+					feedbackStrings.add(AccumulationManager.accumulationFBColor + "hit count layer " + layer
+							+ ", wire " + wire + " is " + hitCount);
 
 				}
 
 			}
 
-			DCTdcHitList hits = DC.getInstance().getTDCHits();
-
 			if ((layer > 0) && (wire > 0)) {
-
-				DCTdcHit hit = null;
-				if ((hits != null) && !hits.isEmpty()) {
-					hit = hits.getHit(_iSupl.sector(), _iSupl.superlayer(), layer, wire);
+				
+				boolean hit = false;
+				for (int i = 0; i < _dcData.count(); i++) {
+					if ((_dcData.sector[i] == _iSupl.sector()) && (_dcData.superlayer[i] == _iSupl.superlayer())
+							&& (_dcData.layer6[i] == layer) && (_dcData.component[i] == wire)) {
+						hit = true;
+						_dcData.tdcFeedback(i, _view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);						break;
+					}
 				}
-
-				// int wire = getWire(layer, worldPoint);
-				// if ((wire > 0) && (wire <= GeoConstants.NUM_WIRE)) {
-
-				if (hit == null) {
+				
+				if (!hit) {
 					feedbackStrings.add("superlayer " + _iSupl.superlayer() + "  layer " + layer + "  wire " + wire);
-				} else {
-					hit.tdcAdcFeedback(_view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);
 				}
+
 
 				// } // good wire
 			} // good layer
@@ -1056,21 +1039,6 @@ public class SuperLayerDrawing {
 
 	// add time based recons fb
 	private void addReconstructedFeedback(List<String> feedbackStrings) {
-		//
-		// double p[] = DC.timeBasedTrackP();
-		// if (p != null) {
-		// int reconTrackCount = p.length;
-		// if (reconTrackCount > 0) {
-		// feedbackStrings.add(DataSupport.reconColor + "TB #reconstructed
-		// tracks " + reconTrackCount);
-		// for (int i = 0; i < reconTrackCount; i++) {
-		//
-		// feedbackStrings.add(DataSupport.reconColor + "TB trk# " + (i + 1) + "
-		// recon p "
-		// + DoubleFormat.doubleFormat(p[i], 5) + " Gev/c");
-		// }
-		// }
-		// } // p != null
 	}
 
 }
