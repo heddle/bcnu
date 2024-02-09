@@ -36,6 +36,7 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
+import cnuphys.bCNU.wordle.Wordle;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.ced3d.view.CentralView3D;
@@ -203,6 +204,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// for the ising model 2D dialog
 	private Ising2DDialog _i2dDialog;
+	
+	//the wordle dialog
+	private Wordle _wordle;
 
 	/**
 	 * Constructor (private--used to create singleton)
@@ -574,6 +578,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		String weirdTitle = "w" + "\u018e" + "i" + "\u1d19" + "d";
 		_weirdMenu = new JMenu(weirdTitle);
 
+		final JMenuItem wordleItem = new JMenuItem("Wordle...");
 		final JMenuItem fortuneItem = new JMenuItem("Fortune...");
 		final JMenuItem tsItem = new JMenuItem("Traveling Salesperson ...");
 		final JMenuItem i2dItem = new JMenuItem("2D Ising Model ...");
@@ -583,7 +588,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 
-				if (source == fortuneItem) {
+				if (source == wordleItem) {
+					Wordle.getInstance().setVisible(true);
+				} else if (source == fortuneItem) {
 					FortuneManager.getInstance().showDialog();
 				} else if (source == tsItem) {
 					if (_tsDialog == null) {
@@ -599,9 +606,11 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			}
 		};
 
+		wordleItem.addActionListener(al1);
 		fortuneItem.addActionListener(al1);
 		tsItem.addActionListener(al1);
 		i2dItem.addActionListener(al1);
+		_weirdMenu.add(wordleItem);
 		_weirdMenu.add(fortuneItem);
 		_weirdMenu.add(tsItem);
 		_weirdMenu.add(i2dItem);

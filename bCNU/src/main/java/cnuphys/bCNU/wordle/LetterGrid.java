@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Insets;
-import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -36,9 +35,16 @@ public class LetterGrid extends JPanel {
 			add(_word[i], SwingConstants.CENTER);
 		}
 
-		
 		setBackground(Color.white);
-		
+	}
+	
+	/**
+	 * Reset to start of game conditions
+	 */
+	public void reset() {
+		for (int i = 0; i < 6; i++) {
+			_word[i].reset();
+		}
 	}
 	
 	/**
@@ -51,22 +57,6 @@ public class LetterGrid extends JPanel {
         _word[index].insetChar(c);
     }
 	
-	/**
-	 * Set the list of used letters
-	 */
-	public void fillUsedLetters(List<Character> usedLetters) {
-		for (int i = 0; i < 6; i++) {
-			char letters[] = _word[i].getWord();
-			
-			for (int j = 0; j < 5; j++) {
-				if (letters[j] != Word.nullChar) {
-					if (!usedLetters.contains(letters[j])) {
-						usedLetters.add(letters[j]);
-					}
-				}
-			}
-		}
-	}
 	
 	/**
 	 * Refresh the drawing

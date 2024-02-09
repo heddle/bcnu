@@ -17,8 +17,6 @@ public class Key extends JComponent {
 
 	private static final Color _unusedColor = new Color(210, 210, 210);
 	
-	private int state = Colors.NEUTRAL;
-	
 	//the label on the key
 	private char _char;
 	
@@ -67,28 +65,20 @@ public class Key extends JComponent {
 		int h = getHeight();
 
 		//has this letter been tried?
-		boolean unused = Brain.getInstance().unused(_char);
+		int val = Brain.getInstance().used(_char);
 
-		g.setColor(unused ? _unusedColor : Colors.colors[state]);
-		g.fillRect(0, 0, w-1, h-1);
+		g.setColor((val < 0) ? _unusedColor : Colors.colors[val]);
+		g.fillRect(0, 0, w-2, h-2);
 		
 		g.setColor(Color.darkGray);
-		GraphicsUtilities.drawSimple3DRect(g, 0, 0, w-2, h-2, !isPressed);
+		GraphicsUtilities.drawSimple3DRect(g, 0, 0, w-3, h-3, !isPressed);
 
 		FontMetrics fm = g.getFontMetrics();
 		int cw = fm.charWidth(_char);
 		
 		g.setFont(Fonts.defaultLargeFont);
-		g.setColor(unused ? Color.black : Color.white);
+		g.setColor((val < 0) ? Color.black : Color.white);
 		g.drawString("" + _char, (w-cw)/2 - 2, h / 2 + 5);
-	}
-	
-	public void setState(int state) {
-		this.state = state;
-	}
-	
-	public int getState() {
-		return state;
 	}
 	
 	/**

@@ -1,13 +1,10 @@
 package cnuphys.bCNU.wordle;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Brain {
 	private static volatile Brain _instance;
 
-
-	//letters that haven't been used yet
-	private ArrayList<Character> _usedLetters = new ArrayList<>();
 
 	//which word guess are we on? [0..5]
 	private int _currentWordIndex = 0;
@@ -17,6 +14,9 @@ public class Brain {
 
 	//the database
 	private static Data _data = Data.getInstance();
+	
+	//used leters and their best score
+	private HashMap<Character, Integer> _usedLetters = new HashMap<>();
 
 	private Brain() {
 	}
@@ -66,12 +66,13 @@ public class Brain {
 	public void newGame() {
 		Wordle.getInstance().setMessage("New game!");
 		_currentWord = (new String(_data.randomWord())).toUpperCase();
-
-		System.err.println("Current word: " + _currentWord);
 		_currentWordIndex = 0;
-
 		_usedLetters.clear();
 		Keyboard.getInstance().reset();
+		LetterGrid.getInstance().reset();
+		Wordle.getInstance().enableNewGame(false);
+
+		refresh();
 	}
 
 
@@ -96,14 +97,12 @@ public class Brain {
 
 	//process a letter
 	private void processLetter(char c) {
-        System.out.println("Letter " + c);
         LetterGrid.getInstance().processLetter(_currentWordIndex, c);
         refresh();
     }
 
 	//process the enter key
 	private void processEnter() {
-		System.out.println("Enter");
 
 		char[] word = LetterGrid.getInstance().getWord(_currentWordIndex);
 		String guess = new String(word);
@@ -117,18 +116,18 @@ public class Brain {
 		
 		//handle not in dictionary
 		if (!_data.goodWord(guess)) {
-			Wordle.getInstance().setMessage("Not a word!");
+			Wordle.getInstance().setMessage("Not in the word list!");
 			LetterGrid.getInstance().badGuess(_currentWordIndex);
 			return;
 		}
 
 		//right or wrong, this word is done
+		updateUsedLetters(word);
 		LetterGrid.getInstance().setCompleted(_currentWordIndex, true);
 
 		boolean result = submitGuess(guess);
 		
 		if (result) {
-			System.out.println("Correct!");
 			gameWon();
 		} else {
 			Wordle.getInstance().setMessage("Nope.\nYou have " + (5 - _currentWordIndex) + " tries left.");
@@ -142,8 +141,27 @@ public class Brain {
 		}
 		refresh();
 	}
+	
+	private void updateUsedLetters(char word[]) {
+		
+		int values[] = new int[5];
+		Scorer.scoreGuess(_currentWord, new String(word), values);
+		
+		for (int i = 0; i < 5; i++) {
+			char c = word[i];
+			int val = values[i];
+			if (_usedLetters.containsKey(c)) {
+				int oldVal = _usedLetters.get(c);
+				if (val > oldVal) {
+					_usedLetters.put(c, val);
+				}
+			} else {
+				_usedLetters.put(c, val);
+			}
+		}
+	}
 
-	//the game was won
+	// the game was won
 	private void gameWon() {
 		switch (_currentWordIndex) {
 		case 0:
@@ -156,25 +174,27 @@ public class Brain {
 			Wordle.getInstance().setMessage("You won! 3rd try! \nYou're good!");
 			break;
 		case 3:
-                Wordle.getInstance().setMessage("You won! 4th try! \nNot too shabby!");
-                break;
-			case 4:
-				Wordle.getInstance().setMessage("You won! 5th try! \nMeh.");
-				break;
+			Wordle.getInstance().setMessage("You won! 4th try! \nNot too shabby!");
+			break;
+		case 4:
+			Wordle.getInstance().setMessage("You won on the 5th try! \nMeh. So avaerage.");
+			break;
 		default:
-			Wordle.getInstance().setMessage("You won on the 6th try. \nColor me unimpressed");
+			Wordle.getInstance().setMessage("You won on the 6th try. \nColor me unimpressed.");
 
 		}
+		
+		Wordle.getInstance().enableNewGame(true);
 	}
 
 	//the game was lost
 	private void gameLost() {
 		Wordle.getInstance().setMessage("Better luck next time!\n" + "The word was " + _currentWord);
+		Wordle.getInstance().enableNewGame(true);
 	}
 
 	//process the enter delete key
 	private void processDelete() {
-		System.out.println("Delete");
 		LetterGrid.getInstance().delete(_currentWordIndex);
 		refresh();
 	}
@@ -183,8 +203,6 @@ public class Brain {
 	 * Refresh the display
 	 */
 	public void refresh() {
-		_usedLetters.clear();
-		LetterGrid.getInstance().fillUsedLetters(_usedLetters);
 		LetterGrid.getInstance().refresh();
 		Keyboard.getInstance().refresh();
 	}
@@ -196,16 +214,22 @@ public class Brain {
 	 * @return <code>true</code> if the guess is correct
 	 */
 	private boolean submitGuess(String guess) {
-		System.out.println("Guess: " + guess);
 		return _currentWord.equals(guess);
 	}
 
 	/**
-	 * Has a char been used?
+	 * Has a char been used in an attempted word?
+	 * 
 	 * @param c the char
-	 * @return <code>true</code> if the char has been used
-     */
-	public boolean unused(char c) {
-		return !_usedLetters.contains(c);
+	 * @return the value of the char in the attempted words. If
+	 *        the char has not been used, return -1.
+	 */
+	public int used(char c) {
+		for (int i = 0; i < 5; i++) {
+			if (_usedLetters.containsKey(c)) {
+				return _usedLetters.get(c);
+			}
+		}
+		return -1;
 	}
 }
