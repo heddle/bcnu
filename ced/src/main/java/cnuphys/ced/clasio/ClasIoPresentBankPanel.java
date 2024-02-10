@@ -20,11 +20,14 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.cedwindow.CedDataView;
 import cnuphys.ced.cedwindow.CedDataWindow;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.table.NodeTable;
+import cnuphys.ced.frame.Ced;
 
 /**
  * Panel that shows which banks are present in an event
@@ -168,6 +171,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 	private void replaceBankLabels(DataEvent event) {
 
 		removeAll();
+		repaint();
 
 		if (event != null) {
 			String[] allBanks = event.getBankList();
@@ -180,6 +184,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 				}
 			}
 		}
+		repaint();
 	}
 
 	// must match
@@ -240,11 +245,20 @@ public class ClasIoPresentBankPanel extends JPanel {
 						_nodeTable.makeNameVisible(label);
 
 					} else if (clickCount == 2) {
-
-						// open a new window
-						CedDataWindow dw = CedDataWindow.getBankWindow(label);
-						dw.update();
-						dw.setVisible(true);
+						
+						if (Ced.getCed().isFloating()) {
+							// open a new window
+							CedDataWindow dw = CedDataWindow.getBankWindow(label);
+							dw.update();
+							dw.setVisible(true);
+						return;
+						}
+						
+						//open a view
+						CedDataView cdv = CedDataView.getBankView(label);
+						cdv.update();
+						cdv.setVisible(true);
+						VirtualView.getInstance().moveToCurrentColumn(cdv);
 
 					}
 				}

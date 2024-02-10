@@ -26,7 +26,6 @@ public class CNDClusterData extends ACommonClusterData {
 		return _instance;
 	}
 
-
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("CND::clusters");
@@ -35,17 +34,17 @@ public class CNDClusterData extends ACommonClusterData {
 			return;
 		}
 
-        sector = bank.getByte("sector");
-        layer = bank.getByte("layer");
-        energy = bank.getFloat("energy");
-        time = bank.getFloat("time");
-        id = bank.getShort("id");
-        status = bank.getShort("status");
-        x = bank.getFloat("x");
-        y = bank.getFloat("y");
-        z = bank.getFloat("z");
+		sector = bank.getByte("sector");
+		layer = bank.getByte("layer");
+		energy = bank.getFloat("energy");
+		time = bank.getFloat("time");
+		id = bank.getShort("id");
+		status = bank.getShort("status");
+		x = bank.getFloat("x");
+		y = bank.getFloat("y");
+		z = bank.getFloat("z");
 
-        int n = (sector != null) ? sector.length : 0;
+		int n = (sector != null) ? sector.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];

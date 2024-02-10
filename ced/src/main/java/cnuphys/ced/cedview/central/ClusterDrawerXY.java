@@ -23,17 +23,9 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 
 	private static final Stroke THICKLINE = new BasicStroke(1.5f);
 
-	// cached rectangles for feedback
-	private Rectangle _bstFBRects[];
-
-	// cached rectangles for feedback
-	private Rectangle _bmtFBRects[];
-
-
 	public ClusterDrawerXY(CentralXYView view) {
 		super(view);
 	}
-
 
 	@Override
 	public void draw(Graphics g, IContainer container) {
@@ -47,8 +39,6 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 		// clip the active area
 		Rectangle sr = container.getInsetRectangle();
 		g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-		_bstFBRects = null;
-		_bmtFBRects = null;
 
 		Stroke oldStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
@@ -120,8 +110,10 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 			for (int i = 0; i < count; i++) {
 				container.worldToLocal(p1, 10 * x1[i], 10 * y1[i]);
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
-				g.setColor(Color.black);
-				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+				
+				//TODO: make line draw a preference
+//				g.setColor(Color.black);
+//				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 				DataDrawSupport.drawCluster(g, p1);
 				DataDrawSupport.drawCluster(g, p2);
 			}
@@ -161,8 +153,10 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 			for (int i = 0; i < count; i++) {
 				container.worldToLocal(p1, 10 * x1[i], 10 * y1[i]);
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
-				g.setColor(Color.black);
-				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+				
+				//TODO: make line draw a preference
+//				g.setColor(Color.black);
+//				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 				DataDrawSupport.drawCluster(g, p1);
 				DataDrawSupport.drawCluster(g, p2);
 			}

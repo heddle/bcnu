@@ -704,15 +704,15 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Convenience method to see if we show CVT pass 1 tracks.
+	 * Convenience method to see if we show CVT rec KF Traj.
 	 *
-	 * @return <code>true</code> if we are to show CVT pass 1 tracks.
+	 * @return <code>true</code> if we are to show CVT rec KF Traj.
 	 */
-	public boolean showCVTP1Tracks() {
+	public boolean showRecKFTraj() {
 		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
 			return false;
 		}
-		return _controlPanel.getDisplayArray().showCVTP1Tracks();
+		return _controlPanel.getDisplayArray().showRecKFTraj();
 	}
 
 	/**
@@ -727,17 +727,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return _controlPanel.getDisplayArray().showCVTRecTraj();
 	}
 
-	/**
-	 * Convenience method to see if we show CVT pass 1 trajectory data.
-	 *
-	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
-	 */
-	public boolean showCVTP1Traj() {
-		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
-			return false;
-		}
-		return _controlPanel.getDisplayArray().showCVTP1Traj();
-	}
 
 	/**
 	 * Convenience method to see if we show the trkDoca column.

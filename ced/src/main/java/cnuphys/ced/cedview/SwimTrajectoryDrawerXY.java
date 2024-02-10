@@ -133,9 +133,7 @@ public class SwimTrajectoryDrawerXY extends ASwimTrajectoryDrawer {
 				show = _view.showAITB();
 			} else if (source.contains("CVTRec::Tracks")) {
 				return _view.showCVTRecTracks();
-			} else if (source.contains("CVT::Tracks")) {
-				return _view.showCVTP1Tracks();
-			}
+			} 
 		}
 
 

@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -72,10 +73,7 @@ import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.CVT;
-import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.FMTCrosses;
 import cnuphys.ced.event.data.HBCrosses;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.TBCrosses;
@@ -205,8 +203,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	// for the ising model 2D dialog
 	private Ising2DDialog _i2dDialog;
 	
-	//the wordle dialog
-	private Wordle _wordle;
+	// set whether data banks  ate floating
+	private JCheckBoxMenuItem _floatingCB;
 
 	/**
 	 * Constructor (private--used to create singleton)
@@ -675,9 +673,42 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		fmenu.add(ClasIoEventMenu.getRecentEventFileMenu(), 0);
 		fmenu.add(ClasIoEventMenu.getOpenEventFileItem(), 0);
 	}
+	
+	/**
+	 * Does the user want the data bank displays to float?
+	 * @return <code>true</code> if the user wants the data bank displays to float.
+	 */
+	public boolean isFloating() {
+		return _floatingCB.isSelected();
+	}
 
 	// create the options menu
 	private void addToOptionMenu(JMenu omenu) {
+		
+		//read default
+		
+		boolean defFloat = true;
+		String floatStr = PropertiesManager.getInstance().get("FLOATBANK");
+		if (floatStr != null) {
+			defFloat = Boolean.parseBoolean(floatStr);
+		}
+		
+	
+		_floatingCB = new JCheckBoxMenuItem("Bank Views are Free Floating", defFloat);
+	
+		
+		_floatingCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// save the new state
+				PropertiesManager.getInstance().put("FLOATBANK", "" + _floatingCB.isSelected());
+				PropertiesManager.getInstance().writeProperties();
+			}
+		});
+
+		omenu.add(_floatingCB);
+		omenu.addSeparator();
+		
 		omenu.add(MagnifyWindow.magificationMenu());
 		omenu.addSeparator();
 
@@ -714,6 +745,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			}
 
 		};
+		
+		
 		environ.addActionListener(al);
 		memPlot.addActionListener(al);
 		drawLeg.addActionListener(al);
@@ -1067,7 +1100,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		DC.getInstance();
 		AIDC.getInstance();
 		BMTCrosses.getInstance();
-		FMTCrosses.getInstance();
 		BSTCrosses.getInstance();
 		TBCrosses.getInstance();
 		HBCrosses.getInstance();
@@ -1077,10 +1109,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		HBSegments.getInstance();
 		AITBSegments.getInstance();
 		AIHBSegments.getInstance();
-		CVT.getInstance();
 		BST.getInstance();
 		BMT.getInstance();
-		Cosmics.getInstance();
 		DataManager.getInstance();
 		DataWarehouse.getInstance();
 	}

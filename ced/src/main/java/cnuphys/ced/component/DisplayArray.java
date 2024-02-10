@@ -149,11 +149,8 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** Label for reconstructed CVT Rec Trajectory */
 	private static final String CVTREC_TRAJ_LABEL = "CVTRec Traj";
 
-	/** Label for reconstructed CVT Pass 1Tracks */
-	private static final String CVTP1_TRACK_LABEL = "CVTP1 Tracks";
-
-	/** Label for reconstructed CVT Pass 1Trajectory */
-	private static final String CVTP1_TRAJ_LABEL = "CVTP1 Traj";
+	/** Label for reconstructed CVT Rec KF Trajectory */
+	private static final String CVTRECKF_TRAJ_LABEL = "CVTRecKF Traj";
 
 	// controls whether any HB data displayed
 	private AbstractButton _showHBButton;
@@ -161,8 +158,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	// controls whether any TB data displayed
 	private AbstractButton _showTBButton;
 
-	// controls whether any neural net data displayed
-    private AbstractButton _showNNButton;
 
  // controls whether any AI HB data displayed
  	private AbstractButton _showAIHBButton;
@@ -197,12 +192,8 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	// controls display od cvt reconstructed trajectory bank data
 	private AbstractButton _cvtRecTrajButton;
 
-	// controls display of cvt pass 1 tracks
-	private AbstractButton _cvtP1TrackButton;
-
-	// controls display od cvt pass 1 trajectory bank data
-	private AbstractButton _cvtP1TrajButton;
-
+	// controls display of cvt kf trajectory bank data
+	private AbstractButton _cvtRecKFTrajButton;
 
 	// controls whether reconstructed clusters are displayed
 	private AbstractButton _clusterButton;
@@ -405,12 +396,8 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 			_cvtRecTrajButton = add(CVTREC_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
-		if (Bits.checkBit(bits, DisplayBits.CVTP1TRACKS)) {
-			_cvtP1TrackButton = add(CVTP1_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
-		}
-
-		if (Bits.checkBit(bits, DisplayBits.CVTP1TRAJ)) {
-			_cvtP1TrajButton = add(CVTP1_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
+		if (Bits.checkBit(bits, DisplayBits.CVTRECKFTRAJ)) {
+			_cvtRecKFTrajButton = add(CVTRECKF_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
 		// ADC hits
@@ -595,16 +582,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 	/**
-	 * Convenience method to see if we show CVT Pass 1 tracks.
-	 *
-	 * @return <code>true</code> if we are to show CVT Pass 1 tracks.
-	 */
-	public boolean showCVTP1Tracks() {
-		return (_cvtP1TrackButton != null) && _cvtP1TrackButton.isSelected();
-	}
-
-
-	/**
 	 * Convenience method to see if we show CVT reconstructed trajectory data.
 	 * hits except
 	 *
@@ -615,13 +592,12 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 	/**
-	 * Convenience method to see if we show CVT pass 1 trajectory data.
-	 * hits except
+	 * Convenience method to see if we show recon KF traj
 	 *
 	 * @return <code>true</code> if we are to show CVT pass 1 trajectory data.
 	 */
-	public boolean showCVTP1Traj() {
-		return (_cvtP1TrajButton != null) && _cvtP1TrajButton.isSelected();
+	public boolean showRecKFTraj() {
+		return (_cvtRecKFTrajButton != null) && _cvtRecKFTrajButton.isSelected();
 	}
 
 	/**

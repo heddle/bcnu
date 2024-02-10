@@ -169,7 +169,7 @@ public class DCXYView extends HexView {
 						+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.FMTCROSSES + DisplayBits.RECPART
 						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
-						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS + DisplayBits.MCTRUTH
+						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.MCTRUTH
 						+ DisplayBits.SECTORCHANGE,
 				3, 5);
 

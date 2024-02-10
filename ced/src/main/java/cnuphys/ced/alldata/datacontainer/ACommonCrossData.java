@@ -7,7 +7,7 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
 
-public abstract class ACommonClusterData implements IDataContainer {
+public abstract class ACommonCrossData implements IDataContainer {
 
 
 	// the data warehouse
@@ -16,72 +16,82 @@ public abstract class ACommonClusterData implements IDataContainer {
 	// event manager
 	protected static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-
 	/** 1-based sectors */
 	public byte[] sector;
 
-	/** 1-based layer*/
-	public byte layer[];
-
-	/** 1-based component */
-	public short component[];
-
-	/** 1-based id */
-	public short id[];
-
-	/** a status value */
-	public short status[];
-
-	/** the cluster energy */
-	public float energy[];
-
-	/** the cluster time */
-	public float time[];
-
-	/** the cluster x */
+	/** 1-based region */
+	public byte[] region;
+	
+	/** the cross x */
 	public float x[];
 
-	/** the cluster y */
+	/** the cross y */
 	public float y[];
 
-	/** the cluster z */
+	/** the cross z */
 	public float z[];
+	
+	/** the cross x error */
+	public float err_x[];
 
+	/** the cross y error */
+	public float err_y[];
+
+	/** the cross z error */
+	public float err_z[];
+	
+	/** the cross x direction */
+	public float ux[];
+
+	/** the cross y direction */
+	public float uy[];
+
+	/** the cross z direction*/
+	public float uz[];
+	
+	/** cluster 1 index */
+	public short cluster1ndex[];
+	
+	/** cluster 2 index */
+	public short cluster2ndex[];
+	
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
 
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
-
-
+	
 	/**
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
      */
-	public ACommonClusterData() {
+	public ACommonCrossData() {
 		_dataWarehouse.addDataContainerListener(this);
 	}
-
 
 	@Override
 	public void clear() {
 		sector = null;
-		layer = null;
-		component = null;
-		id = null;
-		status = null;
-		energy = null;
-		time = null;
+		region = null;
 		x = null;
 		y = null;
 		z = null;
+		err_x = null;
+		err_y = null;
+		err_z = null;
+		ux = null;
+		uy = null;
+		uz = null;
+		cluster1ndex = null;
+		cluster2ndex = null;
+
 		ppx = null;
 		ppy = null;
 	}
 
 	@Override
 	public int count() {
-        return (sector == null) ? 0 : sector.length;
+        return (x == null) ? 0 : x.length;
     }
 
 	/**
@@ -91,7 +101,7 @@ public abstract class ACommonClusterData implements IDataContainer {
 	 */
 	public void setLocation(int index, Point pp) {
 
-		int n = (energy == null) ? 0 : energy.length;
+		int n = (x == null) ? 0 : x.length;
 		if (n == 0) {
 			return;
 		}
@@ -116,17 +126,18 @@ public abstract class ACommonClusterData implements IDataContainer {
 	}
 
 	/**
-	 * Provide feedback for a cluster
+	 * Provide feedback for a cross
 	 * 
 	 * @param detectorName    the name of the detector
 	 * @param index           the index of the cluster
-	 * @param feedbackStrings add feedback strings here
+	 * @param feedbackStrings add strings to this collection
 	 */
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("$magenta$%s cluster xyz (%-6.3f, %-6.3f, %-6.3f) cm", detectorName, x[index], y[index], z[index]));
-		feedbackStrings.add(String.format("$magenta$%s cluster Energy %-6.3f GeV", detectorName, energy[index]));
-		feedbackStrings.add(String.format("$magenta$%s cluster ID %d  status %d", detectorName, id[index], status[index]));
+		feedbackStrings.add(String.format("$Forest Green$%s cross xyz (%-6.3f, %-6.3f, %-6.3f) cm", detectorName,
+				x[index], y[index], z[index]));
+		feedbackStrings.add(String.format("$Forest Green$%s cross error (%-6.3f, %-6.3f, %-6.3f) cm", detectorName,
+				err_x[index], err_y[index], err_z[index]));
+		feedbackStrings.add(String.format("$Forest Green$%s cross direction (%-6.3f, %-6.3f, %-6.3f)", detectorName,
+				ux[index], uy[index], uz[index]));
 	}
-
-
 }

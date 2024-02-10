@@ -37,6 +37,7 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.cvt.CosmicData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.cedview.CedView;
@@ -49,11 +50,8 @@ import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.data.BMT;
 import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
-import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.lists.BaseHit2List;
-import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
@@ -95,6 +93,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private CTOFClusterData _clusterCTOFData = CTOFClusterData.getInstance();
 	private BSTADCData _bstADCData = BSTADCData.getInstance();
 	private BMTADCData _bmtADCData = BMTADCData.getInstance();
+	private CosmicData _cosmicData = CosmicData.getInstance();
+
 
 	// units are mm
 	// private static Rectangle2D.Double _defaultWorldRectangle = new
@@ -175,8 +175,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
-						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
-						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
+						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS
+						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
 						+ DisplayBits.GLOBAL_TB,
 				3, 5);
 
@@ -300,8 +300,12 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
-			g.setColor(Color.black);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			
+			//TODO: draw the line make preference
+		//	g.setColor(Color.black);
+		//	g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			
+			
 			DataDrawSupport.drawClusterHighlight(g, p1);
 			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
@@ -318,8 +322,11 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
-			g.setColor(Color.black);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			
+			//TODO: draw the line make preference
+		//	g.setColor(Color.black);
+		//	g.drawLine(p1.x, p1.y, p2.x, p2.y);
+		
 			DataDrawSupport.drawClusterHighlight(g, p1);
 			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
@@ -328,37 +335,32 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draw cosmic ray tracks
 	private void drawCosmicTracks(Graphics g, IContainer container) {
+		
+		int count = _cosmicData.count();
+		if (count > 0) {
+			Shape oldClip = clipView(g);
 
-		CosmicList cosmics;
-		cosmics = Cosmics.getInstance().getCosmics();
+			Point p1 = new Point();
+			Point p2 = new Point();
+			for (int i = 0; i < count; i++) {
+				double y1 = 100;
+				double y2 = -100;
+				double x1 = _cosmicData.trkline_yx_slope[i] * y1 + _cosmicData.trkline_yx_interc[i];
+				double x2 = _cosmicData.trkline_yx_slope[i] * y2 + _cosmicData.trkline_yx_interc[i];
+				// convert to mm
+				x1 *= 10;
+				x2 *= 10;
+				y1 *= 10;
+				y2 *= 10;
+				container.worldToLocal(p1, x1, y1);
+				container.worldToLocal(p2, x2, y2);
 
-		if ((cosmics == null) || cosmics.isEmpty()) {
-			return;
+				g.setColor(Color.red);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+			}
+			g.setClip(oldClip);
 		}
-
-		Shape oldClip = clipView(g);
-
-		Point p1 = new Point();
-		Point p2 = new Point();
-		for (Cosmic cosmic : cosmics) {
-			double y1 = 100;
-			double y2 = -100;
-			double x1 = cosmic.trkline_yx_slope * y1 + cosmic.trkline_yx_interc;
-			double x2 = cosmic.trkline_yx_slope * y2 + cosmic.trkline_yx_interc;
-			// convert to mm
-			x1 *= 10;
-			x2 *= 10;
-			y1 *= 10;
-			y2 *= 10;
-			container.worldToLocal(p1, x1, y1);
-			container.worldToLocal(p2, x2, y2);
-
-			g.setColor(Color.red);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-
-		}
-
-		g.setClip(oldClip);
 	}
 
 	/**

@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 
 import javax.swing.JButton;
@@ -21,13 +22,21 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
+import cnuphys.bCNU.util.PropertySupport;
+import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.datatable.BankDataTable;
 import cnuphys.ced.clasio.table.NamedLabel;
 import cnuphys.ced.properties.PropertiesManager;
 
-public class CedDataWindow extends CedWindow implements ActionListener, ItemListener {
+public class CedDataView extends BaseView
+		implements ItemListener, ActionListener, WindowListener, IClasIoEventListener {
+
+	// the clasIO event manager
+	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
 	// counter to offset windows
 	private static int count = 0;
@@ -63,20 +72,38 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	private String _bankName;
 
 	// cache all created bank data windows
-	private static HashMap<String, CedDataWindow> _dataBanks = new HashMap<>(193);
+	private static HashMap<String, CedDataView> _dataBanks = new HashMap<>(193);
 
-	// private constructor
-	private CedDataWindow(String bankName) {
-		super(bankName);
+	/**
+	 * View that shows a bank and all its columns
+	 * 
+	 * @param bankName the bank name
+	 */
+	private CedDataView(String bankName) {
+
+		super(PropertySupport.TITLE, bankName, PropertySupport.ICONIFIABLE, true, PropertySupport.MAXIMIZABLE, true,
+				PropertySupport.CLOSABLE, true, PropertySupport.RESIZABLE, true, PropertySupport.LEFT,
+				40 + (count % 5) * 10 + (count / 5) * 40, PropertySupport.TOP, 40 + (count % 5) * 30,
+				PropertySupport.VISIBLE, true, PropertySupport.TOOLBAR, false);
+
+		count++;
+
 		_bankName = bankName;
+
+		getContentPane().removeAll();
+		setLayout(new BorderLayout(2, 2));
 
 		addNorth();
 		addCenter();
 		addSouth();
 
 		readVisibility();
+
 		pack();
-		// set true when constructor finished
+
+        //add event listener
+		_eventManager.addClasIoEventListener(this, 2);
+
 		_isReady = true;
 	}
 
@@ -158,30 +185,31 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	}
 
 	/**
-	 * Get a bank window. If it does not exist, create it.
+	 * Get a bank view. If it does not exist, create it.
 	 *
 	 * @param bankName the name of the bank
 	 * @return the bank window
 	 */
-	public static CedDataWindow getBankWindow(String bankName) {
-		CedDataWindow dataWindow = _dataBanks.get(bankName);
+	public static CedDataView getBankView(String bankName) {
+		CedDataView dataView = _dataBanks.get(bankName);
 
-		if (dataWindow == null) {
-			dataWindow = new CedDataWindow(bankName);
+		if (dataView == null) {
+			dataView = new CedDataView(bankName);
 			// set the location
 			int x = 40 + (count % 5) * 10 + (count / 5) * 40;
 			int y = 40 + (count % 5) * 30;
-			dataWindow.setLocation(x, y);
+			dataView.setLocation(x, y);
 			count++;
 
-			_dataBanks.put(bankName, dataWindow);
+			_dataBanks.put(bankName, dataView);
 		}
 
-		dataWindow.setVisible(true);
-		dataWindow.toFront();
-		dataWindow.requestFocus();
-		return dataWindow;
+		dataView.setVisible(true);
+		dataView.toFront();
+		dataView.requestFocus();
+		return dataView;
 	}
+
 
 	/**
 	 * Set the list to the columns of the given bank
@@ -259,6 +287,31 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	public void windowClosing(WindowEvent e) {
 		_dataBanks.remove(_bankName);
 		_eventManager.removeClasIoEventListener(this);
+	}
+
+	// WindowListener methods
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
 	}
 
 	@Override
@@ -359,5 +412,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 			update();
 		}
 	}
+	
+	
 
 }

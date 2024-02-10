@@ -6,11 +6,9 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.cvt.CosmicData;
 import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.Cosmics;
 import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.event.data.lists.CrossList2;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.lund.X11Colors;
@@ -25,6 +23,9 @@ public class BSTPanel3D extends DetectorItem3D {
 	//bst adc data
 	private BSTADCData _bstADCData = BSTADCData.getInstance();
 
+	
+	//data containers
+	private CosmicData _cosmicData = CosmicData.getInstance();
 
 	// the 1-based sect
 	private int _sector;
@@ -95,36 +96,18 @@ public class BSTPanel3D extends DetectorItem3D {
 
 		// cosmics?
 		if (_cedPanel3D.showCosmics()) {
-			CosmicList cosmics;
-			cosmics = Cosmics.getInstance().getCosmics();
-
-			if ((cosmics != null) && !cosmics.isEmpty()) {
-				for (Cosmic cosmic : cosmics) {
-					float y1 = 1000;
-					float y2 = -1000;
-					float x1 = cosmic.trkline_yx_slope * y1 + cosmic.trkline_yx_interc;
-					float x2 = cosmic.trkline_yx_slope * y2 + cosmic.trkline_yx_interc;
-					float z1 = cosmic.trkline_yz_slope * y1 + cosmic.trkline_yz_interc;
-					float z2 = cosmic.trkline_yz_slope * y2 + cosmic.trkline_yz_interc;
-
-					// no longer have to convert to cm?
-
-//					x1 /= 10;
-//					x2 /= 10;
-//					y1 /= 10;
-//					y2 /= 10;
-//					z1 /= 10;
-//					z2 /= 10;
-
+			
+			for (int i = 0; i < _cosmicData.count(); i++) {
+                    float y1 = 1000;
+                    float y2 = -1000;
+                    float x1 = _cosmicData.trkline_yx_slope[i] * y1 + _cosmicData.trkline_yx_interc[i];
+                    float x2 = _cosmicData.trkline_yx_slope[i] * y2 + _cosmicData.trkline_yx_interc[i];
+                    float z1 = _cosmicData.trkline_yz_slope[i] * y1 + _cosmicData.trkline_yz_interc[i];
+                    float z2 = _cosmicData.trkline_yz_slope[i] * y2 + _cosmicData.trkline_yz_interc[i];
 					Support3D.drawLine(drawable, x1, y1, z1, x2, y2, z2, Color.red, 1f);
-
-				}
 			}
-
+			
 		}
-
-		// cosmics
-
 	}
 
 	// show BST?

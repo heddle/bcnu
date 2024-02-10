@@ -506,7 +506,7 @@ public class DrawingLegend extends JPanel {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.green);
 		x += (TRAJSIZE + 4);
-		quickString(g, x, y, "P1 Traj Pnt");
+		quickString(g, x, y, "KF Traj Pnt");
 	}
 
 
