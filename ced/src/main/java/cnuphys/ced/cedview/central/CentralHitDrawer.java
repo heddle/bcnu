@@ -15,6 +15,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.cvt.CVTRecKFTrajData;
 import cnuphys.ced.alldata.datacontainer.cvt.CVTRecTrajData;
+import cnuphys.ced.alldata.datacontainer.cvt.CVTTrajData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.ILabCoordinates;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -37,6 +38,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 	//data containers
 	CVTRecTrajData cvtRecTrajData = CVTRecTrajData.getInstance();
 	CVTRecKFTrajData cvtRecKFTrajData = CVTRecKFTrajData.getInstance();
+	CVTTrajData cvtP1TrajData = CVTTrajData.getInstance();
 	
 	/**
 	 * Create a central hit drawer
@@ -107,6 +109,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 		drawBMTHitsSingleMode(g, container);
 		drawCTOFSingleHitsMode(g, container);
 		drawCNDSingleHitsMode(g, container);
+		drawCVTP1Traj(g, container);
 		drawCVTRecKFTraj(g, container);
 		drawCVTRecTraj(g, container);
 	}
@@ -121,6 +124,32 @@ public abstract class CentralHitDrawer implements IDrawable {
 	}
 
 	protected void drawCNDSingleHitsMode(Graphics g, IContainer container) {
+	}
+
+	// Pass 1 Rec
+	protected void drawCVTP1Traj(Graphics g, IContainer container) {
+
+		if (!(_view.showCVTP1Traj())) {
+			return;
+		}
+		
+		int count = cvtP1TrajData.count();
+		if (count > 0) {
+			Point pp = new Point();
+			for (int i = 0; i < count; i++) {
+				
+				if (Double.isNaN(cvtP1TrajData.x[i]) || Double.isNaN(cvtP1TrajData.y[i])
+						|| Double.isNaN(cvtP1TrajData.z[i])) {
+					continue;
+				}
+
+				// cm to mm
+				labCoord.labToLocal(container, 10 * cvtP1TrajData.x[i], 10 * cvtP1TrajData.y[i],
+						10 * cvtP1TrajData.z[i], pp);
+				SymbolDraw.drawStar(g, pp.x, pp.y, 6, Color.blue);
+				cvtP1TrajData.setLocation(i, pp);
+			}
+		}
 	}
 
 	//CVT KF Traj

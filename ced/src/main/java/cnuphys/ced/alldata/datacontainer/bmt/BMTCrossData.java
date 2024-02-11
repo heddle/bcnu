@@ -1,4 +1,4 @@
-package cnuphys.ced.alldata.datacontainer.fmt;
+package cnuphys.ced.alldata.datacontainer.bmt;
 
 import java.util.List;
 
@@ -7,10 +7,10 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonCrossData;
 
-public class FMTRecCrossData extends ACommonCrossData {
+public class BMTCrossData extends ACommonCrossData {
 	
 	// singleton
-	private static volatile FMTRecCrossData _instance;
+	private static volatile BMTCrossData _instance;
 	
 	/** ID */
 	public short ID[];
@@ -23,53 +23,54 @@ public class FMTRecCrossData extends ACommonCrossData {
 
 	/** the cross z direction*/
 	public float uz[];
+
+	public byte layer[];
 	
 	/** cluster 1 index */
-	public short cluster1ndex[];
+	public short Cluster1_ID[];
 	
 	/** cluster 2 index */
-	public short cluster2ndex[];
-
-
+	public short Cluster2_ID[];
 
 	/**
 	 * Public access to the singleton
 	 *
 	 * @return the singleton
 	 */
-	public static FMTRecCrossData getInstance() {
+	public static BMTCrossData getInstance() {
 		if (_instance == null) {
-			synchronized (FMTRecCrossData.class) {
+			synchronized (BMTCrossData.class) {
 				if (_instance == null) {
-					_instance = new FMTRecCrossData();
+					_instance = new BMTCrossData();
 				}
 			}
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public void clear() {
 		super.clear();
+		layer = null;
 		ID = null;
 		ux = null;
 		uy = null;
 		uz = null;
-		cluster1ndex = null;
-		cluster2ndex = null;
+		Cluster1_ID = null;
+		Cluster2_ID = null;
 	}
-
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("FMTRec::Crosses");
+		DataBank bank = event.getBank("BMT::Crosses");
 
 		if (bank == null) {
 			return;
 		}
-
+		
 		ID = bank.getShort("ID");
 		sector = bank.getByte("sector");
+		layer = bank.getByte("layer");
 		region = bank.getByte("region");
 		x = bank.getFloat("x");
 		y = bank.getFloat("y");
@@ -80,16 +81,27 @@ public class FMTRecCrossData extends ACommonCrossData {
 		ux = bank.getFloat("ux");
 		uy = bank.getFloat("uy");
 		uz = bank.getFloat("uz");
-		cluster1ndex = bank.getShort("cluster1ndex");
-		cluster2ndex = bank.getShort("cluster2ndex");
 
+        Cluster1_ID = bank.getShort("Cluster1_ID");
+        Cluster2_ID = bank.getShort("Cluster2_ID");
+        
 		int n = (x != null) ? x.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
-
 	}
+	
+	/**
+	 * Does the direction contain NaNs?
+	 * 
+	 * @param index the index of the cross
+	 * @return true if the direction contains NaNs
+	 */
+	public boolean isDirectionBad(int index) {
+		return Float.isNaN(ux[index]) || Float.isNaN(uy[index]) || Float.isNaN(uz[index]);
+	}
+
 	
 	/**
 	 * Provide feedback for a cross
@@ -99,8 +111,10 @@ public class FMTRecCrossData extends ACommonCrossData {
 	 * @param feedbackStrings add strings to this collection
 	 */
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("$Forest Green$%s cross ID %d", detectorName, ID[index]));
+		feedbackStrings.add(String.format("$Forest Green$%s cross layer %d ID %d", detectorName, layer[index], ID[index]));
 		super.feedback(detectorName, index, feedbackStrings);
+		feedbackStrings.add(String.format("$Forest Green$%s cross cluster 1 ID %d cluster 2 ID %d", detectorName,
+				Cluster1_ID[index], Cluster2_ID[index]));
 		feedbackStrings.add(String.format("$Forest Green$%s cross direction (%-6.3f, %-6.3f, %-6.3f)", detectorName,
 				ux[index], uy[index], uz[index]));
 	}

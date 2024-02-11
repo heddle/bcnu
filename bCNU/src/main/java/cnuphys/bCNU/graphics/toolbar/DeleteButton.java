@@ -6,9 +6,6 @@ import cnuphys.bCNU.graphics.container.IContainer;
 
 /**
  * @author heddle
- *
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 @SuppressWarnings("serial")
 public class DeleteButton extends ToolBarButton {

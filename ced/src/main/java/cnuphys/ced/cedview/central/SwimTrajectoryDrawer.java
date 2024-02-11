@@ -110,6 +110,8 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			return _view.showCVTRecTracks();
 		} else if (source.contains("cvt")) {
 			return _view.showRecKFTraj();
+		} else if (source.contains("cvt")) {
+			return _view.showCVTP1Tracks();
 		}
 
 		return true;

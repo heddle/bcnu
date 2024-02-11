@@ -79,6 +79,13 @@ public class DisplayBits {
 
 	/** cvt rec KF traj */
 	public static final int CVTRECKFTRAJ = 0200000000;
+	
+	/** cvt pass 1 tracks */
+	public static final int CVTP1TRACKS = 0400000000;
+
+	/** cvt pass 1 traj */
+	public static final int CVTP1TRAJ = 01000000000;
+
 
 
 	// max octal for ints 20000000000

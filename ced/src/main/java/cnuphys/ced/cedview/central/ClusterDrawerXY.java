@@ -18,6 +18,7 @@ import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDClusterData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.frame.Ced;
 
 public class ClusterDrawerXY extends CentralXYViewDrawer {
 
@@ -111,9 +112,10 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 				container.worldToLocal(p1, 10 * x1[i], 10 * y1[i]);
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
 				
-				//TODO: make line draw a preference
-//				g.setColor(Color.black);
-//				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+				if (Ced.getCed().isConnectCluster()) {
+					g.setColor(Color.black);
+					g.drawLine(p1.x, p1.y, p2.x, p2.y);
+				}
 				DataDrawSupport.drawCluster(g, p1);
 				DataDrawSupport.drawCluster(g, p2);
 			}
@@ -154,9 +156,10 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 				container.worldToLocal(p1, 10 * x1[i], 10 * y1[i]);
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
 				
-				//TODO: make line draw a preference
-//				g.setColor(Color.black);
-//				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+				if (Ced.getCed().isConnectCluster()) {
+					g.setColor(Color.black);
+					g.drawLine(p1.x, p1.y, p2.x, p2.y);
+				}
 				DataDrawSupport.drawCluster(g, p1);
 				DataDrawSupport.drawCluster(g, p2);
 			}

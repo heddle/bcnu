@@ -70,9 +70,7 @@ import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBCrosses;
 import cnuphys.ced.event.data.AITBSegments;
 import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.BMTCrosses;
 import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BSTCrosses;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.HBCrosses;
 import cnuphys.ced.event.data.HBSegments;
@@ -203,8 +201,12 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	// for the ising model 2D dialog
 	private Ising2DDialog _i2dDialog;
 	
-	// set whether data banks  ate floating
-	private JCheckBoxMenuItem _floatingCB;
+	// set whether data banks are floating
+	private JCheckBoxMenuItem _floatingBankDisplayCB;
+	
+	// set whether clusters are connected
+	private JCheckBoxMenuItem _connectClusterCB;
+
 
 	/**
 	 * Constructor (private--used to create singleton)
@@ -678,35 +680,61 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * Does the user want the data bank displays to float?
 	 * @return <code>true</code> if the user wants the data bank displays to float.
 	 */
-	public boolean isFloating() {
-		return _floatingCB.isSelected();
+	public boolean isFloatingBankDisplay() {
+		return _floatingBankDisplayCB.isSelected();
+	}
+	
+	/**
+	 * Does the user want the cluster endpoints to be connected?
+	 * 
+	 * @return <code>true</code> if the user wants the cluster endpoints to be
+	 *         connected.
+	 */
+	public boolean isConnectCluster() {
+		return _connectClusterCB.isSelected();
 	}
 
 	// create the options menu
 	private void addToOptionMenu(JMenu omenu) {
 		
-		//read default
-		
+		//read default for floating bank displays
 		boolean defFloat = true;
 		String floatStr = PropertiesManager.getInstance().get("FLOATBANK");
 		if (floatStr != null) {
 			defFloat = Boolean.parseBoolean(floatStr);
 		}
 		
-	
-		_floatingCB = new JCheckBoxMenuItem("Bank Views are Free Floating", defFloat);
+		_floatingBankDisplayCB = new JCheckBoxMenuItem("Bank Views are Free Floating", defFloat);
 	
 		
-		_floatingCB.addActionListener(new ActionListener() {
+		_floatingBankDisplayCB.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// save the new state
-				PropertiesManager.getInstance().put("FLOATBANK", "" + _floatingCB.isSelected());
+				PropertiesManager.getInstance().put("FLOATBANK", "" + _floatingBankDisplayCB.isSelected());
 				PropertiesManager.getInstance().writeProperties();
 			}
 		});
+		
+		//read default for connecting clusters
+		boolean defCluster = false;
+		String clusterStr = PropertiesManager.getInstance().get("CONNECTCLUSTER");
+		if (clusterStr != null) {
+			defCluster = Boolean.parseBoolean(clusterStr);
+		}
+		_connectClusterCB = new JCheckBoxMenuItem("Connect Cluster Endpoints", defCluster);
+		_connectClusterCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// save the new state
+				PropertiesManager.getInstance().put("CONNECTCLUSTER", "" + _connectClusterCB.isSelected());
+				PropertiesManager.getInstance().writeProperties();
+				Ced.refresh();
+			}
+		});
 
-		omenu.add(_floatingCB);
+		omenu.add(_floatingBankDisplayCB);
+		omenu.add(_connectClusterCB);
 		omenu.addSeparator();
 		
 		omenu.add(MagnifyWindow.magificationMenu());
@@ -1099,8 +1127,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static void initDataCollectors() {
 		DC.getInstance();
 		AIDC.getInstance();
-		BMTCrosses.getInstance();
-		BSTCrosses.getInstance();
 		TBCrosses.getInstance();
 		HBCrosses.getInstance();
 		AITBCrosses.getInstance();

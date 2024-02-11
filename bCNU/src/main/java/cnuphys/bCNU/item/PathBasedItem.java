@@ -37,8 +37,6 @@ public class PathBasedItem extends AItem {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
-		// TODO use dirty. If the item is not dirty, should be able to draw
-		// the _lastDrawnPolygon directly;
 		_lastDrawnPolygon = WorldGraphicsUtilities.drawPath2D(g, container, _path, _style, true);
 
 	}

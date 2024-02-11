@@ -89,8 +89,20 @@ public class BankDataTable extends JTable {
 		}
 
 		super.valueChanged(e);
+		
+		int row = getSelectedRow();
+		if (row < 0) {
+			SelectedDataManager.notifyListeners(_bankName, -1);
+			return;
+		}
+		
+		Object val = getBankTableModel().getValueAt(row, 0);
+		if (val == null) {
+			SelectedDataManager.notifyListeners(_bankName, -1);
+			return;
+		}
 
-		int index = getSelectedRow();  //Zero based
+		int index = (int) val;
 		SelectedDataManager.notifyListeners(_bankName, index);
 	}
 

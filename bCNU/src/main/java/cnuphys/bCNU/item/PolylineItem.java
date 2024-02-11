@@ -33,8 +33,6 @@ public class PolylineItem extends PathBasedItem {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
-		// TODO use dirty
-
 		_lastDrawnPolygon = WorldGraphicsUtilities.drawPath2D(g, container, _path, _style, false);
 
 	}

@@ -6,9 +6,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
-import cnuphys.ced.event.data.BMTCrosses;
-import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.lists.CrossList2;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTCrossData;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.bmt.Constants;
 import cnuphys.lund.X11Colors;
@@ -26,8 +24,9 @@ public class BMTLayer3D extends DetectorItem3D {
 	// the 1-based layer
 	private int _layer;
 	
-	//bmt adc data
+	//data containers
 	private BMTADCData _bmtADCData = BMTADCData.getInstance();
+	private BMTCrossData _bmtCrossData = BMTCrossData.getInstance();
 
 
 	public BMTLayer3D(CedPanel3D panel3D, int sector, int layer) {
@@ -59,39 +58,39 @@ public class BMTLayer3D extends DetectorItem3D {
 	public void drawData(GLAutoDrawable drawable) {
 
 		float coords6[] = new float[6];
-		
-		for (int i = 0; i < _bmtADCData.count(); i++) {
-			if (_bmtADCData.sector[i] == _sector && _bmtADCData.layer[i] == _layer) {
-				int strip = _bmtADCData.component[i];
-				BMTGeometry.getGeometry().getCRZEndPoints(_sector, _layer, strip, coords6);
-				if (!Float.isNaN(coords6[0])) {
-					Support3D.drawLine(drawable, coords6, _bmtADCData.adc[i] > 0 ? Color.red : Color.blue,
-							STRIPLINEWIDTH);
+
+		if (showHits()) {
+			for (int i = 0; i < _bmtADCData.count(); i++) {
+				if (_bmtADCData.sector[i] == _sector && _bmtADCData.layer[i] == _layer) {
+					int strip = _bmtADCData.component[i];
+					BMTGeometry.getGeometry().getCRZEndPoints(_sector, _layer, strip, coords6);
+					if (!Float.isNaN(coords6[0])) {
+						Support3D.drawLine(drawable, coords6, _bmtADCData.adc[i] > 0 ? Color.red : Color.blue,
+								STRIPLINEWIDTH);
+					}
 				}
 			}
 		}
 
 		// reconstructed crosses?
 		if (_cedPanel3D.showReconCrosses()) {
+			
+			for (int i = 0; i < _bmtCrossData.count(); i++) {
+				if (_bmtCrossData.sector[i] == _sector && _bmtCrossData.layer[i] == _layer) {
+					float x = _bmtCrossData.x[i];
+					float y = _bmtCrossData.y[i];
+					float z = _bmtCrossData.z[i];
+					float ux = _bmtCrossData.ux[i];
+					float uy = _bmtCrossData.uy[i];
+					float uz = _bmtCrossData.uz[i];
 
-			// BMT
-			CrossList2 crosses = BMTCrosses.getInstance().getCrosses();
-			int len = (crosses == null) ? 0 : crosses.size();
-			for (int i = 0; i < len; i++) {
-				Cross2 cross = crosses.elementAt(i);
-				if (cross != null) {
-					// no longer convert (already in cm)
-					float x1 = cross.x;
-					float y1 = cross.y;
-					float z1 = cross.z;
+					Support3D.drawLine(drawable, x, y, z, ux, uy, uz, CROSS_LEN, crossColor, 3f);
+					Support3D.drawLine(drawable, x, y, z, ux, uy, uz, (float) (1.1 * CROSS_LEN), Color.black, 1f);
 
-					Support3D.drawLine(drawable, x1, y1, z1, cross.ux, cross.uy, cross.uz, CROSS_LEN, crossColor, 3f);
-					Support3D.drawLine(drawable, x1, y1, z1, cross.ux, cross.uy, cross.uz, (float) (1.1 * CROSS_LEN),
-							Color.black, 1f);
-
-					drawCrossPoint(drawable, x1, y1, z1, crossColor);
+					drawCrossPoint(drawable, x, y, z, crossColor);
 				}
-			} // bmt
+			}
+
 
 		}
 	}

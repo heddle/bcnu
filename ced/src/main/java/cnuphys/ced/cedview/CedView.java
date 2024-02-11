@@ -714,6 +714,30 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showRecKFTraj();
 	}
+	
+	/**
+	 * Convenience method to see if we show CVT pass 1 tracks.
+	 *
+	 * @return <code>true</code> if we are to show CVT pass 1 tracks.
+	 */
+	public boolean showCVTP1Tracks() {
+		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
+			return false;
+		}
+		return _controlPanel.getDisplayArray().showCVTP1Tracks();
+	}
+	
+	/**
+	 * Convenience method to see if we show CVT pass 1 traj.
+	 *
+	 * @return <code>true</code> if we are to show CVT pass 1 traj.
+	 */
+	public boolean showCVTP1Traj() {
+		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
+			return false;
+		}
+		return _controlPanel.getDisplayArray().showCVTP1Traj();
+	}
 
 	/**
 	 * Convenience method to see if we show CVT reconstructed trajectory data.

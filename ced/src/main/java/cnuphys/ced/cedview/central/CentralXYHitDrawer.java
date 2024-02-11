@@ -132,6 +132,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		drawCTOFSingleHitsMode(g, container);
 		drawCNDSingleHitsMode(g, container);
 		drawCVTRecKFTraj(g, container);
+		drawCVTP1Traj(g, container);
 		drawCVTRecTraj(g, container);
 	}
 

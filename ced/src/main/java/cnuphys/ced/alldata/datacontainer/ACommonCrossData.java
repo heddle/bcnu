@@ -39,22 +39,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/** the cross z error */
 	public float err_z[];
-	
-	/** the cross x direction */
-	public float ux[];
-
-	/** the cross y direction */
-	public float uy[];
-
-	/** the cross z direction*/
-	public float uz[];
-	
-	/** cluster 1 index */
-	public short cluster1ndex[];
-	
-	/** cluster 2 index */
-	public short cluster2ndex[];
-	
+		
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
 
@@ -79,11 +64,6 @@ public abstract class ACommonCrossData implements IDataContainer {
 		err_x = null;
 		err_y = null;
 		err_z = null;
-		ux = null;
-		uy = null;
-		uz = null;
-		cluster1ndex = null;
-		cluster2ndex = null;
 
 		ppx = null;
 		ppy = null;
@@ -113,6 +93,36 @@ public abstract class ACommonCrossData implements IDataContainer {
 		ppx[index] = pp.x;
 		ppy[index] = pp.y;
 	}
+	
+	/**
+	 * Does the location contain NaNs?
+	 * @param index the index of the cross
+	 * @return true if the location contains NaNs
+	 */
+	public boolean isFullLocationBad(int index) {
+		return Float.isNaN(x[index]) || Float.isNaN(y[index]) || Float.isNaN(z[index]);
+	}
+
+	/**
+	 * Does the xy ocation contain NaNs?
+	 * 
+	 * @param index the index of the cross
+	 * @return true if the xy location contains NaNs
+	 */
+	public boolean isXYLocationBad(int index) {
+		return Float.isNaN(x[index]) || Float.isNaN(y[index]);
+	}
+
+	/**
+	 * Does the error contain NaNs?
+	 * 
+	 * @param index the index of the cross
+	 * @return true if the error contains NaNs
+	 */
+	public boolean isErrorBad(int index) {
+		return Float.isNaN(err_x[index]) || Float.isNaN(err_y[index]) || Float.isNaN(err_z[index]);
+	}
+
 
 	/**
 	 * Used for hit detection
@@ -133,11 +143,11 @@ public abstract class ACommonCrossData implements IDataContainer {
 	 * @param feedbackStrings add strings to this collection
 	 */
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
+		feedbackStrings.add(String.format("$Forest Green$%s sector %d region %d", 
+				detectorName, sector[index], region[index]));
 		feedbackStrings.add(String.format("$Forest Green$%s cross xyz (%-6.3f, %-6.3f, %-6.3f) cm", detectorName,
 				x[index], y[index], z[index]));
 		feedbackStrings.add(String.format("$Forest Green$%s cross error (%-6.3f, %-6.3f, %-6.3f) cm", detectorName,
 				err_x[index], err_y[index], err_z[index]));
-		feedbackStrings.add(String.format("$Forest Green$%s cross direction (%-6.3f, %-6.3f, %-6.3f)", detectorName,
-				ux[index], uy[index], uz[index]));
 	}
 }

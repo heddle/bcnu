@@ -52,6 +52,7 @@ import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
 import cnuphys.ced.event.data.lists.BaseHit2List;
+import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
@@ -177,8 +178,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
 						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
-						+ DisplayBits.GLOBAL_TB,
-				3, 5);
+						+ DisplayBits.GLOBAL_TB + DisplayBits.CVTP1TRACKS + DisplayBits.CVTP1TRAJ, 3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
@@ -301,10 +301,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
 			
-			//TODO: draw the line make preference
-		//	g.setColor(Color.black);
-		//	g.drawLine(p1.x, p1.y, p2.x, p2.y);
-			
+			if (Ced.getCed().isConnectCluster()) {
+				g.setColor(Color.black);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			}
 			
 			DataDrawSupport.drawClusterHighlight(g, p1);
 			DataDrawSupport.drawClusterHighlight(g, p2);
@@ -323,9 +323,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
 			
-			//TODO: draw the line make preference
-		//	g.setColor(Color.black);
-		//	g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			if (Ced.getCed().isConnectCluster()) {
+				g.setColor(Color.black);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			}
 		
 			DataDrawSupport.drawClusterHighlight(g, p1);
 			DataDrawSupport.drawClusterHighlight(g, p2);

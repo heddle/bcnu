@@ -82,6 +82,7 @@ public class DrawingLegend extends JPanel {
 		add(crossBMT());
 		add(docaTB());
 		add(trajPointRec());
+		add(kfPointRec());
 		add(p1PointRec());
 		add(hitStripMidpoint());
 		add(trackTB());
@@ -369,6 +370,19 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
+	
+	//kf trajectory point
+	private LComp kfPointRec() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				paintKFTrajPoint(g, X, Y);
+			}
+		};
+		return comp;
+	}
+
 
 	//hit strip midpoint
 	private LComp hitStripMidpoint() {
@@ -502,13 +516,19 @@ public class DrawingLegend extends JPanel {
 		quickString(g, x, y, "Rec Traj Pnt");
 	}
 
-	private void paintP1TrajPoint(Graphics g, int x, int y) {
+	private void paintKFTrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.green);
 		x += (TRAJSIZE + 4);
 		quickString(g, x, y, "KF Traj Pnt");
 	}
 
+	private void paintP1TrajPoint(Graphics g, int x, int y) {
+		int s2 = TRAJSIZE/2;
+		SymbolDraw.drawStar(g, x, y, s2, Color.blue);
+		x += (TRAJSIZE + 4);
+		quickString(g, x, y, "P1 Traj Pnt");
+	}
 
 	private void drawLine(Graphics2D g2, int x, int yc, Color lineColor, String str) {
 		g2.setColor(CedColors.docaTruthFill);

@@ -246,7 +246,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 					} else if (clickCount == 2) {
 						
-						if (Ced.getCed().isFloating()) {
+						if (Ced.getCed().isFloatingBankDisplay()) {
 							// open a new window
 							CedDataWindow dw = CedDataWindow.getBankWindow(label);
 							dw.update();
