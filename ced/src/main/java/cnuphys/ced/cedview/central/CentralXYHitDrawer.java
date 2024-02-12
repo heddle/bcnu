@@ -9,16 +9,14 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTRecHitData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -38,6 +36,8 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	private CTOFClusterData clusterCTOFData = CTOFClusterData.getInstance();
 	private BSTADCData adcBSTData = BSTADCData.getInstance();
 	private BMTADCData adcBMTData = BMTADCData.getInstance();
+	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
+	private BMTRecHitData bmtRecHitData = BMTRecHitData.getInstance();
 
 	// accumulation manager
 	private AccumulationManager _accumManager = AccumulationManager.getInstance();
@@ -176,8 +176,8 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		if (_view.showClusters()) {
 			Point pp = new Point();
 			for (int i = 0; i < clusterCTOFData.count(); i++) {
-				//convert to mm
-				container.worldToLocal(pp, 10*clusterCTOFData.x[i], 10*clusterCTOFData.y[i]);
+				// convert to mm
+				container.worldToLocal(pp, 10 * clusterCTOFData.x[i], 10 * clusterCTOFData.y[i]);
 				DataDrawSupport.drawCluster(g, pp);
 				clusterCTOFData.setLocation(i, pp);
 			}
@@ -240,40 +240,37 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	}
 
 	// draw bmt reconstructed hits
+
+	// draw bst reconstructed hits
 	private void drawBMTReconHits(Graphics g, IContainer container) {
 
 		if (_view.showReconHits()) {
-			Point pp = new Point();
-			Point2D.Double wp = new Point2D.Double();
+			int count = bmtRecHitData.count();
+			if (count > 0) {
+				Point pp = new Point();
+				Point2D.Double wp = new Point2D.Double();
 
-			// DataManager.getInstance().
+				for (int i = 0; i < count; i++) {
+					BMTSectorItem bmtItem = _view.getBMTSectorItem(bmtRecHitData.sector[i], bmtRecHitData.layer[i]);
+					if (bmtItem != null && bmtItem.isZLayer()) {
 
-			BaseHit2List recHits = BMT.getInstance().getRecHits();
-			if (recHits != null) {
+						double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(bmtRecHitData.sector[i], bmtRecHitData.layer[i],
+								bmtRecHitData.strip[i]);
 
-				if (recHits.count() > 0) {
-					for (BaseHit2 bhit2 : recHits) {
-						BMTSectorItem bmtItem = _view.getBMTSectorItem(bhit2.sector, bhit2.layer);
-						if (bmtItem != null && bmtItem.isZLayer()) {
+						double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
+						wp.x = rad * Math.cos(phi);
+						wp.y = rad * Math.sin(phi);
+						container.worldToLocal(pp, wp);
 
-							double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(bhit2.sector, bhit2.layer,
-									bhit2.component);
-
-							double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
-							wp.x = rad * Math.cos(phi);
-							wp.y = rad * Math.sin(phi);
-							container.worldToLocal(pp, wp);
-
-							bhit2.setLocation(pp);
-							DataDrawSupport.drawReconHit(g, pp);
-						}
+						bmtRecHitData.setLocation(i, pp);
+						DataDrawSupport.drawReconHit(g, pp);
 					}
+
 				}
 			}
+
 		}
-
 	}
-
 	// draw BST hits single event mode
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
@@ -283,8 +280,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 	// draw BST adc data
 	private void drawBSTADCData(Graphics g, IContainer container) {
-		
-		
+
 		if (_view.showADCHits()) {
 			for (int i = 0; i < adcBSTData.count(); i++) {
 				BSTxyPanel panel = CentralXYView.getPanel(adcBSTData.layer[i], adcBSTData.sector[i]);
@@ -294,37 +290,34 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				}
 			}
 		}
-		
+
 	}
 
 	// draw bst reconstructed hits
 	private void drawBSTReconHits(Graphics g, IContainer container) {
+
 		if (_view.showReconHits()) {
-			Point pp = new Point();
-			Point2D.Double wp = new Point2D.Double();
+			int count = bstRecHitData.count();
+			if (count > 0) {
+				Point pp = new Point();
+				Point2D.Double wp = new Point2D.Double();
 
-			BaseHit2List recHits = BST.getInstance().getRecHits();
-
-			if (recHits != null) {
-
-				for (BaseHit2 bhit2 : recHits) {
-					if (bhit2.sector > 0 && bhit2.layer > 0 && bhit2.component > 0 && bhit2.layer < 7
-							&& bhit2.component < 257
-							&& (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
-						BSTGeometry.getStripMidpointXY(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1, wp);
+				for (int i = 0; i < count; i++) {
+					if (bstRecHitData.sector[i] > 0 && bstRecHitData.layer[i] > 0 && bstRecHitData.strip[i] > 0
+							&& bstRecHitData.layer[i] < 7 && bstRecHitData.strip[i] < 257
+							&& (bstRecHitData.sector[i] <= BSTGeometry.sectorsPerLayer[bstRecHitData.layer[i] - 1])) {
+						BSTGeometry.getStripMidpointXY(bstRecHitData.sector[i] - 1, bstRecHitData.layer[i] - 1,
+								bstRecHitData.strip[i] - 1, wp);
 						container.worldToLocal(pp, wp);
-						bhit2.setLocation(pp);
+						bstRecHitData.setLocation(i, pp);
 						DataDrawSupport.drawReconHit(g, pp);
-
 					} else {
-						// System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits " +
-						// bhit2);
+						System.err.println("bad data in CentralXYHitDrawer drawBSTReconHits ");
 					}
 
 				}
-
 			}
+
 		}
 	}
-
 }

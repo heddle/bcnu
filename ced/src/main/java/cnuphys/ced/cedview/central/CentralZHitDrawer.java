@@ -7,11 +7,9 @@ import java.awt.Point;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import eu.mihosoft.vrl.v3d.Vector3d;
@@ -24,6 +22,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	
 	//data containers
 	private BSTADCData adcBSTData = BSTADCData.getInstance();
+	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
 
 
 	public CentralZHitDrawer(CentralZView view) {
@@ -89,27 +88,28 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	// draw bst reconstructed hits
 	private void drawBSTReconHits(Graphics g, IContainer container) {
 		if (_view.showReconHits()) {
-			Point pp = new Point();
-
-			BaseHit2List recHits = BST.getInstance().getRecHits();
-			if (recHits != null) {
-
-				for (BaseHit2 bhit2 : recHits) {
-
-					if (bhit2.sector > 0 && bhit2.layer > 0 && bhit2.component > 0 && bhit2.layer < 7
-							&& bhit2.component < 257 && (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
-						Vector3d v = BSTGeometry.getStripMidpoint(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1);
+			
+			int count = bstRecHitData.count();
+			if (count > 0) {
+				Point pp = new Point();
+				
+				for (int i = 0; i < count; i++) {
+					int sector = bstRecHitData.sector[i];
+					int layer = bstRecHitData.layer[i];
+					int strip = bstRecHitData.strip[i];
+					if (sector > 0 && layer > 0 && strip > 0 && layer < 7 && strip < 257
+							&& (sector <= BSTGeometry.sectorsPerLayer[layer - 1])) {
+						Vector3d v = BSTGeometry.getStripMidpoint(sector - 1, layer - 1, strip - 1);
 						double alpha = _view.labToLocalWithAlpha(v.x, v.y, v.z, pp);
 						int alp = (int) Math.max(0, Math.min(255, 255 * alpha));
 						DataDrawSupport.drawReconHit(g, pp, alp);
-
+						bstRecHitData.setLocation(i, pp);
 					} else {
-			//			System.err.println("bad data in CentralZHitDrawer drawBSTReconHits   " + bhit2);
+						System.err.println("bad data in CentralZHitDrawer drawBSTReconHits ");
 					}
-
 				}
-
 			}
+			
 		}
 	}
 

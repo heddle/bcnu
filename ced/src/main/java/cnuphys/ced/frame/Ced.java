@@ -67,8 +67,6 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.BST;
 import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.TBSegments;
@@ -1127,8 +1125,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		HBSegments.getInstance();
 		AITBSegments.getInstance();
 		AIHBSegments.getInstance();
-		BST.getInstance();
-		BMT.getInstance();
 		DataManager.getInstance();
 		DataWarehouse.getInstance();
 	}

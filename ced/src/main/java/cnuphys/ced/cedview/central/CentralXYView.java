@@ -36,7 +36,9 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTRecHitData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
 import cnuphys.ced.alldata.datacontainer.cvt.CosmicData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
@@ -47,11 +49,7 @@ import cnuphys.ced.cedview.urwell.HighlightData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BaseHit2;
 import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
@@ -95,6 +93,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	private BSTADCData _bstADCData = BSTADCData.getInstance();
 	private BMTADCData _bmtADCData = BMTADCData.getInstance();
 	private CosmicData _cosmicData = CosmicData.getInstance();
+	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
+	private BMTRecHitData bmtRecHitData = BMTRecHitData.getInstance();
 
 
 	// units are mm
@@ -176,7 +176,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
-						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS
+						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
 						+ DisplayBits.GLOBAL_TB + DisplayBits.CVTP1TRACKS + DisplayBits.CVTP1TRAJ, 3, 5);
 
@@ -641,37 +641,24 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			}
 			
 		}
-
-		boolean foundHit = false;
+		
 		if (showReconHits()) {
-			BaseHit2List reconHits = BMT.getInstance().getRecHits();
-			if ((reconHits != null) && !reconHits.isEmpty()) {
-				for (BaseHit2 bhit2 : reconHits) {
-					if (bhit2.contains(screenPoint)) {
-						fbString("orange", "BMT recon hit sector  " + bhit2.sector + " layer " + bhit2.layer + " strip "
-								+ bhit2.component, feedbackStrings);
-						foundHit = true;
-						break;
-					}
+			for (int i = 0; i < bstRecHitData.count(); i++) {
+				if (bstRecHitData.contains(i, screenPoint)) {
+					bstRecHitData.hitFeedback(i, feedbackStrings);
+					break;
 				}
 			}
-			if (!foundHit) {
-				reconHits = BST.getInstance().getRecHits();
-				if ((reconHits != null) && !reconHits.isEmpty()) {
-					for (BaseHit2 bhit2 : reconHits) {
-						if (bhit2.contains(screenPoint)) {
-							fbString("orange", "BST recon hit sector  " + bhit2.sector + " layer " + bhit2.layer
-									+ " strip " + bhit2.component, feedbackStrings);
-
-							foundHit = true;
-							break;
-						}
-					}
+			
+			for (int i = 0; i < bmtRecHitData.count(); i++) {
+				if (bmtRecHitData.contains(i, screenPoint)) {
+					bmtRecHitData.hitFeedback(i, feedbackStrings);
+					break;
 				}
-
 			}
-
 		}
+
+		
 
 		// near a swum trajectory?
 		double mindist = _swimTrajectoryDrawer.closestApproach(worldPoint);

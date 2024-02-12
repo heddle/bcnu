@@ -7,12 +7,8 @@ import cnuphys.ced.event.data.DCCluster;
 
 public class DCClusterList extends Vector<DCCluster> {
 
-	// the bank name
-	private String _bankName;
 
 	public DCClusterList(String bankName) {
-
-		_bankName = bankName;
 
 		byte sector[] = ColumnData.getByteArray(bankName + ".sector");
 		int length = (sector == null) ? 0 : sector.length;
