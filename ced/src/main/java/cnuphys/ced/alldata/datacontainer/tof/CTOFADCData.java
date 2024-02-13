@@ -64,7 +64,7 @@ public class CTOFADCData extends ACommonADCData {
 			fract = Math.max(0, Math.min(1.0, fract));
 			return AdcColorScale.getInstance().getAlphaColor(fract, 255);
 		}
-		return null;
+		return ADCZERO;
 	}
 
 	//gets the average ADC for a given sector, layer, component, and order
