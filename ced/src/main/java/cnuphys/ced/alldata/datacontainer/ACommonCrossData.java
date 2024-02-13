@@ -3,9 +3,9 @@ package cnuphys.ced.alldata.datacontainer;
 import java.awt.Point;
 import java.util.List;
 
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.DataDrawSupport;
 
 public abstract class ACommonCrossData implements IDataContainer {
 
@@ -75,8 +75,8 @@ public abstract class ACommonCrossData implements IDataContainer {
     }
 
 	/**
-	 * Set the location where the cluster was last drawn
-	 * @param index the index of the cluster
+	 * Set the location where the cross was last drawn
+	 * @param index the index of the cross
 	 * @param pp the location
 	 */
 	public void setLocation(int index, Point pp) {
@@ -127,7 +127,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index
-	 * @param pp rge screen point
+	 * @param pp the screen point
 	 * @return true if the screen point is in the cluster
 	 */
 	public boolean contains(int index, Point pp) {

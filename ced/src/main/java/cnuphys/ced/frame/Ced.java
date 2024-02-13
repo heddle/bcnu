@@ -64,10 +64,8 @@ import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.component.DrawingLegendDialog;
 import cnuphys.ced.dcnoise.edit.NoiseParameterDialog;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AIDC;
 import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.DC;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.TBSegments;
 import cnuphys.ced.geometry.GeometryManager;
@@ -1119,8 +1117,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	// data collectors need to be initialized before
 	// any events come through
 	private static void initDataCollectors() {
-		DC.getInstance();
-		AIDC.getInstance();
 		TBSegments.getInstance();
 		HBSegments.getInstance();
 		AITBSegments.getInstance();

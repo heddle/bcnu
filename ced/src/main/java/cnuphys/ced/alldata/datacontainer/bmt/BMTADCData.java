@@ -5,8 +5,8 @@ import java.awt.Point;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.ACommonADCData;
-import cnuphys.ced.event.data.DataDrawSupport;
 
 public class BMTADCData extends ACommonADCData {
 

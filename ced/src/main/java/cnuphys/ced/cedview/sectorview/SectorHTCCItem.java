@@ -9,14 +9,13 @@ import java.util.List;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cc.HTCCRecData;
 import cnuphys.ced.alldata.datacontainer.cc.HTCCTDCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.HTCCGeometry;
 
@@ -170,7 +169,7 @@ public class SectorHTCCItem extends PolygonItem {
 			List<String> feedbackStrings) {
 		if (contains(container, screenPoint)) {
 
-			feedbackStrings.add(DataSupport.prelimColor + "HTCC sect " + _sector + " ring " + _ring + " half " + _half);
+			feedbackStrings.add(DataDrawSupport.prelimColor + "HTCC sect " + _sector + " ring " + _ring + " half " + _half);
 
 			for (int i = 0; i < adcData.count(); i++) {
 				if ((adcData.sector[i] == _sector) && (adcData.layer[i] == _half) && (adcData.component[i] == _ring)) {

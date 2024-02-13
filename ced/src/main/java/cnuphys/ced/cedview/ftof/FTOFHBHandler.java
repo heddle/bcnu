@@ -3,7 +3,7 @@ package cnuphys.ced.cedview.ftof;
 import java.awt.Graphics;
 import java.awt.Point;
 
-import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.alldata.DataDrawSupport;
 
 public class FTOFHBHandler extends FTOFGenericHitHandler {
 //FTOFGenericHitHandler(FTOFView view, String bankname, String fbcolor, String fbprefix)

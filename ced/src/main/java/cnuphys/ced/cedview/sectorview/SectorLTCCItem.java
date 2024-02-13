@@ -10,15 +10,13 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCRecData;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCTDCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.LTCCGeometry;
 
@@ -28,10 +26,6 @@ public class SectorLTCCItem extends PolygonItem {
 
 	// convenient access to the event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-
-	//the data warehouse
-	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
-
 
 	// sector 1-based 1..6
 	private byte _sector;
@@ -172,7 +166,7 @@ public class SectorLTCCItem extends PolygonItem {
 			List<String> feedbackStrings) {
 		if (contains(container, screenPoint)) {
 
-			feedbackStrings.add(DataSupport.prelimColor + "LTCC sect " + _sector + " ring " + _ring + " half " + _half);
+			feedbackStrings.add(DataDrawSupport.prelimColor + "LTCC sect " + _sector + " ring " + _ring + " half " + _half);
 
 			LTCCADCData adcData = LTCCADCData.getInstance();
 			LTCCTDCData tdcData = LTCCTDCData.getInstance();

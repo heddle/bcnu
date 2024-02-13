@@ -8,23 +8,20 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.List;
 
-import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.cal.ECalClusterData;
 import cnuphys.ced.alldata.datacontainer.cal.ECalReconData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalClusterData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalReconData;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAIHitData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAIHitData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgHitData;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.event.data.AIDC;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCCluster;
-import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.lists.ClusterList;
-import cnuphys.ced.event.data.lists.DCClusterList;
-import cnuphys.ced.event.data.lists.DCReconHitList;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.geometry.ECGeometry;
 
@@ -33,10 +30,13 @@ public class ReconDrawer extends SectorViewDrawer {
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
 
-    //data containers
+	// data containers
 	ECalReconData ecRecData = ECalReconData.getInstance();
 	PCalReconData pcalRecData = PCalReconData.getInstance();
-
+	private HBTrkgHitData _hbData = HBTrkgHitData.getInstance();
+	private TBTrkgHitData _tbData = TBTrkgHitData.getInstance();
+	private HBTrkgAIHitData _hbAIData = HBTrkgAIHitData.getInstance();
+	private TBTrkgAIHitData _tbAIData = TBTrkgAIHitData.getInstance();
 
 	/**
 	 * Reconstructed hits drawer
@@ -52,14 +52,12 @@ public class ReconDrawer extends SectorViewDrawer {
 
 		_fbData.clear();
 
-
 		if (_eventManager.isAccumulating() || !_view.isSingleEventMode()) {
 			return;
 		}
 
 		// DC HB and TB Hits
 		drawDCReconAndDOCA(g, container);
-
 
 		// Reconstructed clusters
 		if (_view.showClusters()) {
@@ -99,13 +97,11 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw data from the REC::Calorimeter bank
 	private void drawRecCal(Graphics g, IContainer container) {
 
-
-
 		Point pp = new Point();
 		Point2D.Double wp = new Point2D.Double();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 
-		//draw ECAL
+		// draw ECAL
 		for (int i = 0; i < ecRecData.count(); i++) {
 			if (_view.containsSector(ecRecData.sector.get(i))) {
 
@@ -113,23 +109,22 @@ public class ReconDrawer extends SectorViewDrawer {
 				float y = ecRecData.y.get(i);
 				float z = ecRecData.z.get(i);
 
-                _view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
-                container.worldToLocal(pp, wp);
-                DataDrawSupport.drawECALRec(g, pp, false);
+				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+				DataDrawSupport.drawECALRec(g, pp, false);
 
-                double r = Math.sqrt(x*x + y*y + z*z);
-                double theta = Math.toDegrees(Math.acos(z/r));
-                double phi = Math.toDegrees(Math.atan2(y, x));
+				double r = Math.sqrt(x * x + y * y + z * z);
+				double theta = Math.toDegrees(Math.acos(z / r));
+				double phi = Math.toDegrees(Math.atan2(y, x));
 
-                float radius = ecRecData.getRadius(ecRecData.energy.get(i));
-                if (radius > 0) {
+				float radius = ecRecData.getRadius(ecRecData.energy.get(i));
+				if (radius > 0) {
 					container.localToWorld(pp, wp);
 					wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
 					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);
-                }
+				}
 
-				_fbData.add(new FBData(pp,
-						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
+				_fbData.add(new FBData(pp, String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
 						String.format("$magenta$REC %s (%-6.3f, %-6.3f, %-6.3f)", CedView.rThetaPhi, r, theta, phi),
 						String.format("$magenta$REC plane %s", ECGeometry.PLANE_NAMES[ecRecData.plane.get(i)]),
 						String.format("$magenta$REC view %s", ECGeometry.VIEW_NAMES[ecRecData.view.get(i)]),
@@ -137,9 +132,9 @@ public class ReconDrawer extends SectorViewDrawer {
 						String.format("$magenta$REC Energy %-7.4f GeV", ecRecData.energy.get(i))));
 
 			}
-		} //for i
+		} // for i
 
-		//draw PCAL
+		// draw PCAL
 		for (int i = 0; i < pcalRecData.count(); i++) {
 			if (_view.containsSector(pcalRecData.sector.get(i))) {
 
@@ -147,31 +142,29 @@ public class ReconDrawer extends SectorViewDrawer {
 				float y = pcalRecData.y.get(i);
 				float z = pcalRecData.z.get(i);
 
-                _view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
-                container.worldToLocal(pp, wp);
-                DataDrawSupport.drawECALRec(g, pp, false);
+				_view.projectClasToWorld(x, y, z, _view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+				DataDrawSupport.drawECALRec(g, pp, false);
 
-                double r = Math.sqrt(x*x + y*y + z*z);
-                double theta = Math.toDegrees(Math.acos(z/r));
-                double phi = Math.toDegrees(Math.atan2(y, x));
+				double r = Math.sqrt(x * x + y * y + z * z);
+				double theta = Math.toDegrees(Math.acos(z / r));
+				double phi = Math.toDegrees(Math.atan2(y, x));
 
-                float radius = pcalRecData.getRadius(pcalRecData.energy.get(i));
-                if (radius > 0) {
+				float radius = pcalRecData.getRadius(pcalRecData.energy.get(i));
+				if (radius > 0) {
 					container.localToWorld(pp, wp);
 					wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
 					WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, null);
-                }
+				}
 
-				_fbData.add(new FBData(pp,
-						String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
+				_fbData.add(new FBData(pp, String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
 						String.format("$magenta$REC %s (%-6.3f, %-6.3f, %-6.3f)", CedView.rThetaPhi, r, theta, phi),
 						String.format("$magenta$REC view %s", ECGeometry.VIEW_NAMES[pcalRecData.view.get(i)]),
 						String.format("$magenta$%s", pcalRecData.getPIDStr(i)),
 						String.format("$magenta$REC Energy %-7.4f GeV", pcalRecData.energy.get(i))));
 
 			}
-		} //for i
-
+		} // for i
 
 	}
 
@@ -180,13 +173,13 @@ public class ReconDrawer extends SectorViewDrawer {
 		drawCalClusters(g, container);
 	}
 
-	//draw calorimeter clusters
+	// draw calorimeter clusters
 	private void drawCalClusters(Graphics g, IContainer container) {
 
 		Point2D.Double wp = new Point2D.Double();
 		Point pp = new Point();
 
-		//ECal
+		// ECal
 		ECalClusterData ecClusterData = ECalClusterData.getInstance();
 		for (int i = 0; i < ecClusterData.count(); i++) {
 			if (_view.containsSector(ecClusterData.sector.get(i))) {
@@ -199,8 +192,7 @@ public class ReconDrawer extends SectorViewDrawer {
 			}
 		} // for i
 
-
-        //PCal
+		// PCal
 		PCalClusterData pcalClusterData = PCalClusterData.getInstance();
 		for (int i = 0; i < pcalClusterData.count(); i++) {
 			if (_view.containsSector(pcalClusterData.sector.get(i))) {
@@ -217,48 +209,25 @@ public class ReconDrawer extends SectorViewDrawer {
 	// draw reconstructed DC hit Hit based and time based based hits
 	private void drawDCReconAndDOCA(Graphics g, IContainer container) {
 		if (_view.showDCHBHits()) {
-			drawDCHitList(g, container, CedColors.HB_COLOR, DC.getInstance().getHBHits(), false);
+			drawDCHitList(g, container, CedColors.HB_COLOR, _hbData, false);
 		}
 		if (_view.showDCTBHits()) {
-			drawDCHitList(g, container, CedColors.TB_COLOR, DC.getInstance().getTBHits(), true);
+			drawDCHitList(g, container, CedColors.TB_COLOR, _tbData, true);
 		}
 		if (_view.showAIDCHBHits()) {
-			drawDCHitList(g, container, CedColors.AIHB_COLOR, AIDC.getInstance().getAIHBHits(), false);
+			drawDCHitList(g, container, CedColors.AIHB_COLOR, _hbAIData, false);
 		}
 		if (_view.showAIDCTBHits()) {
-			drawDCHitList(g, container, CedColors.AITB_COLOR, AIDC.getInstance().getAITBHits(), true);
+			drawDCHitList(g, container, CedColors.AITB_COLOR, _tbAIData, true);
 		}
 	}
 
-	//feedback for clusters
-	private boolean clusterListFeedback(String prefix, ClusterList clusters, Point screenPoint,
-			List<String> feedbackStrings) {
-
-		if (clusters != null) {
-
-			if ((clusters.sector == null) || (clusters.sector.length == 0)) {
-				return false;
-			}
-
-			for (int index = 0; index < clusters.length; index++) {
-
-				if (_view.containsSector(clusters.sector[index])) {
-					if (clusters.contains(index, screenPoint)) {
-						clusters.getFeedbackStrings(prefix, index, feedbackStrings);
-						return true;
-					}
-				}
-			}
-		}
-		return false;
-	}
-
-	//feedback for calorimeter clusters
-	private boolean CalClusterFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
+	// feedback for calorimeter clusters
+	private boolean calClusterFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 		if (_view.showClusters()) {
 
-			//ECal
+			// ECal
 			ECalClusterData ecClusterData = ECalClusterData.getInstance();
 			for (int i = 0; i < ecClusterData.count(); i++) {
 				if (_view.containsSector(ecClusterData.sector.get(i))) {
@@ -322,16 +291,14 @@ public class ReconDrawer extends SectorViewDrawer {
 	public void vdrawFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings, int option) {
 
-		if (CalClusterFeedback(container, screenPoint, worldPoint, feedbackStrings)) {
+		if (calClusterFeedback(container, screenPoint, worldPoint, feedbackStrings)) {
 			return;
 		}
-
 
 		if (_view.showReconHits()) {
 		}
 
-
-		//data from REC::Calorimeter
+		// data from REC::Calorimeter
 		if (_view.showRecCal()) {
 			for (FBData fbdata : _fbData) {
 				boolean added = fbdata.addFeedback(screenPoint, feedbackStrings);
@@ -343,185 +310,67 @@ public class ReconDrawer extends SectorViewDrawer {
 
 		// DC HB Recon Hits
 		if (_view.showDCHBHits()) {
-			DCReconHitList hits = DC.getInstance().getHBHits();
-			DCClusterList clusters = DC.getInstance().getHBClusters();
 
-			if ((hits != null) && !hits.isEmpty()) {
-				for (DCReconHit hit : hits) {
-					if (_view.containsSector(hit.sector)) {
-						if (hit.contains(screenPoint)) {
-							hit.getFeedbackStrings("HB", feedbackStrings);
-
-
-							//possibly have cluster info
-							short clusterId = hit.clusterID;
-
-							if (clusterId > 0) {
-								DCCluster cluster = clusters.fromClusterId(clusterId);
-
-								String str1;
-								if (cluster == null) {
-									str1 = String.format("$red$" + "HB clusterID %d", clusterId);
-								} else {
-									str1 = String.format("$red$" + "HB clusterID %d size %d", clusterId, cluster.size);
-								}
-								feedbackStrings.add(str1);
-							}
-
-							return;
-						}
+			for (int i = 0; i < _hbData.count(); i++) {
+				if (_view.containsSector(_hbData.sector[i])) {
+					if (_hbData.contains(i, screenPoint)) {
+						_hbData.feedback(i, feedbackStrings);
+						break;
 					}
 				}
 			}
-		}  //show hb hits
+		} // show hb hits
 
 		// DC TB Recon Hits
 		if (_view.showDCTBHits()) {
-			DCReconHitList hits = DC.getInstance().getTBHits();
-			DCClusterList clusters = DC.getInstance().getTBClusters();
 
-			if ((hits != null) && !hits.isEmpty()) {
-				for (DCReconHit hit : hits) {
-					if (_view.containsSector(hit.sector)) {
-						if (hit.contains(screenPoint)) {
-							hit.getFeedbackStrings("TB", feedbackStrings);
-
-
-							//possibly have cluster info
-							short clusterId = hit.clusterID;
-
-							if (clusterId > 0) {
-								DCCluster cluster = clusters.fromClusterId(clusterId);
-
-								String str1;
-								if (cluster == null) {
-									str1 = String.format("$red$" + "TB clusterID %d", clusterId);
-								} else {
-									str1 = String.format("$red$" + "TB clusterID %d size %d", clusterId, cluster.size);
-								}
-								feedbackStrings.add(str1);
-							}
-
-							return;
-						}
+			for (int i = 0; i < _tbData.count(); i++) {
+				if (_view.containsSector(_tbData.sector[i])) {
+					if (_tbData.contains(i, screenPoint)) {
+						_tbData.feedback(i, feedbackStrings);
+						break;
 					}
 				}
 			}
-		}  //show tb hits
 
-
+		} // show tb hits
 
 		// AI DC HB Recon Hits
 		if (_view.showAIDCHBHits()) {
-			DCReconHitList hits = AIDC.getInstance().getAIHBHits();
-			DCClusterList clusters = AIDC.getInstance().getAIHBClusters();
-
-			if ((hits != null) && !hits.isEmpty()) {
-				for (DCReconHit hit : hits) {
-					if (_view.containsSector(hit.sector)) {
-						if (hit.contains(screenPoint)) {
-							hit.getFeedbackStrings("AI HB", feedbackStrings);
-
-
-							//possibly have cluster info
-							short clusterId = hit.clusterID;
-
-							if (clusterId > 0) {
-								DCCluster cluster = clusters.fromClusterId(clusterId);
-
-								String str1;
-								if (cluster == null) {
-									str1 = String.format("$red$" + "HB clusterID %d", clusterId);
-								} else {
-									str1 = String.format("$red$" + "HB clusterID %d size %d", clusterId, cluster.size);
-								}
-								feedbackStrings.add(str1);
-							}
-
-							return;
-						}
+			for (int i = 0; i < _hbAIData.count(); i++) {
+				if (_view.containsSector(_hbAIData.sector[i])) {
+					if (_hbAIData.contains(i, screenPoint)) {
+						_hbAIData.feedback(i, feedbackStrings);
+						break;
 					}
 				}
 			}
-		}  //show AI hb hits
+		} // show AI hb hits
 
 		// AI DC TB Recon Hits
 		if (_view.showAIDCTBHits()) {
-			DCReconHitList hits = AIDC.getInstance().getAITBHits();
-			DCClusterList clusters = AIDC.getInstance().getAITBClusters();
-
-			if ((hits != null) && !hits.isEmpty()) {
-				for (DCReconHit hit : hits) {
-					if (_view.containsSector(hit.sector)) {
-						if (hit.contains(screenPoint)) {
-							hit.getFeedbackStrings("AI TB", feedbackStrings);
-
-
-							//possibly have cluster info
-							short clusterId = hit.clusterID;
-
-							if (clusterId > 0) {
-								DCCluster cluster = clusters.fromClusterId(clusterId);
-
-								String str1;
-								if (cluster == null) {
-									str1 = String.format("$red$" + "TB clusterID %d", clusterId);
-								} else {
-									str1 = String.format("$red$" + "TB clusterID %d size %d", clusterId, cluster.size);
-								}
-								feedbackStrings.add(str1);
-							}
-
-							return;
-						}
+			for (int i = 0; i < _tbAIData.count(); i++) {
+				if (_view.containsSector(_tbAIData.sector[i])) {
+					if (_tbAIData.contains(i, screenPoint)) {
+						_tbAIData.feedback(i, feedbackStrings);
+						break;
 					}
 				}
 			}
-		}  //show AI tb hits
+		} // show AI tb hits
 
-
-	}
-
-	// for writing out a vector
-	private String vecStr(String prompt, double vx, double vy, double vz) {
-		return vecStr(prompt, vx, vy, vz, 2);
-	}
-
-	// for writing out a vector
-	private String vecStr(String prompt, double vx, double vy, double vz, int ndig) {
-		return prompt + " (" + DoubleFormat.doubleFormat(vx, ndig) + ", " + DoubleFormat.doubleFormat(vy, ndig) + ", "
-				+ DoubleFormat.doubleFormat(vz, ndig) + ")";
-	}
-
-	// draw a reconstructed cluster list
-	private void drawClusterList(Graphics g, IContainer container, ClusterList clusters) {
-		if ((clusters == null) || (clusters.length < 1) || (clusters.sector == null) || (clusters.sector.length == 0)) {
-			return;
-		}
-
-
-		Point2D.Double wp = new Point2D.Double();
-		Point pp = new Point();
-
-		for (int index = 0; index < clusters.length; index++) {
-			if (_view.containsSector(clusters.sector[index])) {
-				_view.projectClasToWorld(clusters.x[index], clusters.y[index], clusters.z[index], _view.getProjectionPlane(), wp);
-				container.worldToLocal(pp, wp);
-				clusters.setLocation(index, pp);
-				DataDrawSupport.drawCluster(g, pp);
-			}
-		}
 	}
 
 	// draw a reconstructed hit list
-	private void drawDCHitList(Graphics g, IContainer container, Color fillColor, DCReconHitList hits, boolean isTimeBased) {
-		if ((hits == null) || hits.isEmpty()) {
+	private void drawDCHitList(Graphics g, IContainer container, Color fillColor, ATrkgHitData hits,
+			boolean isTimeBased) {
+		if (hits == null) {
 			return;
 		}
 
-		for (DCReconHit hit : hits) {
-			if (_view.containsSector(hit.sector)) {
-				_view.drawDCReconHit(g, container, fillColor, Color.black, hit, isTimeBased);
+		for (int i = 0; i < hits.count(); i++) {
+			if (_view.containsSector(hits.sector[i])) {
+				_view.drawDCReconHit(g, container, fillColor, Color.black, hits, i, isTimeBased);
 			}
 		}
 

@@ -1,4 +1,4 @@
-package cnuphys.ced.event.data;
+package cnuphys.ced.alldata;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -20,6 +20,10 @@ public class DataDrawSupport {
 	public static final int BMT_CROSS = 5;
 	public static final int FMT_CROSS = 6;
 
+
+	// for uniform feedback colors
+	public static final String prelimColor = "$orange$";
+	public static final String trueColor = "$Alice Blue$";
 
 
 	private static final Color TRANSYELLOW = new Color(255, 255, 0, 240);

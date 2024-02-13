@@ -10,12 +10,16 @@ import java.awt.geom.Area;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.ced.event.data.AIDC;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCCluster;
-import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.lists.DCClusterList;
-import cnuphys.ced.event.data.lists.DCReconHitList;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgClusterData;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAIClusterData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAIHitData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgClusterData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAIClusterData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAIHitData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgClusterData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgHitData;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.noise.NoiseManager;
 import cnuphys.snr.NoiseReductionParameters;
@@ -29,6 +33,17 @@ public class ClusterDrawer {
 
 	public static final Stroke THICKLINE = new BasicStroke(2.0f);
 
+	// data containers
+	private HBTrkgHitData _hbData = HBTrkgHitData.getInstance();
+	private TBTrkgHitData _tbData = TBTrkgHitData.getInstance();
+	private HBTrkgAIHitData _hbAIData = HBTrkgAIHitData.getInstance();
+	private TBTrkgAIHitData _tbAIData = TBTrkgAIHitData.getInstance();
+	private HBTrkgClusterData _hbClusterData = HBTrkgClusterData.getInstance();
+	private TBTrkgClusterData _tbClusterData = TBTrkgClusterData.getInstance();
+	private HBTrkgAIClusterData _hbAIClusterData = HBTrkgAIClusterData.getInstance();
+	private TBTrkgAIClusterData _tbAIClusterData = TBTrkgAIClusterData.getInstance();
+	
+	
 
 	/**
 	 * A cluster drawer for the all dc view
@@ -43,40 +58,28 @@ public class ClusterDrawer {
 	 * Draw the hit based DC clusters
 	 */
 	public void drawHBDCClusters(Graphics g, IContainer container) {
-		DCClusterList list = DC.getInstance().getHBClusters();
-		if (list != null) {
-			drawDCClusterList(g, container, list, DC.getInstance().getHBHits(), CedColors.HB_COLOR);
-		}
+		drawDCClusterList(g, container, _hbClusterData, _hbData, CedColors.HB_COLOR);
 	}
 
 	/**
 	 * Draw the time based DC clusters
 	 */
 	public void drawTBDCClusters(Graphics g, IContainer container) {
-		DCClusterList list = DC.getInstance().getTBClusters();
-		if (list != null) {
-			drawDCClusterList(g, container, list, DC.getInstance().getTBHits(), CedColors.TB_COLOR);
-		}
+		drawDCClusterList(g, container, _tbClusterData, _tbData, CedColors.TB_COLOR);
 	}
 
 	/**
 	 * Draw the AI hit based DC clusters
 	 */
 	public void drawAIHBDCClusters(Graphics g, IContainer container) {
-		DCClusterList list = AIDC.getInstance().getAIHBClusters();
-		if (list != null) {
-			drawDCClusterList(g, container, list, AIDC.getInstance().getAIHBHits(), CedColors.AIHB_COLOR);
-		}
+		drawDCClusterList(g, container, _hbAIClusterData, _hbAIData, CedColors.AIHB_COLOR);
 	}
 
 	/**
 	 * Draw the AI time based DC clusters
 	 */
 	public void drawAITBDCClusters(Graphics g, IContainer container) {
-		DCClusterList list = AIDC.getInstance().getAITBClusters();
-		if (list != null) {
-			drawDCClusterList(g, container, list, AIDC.getInstance().getAITBHits(), CedColors.AITB_COLOR);
-		}
+		drawDCClusterList(g, container, _tbAIClusterData, _tbAIData, CedColors.AITB_COLOR);
 	}
 
 	/**
@@ -106,45 +109,51 @@ public class ClusterDrawer {
 
 
 	//draws the HB or TB clusters
-	private void drawDCClusterList(Graphics g, IContainer container, DCClusterList list, DCReconHitList reconHits, Color color) {
+	private void drawDCClusterList(Graphics g, IContainer container, ATrkgClusterData clusters, ATrkgHitData reconHits, Color color) {
 
-		for (DCCluster cluster : list) {
-			if ((cluster != null) && (cluster.hitID != null)) {
-
-
+		if ((clusters == null) || (reconHits == null)) {
+			return;
+		}
+		
+		for (int i = 0; i < clusters.count(); i++) {
+			short hitIds[] = clusters.getHitIds(i);
+			if (hitIds != null) {
 				//count the non-negative hit ids
 				int length = 0;
-				for (short element : cluster.hitID) {
+				for (short element : hitIds) {
 					if (element > 0) {
 						length++;
-					}
-					else {
+					} else {
 						break;
 					}
 				}
-
-				//get the hits
+				
 				if (length > 0) {
-					int sector = cluster.sector; // 1..6
-					int superlayer = cluster.superlayer; // 1..6
+					int sector = clusters.sector[i]; // 1..6
+					int superlayer = clusters.superlayer[i]; // 1..6
 					int layer[] = new int[length]; // 1..6
 					int wire[] = new int[length]; // 1..112
-
-					for (int i = 0; i < length; i++) {
-						short id = cluster.hitID[i];
-						DCReconHit hit = reconHits.hitFromId(id);
-
-						if (hit != null) {
-							layer[i] = hit.layer;
-							wire[i] = hit.wire;
+					
+					int j = 0;
+					for (short element : hitIds) {
+						if (element > 0) {
+							int index = reconHits.indexFromId(element);
+							if (index >= 0) {
+								layer[j] = reconHits.layer[index];
+								wire[j] = reconHits.wire[index];
+							}
+							j++;
 						}
 					}
 
+
 					drawSingleClusterOfWires(g, container, sector, superlayer, layer, wire, color);
 				}
+				
 			}
-
 		}
+		
+	
 	}
 
 	/**

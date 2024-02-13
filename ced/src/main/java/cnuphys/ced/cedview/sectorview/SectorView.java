@@ -37,6 +37,7 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
@@ -47,7 +48,6 @@ import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.DCReconHit;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeometryManager;
@@ -940,11 +940,11 @@ public class SectorView extends SliceView implements ChangeListener {
 	 * @param fillColor the fill color
 	 * @param frameColor the border color
 	 */
-	public void drawDCReconHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCReconHit hit,
-			boolean isTimeBased) {
+	public void drawDCReconHit(Graphics g, IContainer container, Color fillColor, Color frameColor, 
+			ATrkgHitData hits, int index, boolean isTimeBased) {
 
-		SectorSuperLayer sectSL = _superLayers[(hit.sector < 4) ? 0 : 1][hit.superlayer - 1];
-		sectSL.drawDCReconHit(g, container, fillColor, frameColor, hit, isTimeBased);
+		SectorSuperLayer sectSL = _superLayers[(hits.sector[index] < 4) ? 0 : 1][hits.superlayer[index] - 1];
+		sectSL.drawDCReconHit(g, container, fillColor, frameColor, hits, index, isTimeBased);
 
 	}
 

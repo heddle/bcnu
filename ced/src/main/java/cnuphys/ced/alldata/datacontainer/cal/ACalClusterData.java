@@ -3,7 +3,7 @@ package cnuphys.ced.alldata.datacontainer.cal;
 import java.awt.Point;
 import java.util.ArrayList;
 
-import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.alldata.DataDrawSupport;
 
 public abstract class ACalClusterData extends ACalData {
 
@@ -57,7 +57,7 @@ public abstract class ACalClusterData extends ACalData {
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index
-	 * @param pp rge screen point
+	 * @param pp the screen point
 	 * @return true if the screen point is in the cluster
 	 */
 	public boolean contains(int index, Point pp) {

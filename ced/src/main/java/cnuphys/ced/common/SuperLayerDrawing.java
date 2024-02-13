@@ -22,14 +22,14 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.MathUtilities;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.data.AIHBSegments;
 import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DataSupport;
 import cnuphys.ced.event.data.HBSegments;
 import cnuphys.ced.event.data.Segment;
 import cnuphys.ced.event.data.TBSegments;
@@ -463,15 +463,22 @@ public class SuperLayerDrawing {
 	 * @param hit         the hit to draw
 	 * @param isTimeBased hit based or time based?
 	 */
-	public void drawReconDCHitAndDOCA(Graphics g, IContainer container, Color fillColor, Color frameColor, DCReconHit hit,
+	public void drawReconDCHitAndDOCA(Graphics g, IContainer container, Color fillColor, Color frameColor, ATrkgHitData hits, int index,
 			boolean isTimeBased) {
 
-		drawSingleDCHit(g, container, fillColor, frameColor, hit.layer, hit.wire, hit.getLocation());
+		int layer = hits.layer[index];
+		int wire = hits.wire[index];
+		
+		Point pp = new Point();
+		
+		drawSingleDCHit(g, container, fillColor, frameColor, layer, wire, pp);
+		
+		hits.setLocation(index, pp);
 
 		if (WorldGraphicsUtilities
 				.getMeanPixelDensity(_view.getContainer()) > SuperLayerDrawing.wireThreshold[_iSupl.superlayer()]) {
 
-			drawDOCA(g, container, hit, isTimeBased);
+			drawDOCA(g, container, hits, index, isTimeBased);
 		}
 
 	}
@@ -702,19 +709,19 @@ public class SuperLayerDrawing {
 	 * @param wire      the 1-based wire 1..112
 	 * @param doca2d    the doca in mm
 	 */
-	public void drawDOCA(Graphics g, IContainer container, DCReconHit hit, boolean isTimeBased) {
+	public void drawDOCA(Graphics g, IContainer container, ATrkgHitData hits, int index, boolean isTimeBased) {
 
 		float docas[] = { -1, -1 };
 		Color frameColor;
 		Color fillColors[] = { CedColors.DOCA_COLOR, CedColors.TRKDOCA_COLOR };
 
 		if (isTimeBased) {
-			docas[0] = _view.showTBDoca() ? hit.doca : 0f;
-			docas[1] = _view.showTBTrkDoca() ? hit.trkDoca : 0f;
+			docas[0] = _view.showTBDoca() ? hits.doca[index] : 0f;
+			docas[1] = _view.showTBTrkDoca() ? hits.trkDoca[index] : 0f;
 			frameColor = CedColors.TB_DOCAFRAME;
 		} else { // hit based
-			docas[0] = _view.showHBDoca() ? hit.doca : 0f;
-			docas[1] = _view.showHBTrkDoca() ? hit.trkDoca : 0f;
+			docas[0] = _view.showHBDoca() ? hits.doca[index] : 0f;
+			docas[1] = _view.showHBTrkDoca() ? hits.trkDoca[index] : 0f;
 			frameColor = CedColors.HB_DOCAFRAME;
 		}
 
@@ -728,14 +735,14 @@ public class SuperLayerDrawing {
 			if (radius > 5) {
 
 				String wmsg = "Very large doca radius: " + radius + " cm. Sect: " + _iSupl.sector() + " supl: "
-						+ _iSupl.superlayer() + "lay: " + hit.layer + " wire: " + hit.wire;
+						+ _iSupl.superlayer() + "lay: " + hits.layer[index] + " wire: " + hits.wire[index];
 				System.err.println(wmsg);
 				return;
 			}
 
 			// center is the given wire projected locations
 
-			Point2D.Double center = wire(_iSupl.superlayer(), hit.layer, hit.wire, _iSupl.isLowerSector());
+			Point2D.Double center = wire(_iSupl.superlayer(), hits.layer[index], hits.wire[index], _iSupl.isLowerSector());
 			Point2D.Double doca[] = _view.getCenteredWorldCircle(center, radius);
 
 			if (doca != null) {
@@ -984,9 +991,9 @@ public class SuperLayerDrawing {
 			int wire = data[1];
 
 			if (_view.isSingleEventMode()) {
-				feedbackStrings.add(DataSupport.prelimColor + "Raw superlayer occ "
+				feedbackStrings.add(DataDrawSupport.prelimColor + "Raw superlayer occ "
 						+ DoubleFormat.doubleFormat(100.0 * parameters.getRawOccupancy(), 2) + "%");
-				feedbackStrings.add(DataSupport.prelimColor + "Reduced superlayer occ "
+				feedbackStrings.add(DataDrawSupport.prelimColor + "Reduced superlayer occ "
 						+ DoubleFormat.doubleFormat(100.0 * parameters.getNoiseReducedOccupancy(), 2) + "%");
 
 			} else {

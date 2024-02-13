@@ -6,9 +6,9 @@ import java.awt.geom.Point2D;
 import java.util.Hashtable;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFClusterData;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFHitData;
-import cnuphys.ced.event.data.DataDrawSupport;
 
 public class FTOFHighlightHandler {
 

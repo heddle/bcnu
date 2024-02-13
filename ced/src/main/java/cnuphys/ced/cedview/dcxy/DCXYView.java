@@ -60,9 +60,6 @@ public class DCXYView extends HexView {
 	// draws reconstructed crosses
 	private CrossDrawer _crossDrawer;
 
-	// draws mc hits
-	private McHitDrawer _mcHitDrawer;
-
 	// for fmt
 	private FMTCrossDrawer _fmtCrossDrawer;
 
@@ -108,7 +105,6 @@ public class DCXYView extends HexView {
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawerXY(this);
 		_crossDrawer = new CrossDrawer(this);
-		_mcHitDrawer = new McHitDrawer(this);
 
 		// fmt cross drawer
 		_fmtCrossDrawer = new FMTCrossDrawer(this);
@@ -413,10 +409,6 @@ public class DCXYView extends HexView {
 		// Other (not DC) Crosses
 		if (showCrosses()) {
 			_fmtCrossDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
-		}
-
-		if (showMcTruth()) {
-			_mcHitDrawer.feedback(container, pp, wp, feedbackStrings);
 		}
 
 	}

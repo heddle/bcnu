@@ -6,9 +6,9 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFHitData;
 import cnuphys.ced.cedview.SwimTrajectoryDrawerXY;
-import cnuphys.ced.event.data.DataDrawSupport;
 
 /**
  * Handles drawing and feedback for data in the FTOF banks

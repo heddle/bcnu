@@ -1,20 +1,20 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
-public class TBTrkgCrossData extends ATrkgCrossData {
-	
+public class TBTrkgAIHitData extends ATrkgHitData {
+
 	// singleton
-	private static volatile TBTrkgCrossData _instance;
-	
+	private static volatile TBTrkgAIHitData _instance;
+
 	/**
 	 * Public access to the singleton
 	 *
 	 * @return the singleton
 	 */
-	public static TBTrkgCrossData getInstance() {
+	public static TBTrkgAIHitData getInstance() {
 		if (_instance == null) {
-			synchronized (TBTrkgCrossData.class) {
+			synchronized (TBTrkgAIHitData.class) {
 				if (_instance == null) {
-					_instance = new TBTrkgCrossData();
+					_instance = new TBTrkgAIHitData();
 				}
 			}
 		}
@@ -23,12 +23,12 @@ public class TBTrkgCrossData extends ATrkgCrossData {
 
 	@Override
 	public String bankName() {
-		return "TimeBasedTrkg::TBCrosses";
+		return "TimeBasedTrkg::AIHits";
 	}
-	
+
 	@Override
 	public String feedbackName() {
-		return "TBCross";
+		return "TBAIHit";
 	}
 
 }

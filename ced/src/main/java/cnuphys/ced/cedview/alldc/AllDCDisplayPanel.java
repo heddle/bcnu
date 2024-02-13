@@ -1,14 +1,11 @@
 package cnuphys.ced.cedview.alldc;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Rectangle;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -117,14 +114,9 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 			component =  new JComponent() {
 				@Override
 				public void paintComponent(Graphics g) {
+					Rectangle b = getBounds();
 					g.setColor(CedColors.AIHB_COLOR);
-					Graphics2D g2 = (Graphics2D)g;
-					Stroke saveStroke = g2.getStroke();
-					g2.setStroke(new BasicStroke(2));
-					g.drawLine(0, 0, w, h);
-					g.drawLine(w, 0, 0, h);
-
-					g2.setStroke(saveStroke);
+					g.fillRect(0, 0, w, h);
 				}
 
 			};
@@ -138,12 +130,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 				public void paintComponent(Graphics g) {
 					Rectangle b = getBounds();
 					g.setColor(CedColors.AITB_COLOR);
-					Graphics2D g2 = (Graphics2D)g;
-					Stroke saveStroke = g2.getStroke();
-					g2.setStroke(new BasicStroke(2));
-					g.drawLine(w/2, 0, w/2, h);
-					g.drawLine(0, h/2, w, h/2);
-					g2.setStroke(saveStroke);
+					g.fillRect(0, 0, w, h);
 				}
 
 			};

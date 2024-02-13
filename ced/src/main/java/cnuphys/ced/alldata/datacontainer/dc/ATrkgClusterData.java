@@ -3,52 +3,50 @@ package cnuphys.ced.alldata.datacontainer.dc;
 import java.awt.Point;
 import java.util.List;
 
+import org.jlab.io.base.DataBank;
+import org.jlab.io.base.DataEvent;
+
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.IDataContainer;
-import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.DataDrawSupport;
 
 public abstract class ATrkgClusterData implements IDataContainer {
-	
 
 	// the data warehouse
 	protected static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
-	// event manager
-	protected static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-
 	/** 1-based sectors */
-	byte sector[];
+	public byte sector[];
 	
 	/** 1-based superlayers */
-	byte superlayer[];
+	public byte superlayer[];
 	
 	/** 1-based id */
-	short id[];
+	public short id[];
 	
 	/** cluster size */
-	byte size[];
+	public byte size[];
 	
 	/** cluster status */
-	short status[];
+	public short status[];
 	
 	/** average wire */
-	float avgWire[];
+	public float avgWire[];
 	
 	/** fit chisq probability */
-	float fitChisqProb[];
+	public float fitChisqProb[];
 	
 	/** fit intercept */
-	float fitInterc[];
+	public float fitInterc[];
 	
 	/** fit intercept error */
-	float fitIntercErr[];
+	public float fitIntercErr[];
 	
 	/** fit slope */
-	float fitSlope[];
+	public float fitSlope[];
 	
 	/** fit slope error */
-	float fitSlopeErr[];
+	public float fitSlopeErr[];
 	
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
@@ -56,7 +54,87 @@ public abstract class ATrkgClusterData implements IDataContainer {
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
 	
+	private short Hit1_ID[];
+	private short Hit2_ID[];
+	private short Hit3_ID[];
+	private short Hit4_ID[];
+	private short Hit5_ID[];
+	private short Hit6_ID[];
+	private short Hit7_ID[];
+	private short Hit8_ID[];
+	private short Hit9_ID[];
+	private short Hit10_ID[];
+	private short Hit11_ID[];
+	private short Hit12_ID[];
+	
+	/**
+	 * Create a data container and notify the data warehouse that it wants to be
+	 * notified of data events.
+     */
+	public ATrkgClusterData() {
+		_dataWarehouse.addDataContainerListener(this);
+	}
 
+	@Override
+	public void update(DataEvent event) {
+		String bankName = bankName();
+		DataBank bank = event.getBank(bankName);
+
+		if (bank == null) {
+			return;
+		}
+		
+		sector = bank.getByte("sector");
+		superlayer = bank.getByte("superlayer");
+		id = bank.getShort("id");
+		size = bank.getByte("size");
+		status = bank.getShort("status");
+		avgWire = bank.getFloat("avgWire");
+		fitChisqProb = bank.getFloat("fitChisqProb");
+		fitInterc = bank.getFloat("fitInterc");
+		fitIntercErr = bank.getFloat("fitIntercErr");
+		fitSlope = bank.getFloat("fitSlope");
+		fitSlopeErr = bank.getFloat("fitSlopeErr");
+		
+		Hit1_ID = bank.getShort("Hit1_ID");
+		Hit2_ID = bank.getShort("Hit2_ID");
+		Hit3_ID = bank.getShort("Hit3_ID");
+		Hit4_ID = bank.getShort("Hit4_ID");
+		Hit5_ID = bank.getShort("Hit5_ID");
+		Hit6_ID = bank.getShort("Hit6_ID");
+		Hit7_ID = bank.getShort("Hit7_ID");
+		Hit8_ID = bank.getShort("Hit8_ID");
+		Hit9_ID = bank.getShort("Hit9_ID");
+		Hit10_ID = bank.getShort("Hit10_ID");
+		Hit11_ID = bank.getShort("Hit11_ID");
+		Hit12_ID = bank.getShort("Hit12_ID");
+		
+		int n = (sector != null) ? sector.length : 0;
+		if (n > 0) {
+			ppx = new int[n];
+			ppy = new int[n];
+
+
+		}
+		
+ 	}
+	
+	public short[] getHitIds(int index) {
+		short[] hitIds = new short[12];
+		hitIds[0] = (Hit1_ID != null) ? Hit1_ID[index] : -1;
+		hitIds[1] = (Hit2_ID != null) ? Hit2_ID[index] : -1;
+		hitIds[2] = (Hit3_ID != null) ? Hit3_ID[index] : -1;
+		hitIds[3] = (Hit4_ID != null) ? Hit4_ID[index] : -1;
+		hitIds[4] = (Hit5_ID != null) ? Hit5_ID[index] : -1;
+		hitIds[5] = (Hit6_ID != null) ? Hit6_ID[index] : -1;
+		hitIds[6] = (Hit7_ID != null) ? Hit7_ID[index] : -1;
+		hitIds[7] = (Hit8_ID != null) ? Hit8_ID[index] : -1;
+		hitIds[8] = (Hit9_ID != null) ? Hit9_ID[index] : -1;
+		hitIds[9] = (Hit10_ID != null) ? Hit10_ID[index] : -1;
+		hitIds[10] = (Hit11_ID != null) ? Hit11_ID[index] : -1;
+		hitIds[11] = (Hit12_ID != null) ? Hit12_ID[index] : -1;
+		return hitIds;
+	}
 	
 	@Override
 	public void clear() {
@@ -74,6 +152,39 @@ public abstract class ATrkgClusterData implements IDataContainer {
 
 		ppx = null;
 		ppy = null;
+
+		Hit1_ID = null;
+		Hit2_ID = null;
+		Hit3_ID = null;
+		Hit4_ID = null;
+		Hit5_ID = null;
+		Hit6_ID = null;
+		Hit7_ID = null;
+		Hit8_ID = null;
+		Hit9_ID = null;
+		Hit10_ID = null;
+		Hit11_ID = null;
+		Hit12_ID = null;
+	}
+
+	/**
+	 * Set the location where the cluster was last drawn
+	 * @param index the index of the cluster
+	 * @param pp the location
+	 */
+	public void setLocation(int index, Point pp) {
+
+		int n = (sector == null) ? 0 : sector.length;
+		if (n == 0) {
+			return;
+		}
+
+		if ((ppx == null) || (ppy == null)) {
+			ppx = new int[n];
+			ppy = new int[n];
+		}
+		ppx[index] = pp.x;
+		ppy[index] = pp.y;
 	}
 
 
@@ -94,13 +205,30 @@ public abstract class ATrkgClusterData implements IDataContainer {
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index
-	 * @param pp rge screen point
+	 * @param pp the screen point
 	 * @return true if the screen point is in the cluster
 	 */
 	public boolean contains(int index, Point pp) {
 		return ((Math.abs(ppx[index] - pp.x) <= DataDrawSupport.HITHALF)
 				&& (Math.abs(ppy[index] - pp.y) <= DataDrawSupport.HITHALF));
 	}
+
+	/**
+	 * Get the index from the id. Brute force, because
+	 * they are not sorted.
+	 * @param id the id to match
+	 * @return the hit with the matching ID, or -1.
+	 */
+	public int indexFromId(short id) {
+
+		for (int i = 0; i < count(); i++) {
+			if (id == this.id[i]) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
 
 	
 	/**
