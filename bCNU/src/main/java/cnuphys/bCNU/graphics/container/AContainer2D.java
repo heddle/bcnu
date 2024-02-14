@@ -257,10 +257,6 @@ public abstract class AContainer2D implements IContainer, MouseListener, MouseMo
 	}
 
 	@Override
-	public void setDirty(boolean dirty) {
-	}
-
-	@Override
 	public void refresh() {
 	}
 

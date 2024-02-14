@@ -139,7 +139,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 			return;
 		}
 
-		byte sector[] = _dataWarehouse.getByte("BSTRec::Clusters", "sector");
+		byte sector[] = _dataWarehouse.getByte("BMTRec::Clusters", "sector");
 
 		int count = (sector == null) ? 0 : sector.length;
 		if (count == 0) {

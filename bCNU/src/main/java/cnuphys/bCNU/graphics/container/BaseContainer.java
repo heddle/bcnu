@@ -1,7 +1,6 @@
 package cnuphys.bCNU.graphics.container;
 
 import java.awt.Component;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
@@ -38,10 +37,10 @@ import cnuphys.bCNU.graphics.world.WorldPolygon;
 import cnuphys.bCNU.item.AItem;
 import cnuphys.bCNU.item.EllipseItem;
 import cnuphys.bCNU.item.LineItem;
-import cnuphys.bCNU.item.PlotItem;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.item.PolylineItem;
 import cnuphys.bCNU.item.RadArcItem;
+import cnuphys.bCNU.item.RectangleItem;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.layer.LayerControl;
 import cnuphys.bCNU.layer.LogicalLayer;
@@ -90,15 +89,7 @@ public class BaseContainer extends JComponent
 	// location of last mouse event
 	protected MouseEvent _lastLocationMouseEvent;
 
-	/**
-	 * Used for offscreen drawing
-	 */
-	private BufferedImage _offscreenBuffer;
 
-	/**
-	 * Determines whether the off screen buffer is dirty
-	 */
-	private boolean _offscreenBufferDirty = true;
 
 	/**
 	 * This optional drawable is called after the layers are drawn.
@@ -242,47 +233,32 @@ public class BaseContainer extends JComponent
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		// if our offscreen buffer is not dirty, use it and we are done.
-		if (!_offscreenBufferDirty) {
-			g.drawImage(_offscreenBuffer, 0, 0, this);
-			return;
-		}
+		Rectangle b = getBounds();
 
 		setAffineTransforms();
 		if (localToWorld == null) {
 			return;
 		}
-		Dimension size = checkOffscreenBuffer();
-
-		if ((size.width < 1) || (size.height < 1)) {
-			return;
-		}
-
-		Graphics osg = _offscreenBuffer.getGraphics();
 
 		// normal drawing
-		osg.setColor(getBackground());
-		osg.fillRect(0, 0, size.width, size.height);
+		g.setColor(getBackground());
+		g.fillRect(0, 0, b.width, b.height);
 
 		// any before layer drawing?
 		if (_beforeDraw != null) {
-			_beforeDraw.draw(osg, this);
+			_beforeDraw.draw(g, this);
 		}
 
 		// draw the layers
 		if (_layers != null) {
-			_layers.draw(osg, this);
+			_layers.draw(g, this);
 		}
 
 		// any post layer drawing?
 		if (_afterDraw != null) {
-			_afterDraw.draw(osg, this);
+			_afterDraw.draw(g, this);
 		}
 
-		// copy onto real screen
-		g.drawImage(_offscreenBuffer, 0, 0, this);
-		osg.dispose();
-		_offscreenBufferDirty = false;
 	}
 
 	/**
@@ -365,32 +341,6 @@ public class BaseContainer extends JComponent
 		}
 	}
 
-	/**
-	 * See if we need to create a new buffer
-	 *
-	 * @return the size of the offscreen buffer.
-	 */
-	private Dimension checkOffscreenBuffer() {
-		Dimension size = getSize();
-		boolean newbuffer = false;
-		if (_offscreenBuffer == null) {
-			newbuffer = true;
-		} else if ((_offscreenBuffer.getWidth() != size.width) || (_offscreenBuffer.getHeight() != size.height)) {
-			newbuffer = true;
-		}
-
-		if (newbuffer) {
-			try {
-				_offscreenBuffer = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
-			} catch (Exception e) {
-				Log.getInstance().exception(e);
-				e.printStackTrace();
-				_offscreenBuffer = null;
-			}
-
-		}
-		return size;
-	}
 
 	/**
 	 * This converts a screen or pixel point to a world point.
@@ -543,7 +493,6 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void refresh() {
-		_offscreenBufferDirty = true;
 
 		repaint();
 
@@ -615,8 +564,6 @@ public class BaseContainer extends JComponent
 	public void setDirty(boolean dirty) {
 
 		setAffineTransforms();
-		_offscreenBuffer = null;
-		_offscreenBufferDirty = true;
 
 		if (_layers != null) {
 			for (IDrawable layer : _layers) {
@@ -737,34 +684,6 @@ public class BaseContainer extends JComponent
 		}
 	}
 
-	/**
-	 * Get the background image.
-	 *
-	 * @return the fully painted background image.
-	 */
-	@Override
-	public BufferedImage getImage() {
-		// if null, create sized to current component size
-		if (_offscreenBuffer == null) {
-			_offscreenBuffer = GraphicsUtilities.getComponentImageBuffer(this);
-			_offscreenBufferDirty = true;
-		}
-		// if dirty, paint on it
-		if (_offscreenBufferDirty) {
-			GraphicsUtilities.paintComponentOnImage(this, _offscreenBuffer);
-			_offscreenBufferDirty = false;
-		}
-		return _offscreenBuffer;
-	}
-
-	/**
-	 * Set whether or not the offscreen buffer is dirty.
-	 *
-	 * @param dirty If <code>true</code>, offscreen buffer is dirty
-	 */
-	public void setOffscreenBufferDirty(boolean dirty) {
-		_offscreenBufferDirty = dirty;
-	}
 
 	/**
 	 * Zooms to the specified area.
@@ -1080,7 +999,6 @@ public class BaseContainer extends JComponent
 		if (item != null) {
 			item.setDirty(true);
 		}
-		_offscreenBufferDirty = true;
 	}
 
 	/**
@@ -1266,15 +1184,7 @@ public class BaseContainer extends JComponent
 	public AItem createRectangleItem(LogicalLayer layer, Rectangle b) {
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		localToWorld(b, wr);
-
-		// return new PanelItem(layer, new Point2D.Double(wr.x, wr.y),
-		// b.width, b.height);
-		// return new PlotItem(layer, new Point2D.Double(wr.x, wr.y),
-		// b.width, b.height);
-
-		return PlotItem.createHistogram(layer, new Point2D.Double(wr.x, wr.y), b.width, b.height, "Title", "X axis",
-				"Y axis", "curve 1", 1, 112, 112);
-		//// return new RectangleItem(layer, wr);
+		return new RectangleItem(layer, wr);
 	}
 
 	/**
@@ -1358,11 +1268,6 @@ public class BaseContainer extends JComponent
 		AItem item = new PolylineItem(layer, wp);
 
 		return item;
-	}
-
-	protected void disposeOffscreenBuffer() {
-		_offscreenBuffer = null;
-		_offscreenBufferDirty = true;
 	}
 
 	/**
@@ -1623,5 +1528,19 @@ public class BaseContainer extends JComponent
 	@Override
 	public void activeToolBarButtonChanged(ToolBarToggleButton activeButton) {
 	}
+	
+	/**
+	 * Get the background image.
+	 *
+	 * @return the fully painted background image.
+	 */
+	@Override
+	public BufferedImage getImage() {
+		BufferedImage image = GraphicsUtilities.getComponentImageBuffer(this);
+		GraphicsUtilities.paintComponentOnImage(this, image);
+		return image;
+		
+	}
+
 
 }

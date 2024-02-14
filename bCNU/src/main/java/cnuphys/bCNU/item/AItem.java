@@ -427,7 +427,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 */
 	public void setSelected(boolean selected) {
 		_selected = selected;
-		_layer.getContainer().setDirty(true);
+		_layer.getContainer().refresh();
 	}
 
 	/**
