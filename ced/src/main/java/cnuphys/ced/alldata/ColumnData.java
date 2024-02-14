@@ -3,8 +3,6 @@ package cnuphys.ced.alldata;
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.ced.clasio.ClasIoEventManager;
-
 public class ColumnData implements Comparable<ColumnData> {
 
 	/** type is unknown */
@@ -36,7 +34,7 @@ public class ColumnData implements Comparable<ColumnData> {
 
 	/** type is a vector3f */
 	public static final int VECTOR3F = 9;
-
+ 
 	/** type is a composite */
 	public static final int COMPOSITE = 10;
 
@@ -102,49 +100,7 @@ public class ColumnData implements Comparable<ColumnData> {
 		}
 	}
 
-	/**
-	 * Get the length of the backing data array
-	 *
-	 * @param event the current event
-	 * @return the length of the array
-	 */
-	public int getLength(DataEvent event) {
 
-		if (event != null) {
-			try {
-				switch (_type) {
-				case INT8:
-					byte bytes[] = getByteArray(event);
-					return (bytes == null) ? 0 : bytes.length;
-
-				case INT16:
-					short shorts[] = getShortArray(event);
-					return (shorts == null) ? 0 : shorts.length;
-
-				case INT32:
-					int ints[] = getIntArray(event);
-					return (ints == null) ? 0 : ints.length;
-
-				case INT64:
-					long longs[] = getLongArray(event);
-					return (longs == null) ? 0 : longs.length;
-
-				case FLOAT32:
-					float floats[] = getFloatArray(event);
-					return (floats == null) ? 0 : floats.length;
-
-				case FLOAT64:
-					double doubles[] = getDoubleArray(event);
-					return (doubles == null) ? 0 : doubles.length;
-				}
-			} catch (Exception e) {
-				System.err.println(e.getMessage() + " Exception (ColumnData.getLength) with fullName: " + _fullName);
-				e.printStackTrace();
-			}
-		}
-
-		return 0;
-	}
 
 	/**
 	 * Get a byte array for the bank and column names in the given event
@@ -218,43 +174,10 @@ public class ColumnData implements Comparable<ColumnData> {
 	 *
 	 * @return the length of the underlying data array
 	 */
-	public int length(DataEvent event) {
+	public int length() {
 
-		int len = 0;
+		return DataWarehouse.getInstance().rows(_bankName);
 
-			switch (_type) {
-			case INT8:
-				byte ba[] = getByteArray(event);
-				len = (ba != null) ? ba.length : 0;
-				break;
-
-			case INT16:
-				short sa[] = getShortArray(event);
-				len = (sa != null) ? sa.length : 0;
-				break;
-
-			case INT32:
-				int ia[] = getIntArray(event);
-				len = (ia != null) ? ia.length : 0;
-				break;
-
-			case INT64:
-				long la[] = getLongArray(event);
-				len = (la != null) ? la.length : 0;
-				break;
-
-			case FLOAT32:
-				float fa[] = getFloatArray(event);
-				len = (fa != null) ? fa.length : 0;
-				break;
-
-			case FLOAT64:
-				double da[] = getDoubleArray(event);
-				len = (da != null) ? da.length : 0;
-				break;
-			}
-
-		return len;
 	}
 
 	/**
@@ -293,20 +216,6 @@ public class ColumnData implements Comparable<ColumnData> {
 		return _type;
 	}
 
-	// a check to avoid null messages and errors
-	private static DataEvent hasData(String fullName) {
-		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
-		if (event == null) {
-			return null;
-		}
-
-		ColumnData cd = DataManager.getInstance().getColumnData(fullName);
-		if ((cd == null) || !event.hasBank(cd.getBankName())) {
-			return null;
-		}
-
-		return event;
-	}
 
 	/**
 	 * Obtain a byte array from the current event for the given full name
@@ -314,9 +223,8 @@ public class ColumnData implements Comparable<ColumnData> {
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
-	public static byte[] getByteArray(String fullName) {
-		DataEvent event = hasData(fullName);
-		return (event == null) ? null : DataManager.getInstance().getByteArray(event, fullName);
+	public byte[] getByteArray(String fullName) {
+		return DataWarehouse.getInstance().getByte(_bankName, _columnName);
 	}
 
 	/**
@@ -325,9 +233,8 @@ public class ColumnData implements Comparable<ColumnData> {
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
-	public static short[] getShortArray(String fullName) {
-		DataEvent event = hasData(fullName);
-		return (event == null) ? null : DataManager.getInstance().getShortArray(event, fullName);
+	public short[] getShortArray() {
+		return DataWarehouse.getInstance().getShort(_bankName, _columnName);
 	}
 
 	/**
@@ -336,31 +243,26 @@ public class ColumnData implements Comparable<ColumnData> {
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
-	public static int[] getIntArray(String fullName) {
-		DataEvent event = hasData(fullName);
-		return (event == null) ? null : DataManager.getInstance().getIntArray(event, fullName);
+	public int[] getIntArray() {
+		return DataWarehouse.getInstance().getInt(_bankName, _columnName);
 	}
 
 	/**
 	 * Obtain a long array from the current event for the given full name
 	 *
-	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
-	public static long[] getLongArray(String fullName) {
-		DataEvent event = hasData(fullName);
-		return (event == null) ? null : DataManager.getInstance().getLongArray(event, fullName);
+	public long[] getLongArray() {
+		return DataWarehouse.getInstance().getLong(_bankName, _columnName);
 	}
 
 	/**
 	 * Obtain a float array from the current event for the given full name
 	 *
-	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
-	public static float[] getFloatArray(String fullName) {
-		DataEvent event = hasData(fullName);
-		return (event == null) ? null : DataManager.getInstance().getFloatArray(event, fullName);
+	public float[] getFloatArray() {
+		return DataWarehouse.getInstance().getFloat(_bankName, _columnName);
 	}
 
 	/**
@@ -369,9 +271,8 @@ public class ColumnData implements Comparable<ColumnData> {
 	 * @param fullName the full name
 	 * @return the array, or <code>null</code>
 	 */
-	public static double[] getDoubleArray(String fullName) {
-		DataEvent event = hasData(fullName);
-		return (event == null) ? null : DataManager.getInstance().getDoubleArray(event, fullName);
+	public double[] getDoubleArray(String fullName) {
+		return DataWarehouse.getInstance().getDouble(_bankName, _columnName);
 	}
 
 	@Override

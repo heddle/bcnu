@@ -6,6 +6,7 @@ import org.jlab.detector.calib.utils.DatabaseConstantProvider;
 import org.jlab.detector.geant4.v2.SVT.SVTStripFactory;
 import org.jlab.geometry.prim.Line3d;
 
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.frame.Ced;
 import eu.mihosoft.vrl.v3d.Vector3d;
 
@@ -48,7 +49,8 @@ public class BSTGeometry {
 		try {
 			return _svtFac.getStrip(layer, sector, strip);
 		} catch (IllegalArgumentException e) {
-			System.err.println("Illegal Values: getStrip: sector=" + sector + " layer=" + layer + " strip=" + strip);
+			System.err.println("Event number: " + ClasIoEventManager.getInstance().getSequentialEventNumber() + "  " + e.getMessage());
+			System.err.println("Illegal Values: getStrip: sector=" + (sector+1) + " layer=" + (layer+1) + " strip=" + (strip+1));
 		}
 		return null;
 	}

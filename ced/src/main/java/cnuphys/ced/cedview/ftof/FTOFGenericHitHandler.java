@@ -9,10 +9,13 @@ import java.util.List;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public abstract class FTOFGenericHitHandler {
+
+	//data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	private String _fbcolor;
 	private String _bankname;
@@ -47,16 +50,16 @@ public abstract class FTOFGenericHitHandler {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray(_bankname + ".sector");
+			byte sector[] = _dataWarehouse.getByte(_bankname, "sector");
 
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
-
-			byte layer[] = ColumnData.getByteArray(_bankname + ".layer");
-			float x[] = ColumnData.getFloatArray(_bankname + ".x");
-			float y[] = ColumnData.getFloatArray(_bankname + ".y");
+			
+			byte layer[] = _dataWarehouse.getByte(_bankname, "layer");
+			float x[] = _dataWarehouse.getFloat(_bankname, "x");
+			float y[] = _dataWarehouse.getFloat(_bankname, "y");
 
 			for (int i = 0; i < count; i++) {
 				int panel = layer[i] - 1;
@@ -81,20 +84,20 @@ public abstract class FTOFGenericHitHandler {
 				return;
 			}
 
-			byte sector[] = ColumnData.getByteArray(_bankname + ".sector");
+			byte sector[] = _dataWarehouse.getByte(_bankname, "sector");
 
 			int count = (sector == null) ? 0 : sector.length;
 			if (count == 0) {
 				return;
 			}
-
-			byte layer[] = ColumnData.getByteArray(_bankname + ".layer");
-			float x[] = ColumnData.getFloatArray(_bankname + ".x");
-			float y[] = ColumnData.getFloatArray(_bankname + ".y");
-			float z[] = ColumnData.getFloatArray(_bankname + ".z");
-			float energy[] = ColumnData.getFloatArray(_bankname + ".energy");
-			float time[] = ColumnData.getFloatArray(_bankname + ".time");
-			short status[] = ColumnData.getShortArray(_bankname + ".status");
+			
+			byte layer[] = _dataWarehouse.getByte(_bankname, "layer");
+			float x[] = _dataWarehouse.getFloat(_bankname, "x");
+			float y[] = _dataWarehouse.getFloat(_bankname, "y");
+			float z[] = _dataWarehouse.getFloat(_bankname, "z");
+			float energy[] = _dataWarehouse.getFloat(_bankname, "energy");
+			float time[] = _dataWarehouse.getFloat(_bankname, "time");
+			short status[] = _dataWarehouse.getShort(_bankname, "status");
 
 			for (int i = 0; i < count; i++) {
 				if ((sect == sector[i]) && (panel == (layer[i] - 1))) {

@@ -24,7 +24,7 @@ import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
@@ -218,7 +218,7 @@ public class CedDataView extends BaseView
 	 */
 	public String[] colNames(String bankName) {
 		if (bankName != null) {
-			return DataManager.getInstance().getColumnNames(bankName);
+			return DataWarehouse.getInstance().getColumnNames(bankName);
 		}
 		return null;
 	}

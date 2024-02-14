@@ -91,8 +91,6 @@ public class SwimAllMC implements ISwimAll {
 			}
 		}
 
-		System.err.println("Finished swimming all MC particles.");
-
 	}
 
 

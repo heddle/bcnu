@@ -86,7 +86,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 			return;
 		}
 
-		if ((ppx == null) || (ppy == null)) {
+		if (ppx == null) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}

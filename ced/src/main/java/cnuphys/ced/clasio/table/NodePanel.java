@@ -31,7 +31,7 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoPresentBankPanel;
 import cnuphys.ced.clasio.IClasIoEventListener;
@@ -406,16 +406,17 @@ public class NodePanel extends JPanel
 			return;
 		}
 
-		DataManager dm = DataManager.getInstance();
-		String fullName = cd.getFullName();
-
+		DataWarehouse dw = DataWarehouse.getInstance();
+		String bankName = cd.getBankName();
+        String columnName = cd.getColumnName();
+        
 		int lineCounter = 1;
 		int index = 0;
 
 		switch (cd.getType()) {
 
 		case ColumnData.INT8: // byte
-			byte bytes[] = dm.getByteArray(event, fullName);
+			byte bytes[] = dw.getByte(bankName, columnName);
 			if (bytes != null) {
 				for (byte i : bytes) {
 					String s;
@@ -440,7 +441,7 @@ public class NodePanel extends JPanel
 			break;
 
 		case ColumnData.INT16:
-			short shorts[] = dm.getShortArray(event, fullName);
+			short shorts[] = dw.getShort(bankName, columnName);
 			if (shorts != null) {
 				for (short i : shorts) {
 					String s;
@@ -465,7 +466,7 @@ public class NodePanel extends JPanel
 			break;
 
 		case ColumnData.INT32:
-			int ints[] = dm.getIntArray(event, fullName);
+			int ints[] = dw.getInt(bankName, columnName);
 			if (ints != null) {
 				for (int i : ints) {
 					String s;
@@ -490,7 +491,7 @@ public class NodePanel extends JPanel
 			break;
 
 		case ColumnData.FLOAT32:
-			float floats[] = dm.getFloatArray(event, fullName);
+			float floats[] = dw.getFloat(bankName, columnName);
 			if (floats != null) {
 				for (float f : floats) {
 					String doubStr = DoubleFormat.doubleFormat(f, 6, 4);
@@ -511,7 +512,7 @@ public class NodePanel extends JPanel
 			break;
 
 		case ColumnData.FLOAT64:
-			double doubles[] = dm.getDoubleArray(event, fullName);
+			double doubles[] = dw.getDouble(bankName, columnName);
 			if (doubles != null) {
 				for (double d : doubles) {
 					String doubStr = DoubleFormat.doubleFormat(d, 6, 4);

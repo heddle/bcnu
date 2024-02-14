@@ -30,8 +30,6 @@ import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.bCNU.util.MethodName;
-import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
@@ -162,7 +160,7 @@ public class ClasIoEventManager {
                     ScanManager.getInstance().newClasIoEvent(_currentEvent);
                 }
 				else {
-					_runData.set(_currentEvent);
+					_runData.set();
 					notifyEventListeners();
 					Ced.refresh();
 				}
@@ -188,25 +186,20 @@ public class ClasIoEventManager {
 
 		if (_currentEvent != null) {
 			// use any bank with a true pid column
-			// String[] knownBanks =
-			// ClasIoEventManager.getInstance().getKnownBanks();
 
 			String[] cbanks = _currentEvent.getBankList();
 			if (cbanks != null) {
 				for (String bankName : cbanks) {
 					if (bankName.contains("::Particle") || bankName.contains("::Lund")) {
-
-						ColumnData cd = DataManager.getInstance().getColumnData(bankName, "pid");
-
-						if (cd != null) {
-							int pid[] = (cd.getIntArray(_currentEvent));
-							if ((pid != null) && (pid.length > 0)) {
-								for (int pdgid : pid) {
-									LundId lid = LundSupport.getInstance().get(pdgid);
-									if (lid != null) {
-										_uniqueLundIds.remove(lid);
-										_uniqueLundIds.add(lid);
-									}
+						
+						//get the pid column
+						int pid[] = DataWarehouse.getInstance().getInt(bankName, "pid");
+						if ((pid != null) && (pid.length > 0)) {
+							for (int pdgid : pid) {
+								LundId lid = LundSupport.getInstance().get(pdgid);
+								if (lid != null) {
+									_uniqueLundIds.remove(lid);
+									_uniqueLundIds.add(lid);
 								}
 							}
 						}
@@ -735,7 +728,7 @@ public class ClasIoEventManager {
 					_currentEvent = decodeEvioToHipo((EvioDataEvent) _currentEvent);
 				}
 
-				done = (_currentEvent == null) || FilterManager.getInstance().pass(_currentEvent);
+				done = (_currentEvent == null) || FilterManager.getInstance().pass();
 			}
 			if (_currentEvent != null) {
 				_currentEventIndex++;
@@ -768,7 +761,7 @@ public class ClasIoEventManager {
 					_currentEvent = decodeEvioToHipo((EvioDataEvent) _currentEvent);
 				}
 
-				if (FilterManager.getInstance().pass(_currentEvent)) {
+				if (FilterManager.getInstance().pass()) {
 					_currentEventIndex++;
 				} else {
 					_currentEvent = null;
@@ -825,7 +818,7 @@ public class ClasIoEventManager {
 			while (!done && (_currentEventIndex < stopIndex)) {
 				if (_dataSource.hasEvent()) {
 					DataEvent event = _dataSource.getNextEvent();
-					if (FilterManager.getInstance().pass(event)) {
+					if (FilterManager.getInstance().pass()) {
 						_currentEventIndex++;
 					}
 				}
@@ -1116,15 +1109,6 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Get the names of the banks in the current event
-	 *
-	 * @return the names of the banks in the current event
-	 */
-	public String[] getCurrentBanks() {
-		return _currentBanks;
-	}
-
-	/**
 	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
 	 * current event.
 	 *
@@ -1140,20 +1124,7 @@ public class ClasIoEventManager {
 		return index >= 0;
 	}
 
-	/**
-	 * Check whether a given bank is a known bank
-	 *
-	 * @param bankName the bank name
-	 * @return <code>true</code> if the name is recognized.
-	 */
-	public boolean isKnownBank(String bankName) {
-		String allBanks[] = DataManager.getInstance().getKnownBanks();
-		if (allBanks == null) {
-			return false;
-		}
-		int index = Arrays.binarySearch(allBanks, bankName);
-		return index >= 0;
-	}
+
 }
 
 

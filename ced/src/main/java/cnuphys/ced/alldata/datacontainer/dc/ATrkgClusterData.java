@@ -113,10 +113,7 @@ public abstract class ATrkgClusterData implements IDataContainer {
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
-
-
 		}
-		
  	}
 	
 	public short[] getHitIds(int index) {

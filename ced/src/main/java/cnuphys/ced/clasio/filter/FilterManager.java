@@ -2,8 +2,6 @@ package cnuphys.ced.clasio.filter;
 
 import java.util.ArrayList;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.ced.frame.Ced;
 
 public class FilterManager extends ArrayList<IEventFilter> {
@@ -16,7 +14,6 @@ public class FilterManager extends ArrayList<IEventFilter> {
 	private FilterManager() {
 		//trigger filter added by trigger manager
 		//add other standard filters
-		add(new BankSizeFilter());
 	}
 
 	/**
@@ -64,15 +61,14 @@ public class FilterManager extends ArrayList<IEventFilter> {
 
 	/**
 	 * Does the event pass all the active registered filters?
-	 * @param event the event to check
 	 * @return <code>true</code> if the event passes all the filters
 	 */
-	public boolean pass(DataEvent event) {
+	public boolean pass() {
 
 		if (!isEmpty()) {
 			for(IEventFilter filter : this) {
 				if (filter.isActive()) {
-					boolean pass = filter.pass(event);
+					boolean pass = filter.pass();
 
 					if (!pass) {
 						return false;

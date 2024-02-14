@@ -6,8 +6,6 @@ import java.util.Collections;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.jlab.clas.detector.DetectorResponse;
-import org.jlab.detector.base.DetectorType;
 import org.jlab.io.base.DataEvent;
 import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
@@ -100,22 +98,6 @@ public class DataManager {
 		}
 
 	}
-	/**
-	 * Get the collection of recognized columns
-	 *
-	 * @return the collection of recognized columns
-	 */
-	public ArrayList<ColumnData> getColumnData() {
-		if ((_columnData == null) || (_columnData.size() < 1)) {
-			return null;
-		}
-		ArrayList<ColumnData> columns = new ArrayList<>();
-		for (ColumnData cd : _columnData.values()) {
-			columns.add(cd);
-		}
-		Collections.sort(columns);
-		return columns;
-	}
 
 	/**
 	 * public access to singleton
@@ -133,28 +115,6 @@ public class DataManager {
 		return _instance;
 	}
 
-	/**
-	 * Get a list of all column data objects that have data in the given event for a
-	 * specific bank
-	 *
-	 * @param event    the event in question
-	 * @param bankName the bank
-	 * @return a list of all columns in the given bank with data
-	 */
-
-	public ArrayList<ColumnData> hasData(DataEvent event, String bankName) {
-		ArrayList<ColumnData> list = new ArrayList<>();
-
-		String columns[] = event.getColumnList(bankName);
-		if (columns != null) {
-			for (String columnName : columns) {
-				list.add(getColumnData(bankName, columnName));
-			}
-		}
-
-		return list;
-
-	}
 
 	/**
 	 * Get a list of all column data objects that have data in the given event
@@ -197,51 +157,6 @@ public class DataManager {
 		return list;
 	}
 
-	/**
-	 * Get the number of rows (length) of a given bank
-	 * @param event the event
-	 * @param bankName the bank name
-	 * @return the number of rows
-	 */
-	public int getRowCount(DataEvent event, String bankName) {
-		if (bankName == null) {
-			return 0;
-		}
-		String colNames[] = getColumnNames(bankName);
-
-		if ((colNames == null) || (colNames.length < 1)) {
-			return 0;
-		}
-
-		//uses the 1st column, assumes all columns have the same length
-		ColumnData cd = getColumnData(bankName, colNames[0]);
-
-		if (cd == null) {
-			return 0;
-		}
-
-		return cd.getLength(event);
-	}
-
-	/**
-	 * Get the list of column names for a bank name
-	 *
-	 * @param bankName the bank name
-	 * @return the list of column names
-	 */
-	public String[] getColumnNames(String bankName) {
-		return _banks.get(bankName);
-	}
-
-
-	/**
-	 * Get the known banks
-	 *
-	 * @return the (sorted) known bank names
-	 */
-	public String[] getKnownBanks() {
-		return _knownBanks;
-	}
 
 	/**
 	 * Get a ColumnData
@@ -337,28 +252,4 @@ public class DataManager {
 	}
 
 
-	/**
-	 * Get a list of detector responses
-	 *
-	 * @param event    the event
-	 * @param bankName the bank name
-	 * @param type     the detector type
-	 * @return a list of detector responses
-	 */
-	public List<DetectorResponse> getDetectorResponse(DataEvent event, String bankName, DetectorType type) {
-
-		if (event == null) {
-			return null;
-		}
-
-		List<DetectorResponse> responses = null;
-		if (event.hasBank(bankName)) {
-			System.err.println("Event is null: " + (event == null));
-			System.err.println("bankName: [" + bankName + "]");
-			System.err.println("event has bank: " + event.hasBank(bankName));
-			System.err.println("detector type: [" + type + "]");
-			responses = DetectorResponse.readHipoEvent(event, bankName, type);
-		}
-		return responses;
-	}
 }

@@ -34,8 +34,8 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTRecHitData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
@@ -62,6 +62,9 @@ import cnuphys.swim.SwimTrajectory2D;
 @SuppressWarnings("serial")
 public class CentralXYView extends CedXYView implements ILabCoordinates {
 
+	//data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
+	
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 
@@ -286,15 +289,16 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		// indices are zero based
 		if ((_bstHighlightData.cluster >= 0) && dataEvent.hasBank("BSTRec::Clusters")) {
 
-			if (ColumnData.getFloatArray("BSTRec::Clusters.x1") == null) {
+			if (_dataWarehouse.getFloat("BMTRec::Clusters", "x1") == null) {
 				return;
 			}
 			int idx = _bstHighlightData.cluster; // 0 based
 
-			float x1 = ColumnData.getFloatArray("BSTRec::Clusters.x1")[idx];
-			float y1 = ColumnData.getFloatArray("BSTRec::Clusters.y1")[idx];
-			float x2 = ColumnData.getFloatArray("BSTRec::Clusters.x2")[idx];
-			float y2 = ColumnData.getFloatArray("BSTRec::Clusters.y2")[idx];
+			float x1 = _dataWarehouse.getFloat("BSTRec::Clusters", "x1")[idx];
+			float y1 = _dataWarehouse.getFloat("BSTRec::Clusters", "y1")[idx];
+			float x2 = _dataWarehouse.getFloat("BSTRec::Clusters", "x2")[idx];
+			float y2 = _dataWarehouse.getFloat("BSTRec::Clusters", "y2")[idx];
+			
 			Point p1 = new Point();
 			Point p2 = new Point();
 
@@ -313,10 +317,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		if ((_bmtHighlightData.cluster >= 0) && dataEvent.hasBank("BMTRec::Clusters")) {
 			int idx = _bmtHighlightData.cluster; // 0 based
 
-			float x1 = ColumnData.getFloatArray("BMTRec::Clusters.x1")[idx];
-			float y1 = ColumnData.getFloatArray("BMTRec::Clusters.y1")[idx];
-			float x2 = ColumnData.getFloatArray("BMTRec::Clusters.x2")[idx];
-			float y2 = ColumnData.getFloatArray("BMTRec::Clusters.y2")[idx];
+			float x1 = _dataWarehouse.getFloat("BMTRec::Clusters", "x1")[idx];
+			float y1 = _dataWarehouse.getFloat("BMTRec::Clusters", "y1")[idx];
+			float x2 = _dataWarehouse.getFloat("BMTRec::Clusters", "x2")[idx];
+			float y2 = _dataWarehouse.getFloat("BMTRec::Clusters", "y2")[idx];
 			Point p1 = new Point();
 			Point p2 = new Point();
 

@@ -21,7 +21,7 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.datatable.BankDataTable;
 import cnuphys.ced.clasio.table.NamedLabel;
@@ -190,7 +190,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	 */
 	public String[] colNames(String bankName) {
 		if (bankName != null) {
-			return DataManager.getInstance().getColumnNames(bankName);
+			return DataWarehouse.getInstance().getColumnNames(bankName);
 		}
 		return null;
 	}

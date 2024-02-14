@@ -96,10 +96,24 @@ public class DataWarehouse implements IClasIoEventListener {
 	/**
 	 * Get the banks in the current event
 	 *
-	 * @return the known banks
+	 * @return the known banks in a String array
 	 */
-	public ArrayList<String> getKnownBanks() {
-		return _knownBanks;
+	public String[] getKnownBanks() {
+		String[] kbArray = new String[this._knownBanks.size()];
+		_knownBanks.toArray(kbArray);
+		return kbArray;
+	}
+	
+	/**
+	 * Does the current event have a bank with the given name?
+	 * 
+	 * @param bankName the bank name
+	 * @return <code>true</code> if the current event has the bank
+	 */
+	public boolean hasBank(String bankName) {
+		DataEvent event = getCurrentEvent();
+		
+		return (event != null) ? event.hasBank(bankName) : false;
 	}
 
 	/**
@@ -151,24 +165,26 @@ public class DataWarehouse implements IClasIoEventListener {
 	}
 
 	/**
-	 * Get the list of column names for a bank name
+	 * Get the sorted list of column names for a bank name
 	 *
 	 * @param bankName the bank name
 	 * @return the list of column names
 	 */
-	public List<String> getColumnNames(String bankName) {
+	public String[] getColumnNames(String bankName) {
 		if (_knownBanks.contains(bankName)) {
-			return _schemaFactory.getSchema(bankName).getEntryList();
+			List<String> list = _schemaFactory.getSchema(bankName).getEntryList();
+			String[] array = new String[list.size()];
+			list.toArray(array);
+			Arrays.sort(array);
+			return array;
 		}
 		return null;
 	}
 
 	//get the current event from the IO manager
-	private DataEvent getCurrentEvent() {
+	public DataEvent getCurrentEvent() {
 		return ClasIoEventManager.getInstance().getCurrentEvent();
 	}
-
-
 
 	/**
 	 * Get a list of the banks in the current event
@@ -337,6 +353,23 @@ public class DataWarehouse implements IClasIoEventListener {
 	}
 
 
+	/**
+	 * Get the number of rows in a bank for the current event
+	 *
+	 * @param bankName the bank name
+	 * @return the number of rows in the bank, or 0 if the bank is not found.
+	 */
+	public int rows(String bankName) {
+		DataEvent event = getCurrentEvent();
+		if (event != null) {
+			DataBank bank = event.getBank(bankName);
+			if (bank != null) {
+				return bank.rows();
+			}
+		}
+		return 0;
+	}
+	
 
 	/**
 	 * Add an data container listener.

@@ -21,7 +21,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.VirtualView;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedwindow.CedDataView;
 import cnuphys.ced.cedwindow.CedDataWindow;
@@ -211,7 +211,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 	// update as the result of a new event arriving
 	private void update() {
-		String[] allBanks = DataManager.getInstance().getKnownBanks();
+		String[] allBanks = DataWarehouse.getInstance().getKnownBanks();
 
 		if (allBanks == null) {
 			return;

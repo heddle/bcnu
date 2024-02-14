@@ -113,7 +113,7 @@ public class NodeTableModel extends DefaultTableModel {
 					return cd.getTypeName();
 
 				case COUNT_INDEX:
-					return "" + cd.length(_event);
+					return "" + cd.length();
 
 				default:
 					return "?";

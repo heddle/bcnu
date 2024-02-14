@@ -24,16 +24,15 @@ import cnuphys.bCNU.util.MathUtilities;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgSegmentData;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAISegmentData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgSegmentData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAISegmentData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgSegmentData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AIHBSegments;
-import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.HBSegments;
-import cnuphys.ced.event.data.Segment;
-import cnuphys.ced.event.data.TBSegments;
-import cnuphys.ced.event.data.lists.SegmentList;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.frame.OrderColors;
@@ -72,7 +71,12 @@ public class SuperLayerDrawing {
 	private double[] _direction;
 	
 	// data containers
-	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+	private DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+	private HBTrkgSegmentData _hbTrkgSegmentData = HBTrkgSegmentData.getInstance();
+	private TBTrkgSegmentData _tbTrkgSegmentData = TBTrkgSegmentData.getInstance();
+	private HBTrkgAISegmentData _hbTrkgAISegmentData = HBTrkgAISegmentData.getInstance();
+	private TBTrkgAISegmentData _tbTrkgAISegmentData = TBTrkgAISegmentData.getInstance();
+	
 
 
 	/**
@@ -774,6 +778,23 @@ public class SuperLayerDrawing {
 	public Point3D projectedPoint(double x, double y, double z, Point2D.Double wp) {
 		return _view.projectedPoint(x, y, z, _iSupl.projectionPlane(), wp);
 	}
+	
+	private void drawSegments(Graphics g, IContainer container, ATrkgSegmentData segments, Color lc, Color fc) {
+		int count = segments.count();
+        if (count > 0) {
+            Point2D.Double wp1 = new Point2D.Double();
+            Point2D.Double wp2 = new Point2D.Double();
+            for (int i = 0; i < count; i++) {
+                if ((segments.sector[i] == _iSupl.sector())
+                        && (segments.superlayer[i] == _iSupl.superlayer())) {
+                    projectedPoint(segments.x1[i], 0, segments.z1[i], wp1);
+                    projectedPoint(segments.x2[i], 0, segments.z2[i], wp2);
+                    drawSegment(g, container, _view, wp1, wp2, lc, fc);
+
+                }
+            }
+        }
+	}
 
 	/**
 	 * Draw hit based segments
@@ -782,26 +803,9 @@ public class SuperLayerDrawing {
 	 */
 	public void drawHitBasedSegments(Graphics g, IContainer container) {
 
-		if (!_view.showDCHBSegments()) {
-			return;
+		if (_view.showDCHBSegments()) {
+			drawSegments(g, container, _hbTrkgSegmentData, CedColors.hbSegmentLine, CedColors.HB_COLOR);
 		}
-
-		SegmentList segments = HBSegments.getInstance().getSegments();
-
-		if ((segments != null) && !segments.isEmpty()) {
-			Point2D.Double wp1 = new Point2D.Double();
-			Point2D.Double wp2 = new Point2D.Double();
-			for (Segment segment : segments) {
-				if ((segment.sector == _iSupl.sector()) && (segment.superlayer == _iSupl.superlayer())) {
-
-					projectedPoint(segment.x1, 0, segment.z1, wp1);
-					projectedPoint(segment.x2, 0, segment.z2, wp2);
-					drawSegment(g, container, _view, wp1, wp2, CedColors.hbSegmentLine, CedColors.HB_COLOR);
-
-				}
-			}
-		}
-
 	} // drawHitBasedSegments
 
 	/**
@@ -811,30 +815,8 @@ public class SuperLayerDrawing {
 	 */
 	public void drawTimeBasedSegments(Graphics g, IContainer container) {
 
-		if (!_view.showDCTBSegments()) {
-			return;
-		}
-
-		SegmentList segments = TBSegments.getInstance().getSegments();
-		if ((segments != null) && !segments.isEmpty()) {
-			Point2D.Double wp1 = new Point2D.Double();
-			Point2D.Double wp2 = new Point2D.Double();
-			for (Segment segment : segments) {
-				if ((segment.sector == _iSupl.sector()) && (segment.superlayer == _iSupl.superlayer())) {
-
-					projectedPoint(segment.x1, 0, segment.z1, wp1);
-					projectedPoint(segment.x2, 0, segment.z2, wp2);
-
-					// have top flip if lower sector
-					if (_iSupl.isLowerSector()) {
-						wp1.y = -wp1.y;
-						wp2.y = -wp2.y;
-					}
-
-					drawSegment(g, container, _view, wp1, wp2, CedColors.tbSegmentLine, CedColors.TB_COLOR);
-
-				}
-			}
+		if (_view.showDCTBSegments()) {
+			drawSegments(g, container, _tbTrkgSegmentData, CedColors.tbSegmentLine, CedColors.TB_COLOR);
 		}
 
 	} // drawTimeBasedSegments
@@ -848,26 +830,9 @@ public class SuperLayerDrawing {
 	 */
 	public void drawAIHitBasedSegments(Graphics g, IContainer container) {
 
-		if (!_view.showAIDCHBSegments()) {
-			return;
+		if (_view.showAIDCHBSegments()) {
+			drawSegments(g, container, _hbTrkgAISegmentData, CedColors.aihbSegmentLine, CedColors.AIHB_COLOR);
 		}
-
-		SegmentList segments = AIHBSegments.getInstance().getSegments();
-
-		if ((segments != null) && !segments.isEmpty()) {
-			Point2D.Double wp1 = new Point2D.Double();
-			Point2D.Double wp2 = new Point2D.Double();
-			for (Segment segment : segments) {
-				if ((segment.sector == _iSupl.sector()) && (segment.superlayer == _iSupl.superlayer())) {
-
-					projectedPoint(segment.x1, 0, segment.z1, wp1);
-					projectedPoint(segment.x2, 0, segment.z2, wp2);
-					drawSegment(g, container, _view, wp1, wp2, CedColors.aihbSegmentLine, CedColors.AIHB_COLOR);
-
-				}
-			}
-		}
-
 	} // drawAIHitBasedSegments
 
 	/**
@@ -877,30 +842,8 @@ public class SuperLayerDrawing {
 	 */
 	public void drawAITimeBasedSegments(Graphics g, IContainer container) {
 
-		if (!_view.showAIDCTBSegments()) {
-			return;
-		}
-
-		SegmentList segments = AITBSegments.getInstance().getSegments();
-		if ((segments != null) && !segments.isEmpty()) {
-			Point2D.Double wp1 = new Point2D.Double();
-			Point2D.Double wp2 = new Point2D.Double();
-			for (Segment segment : segments) {
-				if ((segment.sector == _iSupl.sector()) && (segment.superlayer == _iSupl.superlayer())) {
-
-					projectedPoint(segment.x1, 0, segment.z1, wp1);
-					projectedPoint(segment.x2, 0, segment.z2, wp2);
-
-					// have top flip if lower sector
-					if (_iSupl.isLowerSector()) {
-						wp1.y = -wp1.y;
-						wp2.y = -wp2.y;
-					}
-
-					drawSegment(g, container, _view, wp1, wp2, CedColors.aitbSegmentLine, CedColors.AITB_COLOR);
-
-				}
-			}
+		if (_view.showAIDCTBSegments()) {
+			drawSegments(g, container, _tbTrkgAISegmentData, CedColors.aitbSegmentLine, CedColors.AITB_COLOR);
 		}
 
 	} // drawAITimeBasedSegments
