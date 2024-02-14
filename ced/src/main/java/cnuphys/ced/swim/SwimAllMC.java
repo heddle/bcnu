@@ -55,12 +55,12 @@ public class SwimAllMC implements ISwimAll {
 		}
 
 		double stepSize = 1.0e-3;
-		double tolerance = 1.0e-8;
+		double tolerance = 1.0e-6;
 
 		//used to avoid swimming duplicates
 		ArrayList<String> swam = new ArrayList<>();
 
-		
+
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
 
@@ -90,8 +90,6 @@ public class SwimAllMC implements ISwimAll {
 				e.printStackTrace();
 			}
 		}
-
-		System.err.println("Finished swimming all MC particles.");
 
 	}
 

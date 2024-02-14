@@ -67,10 +67,6 @@ public class CedColors {
 	public static final Color AITB_TRANS = X11Colors.getX11Color("magenta", 240);
 	public static final Color AITB_DOCAFRAME = AITB_COLOR.darker();
 
-	// neural net based
-	public static final Color NN_COLOR = X11Colors.getX11Color("teal");
-	public static final Color NN_TRANS = X11Colors.getX11Color("teal", 160);
-
 	// doca fills
 	public static final Color DOCA_COLOR = new Color(0, 255, 0, 76);
 	public static final Color TRKDOCA_COLOR = new Color(0, 0, 255, 76);
@@ -85,8 +81,6 @@ public class CedColors {
 	public static final Color CVTP1_COLOR = X11Colors.getX11Color("coral");
 
 	//REC::Calorimeter
-	public static final Color RECEcalFill = new Color(255, 0, 0, 48);
-	public static final Color RECPcalFill = new Color(196, 64, 0, 48);
-
+	public static final Color RECCalFill = new Color(255, 0, 0, 64);
 
 }

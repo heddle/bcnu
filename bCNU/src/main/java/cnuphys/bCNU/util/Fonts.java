@@ -85,24 +85,6 @@ public class Fonts {
 	// tiny monospaced font
 	public static Font tinyMono = new Font(Font.MONOSPACED, Font.PLAIN, 8);
 
-	// attempt to scale the fonts
-	static {
-		float scaleFact = Environment.getInstance().getResolutionScaleFactor();
-		if (scaleFact < 0.1f) {
-			scaleFact = 1f;
-		}
-		if (Math.abs(scaleFact - 1f) > 0.01) {
-//			hugeFont = scaleFont(hugeFont, scaleFact);
-//			largeFont = scaleFont(largeFont, scaleFact);
-//			defaultFont = scaleFont(defaultFont, scaleFact);
-//			mediumFont = scaleFont(mediumFont, scaleFact);
-//			tweenFont = scaleFont(tweenFont, scaleFact);
-//			tinyFont = scaleFont(tinyFont, scaleFact);
-//			mono = scaleFont(mono, scaleFact);
-//			smallMono = scaleFont(smallMono, scaleFact);
-//			tinyMono = scaleFont(tinyMono, scaleFact);
-		}
-	}
 
 	/**
 	 * Scale a font

@@ -1,41 +1,27 @@
 package cnuphys.ced.event;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Collections;
 
 import javax.swing.event.EventListenerList;
 
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
-import cnuphys.bCNU.log.Log;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
+import cnuphys.ced.alldata.datacontainer.cc.HTCCADCData;
+import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
+import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
+import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
+import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
 import cnuphys.ced.clasio.IClasIoEventListener;
-import cnuphys.ced.event.data.AdcECALHit;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.CND;
-import cnuphys.ced.event.data.CTOF;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.FTCAL;
-import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.HTCC2;
-import cnuphys.ced.event.data.LTCC;
-import cnuphys.ced.event.data.RTPC;
-import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
-import cnuphys.ced.event.data.lists.RTPCHitList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeoConstants;
@@ -50,7 +36,7 @@ import cnuphys.ced.geometry.ftof.FTOFGeometry;
  */
 public class AccumulationManager implements IAccumulator, IClasIoEventListener, IAccumulationListener {
 
-	/** Indicates hat accumulation has started */
+	/** Indicates that accumulation has started */
 	public static final int ACCUMULATION_STARTED = 0;
 
 	/** Indicates hat accumulation has been cancelled */
@@ -64,25 +50,19 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// common colorscale
 	public static ColorScaleModel colorScaleModel = new ColorScaleModel(getAccumulationValues(),
-			ColorScaleModel.getWeatherMapColors(8));
+			ColorScaleModel.getSimpleMapColors(8));
 
 	// the singleton
 	private static AccumulationManager instance;
-
-	// private static final Color NULLCOLOR = new Color(128, 128, 128);
-	// private static final Color NULLCOLOR = Color.gray;
-
-//	private static final Color HOTCOLOR = X11Colors.getX11Color("red");
 
 	// CND accumulated accumulated data indices are sector, layer, order (0 or 1,
 	// adc only)
 	private int _CNDAccumulatedData[][][];
 
-	// HTCC accumulated accumulated data indices are sector, ring, half
+	// HTCC accumulated accumulated data indices are sector, half, ring
 	private int _HTCCAccumulatedData[][][];
 
 	// LTCC accumulated accumulated data indices are sector, half, ring
-	// NOTICE THE DIFFERENT ORDER FROM HTCC
 	private int _LTCCAccumulatedData[][][];
 
 	// ftcc accumulated data
@@ -129,6 +109,19 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// list of accumulation listeners
 	private EventListenerList _listeners;
 
+	//data containers
+	private CNDADCData cndADCData = CNDADCData.getInstance();
+	private HTCCADCData htccADCData = HTCCADCData.getInstance();
+	private LTCCADCData ltccADCData = LTCCADCData.getInstance();
+	private ECalADCData ecADCData = ECalADCData.getInstance();
+	private PCalADCData pcADCData = PCalADCData.getInstance();
+	private FTOFADCData ftofADCData = FTOFADCData.getInstance();
+	private CTOFADCData ctofADCData = CTOFADCData.getInstance();
+	private FTCalADCData ftcalADCData = FTCalADCData.getInstance();
+	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
+	private BSTADCData bstADCData = BSTADCData.getInstance();
+	private DCTDCandDOCAData dcTDCData = DCTDCandDOCAData.getInstance();
+
 	/**
 	 * private constructor for singleton.
 	 */
@@ -140,13 +133,13 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_FTCALAccumulatedData = new int[476];
 
 		// RTPC Data
-		_RTPCAccumulatedData = new int[RTPC.NUMCOMPONENT][RTPC.NUMLAYER];
+		_RTPCAccumulatedData = new int[GeoConstants.RTPC_NUMCOMPONENT][GeoConstants.RTPC_NUMLAYER];
 
 		// cnd data (24 sectors, 3 layers, left and right)
 		_CNDAccumulatedData = new int[24][3][2];
 
 		// htcc data
-		_HTCCAccumulatedData = new int[GeoConstants.NUM_SECTOR][4][2];
+		_HTCCAccumulatedData = new int[GeoConstants.NUM_SECTOR][2][4];
 
 		// ltcc data NOTICE THE DIFFERENT ORDER FROM HTCC
 		_LTCCAccumulatedData = new int[GeoConstants.NUM_SECTOR][2][18];
@@ -174,9 +167,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_FTOF1BAccumulatedData = new int[6][FTOFGeometry.numPaddles[1]];
 		_FTOF2AccumulatedData = new int[6][FTOFGeometry.numPaddles[2]];
 
-		// ec and pcal storage
+		// ec and pcal storage  sector, stack (inner, outer), view (uvw), strip
 		_ECALAccumulatedData = new int[6][2][3][36];
 
+		// PCAL [sector, view (uvw), strip]
 		_PCALAccumulatedData = new int[6][3][];
 		for (int sect0 = 0; sect0 < 6; sect0++) {
 			for (int view0 = 0; view0 < 3; view0++) {
@@ -200,8 +194,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 
 		//clear RTPC
-		for (int i = 0; i < RTPC.NUMCOMPONENT; i++) {
-			for (int j = 0; j < RTPC.NUMLAYER; j++) {
+		for (int i = 0; i < GeoConstants.RTPC_NUMCOMPONENT; i++) {
+			for (int j = 0; j < GeoConstants.RTPC_NUMLAYER; j++) {
 				_RTPCAccumulatedData[i][j] = 0;
 			}
 		}
@@ -217,9 +211,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		// clear accumulated HTCC
 		for (int sector = 0; sector < GeoConstants.NUM_SECTOR; sector++) {
-			for (int ring = 0; ring < 4; ring++) {
-				for (int half = 0; half < 2; half++) {
-					_HTCCAccumulatedData[sector][ring][half] = 0;
+			for (int half = 0; half < 2; half++) {
+				for (int ring = 0; ring < 4; ring++) {
+					_HTCCAccumulatedData[sector][half][ring] = 0;
 				}
 			}
 		}
@@ -400,68 +394,63 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// private int _BSTFullAccumulatedData[][][];
 
 	/**
-	 * Get the median counts on any bst panel
+	 * Get the Max counts on any bst panel
 	 *
-	 * @return the median counts for any bst panel.
+	 * @return the Max counts for any bst panel.
 	 */
-	public int getMedianBSTCount() {
-		return getMedian(_BSTAccumulatedData);
+	public int getMaxBSTCount() {
+		return getMax(_BSTAccumulatedData);
 	}
 
-	public int getMedianCTOFCount() {
-		return getMedian(_CTOFAccumulatedData);
-	}
-
-	/**
-	 * Get the median counts on any BST strip
-	 *
-	 * @return the median counts for any BST strip.
-	 */
-	public int getMedianFullBSTCount() {
-		return getMedian(_BSTFullAccumulatedData);
+	public int getMaxCTOFCount() {
+		return getMax(_CTOFAccumulatedData);
 	}
 
 	/**
-	 * Get the median count of accumulated hits
+	 * Get the Max counts on any BST strip
 	 *
-	 * @return the median count of accumulated hits
+	 * @return the Max counts for any BST strip.
 	 */
-	public int getMedianPCALCount() {
-		return getMedian(_PCALAccumulatedData);
+	public int getMaxFullBSTCount() {
+		return getMax(_BSTFullAccumulatedData);
+	}
+
+	/**
+	 * Get the Max count of accumulated hits
+	 *
+	 * @return the Max count of accumulated hits
+	 */
+	public int getMaxPCALCount() {
+		return getMax(_PCALAccumulatedData);
 	}
 
 	// _ECALAccumulatedData = new int[6][2][3][36];
 
-	public int getMedianECALCount(int plane) {
-		return getMedian(_ECALAccumulatedData);
+	public int getMaxECALCount(int plane) {
+		return getMax(_ECALAccumulatedData);
 	}
 
 	/**
-	 * Get the median count for a given superlayer across all sectors
+	 * Get the Max count for a given superlayer across all sectors
 	 *
 	 * @param suplay the superlayer 0..5
-	 * @return the median count for a given superlayer across all sectors
+	 * @return the Max count for a given superlayer across all sectors
 	 */
-	public int getMedianDCCount(int suplay) {
-		ArrayList<Integer> v = new ArrayList<>(24192);
+	public int getMaxDCCount(int suplay) {
 
-		// specialized because of the suplay fixed
+		int max = 0;
 		for (int sect = 0; sect < 6; sect++) {
 			for (int lay = 0; lay < 6; lay++) {
 				for (int wire = 0; wire < 12; wire++) {
 					int count = _DCAccumulatedData[sect][suplay][lay][wire];
-					v.add(count);
+					if (count > max) {
+						max = count;
+					}
 				}
 			}
 		}
 
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
 	/**
@@ -483,48 +472,48 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the median counts for FTCAL
+	 * Get the Max counts for FTCAL
 	 *
-	 * @return the median counts for FTCAL
+	 * @return the Max counts for FTCAL
 	 */
-	public int getMedianFTCALCount() {
-		return getMedian(_FTCALAccumulatedData);
+	public int getMaxFTCALCount() {
+		return getMax(_FTCALAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for RTPC
+	 * Get the Max counts for RTPC
 	 *
-	 * @return the median counts for RTPC
+	 * @return the Max counts for RTPC
 	 */
-	public int getMedianRTPCCount() {
-		return getMedian(_RTPCAccumulatedData);
+	public int getMaxRTPCCount() {
+		return getMax(_RTPCAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for CND
+	 * Get the Max counts for CND
 	 *
-	 * @return the median counts for CND
+	 * @return the Max counts for CND
 	 */
-	public int getMedianCNDCount() {
-		return getMedian(_CNDAccumulatedData);
+	public int getMaxCNDCount() {
+		return getMax(_CNDAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for HTCC
+	 * Get the Max counts for HTCC
 	 *
-	 * @return the median counts for HTCC
+	 * @return the Max counts for HTCC
 	 */
-	public int getMedianHTCCCount() {
-		return getMedian(_HTCCAccumulatedData);
+	public int getMaxHTCCCount() {
+		return getMax(_HTCCAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts for LTCC
+	 * Get the Max counts for LTCC
 	 *
-	 * @return the median counts for LTCC
+	 * @return the Max counts for LTCC
 	 */
-	public int getMedianLTCCCount() {
-		return getMedian(_LTCCAccumulatedData);
+	public int getMaxLTCCCount() {
+		return getMax(_LTCCAccumulatedData);
 	}
 
 	/**
@@ -555,30 +544,30 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the median counts on any ftof1a panel
+	 * Get the Max counts on any ftof1a panel
 	 *
-	 * @return the median counts for any ftof1a panel.
+	 * @return the Max counts for any ftof1a panel.
 	 */
-	public int getMedianFTOF1ACount() {
-		return getMedian(_FTOF1AAccumulatedData);
+	public int getMaxFTOF1ACount() {
+		return getMax(_FTOF1AAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts on any ftof1b panel
+	 * Get the Max counts on any ftof1b panel
 	 *
-	 * @return the median counts for any ftof1b panel.
+	 * @return the Max counts for any ftof1b panel.
 	 */
-	public int getMedianFTOF1BCount() {
-		return getMedian(_FTOF1BAccumulatedData);
+	public int getMaxFTOF1BCount() {
+		return getMax(_FTOF1BAccumulatedData);
 	}
 
 	/**
-	 * Get the median counts on any ftof2 panel
+	 * Get the Max counts on any ftof2 panel
 	 *
-	 * @return the median counts for any ftof2 panel.
+	 * @return the Max counts for any ftof2 panel.
 	 */
-	public int getMedianFTOF2Count() {
-		return getMedian(_FTOF2AccumulatedData);
+	public int getMaxFTOF2Count() {
+		return getMax(_FTOF2AccumulatedData);
 	}
 
 	/**
@@ -589,11 +578,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	public Color getColor(ColorScaleModel model, double fract) {
 		fract = Math.max(0.0001f, Math.min(fract, 0.9999f));
-//		if (fract < 1.0e-6) {
-//			return NULLCOLOR;
-//		} else if (fract > 1.0) {
-//			return model.getHotColor();
-//		}
 		return model.getColor(fract);
 	}
 
@@ -644,60 +628,49 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		_eventCount++;
 
 		// FTCal Data
-		AdcLRHitList ftcalList = FTCAL.getInstance().updateAdcList();
-		accumFTCAL(ftcalList);
+		accumFTCAL();
 
 		//RTPCData
-		RTPCHitList rtpcList = RTPC.getInstance().updateAdcList();
-		accumRTPC(rtpcList);
+		accumRTPC();
 
 		// CND a special case
-		CND.getInstance().updateData();
 		accumCND();
 
 		// htcc data
-		AdcList htccList = HTCC2.getInstance().updateAdcList();
-		accumHTCC(htccList);
+		accumHTCC();
 
 		// ltcc data
-		AdcLRHitList ltccList = LTCC.getInstance().updateAdcList();
-		accumLTCC(ltccList);
+		accumLTCC();
 
 		// dc data
-		DCTdcHitList dclist = DC.getInstance().updateTdcAdcList();
-		accumDC(dclist);
+		accumDC();
 
 		// ctof data
-		TdcAdcTOFHitList ctoflist = CTOF.getInstance().updateTdcAdcList();
-		accumCTOF(ctoflist);
+		accumCTOF();
 
 		// ftof data
-		TdcAdcTOFHitList ftoflist = FTOF.getInstance().updateTdcAdcList();
-		accumFTOF(ftoflist);
+		accumFTOF();
 
-		// all ec
-		AdcECALHitList allEClist = AllEC.getInstance().updateAdcList();
-		accumAllEC(allEClist);
+		// ecal
+		accumECal();
+
+		//pcal
+		accumPCal();
 
 		// BST
-		AdcList bstList = BST.getInstance().updateAdcList();
-		accumBST(bstList);
-
+		accumBST();
 
 	}
 
 	// accumulate bst
-	private void accumBST(AdcList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
-
-		for (AdcHit hit : list) {
-			BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hit.sector);
+	private void accumBST() {
+		
+		for (int i = 0; i < bstADCData.count(); i++) {
+			BSTxyPanel panel = CentralXYView.getPanel(bstADCData.layer[i], bstADCData.sector[i]);
 			if (panel != null) {
-				int lay0 = hit.layer - 1;
-				int sect0 = hit.sector - 1;
-				int strip0 = hit.component - 1;
+				int lay0 = bstADCData.layer[i] - 1;
+				int sect0 =  bstADCData.sector[i] - 1;
+				int strip0 = bstADCData.component[i] - 1;
 				try {
 					_BSTAccumulatedData[lay0][sect0] += 1;
 
@@ -707,220 +680,156 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 				} catch (ArrayIndexOutOfBoundsException e) {
 					String msg = String.format("Index out of bounds (BST). Event# %d lay %d sect %d  strip %d",
-							_eventManager.getSequentialEventNumber(), hit.layer, hit.sector, hit.component);
-					Log.getInstance().warning(msg);
+							_eventManager.getSequentialEventNumber(), bstADCData.layer[i], bstADCData.sector[i], bstADCData.component[i]);
+					System.err.println(msg);
 				}
 
 			}
 		}
+		
 	}
 
 	// accumulate ftcal
-	private void accumFTCAL(AdcLRHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
-
-		for (AdcLRHit hit : list) {
-			_FTCALAccumulatedData[hit.component] += 1;
+	private void accumFTCAL() {
+        //use the adc arrays to accumulate
+		for (int i = 0; i < ftcalADCData.count(); i++) {
+			_FTCALAccumulatedData[ftcalADCData.component[i]] += 1;
 		}
 	}
 
 	// accumulate rtpc
-		private void accumRTPC(RTPCHitList list) {
-			if ((list == null) || list.isEmpty()) {
-				return;
-			}
+		private void accumRTPC() {
 
-			for (RTPCHit hit : list) {
-				int cm1 = hit.component-1;
-				int lm1 = hit.layer-1;
+			for (int i = 0; i < rtpcADCData.count(); i++) {
+				int cm1 = rtpcADCData.component[i] - 1;
+				int lm1 = rtpcADCData.layer[i] - 1;
 				_RTPCAccumulatedData[cm1][lm1] += 1;
 			}
+
 		}
 
 	// accumulate CND which is a special case
 	private void accumCND() {
-		CND cnd = CND.getInstance();
-		int adcCount = cnd.getCountAdc();
-		if (adcCount > 0) {
-			byte[] sect = cnd.adc_sect;
-			byte[] layer = cnd.adc_layer;
-			byte[] order = cnd.adc_order;
 
-			for (int i = 0; i < adcCount; i++) {
-
-				int sect0 = sect[i] - 1;
-				int lay0 = layer[i] - 1;
-				// note order is already a zero based quantity
-				int ord0 = order[i];
-
+		for (int i = 0; i < cndADCData.count(); i++) {
+			if (cndADCData.adc[i] > 0) {
+				int sect0 = cndADCData.sector[i] - 1;
+				int lay0 = cndADCData.layer[i] - 1;
+				int ord0 = cndADCData.order[i];
 				_CNDAccumulatedData[sect0][lay0][ord0] += 1;
 			}
 		}
 	}
 
 	// accumulate htcc
-	private void accumHTCC(AdcList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+	private void accumHTCC() {
 
-		for (AdcHit hit : list) {
-			if (hit != null) {
-				int sect0 = hit.sector - 1; // make 0 based
-				int ring0 = hit.component - 1; // make 0 based
-				int half0 = hit.layer - 1; // make 0 based
+		//use the adc arrays to accumulate
+		for (int i = 0; i < htccADCData.count(); i++) {
+			if (htccADCData.adc[i] > 0) {
+				int sect0 = htccADCData.sector[i] - 1;
 
-				if (sect0 >= 0) {
-					try {
-						_HTCCAccumulatedData[sect0][ring0][half0] += 1;
-					} catch (ArrayIndexOutOfBoundsException e) {
-						String msg = String.format("HTCC index out of bounds. Event# %d sect %d ring %d half %d",
-								_eventManager.getSequentialEventNumber(), hit.sector, hit.layer, hit.component);
-						Log.getInstance().warning(msg);
-						System.err.println(msg);
-					}
+				//sometimes happens
+				if (sect0 < 0) {
+					continue;
 				}
+
+				int half0 = htccADCData.layer[i] - 1;
+				int ring0 = htccADCData.component[i] - 1;
+				_HTCCAccumulatedData[sect0][half0][ring0] += 1;
 			}
 		}
 	}
 
 	// accumulate ltcc
-	private void accumLTCC(AdcLRHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+	private void accumLTCC() {
 
-		for (AdcLRHit hit : list) {
-			if (hit != null) {
-				int sect0 = hit.sector - 1; // make 0 based
+		//use the adc arrays to accumulate
+		for (int i = 0; i < ltccADCData.count(); i++) {
+			if (ltccADCData.adc[i] > 0) {
+				int sect0 = ltccADCData.sector[i] - 1;
 
-				int half0 = hit.layer - 1; // make 0 based
-				int ring0 = hit.component - 1; // make 0 based
-
-				if (sect0 >= 0) {
-					try {
-						_LTCCAccumulatedData[sect0][half0][ring0] += 1;
-					} catch (ArrayIndexOutOfBoundsException e) {
-						String msg = String.format("LTCC index out of bounds. Event# %d sect %d ring %d half %d",
-								_eventManager.getSequentialEventNumber(), hit.sector, hit.layer, hit.component);
-						Log.getInstance().warning(msg);
-						System.err.println(msg);
-					}
+				//sometimes happens
+				if (sect0 < 0) {
+					continue;
 				}
+
+				int half0 = ltccADCData.layer[i] - 1;
+				int ring0 = ltccADCData.component[i] - 1;
+				_LTCCAccumulatedData[sect0][half0][ring0] += 1;
 			}
 		}
 	}
 
-	// accumulate all ec
-	private void accumAllEC(AdcECALHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+	// accumulate ecal data
+	private void accumECal() {
 
-		for (AdcECALHit hit : list) {
-			if (hit != null) {
-				try {
-					int sect0 = hit.sector - 1;
-					int layer = hit.layer;
-					int strip0 = hit.component - 1;
-
-					if (layer < 4) { // pcal
-						int view0 = layer - 1;
-						_PCALAccumulatedData[sect0][view0][strip0] += 1;
-					} else { // ec
-						layer -= 4; // convert to 0..5
-						int stack0 = layer / 3; // 000,111
-						int view0 = layer % 3; // 012012
-
-						_ECALAccumulatedData[sect0][stack0][view0][strip0] += 1;
-
-					}
-
-				} catch (ArrayIndexOutOfBoundsException e) {
-					e.printStackTrace();
-					Log.getInstance().warning("In accumulation, ECAL hit has bad indices: " + hit);
-				}
+		//use ADC data
+		for (int i = 0; i < ecADCData.count(); i++) {
+			if (ecADCData.adc.get(i) > 0) {
+				int sect0 = ecADCData.sector.get(i) - 1;
+				int plane0 = ecADCData.plane.get(i); // already zero based
+				int view0 = ecADCData.view.get(i); // already zero based
+				int strip0 = ecADCData.strip.get(i) - 1;
+				_ECALAccumulatedData[sect0][plane0][view0][strip0] += 1;
 			}
-
 		}
+	}
 
+
+	// accumulate pcal data
+	private void accumPCal() {
+		//use ADC data
+
+		for (int i = 0; i < pcADCData.count(); i++) {
+			if (pcADCData.adc.get(i) > 0) {
+				int sect0 = pcADCData.sector.get(i) - 1;
+				int view0 = pcADCData.view.get(i); // already zero based
+				int strip0 = pcADCData.strip.get(i) - 1;
+				_PCALAccumulatedData[sect0][view0][strip0] += 1;
+			}
+		}
 	}
 
 	// accumulate dc data
-	private void accumDC(DCTdcHitList list) {
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
-
-		for (DCTdcHit hit : list) {
-			if (hit.inRange()) {
-				_DCAccumulatedData[hit.sector - 1][hit.superlayer - 1][hit.layer6 - 1][hit.wire - 1] += 1;
-
-				// _maxDCCount = Math.max(
-				// _DCAccumulatedData[hit.sector - 1][hit.superlayer - 1][hit.layer6 -
-				// 1][hit.wire - 1],
-				// _maxDCCount);
-			} else {
-				Log.getInstance().warning("In accumulation, DC hit has bad indices: " + hit);
-			}
-
-		}
+	private void accumDC() {
+		
+		for (int i = 0; i < dcTDCData.count(); i++) {
+             _DCAccumulatedData[dcTDCData.sector[i] - 1][dcTDCData.superlayer[i] - 1][dcTDCData.layer6[i] - 1][dcTDCData.component[i] - 1] += 1;
+ 		}
 	}
 
 	// for ctof accumulating
-	private void accumCTOF(TdcAdcTOFHitList list) {
+	private void accumCTOF() {
 
-		if ((list == null) || list.isEmpty()) {
-			return;
+		for (int i = 0; i < ctofADCData.count(); i++) {
+			_CTOFAccumulatedData[ctofADCData.component[i] - 1] += 1;
 		}
-
-		for (TdcAdcTOFHit hit : list) {
-			if (hit != null) {
-				try {
-					_CTOFAccumulatedData[hit.component - 1] += 1;
-				} catch (ArrayIndexOutOfBoundsException e) {
-					Log.getInstance().warning("In accumulation, CTOF hit has bad indices: " + hit);
-				}
-			}
-
-		}
-
 	}
 
 	// for ftof accumulating
-	private void accumFTOF(TdcAdcTOFHitList list) {
+	private void accumFTOF() {
 
-		if ((list == null) || list.isEmpty()) {
-			return;
-		}
+		for (int i = 0; i < ftofADCData.count(); i++) {
+			int sect0 = ftofADCData.sector[i] - 1;
+			int paddle0 = ftofADCData.component[i] - 1;
 
-		for (TdcAdcTOFHit hit : list) {
-			if (hit != null) {
-				try {
-					int sect0 = hit.sector - 1;
-					int paddle0 = hit.component - 1;
-
-					if (hit.layer == 1) {
-						_FTOF1AAccumulatedData[sect0][paddle0] += 1;
-					} else if (hit.layer == 2) {
-						_FTOF1BAccumulatedData[sect0][paddle0] += 1;
-					}
-					if (hit.layer == 3) {
-						_FTOF2AccumulatedData[sect0][paddle0] += 1;
-					}
-				} catch (ArrayIndexOutOfBoundsException e) {
-					Log.getInstance().warning("In accumulation, FTOF hit has bad indices: " + hit);
-				}
+			if (ftofADCData.layer[i] == 1) {
+				_FTOF1AAccumulatedData[sect0][paddle0] += 1;
+			} else if (ftofADCData.layer[i] == 2) {
+				_FTOF1BAccumulatedData[sect0][paddle0] += 1;
+			} else if (ftofADCData.layer[i] == 3) {
+				_FTOF2AccumulatedData[sect0][paddle0] += 1;
+			} else {
+				System.out.println("ERROR:  accumFTOF layer out of bounds: " + ftofADCData.layer[i]);
 			}
-
 		}
 
 	}
 
 	@Override
 	public void openedNewEventFile(String path) {
+		clear();
 	}
 
 	/**
@@ -930,6 +839,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	@Override
 	public void changedEventSource(ClasIoEventManager.EventSourceType source) {
+		clear();
 	}
 
 	/**
@@ -940,7 +850,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	private static double getAccumulationValues()[] {
 
-		int len = ColorScaleModel.getWeatherMapColors(8).length + 1;
+		int len = ColorScaleModel.getSimpleMapColors(8).length + 1;
 
 		double values[] = new double[len];
 
@@ -1060,120 +970,82 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		return 100.0 * (_DCAccumulatedData[sect0][supl0][lay0][wire0] / (double) _eventCount);
 	}
 
-	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return false;
-	}
 
 	// get the median of a 1D array of ints
-	private int getMedian(int[] data) {
+	private int getMax(int[] data) {
 
 		if ((data == null) || (data.length < 1)) {
 			return 0;
 		}
 
-		ArrayList<Integer> v = new ArrayList<>(data.length);
-
+		int max = 0;
 		for (int val : data) {
-			if (val != 0) {
-				v.add(val);
+			if (val > max) {
+				max = val;
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
-	// get the median of a 2D array of ints
-	private int getMedian(int[][] data) {
+	// get the max of a 2D array of ints
+	private int getMax(int[][] data) {
 
 		if (data == null) {
 			return 0;
 		}
 
-		ArrayList<Integer> v = new ArrayList<>(1000);
-
+		int max = 0;
 		for (int iarry[] : data) {
 			for (int val : iarry) {
-				if (val != 0) {
-					v.add(val);
+				if (val > max) {
+					max = val;
 				}
-
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
-	// get the median of a 3D array of ints
-	private int getMedian(int[][][] data) {
+	// get the max of a 3D array of ints
+	private int getMax(int[][][] data) {
 
 		if (data == null) {
 			return 0;
 		}
 
-		ArrayList<Integer> v = new ArrayList<>(1000);
+		int max = 0;
 
 		for (int iarry1[][] : data) {
 			for (int iarray2[] : iarry1) {
 				for (int val : iarray2) {
-					if (val != 0) {
-						v.add(val);
+					if (val > max) {
+						max = val;
 					}
 				}
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
-	// get the median of a 4D array of ints
-	private int getMedian(int[][][][] data) {
+	// get the max of a 4D array of ints
+	private int getMax(int[][][][] data) {
 
 		if (data == null) {
 			return 0;
 		}
 
-		ArrayList<Integer> v = new ArrayList<>(1000);
-
+		int max = 0;
 		for (int iarry1[][][] : data) {
 			for (int iarray2[][] : iarry1) {
 				for (int iarray3[] : iarray2) {
 					for (int val : iarray3) {
-						v.add(val);
+						if (val > max) {
+							max = val;
+						}
 					}
 				}
 			}
 		}
-
-		int size = v.size();
-		if (size == 0) {
-			return 0;
-		}
-		Collections.sort(v);
-		return v.get(size / 2);
+		return max;
 	}
 
 }

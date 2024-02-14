@@ -34,14 +34,13 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
+import cnuphys.ced.alldata.datacontainer.cvt.CosmicData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.ILabCoordinates;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.Cosmics;
-import cnuphys.ced.event.data.lists.CosmicList;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
@@ -96,7 +95,11 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	private CentralZHitDrawer _hitDrawer;
 
 	//bank matches
-	private static String _defMatches[] = {"BMT", "BST", "CVT", "CTOF"};
+	private static String _defMatches[] = {"BMT", "BST", "CND", "CVT", "CTOF"};
+
+	//data containers
+	private CosmicData _cosmicData = CosmicData.getInstance();
+	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
 
 
 	public CentralZView(Object... keyVals) {
@@ -151,8 +154,8 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 						+ ControlPanel.FIELDLEGEND +
 						ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH | DisplayBits.RECONHITS
-						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS |
-						DisplayBits.CVTRECTRAJ | DisplayBits.CVTP1TRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
+						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS | DisplayBits.CVTP1TRAJ | 
+						DisplayBits.CVTRECTRAJ | DisplayBits.CVTRECKFTRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
 				3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
@@ -322,42 +325,40 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	// draw cosmic ray tracks
 	private void drawCosmicTracks(Graphics g, IContainer container) {
+		
+		int count = _cosmicData.count();
+		if (count > 0) {
+			Shape oldClip = clipView(g);
 
-		CosmicList cosmics;
-		cosmics = Cosmics.getInstance().getCosmics();
+			Point p1 = new Point();
+			Point p2 = new Point();
 
-		if ((cosmics == null) || cosmics.isEmpty()) {
-			return;
+			for (int i = 0; i < count; i++) {
+				double y1 = 100;
+				double y2 = -100;
+				double x1 = _cosmicData.trkline_yx_slope[i] * y1 + _cosmicData.trkline_yx_interc[i];
+				double x2 = _cosmicData.trkline_yx_slope[i] * y2 + _cosmicData.trkline_yx_interc[i];
+				double z1 = _cosmicData.trkline_yz_slope[i] * y1 + _cosmicData.trkline_yz_interc[i];
+				double z2 = _cosmicData.trkline_yz_slope[i] * y2 + _cosmicData.trkline_yz_interc[i];
+
+				// convert to mm
+				x1 *= 10;
+				x2 *= 10;
+				y1 *= 10;
+				y2 *= 10;
+				z1 *= 10;
+				z2 *= 10;
+				labToLocalWithAlpha(x1, y1, z1, p1);
+				labToLocalWithAlpha(x2, y2, z2, p2);
+
+				g.setColor(Color.red);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);				
+			}
+			
+			g.setClip(oldClip);
 		}
 
-		Shape oldClip = clipView(g);
 
-		Point p1 = new Point();
-		Point p2 = new Point();
-		for (Cosmic cosmic : cosmics) {
-			double y1 = 100;
-			double y2 = -100;
-			double x1 = cosmic.trkline_yx_slope * y1 + cosmic.trkline_yx_interc;
-			double x2 = cosmic.trkline_yx_slope * y2 + cosmic.trkline_yx_interc;
-			double z1 = cosmic.trkline_yz_slope * y1 + cosmic.trkline_yz_interc;
-			double z2 = cosmic.trkline_yz_slope * y2 + cosmic.trkline_yz_interc;
-
-			// convert to mm
-			x1 *= 10;
-			x2 *= 10;
-			y1 *= 10;
-			y2 *= 10;
-			z1 *= 10;
-			z2 *= 10;
-			labToLocalWithAlpha(x1, y1, z1, p1);
-			labToLocalWithAlpha(x2, y2, z2, p2);
-
-			g.setColor(Color.red);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-
-		}
-
-		g.setClip(oldClip);
 	}
 
 	// draw the panels
@@ -747,6 +748,17 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		// hit feedback
 		_hitDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
+		
+		if (showReconHits()) {
+			for (int i = 0; i < bstRecHitData.count(); i++) {
+				if (bstRecHitData.contains(i, screenPoint)) {
+					bstRecHitData.hitFeedback(i, feedbackStrings);
+					break;
+				}
+			}
+			
+		}
+
 
 	}
 
@@ -941,7 +953,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		return view;
 
 	}
-	
+
 	/**
 	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank

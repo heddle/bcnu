@@ -1,6 +1,7 @@
 package bCNU3D;
 
 import java.awt.Color;
+
 import com.jogamp.graph.geom.SVertex;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
@@ -53,7 +54,7 @@ public class Support3D {
 
 	/**
 	 * Draw a set of points
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param coords   the vertices as [x, y, z, x, y, z, ...]
 	 * @param color    the color
@@ -83,7 +84,7 @@ public class Support3D {
 
 	/**
 	 * Draw a set of points
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param coords   the vertices as [x, y, z, x, y, z, ...]
 	 * @param fill     the fill color
@@ -102,12 +103,12 @@ public class Support3D {
 
 	/**
 	 * Draw a single point using double coordinates
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param x        the x coordinate
 	 * @param y        the y coordinate
 	 * @param z        the z coordinate
-	 * 
+	 *
 	 * @param color    the color
 	 * @param size     the point's pixel size
 	 */
@@ -118,12 +119,12 @@ public class Support3D {
 
 	/**
 	 * Draw a point using float coordinates
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param x        the x coordinate
 	 * @param y        the y coordinate
 	 * @param z        the z coordinate
-	 * 
+	 *
 	 * @param color    the color
 	 * @param size     the points size
 	 * @param circular
@@ -194,7 +195,7 @@ public class Support3D {
 
 	/**
 	 * Draw a wire sphere
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param x        x center
 	 * @param y        y center
@@ -214,10 +215,10 @@ public class Support3D {
 		gl.glPopMatrix();
 
 	}
-	
+
 	/**
 	 * Draw a solid sphere
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param x        x center
 	 * @param y        y center
@@ -237,7 +238,7 @@ public class Support3D {
 		gl.glPopMatrix();
 
 	}
-	
+
 	/**
 	 * Draw a rectangular solid
 	 * @param drawable
@@ -303,7 +304,7 @@ public class Support3D {
 		gl.glVertex3f(xm, ym, zp);
 		gl.glVertex3f(xm, ym, zm);
 		gl.glEnd();
-		
+
 		if (frame) {
 			Support3D.setColor(gl, color.darker());
 
@@ -315,7 +316,7 @@ public class Support3D {
 			gl.glVertex3f(xm, yp, zm);
 			gl.glEnd();
 
-			
+
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glVertex3f(xm, yp, zm);
@@ -323,8 +324,8 @@ public class Support3D {
 			gl.glVertex3f(xp, ym, zm);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glEnd();
-		
-			
+
+
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, yp, zm);
 			gl.glVertex3f(xm, yp, zp);
@@ -332,7 +333,7 @@ public class Support3D {
 			gl.glVertex3f(xp, yp, zm);
 			gl.glVertex3f(xm, yp, zm);
 			gl.glEnd();
-		
+
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glVertex3f(xm, ym, zp);
@@ -372,7 +373,7 @@ public class Support3D {
 
 		drawQuads(drawable, coords, color, (frame ? color.darker() : null), lineWidth);
 	}
-	
+
 	/**
 	 * @param drawable  the openGL drawable
 	 * @param coords    the coordinate array
@@ -516,7 +517,7 @@ public class Support3D {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param coords    the triangle as [x1, y1, ..., y3, z3]
 	 * @param color     the color
@@ -535,7 +536,7 @@ public class Support3D {
 
 	/**
 	 * Break one triangle into smaller triangles
-	 * 
+	 *
 	 * @param coords the triangle as [x1, y1, ..., y3, z3]
 	 * @param level  [1..] number of times called recursively. If level is n, get
 	 *               4^n triangles
@@ -564,7 +565,7 @@ public class Support3D {
 
 	/**
 	 * Break one triangle into four by connecting the midpoints
-	 * 
+	 *
 	 * @param coords the triangle as [x1, y1, ..., y3, z3] starting at index
 	 * @param index  to first vertex, where coords is assume to contain a list of
 	 *               triangles each one requiring 9 numbers
@@ -595,7 +596,7 @@ public class Support3D {
 
 	/**
 	 * Break one triangle into four by connecting the midpoints
-	 * 
+	 *
 	 * @param coords the triangle as [x1, y1, ..., y3, z3]
 	 * @return all four triangles in a coordinate array
 	 */
@@ -618,7 +619,7 @@ public class Support3D {
 
 	/**
 	 * Draw a triangle from a coordinate array
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param coords    a set of points
 	 * @param index1    "three index" of start of first corner, which will be the
@@ -665,7 +666,7 @@ public class Support3D {
 
 	/**
 	 * Draw a cone
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param x1       x coordinate of center of base
 	 * @param y1       y coordinate of center of base
@@ -688,8 +689,9 @@ public class Support3D {
 
 		float v = (float) Math.sqrt(vx * vx + vy * vy + vz * vz);
 		float ax = (float) (57.2957795 * Math.acos(vz / v));
-		if (vz < 0.0)
+		if (vz < 0.0) {
 			ax = -ax;
+		}
 		float rx = -vy * vz;
 		float ry = vx * vz;
 
@@ -708,7 +710,7 @@ public class Support3D {
 
 	/**
 	 * Draw a 3D tube
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 * @param x1       x coordinate of one end
 	 * @param y1       y coordinate of one end
@@ -735,8 +737,9 @@ public class Support3D {
 
 		float v = (float) Math.sqrt(vx * vx + vy * vy + vz * vz);
 		float ax = (float) (57.2957795 * Math.acos(vz / v));
-		if (vz < 0.0)
+		if (vz < 0.0) {
 			ax = -ax;
+		}
 		float rx = -vy * vz;
 		float ry = vx * vz;
 
@@ -777,7 +780,7 @@ public class Support3D {
 
 	/**
 	 * Draw a 3D line
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param x1        x coordinate of one end
 	 * @param y1        y coordinate of one end
@@ -803,7 +806,7 @@ public class Support3D {
 
 	/**
 	 * Draw a 3D line
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param p0        one end point as [x, y, z]
 	 * @param p1        other end point as [x, y, z]
@@ -817,7 +820,7 @@ public class Support3D {
 
 	/**
 	 * Draw a 3D line
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param coords    the line as [x1, y1, z1, x2, y2, z2]
 	 * @param color     the color
@@ -830,7 +833,7 @@ public class Support3D {
 
 	/**
 	 * Draw a polyline
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param coords    the vertices as [x, y, z, x, y, z, ...]
 	 * @param color     the color
@@ -855,7 +858,7 @@ public class Support3D {
 
 	/**
 	 * Draw a two color 3D line
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param gl        the gl context
 	 * @param x1        x coordinate of one end
@@ -898,7 +901,7 @@ public class Support3D {
 
 	/**
 	 * Draw a two color polyline
-	 * 
+	 *
 	 * @param drawable  the OpenGL drawable
 	 * @param coords    the vertices as [x, y, z, x, y, z, ...]
 	 * @param color1    one color
@@ -942,7 +945,7 @@ public class Support3D {
 
 	/**
 	 * Set a color based on an awt color
-	 * 
+	 *
 	 * @param gl    the graphics context
 	 * @param color the awt color
 	 */
@@ -956,7 +959,7 @@ public class Support3D {
 
 	/**
 	 * Get a simple vertex
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate
@@ -968,13 +971,13 @@ public class Support3D {
 
 	/**
 	 * Convenience method to convert a variable list of floats into a float array.
-	 * 
+	 *
 	 * @param v the variable length list of floats
 	 * @return the corresponding array
 	 */
 	public static float[] toArray(float... v) {
 		return v;
 	}
-	
+
 
 }

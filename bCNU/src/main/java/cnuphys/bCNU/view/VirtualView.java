@@ -8,8 +8,6 @@ import java.awt.GraphicsEnvironment;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -22,7 +20,6 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 import javax.swing.event.InternalFrameEvent;
 import javax.swing.event.InternalFrameListener;
 
@@ -111,18 +108,6 @@ public class VirtualView extends BaseView
 		setAfterDraw();
 
 		_instance = this;
-
-		ActionListener taskPerformer = new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent evt) {
-				if (_refreshPending) {
-					getContainer().refresh();
-					_refreshPending = false;
-				}
-			}
-		};
-		new Timer(1500, taskPerformer).start();
-
 
 	}
 

@@ -9,10 +9,10 @@ import org.jlab.io.base.DataEvent;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
+import cnuphys.ced.alldata.datacontainer.cal.ECalReconData;
+import cnuphys.ced.alldata.datacontainer.cal.PCalReconData;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.frame.CedColors;
-import cnuphys.lund.LundId;
 import item3D.Item3D;
 
 public class RecDrawer3D extends Item3D {
@@ -26,6 +26,9 @@ public class RecDrawer3D extends Item3D {
 	private static final float POINTSIZE = 5f;
 	private CedPanel3D _cedPanel3D;
 
+//data containers
+	ECalReconData ecRecData = ECalReconData.getInstance();
+	PCalReconData pcalRecData = PCalReconData.getInstance();
 
 
 	public RecDrawer3D(CedPanel3D panel3D) {
@@ -45,40 +48,40 @@ public class RecDrawer3D extends Item3D {
 
 			//show any data from REC::Calorimiter?
 			if (((ForwardPanel3D) _panel3D).showRecCal()) {
-				showEconCalorimeter(drawable);
+				showReconCalorimeter(drawable);
 			}
 		}
 	}
 
 
 	//show data from REC::Calorimeter
-	private void showEconCalorimeter(GLAutoDrawable drawable) {
+	private void showReconCalorimeter(GLAutoDrawable drawable) {
 
-		RECCalorimeter recCal = RECCalorimeter.getInstance();
-		if (recCal.isEmpty()) {
-			return;
+		if (_cedPanel3D.showECAL()) {
+			for (int i = 0; i < ecRecData.count(); i++) {
+				float x = ecRecData.x.get(i);
+				float y = ecRecData.y.get(i);
+				float z = ecRecData.z.get(i);
+				Support3D.drawPoint(drawable, x, y, z, Color.black, POINTSIZE, true);
+				float radius = ecRecData.getRadius(ecRecData.energy.get(i));
+				if (radius > 0) {
+					Support3D.solidSphere(drawable, x, y, z, radius, 40, 40, CedColors.RECCalFill);
+				}
+			} // end for
 		}
 
-		for (int i = 0; i < recCal.count; i++) {
-
-			float radius = recCal.getRadius(recCal.energy[i]);
-			LundId lid = recCal.getLundId(i);
-
-			if ((recCal.layer[i] <= 3) && _cedPanel3D.showPCAL()) {
-				Support3D.drawPoint(drawable, recCal.x[i], recCal.y[i], recCal.z[i], Color.black, POINTSIZE, true);
-
+		if (_cedPanel3D.showPCAL()) {
+			for (int i = 0; i < pcalRecData.count(); i++) {
+				float x = pcalRecData.x.get(i);
+				float y = pcalRecData.y.get(i);
+				float z = pcalRecData.z.get(i);
+				Support3D.drawPoint(drawable, x, y, z, Color.black, POINTSIZE, true);
+				float radius = pcalRecData.getRadius(pcalRecData.energy.get(i));
 				if (radius > 0) {
-					Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-					Support3D.solidSphere(drawable, recCal.x[i], recCal.y[i], recCal.z[i], radius, 40, 40, color);
+					Support3D.solidSphere(drawable, x, y, z, radius, 40, 40, CedColors.RECCalFill);
 				}
-			} else if ((recCal.layer[i] > 3) && _cedPanel3D.showECAL()) {
-				Support3D.drawPoint(drawable, recCal.x[i], recCal.y[i], recCal.z[i], Color.black, POINTSIZE, true);
-				if (radius > 0) {
-					Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-					Support3D.solidSphere(drawable, recCal.x[i], recCal.y[i], recCal.z[i], radius, 40, 40, color);
-				}
-			}
-		} // end for
+			} // end for
+		}
 
 	}
 

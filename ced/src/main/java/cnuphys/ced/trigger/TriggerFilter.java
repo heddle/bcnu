@@ -2,15 +2,14 @@ package cnuphys.ced.trigger;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.filter.AEventFilter;
 
 public class TriggerFilter extends AEventFilter {
 
-	// the bank name
-	private static String _columnName = "RUN::trigger.trigger";
+	//data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// the actual bits
 	private int _bits;
@@ -27,18 +26,18 @@ public class TriggerFilter extends AEventFilter {
 	}
 
 	@Override
-	public boolean pass(DataEvent event) {
+	public boolean pass() {
 
+		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
 		if (event == null) {
 			return false;
 		}
-
-		ColumnData cd = DataManager.getInstance().getColumnData(_columnName);
-		if ((cd == null) || !event.hasBank(cd.getBankName())) {
+		
+		if (!event.hasBank("RUN::trigger")) {
 			return false;
 		}
 
-		int triggerData[] = DataManager.getInstance().getIntArray(event, _columnName);
+		int triggerData[] = _dataWarehouse.getInt("RUN::trigger", "trigger");
 
 		int triggerWord = triggerData[0];
 
@@ -60,7 +59,6 @@ public class TriggerFilter extends AEventFilter {
 	@Override
 	protected void toggleActiveState() {
 		super.toggleActiveState();
-		ClasIoEventManager.getInstance().resetIndexMap();
 		TriggerDialog.getInstance().getTriggerActiveCheckBox().setSelected(isActive());
 	}
 
@@ -137,7 +135,6 @@ public class TriggerFilter extends AEventFilter {
 		}
 
 		public Builder setActive(boolean active) {
-			ClasIoEventManager.getInstance().resetIndexMap();
 			_filter.setActive(active);
 			return this;
 		}

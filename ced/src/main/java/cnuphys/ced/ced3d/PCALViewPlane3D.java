@@ -5,10 +5,7 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.bCNU.log.Log;
-import cnuphys.ced.event.data.AdcECALHit;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.geometry.PCALGeometry;
 
 public class PCALViewPlane3D extends DetectorItem3D {
@@ -58,33 +55,26 @@ public class PCALViewPlane3D extends DetectorItem3D {
 	@Override
 	public void drawData(GLAutoDrawable drawable) {
 
-		AdcECALHitList hits = AllEC.getInstance().getHits();
-		if ((hits != null) && !hits.isEmpty()) {
+		//draw adc data
+		PCalADCData pcalADCData = PCalADCData.getInstance();
+		int count = pcalADCData.count();
+		if (count == 0) {
+			return;
+		}
 
-			float coords[] = new float[24];
+		float coords[] = new float[24];
 
-			for (AdcECALHit hit : hits) {
-				if (hit != null) {
-					try {
-						if (hit.layer < 4) {
-
-							int view = hit.layer; // 123 for uvwuvw
-
-							if ((_sector == hit.sector) && (_view == view)) {
-								int strip = hit.component;
-
-								Color color = hits.adcColor(hit, AllEC.getInstance().getMaxPCALAdc());
-
-								PCALGeometry.getStrip(_sector, _view, strip, coords);
-								drawStrip(drawable, color, coords);
-							}
-						}
-					} catch (Exception e) {
-						Log.getInstance().exception(e);
-					}
-				} // hit not null
-			} // hit loop
-		} // have hits
+		for (int i = 0; i < count; i++) {
+			if (pcalADCData.sector.get(i) == _sector) {
+				if (pcalADCData.view.get(i) == (_view - 1)) {
+					int adc = pcalADCData.adc.get(i);
+					int strip = pcalADCData.strip.get(i);
+					Color color = pcalADCData.getADCColor(adc);
+					PCALGeometry.getStrip(_sector, _view, strip, coords);
+					drawStrip(drawable, color, coords);
+				}
+			}
+		}
 
 	}
 

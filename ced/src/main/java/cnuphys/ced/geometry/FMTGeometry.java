@@ -62,8 +62,9 @@ public class FMTGeometry {
 	// ----- end cut based cand select
 
 	public static synchronized void Load() {
-		if (areConstantsLoaded)
+		if (areConstantsLoaded) {
 			return;
+		}
 
 		FVT_Zlayer[0] = 30.2967;
 		FVT_Zlayer[1] = 31.4897;
@@ -161,14 +162,18 @@ public class FMTGeometry {
 		// range is from 833 to 1024 ( 832 <= i < 1024)
 
 		int region = 0;
-		if (i >= 0 && i < 320)
+		if (i >= 0 && i < 320) {
 			region = 1;
-		if (i >= 320 && i < 512)
+		}
+		if (i >= 320 && i < 512) {
 			region = 2;
-		if (i >= 512 && i < 832)
+		}
+		if (i >= 512 && i < 832) {
 			region = 3;
-		if (i >= 832 && i < 1024)
+		}
+		if (i >= 832 && i < 1024) {
 			region = 4;
+		}
 
 		return region;
 	}

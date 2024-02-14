@@ -73,7 +73,7 @@ public class SplashWindowCED extends JWindow {
 			}
 		}
 
-		addTimer(2500);
+		addTimer(3000);
 
 		addSouth();
 		addCenter(bg, (_cnu2 != null) ? _cnu2.getIconWidth() : width);
@@ -123,13 +123,6 @@ public class SplashWindowCED extends JWindow {
 		final Dimension size = new Dimension(_cnu2.getIconWidth() + 20, _cnu2.getIconHeight() + 20);
 
 		JLabel label = new JLabel("") {
-
-//        	@Override
-//        	public Insets getInsets() {
-//        		Insets def = super.getInsets();
-//        		return new Insets(def.top + 4, def.left + 4, def.bottom + 4,
-//        				def.right + 4);
-//        	}
 
 			@Override
 			public Dimension getPreferredSize() {

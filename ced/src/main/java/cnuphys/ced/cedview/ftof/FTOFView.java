@@ -23,7 +23,6 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.ColumnData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.component.ControlPanel;
@@ -60,9 +59,6 @@ public class FTOFView extends HexView {
 
 	//for handling highlight data
 	private FTOFHighlightHandler _highlightHandler;
-
-	//the max adc in the current event
-	private int _maxAdc;
 
 	//world limits
 	protected static Rectangle2D.Double _defaultWorld = new Rectangle2D.Double(_xsize, -_ysize, -2 * _xsize,
@@ -204,7 +200,13 @@ public class FTOFView extends HexView {
 
 
 
-	//get the world based polygon for the paddle
+	/**
+	 * Get the world based polygon for the paddle
+	 * @param sector 1-based sector
+	 * @param panel 0, 1, 2 for 1A, 1B, 2
+	 * @param paddleId 1-based paddle id
+	 * @return the world based polygon for the paddle
+	 */
 	private Point2D.Double[] getWorldPoly(int sector, int panel, int paddleId) {
 		String hash = "" + sector + "|" + panel + "|" + paddleId;
 		Point2D.Double wp[] = polyHash.get(hash);
@@ -220,7 +222,14 @@ public class FTOFView extends HexView {
 		return wp;
 	}
 
-	//get the paddle polygon
+	/**
+	 * Get the world based polygon for the paddle
+	 * @param container the container
+	 * @param sector 1-based sector
+	 * @param panel 0, 1, 2 for 1A, 1B, 2
+	 * @param paddleId 1-based paddle id
+	 * @param poly the polygon to fill
+	 */
 	public void getPaddlePolygon(IContainer container,  int sector, int panel, int paddleId, Polygon poly) {
 		Point2D.Double wp[] = getWorldPoly(sector, panel, paddleId);
 		poly.reset();
@@ -331,14 +340,6 @@ public class FTOFView extends HexView {
 	}
 
 	/**
-	 * Get the max adc in the current event for color scaling
-	 * @return
-	 */
-	public int getMaxADC() {
-		return _maxAdc;
-	}
-
-	/**
 	 * A new event has arrived.
 	 *
 	 * @param event the new event.
@@ -346,15 +347,6 @@ public class FTOFView extends HexView {
 	@Override
 	public void newClasIoEvent(final DataEvent event) {
 		super.newClasIoEvent(event);
-
-		//useful to cache the max adc
-		_maxAdc = 0;
-		int adc[] = ColumnData.getIntArray("FTOF::adc.ADC");
-		if (adc != null) {
-			for (int adcval : adc) {
-				_maxAdc = Math.max(_maxAdc, adcval);
-			}
-		}
 	}
 
 	/**

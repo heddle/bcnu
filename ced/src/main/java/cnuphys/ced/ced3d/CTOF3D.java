@@ -4,15 +4,16 @@ import java.awt.Color;
 
 import com.jogamp.opengl.GLAutoDrawable;
 
-import cnuphys.ced.event.data.CTOF;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.lund.X11Colors;
 
 public class CTOF3D extends DetectorItem3D {
 
 	// child layer items
 	private CTOFPaddle3D _paddles[];
+
+	//data containers
+	private CTOFADCData _adcData = CTOFADCData.getInstance();
 
 	/**
 	 * The 3D CND
@@ -32,18 +33,17 @@ public class CTOF3D extends DetectorItem3D {
 	@Override
 	public void drawShape(GLAutoDrawable drawable) {
 
-		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
-		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
-		TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
+		Color color = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
 
 		for (int paddleId = 1; paddleId <= 48; paddleId++) {
+			_paddles[paddleId - 1].drawPaddle(drawable, color);
+		}
 
-			TdcAdcTOFHit hit = null;
-			if ((hits != null) && !hits.isEmpty()) {
-				hit = hits.get(0, 0, paddleId);
-			}
-
-			_paddles[paddleId - 1].drawPaddle(drawable, hit == null ? noHitColor : hitColor);
+		for (int i = 0; i < _adcData.count(); i++) {
+			short paddleId = _adcData.component[i];
+			byte order = _adcData.order[i];
+			Color fc = _adcData.getColor((byte)1, (byte)1, paddleId, order);
+			_paddles[paddleId-1].drawPaddle(drawable, fc);
 		}
 	}
 

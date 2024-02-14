@@ -76,8 +76,8 @@ public class MatchedBankPanel extends JPanel {
 
 	//create the bank panel
 	private void makeBankPanel() {
-		_presentBankPanel = new ClasIoPresentBankPanel(_view, null, 16, 3);
-		add(_presentBankPanel, BorderLayout.CENTER);
+		_presentBankPanel = ClasIoPresentBankPanel.createPresentBankPanel(_view, null, 16);
+		add(_presentBankPanel.getScrollPane(), BorderLayout.CENTER);
 	}
 
 	//convert the string in the text area to an array of matches

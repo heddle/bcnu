@@ -31,11 +31,10 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.DC;
 import cnuphys.ced.geometry.GeoConstants;
 
 /**
@@ -126,6 +125,8 @@ public class AllDCView extends CedView implements IRollOverListener {
 	//bank matches
 	private static String _defMatches[] = {"DC:", "HitBased", "TimeBased"};
 
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
 	/**
 	 * Create an allDCView
@@ -384,8 +385,8 @@ public class AllDCView extends CedView implements IRollOverListener {
 
 		int sector = getSector(container, screenPoint, worldPoint);
 
-		double totalOcc = 100. * DC.getInstance().totalOccupancy();
-		double sectorOcc = 100. * DC.getInstance().totalSectorOccupancy(sector);
+		double totalOcc = 100. * _dcData.totalOccupancy();
+		double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
 		String occStr = "Total DC occ " + DoubleFormat.doubleFormat(totalOcc, 2) + "%" + " sector " + sector + " occ "
 				+ DoubleFormat.doubleFormat(sectorOcc, 2) + "%";
 		feedbackStrings.add("$aqua$" + occStr);
@@ -493,16 +494,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 		return _controlPanel.getAllDCDisplayPanel().showAITBHits();
 	}
 
-	/**
-	 * Display neural net marked hits?
-	 *
-	 * @return <code> if we should display neural net marked hits
-	 */
-	public boolean showNNHits() {
-		return _controlPanel.getAllDCDisplayPanel().showNNHits();
-	}
-
-
 
 	@Override
 	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
@@ -561,33 +552,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 		refresh();
 	}
 
-	/**
-	 * In the BankDataTable a row was selected. Notify listeners who may want to highlight
-	 * @param bankName the name of the bank
-	 * @param index the 1-based index into the bank
-	 */
-	@Override
-	public void dataSelected(String bankName, int index) {
-		if ("DC::tdc".equals(bankName)) {
-
-			int tdc = ClasIoEventManager.getInstance().getInt(bankName, "TDC", index-1);
-			System.err.println("SELECTED TDC: " + tdc);
-
-//			DCTdcHitList hits = DC.getInstance().getTDCHits();
-//			if ((hits != null) && (hits.size() >= index)) {
-//				DCTdcHit hit = hits.get(index-1);
-//
-//				int sector = hit.sector;
-//				int layer = hit.layer36;
-//				int wire = hit.wire;
-//				int tdc = hit.tdc;
-//
-//				System.err.println(String.format("In AllDCView highlight sect: %d  lay: %d  wire: %d with tdc: %d", sector, layer, wire, tdc));
-//			}
-
-			refresh();
-		}
-	}
 
 
 }

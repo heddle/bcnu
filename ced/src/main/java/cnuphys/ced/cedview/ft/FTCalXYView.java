@@ -17,14 +17,14 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
+import cnuphys.ced.alldata.datacontainer.ftcal.FTCalHitData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.FTCAL;
 import cnuphys.ced.geometry.FTCALGeometry;
 
 public class FTCalXYView extends CedXYView {
@@ -41,7 +41,18 @@ public class FTCalXYView extends CedXYView {
 	// the CND xy polygons
 	FTCalXYPolygon ftCalPoly[] = new FTCalXYPolygon[332];
 
-	private short[] indices = new short[476];
+	//the reverse mappings
+	private short[] componentToIndex = new short[476];
+
+	//bank matches
+	private static String _defMatches[] = {"FTCAL"};
+
+	//good ids are the 332 component ids
+	private static final short[] goodIds = FTCALGeometry.getGoodIds();
+
+	//data containers
+	private FTCalADCData adcData = FTCalADCData.getInstance();
+	private FTCalHitData hitData = FTCalHitData.getInstance();
 
 	/**
 	 * Create a FTCalXYView View
@@ -50,15 +61,13 @@ public class FTCalXYView extends CedXYView {
 	public FTCalXYView(Object... keyVals) {
 		super(keyVals);
 
-		for (int i = 0; i < indices.length; i++) {
-			indices[i] = -1;
+		for (int i = 0; i < componentToIndex.length; i++) {
+			componentToIndex[i] = -1;
 		}
 
-		// good IDs are the component ids
-		short goodIds[] = FTCALGeometry.getGoodIds();
 		for (int i = 0; i < 332; i++) {
 			int id = goodIds[i];
-			indices[id] = (short) i; // reverse mapping
+			componentToIndex[id] = (short) i; // reverse mapping
 			ftCalPoly[i] = new FTCalXYPolygon(id);
 		}
 
@@ -90,11 +99,18 @@ public class FTCalXYView extends CedXYView {
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND,
-				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH, 3, 5);
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
+				DisplayBits.ACCUMULATION + DisplayBits.MCTRUTH + DisplayBits.RECONHITS, 3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
+
+		//i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+		view._controlPanel.getMatchedBankPanel().update();
+
 
 		return view;
 	}
@@ -201,23 +217,36 @@ public class FTCalXYView extends CedXYView {
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
 
-		AdcLRHitList hits = FTCAL.getInstance().getHits();
+		for (int i = 0; i < adcData.count(); i++) {
+			short component = adcData.component[i];
+			short index = componentToIndex[component];
+			int adc = adcData.adc[i];
+			if (index >= 0) {
+				FTCalXYPolygon poly = ftCalPoly[index];
+				Color color = adcData.getADCColor(adc);
+				g.setColor(color);
+				g.fillPolygon(poly);
+				g.setColor(Color.black);
+				g.drawPolygon(poly);
+			}
+		}
 
-		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcLRHit hit : hits) {
-				if (hit != null) {
-					short id = hit.component;
-					short index = indices[id];
-					if (index >= 0) {
-						FTCalXYPolygon poly = ftCalPoly[index];
-						Color color = hits.adcColor(hit);
-						g.setColor(color);
-						g.fillPolygon(poly);
-						g.setColor(Color.black);
-						g.drawPolygon(poly);
-					} else {
-						System.err.println("indexing problem in FT");
-					}
+		// draw based on hits, but the FTCal hit data doesn't map to
+		// one of out hit arrays because therer is no sector, layer, component
+		// so go directly to the bank
+
+		if (showReconHits()) {
+			int count = hitData.count();
+			if (count > 0) {
+				Point pp = new Point();
+				Point2D.Double wp = new Point2D.Double();
+				float x[] = hitData.x;
+				float y[] = hitData.y;
+				for (int i = 0; i < count; i++) {
+					wp.setLocation(x[i], y[i]);
+					container.worldToLocal(pp, wp);
+					DataDrawSupport.drawReconHit(g, pp);
+					hitData.setLocation(i, pp);
 				}
 			}
 		}
@@ -226,23 +255,23 @@ public class FTCalXYView extends CedXYView {
 	// accumulated hits drawer
 	private void drawAccumulatedHits(Graphics g, IContainer container) {
 
-		int medianHit = AccumulationManager.getInstance().getMedianFTCALCount();
+		int maxHit = AccumulationManager.getInstance().getMaxFTCALCount();
 
 		int acchits[] = AccumulationManager.getInstance().getAccumulatedFTCALData();
+
+		//loop will be 0 to 475
 		for (int i = 0; i < acchits.length; i++) {
 			if (acchits[i] > 0) {
-				int index = indices[i];
+				int index = componentToIndex[i];
 				if (index >= 0) {
 					FTCalXYPolygon poly = ftCalPoly[index];
-					double fract = getMedianSetting() * (((double) acchits[i]) / (1 + medianHit));
-
+					int hitCount = acchits[i];
+					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color color = AccumulationManager.getInstance().getColor(getColorScaleModel(), fract);
 					g.setColor(color);
 					g.fillPolygon(poly);
 					g.setColor(Color.black);
 					g.drawPolygon(poly);
-				} else {
-					System.err.println("indexing problem in FTCAL");
 				}
 			}
 		}
@@ -272,41 +301,49 @@ public class FTCalXYView extends CedXYView {
 
 		basicFeedback(container, screenPoint, worldPoint, "cm", feedbackStrings);
 
-		int xindex = FTCALGeometry.valToIndex(worldPoint.x);
-		if (xindex != 0) {
-			int yindex = FTCALGeometry.valToIndex(worldPoint.y);
-			if (yindex != 0) {
+		int inIndex = -1;
 
-				boolean found = false;
+		for (int index = 0; index < ftCalPoly.length; index++) {
+			FTCalXYPolygon poly = ftCalPoly[index];
+            if (poly.contains(screenPoint)) {
+                String s = String.format("FTCAL index: %d", poly.paddleId);
+                feedbackStrings.add(s);
+                inIndex = index;
+                break;
+            }
+		}
 
-				for (int index = 0; index < ftCalPoly.length; index++) {
-					FTCalXYPolygon poly = ftCalPoly[index];
-					found = poly.getFeedbackStrings(container, screenPoint, worldPoint, feedbackStrings);
-
-					if (found) {
-
-						AdcLRHitList hits = FTCAL.getInstance().getHits();
-						if ((hits != null) && !hits.isEmpty()) {
-							short component = FTCALGeometry.getGoodId(index);
-							AdcLRHit hit = hits.get(1, 1, component);
-
-							// hack
-							if (hit == null) {
-								hit = hits.get(0, 0, component);
-							}
-							if (hit != null) {
-								hit.tdcAdcFeedback(feedbackStrings);
-							}
-						}
-
-						break;
-					}
-				} // end for index
-
+		if (inIndex >= 0) {
+			FTCalADCData adcData = FTCalADCData.getInstance();
+			for (int i = 0; i < adcData.count(); i++) {
+				short component = adcData.component[i];
+				short index = componentToIndex[component];
+				if (index == inIndex) {
+					adcData.adcFeedback("FTCAL", i, feedbackStrings);
+				}
 			}
 		}
 
+
+		// draw based on hits, but the FTCal hit data doesn't map to
+		// one of out hit arrays because therer is no sector, layer, component
+		// so go directly to the bank
+
+		if (showReconHits()) {
+
+
+			int count = hitData.count();
+			if (count > 0) {
+				for (int i = 0; i < count; i++) {
+					if (hitData.contains(i, screenPoint)) {
+						hitData.recFeedback("HTTC", i, feedbackStrings);
+						break;
+					}
+				}
+			}
+		}
 	}
+
 
 	/**
 	 * Clone the view.

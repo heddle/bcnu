@@ -17,7 +17,7 @@ public class Cylinder extends Item3D {
 	private float _y2;
 	private float _z2;
 	private Color _color;
-	
+
 	private boolean _extend;
 	private float _extensionFactor = 2;
 
@@ -33,7 +33,7 @@ public class Cylinder extends Item3D {
 		_z2 = z2;
 		_color = color;
 	}
-	
+
 	/**
 	 * Set whether we draw the cylinder longer than its defining center line.
 	 * @param extend if <code>true</code> draw the cylinder longer than its defining center line.
@@ -41,7 +41,7 @@ public class Cylinder extends Item3D {
 	public void setExtend(boolean extend) {
 		_extend = extend;
 	}
-	
+
 	/**
 	 * If drawing extended, what factor to extend by
 	 * @param extensionFactor the extension factor
@@ -60,9 +60,9 @@ public class Cylinder extends Item3D {
 			float dx = _x2 - _x1;
 			float dy = _y2 - _y1;
 			float dz = _z2 - _z1;
-			
+
 			float sm1 = _extensionFactor-1;
-			
+
 			float x1 = _x1 - sm1*dx;
 			float x2 = _x1 + _extensionFactor*dx;
 
@@ -73,7 +73,7 @@ public class Cylinder extends Item3D {
 			float z2 = _z1 + _extensionFactor*dz;
 			Support3D.drawTube(drawable, x1, y1, z1, x2, y2, z2, _radius, _color);
 
-		} 
+		}
 		else {
 			Support3D.drawTube(drawable, _x1, _y1, _z1, _x2, _y2, _z2, _radius, _color);
 		}

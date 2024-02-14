@@ -19,7 +19,7 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.ced.event.data.DataDrawSupport;
+import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.frame.CedColors;
 
 /**
@@ -82,6 +82,7 @@ public class DrawingLegend extends JPanel {
 		add(crossBMT());
 		add(docaTB());
 		add(trajPointRec());
+		add(kfPointRec());
 		add(p1PointRec());
 		add(hitStripMidpoint());
 		add(trackTB());
@@ -227,7 +228,7 @@ public class DrawingLegend extends JPanel {
 				super.paintComponent(g);
 				Point pp = new Point();
 				pp.setLocation(X, Y);
-				DataDrawSupport.drawReconCluster(g, pp);
+				DataDrawSupport.drawCluster(g, pp);
 				quickString(g, X+8, Y, "Recon Cluster ");
 			}
 		};
@@ -242,7 +243,7 @@ public class DrawingLegend extends JPanel {
 				super.paintComponent(g);
 				Point pp = new Point();
 				pp.setLocation(X+3, Y);
-				DataDrawSupport.drawReconClusterHighlight(g, pp);
+				DataDrawSupport.drawClusterHighlight(g, pp);
 				quickString(g, X+15, Y, "Highlight Cluster ");
 			}
 		};
@@ -369,6 +370,19 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
+	
+	//kf trajectory point
+	private LComp kfPointRec() {
+		LComp comp = new LComp() {
+			@Override
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				paintKFTrajPoint(g, X, Y);
+			}
+		};
+		return comp;
+	}
+
 
 	//hit strip midpoint
 	private LComp hitStripMidpoint() {
@@ -502,13 +516,19 @@ public class DrawingLegend extends JPanel {
 		quickString(g, x, y, "Rec Traj Pnt");
 	}
 
-	private void paintP1TrajPoint(Graphics g, int x, int y) {
+	private void paintKFTrajPoint(Graphics g, int x, int y) {
 		int s2 = TRAJSIZE/2;
 		SymbolDraw.drawStar(g, x, y, s2, Color.green);
 		x += (TRAJSIZE + 4);
-		quickString(g, x, y, "P1 Traj Pnt");
+		quickString(g, x, y, "KF Traj Pnt");
 	}
 
+	private void paintP1TrajPoint(Graphics g, int x, int y) {
+		int s2 = TRAJSIZE/2;
+		SymbolDraw.drawStar(g, x, y, s2, Color.blue);
+		x += (TRAJSIZE + 4);
+		quickString(g, x, y, "P1 Traj Pnt");
+	}
 
 	private void drawLine(Graphics2D g2, int x, int yc, Color lineColor, String str) {
 		g2.setColor(CedColors.docaTruthFill);

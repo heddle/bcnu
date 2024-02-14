@@ -2,10 +2,10 @@ package item3D;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Panel3D;
 import bCNU3D.Support3D;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class Triangle3D extends Item3D {
 
@@ -17,7 +17,7 @@ public class Triangle3D extends Item3D {
 
 	/**
 	 * Create a triangle from an array of coordinates
-	 * 
+	 *
 	 * @param panel3d   the owner panel
 	 * @param coords    the coordinates [x1, y1, ..., y3, z3]
 	 * @param color     the triangle color
@@ -35,7 +35,7 @@ public class Triangle3D extends Item3D {
 
 	/**
 	 * Create a triangle from nine explicit coordinates
-	 * 
+	 *
 	 * @param panel3d   the owner panel
 	 * @param x1
 	 * @param y1
@@ -70,7 +70,7 @@ public class Triangle3D extends Item3D {
 //	System.err.println("Coords len: " + _coords.length);
 
 		setFillColor(color);
-		
+
 		setLineWidth(lineWidth);
 	}
 

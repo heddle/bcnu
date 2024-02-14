@@ -3,42 +3,50 @@ package cnuphys.ced.properties;
 import java.io.File;
 import java.util.Properties;
 
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.SerialIO;
 
 /**
  * For dealing with persistent user preferences
+ * 
  * @author heddle
  *
  */
 public class PropertiesManager {
 
-	private static PropertiesManager _instance;
+	// singleton
+	private static volatile PropertiesManager _instance;
 
 	private static Properties _userPref;
 
 	private static File _upFile;
 
-	//private constructor for singleton
+	// private constructor for singleton
 	private PropertiesManager() {
 	}
 
 	/**
 	 * Public access for the singleton
+	 * 
 	 * @return the PropertiesManager singleton.
 	 */
 	public static PropertiesManager getInstance() {
+
 		if (_instance == null) {
-			_instance = new PropertiesManager();
-			_instance.getPropertiesFromDisk();
+			synchronized (PropertiesManager.class) {
+				if (_instance == null) {
+					_instance = new PropertiesManager();
+					_instance.getPropertiesFromDisk();
+				}
+			}
 		}
 		return _instance;
 	}
 
 	/**
 	 * Put in a property, then write the preferences
-	 * @param key the key
+	 * 
+	 * @param key   the key
 	 * @param value the value
 	 */
 	public void putAndWrite(String key, String value) {
@@ -51,7 +59,8 @@ public class PropertiesManager {
 
 	/**
 	 * Put in a property, don't write the preferences
-	 * @param key the key
+	 * 
+	 * @param key   the key
 	 * @param value the value
 	 */
 	public void put(String key, String value) {
@@ -61,9 +70,9 @@ public class PropertiesManager {
 		}
 	}
 
-
 	/**
 	 * Get a property from the user preferences
+	 * 
 	 * @param key the key
 	 * @return the property, or <code>null</code> if not found
 	 */
@@ -92,7 +101,7 @@ public class PropertiesManager {
 		try {
 			String homeDir = Environment.getInstance().getHomeDirectory();
 			_upFile = new File(homeDir, ".ced.user.pref");
-			 System.out.print("User pref file: " + _upFile.getPath() + "     ");
+			System.out.print("User pref file: " + _upFile.getPath() + "     ");
 			if (_upFile.exists()) {
 				_userPref = (Properties) SerialIO.serialRead(_upFile.getPath());
 				System.out.println("Read preferences");
@@ -102,7 +111,7 @@ public class PropertiesManager {
 			}
 		} catch (Exception e) {
 			_userPref = new Properties();
-			Log.getInstance().exception(e);
+			System.out.println("Could not read preferences");
 		}
 	}
 }

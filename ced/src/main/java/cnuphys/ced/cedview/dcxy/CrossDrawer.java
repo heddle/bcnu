@@ -9,17 +9,15 @@ import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgCrossData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAICrossData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgCrossData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAICrossData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgCrossData;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.AIHBCrosses;
-import cnuphys.ced.event.data.AITBCrosses;
-import cnuphys.ced.event.data.Cross;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.HBCrosses;
-import cnuphys.ced.event.data.TBCrosses;
-import cnuphys.ced.event.data.lists.CrossList;
 import cnuphys.ced.item.HexSectorItem;
 
 public class CrossDrawer extends DCXYViewDrawer {
@@ -33,8 +31,11 @@ public class CrossDrawer extends DCXYViewDrawer {
 	private static final int ARROWLEN = cnuphys.ced.common.CrossDrawer.ARROWLEN;
 	private static final Stroke THICKLINE = cnuphys.ced.common.CrossDrawer.THICKLINE;
 
-	// feedback string color
-	private static String fbcolors[] = cnuphys.ced.common.CrossDrawer.fbcolors;
+	//data containers
+	private HBTrkgCrossData _hbCrossData = HBTrkgCrossData.getInstance();
+	private TBTrkgCrossData _tbCrossData = TBTrkgCrossData.getInstance();
+	private HBTrkgAICrossData _hbAICrossData = HBTrkgAICrossData.getInstance();
+	private TBTrkgAICrossData _tbAICrossData = TBTrkgAICrossData.getInstance();
 
 	private int _mode = HB;
 
@@ -62,22 +63,23 @@ public class CrossDrawer extends DCXYViewDrawer {
 			return;
 		}
 
+		ATrkgCrossData crossData = null;
+
 		// any crosses?
-		CrossList crosses = null;
 		if (_mode == HB) {
-			crosses = HBCrosses.getInstance().getCrosses();
+			crossData = _hbCrossData;
 		}
 		else if (_mode == TB) {
-			crosses = TBCrosses.getInstance().getCrosses();
+			crossData = _tbCrossData;
 		}
 		else if (_mode == AIHB) {
-			crosses = AIHBCrosses.getInstance().getCrosses();
+			crossData = _hbAICrossData;
 		}
 		else if (_mode == AITB) {
-			crosses = AITBCrosses.getInstance().getCrosses();
+			crossData = _tbAICrossData;
 		}
 
-		if ((crosses == null) || crosses.isEmpty()) {
+		if ((crossData == null) || crossData.count() < 1) {
 			return;
 		}
 
@@ -88,24 +90,25 @@ public class CrossDrawer extends DCXYViewDrawer {
 
 		double result[] = new double[3];
 		Point pp = new Point();
-
-		for (Cross cross : crosses) {
-			HexSectorItem hsItem = _view.getHexSectorItem(cross.sector);
+		
+		for (int i = 0; i < crossData.count(); i++) {
+			HexSectorItem hsItem = _view.getHexSectorItem(crossData.sector[i]);
 
 			if (hsItem == null) {
-				System.err.println("null sector item in DCXY Cross Drawer sector: " + cross.sector);
+				System.err.println("null sector item in DCXY Cross Drawer sector: " + crossData.sector[i]);
 				break;
 			}
 
-			result[0] = cross.x;
-			result[1] = cross.y;
-			result[2] = cross.z;
+			result[0] = crossData.x[i];
+			result[1] = crossData.y[i];
+			result[2] = crossData.z[i];
+
 			_view.tiltedToSector(result, result);
 
 			// only care about xy
 			Point2D.Double sp = new Point2D.Double(result[0], result[1]);
 			hsItem.sector2DToLocal(container, pp, sp);
-			cross.setLocation(pp);
+			crossData.setLocation(i, pp);
 
 			// arrows
 			Point pp2 = new Point();
@@ -113,28 +116,25 @@ public class CrossDrawer extends DCXYViewDrawer {
 			int pixlen = ARROWLEN;
 			double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
 
-			// System.err.println("ARROWLEN r = " + r + " absmaxx: " +
-			// DCGeometry.getAbsMaxWireX());
-			// System.err.println("PIX LEN: " + pixlen + " density " +
-			// WorldGraphicsUtilities.getMeanPixelDensity(container) +
-			// " pix/len");
+			result[0] = crossData.x[i] + r * crossData.ux[i];
+			result[1] = crossData.y[i] + r * crossData.uy[i];
+			result[2] = crossData.z[i] + r * crossData.uz[i];
 
-			result[0] = cross.x + r * cross.ux;
-			result[1] = cross.y + r * cross.uy;
-			result[2] = cross.z + r * cross.uz;
 			_view.tiltedToSector(result, result);
-			sp.setLocation(result[0], result[1]);
-			hsItem.sector2DToLocal(container, pp2, sp);
+	        sp.setLocation(result[0], result[1]);
+	        hsItem.sector2DToLocal(container, pp2, sp);
 
-			g.setColor(Color.orange);
-			g.drawLine(pp.x + 1, pp.y, pp2.x + 1, pp2.y);
-			g.drawLine(pp.x, pp.y + 1, pp2.x, pp2.y + 1);
-			g.setColor(Color.darkGray);
-			g.drawLine(pp.x, pp.y, pp2.x, pp2.y);
+	        g.setColor(Color.orange);
+	        g.drawLine(pp.x + 1, pp.y, pp2.x + 1, pp2.y);
+	        g.drawLine(pp.x, pp.y + 1, pp2.x, pp2.y + 1);
+	        g.setColor(Color.darkGray);
+	        g.drawLine(pp.x, pp.y, pp2.x, pp2.y);
 
-			// the circles and crosses
-			DataDrawSupport.drawCross(g, pp.x, pp.y, _mode);
+	        // the circles and crosses
+	        DataDrawSupport.drawCross(g, pp.x, pp.y, _mode);
 		}
+
+
 
 		g2.setStroke(oldStroke);
 	}
@@ -151,56 +151,36 @@ public class CrossDrawer extends DCXYViewDrawer {
 	public void feedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 
+		ATrkgCrossData crossData = null;
+
 		// any crosses?
-		CrossList crosses = null;
 		if (_mode == HB) {
-			crosses = HBCrosses.getInstance().getCrosses();
+			crossData = _hbCrossData;
 		}
 		else if (_mode == TB) {
-			crosses = TBCrosses.getInstance().getCrosses();
+			crossData = _tbCrossData;
 		}
 		else if (_mode == AIHB) {
-			crosses = AIHBCrosses.getInstance().getCrosses();
+			crossData = _hbAICrossData;
 		}
 		else if (_mode == AITB) {
-			crosses = AITBCrosses.getInstance().getCrosses();
+			crossData = _tbAICrossData;
 		}
 
-		if ((crosses == null) || crosses.isEmpty()) {
+		if ((crossData == null) || crossData.count() < 1) {
 			return;
 		}
 
-		for (Cross cross : crosses) {
-			if (cross.contains(screenPoint)) {
-				feedbackStrings.add(fbcolors[_mode] + DataDrawSupport.prefix[_mode] + "cross ID: " + cross.id
-						+ "  sect: " + cross.sector + "  reg: " + cross.region);
-
-				feedbackStrings.add(vecStr("cross loc tilted", cross.x, cross.y, cross.z));
-				feedbackStrings.add(vecStr("cross error", cross.err_x, cross.err_y, cross.err_z));
-				feedbackStrings.add(vecStr("cross direc tilted", cross.ux, cross.uy, cross.uz));
-
-				double result[] = new double[3];
-				result[0] = cross.x;
-				result[1] = cross.y;
-				result[2] = cross.z;
-				_view.tiltedToSector(result, result);
-				feedbackStrings.add(vecStr("cross loc vector", result[0], result[1], result[2]));
-
-				result[0] = cross.ux;
-				result[1] = cross.uy;
-				result[2] = cross.uz;
-				_view.tiltedToSector(result, result);
-				feedbackStrings.add(vecStr("cross direc vector", result[0], result[1], result[2]));
+		for (int i = 0; i < crossData.count(); i++) {
+			if (crossData.contains(i, screenPoint)) {
+				crossData.feedback(i, feedbackStrings);
 				break;
 			}
 		}
+
+
 	}
 
-	// for writing out a vector
-	private String vecStr(String prompt, double vx, double vy, double vz) {
-		return fbcolors[_mode] + DataDrawSupport.prefix[_mode] + prompt + " (" + DoubleFormat.doubleFormat(vx, 2) + ", "
-				+ DoubleFormat.doubleFormat(vy, 2) + ", " + DoubleFormat.doubleFormat(vz, 2) + ")";
-	}
 
 	class FeedbackRects {
 		public Rectangle rects[];

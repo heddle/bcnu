@@ -7,7 +7,7 @@ import javax.swing.table.DefaultTableModel;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 
 public class NodeTableModel extends DefaultTableModel {
 
@@ -49,7 +49,7 @@ public class NodeTableModel extends DefaultTableModel {
 		if ((name != null) && (_data != null) && !_data.isEmpty()) {
 			int index = 0;
 			for (ColumnData cd : _data) {
-				if (cd.getFullName().contains(name)) {
+				if (cd.fullName.contains(name)) {
 					return index;
 				}
 				index++;
@@ -59,14 +59,6 @@ public class NodeTableModel extends DefaultTableModel {
 		return -1;
 	}
 
-	/**
-	 * Get the event being displayed
-	 *
-	 * @return the event being displayed
-	 */
-	public DataEvent getCurrentEvent() {
-		return _event;
-	}
 
 	/**
 	 * Get the number of columns
@@ -107,13 +99,13 @@ public class NodeTableModel extends DefaultTableModel {
 			if (cd != null) {
 				switch (col) {
 				case NAME_INDEX:
-					return cd.getFullName();
+					return cd.fullName;
 
 				case TYPE_INDEX:
-					return cd.getTypeName();
+					return cd.typeName;
 
 				case COUNT_INDEX:
-					return "" + cd.length(_event);
+					return "" + cd.getCount();
 
 				default:
 					return "?";
@@ -136,27 +128,7 @@ public class NodeTableModel extends DefaultTableModel {
 	 */
 	public void setData(DataEvent event) {
 		clear();
-		_event = event;
-
-		if (event != null) {
-			String banks[] = event.getBankList();
-			if (banks != null) {
-				for (String bank : banks) {
-
-					_data = DataManager.getInstance().hasData(event);
-
-//					String columns[] = event.getColumnList(bank);
-//					if (columns != null) {
-//						for (String column : columns) {
-//							ColumnData cd = DataManager.getInstance().getColumnData(bank, column);
-//							if (cd != null) {
-//								_data.add(cd);
-//							}
-//						}
-//					}
-				}
-			}
-		}
+		_data = DataWarehouse.getInstance().getColumnData();
 		fireTableDataChanged();
 	}
 

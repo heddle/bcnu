@@ -93,6 +93,14 @@ public class ECView extends HexView {
 		return checkBooleanProperty(DisplayArray.SHOWINNER_PROPERTY);
 	}
 
+	/**
+	 * Get the plane being displayed (0, 1) for (inner, outer)
+	 * @return the plane being displayed
+	 */
+	public int getDisplayPlane() {
+		return displayInner() ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
+	}
+
 	// add the control panel
 	@Override
 	protected void addControls() {
@@ -214,22 +222,6 @@ public class ECView extends HexView {
 
 	}
 
-	// /**
-	// * Convert the sector xy coordinates to IJK
-	// * @param sectorXY sector xy coordinates
-	// * @param pijk ijk coordinates
-	// */
-	// public void sectorXYToIJK(Point2D.Double sectorXY, PointIJK pijk) {
-	// boolean inner = displayInner();
-	//
-	// double r0[] = inner ? ECGeometry.getR0(0) : ECGeometry.getR0(1);
-	//
-	// pijk.k = inner ? 0 : ECGeometry.getDeltaK();
-	// pijk.j = sectorXY.y;
-	// pijk.i = sectorXY.x - r0[0];
-	//
-	// }
-
 	/**
 	 * Convert ijk coordinates to sector xyz
 	 *
@@ -324,6 +316,7 @@ public class ECView extends HexView {
 		refresh();
 
 	}
+
 
 	/**
 	 * Opened a new event file

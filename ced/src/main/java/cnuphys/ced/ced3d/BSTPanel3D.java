@@ -5,15 +5,9 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.Cosmics;
-import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.lists.CosmicList;
-import cnuphys.ced.event.data.lists.CrossList2;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTCrossData;
+import cnuphys.ced.alldata.datacontainer.cvt.CosmicData;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.lund.X11Colors;
 
@@ -23,6 +17,13 @@ public class BSTPanel3D extends DetectorItem3D {
 
 	protected static final float CROSS_LEN = 3f; // in cm
 	protected static final Color crossColor = X11Colors.getX11Color("dark green");
+	
+	//bst adc data
+	private BSTADCData _bstADCData = BSTADCData.getInstance();
+
+	//data containers
+	private CosmicData _cosmicData = CosmicData.getInstance();
+	private BSTCrossData _bstCrossData = BSTCrossData.getInstance();
 
 	// the 1-based sect
 	private int _sector;
@@ -54,86 +55,57 @@ public class BSTPanel3D extends DetectorItem3D {
 		float coords36[] = new float[36];
 		boolean drawOutline = false;
 
-		AdcList hits = BST.getInstance().getADCHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			for (AdcHit hit : hits) {
-				if (hit != null) {
-					int sector = hit.sector;
-					int layer = hit.layer;
-					if ((_sector == sector) && (_layer == layer)) {
-						drawOutline = true;
-						int strip = hit.component;
-						BSTGeometry.getStripCM(sector, layer, strip, coords6);
+		if (showHits()) {
 
-						if (showHits()) {
-							Support3D.drawLine(drawable, coords6, hitColor, STRIPLINEWIDTH);
-						}
+			for (int i = 0; i < _bstADCData.count(); i++) {
+				if (_bstADCData.sector[i] == _sector && _bstADCData.layer[i] == _layer) {
+					drawOutline = true;
+					int strip = _bstADCData.component[i];
+					BSTGeometry.getStripCM(_sector - 1, _layer - 1, strip - 1, coords6);
+					Support3D.drawLine(drawable, coords6, _bstADCData.adc[i] > 0 ? Color.red : Color.blue,
+							STRIPLINEWIDTH);
+				}
+			}
 
-					} // match sector and layer
-				} // hit not null
-			} // loop on hits
-		} // hits not null
-
-		if (drawOutline) { // if any hits, draw it once
-			BSTGeometry.getLayerQuads(_sector-1, _layer-1, coords36);
-			Support3D.drawQuads(drawable, coords36, outlineHitColor, 1f, true);
+			if (drawOutline) { // if any hits, draw it once
+				BSTGeometry.getLayerQuads(_sector - 1, _layer - 1, coords36);
+				Support3D.drawQuads(drawable, coords36, outlineHitColor, 1f, true);
+			}
 		}
 
 		// reconstructed crosses?
 		if (_cedPanel3D.showReconCrosses()) {
 			// BST
-			CrossList2 crosses = BSTCrosses.getInstance().getCrosses();
-			int len = (crosses == null) ? 0 : crosses.size();
-			for (int i = 0; i < len; i++) {
-				Cross2 cross = crosses.elementAt(i);
-				if (cross != null) {
-					// should now be in cm after v 1.0
-					float x1 = cross.x;
-					float y1 = cross.y;
-					float z1 = cross.z;
+			
+			for (int i = 0; i < _bstCrossData.count(); i++) {
+                float x1 = _bstCrossData.x[i];
+                float y1 = _bstCrossData.y[i];
+                float z1 = _bstCrossData.z[i];
+                float ux = _bstCrossData.ux[i];
+                float uy = _bstCrossData.uy[i];
+                float uz = _bstCrossData.uz[i];
 
-					Support3D.drawLine(drawable, x1, y1, z1, cross.ux, cross.uy, cross.uz, CROSS_LEN, crossColor, 3f);
-					Support3D.drawLine(drawable, x1, y1, z1, cross.ux, cross.uy, cross.uz, (float) (1.1 * CROSS_LEN),
-							Color.black, 1f);
+                Support3D.drawLine(drawable, x1, y1, z1, ux, uy, uz, CROSS_LEN, crossColor, 3f);
+                Support3D.drawLine(drawable, x1, y1, z1, ux, uy, uz, (float) (1.1 * CROSS_LEN), Color.black, 1f);
 
-					drawCrossPoint(drawable, x1, y1, z1, crossColor);
-				}
-			} // bst
-
+                drawCrossPoint(drawable, x1, y1, z1, crossColor);
+            } // bst
 		}
 
 		// cosmics?
 		if (_cedPanel3D.showCosmics()) {
-			CosmicList cosmics;
-			cosmics = Cosmics.getInstance().getCosmics();
-
-			if ((cosmics != null) && !cosmics.isEmpty()) {
-				for (Cosmic cosmic : cosmics) {
-					float y1 = 1000;
-					float y2 = -1000;
-					float x1 = cosmic.trkline_yx_slope * y1 + cosmic.trkline_yx_interc;
-					float x2 = cosmic.trkline_yx_slope * y2 + cosmic.trkline_yx_interc;
-					float z1 = cosmic.trkline_yz_slope * y1 + cosmic.trkline_yz_interc;
-					float z2 = cosmic.trkline_yz_slope * y2 + cosmic.trkline_yz_interc;
-
-					// no longer have to convert to cm?
-
-//					x1 /= 10;
-//					x2 /= 10;
-//					y1 /= 10;
-//					y2 /= 10;
-//					z1 /= 10;
-//					z2 /= 10;
-
+			
+			for (int i = 0; i < _cosmicData.count(); i++) {
+                    float y1 = 1000;
+                    float y2 = -1000;
+                    float x1 = _cosmicData.trkline_yx_slope[i] * y1 + _cosmicData.trkline_yx_interc[i];
+                    float x2 = _cosmicData.trkline_yx_slope[i] * y2 + _cosmicData.trkline_yx_interc[i];
+                    float z1 = _cosmicData.trkline_yz_slope[i] * y1 + _cosmicData.trkline_yz_interc[i];
+                    float z2 = _cosmicData.trkline_yz_slope[i] * y2 + _cosmicData.trkline_yz_interc[i];
 					Support3D.drawLine(drawable, x1, y1, z1, x2, y2, z2, Color.red, 1f);
-
-				}
 			}
-
+			
 		}
-
-		// cosmics
-
 	}
 
 	// show BST?

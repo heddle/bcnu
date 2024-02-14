@@ -26,11 +26,11 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.cedview.SwimTrajectoryDrawerXY;
@@ -38,9 +38,6 @@ import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCTdcHit;
-import cnuphys.ced.event.data.lists.DCTdcHitList;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.HexSectorItem;
@@ -63,14 +60,14 @@ public class DCXYView extends HexView {
 	// draws reconstructed crosses
 	private CrossDrawer _crossDrawer;
 
-	// draws mc hits
-	private McHitDrawer _mcHitDrawer;
-
 	// for fmt
 	private FMTCrossDrawer _fmtCrossDrawer;
 
 	//bank matches
 	private static String _defMatches[] = {"DC:"};
+	
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
 
 	// each superlayer in a different color
@@ -108,7 +105,6 @@ public class DCXYView extends HexView {
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawerXY(this);
 		_crossDrawer = new CrossDrawer(this);
-		_mcHitDrawer = new McHitDrawer(this);
 
 		// fmt cross drawer
 		_fmtCrossDrawer = new FMTCrossDrawer(this);
@@ -169,8 +165,8 @@ public class DCXYView extends HexView {
 						+ ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.FMTCROSSES + DisplayBits.RECPART
 						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
-						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS + DisplayBits.MCTRUTH
-						+ DisplayBits.SECTORCHANGE,
+						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.MCTRUTH
+						+ DisplayBits.SECTORCHANGE + DisplayBits.CVTP1TRACKS,
 				3, 5);
 
 		add(_controlPanel, BorderLayout.EAST);
@@ -277,10 +273,9 @@ public class DCXYView extends HexView {
 	private void drawHits(Graphics g, IContainer container) {
 
 		if (isSingleEventMode()) {
-
-			DCTdcHitList hits = DC.getInstance().getTDCHits();
-			if ((hits != null) && !hits.isEmpty()) {
-
+			
+			int count = _dcData.count();
+			if (count > 0) {
 				Graphics2D g2 = (Graphics2D) g;
 				Stroke oldStroke = g2.getStroke();
 				g2.setStroke(stroke);
@@ -290,52 +285,26 @@ public class DCXYView extends HexView {
 				Point2D.Double wp1 = new Point2D.Double();
 				Point2D.Double wp2 = new Point2D.Double();
 
-				for (DCTdcHit hit : hits) {
-					projectWire(g, container, hit.sector, hit.superlayer, hit.layer6, hit.wire, wp1, wp2, pp1, pp2);
-					g.setColor(_wireColors[hit.superlayer - 1]);
+				for (int i = 0; i < count; i++) {
+					int sect = _dcData.sector[i];
+					int supl = _dcData.superlayer[i];
+					int lay = _dcData.layer6[i];
+					int wire = _dcData.component[i];
+					projectWire(g, container, sect, supl, lay, wire, wp1, wp2, pp1, pp2);
+					g.setColor(_wireColors[supl - 1]);
 					g.drawLine(pp1.x, pp1.y, pp2.x, pp2.y);
 				}
 
 				g2.setStroke(oldStroke);
 			}
 
-//
-//			if (showMcTruth()) {
-//				_mcHitDrawer.draw(g, container);
-//
-//				int hitCount = DC.hitCount();
-//
-//				if (hitCount > 0) {
-//					byte sector[] = DC.sector();
-//					byte superlayer[] = DC.superlayer();
-//					byte layer[] = DC.layer();
-//					short wire[] = DC.wire();
-//
-//					Graphics2D g2 = (Graphics2D)g;
-//					Stroke oldStroke = g2.getStroke();
-//					g2.setStroke(stroke);
-//
-//					Point pp1 = new Point();
-//					Point pp2 = new Point();
-//					Point2D.Double wp1 = new Point2D.Double();
-//					Point2D.Double wp2 = new Point2D.Double();
-//
-//					for (int hit = 0; hit < hitCount; hit++) {
-//						projectWire(g, container, sector[hit], superlayer[hit], layer[hit], wire[hit], wp1, wp2, pp1, pp2);
-//						g.setColor(_wireColors[superlayer[hit]-1]);
-//						g.drawLine(pp1.x, pp1.y, pp2.x, pp2.y);
-//					}
-//
-//					g2.setStroke(oldStroke);
-//
-//				} //hitCount > 0
-//
-//			}
+
 		} else {
 			drawAccumulatedHits(g, container);
 		}
 	}
 
+	//everything is one based
 	private void projectWire(Graphics g, IContainer container, int sect1, int supl1, int layer1, int wire1,
 			Point2D.Double wp1, Point2D.Double wp2, Point p1, Point p2) {
 		Line3D line = DCGeometry.getWire(sect1, supl1, layer1, wire1);
@@ -362,7 +331,7 @@ public class DCXYView extends HexView {
 		for (int sect0 = 0; sect0 < 6; sect0++) {
 			for (int supl0 = 0; supl0 < 6; supl0++) {
 
-				int medianHit = AccumulationManager.getInstance().getMedianDCCount(supl0);
+				int maxHit = AccumulationManager.getInstance().getMaxDCCount(supl0);
 
 				for (int lay0 = 0; lay0 < 6; lay0++) {
 					for (int wire0 = 0; wire0 < 112; wire0++) {
@@ -370,8 +339,7 @@ public class DCXYView extends HexView {
 						int hitCount = dcAccumulatedData[sect0][supl0][lay0][wire0];
 
 						if (hitCount > 0) {
-							double fract = getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+							double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 							Color color = AccumulationManager.getInstance().getAlphaColor(getColorScaleModel(), fract,
 									128);
 
@@ -443,10 +411,6 @@ public class DCXYView extends HexView {
 			_fmtCrossDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
 		}
 
-		if (showMcTruth()) {
-			_mcHitDrawer.feedback(container, pp, wp, feedbackStrings);
-		}
-
 	}
 
 	/**
@@ -468,7 +432,7 @@ public class DCXYView extends HexView {
 	 */
 	public HexSectorItem getHexSectorItem(int sector) {
 		if ((sector < 1) || (sector > 6)) {
-			Log.getInstance().warning("Bad sector in DCXYView getHexSectorItem, sector = " + sector);
+			System.err.println("Bad sector in DCXYView getHexSectorItem, sector = " + sector);
 			return null;
 		}
 		return _hexItems[sector - 1];

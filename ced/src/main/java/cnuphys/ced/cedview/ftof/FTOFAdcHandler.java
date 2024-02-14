@@ -9,13 +9,8 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 
 /**
  * Handles drawing and feedback for the adc (and tdc) bank
@@ -24,11 +19,12 @@ import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
  */
 public class FTOFAdcHandler {
 
-	private static final String fbcolor = "$medium spring green$";
-
 
 	// the parent view
 	private FTOFView _view;
+
+	//data containers
+	private FTOFADCData _adcData = FTOFADCData.getInstance();
 
 	public FTOFAdcHandler(FTOFView view) {
 		_view = view;
@@ -37,42 +33,37 @@ public class FTOFAdcHandler {
 
 	// draw the adc data
 	public void draw(Graphics g, IContainer container) {
-		if (_view.isSingleEventMode() && _view.showClusters()) {
-			DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
-			if (event == null) {
+		if (_view.isSingleEventMode()) {
+
+			int count = _adcData.count();
+			if (count == 1) {
 				return;
 			}
 
-			TdcAdcTOFHitList hitList = FTOF.getInstance().getTdcAdcHits();
-			if (hitList != null) {
-				Polygon poly = new Polygon();
-				boolean isMono = _view.getControlPanel().isMonochrome();
+			Polygon poly = new Polygon();
+			for (int i = 0; i < count; i++) {
+				int panel = _adcData.layer[i] - 1; // nasty -- this is zero based
+				if (panel == _view.displayPanel()) {
 
-				Color lc = isMono ? Color.red : Color.black;
+					_view.getPaddlePolygon(container, _adcData.sector[i], panel, _adcData.component[i], poly);
+					Color colorL = _adcData.getColor(_adcData.sector[i], _adcData.layer[i], _adcData.component[i], (byte) 0);
+					Color colorR = _adcData.getColor(_adcData.sector[i], _adcData.layer[i], _adcData.component[i], (byte) 1);
 
-
-				for (TdcAdcTOFHit hit : hitList) {
-					int panel = hit.layer - 1;
-					if (panel == _view.displayPanel()) {
-						int adcL = hit.adcL;
-						int adcR = hit.adcR;
-
-						Color colorL = isMono ? _view.adcMonochromeColor(adcL, _view.getMaxADC()) : _view.adcColor(adcL, _view.getMaxADC());
-						Color colorR = isMono ? _view.adcMonochromeColor(adcR, _view.getMaxADC()) : _view.adcColor(adcR, _view.getMaxADC());
-						_view.getPaddlePolygon(container, hit.sector, panel, hit.component, poly);
-						GradientPaint gpaint = new GradientPaint(poly.xpoints[0], poly.ypoints[0], colorL, poly.xpoints[2], poly.ypoints[2], colorR);
-
-
-						((Graphics2D)g).setPaint(gpaint);
-						((Graphics2D)g).fillPolygon(poly);
-
-						g.setColor(lc);
-						g.drawPolygon(poly);
+					if (colorL == null) {
+						colorL = Color.white;
 					}
+					if (colorR == null) {
+						colorR = Color.white;
+					}
+					GradientPaint gpaint = new GradientPaint(poly.xpoints[0], poly.ypoints[0], colorL, poly.xpoints[2],
+							poly.ypoints[2], colorR);
+
+					((Graphics2D) g).setPaint(gpaint);
+					((Graphics2D) g).fillPolygon(poly);
+
+					g.fillPolygon(poly);
 				}
 			}
-
-
 
 		} else {
 			// drawAccumulatedHits(g, container);
@@ -80,13 +71,23 @@ public class FTOFAdcHandler {
 
 	}
 
+	/**
+	 * Get the feedback strings for the adc bank
+	 * @param container the drawing container
+	 * @param sect the 1-based sector
+	 * @param layer the 1-based layer
+	 * @param paddleId the 1-based paddle
+	 * @param pp the pixel point
+	 * @param wp the world point
+	 * @param feedbackStrings the list to add feedback strings to
+	 */
 	public void getFeedbackStrings(IContainer container, int sect, int layer, int paddleId, Point pp, Point2D.Double wp,
 			List<String> feedbackStrings) {
-		TdcAdcTOFHitList hitList = FTOF.getInstance().getTdcAdcHits();
-		TdcAdcTOFHit hit = hitList.get(sect, layer, paddleId);
-		if (hit != null) {
-			feedbackStrings.add(String.format("adc left %d  adc right %d", hit.adcL, hit.adcR));
-			feedbackStrings.add(String.format("tdc left %d  tdc right %d", hit.tdcL, hit.tdcR));
+
+		for (int i = 0; i < _adcData.count(); i++) {
+			if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer) && (_adcData.component[i] == paddleId)) {
+				_adcData.adcFeedback("FTOF", i, feedbackStrings);
+			}
 		}
 	}
 

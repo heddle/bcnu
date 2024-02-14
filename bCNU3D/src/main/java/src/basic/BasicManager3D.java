@@ -24,7 +24,7 @@ public class BasicManager3D {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return the singleton
 	 */
 	public static BasicManager3D getInstance() {

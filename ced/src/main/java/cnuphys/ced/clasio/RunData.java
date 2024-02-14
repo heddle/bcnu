@@ -1,9 +1,6 @@
 package cnuphys.ced.clasio;
 
-import org.jlab.io.base.DataEvent;
-
-import cnuphys.bCNU.log.Log;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.magfield.MagneticFields;
 
 /**
@@ -14,6 +11,11 @@ import cnuphys.magfield.MagneticFields;
  */
 
 public class RunData {
+	
+	//bank name
+	private static final String bankName = "RUN::config";
+	// data warehouse
+	private static DataWarehouse _dw = DataWarehouse.getInstance();
 
 	public int run = -1;
 	public int event;
@@ -29,17 +31,13 @@ public class RunData {
 	}
 
 	/**
-	 * Change the fields if the event contains the run bank
+	 * Change the fields if the current event contains the run bank
 	 *
-	 * @param event the data event
 	 * @return true if a run config bank was found and successfully parsed
 	 */
-	public boolean set(DataEvent dataEvent) {
-		if (dataEvent == null) {
-			return false;
-		}
+	public boolean set() {
 
-		boolean hasRunBank = dataEvent.hasBank("RUN::config");
+		boolean hasRunBank = _dw.hasBank("RUN::config");
 		if (!hasRunBank) {
 			return false;
 		}
@@ -47,14 +45,12 @@ public class RunData {
 		int oldRun = run;
 
 		try {
-			// System.out.println("-- GETTING Run:Config...");
-
-			run = safeInt(dataEvent, "run");
+ 			run = safeInt("run");
 			if (run < 0) {
 				return false;
 			}
 
-			event = safeInt(dataEvent, "event");
+			event = safeInt("event");
 
 //			System.err.println("In Set Data event num: " + event + "    event: " + dataEvent);
 
@@ -62,17 +58,17 @@ public class RunData {
 				return false;
 			}
 
-			trigger = safeLong(dataEvent, "trigger");
-			timestamp = safeLong(dataEvent, "timestamp");
-			type = safeByte(dataEvent, "type");
-			mode = safeByte(dataEvent, "mode");
+			trigger = safeLong("trigger");
+			timestamp = safeLong("timestamp");
+			type = safeByte("type");
+			mode = safeByte("mode");
 
-			solenoid = safeFloat(dataEvent, "solenoid");
+			solenoid = safeFloat("solenoid");
 			if (Float.isNaN(solenoid)) {
 				return false;
 			}
 
-			torus = safeFloat(dataEvent, "torus");
+			torus = safeFloat("torus");
 			if (Float.isNaN(torus)) {
 				return false;
 			}
@@ -83,42 +79,39 @@ public class RunData {
 			}
 			return true;
 		} catch (Exception e) {
-			Log.getInstance().warning("Exception in RunData det method");
+			e.printStackTrace();
 		}
 
 		return false;
 	}
 
-	private long safeLong(DataEvent event, String colName) {
-		DataManager dm = DataManager.getInstance();
-		long[] data = dm.getLongArray(event, "RUN::config." + colName);
+	private long safeLong(String colName) {
+		
+		long[] data = _dw.getLong(bankName, colName);
 		if ((data == null) || (data.length < 1)) {
 			return -1;
 		}
 		return data[0];
 	}
 
-	private int safeInt(DataEvent event, String colName) {
-		DataManager dm = DataManager.getInstance();
-		int[] data = dm.getIntArray(event, "RUN::config." + colName);
+	private int safeInt(String colName) {
+		int[] data = _dw.getInt(bankName, colName);
 		if ((data == null) || (data.length < 1)) {
 			return -1;
 		}
 		return data[0];
 	}
 
-	private byte safeByte(DataEvent event, String colName) {
-		DataManager dm = DataManager.getInstance();
-		byte[] data = dm.getByteArray(event, "RUN::config." + colName);
+	private byte safeByte(String colName) {
+		byte[] data = _dw.getByte(bankName, colName);
 		if ((data == null) || (data.length < 1)) {
 			return -1;
 		}
 		return data[0];
 	}
 
-	private float safeFloat(DataEvent event, String colName) {
-		DataManager dm = DataManager.getInstance();
-		float[] data = dm.getFloatArray(event, "RUN::config." + colName);
+	private float safeFloat(String colName) {
+		float[] data = _dw.getFloat(bankName, colName);
 		if ((data == null) || (data.length < 1)) {
 			return Float.NaN;
 		}

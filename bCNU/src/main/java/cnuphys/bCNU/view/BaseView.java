@@ -770,11 +770,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	@Override
 	public void componentMoved(ComponentEvent arg0) {
-//		Point p = getLocation();
-//		if (p.y < -9) {
-//			p.y = -9;
-//			setLocation(p);
-//		}
 	}
 
 	@Override

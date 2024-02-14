@@ -14,7 +14,7 @@ public class ClasIoEventView extends BaseView {
 	protected NodePanel _nodePanel;
 
 	// singleton
-	private static ClasIoEventView instance;
+	private static volatile ClasIoEventView instance;
 
 	/**
 	 * Constructor for the Event view, which manages events from an event file.
@@ -23,7 +23,7 @@ public class ClasIoEventView extends BaseView {
 
 		super(PropertySupport.TITLE, "Current Event", PropertySupport.ICONIFIABLE, true, PropertySupport.MAXIMIZABLE,
 				true, PropertySupport.CLOSABLE, true, PropertySupport.RESIZABLE, true, PropertySupport.WIDTH, 1100,
-				PropertySupport.HEIGHT, 650, PropertySupport.VISIBLE, true, PropertySupport.TOOLBAR, false,
+				PropertySupport.HEIGHT, 750, PropertySupport.VISIBLE, true, PropertySupport.TOOLBAR, false,
 				PropertySupport.PROPNAME, "CUREVENT");
 
 		JPanel sPanel = new JPanel();
@@ -43,7 +43,11 @@ public class ClasIoEventView extends BaseView {
 	public static ClasIoEventView createEventView() {
 
 		if (instance == null) {
-			instance = new ClasIoEventView();
+			synchronized (ClasIoEventView.class) {
+				if (instance == null) {
+					instance = new ClasIoEventView();
+				}
+			}
 		}
 		return instance;
 	}

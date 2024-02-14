@@ -39,6 +39,8 @@ import cnuphys.bCNU.util.TextUtilities;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.AdcColorScale;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
@@ -48,13 +50,11 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.MagFieldDisplayArray;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
-import cnuphys.ced.event.data.AdcColorScale;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.properties.PropertiesManager;
 import cnuphys.lund.SwimTrajectoryListener;
-import cnuphys.lund.X11Colors;
 import cnuphys.magfield.FieldProbe;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
@@ -64,25 +64,15 @@ import cnuphys.swim.Swimming;
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
 		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
 
-
-	//name used for reading and writing properties
-	//can be different from title
-	protected String VIEWPROPNAME = "???";
-
-	//to speed up by suppressing refreshes
-	public static boolean SUPPRESSREFRESH = false;
+	//the data warehouse
+	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
-	// for accumulation drawing
-	private double _medianRelSetting = 0.25;
-
 	//for 0 adc values
 	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
-	private static final Color ASDZERO2 = X11Colors.getX11Color("Light Sky Blue", 80);
 	private static final Color ASDZERO1T = new Color(0, 0, 0, 0);
-	private static final Color ASDZERO2T = X11Colors.getX11Color("Light Sky Blue", 0);
 
 
 	// are we showing single events or are we showing accumulated data
@@ -276,16 +266,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Suppress refresh to avoid unnecessary drawing.
-	 * USE CAUTIOUSLY!!
-	 * @param suppress if true, refreshes will be suppressed until set back
-	 */
-	public static void suppressRefresh(boolean suppress) {
-		SUPPRESSREFRESH = suppress;
-	}
-
-
-	/**
 	 * Accessor for the control panel
 	 * @return the control panel
 	 */
@@ -343,6 +323,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 		if ((matches == null) || (matches.length == 0)) {
 			_matches = _noMatches;
+			return;
 		}
 
 		_matches = new String[matches.length];
@@ -633,18 +614,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return _controlPanel.getDisplayArray().showAITB();
 	}
 
-	/**
-	 * Convenience method global neural net data
-	 *
-	 * @return <code>true</code> if we are to show neural net globally
-	 */
-	public boolean showNN() {
-		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
-			return false;
-		}
-		return _controlPanel.getDisplayArray().showNN();
-	}
-
 
 	/**
 	 * Convenience method to see it we show the reconstructed clusters.
@@ -735,6 +704,18 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
+	 * Convenience method to see if we show CVT rec KF Traj.
+	 *
+	 * @return <code>true</code> if we are to show CVT rec KF Traj.
+	 */
+	public boolean showRecKFTraj() {
+		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
+			return false;
+		}
+		return _controlPanel.getDisplayArray().showRecKFTraj();
+	}
+	
+	/**
 	 * Convenience method to see if we show CVT pass 1 tracks.
 	 *
 	 * @return <code>true</code> if we are to show CVT pass 1 tracks.
@@ -744,6 +725,18 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			return false;
 		}
 		return _controlPanel.getDisplayArray().showCVTP1Tracks();
+	}
+	
+	/**
+	 * Convenience method to see if we show CVT pass 1 traj.
+	 *
+	 * @return <code>true</code> if we are to show CVT pass 1 traj.
+	 */
+	public boolean showCVTP1Traj() {
+		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
+			return false;
+		}
+		return _controlPanel.getDisplayArray().showCVTP1Traj();
 	}
 
 	/**
@@ -758,17 +751,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return _controlPanel.getDisplayArray().showCVTRecTraj();
 	}
 
-	/**
-	 * Convenience method to see if we show CVT pass 1 trajectory data.
-	 *
-	 * @return <code>true</code> if we are to show CVT reconstructed trajectory data.
-	 */
-	public boolean showCVTP1Traj() {
-		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
-			return false;
-		}
-		return _controlPanel.getDisplayArray().showCVTP1Traj();
-	}
 
 	/**
 	 * Convenience method to see if we show the trkDoca column.
@@ -1055,10 +1037,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	/**
 	 * Should we show the strips
 	 *
-	 * @param stripType U, V or W
-	 * @return <code>true</code> if thebstrips of that type should be shown
+	 * @param stripType (view) U, V or W
+	 * @return <code>true</code> if the strips of that type should be shown
 	 */
-	public boolean showStrips(int stripType) {
+	public boolean showView(int stripType) {
 		if (stripType == ECGeometry.EC_U) {
 			return showUStrips();
 		} else if (stripType == ECGeometry.EC_V) {
@@ -1087,7 +1069,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public void magneticFieldChanged() {
 		_activeProbe = FieldProbe.factory();
 		refresh();
-//		TimedRefreshManager.getInstance().add(this);
 	}
 
 	/**
@@ -1095,10 +1076,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 */
 	@Override
 	public void refresh() {
-
-		if (SUPPRESSREFRESH) {
-			return;
-		}
 		super.refresh();
 	}
 
@@ -1203,7 +1180,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		else {
 			int seqNum = ClasIoEventManager.getInstance().getSequentialEventNumber();
 			int trueNum = ClasIoEventManager.getInstance().getTrueEventNumber();
-			feedbackStrings.add(String.format("$orange red$Event number  Sequential %d  True %d", seqNum, trueNum));
+			feedbackStrings.add(String.format("$orange red$Event Sequential %d  True %d", seqNum, trueNum));
 
 		}
 
@@ -1310,7 +1287,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	@Override
 	public void trajectoriesChanged() {
 		if (!_eventManager.isAccumulating()) {
-//			TimedRefreshManager.getInstance().add(this);
 			refresh();
 		}
 	}
@@ -1492,35 +1468,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return true;
-	}
-
-	/**
-	 * Get the median setting used in accumulation drawing
-	 *
-	 * @return the median setting used in accumulation drawing
-	 */
-	public double getMedianSetting() {
-		return _medianRelSetting;
-	}
-
-	/**
-	 * Set the median setting used in accumulation drawing
-	 *
-	 * @param medianSetting the median setting used in accumulation drawing
-	 */
-	public void setMedianSetting(double medianSetting) {
-		_medianRelSetting = Math.max(0, Math.min(1, medianSetting));
-	}
-
-	/**
 	 * Some views (e.g., RTPC) have a threshold. Thay must override.
 	 * @return the adc threshold for viewing hits
 	 */
@@ -1616,31 +1563,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	}
 
-
-
-	/**
-	 * Get a monochrome color with alpha based of relative adc
-	 *
-	 * @param hit    the hit
-	 * @param maxAdc the max adc value
-	 * @return a fill color for adc hits
-	 */
-	public Color adcMonochromeColor(int adc, int maxAdc) {
-		if(adc < 1) {
-			return (adc == 0) ? ASDZERO2 : ASDZERO2T;
-		}
-
-
-		double maxadc = Math.max(1, maxAdc);
-
-		double fract = adc / maxadc;
-		fract = Math.max(0, Math.min(1.0, fract));
-
-		int alpha = 128 + (int) (127 * fract);
-		alpha = Math.min(255, alpha);
-
-		return AdcColorScale.getInstance().getMonochromeAlphaColor(fract, alpha);
-	}
 
 	/**
 	 * Get a color with alpha based of relative adc

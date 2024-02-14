@@ -5,16 +5,14 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.event.data.AdcLRHit;
-import cnuphys.ced.event.data.AdcLRHitList;
-import cnuphys.ced.event.data.FTCAL;
+import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
 import cnuphys.ced.geometry.FTCALGeometry;
 import cnuphys.lund.X11Colors;
 
 public class FTCalPaddle3D extends DetectorItem3D {
 
 	// paddle ID
-	private int _id;
+	private short _id;
 
 	// the cached vertices
 	private float[] _coords = new float[24];
@@ -22,7 +20,16 @@ public class FTCalPaddle3D extends DetectorItem3D {
 	// frame the paddle?
 	private static boolean _frame = true;
 
-	public FTCalPaddle3D(CedPanel3D panel3D, int id) {
+	//data container
+	private FTCalADCData adcData = FTCalADCData.getInstance();
+
+	/**
+	 * Create a FTCAL paddle
+	 *
+	 * @param panel3D the 3D panel this is associated with
+	 * @param id      the paddle ID which is sparse, the first one is 8
+	 */
+	public FTCalPaddle3D(CedPanel3D panel3D, short id) {
 		super(panel3D);
 		_id = id;
 
@@ -31,16 +38,20 @@ public class FTCalPaddle3D extends DetectorItem3D {
 
 	@Override
 	public void drawShape(GLAutoDrawable drawable) {
-		Color noHitColor = X11Colors.getX11Color("Dodger blue", getVolumeAlpha());
-		Color hitColor = X11Colors.getX11Color("red", getVolumeAlpha());
+		//hits use adc data
+		Color color = X11Colors.getX11Color("white", getVolumeAlpha());
 
-		AdcLRHitList hits = FTCAL.getInstance().getHits();
-		AdcLRHit hit = null;
-		if ((hits != null) && !hits.isEmpty()) {
-			hit = hits.get(1, 0, _id);
+		// draw "hit" based on adc values
+		for (int i = 0; i < adcData.count(); i++) {
+			if (adcData.component[i] == _id) {
+				int adc = adcData.adc[i];
+
+				color = adcData.getADCColor(adc);
+				color = new Color(color.getRed(), color.getGreen(), color.getBlue(), getVolumeAlpha());
+				break;
+			}
 		}
 
-		Color color = (hit == null) ? noHitColor : hitColor;
 		Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
 		Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);
 		Support3D.drawQuad(drawable, _coords, 0, 4, 7, 3, color, 1f, _frame);

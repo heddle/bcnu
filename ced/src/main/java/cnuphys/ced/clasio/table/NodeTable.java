@@ -20,6 +20,12 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.ced.alldata.ColumnData;
 import cnuphys.splot.plot.X11Colors;
 
+/**
+ * A table for the node data
+ * This is on the Current Event View. It is the big table
+ * that shows all the banks for the current event.
+ *
+ */
 public class NodeTable extends JTable {
 
 	// a scroll pane for this table
@@ -104,6 +110,7 @@ public class NodeTable extends JTable {
 		getNodeModel().setData(event);
 	}
 
+	//custom renderer
 	class CustomRenderer extends DefaultTableCellRenderer {
 
 		private NodeTable _table;
@@ -144,15 +151,6 @@ public class NodeTable extends JTable {
 
 			return cellComponent;
 		}
-	}
-
-	/**
-	 * Get the event being displayed
-	 *
-	 * @return the event being displayed
-	 */
-	public DataEvent getCurrentEvent() {
-		return getNodeModel().getCurrentEvent();
 	}
 
 	/**

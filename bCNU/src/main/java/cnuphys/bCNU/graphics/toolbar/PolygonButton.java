@@ -10,9 +10,6 @@ import cnuphys.bCNU.item.AItem;
 
 /**
  * @author heddle
- *
- *         TODO To change the template for this generated type comment go to
- *         Window - Preferences - Java - Code Style - Code Templates
  */
 @SuppressWarnings("serial")
 public class PolygonButton extends ToolBarToggleButton implements IRubberbanded {

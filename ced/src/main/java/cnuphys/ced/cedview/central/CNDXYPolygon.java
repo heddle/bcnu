@@ -16,10 +16,11 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
+import cnuphys.ced.alldata.datacontainer.cnd.CNDTDCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.CND;
 import cnuphys.ced.geometry.CNDGeometry;
 
 @SuppressWarnings("serial")
@@ -29,6 +30,9 @@ public class CNDXYPolygon extends Polygon {
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();
 
+	//data containers
+	CNDADCData adcData = CNDADCData.getInstance();
+	CNDTDCData tdcData = CNDTDCData.getInstance();
 
 	/**
 	 * The layer, 1..3
@@ -131,51 +135,35 @@ public class CNDXYPolygon extends Polygon {
 	public boolean getFeedbackStrings(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
 
-		CND cnd = CND.getInstance();
-
 		if (!contains(screenPoint)) {
 			return false;
 		}
 
-		fbString("cyan", "cnd sect " + sector + " layer " + layer + (_leftRight == 1 ? " [left]" : " [right]"),
+		fbString("cyan", "CND sect " + sector + " layer " + layer + (_leftRight == 1 ? " [left]" : " [right]"),
 				feedbackStrings);
 
 		CedView view = (CedView) (container.getView());
 
 		if (view.isSingleEventMode()) {
 
-			int adcCount = cnd.getCountAdc();
-			int tdcCount = cnd.getCountTdc();
+			for (int i = 0; i < adcData.count(); i++) {
+				if ((adcData.sector[i] == sector) && (adcData.layer[i] == layer)
+						&& (adcData.order[i] == (_leftRight - 1))) {
 
-			// adc?
-			if (adcCount > 0) {
-				for (int i = 0; i < adcCount; i++) {
-					int hsect = cnd.adc_sect[i];
-					int hlayer = cnd.adc_layer[i];
-					int hleftright = 1 + (cnd.adc_order[i] % 2);
-
-					if ((sector == hsect) && (layer == hlayer) && (_leftRight == hleftright)) {
-						fbString("cyan", "cnd adc " + cnd.adc_ADC[i], feedbackStrings);
-						fbString("cyan", "cnd ped " + cnd.adc_ped[i], feedbackStrings);
-
-						String timeStr = String.format("cnd time %-6.1f", cnd.adc_time[i]);
-						fbString("cyan", timeStr, feedbackStrings);
-					}
+					adcData.adcFeedback("CND", i, feedbackStrings);
+					break;
 				}
 			}
 
-			// tdc?
-			if (tdcCount > 0) {
-				for (int i = 0; i < tdcCount; i++) {
-					int hsect = cnd.tdc_sect[i];
-					int hlayer = cnd.tdc_layer[i];
-					int hleftright = 1 + (cnd.tdc_order[i] % 2);
-
-					if ((sector == hsect) && (layer == hlayer) && (_leftRight == hleftright)) {
-						fbString("cyan", "cnd tdc " + cnd.tdc_TDC[i], feedbackStrings);
-					}
+			for (int i = 0; i < tdcData.count(); i++) {
+				if ((tdcData.sector[i] == sector) && (tdcData.layer[i] == layer)
+						&& (tdcData.order[i] == (_leftRight + 1))) {
+					feedbackStrings.add(String.format("$cyan$CND tdc %d", tdcData.tdc[i]));
+					break;
 				}
 			}
+
+
 		} else { // accumulated
 
 			int[][][] cndAccumData = AccumulationManager.getInstance().getAccumulatedCNDData();

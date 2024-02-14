@@ -29,15 +29,13 @@ import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.bCNU.util.RingBuffer;
-import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
 import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.event.ScanManager;
 import cnuphys.ced.frame.Ced;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -73,23 +71,10 @@ public class ClasIoEventManager {
 	// reset everytime hipo or evio file is opened
 	private int _currentEventIndex;
 
-
-	//a ringbuffer for previous events
-	private RingBuffer<PrevIndexedEvent> _prevEventBuffer;
-
-	//maps sequential event number to true event numbers
-	private long[] _numberMap;
-	private int _numberMapCount = 0;
-
-
 	// sources of events (the type, not the actual source)
 	public enum EventSourceType {
 		HIPOFILE, ET, EVIOFILE
 	}
-
-	// for firing property changes
-	public static final String SWIM_ALL_MC_PROP = "SWIM ALL MC";
-	public static final String SWIM_ALL_RECON_PROP = "SWIM ALL RECON";
 
 	// the current source type
 	private EventSourceType _sourceType = EventSourceType.HIPOFILE;
@@ -99,6 +84,10 @@ public class ClasIoEventManager {
 
 	// flag that set set to <code>true</code> if we are accumulating events
 	private boolean _accumulating = false;
+
+	// flag that set set to <code>true</code> if we are quickly scanning events events
+	private boolean _scanning = false;
+
 
 	// list of view listeners. There are actually three lists. Those in index 0
 	// are notified first. Then those in index 1. Finally those in index 2. The
@@ -134,19 +123,14 @@ public class ClasIoEventManager {
 	private DataSource _dataSource;
 
 	// singleton
-	private static ClasIoEventManager instance;
+	private static volatile ClasIoEventManager instance;
 
 	// the current event
 	private DataEvent _currentEvent;
 
-	// the previous event and index
-	private PrevIndexedEvent _prevIndexedEvent = new PrevIndexedEvent(null, -1);
-
-
 	// private constructor for singleton
 	private ClasIoEventManager() {
 		_dataSource = new HipoDataSource();
-		_prevEventBuffer = new RingBuffer<>(10);
 	}
 
 	/**
@@ -168,12 +152,15 @@ public class ClasIoEventManager {
 			if (_currentEvent != null) {
 
 				if (isAccumulating()) {
+					DataWarehouse.getInstance().newClasIoEvent(_currentEvent);
 					AccumulationManager.getInstance().newClasIoEvent(_currentEvent);
-				} else {
-					CedView.suppressRefresh(true);
-					_runData.set(_currentEvent);
+				}
+				else if (isScanning()) {
+                    ScanManager.getInstance().newClasIoEvent(_currentEvent);
+                }
+				else {
+					_runData.set();
 					notifyEventListeners();
-					CedView.suppressRefresh(false);
 					Ced.refresh();
 				}
 			}
@@ -198,25 +185,20 @@ public class ClasIoEventManager {
 
 		if (_currentEvent != null) {
 			// use any bank with a true pid column
-			// String[] knownBanks =
-			// ClasIoEventManager.getInstance().getKnownBanks();
 
 			String[] cbanks = _currentEvent.getBankList();
 			if (cbanks != null) {
 				for (String bankName : cbanks) {
 					if (bankName.contains("::Particle") || bankName.contains("::Lund")) {
-
-						ColumnData cd = DataManager.getInstance().getColumnData(bankName, "pid");
-
-						if (cd != null) {
-							int pid[] = (cd.getIntArray(_currentEvent));
-							if ((pid != null) && (pid.length > 0)) {
-								for (int pdgid : pid) {
-									LundId lid = LundSupport.getInstance().get(pdgid);
-									if (lid != null) {
-										_uniqueLundIds.remove(lid);
-										_uniqueLundIds.add(lid);
-									}
+						
+						//get the pid column
+						int pid[] = DataWarehouse.getInstance().getInt(bankName, "pid");
+						if ((pid != null) && (pid.length > 0)) {
+							for (int pdgid : pid) {
+								LundId lid = LundSupport.getInstance().get(pdgid);
+								if (lid != null) {
+									_uniqueLundIds.remove(lid);
+									_uniqueLundIds.add(lid);
 								}
 							}
 						}
@@ -235,7 +217,11 @@ public class ClasIoEventManager {
 	 */
 	public static ClasIoEventManager getInstance() {
 		if (instance == null) {
-			instance = new ClasIoEventManager();
+			synchronized (ClasIoEventManager.class) {
+				if (instance == null) {
+					instance = new ClasIoEventManager();
+				}
+			}
 		}
 		return instance;
 	}
@@ -293,18 +279,38 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * @return the accumulating
+	 * Are we accumulating?
+	 * @return the accumulating flag
 	 */
 	public boolean isAccumulating() {
 		return _accumulating;
 	}
 
 	/**
+	 * Set whether we are accumulating
 	 * @param accumulating the accumulating to set
 	 */
 	public void setAccumulating(boolean accumulating) {
 		_accumulating = accumulating;
 	}
+
+	/**
+	 * Are we scanning?
+	 *
+	 * @return the scanning flag
+	 */
+	public boolean isScanning() {
+		return _scanning;
+	}
+
+	/**
+	 * Set whether we are scanning
+	 * @param scanning the scanning to set
+	 */
+	public void setScanning(boolean scanning) {
+		_scanning = scanning;
+	}
+
 
 	/**
 	 * Get the current event
@@ -356,7 +362,7 @@ public class ClasIoEventManager {
 
 		//let the data manager know
 		_schemaFactory = ((HipoDataSource)_dataSource).getReader().getSchemaFactory();
-		DataManager.getInstance().updateSchema(_schemaFactory);
+		DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		//notify the listeners
 		notifyEventListeners(_currentHipoFile);
@@ -364,8 +370,7 @@ public class ClasIoEventManager {
 
 		reset();
 
-		// TODO check if I need to skip the first event
-
+		// auto go to first event
 		try {
 			getNextEvent();
 		} catch (Exception e) {
@@ -378,18 +383,7 @@ public class ClasIoEventManager {
 	private void reset() {
 		_runData.reset();
 		_currentEvent = null;
-		_prevIndexedEvent.reset();
 		_currentEventIndex = 0;
-		_prevEventBuffer.clear();
-		resetIndexMap();
-	}
-
-	/**
-	 * Reset the index map
-	 */
-	public void resetIndexMap() {
-		_numberMap = null;
-		_numberMapCount = 0;
 	}
 
 	/**
@@ -448,18 +442,13 @@ public class ClasIoEventManager {
 
 			// does the file exist?
 
-			Log.getInstance().info("Attempting to connect to ET ring");
-			Log.getInstance().info("ET Filename: [" + _currentETFile + "]");
-			Log.getInstance().info("ET Station Name: [" + _currentStation + "]");
 			System.err.println("ET File Name:_currentETFile [" + _currentETFile + "]");
 
 			try {
-				Log.getInstance().info("Attempting to create EvioETSource.");
 
 				_dataSource = new EvioETSource(_currentMachine, _currentPort, _currentStation);
 
 				if (_dataSource == null) {
-					Log.getInstance().error("null EvioETSource.  Cannot connect to ET.");
 					JOptionPane.showMessageDialog(null, "The ET Data Source is null, used Machine: " + _currentMachine,
 							"ET null Data Source", JOptionPane.INFORMATION_MESSAGE, ImageManager.cnuIcon);
 					return;
@@ -467,14 +456,13 @@ public class ClasIoEventManager {
 
 				System.err.println("trying to connect using et file: " + _currentETFile);
 				setEventSourceType(EventSourceType.ET);
-				Log.getInstance().info("Attempting to open EvioETSource.");
 				_dataSource.open(_currentETFile);
 
 				//auto select events every 2 sec
 				Ced.getCed().getEventMenu().autoCheckAuto();
 			} catch (Exception e) {
 				String message = "Could not connect to ET Ring [" + e.getMessage() + "]";
-				Log.getInstance().error(message);
+				System.err.println(message);
 			}
 
 		} // end ok
@@ -632,7 +620,7 @@ public class ClasIoEventManager {
 	 * @return <code>true</code> if any prev event control should be enabled.
 	 */
 	public boolean isPrevOK() {
-		return (_prevEventBuffer.size() > 0);
+		return isGotoOK() && (_currentEventIndex > 1);
 	}
 
 	/**
@@ -673,7 +661,7 @@ public class ClasIoEventManager {
 
 			_decoder = new CLASDecoder4();
 
-			DataManager.getInstance().updateSchema(_schemaFactory);
+			DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		}
 
@@ -703,25 +691,22 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Get the next event from the current  reader
+	 * Get the previous event from the current  reader
 	 * @return the next event, if possible
 	 */
-	public DataEvent getNextEvent() {
-		return getNextEvent(true);
+	public DataEvent getPreviousEvent() {
+		return gotoEvent(_currentEventIndex - 1);
 	}
+
 
 	/**
 	 * Get the next event from the current  reader
 	 * @return the next event, if possible
 	 */
-	private DataEvent getNextEvent(boolean addToBuffer) {
+	public DataEvent getNextEvent() {
 
 		EventSourceType estype = getEventSourceType();
 		boolean done = false; //for filters
-
-		if (addToBuffer) {
-			_prevIndexedEvent.set(_currentEvent, _currentEventIndex);
-		}
 
 		switch (estype) {
 
@@ -740,7 +725,7 @@ public class ClasIoEventManager {
 					_currentEvent = decodeEvioToHipo((EvioDataEvent) _currentEvent);
 				}
 
-				done = (_currentEvent == null) || FilterManager.getInstance().pass(_currentEvent);
+				done = (_currentEvent == null) || FilterManager.getInstance().pass();
 			}
 			if (_currentEvent != null) {
 				_currentEventIndex++;
@@ -773,7 +758,7 @@ public class ClasIoEventManager {
 					_currentEvent = decodeEvioToHipo((EvioDataEvent) _currentEvent);
 				}
 
-				if (FilterManager.getInstance().pass(_currentEvent)) {
+				if (FilterManager.getInstance().pass()) {
 					_currentEventIndex++;
 				} else {
 					_currentEvent = null;
@@ -785,12 +770,6 @@ public class ClasIoEventManager {
 			break; // end case ET
 
 		} // end switch
-
-		if (addToBuffer) {
-			if ((_prevIndexedEvent.event != null) && (_prevIndexedEvent.event != _currentEvent)) {
-				_prevEventBuffer.add(new PrevIndexedEvent(_prevIndexedEvent.event, _prevIndexedEvent.index));
-			}
-		}
 
 		setCurrentEvent();
 		return _currentEvent;
@@ -815,24 +794,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-	/**
-	 * Get the previous event from the current compact reader
-	 *
-	 * @return the previous event, if possible.
-	 */
-	public DataEvent getPreviousEvent() {
-
-		PrevIndexedEvent prev = _prevEventBuffer.previous();
-		if ((prev == null) || (prev.event == _currentEvent)) {
-			return _currentEvent;
-		}
-
-		_currentEvent = prev.event;
-		_currentEventIndex = prev.index;
-
-		setCurrentEvent();
-		return _currentEvent;
-	}
 
 	// skip a number of events
 	private void skipEvents(int n) {
@@ -841,11 +802,6 @@ public class ClasIoEventManager {
 		}
 
 		EventSourceType estype = getEventSourceType();
-
-		if (_currentEvent != null) {
-			_prevEventBuffer.add(new PrevIndexedEvent(_currentEvent, _currentEventIndex));
-		}
-
 
 		switch (estype) {
 		case HIPOFILE:
@@ -859,7 +815,7 @@ public class ClasIoEventManager {
 			while (!done && (_currentEventIndex < stopIndex)) {
 				if (_dataSource.hasEvent()) {
 					DataEvent event = _dataSource.getNextEvent();
-					if (FilterManager.getInstance().pass(event)) {
+					if (FilterManager.getInstance().pass()) {
 						_currentEventIndex++;
 					}
 				}
@@ -875,50 +831,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-	/**
-	 * Go t the event with the desired true event number
-	 * @param desesiredTrueNumber the desired true event number
-	 * @return the event
-	 */
-	public DataEvent gotoTrueEvent(int desiredTrueNumber) {
-
-		int currentTrueEvent = getTrueEventNumber();
-		if (currentTrueEvent < 0) {
-			return _currentEvent;
-		}
-
-		EventSourceType estype = getEventSourceType();
-		switch (estype) {
-
-		case HIPOFILE:
-			break;
-
-		case EVIOFILE: // assume the event numbers are sequential
-			return gotoEvent(_currentEventIndex + (desiredTrueNumber - currentTrueEvent));
-
-		default:
-			return _currentEvent;
-		}
-
-
-		// only hipo
-
-		if (_numberMap == null) {
-			runThroughEvents(desiredTrueNumber);
-		} else {
-
-			int saveIndex = _currentEventIndex;
-			int seqIndex = getSequentialFromTrue(desiredTrueNumber);
-
-			if (seqIndex >= 0) {
-				gotoEvent(seqIndex);
-			} else {
-				gotoEvent(saveIndex);
-			}
-		}
-
-		return _currentEvent;
-	}
 
 	/**
 	 *
@@ -938,7 +850,7 @@ public class ClasIoEventManager {
 			if (eventNumber > _currentEventIndex) {
 				int numToSkip = (eventNumber - _currentEventIndex) - 1;
 				skipEvents(numToSkip);
-				getNextEvent(false);
+				getNextEvent();
 			} else {
 				_dataSource.close();
 				_currentEvent = null;
@@ -992,7 +904,6 @@ public class ClasIoEventManager {
 			_dataSource.close();
 			_currentEvent = null;
 			_currentEventIndex = 0;
-			_prevEventBuffer.clear();
 		}
 
 		for (int index = 0; index < 3; index++) {
@@ -1015,23 +926,39 @@ public class ClasIoEventManager {
 
 	// new event file notification
 	private void notifyEventListeners(File file) {
+		
+		Runnable runner = new Runnable() {
 
-		Swimming.clearAllTrajectories();
+			@Override
+			public void run() {
+				Swimming.clearAllTrajectories();
+				for (int index = 0; index < 3; index++) {
+					if (_viewListenerList[index] != null) {
+						// Guaranteed to return a non-null array
+						Object[] listeners = _viewListenerList[index].getListenerList();
 
-		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
-
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					if (listeners[i] == IClasIoEventListener.class) {
-						((IClasIoEventListener) listeners[i + 1]).openedNewEventFile(file.getAbsolutePath());
+						// This weird loop is the bullet proof way of notifying all
+						// listeners.
+						for (int i = listeners.length - 2; i >= 0; i -= 2) {
+							if (listeners[i] == IClasIoEventListener.class) {
+								((IClasIoEventListener) listeners[i + 1]).openedNewEventFile(file.getAbsolutePath());
+							}
+						}
 					}
 				}
+
 			}
+		};
+
+		Thread t = new Thread(runner);
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
+
+
 		Ced.getCed().fixTitle();
 
 	}
@@ -1044,68 +971,70 @@ public class ClasIoEventManager {
 	 */
 	protected void notifyEventListeners() {
 
-		Swimming.setNotifyOn(false); // prevent refreshes
-		Swimming.clearAllTrajectories();
-		Swimming.setNotifyOn(true); // prevent refreshes
-
-		_uniqueLundIds = null;
-
-		Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
-
-		_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
-
-
-		if (_currentBanks != null) {
-			Arrays.sort(_currentBanks);
+		if (_currentEvent == null) {
+			return;
 		}
 
-		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
+		Runnable runner = new Runnable() {
 
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
-					if (listeners[i] == IClasIoEventListener.class) {
-						boolean notify = true;
-						if (isAccumulating()) {
-							notify = !listener.ignoreIfAccumulating();
-						}
+			@Override
+			public void run() {
+				Swimming.setNotifyOn(false); // prevent refreshes
+				Swimming.clearAllTrajectories();
+				Swimming.setNotifyOn(true); // prevent refreshes
 
-						if (notify) {
-							listener.newClasIoEvent(_currentEvent);
+				_uniqueLundIds = null;
+				Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
+				_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
+
+				if (_currentBanks != null) {
+					Arrays.sort(_currentBanks);
+				}
+
+				for (int index = 0; index < 3; index++) {
+					if (_viewListenerList[index] != null) {
+						// Guaranteed to return a non-null array
+						Object[] listeners = _viewListenerList[index].getListenerList();
+
+						// This weird loop is the bullet proof way of notifying all
+						// listeners.
+						for (int i = listeners.length - 2; i >= 0; i -= 2) {
+							IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
+							if (listeners[i] == IClasIoEventListener.class) {
+								listener.newClasIoEvent(_currentEvent);
+							}
 						}
 					}
-				}
+				} // index loop
+				finalSteps();
 			}
+		};
 
-		} // index loop
-
-		finalSteps();
+		Thread t = new Thread(runner);
+		t.start();
+		try {
+			t.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	// final steps
 	private void finalSteps() {
-		if (isAccumulating()) {
+		if (isAccumulating() || isScanning()) {
 			return;
 		}
 
 
 		swimAllMC();
 		swimAllRecon();
-		Ced.setEventNumberLabel(getSequentialEventNumber());
+		Ced.setEventNumberLabel(getSequentialEventNumber(), getTrueEventNumber());
 
 		for (JInternalFrame jif : Desktop.getInstance().getAllFrames()) {
 			if (jif instanceof CedView) {
 				((CedView) jif).getContainer().redoFeedback();
 			}
 		}
-		
-		
-		//refresh
-		//Ced.refresh();
 	}
 
 	private void swimAllMC() {
@@ -1177,16 +1106,7 @@ public class ClasIoEventManager {
 	}
 
 	/**
-	 * Get the names of the banks in the current event
-	 *
-	 * @return the names of the banks in the current event
-	 */
-	public String[] getCurrentBanks() {
-		return _currentBanks;
-	}
-
-	/**
-	 * Checks if a bank, identified by a string such as "FTOF::hits", is in the
+	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
 	 * current event.
 	 *
 	 * @param bankName the bank name
@@ -1199,248 +1119,6 @@ public class ClasIoEventManager {
 
 		int index = Arrays.binarySearch(_currentBanks, bankName);
 		return index >= 0;
-	}
-
-	/**
-	 * Check whether a given bank is a known bank
-	 *
-	 * @param bankName the bank name
-	 * @return <code>true</code> if the name is recognized.
-	 */
-	public boolean isKnownBank(String bankName) {
-		String allBanks[] = DataManager.getInstance().getKnownBanks();
-		if (allBanks == null) {
-			return false;
-		}
-		int index = Arrays.binarySearch(allBanks, bankName);
-		return index >= 0;
-	}
-
-
-	/**
-	 * Minimal event getter for running through events as fast as possible
-	 * @return the next event
-	 */
-	public DataEvent bareNextEvent() {
-
-		EventSourceType estype = getEventSourceType();
-
-		boolean done = false;
-
-		switch (estype) {
-
-		case HIPOFILE:
-		case EVIOFILE:
-
-			while (!done) {
-				if (_currentEventIndex >= getEventCount()) {
-					return null;
-				}
-
-				try {
-					if (_dataSource.hasEvent()) {
-						_currentEvent = _dataSource.getNextEvent();
-					} else {
-						_currentEvent = null;
-					}
-				} catch (Exception e) {
-					System.err.println("Exception in bareNextEvent: " + e.getMessage());
-					_currentEvent = null;
-				}
-
-				done = (_currentEvent == null) || FilterManager.getInstance().pass(_currentEvent);
-
-				if ((_currentEvent != null) && (_currentEvent instanceof EvioDataEvent)) {
-					_currentEvent = decodeEvioToHipo((EvioDataEvent) _currentEvent);
-				}
-
-				if (_currentEvent != null) {
-					_currentEventIndex++;
-				}
-
-				else {
-					return null;
-				}
-			}
-			break;
-
-		case ET:
-			break;
-		}
-
-
-		return _currentEvent;
-	}
-
-	//the sequential index is in the lower 32 bits
-	private int getSequentialFromTrue(int trueIndex) {
-		int index =  Arrays.binarySearch(_numberMap, 0, _numberMapCount-1, ((long)trueIndex << 32));
-
-		if (index < 0) {
-			index = -(index + 1); // now the insertion point.
-		}
-
-		int seqIndex = 1;
-		try {
-			seqIndex = (int)(_numberMap[index] & 0xffffffffL);
-		}
-		catch (Exception e ) {
-			System.err.println("Problem in getSequentialFromTrue: " + e.getMessage());
-			System.err.println("Requested true index: " + trueIndex);
-			System.err.println("Index from binary search: " + index);
-			System.err.println("Length of map array: " + _numberMap.length);
-		}
-
-		return seqIndex;
-	}
-
-	//run through the hipo file to make a mapping of sequential to true
-	private void runThroughEvents(int gotoIndex) {
-
-		int saveIndex = _currentEventIndex;
-
-		EventSourceType estype = getEventSourceType();
-		switch (estype) {
-
-		case HIPOFILE:
-			gotoEvent(0);
-
-			int count = getEventCount();
-
-			if (count > 0) {
-				_numberMap = new long[count];
-			} else {
-				_numberMap = null;
-			}
-			break;
-
-		case EVIOFILE:
-			gotoEvent(0);
-			return;
-
-
-			default:
-				return;
-		}
-
-		int trueNum = getTrueEventNumber();
-		_numberMap[0] = ((long)trueNum << 32) + 1;
-
-		IRunThrough rthrough = new IRunThrough() {
-
-			int index = 1;
-
-			@Override
-			public void nextRunthroughEvent(DataEvent event) {
-				if ((event != null) && FilterManager.getInstance().pass(event)) {
-					try {
-						int trueNum = getTrueEventNumber();
-						_numberMap[index] = ((long)trueNum << 32) + index + 1;
-						_numberMapCount++;
-						index++;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
-				else {
-					System.err.println("null event in nextRunthroughEvent");
-				}
-
-			}
-
-			@Override
-			public void runThroughtDone() {
-
-
-				int num = 50;
-
-				System.err.println("Before sort");
-				for (int i = 0; i < num; i++) {
-					long v = _numberMap[i];
-					System.err.println("Seq: [" + (v & 0xffffffffL) + "]  true: " + (v >> 32));
-				}
-
-
-				Arrays.sort(_numberMap, 0, _numberMapCount-1);
-
-				System.err.println("\nAfter sort");
-				for (int i = 0; i < num; i++) {
-					long v = _numberMap[i];
-					System.err.println("Seq: [" + (v & 0xffffffffL) + "]  true: " + (v >> 32));
-				}
-
-
-				int seqIndex = getSequentialFromTrue(gotoIndex);
-
-
-				if (seqIndex >= 0) {
-					gotoEvent(seqIndex);
-				} else {
-					gotoEvent(saveIndex);
-				}
-
-			}
-
-		};
-
-		RunThroughDialog dialog = new RunThroughDialog(rthrough);
-		dialog.setVisible(true);
-		dialog.process();
-
-	}
-
-
-	//inner class for storing previous events in a ring buffer
-	class PrevIndexedEvent {
-		public DataEvent event;
-		public int index;
-
-		public PrevIndexedEvent(DataEvent event, int index) {
-			set(event, index);
-		}
-
-		public void set(DataEvent event, int index) {
-			this.event = event;
-			this.index = index;
-		}
-
-		public void reset() {
-			set(null, -1);
-		}
-	}
-
-	//EXPERIMENTAL
-	/**
-	 * Get a single int from a row in the bank of the current event
-	 * @param bankName the name of the bank
-	 * @param columnName the name of the column
-	 * @param index the 0-based index (row)
-	 * @return the int, or Integer.MIN_Value on error (-2147483648)
-	 */
-	public int getInt(String bankName, String columnName, int index) {
-
-		DataBank bank = firstGetBank(bankName, columnName, index);
-
-		if (bank == null) {
-			return Integer.MIN_VALUE;
-		}
-
-		int data[] = bank.getInt(columnName);
-		if ((data == null) || (index >= data.length)) {
-			return Integer.MIN_VALUE;
-		}
-
-
-		return data[index];
-	}
-
-	private DataBank firstGetBank(String bankName, String columnName, int index) {
-		if ((_currentEvent == null) || (bankName == null) || (columnName == null) || (index < 0)) {
-			return null;
-		}
-
-		return _currentEvent.getBank(bankName);
 	}
 
 

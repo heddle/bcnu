@@ -11,13 +11,11 @@ import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
+import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcECALHit;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
+import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.PCALGeometry;
 import cnuphys.ced.item.HexSectorItem;
@@ -32,6 +30,10 @@ public class PCALHexSectorItem extends HexSectorItem {
 	public static final Color transYellow = new Color(255, 255, 0, 200);
 
 	private static int[] _stripCounts = PCALGeometry.PCAL_NUMSTRIP; // u,v,w
+
+	//the EC data container
+	private static PCalADCData _pcalADCData = PCalADCData.getInstance();
+
 
 	/**
 	 * Get a hex sector item
@@ -60,7 +62,7 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 
 		for (int stripType = 0; stripType < 3; stripType++) {
-			if (_pcalView.showStrips(stripType)) {
+			if (_pcalView.showView(stripType)) {
 				for (int stripIndex = 0; stripIndex < PCALGeometry.PCAL_NUMSTRIP[stripType]; stripIndex++) {
 					Polygon poly = stripPolygon(container, stripType, stripIndex);
 
@@ -80,17 +82,14 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 
 		drawOutlines(g, container, Color.lightGray);
-
-		drawPCALHits(g, container);
-
+		drawPCALData(g, container);
 		drawIJKOrigin(g, container);
-
 	}
 
 	// draw strip outlines
 	private void drawOutlines(Graphics g, IContainer container, Color color) {
 		for (int stripType = 0; stripType < 3; stripType++) {
-			if (_pcalView.showStrips(stripType)) {
+			if (_pcalView.showView(stripType)) {
 				for (int stripIndex = 0; stripIndex < PCALGeometry.PCAL_NUMSTRIP[stripType]; stripIndex++) {
 					// g.drawPolygon(_stripPoly[stripType][stripIndex]);
 
@@ -109,8 +108,8 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 	}
 
-	// draw the hits
-	private void drawPCALHits(Graphics g, IContainer container) {
+	// draw the data
+	private void drawPCALData(Graphics g, IContainer container) {
 		if (_pcalView.isSingleEventMode()) {
 			drawSingleEvent(g, container);
 		} else {
@@ -118,66 +117,48 @@ public class PCALHexSectorItem extends HexSectorItem {
 		}
 	}
 
-	//is this for this sector and PCAL, not ECAL
-	private boolean isThisPC(byte sector, byte layer) {
-		return (sector == getSector()) && (layer < 4);
+	// draw single event data
+	private void drawSingleEvent(Graphics g, IContainer container) {
+		drawADCData(g, container);
 	}
 
+	// draw data from adc bank
+	private void drawADCData(Graphics g, IContainer container) {
 
-	// draw single event hit
-	private void drawSingleEvent(Graphics g, IContainer container) {
+		// use the adc values
+		for (int i = 0; i < _pcalADCData.count(); i++) {
+			if (_sector == _pcalADCData.sector.get(i)) {
+				if (_pcalView.showView(_pcalADCData.view.get(i))) {
+					int strip0 = _pcalADCData.strip.get(i) - 1;
+					Polygon poly = stripPolygon(container, _pcalADCData.view.get(i), strip0);
 
-		AdcECALHitList hits = AllEC.getInstance().getHits();
-		if ((hits != null) && !hits.isEmpty()) {
+					g.setColor(_pcalADCData.getADCColor(_pcalADCData.adc.get(i)));
+					g.fillPolygon(poly);
 
-			for (AdcECALHit hit : hits) {
-				if (hit != null) {
+					g.setColor(Color.black);
+					g.drawPolygon(poly);
 
-					try {
-						if (isThisPC(hit.sector, hit.layer)) {
-							int view0 = hit.layer - 1; // uvw
-							int strip0 = hit.component - 1;
-							Polygon poly = stripPolygon(container, view0, strip0);
+					// extension
+					if (_pcalADCData.adc.get(i) > 0) {
+						int adcmax = Math.max(1, _pcalADCData.maxADC);
+						double fract = ((double) _pcalADCData.adc.get(i) / (double) adcmax);
+						fract = Math.max(0.15, Math.min(1.0, fract));
 
-							//handle monochrome
-							boolean isMono = _pcalView.getControlPanel().isMonochrome();
-							if (isMono) {
-								g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
-							}
-							else {
-								g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
-							}
-							g.fillPolygon(poly);
-							g.drawPolygon(poly);
-
-							int adcmax = Math.max(1, AllEC.getInstance().getMaxPCALAdc());
-							double fract = ((double) hit.averageADC() / (double) adcmax);
-							fract = Math.max(0.15, Math.min(1.0, fract));
-
-							// extension
-							poly = extensionPolygon(container, view0, strip0, fract);
-							g.setColor(transYellow);
-							g.fillPolygon(poly);
-							g.setColor(X11Colors.getX11Color("dark red"));
-							g.drawPolygon(poly);
-
-						}
-					} catch (Exception e) {
-						Log.getInstance().exception(e);
+						poly = extensionPolygon(container, _pcalADCData.view.get(i), strip0, fract);
+						g.setColor(Color.yellow);
+						g.fillPolygon(poly);
+						g.setColor(X11Colors.getX11Color("dark red"));
+						g.drawPolygon(poly);
 					}
-				} // hit not null
-				else {
-					Log.getInstance().warning("[PCALHexSectorItem] null hit in ECAll hit list");
 				}
 			}
 		}
-
 	}
 
 	// draw accumulated hits
 	private void drawAccumulatedHits(Graphics g, IContainer container) {
 
-		int medianHit = AccumulationManager.getInstance().getMedianPCALCount();
+		int maxHit = AccumulationManager.getInstance().getMaxPCALCount();
 
 		int hits[][][] = AccumulationManager.getInstance().getAccumulatedPCALData();
 
@@ -185,13 +166,12 @@ public class PCALHexSectorItem extends HexSectorItem {
 
 		for (int view0 = 0; view0 < 3; view0++) {
 			for (int strip0 = 0; strip0 < _stripCounts[view0]; strip0++) {
-				if (_pcalView.showStrips(view0)) {
+				if (_pcalView.showView(view0)) {
 					Polygon poly = stripPolygon(container, view0, strip0);
 
 					int hitCount = hits[sect0][view0][strip0];
 					if (hitCount > 0) {
-						double fract = _pcalView.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+						double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 						Color color = _pcalView.getColorScaleModel().getAlphaColor(fract, 128);
 
 						g.setColor(color);
@@ -379,10 +359,6 @@ public class PCALHexSectorItem extends HexSectorItem {
 			double labXYZ[] = new double[3];
 			sectorXYZToLabXYZ(sectorXYZ, labXYZ);
 
-			// TEST
-			// Point3D labP = new Point3D();
-			// ECGeometry.localToLab(getSector(), plane, lp, labP);
-			// feedbackStrings.add("TEST LAB: " + labP);
 
 			// lab rho phy
 			double labRho = Math.hypot(labXYZ[0], labXYZ[1]);
@@ -414,18 +390,20 @@ public class PCALHexSectorItem extends HexSectorItem {
 				feedbackStrings.add(uvwStr);
 
 				// any hits?
+				for (int i = 0; i < _pcalADCData.count(); i++) {
+					byte sect = _pcalADCData.sector.get(i);
+					if (sect == getSector()) {
+						byte view = _pcalADCData.view.get(i);
+						short component = _pcalADCData.strip.get(i);
+						if (uvw[view] == component) {
+							String str = String.format("%s strip %d adc %d time %-7.3f",
+									ECGeometry.VIEW_NAMES[view], component,
+									_pcalADCData.adc.get(i), _pcalADCData.time.get(i));
 
-				AdcECALHitList hits = AllEC.getInstance().getHits();
-				if ((hits != null) && !hits.isEmpty()) {
-					for (int stype = 0; stype < 3; stype++) {
-						int component = uvw[stype];
-						AdcECALHit hit = hits.get(getSector(), stype + 1, component);
-						if (hit != null) {
-							hit.adcFeedback(AllEC.layerNames[hit.layer], "strip", feedbackStrings);
+							feedbackStrings.add("$coral$" + str);
 						}
 					}
 				}
-
 			}
 
 		} // end contains

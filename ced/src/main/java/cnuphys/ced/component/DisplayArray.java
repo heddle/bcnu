@@ -28,7 +28,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** property for tof panel */
 	public static final String TOFPANEL_PROPERTY = "DisplayInner";
 
-
 	/** Label and access to the monte carlo truth checkbox */
 	public static final String MCTRUTH_LABEL = "Truth";
 
@@ -90,10 +89,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** Label for TOF Panel 2 strips */
 	public static final String PAN2_LABEL = "Panel 2";
 
-
-	/** Distance scale label */
-	// public static final String SCALE_LABEL = "Scale";
-
 	/** BST Hits as crosses */
 	public static final String COSMIC_LABEL = "Cosmic Tracks";
 
@@ -135,9 +130,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** Global show TB */
 	private static final String GLOBAL_TB_LABEL = "Reg TB";
 
-	/** Global show Neural Net data */
-	private static final String GLOBAL_NN_LABEL = "NN Data";
-
 	/** Global show AI HB */
 	private static final String GLOBAL_AIHB_LABEL = "AI HB";
 
@@ -153,11 +145,16 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	/** Label for reconstructed CVT Rec Trajectory */
 	private static final String CVTREC_TRAJ_LABEL = "CVTRec Traj";
 
+	/** Label for reconstructed CVT Rec KF Trajectory */
+	private static final String CVTRECKF_TRAJ_LABEL = "CVTRecKF Traj";
+	
 	/** Label for reconstructed CVT Pass 1Tracks */
 	private static final String CVTP1_TRACK_LABEL = "CVTP1 Tracks";
 
 	/** Label for reconstructed CVT Pass 1Trajectory */
 	private static final String CVTP1_TRAJ_LABEL = "CVTP1 Traj";
+
+
 
 	// controls whether any HB data displayed
 	private AbstractButton _showHBButton;
@@ -165,8 +162,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	// controls whether any TB data displayed
 	private AbstractButton _showTBButton;
 
-	// controls whether any neural net data displayed
-    private AbstractButton _showNNButton;
 
  // controls whether any AI HB data displayed
  	private AbstractButton _showAIHBButton;
@@ -201,12 +196,14 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	// controls display od cvt reconstructed trajectory bank data
 	private AbstractButton _cvtRecTrajButton;
 
+	// controls display of cvt kf trajectory bank data
+	private AbstractButton _cvtRecKFTrajButton;
+	
 	// controls display of cvt pass 1 tracks
 	private AbstractButton _cvtP1TrackButton;
 
 	// controls display od cvt pass 1 trajectory bank data
 	private AbstractButton _cvtP1TrajButton;
-
 
 	// controls whether reconstructed clusters are displayed
 	private AbstractButton _clusterButton;
@@ -351,12 +348,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 			_cosmicButton = add(COSMIC_LABEL, true, true, this, Color.black).getCheckBox();
 		}
 
-		// display scale?
-//		if (Bits.checkBit(bits, DisplayBits.SCALE)) {
-//			_showScaleButton = add(SCALE_LABEL, show_scale, true, this,
-//					Color.black).getCheckBox();
-//		}
-
 		// global hit based data
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_HB)) {
 			_showHBButton = add(GLOBAL_HB_LABEL, true, true, this, _buttonColor).getCheckBox();
@@ -375,11 +366,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		// global time based AI data
 		if (Bits.checkBit(bits, DisplayBits.GLOBAL_AITB)) {
 			_showAITBButton = add(GLOBAL_AITB_LABEL, true, true, this, _buttonColor).getCheckBox();
-		}
-
-		// global neural data
-		if (Bits.checkBit(bits, DisplayBits.GLOBAL_NN)) {
-			_showNNButton = add(GLOBAL_NN_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
 		// reonstructed crosses?
@@ -420,6 +406,10 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 			_cvtRecTrajButton = add(CVTREC_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
 
+		if (Bits.checkBit(bits, DisplayBits.CVTRECKFTRAJ)) {
+			_cvtRecKFTrajButton = add(CVTRECKF_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
+		}
+		
 		if (Bits.checkBit(bits, DisplayBits.CVTP1TRACKS)) {
 			_cvtP1TrackButton = add(CVTP1_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
@@ -610,16 +600,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 	/**
-	 * Convenience method to see if we show CVT Pass 1 tracks.
-	 *
-	 * @return <code>true</code> if we are to show CVT Pass 1 tracks.
-	 */
-	public boolean showCVTP1Tracks() {
-		return (_cvtP1TrackButton != null) && _cvtP1TrackButton.isSelected();
-	}
-
-
-	/**
 	 * Convenience method to see if we show CVT reconstructed trajectory data.
 	 * hits except
 	 *
@@ -630,6 +610,24 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 	/**
+	 * Convenience method to see if we show recon KF traj
+	 *
+	 * @return <code>true</code> if we are to show CVT pass 1 trajectory data.
+	 */
+	public boolean showRecKFTraj() {
+		return (_cvtRecKFTrajButton != null) && _cvtRecKFTrajButton.isSelected();
+	}
+
+	/**
+	 * Convenience method to see if we show CVT Pass 1 tracks.
+	 *
+	 * @return <code>true</code> if we are to show CVT Pass 1 tracks.
+	 */
+	public boolean showCVTP1Tracks() {
+		return (_cvtP1TrackButton != null) && _cvtP1TrackButton.isSelected();
+	}
+	
+	/**
 	 * Convenience method to see if we show CVT pass 1 trajectory data.
 	 * hits except
 	 *
@@ -639,6 +637,8 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		return (_cvtP1TrajButton != null) && _cvtP1TrajButton.isSelected();
 	}
 
+
+	
 	/**
 	 * Convenience method global hit based display
 	 *
@@ -675,25 +675,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		return (_showAITBButton != null) && _showAITBButton.isSelected();
 	}
 
-
-	/**
-	 * Convenience method global neural net based display
-	 *
-	 * @return <code>true</code> if we are to show nn globally
-	 */
-	public boolean showNN() {
-		return (_showNNButton != null) && _showNNButton.isSelected();
-	}
-
-
-	/**
-	 * Convenience method to see if we show the dc neural net hits.
-	 *
-	 * @return <code>true</code> if we are to show dc neural net hits.
-	 */
-	public boolean showDCNNHits() {
-		return showNN() && (_dcHitsButton != null) && _dcHitsButton.isSelected();
-	}
 
 	/**
 	 * Convenience method to see if we show the dc HB reconstructed hits.

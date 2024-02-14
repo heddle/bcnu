@@ -21,7 +21,7 @@ public class GrowablePointSets3D extends Item3D {
 
 	/**
 	 * Get the collection of point sets
-	 * 
+	 *
 	 * @return the collection of point sets
 	 */
 	public ArrayList<GrowablePointSet> getPointSets() {
@@ -30,7 +30,7 @@ public class GrowablePointSets3D extends Item3D {
 
 	/**
 	 * Add a new point set
-	 * 
+	 *
 	 * @param name      the name of the point set
 	 * @param color     the color of the points
 	 * @param pointSize the size of the points
@@ -60,7 +60,7 @@ public class GrowablePointSets3D extends Item3D {
 
 	/**
 	 * Find a point set by name
-	 * 
+	 *
 	 * @param name the name of the set (case sensitive)
 	 * @return the set with a matching name, or null.
 	 */

@@ -21,7 +21,7 @@ public class GrowablePointSet extends ArrayList<Vector3f> {
 	private String _name;
 
 	/**
-	 * 
+	 *
 	 * @param name
 	 * @param color     the color of the points
 	 * @param pointSize the drawing size of the points
@@ -52,7 +52,7 @@ public class GrowablePointSet extends ArrayList<Vector3f> {
 
 	/**
 	 * Add a point to this set
-	 * 
+	 *
 	 * @param x the x coordinate
 	 * @param y the y coordinate
 	 * @param z the z coordinate

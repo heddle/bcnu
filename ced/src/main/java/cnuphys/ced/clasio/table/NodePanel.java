@@ -31,12 +31,13 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.ColumnData;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoPresentBankPanel;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
+import cnuphys.ced.event.ScanManager;
 
 public class NodePanel extends JPanel
 		implements ActionListener, ListSelectionListener, IClasIoEventListener, IAccumulationListener {
@@ -56,10 +57,10 @@ public class NodePanel extends JPanel
 	/** show ints as hex */
 	protected JCheckBox intsInHexButton;
 
-	/** Used for "goto" sequential event */
+	/** Used for "goto" event */
 	protected JTextField seqEventNumberInput;
 
-	/** Used for "goto" true event */
+	/** Used for "goto" event */
 	protected JTextField trueEventNumberInput;
 
 	// the table
@@ -103,9 +104,9 @@ public class NodePanel extends JPanel
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
 		// shows which banks are present
-		_presentPanel = new ClasIoPresentBankPanel(_view, _nodeTable);
+		_presentPanel = ClasIoPresentBankPanel.createPresentBankPanel(_view, _nodeTable, 45);
 
-		panel.add(_presentPanel);
+		panel.add(_presentPanel.getScrollPane());
 		panel.add(Box.createVerticalGlue());
 
 		add(panel, BorderLayout.EAST);
@@ -198,10 +199,10 @@ public class NodePanel extends JPanel
 		prevButton.setFont(Fonts.smallFont);
 		prevButton.addActionListener(this);
 
-		JLabel seqLabel = new JLabel("Goto seq # ");
+		JLabel seqLabel = new JLabel("goto event   seq: ");
 		GraphicsUtilities.setSizeSmall(seqLabel);
 
-		JLabel trueLabel = new JLabel("Goto true # ");
+		JLabel trueLabel = new JLabel(" true: ");
 		GraphicsUtilities.setSizeSmall(trueLabel);
 
 
@@ -223,29 +224,23 @@ public class NodePanel extends JPanel
 						}
 					}
 				}
-
 				else if (kev.getSource() == trueEventNumberInput) {
-
-					// find the corresponding sequential number
-
 					if (kev.getKeyCode() == KeyEvent.VK_ENTER) {
-						int trueNum = _eventManager.getTrueEventNumber();
-						if (trueNum > -1) {
-							try {
-								int enumber = Integer.parseInt(trueEventNumberInput.getText());
-								_eventManager.gotoTrueEvent(enumber);
-							} catch (Exception e) {
-								seqEventNumberInput.setText("");
-							}
+						MenuSelectionManager.defaultManager().clearSelectedPath();
+						try {
+							int enumber = Integer.parseInt(trueEventNumberInput.getText());
+							ScanManager.getInstance().gotoTrue(enumber);						} catch (Exception e) {
+							trueEventNumberInput.setText("");
 						}
-
 					}
 				}
+
 
 			}
 		};
 		seqEventNumberInput.addKeyListener(ka);
 		trueEventNumberInput.addKeyListener(ka);
+
 
 		intsInHexButton = new JCheckBox("Show ints in hex", false);
 		intsInHexButton.setFont(Fonts.defaultFont);
@@ -278,9 +273,9 @@ public class NodePanel extends JPanel
 
 		panel.add(seqLabel);
 		panel.add(seqEventNumberInput);
-		panel.add(Box.createHorizontalStrut(6));
 		panel.add(trueLabel);
 		panel.add(trueEventNumberInput);
+		panel.add(Box.createHorizontalStrut(6));
 
 		numPanel.add(panel, 0);
 	}
@@ -295,7 +290,7 @@ public class NodePanel extends JPanel
 		nextButton.setEnabled(_eventManager.isNextOK());
 		prevButton.setEnabled(_eventManager.isPrevOK());
 		seqEventNumberInput.setEnabled(_eventManager.isGotoOK());
-		trueEventNumberInput.setEnabled(_eventManager.isGotoOK() && (_eventManager.getTrueEventNumber() > -1));
+        trueEventNumberInput.setEnabled(_eventManager.isGotoOK());
 	}
 
 	/**
@@ -406,21 +401,22 @@ public class NodePanel extends JPanel
 			return;
 		}
 
-		DataEvent event = _nodeTable.getCurrentEvent();
+		DataEvent event = DataWarehouse.getInstance().getCurrentEvent();
 		if (event == null) {
 			return;
 		}
 
-		DataManager dm = DataManager.getInstance();
-		String fullName = cd.getFullName();
-
+		DataWarehouse dw = DataWarehouse.getInstance();
+		String bankName = cd.bankName;
+        String columnName = cd.columnName;
+        
 		int lineCounter = 1;
 		int index = 0;
 
-		switch (cd.getType()) {
+		switch (cd.type) {
 
-		case ColumnData.INT8: // byte
-			byte bytes[] = dm.getByteArray(event, fullName);
+		case DataWarehouse.INT8: // byte
+			byte bytes[] = dw.getByte(bankName, columnName);
 			if (bytes != null) {
 				for (byte i : bytes) {
 					String s;
@@ -444,8 +440,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.INT16:
-			short shorts[] = dm.getShortArray(event, fullName);
+		case DataWarehouse.INT16:
+			short shorts[] = dw.getShort(bankName, columnName);
 			if (shorts != null) {
 				for (short i : shorts) {
 					String s;
@@ -469,8 +465,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.INT32:
-			int ints[] = dm.getIntArray(event, fullName);
+		case DataWarehouse.INT32:
+			int ints[] = dw.getInt(bankName, columnName);
 			if (ints != null) {
 				for (int i : ints) {
 					String s;
@@ -493,9 +489,35 @@ public class NodePanel extends JPanel
 				_dataTextArea.append("null data\n");
 			}
 			break;
+			
+		case DataWarehouse.INT64:
+			long longs[] = dw.getLong(bankName, columnName);
+			if (longs != null) {
+				for (long i : longs) {
+					String s;
+					if (intsInHexButton.isSelected()) {
+						s = String.format("[%02d]  %#010X", index++, i);
+					} else {
+						s = String.format("[%02d]  %d", index++, i);
+					}
+					_dataTextArea.append(s);
+					if (lineCounter < longs.length) {
+						if (lineCounter % blankLineEveryNth == 0) {
+							_dataTextArea.append("\n\n");
+						} else {
+							_dataTextArea.append("\n");
+						}
+						lineCounter++;
+					}
+				}
+			} else {
+				_dataTextArea.append("null data\n");
+			}
+			break;
 
-		case ColumnData.FLOAT32:
-			float floats[] = dm.getFloatArray(event, fullName);
+
+		case DataWarehouse.FLOAT32:
+			float floats[] = dw.getFloat(bankName, columnName);
 			if (floats != null) {
 				for (float f : floats) {
 					String doubStr = DoubleFormat.doubleFormat(f, 6, 4);
@@ -515,8 +537,8 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.FLOAT64:
-			double doubles[] = dm.getDoubleArray(event, fullName);
+		case DataWarehouse.FLOAT64:
+			double doubles[] = dw.getDouble(bankName, columnName);
 			if (doubles != null) {
 				for (double d : doubles) {
 					String doubStr = DoubleFormat.doubleFormat(d, 6, 4);
@@ -607,15 +629,5 @@ public class NodePanel extends JPanel
 		}
 	}
 
-	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return true;
-	}
 
 }

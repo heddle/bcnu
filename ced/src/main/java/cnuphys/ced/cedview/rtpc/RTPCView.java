@@ -2,7 +2,6 @@ package cnuphys.ced.cedview.rtpc;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -12,7 +11,6 @@ import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.event.ChangeEvent;
@@ -26,6 +24,7 @@ import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -33,9 +32,7 @@ import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.RTPC;
-import cnuphys.ced.event.data.RTPCHit;
-import cnuphys.ced.event.data.lists.RTPCHitList;
+import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.lund.X11Colors;
 
 
@@ -54,10 +51,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	private static final double PHIMIN = 0;
 	private static final double ZMAX = 192;
 	private static final double PHIMAX = 360;
-//	private static final double STRETCHZMIN = 1.005*ZMIN;
-//	private static final double STRETCHPHIMIN = 1.005*PHIMIN;
-//	private static final double STRETCHZMAX = 1.005*ZMAX;
-//	private static final double STRETCHPHIMAX = 1.005*PHIMAX;
 
 	//the local screen rect
 	private Rectangle screenRect;
@@ -68,11 +61,11 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	// base title
 	private static final String _baseTitle = "RTPC";
 
-	// units are
-//	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(STRETCHPHIMIN, STRETCHZMIN,
-//			(STRETCHPHIMAX - STRETCHPHIMIN), (STRETCHZMAX - STRETCHZMIN));
 
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-10, -200, 380, 400);
+
+	// the adc data container
+	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
 
 	/**
 	 * Create an RTPC view
@@ -135,14 +128,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 
-				Component component = container.getComponent();
-//				Rectangle b = component.getBounds();
-//
-//				// ignore b.x and b.y as usual
-//
-//				b.x = 0;
-//				b.y = 0;
-
 				screenRect = container.getInsetRectangle();
 				g.setColor(X11Colors.getX11Color("alice blue"));
 				g.fillRect(screenRect.x, screenRect.y, screenRect.width, screenRect.height);
@@ -168,7 +153,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 				Point p1 = new Point();
 
 				//horizontal lines
-				for (int i = 0; i <= RTPC.NUMLAYER; i++) {
+				for (int i = 0; i <= GeoConstants.RTPC_NUMLAYER; i++) {
 					double z = ZMIN + i*DELZ;
 
 
@@ -184,7 +169,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 				}
 
 				// vertical lines
-				for (int i = 0; i <= RTPC.NUMCOMPONENT; i++) {
+				for (int i = 0; i <= GeoConstants.RTPC_NUMCOMPONENT; i++) {
 					double phi = PHIMIN + i * DELPHI;
 
 
@@ -232,29 +217,21 @@ public class RTPCView extends CedXYView implements ChangeListener {
 
 	// single event drawer
 	private void drawSingleEventHits(Graphics g, IContainer container) {
-		RTPCHitList hits = RTPC.getInstance().getHits();
-//		System.err.println("DRAWING RTPC HITS count " + ((hits == null) ? 0 : hits.size()));
+		//use the ADC data
 
-		if ((hits != null) && !hits.isEmpty()) {
+		for (int i = 0; i < rtpcADCData.count(); i++) {
+			if (rtpcADCData.adc[i] >= getAdcThreshold()) {
+				// component and layer are 1-based
+				short component = rtpcADCData.component[i];
+				byte layer = rtpcADCData.layer[i];
 
-			Rectangle hr = new Rectangle();
-			Point p0 = new Point();
-			Point p1 = new Point();
+				Rectangle hr = new Rectangle();
+				Point p0 = new Point();
+				Point p1 = new Point();
 
-			for (RTPCHit hit : hits) {
-				if (hit != null) {
-
-					if (hit.adc >= getAdcThreshold()) {
-						// component and layer are 1-based
-						short component = hit.component;
-						byte layer = hit.layer;
-
-						setRect(container, component, layer, hr, p0, p1);
-						g.setColor(Color.red);
-						g.fillRect(hr.x, hr.y, hr.width, hr.height);
-					}
-
-				}
+				setRect(container, component, layer, hr, p0, p1);
+				g.setColor(Color.red);
+				g.fillRect(hr.x, hr.y, hr.width, hr.height);
 			}
 		}
 
@@ -270,36 +247,30 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		container.worldToLocal(p1, phi+DELPHI, z+DELZ);
 
 		hr.setBounds(p0.x, p1.y, p1.x -  p0.x, p0.y - p1.y);
-
-//		System.err.println("RTPC hit rect: " +  hr);
 	}
 
 	// accumulated hits drawer
 	private void drawAccumulatedHits(Graphics g, IContainer container) {
-		int medianHit = AccumulationManager.getInstance().getMedianRTPCCount();
+		int maxHit = AccumulationManager.getInstance().getMaxRTPCCount();
 
 		Rectangle hr = new Rectangle();
 		Point p0 = new Point();
 		Point p1 = new Point();
 
 		int counts[][] = AccumulationManager.getInstance().getAccumulatedRTPCData();
-		for (short cm1 = 0; cm1 < RTPC.NUMCOMPONENT; cm1++) {
-			for (byte lm1 = 0; lm1 < RTPC.NUMLAYER; lm1++) {
+		for (short cm1 = 0; cm1 < GeoConstants.RTPC_NUMCOMPONENT; cm1++) {
+			for (byte lm1 = 0; lm1 < GeoConstants.RTPC_NUMLAYER; lm1++) {
 				if (counts[cm1][lm1] > 0) {
 
 					short component =  (short)(cm1 + 1);
 					byte layer = (byte)(lm1 + 1);
 					setRect(container, component, layer, hr, p0, p1);
 
-					double fract = getMedianSetting() * (((double) counts[cm1][lm1]) / (1 + medianHit));
-
+					double hitCount = counts[cm1][lm1];
+					double fract = (maxHit == 0) ? 0 : ((hitCount) / maxHit);
 					Color color = AccumulationManager.getInstance().getColor(getColorScaleModel(), fract);
 					g.setColor(color);
 					g.fillRect(hr.x, hr.y, hr.width, hr.height);
-
-//					System.err.println("[" + component + ", " + layer + "] count: " +
-//							counts[cm1][lm1] + "  fract: " + fract + "  medianCount: " +  medianHit);
-
 				}
 			}
 
@@ -316,28 +287,6 @@ public class RTPCView extends CedXYView implements ChangeListener {
 	protected void addItems() {
 	}
 
-
-	//find the matching hits
-	private ArrayList<RTPCHit> matchingHits(short component, byte layer) {
-		ArrayList<RTPCHit> list =  new ArrayList<>();
-
-		RTPCHitList hits = RTPC.getInstance().getHits();
-//		System.err.println("DRAWING RTPC HITS count " + ((hits == null) ? 0 : hits.size()));
-
-		if ((hits != null) && !hits.isEmpty()) {
-
-			for (RTPCHit hit : hits) {
-				if (hit != null) {
-					if ((component ==  hit.component) && (layer == hit.layer)) {
-						list.add(hit);
-					}
-				}
-			}
-		}
-
-
-		return list;
-	}
 
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
@@ -386,23 +335,20 @@ public class RTPCView extends CedXYView implements ChangeListener {
 		Point pp = new Point();
 		worldToComponentLayer(container, pp, wp);
 
-		short component = (short)(pp.x);
-		byte layer = (byte)(pp.y);
+		short component = (short) (pp.x); // 1-based
+		byte layer = (byte) (pp.y); // 1-based
 
 		String clStr = "component " + pp.x + ", layer " + pp.y;
 		feedbackStrings.add(clStr);
 
-		//hits
-		ArrayList<RTPCHit> list = matchingHits(component, layer);
-		if ((list != null) && !list.isEmpty()) {
-			feedbackStrings.add("num hits: " + list.size());
-			for (RTPCHit hit : list) {
+		for (int i = 0; i < rtpcADCData.count(); i++) {
+			if (rtpcADCData.adc[i] >= getAdcThreshold()) {
 
-				String s = String.format("  adc %d ped %d time %-7.2f", hit.adc, hit.ped, hit.time);
-				feedbackStrings.add(s);
+				if ((component == rtpcADCData.component[i]) && (layer == rtpcADCData.layer[i])) {
+					rtpcADCData.adcFeedback("RTPC", i, feedbackStrings);
+				}
 			}
 		}
-
 	}
 
 	//after return, p.x is the components 1..180 and p.y is layer 1..96

@@ -8,7 +8,7 @@ public class BasicColorSupport3D {
 
 	/**
 	 * Set the color
-	 * 
+	 *
 	 * @param gl2   the context
 	 * @param color the color
 	 */

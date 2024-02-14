@@ -21,7 +21,6 @@ import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-import java.util.Vector;
 
 import org.jlab.io.base.DataEvent;
 
@@ -35,7 +34,15 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTADCData;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTRecHitData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
+import cnuphys.ced.alldata.datacontainer.cvt.CosmicData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
@@ -43,19 +50,7 @@ import cnuphys.ced.cedview.urwell.HighlightData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BaseHit2;
-import cnuphys.ced.event.data.CTOF;
-import cnuphys.ced.event.data.Cosmic;
-import cnuphys.ced.event.data.Cosmics;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.lists.BaseHit2List;
-import cnuphys.ced.event.data.lists.CosmicList;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
+import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
@@ -67,6 +62,9 @@ import cnuphys.swim.SwimTrajectory2D;
 @SuppressWarnings("serial")
 public class CentralXYView extends CedXYView implements ILabCoordinates {
 
+	//data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
+	
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 
@@ -87,10 +85,19 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// BMT [sector][layer]
 	private BMTSectorItem _bmtItems[][];
-	
-	//for highlighting
+
+	// for highlighting
 	private HighlightData _bstHighlightData = new HighlightData();
 	private HighlightData _bmtHighlightData = new HighlightData();
+
+	// data containers
+	private CTOFADCData _ctofADCData = CTOFADCData.getInstance();
+	private CTOFClusterData _clusterCTOFData = CTOFClusterData.getInstance();
+	private BSTADCData _bstADCData = BSTADCData.getInstance();
+	private BMTADCData _bmtADCData = BMTADCData.getInstance();
+	private CosmicData _cosmicData = CosmicData.getInstance();
+	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
+	private BMTRecHitData bmtRecHitData = BMTRecHitData.getInstance();
 
 
 	// units are mm
@@ -105,17 +112,15 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draws reconstructed crosses
 	private CrossDrawerXY _crossDrawer;
-	
+
 	// draws reconstructed clusters
 	private ClusterDrawerXY _clusterDrawer;
-
 
 	// draws hits
 	private CentralXYHitDrawer _hitDrawer;
 
-	//bank matches
-	private static String _defMatches[] = {"BMT", "BST", "CVT", "CTOF"};
-
+	// bank matches
+	private static String _defMatches[] = { "BMT", "BST", "CND", "CVT", "CTOF" };
 
 	/**
 	 * Create a Central detector XY View
@@ -168,17 +173,15 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN, RMARGIN, PropertySupport.BOTTOMMARGIN,
 				BMARGIN, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
 				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CentralXY",
-				PropertySupport.STANDARDVIEWDECORATIONS,
-				true);
+				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
-						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS + DisplayBits.CVTP1TRACKS
-						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTP1TRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
-						+ DisplayBits.GLOBAL_TB,
-				3, 5);
+				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
+						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
+						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
+						+ DisplayBits.GLOBAL_TB + DisplayBits.CVTP1TRACKS + DisplayBits.CVTP1TRAJ, 3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
@@ -186,7 +189,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		// add quick zooms
 		view.addQuickZoom("BST & BMT", -190, -190, 190, 190);
 
-		//i.e. if none were in the properties
+		// i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);
 		}
@@ -252,11 +255,9 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 					if (showClusters()) {
 						_clusterDrawer.draw(g, container);
 					}
-					
-					//data selected highlight?
+
+					// data selected highlight?
 					drawDataSelectedHighlight(g, container);
-
-
 
 					Rectangle screenRect = getActiveScreenRectangle(container);
 					drawAxes(g, container, screenRect, true);
@@ -268,8 +269,8 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		};
 		getContainer().setAfterDraw(afterDraw);
 	}
-	
-	//draw data selected hightlight data
+
+	// draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
 
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
@@ -282,86 +283,89 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 	}
-	
-	//draw highlighted clusters
+
+	// draw highlighted clusters
 	private void drawHighlightClusters(Graphics g, IContainer container, DataEvent dataEvent) {
 		// indices are zero based
 		if ((_bstHighlightData.cluster >= 0) && dataEvent.hasBank("BSTRec::Clusters")) {
-			
-			if (ColumnData.getFloatArray("BSTRec::Clusters.x1") == null) {
+
+			if (_dataWarehouse.getFloat("BMTRec::Clusters", "x1") == null) {
 				return;
 			}
 			int idx = _bstHighlightData.cluster; // 0 based
 
-			float x1 = ColumnData.getFloatArray("BSTRec::Clusters.x1")[idx];
-			float y1 = ColumnData.getFloatArray("BSTRec::Clusters.y1")[idx];
-			float x2 = ColumnData.getFloatArray("BSTRec::Clusters.x2")[idx];
-			float y2 = ColumnData.getFloatArray("BSTRec::Clusters.y2")[idx];
+			float x1 = _dataWarehouse.getFloat("BSTRec::Clusters", "x1")[idx];
+			float y1 = _dataWarehouse.getFloat("BSTRec::Clusters", "y1")[idx];
+			float x2 = _dataWarehouse.getFloat("BSTRec::Clusters", "x2")[idx];
+			float y2 = _dataWarehouse.getFloat("BSTRec::Clusters", "y2")[idx];
+			
 			Point p1 = new Point();
 			Point p2 = new Point();
 
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
-			g.setColor(Color.black);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-			DataDrawSupport.drawReconClusterHighlight(g, p1);
-			DataDrawSupport.drawReconClusterHighlight(g, p2);
+			
+			if (Ced.getCed().isConnectCluster()) {
+				g.setColor(Color.black);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			}
+			
+			DataDrawSupport.drawClusterHighlight(g, p1);
+			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
-		
+
 		if ((_bmtHighlightData.cluster >= 0) && dataEvent.hasBank("BMTRec::Clusters")) {
 			int idx = _bmtHighlightData.cluster; // 0 based
 
-			float x1 = ColumnData.getFloatArray("BMTRec::Clusters.x1")[idx];
-			float y1 = ColumnData.getFloatArray("BMTRec::Clusters.y1")[idx];
-			float x2 = ColumnData.getFloatArray("BMTRec::Clusters.x2")[idx];
-			float y2 = ColumnData.getFloatArray("BMTRec::Clusters.y2")[idx];
+			float x1 = _dataWarehouse.getFloat("BMTRec::Clusters", "x1")[idx];
+			float y1 = _dataWarehouse.getFloat("BMTRec::Clusters", "y1")[idx];
+			float x2 = _dataWarehouse.getFloat("BMTRec::Clusters", "x2")[idx];
+			float y2 = _dataWarehouse.getFloat("BMTRec::Clusters", "y2")[idx];
 			Point p1 = new Point();
 			Point p2 = new Point();
 
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
-			g.setColor(Color.black);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-			DataDrawSupport.drawReconClusterHighlight(g, p1);
-			DataDrawSupport.drawReconClusterHighlight(g, p2);
+			
+			if (Ced.getCed().isConnectCluster()) {
+				g.setColor(Color.black);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+			}
+		
+			DataDrawSupport.drawClusterHighlight(g, p1);
+			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
 
 	}
 
-
 	// draw cosmic ray tracks
 	private void drawCosmicTracks(Graphics g, IContainer container) {
+		
+		int count = _cosmicData.count();
+		if (count > 0) {
+			Shape oldClip = clipView(g);
 
-		CosmicList cosmics;
-		cosmics = Cosmics.getInstance().getCosmics();
+			Point p1 = new Point();
+			Point p2 = new Point();
+			for (int i = 0; i < count; i++) {
+				double y1 = 100;
+				double y2 = -100;
+				double x1 = _cosmicData.trkline_yx_slope[i] * y1 + _cosmicData.trkline_yx_interc[i];
+				double x2 = _cosmicData.trkline_yx_slope[i] * y2 + _cosmicData.trkline_yx_interc[i];
+				// convert to mm
+				x1 *= 10;
+				x2 *= 10;
+				y1 *= 10;
+				y2 *= 10;
+				container.worldToLocal(p1, x1, y1);
+				container.worldToLocal(p2, x2, y2);
 
-		if ((cosmics == null) || cosmics.isEmpty()) {
-			return;
+				g.setColor(Color.red);
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
+
+			}
+			g.setClip(oldClip);
 		}
-
-		Shape oldClip = clipView(g);
-
-		Point p1 = new Point();
-		Point p2 = new Point();
-		for (Cosmic cosmic : cosmics) {
-			double y1 = 100;
-			double y2 = -100;
-			double x1 = cosmic.trkline_yx_slope * y1 + cosmic.trkline_yx_interc;
-			double x2 = cosmic.trkline_yx_slope * y2 + cosmic.trkline_yx_interc;
-			// convert to mm
-			x1 *= 10;
-			x2 *= 10;
-			y1 *= 10;
-			y2 *= 10;
-			container.worldToLocal(p1, x1, y1);
-			container.worldToLocal(p2, x2, y2);
-
-			g.setColor(Color.red);
-			g.drawLine(p1.x, p1.y, p2.x, p2.y);
-
-		}
-
-		g.setClip(oldClip);
 	}
 
 	/**
@@ -557,7 +561,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		if (_closestPanel != null) {
-
 			int region = (_closestPanel.getLayer() + 1) / 2;
 			fbString("red", "BST layer " + _closestPanel.getLayer(), feedbackStrings);
 			fbString("red", "BST region " + region, feedbackStrings);
@@ -587,89 +590,79 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				}
 			}
 
-			// ctof
+			// ctof ?
 			else if ((rad > CTOFGeometry.RINNER) && (rad < CTOFGeometry.ROUTER)) {
 
-				for (int index = 0; index < 48; index++) {
+				for (short index = 0; index < 48; index++) {
 					if (_ctofPoly[index].contains(screenPoint)) {
-						int paddle = index + 1;
-						TdcAdcTOFHit hit = null;
-						TdcAdcTOFHitList hits = CTOF.getInstance().getHits();
-						if ((hits != null) && !hits.isEmpty()) {
-							hit = hits.get(0, 0, paddle);
-						}
+						short paddle = (short) (index + 1); // now 1-based
+						feedbackStrings.add("$cyan$CTOF paddle: " + paddle);
 
-						if (hit == null) {
-							feedbackStrings.add("$dodger blue$" + "CTOF paddle " + paddle);
-						} else {
-							hit.tdcAdcFeedback("CTOF paddle", feedbackStrings);
+						for (int i = 0; i < _ctofADCData.count(); i++) {
+							if (_ctofADCData.component[i] == paddle) {
+								_ctofADCData.adcFeedback("CTOF", i, feedbackStrings);
+							}
 						}
 
 						break;
 					}
-
 				}
-			}
 
-		}
-
-		// hits data
-
-		if (_closestPanel != null) {
-			AdcList hits = BST.getInstance().getADCHits();
-			if ((hits != null) && !hits.isEmpty()) {
-				Vector<int[]> stripADCData = BST.getInstance().allStripsForSectorAndLayer(_closestPanel.getSector(),
-						_closestPanel.getLayer());
-				for (int sdtdat[] : stripADCData) {
-					fbString("orange", "strip  " + sdtdat[0] + " adc " + +sdtdat[1], feedbackStrings);
-				}
-			}
-		}
-
-		// BMT?
-
-		if (showADCHits()) {
-			AdcList adcHits = BMT.getInstance().getADCHits();
-			if ((adcHits != null) && !adcHits.isEmpty()) {
-				for (AdcHit adcHit : adcHits) {
-					if (adcHit.contains(screenPoint)) {
-						adcHit.adcFeedback("layer", "strip", feedbackStrings);
-						break;
-					}
-				}
-			}
-		}
-
-		boolean foundHit = false;
-		if (showReconHits()) {
-			BaseHit2List reconHits = BMT.getInstance().getRecHits();
-			if ((reconHits != null) && !reconHits.isEmpty()) {
-				for (BaseHit2 bhit2 : reconHits) {
-					if (bhit2.contains(screenPoint)) {
-						fbString("orange", "BMT recon hit sector  " + bhit2.sector + " layer " + bhit2.layer + " strip "
-								+ bhit2.component, feedbackStrings);
-						foundHit = true;
-						break;
-					}
-				}
-			}
-			if (!foundHit) {
-				reconHits = BST.getInstance().getRecHits();
-				if ((reconHits != null) && !reconHits.isEmpty()) {
-					for (BaseHit2 bhit2 : reconHits) {
-						if (bhit2.contains(screenPoint)) {
-							fbString("orange", "BST recon hit sector  " + bhit2.sector + " layer " + bhit2.layer + " strip "
-									+ bhit2.component, feedbackStrings);
-
-							foundHit = true;
+				if (showClusters()) {
+					for (int i = 0; i < _clusterCTOFData.count(); i++) {
+						if (_clusterCTOFData.contains(i, screenPoint)) {
+							_clusterCTOFData.feedback("CTOF", i, feedbackStrings);
 							break;
 						}
 					}
 				}
 
 			}
-
 		}
+
+
+		// BMT?
+
+		if (showADCHits()) {
+			// BST ADC?
+			if (_closestPanel != null) {
+
+				for (int i = 0; i < _bstADCData.count(); i++) {
+					if ((_bstADCData.sector[i] == _closestPanel.getSector())
+							&& (_bstADCData.layer[i] == _closestPanel.getLayer())) {
+						_bstADCData.adcFeedback(i, feedbackStrings);
+					}
+				}
+
+			}
+			
+			
+			// BMT ADC?
+			for (int i = 0; i < _bmtADCData.count(); i++) {
+				if (_bmtADCData.contains(i, screenPoint)) {
+					_bmtADCData.adcFeedback("BMT", i, feedbackStrings);
+				}
+			}
+			
+		}
+		
+		if (showReconHits()) {
+			for (int i = 0; i < bstRecHitData.count(); i++) {
+				if (bstRecHitData.contains(i, screenPoint)) {
+					bstRecHitData.hitFeedback(i, feedbackStrings);
+					break;
+				}
+			}
+			
+			for (int i = 0; i < bmtRecHitData.count(); i++) {
+				if (bmtRecHitData.contains(i, screenPoint)) {
+					bmtRecHitData.hitFeedback(i, feedbackStrings);
+					break;
+				}
+			}
+		}
+
+		
 
 		// near a swum trajectory?
 		double mindist = _swimTrajectoryDrawer.closestApproach(worldPoint);
@@ -684,8 +677,10 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			}
 		}
 
-		// see if any feedback from simulated data
-		getGemcFeedback(container, screenPoint, worldPoint, feedbackStrings);
+		// cluster feedback
+		if (showClusters()) {
+			_clusterDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
+		}
 
 		// reconstructed feedback?
 		_crossDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
@@ -718,12 +713,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		return closest;
-	}
-
-	// feedback from simulated data
-	private void getGemcFeedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
-			List<String> feedbackStrings) {
-
 	}
 
 	/**
@@ -805,10 +794,12 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	}
 
 	/**
-	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of the view)
-	 * @param x the CLAS12 x coordinate
-	 * @param y the CLAS12 y coordinate
-	 * @param z the CLAS12 z coordinate
+	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
+	 * the view)
+	 * 
+	 * @param x  the CLAS12 x coordinate
+	 * @param y  the CLAS12 y coordinate
+	 * @param z  the CLAS12 z coordinate
 	 * @param wp holds the world point
 	 */
 	@Override
@@ -816,46 +807,33 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		wp.x = x;
 		wp.y = y;
 	}
-	
+
 	/**
 	 * In the BankDataTable a row was selected.
+	 * 
 	 * @param bankName the name of the bank
-	 * @param index the 0-based index into the bank
+	 * @param index    the 0-based index into the bank
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
-		System.out.println("CentralXY selected [" + bankName + "]  index: " + index);
-		
+
 		if ("BMT::adc".equals(bankName)) {
-		}
-		else if ("BMTRec::Clusters".equals(bankName)) {
-		}
-		else if ("BMTRec::Crosses".equals(bankName)) {
-		}
-		else if ("BMTRec::Hits".equals(bankName)) {
+		} else if ("BMTRec::Clusters".equals(bankName)) {
+		} else if ("BMTRec::Crosses".equals(bankName)) {
+		} else if ("BMTRec::Hits".equals(bankName)) {
 			_bstHighlightData.hit = index;
-		}
-		else if ("BST::adc".equals(bankName)) {
-		}
-		else if ("BSTRec::Clusters".equals(bankName)) {
+		} else if ("BST::adc".equals(bankName)) {
+		} else if ("BSTRec::Clusters".equals(bankName)) {
 			_bstHighlightData.cluster = index;
-		}
-		else if ("BSTRec::Crosses".equals(bankName)) {
+		} else if ("BSTRec::Crosses".equals(bankName)) {
 			_bstHighlightData.cross = index;
-		}
-		else if ("BSTRec::Hits".equals(bankName)) {
-		}
-		else if ("CTOF::adc".equals(bankName)) {
-		}
-		else if ("CTOF::hits".equals(bankName)) {
-		}
-		else if ("CTOF::tdc".equals(bankName)) {
-		}
-		else if ("CVTRec::Tracks".equals(bankName)) {
-		}
-		else if ("CVTRec::Trajectory".equals(bankName)) {
-		}
-		else if ("CVTRec::uTracks".equals(bankName)) {
+		} else if ("BSTRec::Hits".equals(bankName)) {
+		} else if ("CTOF::adc".equals(bankName)) {
+		} else if ("CTOF::hits".equals(bankName)) {
+		} else if ("CTOF::tdc".equals(bankName)) {
+		} else if ("CVTRec::Tracks".equals(bankName)) {
+		} else if ("CVTRec::Trajectory".equals(bankName)) {
+		} else if ("CVTRec::uTracks".equals(bankName)) {
 		}
 
 		refresh();

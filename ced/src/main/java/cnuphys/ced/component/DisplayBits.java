@@ -2,7 +2,7 @@ package cnuphys.ced.component;
 
 public class DisplayBits {
 
-	/** A bit for a "Monte Carlo Truth" checkbox */
+	/** FTOF panels */
 	public static final int MCTRUTH = 01;
 
 	/** A flag for accumulation */
@@ -59,8 +59,8 @@ public class DisplayBits {
 	/** sector change diamonds */
     public static final int SECTORCHANGE = 01000000;
 
-    /** global nn data */
-    public static final int GLOBAL_NN = 02000000;
+    /** TOF panels */
+	public static final int TOFPANELS = 02000000;
 
     /** global nn data */
     public static final int GLOBAL_AIHB = 04000000;
@@ -77,19 +77,16 @@ public class DisplayBits {
     /** REC::Particles */
     public static final int RECPART = 0100000000;
 
+	/** cvt rec KF traj */
+	public static final int CVTRECKFTRAJ = 0200000000;
+	
 	/** cvt pass 1 tracks */
-	public static final int CVTP1TRACKS = 0200000000;
+	public static final int CVTP1TRACKS = 0400000000;
 
 	/** cvt pass 1 traj */
-	public static final int CVTP1TRAJ = 0400000000;
+	public static final int CVTP1TRAJ = 01000000000;
 
-	/** FTOF panels */
-	public static final int TOFPANELS = 01000000000;
 
-//last one: 20000000000
-
-	/** Distance scale */
-	// public static final int SCALE = 04;
 
 	// max octal for ints 20000000000
 

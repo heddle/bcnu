@@ -8,7 +8,7 @@ import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 
 /**
  * Puts all known banks into a scrollable list
@@ -27,7 +27,7 @@ public class AllBanksList extends JList<String> {
 	 * Create a list that has all the known banks
 	 */
 	public AllBanksList() {
-		super(sorted(DataManager.getInstance().getKnownBanks()));
+		super(sorted(DataWarehouse.getInstance().getKnownBanks()));
 		setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		_scrollPane = new JScrollPane(this);
 		_scrollPane.setPreferredSize(_size);

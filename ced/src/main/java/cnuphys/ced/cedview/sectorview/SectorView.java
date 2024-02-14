@@ -37,6 +37,8 @@ import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
 import cnuphys.ced.cedview.central.CentralSupport;
@@ -46,9 +48,6 @@ import cnuphys.ced.common.FMTCrossDrawer;
 import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.DCReconHit;
-import cnuphys.ced.event.data.DCTdcHit;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeometryManager;
@@ -117,6 +116,10 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	private static Color plotColors[] = { X11Colors.getX11Color("Dark Red"), X11Colors.getX11Color("Dark Blue"),
 			X11Colors.getX11Color("Dark Green"), Color.black, Color.gray, X11Colors.getX11Color("wheat") };
+	
+	// data containers
+	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+
 
 	/**
 	 * Create a sector view
@@ -198,10 +201,10 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY + ControlPanel.PHISLIDER
-						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND 
+						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
-						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_NN
+						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB + 
 						+ DisplayBits.GLOBAL_AIHB + DisplayBits.GLOBAL_AITB
 						+ DisplayBits.GLOBAL_TB + DisplayBits.ACCUMULATION + DisplayBits.DOCA + DisplayBits.MCTRUTH +
 						DisplayBits.SECTORCHANGE + DisplayBits.RECCAL,
@@ -241,23 +244,23 @@ public class SectorView extends SliceView implements ChangeListener {
 		new BeamLineItem(detectorLayer);
 
 		// add the ltcc items
-		for (int ring = 1; ring <= 18; ring++) {
-			for (int half = 1; half <= 2; half++) {
+		for (short ring = 1; ring <= 18; ring++) {
+			for (byte half = 1; half <= 2; half++) {
 
 				switch (_displaySectors) {
 				case SECTORS14:
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 1, ring, half);
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 4, ring, half);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)1, half, ring);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)4, half, ring);
 					break;
 
 				case SECTORS25:
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 2, ring, half);
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 5, ring, half);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)2, half, ring);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)5, half, ring);
 					break;
 
 				case SECTORS36:
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 3, ring, half);
-					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, 6, ring, half);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)3, half, ring);
+					_ltcc[ring - 1][half - 1] = new SectorLTCCItem(detectorLayer, this, (byte)6, half, ring);
 					break;
 				}
 
@@ -265,23 +268,23 @@ public class SectorView extends SliceView implements ChangeListener {
 		}
 
 		// add the htcc items
-		for (int ring = 1; ring <= 4; ring++) {
-			for (int half = 1; half <= 2; half++) {
+		for (short ring = 1; ring <= 4; ring++) {
+			for (byte half = 1; half <= 2; half++) {
 
 				switch (_displaySectors) {
 				case SECTORS14:
-					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, 1, ring, half);
-					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, 4, ring, half);
+					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, (byte)1, half, ring);
+					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, (byte)4, half, ring);
 					break;
 
 				case SECTORS25:
-					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, 2, ring, half);
-					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, 5, ring, half);
+					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, (byte)2, half, ring);
+					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, (byte)5, half, ring);
 					break;
 
 				case SECTORS36:
-					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, 3, ring, half);
-					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, 6, ring, half);
+					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, (byte)3, half, ring);
+					_htcc[ring - 1][half - 1] = new SectorHTCCItem(detectorLayer, this, (byte)6, half, ring);
 					break;
 				}
 
@@ -589,8 +592,8 @@ public class SectorView extends SliceView implements ChangeListener {
 		// DC Occupancy
 		int sector = getSector(container, pp, wp);
 
-		double totalOcc = 100. * DC.getInstance().totalOccupancy();
-		double sectorOcc = 100. * DC.getInstance().totalSectorOccupancy(sector);
+		double totalOcc = 100. * _dcData.totalOccupancy();
+		double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
 		String occStr = "Total DC occ " + DoubleFormat.doubleFormat(totalOcc, 2) + "%" + " sector " + sector + " occ "
 				+ DoubleFormat.doubleFormat(sectorOcc, 2) + "%";
 		feedbackStrings.add("$aqua$" + occStr);
@@ -621,7 +624,6 @@ public class SectorView extends SliceView implements ChangeListener {
 
 		//draws HB hits and segs, TB hits and segs, and nn overlays
 		_reconDrawer.vdrawFeedback(container, pp, wp, feedbackStrings, 0);
-
 	}
 
 
@@ -938,29 +940,13 @@ public class SectorView extends SliceView implements ChangeListener {
 	 * @param fillColor the fill color
 	 * @param frameColor the border color
 	 */
-	public void drawDCReconHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCReconHit hit,
-			boolean isTimeBased) {
+	public void drawDCReconHit(Graphics g, IContainer container, Color fillColor, Color frameColor, 
+			ATrkgHitData hits, int index, boolean isTimeBased) {
 
-		SectorSuperLayer sectSL = _superLayers[(hit.sector < 4) ? 0 : 1][hit.superlayer - 1];
-		sectSL.drawDCReconHit(g, container, fillColor, frameColor, hit, isTimeBased);
-
-	}
-
-	/**
-	 * Draw a raw dc hit (and also used for NN overlays) from hit based or time based tracking
-	 *
-	 * @param g the Graphics context
-	 * @param container the drawing container
-	 * @param fillColor the fill color
-	 * @param frameColor the border color
-	 * @param hit the  hit to  draw
-	 */
-	public void drawDCRawHit(Graphics g, IContainer container, Color fillColor, Color frameColor, DCTdcHit hit) {
-		SectorSuperLayer sectSL = _superLayers[(hit.sector < 4) ? 0 : 1][hit.superlayer - 1];
-		sectSL.drawDCRawHit(g, container, fillColor, frameColor, hit);
+		SectorSuperLayer sectSL = _superLayers[(hits.sector[index] < 4) ? 0 : 1][hits.superlayer[index] - 1];
+		sectSL.drawDCReconHit(g, container, fillColor, frameColor, hits, index, isTimeBased);
 
 	}
-
 
 	/**
 	 * Clone the view.

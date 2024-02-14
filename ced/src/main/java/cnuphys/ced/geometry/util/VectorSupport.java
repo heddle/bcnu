@@ -1,7 +1,6 @@
 package cnuphys.ced.geometry.util;
 
 import cnuphys.bCNU.format.DoubleFormat;
-import cnuphys.bCNU.log.Log;
 
 /**
  * Static classes for treating arrays of doubles as 2D or 3D vectors
@@ -10,9 +9,6 @@ import cnuphys.bCNU.log.Log;
  *
  */
 public class VectorSupport {
-
-	// the log
-	private static Log _log = Log.getInstance();
 
 	// tiny number check
 	private static final double TINY = 1.0e-40;
@@ -136,7 +132,6 @@ public class VectorSupport {
 
 	private static void logWarning(String warning) {
 		String wstr = "[VectorSupport] " + warning;
-		_log.warning(wstr);
 		System.err.println(wstr);
 	}
 

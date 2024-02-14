@@ -2,17 +2,14 @@ package cnuphys.ced.clasio.filter;
 
 import javax.swing.JComponent;
 
-import org.jlab.io.base.DataEvent;
-
 public interface IEventFilter {
 
 	/**
 	 * A filter for an event
 	 *
-	 * @param event the event to test
 	 * @return <code>true</code> if the event passes the filter
 	 */
-	public boolean pass(DataEvent event);
+	public boolean pass();
 
 	/**
 	 * Set the active state of the filter

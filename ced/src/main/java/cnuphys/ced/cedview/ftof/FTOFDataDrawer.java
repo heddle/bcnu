@@ -6,6 +6,8 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFHitData;
 import cnuphys.ced.cedview.SwimTrajectoryDrawerXY;
 
 /**
@@ -28,15 +30,15 @@ public class FTOFDataDrawer {
 	//cluster handler
 	private FTOFClusterHandler _clusterHandler;
 
-	//recon hits handler
-	private FTOFHitHandler _hitHandler;
-
 	//hit based hits handler
 	private FTOFHBHandler _hbHandler;
 
-	//accumulatin data
+	//accumulating data
 	private FTOFAccumulationHandler _accumHandler;
 
+
+	// hits data
+	FTOFHitData _hitData = FTOFHitData.getInstance();
 
 	/**
 	 * This object handles drawing and feedback for FTOF banks for the FTOF view
@@ -46,7 +48,6 @@ public class FTOFDataDrawer {
 		_view = view;
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawerXY(_view);
 		_adcHandler = new FTOFAdcHandler(_view);
-		_hitHandler = new FTOFHitHandler(_view);
 		_hbHandler = new FTOFHBHandler(_view);
 		_clusterHandler = new FTOFClusterHandler(_view);
 		_accumHandler = new FTOFAccumulationHandler(_view);
@@ -68,7 +69,9 @@ public class FTOFDataDrawer {
 			_swimTrajectoryDrawer.draw(g, container);
 
 			// draw hits
-			_hitHandler.draw(g, container);
+			if (_view.showReconHits()) {
+				drawFTOFHits(g, container);
+			}
 
 			// draw hit based hits
 			_hbHandler.draw(g, container);
@@ -79,6 +82,23 @@ public class FTOFDataDrawer {
 			_accumHandler.draw(g, container);
 		}
 
+	}
+
+	//draw the hits
+	private void drawFTOFHits(Graphics g, IContainer container) {
+
+		Point pp = new Point();
+		Point2D.Double wp = new Point2D.Double();
+
+		for (int i = 0; i < _hitData.count(); i++) {
+			int panel = _hitData.layer[i] - 1;
+			if (panel == _view.displayPanel()) {
+				 wp.setLocation(_hitData.x[i], _hitData.y[i]);
+				 container.worldToLocal(pp, wp);
+				 DataDrawSupport.drawReconHit(g, pp);
+				_hitData.setLocation(i, pp);
+			}
+		}
 	}
 
 	/**
@@ -97,13 +117,23 @@ public class FTOFDataDrawer {
 
 		if (_view.isSingleEventMode()) {
 
-			_hitHandler.getFeedbackStrings(container, sect, panel, paddleId, pp, wp, feedbackStrings);
 			_hbHandler.getFeedbackStrings(container, sect, panel, paddleId, pp, wp, feedbackStrings);
 			_clusterHandler.getFeedbackStrings(container, sect, panel, paddleId, pp, wp, feedbackStrings);
 
 			// convert panel to 1-based layer
 			if (paddleId > 0) {
 				_adcHandler.getFeedbackStrings(container, sect, panel + 1, paddleId, pp, wp, feedbackStrings);
+			}
+
+			if (_view.showReconHits()) {
+				for (int i = 0; i < _hitData.count(); i++) {
+					if ((sect == _hitData.sector[i]) && (panel == (_hitData.layer[i] - 1))) {
+						if (_hitData.contains(i, pp)) {
+							_hitData.hitFeedback("FTOF", i, feedbackStrings);
+							break;
+						}
+					}
+				}
 			}
 		}
 	}

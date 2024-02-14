@@ -5,8 +5,7 @@ import java.util.Vector;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.adaptiveSwim.SwimType;
-import cnuphys.bCNU.log.Log;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
 import cnuphys.lund.TrajectoryRowData;
@@ -16,7 +15,7 @@ import cnuphys.lund.TrajectoryTableModel;
 public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 	// singleton
-	private static ClasIoMonteCarloView instance;
+	private static volatile ClasIoMonteCarloView instance;
 
 	// one row for each reconstructed trajectory
 	private static Vector<TrajectoryRowData> _trajData = new Vector<>();
@@ -33,7 +32,11 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 	 */
 	public static ClasIoMonteCarloView getInstance() {
 		if (instance == null) {
-			instance = new ClasIoMonteCarloView();
+			synchronized (ClasIoMonteCarloView.class) {
+				if (instance == null) {
+					instance = new ClasIoMonteCarloView();
+				}
+			}
 		}
 		return instance;
 	}
@@ -52,8 +55,8 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 			// now fill the table.
 			TrajectoryTableModel model = _trajectoryTable.getTrajectoryModel();
 
-			addTracks(event, _trajData, "MC::Particle");
-			addTracks(event, _trajData, "MC::Lund");
+			addTracks(_trajData, "MC::Particle");
+			addTracks(_trajData, "MC::Lund");
 
 			model.setData(_trajData);
 			model.fireTableDataChanged();
@@ -63,29 +66,21 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 	}
 
 	// add tracks
-	private void addTracks(DataEvent event, Vector<TrajectoryRowData> data, String bankName) {
+	private void addTracks(Vector<TrajectoryRowData> data, String bankName) {
 		try {
 
-			// do we have any data?
-			boolean hasBank = event.hasBank(bankName);
-			if (!hasBank) {
-				return;
-			}
+
+			DataWarehouse dm = DataWarehouse.getInstance();
 
 
-			DataManager dm = DataManager.getInstance();
-
-
-
-			float[] vx = dm.getFloatArray(event, bankName + ".vx"); // vertex x cm
+			float[] vx = dm.getFloat(bankName, "vx"); // vertex x cm
 			if ((vx != null) && (vx.length > 0)) {
-				float[] vy = dm.getFloatArray(event, bankName + ".vy"); // vertex y cm
-				float[] vz = dm.getFloatArray(event, bankName + ".vz"); // vertex z cm
-				float px[] = dm.getFloatArray(event, bankName + ".px");
-				float py[] = dm.getFloatArray(event, bankName + ".py");
-				float pz[] = dm.getFloatArray(event, bankName + ".pz");
-				byte q[] = dm.getByteArray(event, bankName + "." + "q");
-				int pid[] = dm.getIntArray(event, bankName + ".pid");
+				float[] vy = dm.getFloat(bankName, "vy"); // vertex y cm
+				float[] vz = dm.getFloat(bankName, "vz"); // vertex z cm
+				float px[] = dm.getFloat(bankName, "px");
+				float py[] = dm.getFloat(bankName, "py");
+				float pz[] = dm.getFloat(bankName, "pz");
+				int pid[] = dm.getInt(bankName, "pid");
 
 				for (int i = 0; i < vx.length; i++) {
 
@@ -124,7 +119,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 			}
 		} catch (Exception e) {
 			String warning = "[ClasIoMonteCarloEventView.addTracks] " + e.getMessage();
-			Log.getInstance().warning(warning);
+			System.err.println(warning);
 		}
 	}
 

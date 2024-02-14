@@ -2,16 +2,19 @@ package cnuphys.ced.trigger;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.filter.FilterManager;
 
 public class TriggerManager implements IClasIoEventListener {
+	
+	//data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// singleton
-	private static TriggerManager _instance;
+	private static volatile TriggerManager _instance;
 
 	// the bank name
 	private static String _bankName = "RUN::trigger";
@@ -34,12 +37,17 @@ public class TriggerManager implements IClasIoEventListener {
 	 * @return the TriggerManager singleton
 	 */
 	public static TriggerManager getInstance() {
-		if (_instance == null) {
-			_instance = new TriggerManager();
 
-			_filter = new TriggerFilter.Builder().setActive(false).setBits(new Long(0xFFFFFFFF).intValue())
-					.setType(TriggerMatch.ANY).setName("Trigger Filter").build();
+		if (_instance == null) {
+			synchronized (TriggerManager.class) {
+				if (_instance == null) {
+					_instance = new TriggerManager();
+					_filter = new TriggerFilter.Builder().setActive(false).setBits(new Long(0xFFFFFFFF).intValue())
+							.setType(TriggerMatch.ANY).setName("Trigger Filter").build();
+				}
+			}
 		}
+
 
 		FilterManager.getInstance().add(_filter);
 		return _instance;
@@ -51,7 +59,6 @@ public class TriggerManager implements IClasIoEventListener {
 	 * @param active the active state of the trigger filter
 	 */
 	public void setFilterActive(boolean active) {
-		ClasIoEventManager.getInstance().resetIndexMap();
 		_filter.setActive(active);
 	}
 
@@ -72,9 +79,9 @@ public class TriggerManager implements IClasIoEventListener {
 			_id = null;
 			_trigger = null;
 
-			_id = ColumnData.getIntArray(_bankName + ".id");
+			_id = _dataWarehouse.getInt(_bankName, ".id");
 			if (_id != null) {
-				_trigger = ColumnData.getIntArray(_bankName + ".trigger");
+				_trigger = _dataWarehouse.getInt(_bankName, ".trigger");
 			}
 
 			TriggerDialog.getInstance().setCurrentEvent(_id, _trigger);
@@ -89,15 +96,5 @@ public class TriggerManager implements IClasIoEventListener {
 	public void changedEventSource(EventSourceType source) {
 	}
 
-	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return true;
-	}
 
 }

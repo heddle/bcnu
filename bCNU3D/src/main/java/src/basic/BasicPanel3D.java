@@ -59,7 +59,7 @@ public class BasicPanel3D extends GLJPanel implements GLEventListener {
 
 	/**
 	 * main program for testing
-	 * 
+	 *
 	 * @param arg command line arguments (ignored)
 	 */
 	public static void main(String arg[]) {

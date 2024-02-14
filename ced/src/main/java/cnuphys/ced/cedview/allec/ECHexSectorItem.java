@@ -11,13 +11,10 @@ import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.layer.LogicalLayer;
-import cnuphys.bCNU.log.Log;
+import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcECALHit;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.lists.AdcECALHitList;
 import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.item.HexSectorItem;
@@ -35,6 +32,9 @@ public class ECHexSectorItem extends HexSectorItem {
 	private ECView _ecView;
 
 	public static final Color baseFillColor = new Color(139, 0, 0, 160);
+
+	//the EC ac data container
+	private static ECalADCData _ecADCData = ECalADCData.getInstance();
 
 	/**
 	 * Get a hex sector item
@@ -62,12 +62,10 @@ public class ECHexSectorItem extends HexSectorItem {
 
 		super.drawItem(g, container);
 
-
-		boolean inner = _ecView.displayInner();
-		int plane = inner ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
+		int plane = _ecView.getDisplayPlane(); // 0 or 1 for inner or outer
 
 		for (int stripType = 0; stripType < 3; stripType++) {
-			if (_ecView.showStrips(stripType)) {
+			if (_ecView.showView(stripType)) {
 				for (int stripIndex = 0; stripIndex < ECGeometry.EC_NUMSTRIP; stripIndex++) {
 
 					Polygon poly = stripPolygon(container, plane, stripType, stripIndex);
@@ -87,17 +85,15 @@ public class ECHexSectorItem extends HexSectorItem {
 		}
 
 		drawOutlines(g, container, plane, Color.lightGray);
-
-		drawECHits(g, container, plane);
-
+		drawECData(g, container, plane);
 		drawIJKOrigin(g, container);
-
 	}
+
 
 	// draw strip outlines
 	private void drawOutlines(Graphics g, IContainer container, int plane, Color color) {
 		for (int stripType = 0; stripType < 3; stripType++) {
-			if (_ecView.showStrips(stripType)) {
+			if (_ecView.showView(stripType)) {
 				for (int stripIndex = 0; stripIndex < ECGeometry.EC_NUMSTRIP; stripIndex++) {
 
 					Polygon poly = stripPolygon(container, plane, stripType, stripIndex);
@@ -119,7 +115,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	}
 
 	// draw the hits
-	private void drawECHits(Graphics g, IContainer container, int plane) {
+	private void drawECData(Graphics g, IContainer container, int plane) {
 		if (_ecView.isSingleEventMode()) {
 			drawSingleEvent(g, container, plane);
 		} else {
@@ -127,63 +123,45 @@ public class ECHexSectorItem extends HexSectorItem {
 		}
 	}
 
-	//is this for this sector and ECAL, not PCAL
-	private boolean isThisEC(byte sector, byte layer) {
-		return (sector == getSector()) && (layer > 3);
+
+	// draw single event data
+	private void drawSingleEvent(Graphics g, IContainer container, int plane) {
+		drawADCData(g, container, plane);
 	}
 
-	// draw single event hit
-	private void drawSingleEvent(Graphics g, IContainer container, int plane) {
+	// draw data from adc bank
+	private void drawADCData(Graphics g, IContainer container, int plane) {
 
-		AdcECALHitList hits = AllEC.getInstance().getHits();
-		if ((hits != null) && !hits.isEmpty()) {
+		//use the adc values
+		for (int i = 0; i < _ecADCData.count(); i++) {
+			if (_sector == _ecADCData.sector.get(i)) {
+				if (plane == _ecADCData.plane.get(i)) {
+					if (_ecView.showView(_ecADCData.view.get(i))) {
+						int strip0 = _ecADCData.strip.get(i) - 1;
+						Polygon poly = stripPolygon(container, plane, _ecADCData.view.get(i), strip0);
 
-			for (AdcECALHit hit : hits) {
+						g.setColor(_ecADCData.getADCColor(_ecADCData.adc.get(i)));
+						g.fillPolygon(poly);
 
-				if (hit != null) {
-
-					try {
-						if (isThisEC(hit.sector, hit.layer)) {
-							int layer = hit.layer - 4; // 0..5
-							int stack0 = layer / 3; // 000,111
-							if (stack0 == plane) {
-								int view0 = layer % 3; // 012012
-								int strip0 = hit.component - 1;
-
-								Polygon poly = stripPolygon(container, plane, view0, strip0);
-
-								// handle monochrome
-								boolean isMono = _ecView.getControlPanel().isMonochrome();
-								if (isMono) {
-									g.setColor(hits.adcMonochromeColor(hit, AllEC.getInstance().getMaxECALAdc()));
-								} else {
-									g.setColor(hits.adcColor(hit, AllEC.getInstance().getMaxECALAdc()));
-								}
-
-								g.fillPolygon(poly);
-								g.drawPolygon(poly);
-
-								// extension
-
-								int adcmax = Math.max(1, AllEC.getInstance().getMaxECALAdc());
-								double fract = ((double) hit.averageADC() / (double) adcmax);
-								fract = Math.max(0.15, Math.min(1.0, fract));
-
-								poly = extensionPolygon(container, plane, view0, strip0, fract);
-								g.setColor(Color.yellow);
-								g.fillPolygon(poly);
-								g.setColor(X11Colors.getX11Color("dark red"));
-								g.drawPolygon(poly);
-
-							}
-
+						if (_ecADCData.adc.get(i) > 0) {
+							g.setColor(X11Colors.getX11Color("dark red"));
+							g.drawPolygon(poly);
 						}
-					} catch (Exception e) {
-						Log.getInstance().exception(e);
+
+						// extension
+						if (_ecADCData.adc.get(i) > 0) {
+							int adcmax = Math.max(1, _ecADCData.maxADC);
+							double fract = ((double) _ecADCData.adc.get(i) / (double) adcmax);
+							fract = Math.max(0.15, Math.min(1.0, fract));
+
+							poly = extensionPolygon(container, plane, _ecADCData.view.get(i), strip0, fract);
+							g.setColor(Color.yellow);
+							g.fillPolygon(poly);
+							g.setColor(X11Colors.getX11Color("dark red"));
+							g.drawPolygon(poly);
+						}
+
 					}
-				} // hit not null
-				else {
-					Log.getInstance().warning("[ECHexSectorItem] null hit in ECAll hit list");
 				}
 			}
 		}
@@ -192,7 +170,7 @@ public class ECHexSectorItem extends HexSectorItem {
 	// draw accumulated hits
 	private void drawAccumulatedHits(Graphics g, IContainer container, int plane) {
 
-		int medianHit = AccumulationManager.getInstance().getMedianECALCount(plane);
+		int maxHit = AccumulationManager.getInstance().getMaxECALCount(plane);
 
 		int hits[][][][] = AccumulationManager.getInstance().getAccumulatedECALData();
 
@@ -200,13 +178,13 @@ public class ECHexSectorItem extends HexSectorItem {
 
 		for (int view0 = 0; view0 < 3; view0++) {
 			for (int strip0 = 0; strip0 < 36; strip0++) {
-				if (_ecView.showStrips(view0)) {
+				if (_ecView.showView(view0)) {
 					Polygon poly = stripPolygon(container, plane, view0, strip0);
 
 					int hitCount = hits[sect0][plane][view0][strip0];
 					if (hitCount > 0) {
-						double fract = _ecView.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
 
+						double fract = (maxHit == 0) ? 0 : (((double) hitCount) / (1 + maxHit));
 						Color color = _ecView.getColorScaleModel().getAlphaColor(fract, 128);
 
 						g.setColor(color);
@@ -385,8 +363,7 @@ public class ECHexSectorItem extends HexSectorItem {
 
 		if (contains(container, pp)) {
 
-			boolean inner = _ecView.displayInner();
-			int plane = inner ? ECGeometry.EC_INNER : ECGeometry.EC_OUTER;
+			int plane = _ecView.getDisplayPlane();
 
 			// get the sector xyz coordinates
 			double sectorXYZ[] = new double[3];
@@ -404,10 +381,6 @@ public class ECHexSectorItem extends HexSectorItem {
 			double labXYZ[] = new double[3];
 			sectorXYZToLabXYZ(sectorXYZ, labXYZ);
 
-			// TEST
-			// Point3D labP = new Point3D();
-			// ECGeometry.localToLab(getSector(), plane, lp, labP);
-			// feedbackStrings.add("TEST LAB: " + labP);
 
 			// lab rho phy
 			double labRho = Math.hypot(labXYZ[0], labXYZ[1]);
@@ -432,8 +405,6 @@ public class ECHexSectorItem extends HexSectorItem {
 					(Math.toDegrees(sectPhi)));
 			feedbackStrings.add(sectRhoPhi);
 
-			// System.err.println(String.format("[%d, %d, %d]", uvw[0], uvw[1], uvw[2]));
-
 			// now add the strings
 			if ((uvw[0] > 0) && (uvw[1] > 0) && (uvw[2] > 0)) {
 
@@ -446,23 +417,23 @@ public class ECHexSectorItem extends HexSectorItem {
 				int pixel = ECGeometry.pixelFromUVW(uvw[0], uvw[1], uvw[2]);
 				feedbackStrings.add("$lime green$pixel " + pixel);
 
-				AdcECALHitList hits = AllEC.getInstance().getHits();
-				if ((hits != null) && !hits.isEmpty()) {
-					for (int stype = 0; stype < 3; stype++) {
-						int layer = 4 + 3 * plane + stype;
-						int component = uvw[stype];
+				// any hits?
+				for (int i = 0; i < _ecADCData.count(); i++) {
+					byte sect = _ecADCData.sector.get(i);
+					if (sect == getSector()) {
+						byte view = _ecADCData.view.get(i);
+						short component = _ecADCData.strip.get(i);
+						if (uvw[view] == component) {
+							String str = String.format("%s strip %d adc %d time %-7.3f",
+									ECGeometry.VIEW_NAMES[view], component,
+									_ecADCData.adc.get(i), _ecADCData.time.get(i));
 
-						AdcECALHit hit = hits.get(getSector(), layer, component);
-						if (hit != null) {
-							hit.adcFeedback(AllEC.layerNames[layer], "strip", feedbackStrings);
+							feedbackStrings.add("$coral$" + str);
 						}
 					}
-
 				}
-
-			}
+			} // end uvw > 0
 		} // end contains
-
 	}
 
 	private String point3DString(Point3D p3d) {

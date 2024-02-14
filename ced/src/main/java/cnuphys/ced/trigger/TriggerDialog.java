@@ -22,7 +22,7 @@ public class TriggerDialog extends JDialog implements ActionListener {
 	private static final int NUMTODISPLAY = 3; // 1..3
 
 	// singleton
-	private static TriggerDialog _instance;
+	private static volatile TriggerDialog _instance;
 
 	// first display
 	private static boolean first = true;
@@ -86,7 +86,11 @@ public class TriggerDialog extends JDialog implements ActionListener {
 
 	public static TriggerDialog getInstance() {
 		if (_instance == null) {
-			_instance = new TriggerDialog();
+			synchronized (TriggerDialog.class) {
+				if (_instance == null) {
+					_instance = new TriggerDialog();
+				}
+			}
 		}
 		return _instance;
 	}

@@ -4,12 +4,15 @@ import java.awt.Dimension;
 
 import org.jlab.io.base.DataEvent;
 
-import cnuphys.ced.alldata.ColumnData;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
 
 public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListener {
+	
+	// the data warehouse
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// the bank name
 	private static String _bankName = "RUN::trigger";
@@ -40,11 +43,10 @@ public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListen
 			int idData[] = null;
 			int triggerData[] = null;
 
-			idData = ColumnData.getIntArray(_bankName + ".id");
-			if (idData != null) {
-				triggerData = ColumnData.getIntArray(_bankName + ".trigger");
+			idData = _dataWarehouse.getInt(_bankName, ".id");
+			if ((idData != null) && (idData.length > 0)) {
+				triggerData = _dataWarehouse.getInt(_bankName, ".trigger");
 				setBits(idData[0], triggerData[0]);
-
 			}
 
 		}
@@ -58,15 +60,5 @@ public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListen
 	public void changedEventSource(EventSourceType source) {
 	}
 
-	/**
-	 * Tests whether this listener is interested in events while accumulating
-	 *
-	 * @return <code>true</code> if this listener is NOT interested in events while
-	 *         accumulating
-	 */
-	@Override
-	public boolean ignoreIfAccumulating() {
-		return true;
-	}
 
 }

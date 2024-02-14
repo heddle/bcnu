@@ -179,14 +179,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		return _tabbedPane;
 	}
 
-	/**
-	 * Is monochrome selected?
-	 * @return true if monochrome selected
-	 */
-	public boolean isMonochrome() {
-		return (_colorPanel != null) && _colorPanel.isMonochrome();
-	}
-
 	// use a tabbed pane to save space
 	private JTabbedPane addTabbedPane(CedView view, int controlPanelBits, int displayArrayBits) {
 
@@ -305,7 +297,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
 			_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
-					"Relative Accumulation or ADC Value", 10, _view.getMedianSetting(), true, true);
+					"Relative Accumulation or ADC Value", 10, false, true);
 
 			sp.add(_colorPanel);
 

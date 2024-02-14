@@ -7,7 +7,6 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.CLAS12Swim.CLAS12SwimResult;
-import cnuphys.adaptiveSwim.AdaptiveSwimResult;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundStyle;
 import cnuphys.swim.SwimTrajectory;

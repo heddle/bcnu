@@ -5,7 +5,6 @@ import org.jlab.detector.calib.utils.DatabaseConstantProvider;
 public class ConstantsLoader {
 
 	public ConstantsLoader() {
-		// TODO Auto-generated constructor stub
 	}
 
 	static boolean CSTLOADED = false;

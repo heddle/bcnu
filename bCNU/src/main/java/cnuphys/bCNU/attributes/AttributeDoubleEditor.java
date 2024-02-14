@@ -3,7 +3,6 @@
  */
 package cnuphys.bCNU.attributes;
 
-@SuppressWarnings("serial")
 public class AttributeDoubleEditor extends AttributeRealValueEditor {
 
 	public AttributeDoubleEditor(AttributeTable attributeTable, Attribute attribute) {

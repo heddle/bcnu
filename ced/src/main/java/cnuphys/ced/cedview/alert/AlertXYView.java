@@ -66,7 +66,7 @@ public class AlertXYView extends CedXYView {
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
 				ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.MCTRUTH + DisplayBits.RECONHITS
+				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.RECONHITS
 						+ DisplayBits.ADCDATA,
 				3, 5);
 

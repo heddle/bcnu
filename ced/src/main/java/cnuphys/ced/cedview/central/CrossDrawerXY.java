@@ -11,30 +11,27 @@ import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.bmt.BMTCrossData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTCrossData;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.BMTCrosses;
-import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.lists.CrossList2;
 
 public class CrossDrawerXY extends CentralXYViewDrawer {
 
 	private static final int ARROWLEN = 30; // pixels
 	private static final Stroke THICKLINE = new BasicStroke(1.5f);
 
-	// feedback string color
-	private static final String FBCOL = "$wheat$";
+	// data containers
+	private BSTCrossData bstCrossData = BSTCrossData.getInstance();
+	private BMTCrossData bmtCrossData = BMTCrossData.getInstance();
 
-	// cached rectangles for feedback
-	private Rectangle _bstFBRects[];
-
-	// cached rectangles for feedback
-	private Rectangle _bmtFBRects[];
-
+	/**
+	 * Create a central cross drawer
+	 * 
+	 * @param view the CedView
+	 */
 	public CrossDrawerXY(CentralXYView view) {
 		super(view);
 	}
@@ -51,8 +48,6 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 		// clip the active area
 		Rectangle sr = container.getInsetRectangle();
 		g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-		_bstFBRects = null;
-		_bmtFBRects = null;
 
 		Stroke oldStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
@@ -73,103 +68,25 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	 */
 	public void drawBSTCrosses(Graphics g, IContainer container) {
 
-		CrossList2 crosses = BSTCrosses.getInstance().getCrosses();
-
-		int len = (crosses == null) ? 0 : crosses.size();
-
-		if (len == 0) {
-			_bstFBRects = null;
-		} else {
-			_bstFBRects = new Rectangle[len];
-		}
-
-		if (len > 0) {
+		int count = bstCrossData.count();
+		if (count > 0) {
 			Point2D.Double wp = new Point2D.Double();
 			Point pp = new Point();
 			Point2D.Double wp2 = new Point2D.Double();
 			Point pp2 = new Point();
 
-			for (int i = 0; i < len; i++) {
-				Cross2 cross = crosses.elementAt(i);
+			int pixlen = ARROWLEN;
+			double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
 
-				if (!cross.isXYLocationBad()) {
+			for (int i = 0; i < count; i++) {
+				wp.setLocation(10.0 * bstCrossData.x[i], 10.0 * bstCrossData.y[i]);
 
-					// version 1.0 must convert cm to mm
-					wp.setLocation(10.0 * cross.x, 10.0 * cross.y);
-					// arrows
-
-					if (!cross.isDirectionBad()) {
-						int pixlen = ARROWLEN;
-						double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
-
-						wp2.x = wp.x + r * cross.ux;
-						wp2.y = wp.y + r * cross.uy;
-
-						container.worldToLocal(pp, wp);
-						container.worldToLocal(pp2, wp2);
-
-						g.setColor(Color.orange);
-						g.drawLine(pp.x + 1, pp.y, pp2.x + 1, pp2.y);
-						g.drawLine(pp.x, pp.y + 1, pp2.x, pp2.y + 1);
-						g.setColor(Color.darkGray);
-						g.drawLine(pp.x, pp.y, pp2.x, pp2.y);
-					} // direction bad
-
-					// the circles and crosses
-					DataDrawSupport.drawCross(g, pp.x, pp.y, DataDrawSupport.BST_CROSS);
-
-					// fbrects for quick feedback
-					_bstFBRects[i] = new Rectangle(pp.x - DataDrawSupport.CROSSHALF, pp.y - DataDrawSupport.CROSSHALF,
-							2 * DataDrawSupport.CROSSHALF, 2 * DataDrawSupport.CROSSHALF);
-				} // location !bad
-				else {
-					_bstFBRects[i] = new Rectangle(0, 0, 0, 0);
-				}
-
-			}
-		} // len > 0
-
-	}
-
-	/**
-	 * Draw the BMT Crosses
-	 *
-	 * @param g
-	 * @param container
-	 */
-	public void drawBMTCrosses(Graphics g, IContainer container) {
-
-		CrossList2 crosses = BMTCrosses.getInstance().getCrosses();
-
-		int len = (crosses == null) ? 0 : crosses.size();
-
-		if (len == 0) {
-			_bmtFBRects = null;
-		} else {
-			_bmtFBRects = new Rectangle[len];
-		}
-
-		if (len > 0) {
-			Point2D.Double wp = new Point2D.Double();
-			Point pp = new Point();
-			Point2D.Double wp2 = new Point2D.Double();
-			Point pp2 = new Point();
-
-			for (int i = 0; i < len; i++) {
-				Cross2 cross = crosses.elementAt(i);
-				// version 1.0 must convert cm to mm
-				wp.setLocation(10.0 * cross.x, 10.0 * cross.y);
-				// arrows
-
-				int pixlen = ARROWLEN;
-				double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
-
-				if (!cross.isXYLocationBad()) {
+				if (!bstCrossData.isXYLocationBad(i)) {
 					container.worldToLocal(pp, wp);
-					if (!cross.isDirectionBad()) {
-						wp2.x = wp.x + r * cross.ux;
-						wp2.y = wp.y + r * cross.uy;
 
+					if (!bstCrossData.isDirectionBad(i)) {
+						wp2.x = wp.x + r * bstCrossData.ux[i];
+						wp2.y = wp.y + r * bstCrossData.uy[i];
 						container.worldToLocal(pp2, wp2);
 
 						g.setColor(Color.orange);
@@ -181,17 +98,57 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 					// the circles and crosses
 					DataDrawSupport.drawCross(g, pp.x, pp.y, DataDrawSupport.BMT_CROSS);
-
-					// fbrects for quick feedback
-					_bmtFBRects[i] = new Rectangle(pp.x - DataDrawSupport.CROSSHALF, pp.y - DataDrawSupport.CROSSHALF,
-							2 * DataDrawSupport.CROSSHALF, 2 * DataDrawSupport.CROSSHALF);
+					bstCrossData.setLocation(i, pp);
 				} // bad location
-				else {
-					_bmtFBRects[i] = new Rectangle(0, 0, 0, 0);
-				}
 			}
-		} // len > 0
+		}
+
 	}
+
+	/**
+	 * Draw the BMT Crosses
+	 *
+	 * @param g
+	 * @param container
+	 */
+	public void drawBMTCrosses(Graphics g, IContainer container) {
+
+		int count = bmtCrossData.count();
+		if (count > 0) {
+			Point2D.Double wp = new Point2D.Double();
+			Point pp = new Point();
+			Point2D.Double wp2 = new Point2D.Double();
+			Point pp2 = new Point();
+
+			int pixlen = ARROWLEN;
+			double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
+
+			for (int i = 0; i < count; i++) {
+				wp.setLocation(10.0 * bmtCrossData.x[i], 10.0 * bmtCrossData.y[i]);
+
+				if (!bmtCrossData.isXYLocationBad(i)) {
+					container.worldToLocal(pp, wp);
+
+					if (!bmtCrossData.isDirectionBad(i)) {
+						wp2.x = wp.x + r * bmtCrossData.ux[i];
+						wp2.y = wp.y + r * bmtCrossData.uy[i];
+						container.worldToLocal(pp2, wp2);
+
+						g.setColor(Color.orange);
+						g.drawLine(pp.x + 1, pp.y, pp2.x + 1, pp2.y);
+						g.drawLine(pp.x, pp.y + 1, pp2.x, pp2.y + 1);
+						g.setColor(Color.darkGray);
+						g.drawLine(pp.x, pp.y, pp2.x, pp2.y);
+					} // bad direction
+
+					// the circles and crosses
+					DataDrawSupport.drawCross(g, pp.x, pp.y, DataDrawSupport.BMT_CROSS);
+					bmtCrossData.setLocation(i, pp);
+				} // bad location
+			}
+		}
+	}
+
 
 	/**
 	 * Use what was drawn to generate feedback strings
@@ -207,90 +164,25 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 		// bst crosses?
 		if (_view.showCrosses()) {
-
-			CrossList2 crosses = BSTCrosses.getInstance().getCrosses();
-			int len = (crosses == null) ? 0 : crosses.size();
-
-			if ((len > 0) && (_bstFBRects != null) && (_bstFBRects.length == len)) {
-				for (int i = 0; i < len; i++) {
-					if ((_bstFBRects[i] != null) && _bstFBRects[i].contains(screenPoint)) {
-
-						Cross2 cross = crosses.elementAt(i);
-						feedbackStrings.add(
-								FBCOL + "cross ID: " + cross.id + "  sect: " + cross.sector + "  reg: " + cross.region);
-
-						if (!cross.isXYLocationBad()) {
-							// to mm
-							feedbackStrings.add(vecStr("cross loc (lab)", 10 * cross.x, 10 * cross.y, 10 * cross.z));
-						} else {
-							feedbackStrings.add("cross location contains NaN");
-						}
-
-						if (!cross.isErrorBad()) {
-							// to mm
-							feedbackStrings
-									.add(vecStr("cross error", 10 * cross.err_x, 10 * cross.err_y, 10 * cross.err_z));
-						} else {
-							feedbackStrings.add("cross error contains NaN");
-						}
-
-						if (!cross.isDirectionBad()) {
-							feedbackStrings.add(vecStr("cross direction", cross.ux, cross.uy, cross.uz));
-						} else {
-							feedbackStrings.add("cross direction contains NaN");
-						}
-
-						break;
-					}
+			
+			for (int i = 0; i < bstCrossData.count(); i++) {
+				if (bstCrossData.contains(i, screenPoint)) {
+					bstCrossData.feedback("BSTCross", i, feedbackStrings);
+					return;
 				}
 			}
 		}
+
 
 		// bmt crosses?
 		if (_view.showCrosses()) {
-			CrossList2 crosses = BMTCrosses.getInstance().getCrosses();
-			int len = (crosses == null) ? 0 : crosses.size();
-
-			if ((len > 0) && (_bmtFBRects != null) && (_bmtFBRects.length == len)) {
-				for (int i = 0; i < len; i++) {
-					if ((_bmtFBRects[i] != null) && _bmtFBRects[i].contains(screenPoint)) {
-
-						Cross2 cross = crosses.elementAt(i);
-						feedbackStrings.add(
-								FBCOL + "cross ID: " + cross.id + "  sect: " + cross.sector + "  reg: " + cross.region);
-
-						if (!cross.isXYLocationBad()) {
-							// to mm
-							feedbackStrings.add(vecStr("cross loc (lab)", 10 * cross.x, 10 * cross.y, 10 * cross.z));
-						} else {
-							feedbackStrings.add("cross location contains NaN");
-						}
-
-						if (!cross.isErrorBad()) {
-							feedbackStrings
-									.add(vecStr("cross error", 10 * cross.err_x, 10 * cross.err_y, 10 * cross.err_z));
-						} else {
-							feedbackStrings.add("cross error contains NaN");
-						}
-
-						if (!cross.isDirectionBad()) {
-							feedbackStrings.add(vecStr("cross direction", cross.ux, cross.uy, cross.uz));
-						} else {
-							feedbackStrings.add("cross direction contains NaN");
-						}
-
-						break;
-					}
+			
+			for (int i = 0; i < bmtCrossData.count(); i++) {
+				if (bmtCrossData.contains(i, screenPoint)) {
+					bmtCrossData.feedback("BMTCross", i, feedbackStrings);
+					return;
 				}
 			}
 		}
-
 	}
-
-	// for writing out a vector
-	private String vecStr(String prompt, double vx, double vy, double vz) {
-		return FBCOL + prompt + ": (" + DoubleFormat.doubleFormat(vx, 2) + ", " + DoubleFormat.doubleFormat(vy, 2)
-				+ ", " + DoubleFormat.doubleFormat(vz, 2) + ")";
-	}
-
 }

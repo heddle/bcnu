@@ -6,7 +6,7 @@ import java.awt.Polygon;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.FTOF;
+import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 public class FTOFAccumulationHandler {
 
@@ -22,19 +22,19 @@ public class FTOFAccumulationHandler {
 		Polygon poly = new Polygon();
 		int hits[][] = null;
 
-		int medianHit = 0;
+		int maxHit = 0;
 
 		switch (_view.displayPanel()) {
-		case FTOF.PANEL_1A:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
+		case FTOFGeometry.PANEL_1A:
+			maxHit = AccumulationManager.getInstance().getMaxFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();
 			break;
-		case FTOF.PANEL_1B:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF1BCount();
+		case FTOFGeometry.PANEL_1B:
+			maxHit = AccumulationManager.getInstance().getMaxFTOF1BCount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1BData();
 			break;
-		case FTOF.PANEL_2:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF2Count();
+		case FTOFGeometry.PANEL_2:
+			maxHit = AccumulationManager.getInstance().getMaxFTOF2Count();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF2Data();
 			break;
 		}
@@ -45,8 +45,7 @@ public class FTOFAccumulationHandler {
 
 				for (int paddle0 = 0; paddle0 < hits[sect0].length; paddle0++) {
 					int hitCount = hits[sect0][paddle0];
-
-					double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
+					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color fc = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 
 					_view.getPaddlePolygon(container, sect0+1, _view.displayPanel(), paddle0+1, poly);

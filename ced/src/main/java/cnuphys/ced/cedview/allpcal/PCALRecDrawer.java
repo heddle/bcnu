@@ -14,12 +14,12 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.view.FBData;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.cal.PCalReconData;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.RECCalorimeter;
 import cnuphys.ced.frame.CedColors;
+import cnuphys.ced.geometry.ECGeometry;
 import cnuphys.ced.geometry.PCALGeometry;
-import cnuphys.lund.LundId;
 
 /**
  * Rec drawer for the AllPCALView
@@ -28,12 +28,11 @@ import cnuphys.lund.LundId;
  */
 public class PCALRecDrawer extends PCALViewDrawer {
 
-	// the event manager
-	ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	//the EC data container
+	private static PCalReconData _pcReconData = PCalReconData.getInstance();
 
 	//the current event
 	private DataEvent _currentEvent;
-
 
 	// cached for feedback
 	private ArrayList<FBData> _fbData = new ArrayList<>();
@@ -64,15 +63,9 @@ public class PCALRecDrawer extends PCALViewDrawer {
 			return;
 		}
 
-		RECCalorimeter recCal = RECCalorimeter.getInstance();
-		if (recCal.isEmpty()) {
-			return;
-		}
-
-		for (int index = 0; index < recCal.count; index++) {
+		for (int index = 0; index < _pcReconData.count(); index++) {
 			drawRecCal(g, container, index, false);
 		}
-
 
 	}
 
@@ -85,55 +78,40 @@ public class PCALRecDrawer extends PCALViewDrawer {
 	 * @param highlight
 	 */
 	public void drawRecCal(Graphics g, IContainer container, int index, boolean highlight) {
-		if (ignore()) {
-			return;
-		}
-
-		RECCalorimeter recCal = RECCalorimeter.getInstance();
-		if (recCal.isEmpty()) {
-			return;
-		}
 
 		Point pp = new Point();
 		Rectangle2D.Double wr = new Rectangle2D.Double();
 		Point2D.Double wp = new Point2D.Double();
 
-		if (recCal.layer[index] > 3) {  //is it ecal rather than pcal?
-			return;
-		}
+		float x = _pcReconData.x.get(index);
+		float y = _pcReconData.y.get(index);
+		float z = _pcReconData.z.get(index);
 
-
-		Point3D clasP = new Point3D(recCal.x[index], recCal.y[index], recCal.z[index]);
+		Point3D clasP = new Point3D(x, y, z);
 		Point3D localP = new Point3D();
 		PCALGeometry.getTransformations().clasToLocal(localP, clasP);
 
 		localP.setZ(0);
 
 		// get the right item
-		_view.getHexSectorItem(recCal.sector[index]).ijkToScreen(container, localP, pp);
+		_view.getHexSectorItem(_pcReconData.sector.get(index)).ijkToScreen(container, localP, pp);
 
 		DataDrawSupport.drawECALRec(g, pp, highlight);
 
-
-		float radius = recCal.getRadius(recCal.energy[index]);
+		float radius = _pcReconData.getRadius(_pcReconData.energy.get(index));
 		if (radius > 0) {
 			container.localToWorld(pp, wp);
 			wr.setRect(wp.x - radius, wp.y - radius, 2 * radius, 2 * radius);
-
-			LundId lid = recCal.getLundId(index);
-			Color color = (lid == null) ? CedColors.RECEcalFill : lid.getStyle().getTransparentFillColor();
-
-
-			WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, null);
+			WorldGraphicsUtilities.drawWorldOval(g, container, wr, CedColors.RECCalFill, highlight ? Color.red : null);
 		}
 
 
 		_fbData.add(new FBData(pp,
-				String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", recCal.x[index], recCal.y[index],
-						recCal.z[index]),
-				String.format("$magenta$REC layer %d", recCal.layer[index]),
-				String.format("$magenta$%s", recCal.getPIDStr(index)),
-				String.format("$magenta$REC Energy %-7.4f GeV", recCal.energy[index])));
+				String.format("$magenta$REC xyz (%-6.3f, %-6.3f, %-6.3f) cm", x, y, z),
+				String.format("$magenta$REC sector: %d", _pcReconData.sector.get(index)),
+				String.format("$magenta$REC view %s", ECGeometry.VIEW_NAMES[_pcReconData.view.get(index)]),
+				String.format("$magenta$%s", _pcReconData.getPIDStr(index)),
+				String.format("$magenta$REC Energy %-7.4f", _pcReconData.energy.get(index))));
 
 	}
 

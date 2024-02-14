@@ -39,7 +39,8 @@ public class FTCalPanel3D extends CedPanel3D {
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
 
-		for (int id : FTCALGeometry.getGoodIds()) {
+		//the ids are the component ids which are sparse
+		for (short id : FTCALGeometry.getGoodIds()) {
 			FTCalPaddle3D paddle = new FTCalPaddle3D(this, id);
 			addItem(paddle);
 		}

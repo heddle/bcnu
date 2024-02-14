@@ -5,11 +5,12 @@ import java.awt.Color;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgCrossData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAICrossData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgCrossData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAICrossData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgCrossData;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.Cross;
-import cnuphys.ced.event.data.HBCrosses;
-import cnuphys.ced.event.data.TBCrosses;
-import cnuphys.ced.event.data.lists.CrossList;
 import cnuphys.ced.frame.CedColors;
 import item3D.Item3D;
 
@@ -20,6 +21,13 @@ public class CrossDrawer3D extends Item3D {
 	protected static final double SIN_TILT = Math.sin(Math.toRadians(25.));
 
 	private CedPanel3D _cedPanel3D;
+	
+	//data containers
+	private HBTrkgCrossData _hbCrossData = HBTrkgCrossData.getInstance();
+	private TBTrkgCrossData _tbCrossData = TBTrkgCrossData.getInstance();
+	private HBTrkgAICrossData _hbAICrossData = HBTrkgAICrossData.getInstance();
+	private TBTrkgAICrossData _tbAICrossData = TBTrkgAICrossData.getInstance();
+
 
 	public CrossDrawer3D(CedPanel3D panel3D) {
 		super(panel3D);
@@ -33,59 +41,52 @@ public class CrossDrawer3D extends Item3D {
 			return;
 		}
 
+		ATrkgCrossData crossData = null;
 		if (_cedPanel3D.showHBCross()) {
-			CrossList list = HBCrosses.getInstance().getCrosses();
-			drawCrossList(drawable, list, CedColors.HB_COLOR);
+			crossData = _hbCrossData;
+			drawCrossData(drawable, crossData, CedColors.HB_COLOR);
 		}
 		if (_cedPanel3D.showTBCross()) {
-			CrossList list = TBCrosses.getInstance().getCrosses();
-			drawCrossList(drawable, list, CedColors.TB_COLOR);
+            crossData = _tbCrossData;
+            drawCrossData(drawable, crossData, CedColors.TB_COLOR);
 		}
 		if (_cedPanel3D.showAIHBCross()) {
-			CrossList list = HBCrosses.getInstance().getCrosses();
-			drawCrossList(drawable, list, CedColors.AIHB_COLOR);
+			crossData = _hbAICrossData;
+			drawCrossData(drawable, crossData, CedColors.AIHB_COLOR);
 		}
-		if (_cedPanel3D.showAITBCross()) {
-			CrossList list = TBCrosses.getInstance().getCrosses();
-			drawCrossList(drawable, list, CedColors.AITB_COLOR);
-		}
+ 		if (_cedPanel3D.showAITBCross()) {
+ 			crossData = _tbAICrossData;
+            drawCrossData(drawable, crossData, CedColors.AITB_COLOR);
+ 		}
 
 	}
-
-	// draw a cross list
-	private void drawCrossList(GLAutoDrawable drawable, CrossList list, Color color) {
-		if ((list == null) || list.isEmpty()) {
+	
+	private void drawCrossData(GLAutoDrawable drawable, ATrkgCrossData crossData, Color color) {
+		if (crossData == null) {
 			return;
 		}
+		
+		for (int i = 0; i < crossData.count(); i++) {
+			float[] p3d0 = new float[3];
+			float[] p3d1 = new float[3];
 
-		for (Cross cross : list) {
-			if (cross != null) {
-				drawCross(drawable, cross, color);
-			}
+			tiltedToSector(crossData.x[i], crossData.y[i], crossData.z[i], p3d0);
+			float x = p3d0[0];
+			float y = p3d0[1];
+			float z = p3d0[2];
+
+			float tx = crossData.x[i] + CROSS_LEN * crossData.ux[i];
+			float ty = crossData.y[i] + CROSS_LEN * crossData.uy[i];
+			float tz = crossData.z[i] + CROSS_LEN * crossData.uz[i];
+			tiltedToSector(tx, ty, tz, p3d1);
+
+			Support3D.drawLine(drawable, x, y, z, p3d1[0], p3d1[1], p3d1[2], Color.black, 3f);
+			Support3D.drawLine(drawable, x, y, z, p3d1[0], p3d1[1], p3d1[2], Color.gray, 1f);
+
+			Support3D.drawPoint(drawable, x, y, z, Color.black, 13, true);
+			Support3D.drawPoint(drawable, x, y, z, color, 11, true);
 		}
-	}
-
-	private void drawCross(GLAutoDrawable drawable, Cross cross, Color color) {
-
-		float[] p3d0 = new float[3];
-		float[] p3d1 = new float[3];
-
-		tiltedToSector(cross.x, cross.y, cross.z, p3d0);
-		float x = p3d0[0];
-		float y = p3d0[1];
-		float z = p3d0[2];
-
-		float tx = cross.x + CROSS_LEN * cross.ux;
-		float ty = cross.y + CROSS_LEN * cross.uy;
-		float tz = cross.z + CROSS_LEN * cross.uz;
-		tiltedToSector(tx, ty, tz, p3d1);
-
-		Support3D.drawLine(drawable, x, y, z, p3d1[0], p3d1[1], p3d1[2], Color.black, 3f);
-		Support3D.drawLine(drawable, x, y, z, p3d1[0], p3d1[1], p3d1[2], Color.gray, 1f);
-
-		Support3D.drawPoint(drawable, x, y, z, Color.black, 13, true);
-		Support3D.drawPoint(drawable, x, y, z, color, 11, true);
-
+		
 	}
 
 	/**

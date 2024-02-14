@@ -75,8 +75,9 @@ public class Constants {
 	public static final int STARTINGLAYR = 1;
 
 	public static synchronized void Load() {
-		if (areConstantsLoaded)
+		if (areConstantsLoaded) {
 			return;
+		}
 
 //
 //		if(org.jlab.rec.cvt.Constants.isCosmicsData() == false)

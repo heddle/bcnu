@@ -2,10 +2,10 @@ package item3D;
 
 import java.awt.Color;
 
+import com.jogamp.opengl.GLAutoDrawable;
+
 import bCNU3D.Panel3D;
 import bCNU3D.Support3D;
-
-import com.jogamp.opengl.GLAutoDrawable;
 
 public class Line3D extends Item3D {
 
@@ -19,7 +19,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Create a simple 3D Line item for use on a Panel3D.
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param p0        one end point as [x, y, z]
 	 * @param p1        other end point as [x, y, z]
@@ -48,7 +48,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Create a simple 3D Line item for use on a Panel3D.
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param x1        x coordinate of one end
 	 * @param y1        y coordinate of one end
@@ -66,7 +66,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Create a simple 3D Line item for use on a Panel3D.
-	 * 
+	 *
 	 * @param panel3D   the owner 3D panel
 	 * @param coords    the endpoints as [x1, y1, z1, x2, y2, z2]
 	 * @param color     the color
@@ -83,7 +83,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Get the x coordinate of the start
-	 * 
+	 *
 	 * @return x coordinate of the start
 	 */
 	public float getX0() {
@@ -92,7 +92,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Get the x coordinate of the end
-	 * 
+	 *
 	 * @return x coordinate of the end
 	 */
 	public float getX1() {
@@ -101,7 +101,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Get the y coordinate of the start
-	 * 
+	 *
 	 * @return y coordinate of the start
 	 */
 	public float getY0() {
@@ -110,7 +110,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Get the y coordinate of the end
-	 * 
+	 *
 	 * @return y coordinate of the end
 	 */
 	public float getY1() {
@@ -119,7 +119,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Get the z coordinate of the start
-	 * 
+	 *
 	 * @return z coordinate of the start
 	 */
 	public float getZ0() {
@@ -128,7 +128,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Get the z coordinate of the end
-	 * 
+	 *
 	 * @return z coordinate of the end
 	 */
 	public float getZ1() {
@@ -137,7 +137,7 @@ public class Line3D extends Item3D {
 
 	/**
 	 * Add many lines to see how it handles them
-	 * 
+	 *
 	 * @param p3D the panel
 	 * @param n   the number to add
 	 */

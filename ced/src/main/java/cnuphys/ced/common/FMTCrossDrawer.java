@@ -12,16 +12,13 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Point2D.Double;
 import java.util.List;
 
-import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.fmt.FMTRecCrossData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.event.data.Cross2;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.FMTCrosses;
-import cnuphys.ced.event.data.lists.CrossList2;
 import cnuphys.ced.geometry.GeometryManager;
 
 public class FMTCrossDrawer extends CedViewDrawer {
@@ -29,15 +26,12 @@ public class FMTCrossDrawer extends CedViewDrawer {
 	private static final int ARROWLEN = 30; // pixels
 	private static final Stroke THICKLINE = new BasicStroke(1.5f);
 
-	// feedback string color
-	private static final String FBCOL = "$wheat$";
-
-	// cached rectangles for feedback
-	private Rectangle _fmtFBRects[];
-
 	public FMTCrossDrawer(CedView view) {
 		super(view);
 	}
+	
+	// data container
+	private FMTRecCrossData _fmtRecCrossData = FMTRecCrossData.getInstance();
 
 	@Override
 	public void draw(Graphics g, IContainer container) {
@@ -51,7 +45,6 @@ public class FMTCrossDrawer extends CedViewDrawer {
 		// clip the active area
 		Rectangle sr = container.getInsetRectangle();
 		g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-		_fmtFBRects = null;
 
 		Stroke oldStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
@@ -75,42 +68,27 @@ public class FMTCrossDrawer extends CedViewDrawer {
 			drawFMTCrossesXY(g, container);
 			return;
 		}
-
-		CrossList2 crosses = FMTCrosses.getInstance().getCrosses();
-
-		int len = (crosses == null) ? 0 : crosses.size();
-
-		if (len == 0) {
-			_fmtFBRects = null;
-		} else {
-			_fmtFBRects = new Rectangle[len];
-		}
-
-		double result[] = new double[3];
-
-		if (len > 0) {
+		
+		int count = _fmtRecCrossData.count();
+		if (count > 0) {
 			Point2D.Double wp = new Point2D.Double();
 			Point pp = new Point();
 			Point2D.Double wp2 = new Point2D.Double();
 			Point pp2 = new Point();
+			double result[] = new double[3];
 
-			for (int i = 0; i < len; i++) {
-				Cross2 cross = crosses.elementAt(i);
+			for (int i = 0; i < _fmtRecCrossData.count(); i++) {
 
-				// lab coordinates
-				result[0] = cross.x;
-				result[1] = cross.y;
-				result[2] = cross.z;
+				result[0] = _fmtRecCrossData.x[i];
+				result[1] = _fmtRecCrossData.y[i];
+				result[2] = _fmtRecCrossData.z[i];
 
 				int crossSector = GeometryManager.labXYZToSectorNumber(result);
-
 				_view.projectClasToWorld(result[0], result[1], result[2], _view.getProjectionPlane(), wp);
-
 				int mySector = _view.getSector(container, null, wp);
 				if (mySector == crossSector) {
-
 					container.worldToLocal(pp, wp);
-					cross.setLocation(pp);
+					_fmtRecCrossData.setLocation(i, pp);
 
 					// arrows
 
@@ -118,9 +96,9 @@ public class FMTCrossDrawer extends CedViewDrawer {
 					double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
 
 					// lab coordinates of end of arrow
-					result[0] = cross.x + r * cross.ux;
-					result[1] = cross.y + r * cross.uy;
-					result[2] = cross.z + r * cross.uz;
+					result[0] = _fmtRecCrossData.x[i] + r * _fmtRecCrossData.ux[i];
+					result[1] = _fmtRecCrossData.y[i] + r * _fmtRecCrossData.uy[i];
+					result[2] = _fmtRecCrossData.z[i] + r * _fmtRecCrossData.uz[i];
 					_view.projectClasToWorld(result[0], result[1], result[2], _view.getProjectionPlane(), wp2);
 					container.worldToLocal(pp2, wp2);
 
@@ -132,14 +110,9 @@ public class FMTCrossDrawer extends CedViewDrawer {
 
 					// the circles and crosses
 					DataDrawSupport.drawCross(g, pp.x, pp.y, DataDrawSupport.FMT_CROSS);
-
-					// fbrects for quick feedback
-					_fmtFBRects[i] = new Rectangle(pp.x - DataDrawSupport.CROSSHALF, pp.y - DataDrawSupport.CROSSHALF,
-							2 * DataDrawSupport.CROSSHALF, 2 * DataDrawSupport.CROSSHALF);
 				}
-			} // loop over crosses
-		} // len > 0
-
+			}
+		}
 	}
 
 	/**
@@ -150,30 +123,15 @@ public class FMTCrossDrawer extends CedViewDrawer {
 	 */
 	public void drawFMTCrossesXY(Graphics g, IContainer container) {
 
-		CrossList2 crosses = FMTCrosses.getInstance().getCrosses();
-
-		int len = (crosses == null) ? 0 : crosses.size();
-
-		if (len == 0) {
-			_fmtFBRects = null;
-		} else {
-			_fmtFBRects = new Rectangle[len];
-		}
-
-		if (len > 0) {
-			Point2D.Double wp = new Point2D.Double();
+		int count = _fmtRecCrossData.count();
+		if (count > 0) {
 			Point pp = new Point();
 			Point2D.Double wp2 = new Point2D.Double();
 			Point pp2 = new Point();
 
-			for (int i = 0; i < len; i++) {
-				Cross2 cross = crosses.elementAt(i);
-
-				// lab coordinates
-				wp.setLocation(cross.x, cross.y);
-
-				container.worldToLocal(pp, wp);
-				cross.setLocation(pp);
+			for (int i = 0; i < _fmtRecCrossData.count(); i++) {
+				container.worldToLocal(pp, _fmtRecCrossData.x[i], _fmtRecCrossData.y[i]);
+				_fmtRecCrossData.setLocation(i, pp);
 
 				// arrows
 
@@ -181,7 +139,8 @@ public class FMTCrossDrawer extends CedViewDrawer {
 				double r = pixlen / WorldGraphicsUtilities.getMeanPixelDensity(container);
 
 				// lab coordinates of end of arrow
-				wp2.setLocation(cross.x + r * cross.ux, cross.y + r * cross.uy);
+				wp2.setLocation(_fmtRecCrossData.x[i] + r * _fmtRecCrossData.ux[i],
+						_fmtRecCrossData.y[i] + r * _fmtRecCrossData.uy[i]);
 				container.worldToLocal(pp2, wp2);
 
 				g.setColor(Color.orange);
@@ -192,13 +151,8 @@ public class FMTCrossDrawer extends CedViewDrawer {
 
 				// the circles and crosses
 				DataDrawSupport.drawCross(g, pp.x, pp.y, DataDrawSupport.FMT_CROSS);
-
-				// fbrects for quick feedback
-				_fmtFBRects[i] = new Rectangle(pp.x - DataDrawSupport.CROSSHALF, pp.y - DataDrawSupport.CROSSHALF,
-						2 * DataDrawSupport.CROSSHALF, 2 * DataDrawSupport.CROSSHALF);
-			} // loop over crosses
-		} // len > 0
-
+			}
+		}
 	}
 
 	/**
@@ -213,32 +167,17 @@ public class FMTCrossDrawer extends CedViewDrawer {
 			List<String> feedbackStrings) {
 
 		// fmt crosses?
-		CrossList2 crosses = FMTCrosses.getInstance().getCrosses();
-		int len = (crosses == null) ? 0 : crosses.size();
-
-		if ((len > 0) && (_fmtFBRects != null) && (_fmtFBRects.length == len)) {
-			for (int i = 0; i < len; i++) {
-				if ((_fmtFBRects[i] != null) && _fmtFBRects[i].contains(screenPoint)) {
-
-					Cross2 cross = crosses.elementAt(i);
-					feedbackStrings.add(
-							FBCOL + "cross ID: " + cross.id + "  sect: " + cross.sector + "  reg: " + cross.region);
-
-					feedbackStrings.add(vecStr("cross loc (lab)", cross.x, cross.y, cross.z));
-					feedbackStrings.add(vecStr("cross error", cross.err_x, cross.err_y, cross.err_z));
-					feedbackStrings.add(vecStr("cross direction", cross.ux, cross.uy, cross.uz));
-
+		
+		int count = _fmtRecCrossData.count();
+		if (count > 0) {
+			for (int i = 0; i < count; i++) {
+				if (_fmtRecCrossData.contains(i, screenPoint)) {
+					_fmtRecCrossData.feedback("FMTRec", i, feedbackStrings);
 					break;
 				}
 			}
 		}
 
-	}
-
-	// for writing out a vector
-	private String vecStr(String prompt, double vx, double vy, double vz) {
-		return FBCOL + prompt + ": (" + DoubleFormat.doubleFormat(vx, 2) + ", " + DoubleFormat.doubleFormat(vy, 2)
-				+ ", " + DoubleFormat.doubleFormat(vz, 2) + ")";
 	}
 
 	@Override

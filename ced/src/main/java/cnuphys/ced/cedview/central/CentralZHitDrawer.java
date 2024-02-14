@@ -6,13 +6,10 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
+import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AdcHit;
-import cnuphys.ced.event.data.AdcList;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BaseHit2;
-import cnuphys.ced.event.data.DataDrawSupport;
-import cnuphys.ced.event.data.lists.BaseHit2List;
 import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import eu.mihosoft.vrl.v3d.Vector3d;
@@ -22,6 +19,11 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 
 	// owner view
 	private CentralZView _view;
+	
+	//data containers
+	private BSTADCData adcBSTData = BSTADCData.getInstance();
+	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
+
 
 	public CentralZHitDrawer(CentralZView view) {
 		super(view);
@@ -36,7 +38,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	@Override
 	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {
 
-		int medianHit = AccumulationManager.getInstance().getMedianFullBSTCount();
+		int maxHit = AccumulationManager.getInstance().getMaxFullBSTCount();
 
 		// first index is layer 0..7, second is sector 0..23
 		int bstFullData[][][] = AccumulationManager.getInstance().getAccumulatedBSTFullData();
@@ -46,9 +48,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 					int hitCount = bstFullData[lay0][sect0][strip0];
 
 					if (hitCount > 1) {
-
-						double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+						double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 						Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 						_view.drawBSTStrip((Graphics2D) g, container, color, sect0 + 1, lay0 + 1, strip0 + 1);
 					}
@@ -66,49 +66,50 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 		drawBSTReconHits(g, container);
 	}
 
-	//draw BST adc data
+	// draw BST adc data
 	private void drawBSTADCData(Graphics g, IContainer container) {
 		if (_view.showADCHits()) {
-			AdcList hits = BST.getInstance().getADCHits();
-			if ((hits != null) && !hits.isEmpty()) {
-				Graphics2D g2 = (Graphics2D) g;
+			for (int i = 0; i < adcBSTData.count(); i++) {
+				int sector = adcBSTData.sector[i];
 
-				for (AdcHit hit : hits) {
-					if (hit != null) {
-						BSTxyPanel panel = CentralXYView.getPanel(hit.layer, hit.sector);
-						if (panel != null) {
-							_view.drawBSTStrip(g2, container, Color.red, hit.sector, hit.layer, hit.component);
-						}
-					}
+				int layer = adcBSTData.layer[i];
+				BSTxyPanel panel = CentralXYView.getPanel(layer, sector);
+				if (panel != null) {
+
+					int strip = adcBSTData.component[i];
+					int adc = adcBSTData.adc[i];
+					_view.drawBSTStrip((Graphics2D) g, container, adcBSTData.getADCColor(adc), sector, layer, strip);
 				}
 			}
 		}
+
 	}
 
 	// draw bst reconstructed hits
 	private void drawBSTReconHits(Graphics g, IContainer container) {
 		if (_view.showReconHits()) {
-			Point pp = new Point();
-
-			BaseHit2List recHits = BST.getInstance().getRecHits();
-			if (recHits != null) {
-
-				for (BaseHit2 bhit2 : recHits) {
-
-					if (bhit2.sector > 0 && bhit2.layer > 0 && bhit2.component > 0 && bhit2.layer < 7
-							&& bhit2.component < 257 && (bhit2.sector <= BSTGeometry.sectorsPerLayer[bhit2.layer - 1])) {
-						Vector3d v = BSTGeometry.getStripMidpoint(bhit2.sector - 1, bhit2.layer - 1, bhit2.component - 1);
+			
+			int count = bstRecHitData.count();
+			if (count > 0) {
+				Point pp = new Point();
+				
+				for (int i = 0; i < count; i++) {
+					int sector = bstRecHitData.sector[i];
+					int layer = bstRecHitData.layer[i];
+					int strip = bstRecHitData.strip[i];
+					if (sector > 0 && layer > 0 && strip > 0 && layer < 7 && strip < 257
+							&& (sector <= BSTGeometry.sectorsPerLayer[layer - 1])) {
+						Vector3d v = BSTGeometry.getStripMidpoint(sector - 1, layer - 1, strip - 1);
 						double alpha = _view.labToLocalWithAlpha(v.x, v.y, v.z, pp);
 						int alp = (int) Math.max(0, Math.min(255, 255 * alpha));
 						DataDrawSupport.drawReconHit(g, pp, alp);
-
+						bstRecHitData.setLocation(i, pp);
 					} else {
-			//			System.err.println("bad data in CentralZHitDrawer drawBSTReconHits   " + bhit2);
+						System.err.println("bad data in CentralZHitDrawer drawBSTReconHits ");
 					}
-
 				}
-
 			}
+			
 		}
 	}
 

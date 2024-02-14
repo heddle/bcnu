@@ -14,10 +14,10 @@ public class Quad3D extends Item3D {
 
 	// frame?
 	protected boolean _frame;
-	
+
 	/**
 	 * Create a quad from an array of coordinates
-	 * 
+	 *
 	 * @param panel3d   the owner panel
 	 * @param coords    the coordinates [x1, y1, ..., y3, z3]
 	 * @param color     the quad color
@@ -32,10 +32,10 @@ public class Quad3D extends Item3D {
 		setFillColor(color);
 		setLineWidth(lineWidth);
 	}
-	
+
 	/**
 	 * Create a quad from 12 explicit coordinates
-	 * 
+	 *
 	 * @param panel3d   the owner panel
 	 * @param x1
 	 * @param y1
@@ -54,8 +54,8 @@ public class Quad3D extends Item3D {
 	 * @param lineWidth the line width
 	 * @param frame     frame the quad
 	 */
-	public Quad3D(Panel3D panel3d, float x1, float y1, float z1, float x2, float y2, float z2, 
-			float x3, float y3, float z3, float x4, float y4, float z4, 
+	public Quad3D(Panel3D panel3d, float x1, float y1, float z1, float x2, float y2, float z2,
+			float x3, float y3, float z3, float x4, float y4, float z4,
 			Color color, float lineWidth, boolean frame) {
 		super(panel3d);
 		_coords = new float[12];
@@ -75,10 +75,10 @@ public class Quad3D extends Item3D {
 		_frame = frame;
 
 		setFillColor(color);
-		
+
 		setLineWidth(lineWidth);
 	}
-	
+
 	/**
 	 * Create a quad to serve as a constant z plane
 	 * @param panel3d
@@ -92,8 +92,8 @@ public class Quad3D extends Item3D {
 	public static Quad3D constantZQuad(Panel3D panel3d, float z, float size,
        Color color, float lineWidth, boolean frame) {
 		float coords[] = new float[12];
-		
-		
+
+
 		coords[0] = -size;
 		coords[1] = -size;
 		coords[2] = z;

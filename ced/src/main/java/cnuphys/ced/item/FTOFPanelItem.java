@@ -12,12 +12,13 @@ import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.ced.alldata.DataDrawSupport;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFClusterData;
+import cnuphys.ced.alldata.datacontainer.tof.FTOFHitData;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.TdcAdcTOFHit;
-import cnuphys.ced.event.data.lists.TdcAdcTOFHitList;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.ftof.FTOFPanel;
@@ -32,6 +33,14 @@ public class FTOFPanelItem extends PolygonItem {
 	// the container sector view
 	private SectorView _view;
 
+	//the event manager
+	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+
+	//data containers
+	private FTOFADCData _adcData = FTOFADCData.getInstance();
+	private FTOFClusterData _clusterData = FTOFClusterData.getInstance();
+	private FTOFHitData _hitData = FTOFHitData.getInstance();
+
 	/**
 	 * Create a FTOFPanelItem
 	 *
@@ -43,7 +52,7 @@ public class FTOFPanelItem extends PolygonItem {
 		_ftofPanel = panel;
 		_sector = sector;
 
-		_name = (panel != null) ? FTOF.name(panel.getPanelType()) : "??";
+		_name = (panel != null) ? FTOFGeometry.panelName((byte)panel.getPanelType()) : "??";
 
 		// _style.setFillColor(X11Colors.getX11Color("Wheat", 128));
 		_style.setFillColor(Color.white);
@@ -59,8 +68,6 @@ public class FTOFPanelItem extends PolygonItem {
 	 */
 	@Override
 	public void drawItem(Graphics g, IContainer container) {
-		// TODO use dirty. If the item is not dirty, should be able to draw
-		// the _lastDrawnPolygon directly;
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
@@ -73,8 +80,8 @@ public class FTOFPanelItem extends PolygonItem {
 		setPath(path);
 		super.drawItem(g, container);
 
-		// hits
-		drawHits(g, container);
+		// adc data
+		drawFTOFData(g, container);
 
 		Point2D.Double wp[] = GeometryManager.allocate(4);
 
@@ -93,33 +100,36 @@ public class FTOFPanelItem extends PolygonItem {
 
 	}
 
-	// draw any hits
-	private void drawHits(Graphics g, IContainer container) {
+	// draw any adc based data and hits
+	private void drawFTOFData(Graphics g, IContainer container) {
 
 		if (_view.isSingleEventMode()) {
+			drawSingleModeADCBased(g, container);
 			drawSingleModeHits(g, container);
+			drawSingleModeClusters(g, container);
 		} else {
-			drawAccumulatedHits(g, container);
+			drawAccumulatedADCBased(g, container);
 		}
 	}
 
-	private void drawAccumulatedHits(Graphics g, IContainer container) {
+	//draw based on accumulated data
+	private void drawAccumulatedADCBased(Graphics g, IContainer container) {
 		int hits[][] = null;
 
-		int medianHit = 0;
+		int maxHit = 0;
 
 		int panelType = _ftofPanel.getPanelType();
 		switch (panelType) {
-		case FTOF.PANEL_1A:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF1ACount();
+		case FTOFGeometry.PANEL_1A:
+			maxHit = AccumulationManager.getInstance().getMaxFTOF1ACount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1AData();
 			break;
-		case FTOF.PANEL_1B:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF1BCount();
+		case FTOFGeometry.PANEL_1B:
+			maxHit = AccumulationManager.getInstance().getMaxFTOF1BCount();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF1BData();
 			break;
-		case FTOF.PANEL_2:
-			medianHit = AccumulationManager.getInstance().getMedianFTOF2Count();
+		case FTOFGeometry.PANEL_2:
+			maxHit = AccumulationManager.getInstance().getMaxFTOF2Count();
 			hits = AccumulationManager.getInstance().getAccumulatedFTOF2Data();
 			break;
 		}
@@ -129,8 +139,7 @@ public class FTOFPanelItem extends PolygonItem {
 			for (int paddle0 = 0; paddle0 < hits[sect0].length; paddle0++) {
 
 				int hitCount = hits[sect0][paddle0];
-				double fract = _view.getMedianSetting() * (((double) hitCount) / (1 + medianHit));
-
+				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 				Color fc = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
 				Point2D.Double wp[] = getPaddle(_view, paddle0, _ftofPanel, _sector);
 
@@ -144,30 +153,86 @@ public class FTOFPanelItem extends PolygonItem {
 
 	}
 
-	// works for both showMcTruth and not
-	private void drawSingleModeHits(Graphics g, IContainer container) {
+	//draw based on data in ADC bank
+	private void drawSingleModeADCBased(Graphics g, IContainer container) {
 
-		// draw tdc adc hits
-		TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
-		if ((hits != null) && !hits.isEmpty()) {
-			byte sect = (byte) _sector;
-			byte layer = (byte) (_ftofPanel.getPanelType() + 1);
-			for (TdcAdcTOFHit hit : hits) {
-				if ((hit.sector == _sector) && (hit.layer == layer)) {
-					Point2D.Double wp[] = getPaddle(_view, hit.component - 1, _ftofPanel, _sector);
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
 
-					if (wp != null) {
-						Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
-						WorldGraphicsUtilities.drawPath2D(g, container, path, Color.white, _style.getLineColor(), 0,
-								LineStyle.SOLID, true);
-						WorldGraphicsUtilities.drawPath2D(g, container, path, hits.adcColor(hit), _style.getLineColor(),
-								0, LineStyle.SOLID, true);
-					}
+
+		byte sect = (byte) _sector; //1-based
+		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
+
+		for (int i = 0; i < _adcData.count(); i++) {
+			if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer)) {
+				Point2D.Double wp[] = getPaddle(_view, _adcData.component[i] - 1, _ftofPanel, _sector);
+
+				if (wp != null) {
+					Color fc = _adcData.getADCColor(i);
+					Path2D.Double path = WorldGraphicsUtilities.worldPolygonToPath(wp);
+					WorldGraphicsUtilities.drawPath2D(g, container, path, fc, _style.getLineColor(), 0, LineStyle.SOLID,
+							true);
 				}
 			}
 		}
 
 	}
+
+	//draw based on data in hits bank
+	private void drawSingleModeClusters(Graphics g, IContainer container) {
+
+		if ((_eventManager.getCurrentEvent() == null) || !_view.showClusters()) {
+			return;
+		}
+
+		byte layer = (byte) (_ftofPanel.getPanelType() + 1); //(now) 1-based
+		Point.Double wp = new Point.Double();
+		Point pp = new Point();
+
+
+		for (int i = 0; i < _clusterData.count(); i++) {
+			if ((_clusterData.sector[i] == _sector) && (_clusterData.layer[i] == layer)) {
+				_view.projectClasToWorld(_clusterData.x[i], _clusterData.y[i], _clusterData.z[i],
+						_view.getProjectionPlane(), wp);
+				container.worldToLocal(pp, wp);
+				DataDrawSupport.drawCluster(g, pp);
+				_clusterData.setLocation(i, pp);
+			}
+		}
+
+
+	}
+
+	// draw based on data in hits bank
+	private void drawSingleModeHits(Graphics g, IContainer container) {
+
+		if ((_eventManager.getCurrentEvent() == null) || !_view.showReconHits()) {
+			return;
+		}
+
+		int count = _hitData.count();
+
+		if (count > 0) {
+			byte sect = (byte) _sector; // 1-based
+			byte layer = (byte) (_ftofPanel.getPanelType() + 1); // (now) 1-based
+
+			Point.Double wp = new Point.Double();
+			Point pp = new Point();
+
+			for (int i = 0; i < count; i++) {
+				if ((_hitData.sector[i] == sect) && (_hitData.layer[i] == layer)) {
+					_view.projectClasToWorld(_hitData.x[i], _hitData.y[i], _hitData.z[i], _view.getProjectionPlane(),
+							wp);
+					container.worldToLocal(pp, wp);
+					DataDrawSupport.drawReconHit(g, pp);
+					_hitData.setLocation(i, pp);
+				}
+			}
+		}
+
+	}
+
 
 	/**
 	 * Get the FTOFPanel which contains the geometry
@@ -263,25 +328,66 @@ public class FTOFPanelItem extends PolygonItem {
 
 				if (path.contains(worldPoint)) {
 
-					// have a tdc adc hit?
-					TdcAdcTOFHitList hits = FTOF.getInstance().getTdcAdcHits();
-					byte sect = (byte) _sector;
-					byte layer = (byte) (_ftofPanel.getPanelType() + 1);
-					short paddle = (short) (index + 1);
-					TdcAdcTOFHit hit = hits.get(sect, layer, paddle);
-					if (hit != null) {
-						hit.tdcAdcFeedback(getName(), "paddle", feedbackStrings);
-					} else {
-						feedbackStrings
-								.add("$Orange Red$" + getName() + "  sector " + _sector + " paddle " + (index + 1));
-					}
+					byte sect = (byte) _sector; // 1-based
+					byte layer = (byte) (_ftofPanel.getPanelType() + 1); // 1-based
+					short paddle = (short) (index + 1); // 1-based
+
+					feedbackStrings.add("$Orange Red$" + getName() + "  sector " + _sector + " paddle " + (index + 1));
 					feedbackStrings.add("$Orange Red$paddle length "
 							+ FTOFGeometry.getLength(_ftofPanel.getPanelType(), index) + " cm");
 
+					for (int i = 0; i < _adcData.count(); i++) {
+						if ((_adcData.sector[i] == sect) && (_adcData.layer[i] == layer)
+								&& (_adcData.component[i] == paddle)) {
+							_adcData.adcFeedback("FTOF", i, feedbackStrings);
+							break;
+						}
+					}
+
+					// any hit data?
 					break;
 				} // path contains wp
 			} // end wp != null
-		} // end which paddle
+		} // end for loop
+
+		//rest of feedback depends on having an event
+		if (_eventManager.getCurrentEvent() == null) {
+			return;
+		}
+
+		// hit feedback
+		if (_view.showReconHits()) {
+
+			int count = _hitData.count();
+			if (count > 0) {
+				byte sect = (byte) _sector; // 1-based
+				byte layer = (byte) (_ftofPanel.getPanelType() + 1); // 1-based
+
+				for (int i = 0; i < count; i++) {
+					if ((_hitData.sector[i] == sect) && (_hitData.layer[i] == layer)) {
+						if (_hitData.contains(i, screenPoint)) {
+							_hitData.hitFeedback("FTOF", i, feedbackStrings);
+							break;
+						}
+					}
+				}
+			}
+
+		} //end recon hits shown
+
+		// cluster feedback
+		if (_view.showClusters()) {
+
+			for (int i = 0; i < _clusterData.count(); i++) {
+				if ((_clusterData.sector[i] == _sector) && (_clusterData.layer[i] == _ftofPanel.getPanelType() + 1)) {
+					if (_clusterData.contains(i, screenPoint)) {
+						_clusterData.feedback("FTOF", i, feedbackStrings);
+						break;
+					}
+				}
+			}
+		}
+
 	}
 
 }

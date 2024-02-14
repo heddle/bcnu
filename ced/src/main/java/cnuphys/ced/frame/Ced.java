@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -25,26 +26,23 @@ import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.dialog.TextDisplayDialog;
-import cnuphys.bCNU.eliza.ElizaDialog;
 import cnuphys.bCNU.fortune.FortuneManager;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.menu.MenuManager;
 import cnuphys.bCNU.ping.Ping;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Jar;
 import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
-import cnuphys.ced.alldata.DataManager;
+import cnuphys.bCNU.wordle.Wordle;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmingTestView3D;
-import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
@@ -53,7 +51,6 @@ import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.ftof.FTOFView;
-import cnuphys.ced.cedview.rtpc.RTPCView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
 import cnuphys.ced.cedview.sectorview.SectorView;
 import cnuphys.ced.cedview.urwell.UrWELLXYView;
@@ -66,30 +63,6 @@ import cnuphys.ced.clasio.filter.FilterManager;
 import cnuphys.ced.component.DrawingLegendDialog;
 import cnuphys.ced.dcnoise.edit.NoiseParameterDialog;
 import cnuphys.ced.event.AccumulationManager;
-import cnuphys.ced.event.data.AIDC;
-import cnuphys.ced.event.data.AIHBCrosses;
-import cnuphys.ced.event.data.AIHBSegments;
-import cnuphys.ced.event.data.AITBCrosses;
-import cnuphys.ced.event.data.AITBSegments;
-import cnuphys.ced.event.data.AllEC;
-import cnuphys.ced.event.data.BMT;
-import cnuphys.ced.event.data.BMTCrosses;
-import cnuphys.ced.event.data.BST;
-import cnuphys.ced.event.data.BSTCrosses;
-import cnuphys.ced.event.data.CND;
-import cnuphys.ced.event.data.CTOF;
-import cnuphys.ced.event.data.CVT;
-import cnuphys.ced.event.data.Cosmics;
-import cnuphys.ced.event.data.DC;
-import cnuphys.ced.event.data.FMTCrosses;
-import cnuphys.ced.event.data.FTCAL;
-import cnuphys.ced.event.data.FTOF;
-import cnuphys.ced.event.data.HBCrosses;
-import cnuphys.ced.event.data.HBSegments;
-import cnuphys.ced.event.data.HTCC2;
-import cnuphys.ced.event.data.RECCalorimeter;
-import cnuphys.ced.event.data.TBCrosses;
-import cnuphys.ced.event.data.TBSegments;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.magfield.PlotFieldDialog;
 import cnuphys.ced.noise.NoiseManager;
@@ -121,7 +94,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.5.5";
+	private static final String _release = "1.6.0";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -177,16 +150,15 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private CentralXYView _centralXYView;
 	private CentralZView _centralZView;
 
-	private AlertXYView _alertXYView;
+//	private AlertXYView _alertXYView;
 
-	private RTPCView _rtpcView;
+//	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
 	private UrWELLXYView _urwellXyView;
 
 	private ECView _ecView;
 	private PCALView _pcalView;
-	private LogView _logView;
 	private ForwardView3D _forward3DView;
 
 	private SwimmingTestView3D _swimming3DView;
@@ -195,10 +167,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	private FTOFView _ftofView;
 
-	// magfield testing views
-//	private MagfieldView _magfieldView14;
-//	private MagfieldView _magfieldView25;
-//	private MagfieldView _magfieldView36;
 
 	// sector views
 	private SectorView _sectorView14;
@@ -219,6 +187,13 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// for the ising model 2D dialog
 	private Ising2DDialog _i2dDialog;
+
+	// set whether data banks are floating
+	private JCheckBoxMenuItem _floatingBankDisplayCB;
+
+	// set whether clusters are connected
+	private JCheckBoxMenuItem _connectClusterCB;
+
 
 	/**
 	 * Constructor (private--used to create singleton)
@@ -309,26 +284,22 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// note no constraint means "center"
 		_virtualView.moveTo(_dcXyView, 6);
 
-		_virtualView.moveTo(_rtpcView, 7);
-		_virtualView.moveTo(_urwellXyView, 8, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_ftofView, 9, VirtualView.UPPERRIGHT);
-		_virtualView.moveTo(_ftcalXyView, 10, VirtualView.CENTER);
-		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_logView, 12, VirtualView.CENTER);
+//		_virtualView.moveTo(_rtpcView, 7);
+		_virtualView.moveTo(_urwellXyView, 7, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_ftofView, 8, VirtualView.UPPERRIGHT);
+		_virtualView.moveTo(_ftcalXyView, 9, VirtualView.CENTER);
+//		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
 
 
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 14, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_forward3DView, 11, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 12, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 12, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 13, VirtualView.CENTER);
 			}
 		}
-
-		Log.getInstance().config("reset views on virtual dekstop");
-
 	}
 
 
@@ -377,9 +348,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// make sure noise listener is instantiated
 		NoiseManager.getInstance();
 
-		// make sure Timed refresh manager is instantiated
-//		TimedRefreshManager.getInstance();
-
 		// add an object that can respond to a "swim all MC" request.
 
 		ClasIoEventManager.getInstance().setAllMCSwimmer(new SwimAllMC());
@@ -390,7 +358,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a virtual view
 
-		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 11 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -438,7 +406,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		//add and ALERT XY view
-		_alertXYView = AlertXYView.createAlertXYView();
+		//_alertXYView = AlertXYView.createAlertXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
@@ -449,7 +417,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		// add an RTPC vie
-		_rtpcView = RTPCView.createRTPCView();
+		//_rtpcView = RTPCView.createRTPCView();
 
         //FTOF
 		_ftofView = FTOFView.createFTOFView();
@@ -472,8 +440,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		_plotView = new PlotView();
 
-		_logView = new LogView();
-
 		// the trigger bit "view"
 		ActionListener al3 = new ActionListener() {
 			@Override
@@ -486,8 +452,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		menuItem.addActionListener(al3);
 		ViewManager.getInstance().getViewMenu().add(menuItem, 1);
 
-		// log some environment info
-		Log.getInstance().config(Environment.getInstance().toString());
 
 		// use config file info
 		// Desktop.getInstance().configureViews();
@@ -601,8 +565,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		String weirdTitle = "w" + "\u018e" + "i" + "\u1d19" + "d";
 		_weirdMenu = new JMenu(weirdTitle);
 
-		// eliza!
-		final JMenuItem elizaItem = new JMenuItem("Eliza...");
+		final JMenuItem wordleItem = new JMenuItem("Wordle...");
 		final JMenuItem fortuneItem = new JMenuItem("Fortune...");
 		final JMenuItem tsItem = new JMenuItem("Traveling Salesperson ...");
 		final JMenuItem i2dItem = new JMenuItem("2D Ising Model ...");
@@ -612,8 +575,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			public void actionPerformed(ActionEvent e) {
 				Object source = e.getSource();
 
-				if (source == elizaItem) {
-					ElizaDialog.showEliza(_instance);
+				if (source == wordleItem) {
+					Wordle.getInstance().setVisible(true);
 				} else if (source == fortuneItem) {
 					FortuneManager.getInstance().showDialog();
 				} else if (source == tsItem) {
@@ -630,11 +593,11 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			}
 		};
 
-		elizaItem.addActionListener(al1);
+		wordleItem.addActionListener(al1);
 		fortuneItem.addActionListener(al1);
 		tsItem.addActionListener(al1);
 		i2dItem.addActionListener(al1);
-		_weirdMenu.add(elizaItem);
+		_weirdMenu.add(wordleItem);
 		_weirdMenu.add(fortuneItem);
 		_weirdMenu.add(tsItem);
 		_weirdMenu.add(i2dItem);
@@ -700,8 +663,67 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		fmenu.add(ClasIoEventMenu.getOpenEventFileItem(), 0);
 	}
 
+	/**
+	 * Does the user want the data bank displays to float?
+	 * @return <code>true</code> if the user wants the data bank displays to float.
+	 */
+	public boolean isFloatingBankDisplay() {
+		return _floatingBankDisplayCB.isSelected();
+	}
+
+	/**
+	 * Does the user want the cluster endpoints to be connected?
+	 *
+	 * @return <code>true</code> if the user wants the cluster endpoints to be
+	 *         connected.
+	 */
+	public boolean isConnectCluster() {
+		return _connectClusterCB.isSelected();
+	}
+
 	// create the options menu
 	private void addToOptionMenu(JMenu omenu) {
+
+		//read default for floating bank displays
+		boolean defFloat = true;
+		String floatStr = PropertiesManager.getInstance().get("FLOATBANK");
+		if (floatStr != null) {
+			defFloat = Boolean.parseBoolean(floatStr);
+		}
+
+		_floatingBankDisplayCB = new JCheckBoxMenuItem("Bank Views are Free Floating", defFloat);
+
+
+		_floatingBankDisplayCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// save the new state
+				PropertiesManager.getInstance().put("FLOATBANK", "" + _floatingBankDisplayCB.isSelected());
+				PropertiesManager.getInstance().writeProperties();
+			}
+		});
+
+		//read default for connecting clusters
+		boolean defCluster = false;
+		String clusterStr = PropertiesManager.getInstance().get("CONNECTCLUSTER");
+		if (clusterStr != null) {
+			defCluster = Boolean.parseBoolean(clusterStr);
+		}
+		_connectClusterCB = new JCheckBoxMenuItem("Connect Cluster Endpoints", defCluster);
+		_connectClusterCB.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// save the new state
+				PropertiesManager.getInstance().put("CONNECTCLUSTER", "" + _connectClusterCB.isSelected());
+				PropertiesManager.getInstance().writeProperties();
+				Ced.refresh();
+			}
+		});
+
+		omenu.add(_floatingBankDisplayCB);
+		omenu.add(_connectClusterCB);
+		omenu.addSeparator();
+
 		omenu.add(MagnifyWindow.magificationMenu());
 		omenu.addSeparator();
 
@@ -738,6 +760,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			}
 
 		};
+
+
 		environ.addActionListener(al);
 		memPlot.addActionListener(al);
 		drawLeg.addActionListener(al);
@@ -777,15 +801,15 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 *
 	 * @param num the event number
 	 */
-	public static void setEventNumberLabel(int num) {
+	public static void setEventNumberLabel(int seqnum, int truenum) {
 
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
-		if (num < 0) {
-			_eventNumberLabel.setText("  Event Num:      ");
+		if (seqnum < 0) {
+			_eventNumberLabel.setText("  No Event           ");
 		} else {
-			_eventNumberLabel.setText("  Event Num: " + num);
+			_eventNumberLabel.setText("  Event Seq: " + seqnum + "  True: " + truenum);
 		}
 	}
 
@@ -916,13 +940,13 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// create the event number label
 	private void createEventNumberLabel() {
-		_eventNumberLabel = new JLabel("  Event Num:      is GEMC: false");
+		_eventNumberLabel = new JLabel("  Event:     ");
 		_eventNumberLabel.setOpaque(true);
 		_eventNumberLabel.setBackground(Color.black);
 		_eventNumberLabel.setForeground(Color.yellow);
 		_eventNumberLabel.setFont(new Font("Dialog", Font.BOLD, 12));
 		_eventNumberLabel.setBorder(BorderFactory.createLineBorder(Color.cyan, 1));
-		setEventNumberLabel(-1);
+		setEventNumberLabel(-1, -1);
 
 		getJMenuBar().add(Box.createHorizontalGlue());
 		getJMenuBar().add(_eventNumberLabel);
@@ -1029,7 +1053,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
 			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
 			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
@@ -1042,7 +1065,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
 			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
 			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
@@ -1054,7 +1076,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (_clasDir.exists() && _clasDir.isDirectory()) {
 			System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 			System.setProperty("CLAS12DIR", clas12dir);
-			Log.getInstance().config("CLAS12DIR: " + clas12dir);
 			return;
 		} else {
 			System.out.println("**** Did not find CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
@@ -1068,7 +1089,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			if (_clasDir.exists() && _clasDir.isDirectory()) {
 				System.out.println("**** Found CLAS12DIR [" + _clasDir.getCanonicalPath() + "]");
 				System.setProperty("CLAS12DIR", clas12dir);
-				Log.getInstance().config("CLAS12DIR: " + clas12dir);
 				return;
 			}
 			else {
@@ -1092,31 +1112,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	// data collectors need to be initialized before
 	// any events come through
 	private static void initDataCollectors() {
-		DC.getInstance();
-		AIDC.getInstance();
-		FTOF.getInstance();
-		BMTCrosses.getInstance();
-		FMTCrosses.getInstance();
-		BSTCrosses.getInstance();
-		TBCrosses.getInstance();
-		HBCrosses.getInstance();
-		AITBCrosses.getInstance();
-		AIHBCrosses.getInstance();
-		TBSegments.getInstance();
-		HBSegments.getInstance();
-		AITBSegments.getInstance();
-		AIHBSegments.getInstance();
-		AllEC.getInstance();
-		HTCC2.getInstance();
-		FTCAL.getInstance();
-		CTOF.getInstance();
-		CVT.getInstance();
-		BST.getInstance();
-		BMT.getInstance();
-		CND.getInstance();
-		RECCalorimeter.getInstance();
-		Cosmics.getInstance();
-		DataManager.getInstance();
+		DataWarehouse.getInstance();
 	}
 
 	/**
@@ -1128,7 +1124,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-		
+
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 
@@ -1229,21 +1225,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 				// initialize data columns
 //				DataManager.getInstance();
 
-				System.out.println(String.format("ced %s us ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
+				System.out.println(String.format("ced %s is ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
 			}
 
 		});
-		Log.getInstance().info(Environment.getInstance().toString());
-
-		// try to update the log for fun
-//		try {
-//			updateCedLog();
-//		}
-//		catch (Exception e) {
-//		}
-
-		Log.getInstance().info("ced is ready.");
-//		Environment.getInstance().say("c e d is ready");
 
 	} // end main
 

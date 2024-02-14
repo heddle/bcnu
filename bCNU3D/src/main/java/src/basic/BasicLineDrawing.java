@@ -12,7 +12,7 @@ public class BasicLineDrawing {
 
 	/**
 	 * Draw a line
-	 * 
+	 *
 	 * @param drawable the GL drawable
 	 * @param x1       x coordinate of start
 	 * @param y1       y coordinate of start
@@ -31,7 +31,7 @@ public class BasicLineDrawing {
 
 	/**
 	 * Draw a line
-	 * 
+	 *
 	 * @param drawable the GL drawable
 	 * @param p1       one end of the line
 	 * @param p2       the other end of the line
@@ -42,7 +42,7 @@ public class BasicLineDrawing {
 
 	/**
 	 * Draw lines (not connected)
-	 * 
+	 *
 	 * @param drawable the GL drawable
 	 * @param x1       x coordinates of start of line
 	 * @param y1       y coordinates of start of line
