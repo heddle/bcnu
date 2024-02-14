@@ -38,7 +38,6 @@ import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.bCNU.wordle.Wordle;
-import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
@@ -1113,7 +1112,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	// data collectors need to be initialized before
 	// any events come through
 	private static void initDataCollectors() {
-		DataManager.getInstance();
 		DataWarehouse.getInstance();
 	}
 

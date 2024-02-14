@@ -30,7 +30,6 @@ import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.ced.alldata.DataManager;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
@@ -363,7 +362,6 @@ public class ClasIoEventManager {
 
 		//let the data manager know
 		_schemaFactory = ((HipoDataSource)_dataSource).getReader().getSchemaFactory();
-		DataManager.getInstance().updateSchema(_schemaFactory);
 		DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		//notify the listeners
@@ -663,7 +661,6 @@ public class ClasIoEventManager {
 
 			_decoder = new CLASDecoder4();
 
-			DataManager.getInstance().updateSchema(_schemaFactory);
 			DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		}

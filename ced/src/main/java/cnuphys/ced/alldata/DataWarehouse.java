@@ -77,6 +77,9 @@ public class DataWarehouse implements IClasIoEventListener {
 	/** type names */
 	public static String[] typeNames = { "Unknown", "byte", "short", "int", "float", "double", "string", "group", "long", "vector3f", "composite", "table", "branch"};
 
+	/** the column data used by the node panel */
+	private ArrayList<ColumnData> _columnData = new ArrayList<>();
+	
 	/**
 	 * Public access to the singleton
 	 *
@@ -117,7 +120,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	}
 
 	/**
-	 * Update the schema factory and the columa dataobjects
+	 * Update the schema factory
 	 * @param schemaFactory
 	 */
 	public void updateSchema(SchemaFactory schemaFactory) {
@@ -139,6 +142,7 @@ public class DataWarehouse implements IClasIoEventListener {
 
         // sort the banks
 		_knownBanks.sort(null);
+		
 	}
 
 
@@ -392,6 +396,24 @@ public class DataWarehouse implements IClasIoEventListener {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
+		
+		
+		// create the column data
+		_columnData.clear();
+		
+		int bankIndex = 0;
+		for (String bankName : _knownBanks) {
+			DataBank bank = event.getBank(bankName);
+			if ((bank != null) && (event.hasBank(bankName))) {
+		  	    String columnNames[] = bank.getColumnList();
+		  	    Arrays.sort(columnNames);
+				for (String columnName : columnNames) {
+					_columnData.add(new ColumnData(bankName, columnName, getType(bankName, columnName), bankIndex));
+				}
+				bankIndex++;
+			}
+		}
+		
 		notifyListeners(); //clear previous data
 		notifyListeners(event);
 	}
@@ -404,6 +426,15 @@ public class DataWarehouse implements IClasIoEventListener {
 	@Override
 	public void changedEventSource(EventSourceType source) {
 		notifyListeners();
+	}
+	
+	/**
+	 * Get the column data
+	 * 
+	 * @return the column data
+	 */
+	public ArrayList<ColumnData> getColumnData() {
+		return _columnData;
 	}
 
 }

@@ -401,21 +401,21 @@ public class NodePanel extends JPanel
 			return;
 		}
 
-		DataEvent event = _nodeTable.getCurrentEvent();
+		DataEvent event = DataWarehouse.getInstance().getCurrentEvent();
 		if (event == null) {
 			return;
 		}
 
 		DataWarehouse dw = DataWarehouse.getInstance();
-		String bankName = cd.getBankName();
-        String columnName = cd.getColumnName();
+		String bankName = cd.bankName;
+        String columnName = cd.columnName;
         
 		int lineCounter = 1;
 		int index = 0;
 
-		switch (cd.getType()) {
+		switch (cd.type) {
 
-		case ColumnData.INT8: // byte
+		case DataWarehouse.INT8: // byte
 			byte bytes[] = dw.getByte(bankName, columnName);
 			if (bytes != null) {
 				for (byte i : bytes) {
@@ -440,7 +440,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.INT16:
+		case DataWarehouse.INT16:
 			short shorts[] = dw.getShort(bankName, columnName);
 			if (shorts != null) {
 				for (short i : shorts) {
@@ -465,7 +465,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.INT32:
+		case DataWarehouse.INT32:
 			int ints[] = dw.getInt(bankName, columnName);
 			if (ints != null) {
 				for (int i : ints) {
@@ -489,8 +489,34 @@ public class NodePanel extends JPanel
 				_dataTextArea.append("null data\n");
 			}
 			break;
+			
+		case DataWarehouse.INT64:
+			long longs[] = dw.getLong(bankName, columnName);
+			if (longs != null) {
+				for (long i : longs) {
+					String s;
+					if (intsInHexButton.isSelected()) {
+						s = String.format("[%02d]  %#010X", index++, i);
+					} else {
+						s = String.format("[%02d]  %d", index++, i);
+					}
+					_dataTextArea.append(s);
+					if (lineCounter < longs.length) {
+						if (lineCounter % blankLineEveryNth == 0) {
+							_dataTextArea.append("\n\n");
+						} else {
+							_dataTextArea.append("\n");
+						}
+						lineCounter++;
+					}
+				}
+			} else {
+				_dataTextArea.append("null data\n");
+			}
+			break;
 
-		case ColumnData.FLOAT32:
+
+		case DataWarehouse.FLOAT32:
 			float floats[] = dw.getFloat(bankName, columnName);
 			if (floats != null) {
 				for (float f : floats) {
@@ -511,7 +537,7 @@ public class NodePanel extends JPanel
 			}
 			break;
 
-		case ColumnData.FLOAT64:
+		case DataWarehouse.FLOAT64:
 			double doubles[] = dw.getDouble(bankName, columnName);
 			if (doubles != null) {
 				for (double d : doubles) {

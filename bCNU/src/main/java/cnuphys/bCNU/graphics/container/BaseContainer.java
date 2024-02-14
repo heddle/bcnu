@@ -189,7 +189,6 @@ public class BaseContainer extends JComponent
 	 * @param worldSystem the default world system.
 	 */
 	public BaseContainer(BaseView view, Rectangle2D.Double worldSystem) {
-	//	setDoubleBuffered(true);
 		_view = view;
 		_worldSystem = worldSystem;
 		_feedbackControl = new FeedbackControl(this);

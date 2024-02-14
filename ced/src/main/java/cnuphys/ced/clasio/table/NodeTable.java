@@ -154,15 +154,6 @@ public class NodeTable extends JTable {
 	}
 
 	/**
-	 * Get the event being displayed
-	 *
-	 * @return the event being displayed
-	 */
-	public DataEvent getCurrentEvent() {
-		return getNodeModel().getCurrentEvent();
-	}
-
-	/**
 	 * Make sure the row with the given name is visible
 	 *
 	 * @param name the name to look for
