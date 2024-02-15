@@ -43,9 +43,9 @@ public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListen
 			int idData[] = null;
 			int triggerData[] = null;
 
-			idData = _dataWarehouse.getInt(_bankName, ".id");
+			idData = _dataWarehouse.getInt(_bankName, "id");
 			if ((idData != null) && (idData.length > 0)) {
-				triggerData = _dataWarehouse.getInt(_bankName, ".trigger");
+				triggerData = _dataWarehouse.getInt(_bankName, "trigger");
 				setBits(idData[0], triggerData[0]);
 			}
 
