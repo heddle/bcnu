@@ -20,7 +20,7 @@ public class TimerRefresher {
 	        // Wrap the HashSet in a synchronized set for thread-safe access
 	        componentsToRefresh = Collections.synchronizedSet(new HashSet<>());
 
-	        // Set up the timer to repaint at 30 times per second (approximately every 33 ms)
+	        // Set up the timer to repaint at 60 times per second (approximately every 16 ms)
 	        refreshTimer = new Timer(1000 / 60, e -> refreshComponents());
 	        refreshTimer.start();
 	    }
