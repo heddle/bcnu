@@ -1222,9 +1222,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 				getCed().fixTitle();
 
 				FilterManager.getInstance().setUpFilterMenu();
-				// initialize data columns
-//				DataManager.getInstance();
-
 				System.out.println(String.format("ced %s is ready. COATJAVA: %s Geometry variation: %s", versionString(), getCoatJavaVersion(), _geoVariation));
 			}
 

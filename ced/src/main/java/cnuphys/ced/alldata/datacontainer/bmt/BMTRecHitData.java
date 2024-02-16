@@ -89,11 +89,8 @@ public class BMTRecHitData extends ACommonStripHitData {
 	 */
 	public void hitFeedback(int index, List<String> feedbackStrings) {
 		super.hitFeedback("BMTRecHit", index, feedbackStrings);
-        feedbackStrings.add("$wheat$BMTRecHit ID: " + ID[index]);
-        feedbackStrings.add("$wheat$BMTRecHit status: " + status[index]);
-        feedbackStrings.add("$wheat$BMTRecHit fit residual: " + fitResidual[index]);
-        feedbackStrings.add("$wheat$BMTRecHit cluster ID: " + clusterID[index]);
-        feedbackStrings.add("$wheat$BMTRecHit track ID: " + trkID[index]);
+		feedbackStrings.add("$wheat$BMTRecHit ID " + ID[index] + " status: " + status[index]);
+        feedbackStrings.add("$wheat$BMTRecHit cluster " + clusterID[index] + " track " + trkID[index]);
 	}
 
 }

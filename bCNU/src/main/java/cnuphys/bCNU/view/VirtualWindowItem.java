@@ -1,6 +1,7 @@
 package cnuphys.bCNU.view;
 
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -96,6 +97,15 @@ public class VirtualWindowItem extends RectangleItem {
 	public void stopModification() {
 		switch (_modification.getType()) {
 		case DRAG:
+			
+			Point p = _modification.getCurrentMousePoint();
+			if (_vview.getContainer().getComponent().getBounds().contains(p) == false) {
+				System.err.println("Cant drag out of vv!");
+				_vview.getContainer().refresh();
+				break;
+			}
+			
+			
 			Point2D.Double wp0 = _modification.getStartWorldPoint();
 			Point2D.Double wp1 = _modification.getCurrentWorldPoint();
 			int dh = (int) (wp1.x - wp0.x);

@@ -79,9 +79,9 @@ public class TriggerManager implements IClasIoEventListener {
 			_id = null;
 			_trigger = null;
 
-			_id = _dataWarehouse.getInt(_bankName, ".id");
+			_id = _dataWarehouse.getInt(_bankName, "id");
 			if (_id != null) {
-				_trigger = _dataWarehouse.getInt(_bankName, ".trigger");
+				_trigger = _dataWarehouse.getInt(_bankName, "trigger");
 			}
 
 			TriggerDialog.getInstance().setCurrentEvent(_id, _trigger);

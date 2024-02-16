@@ -88,7 +88,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 					if (lid == null) {
 						//can't swim if don't know the charge!
-						System.err.println("Cannot swim unknown LundID: " + pid[i]);
+					//	System.err.println("Cannot swim unknown LundID: " + pid[i]);
 						continue;
 					}
 

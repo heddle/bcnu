@@ -145,6 +145,11 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 	public void mouseDragged(MouseEvent mouseEvent) {
 
 		Environment.getInstance().setDragging(true);
+		
+		if (getView().getContainer().getComponent().getBounds().contains(mouseEvent.getPoint()) == false) {
+			return;
+		}
+		
 
 		_currentPoint.setLocation(mouseEvent.getPoint());
 

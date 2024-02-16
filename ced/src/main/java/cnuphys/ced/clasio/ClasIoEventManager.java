@@ -189,7 +189,12 @@ public class ClasIoEventManager {
 			String[] cbanks = _currentEvent.getBankList();
 			if (cbanks != null) {
 				for (String bankName : cbanks) {
+					
 					if (bankName.contains("::Particle") || bankName.contains("::Lund")) {
+						
+						if (DataWarehouse.getInstance().bankContainsColumn(bankName, "pid") == false) {
+							continue;
+						}
 						
 						//get the pid column
 						int pid[] = DataWarehouse.getInstance().getInt(bankName, "pid");

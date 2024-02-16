@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -20,6 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
+import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 
@@ -463,7 +465,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						// System.err.println("NEXT EVENT period = " + _period);
 						_eventManager.getNextEvent();
 					}
 
@@ -481,7 +482,6 @@ public class ClasIoEventMenu extends JMenu implements ActionListener, IClasIoEve
 				_nextEventTimer.stop();
 			}
 		}
-
 	}
 
 	// create the event every so many seconds widget

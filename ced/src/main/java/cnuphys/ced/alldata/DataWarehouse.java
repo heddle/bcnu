@@ -267,10 +267,15 @@ public class DataWarehouse implements IClasIoEventListener {
 	 */
 	public int[] getInt(String bankName, String columnName) {
 		DataEvent event = getCurrentEvent();
-        if (event != null) {
+		if (event != null) {
 			DataBank bank = event.getBank(bankName);
 			if (bank != null) {
-				return bank.getInt(columnName);
+				try {
+					return bank.getInt(columnName);
+				} catch (NullPointerException e) {
+					System.err.println("Error getting int array for " + bankName + " " + columnName);
+					System.err.println("Event number is " + ClasIoEventManager.getInstance().getSequentialEventNumber());
+				}
 			}
 		}
 		return null;
@@ -356,6 +361,27 @@ public class DataWarehouse implements IClasIoEventListener {
 		}
 	}
 
+	/**
+	 * Does the current event have a bank with the given name?
+	 * @param bankName the bank name
+	 * @param columnName the column name
+	 * @return <code>true</code> if the current event has the bank and column
+     */
+	public boolean bankContainsColumn(String bankName, String columnName) {
+		DataEvent event = getCurrentEvent();
+		if (event != null) {
+			DataBank bank = event.getBank(bankName);
+			if (bank != null) {
+		  	    String columnNames[] = bank.getColumnList();
+				for (String name : columnNames) {
+					if (name.equals(columnName)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Get the number of rows in a bank for the current event

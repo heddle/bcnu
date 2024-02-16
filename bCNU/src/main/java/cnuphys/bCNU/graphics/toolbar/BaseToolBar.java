@@ -123,9 +123,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	// draw a world rectangle
 	private RectangleButton _rectangleButton;
 
-	// draw a world rectangle grid
-	private RectGridButton _rectgridButton;
-
 	// draw a world rad arc
 	private RadArcButton _radarcButton;
 
@@ -245,10 +242,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 			_rectangleButton = new RectangleButton(_container);
 		}
 
-		if (notNothing && Bits.checkBit(bits, RECTGRIDBUTTON)) {
-			_rectgridButton = new RectGridButton(_container);
-		}
-
 		if (notNothing && Bits.checkBit(bits, RADARCBUTTON)) {
 			_radarcButton = new RadArcButton(_container);
 		}
@@ -291,7 +284,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 		add(_polylineButton);
 		add(_textButton);
 		add(_deleteButton);
-		add(_rectgridButton);
 
 		if (_cloneButton != null) {
 			add(Box.createHorizontalStrut(8));
@@ -510,15 +502,6 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 	 */
 	public RectangleButton getRectangleButton() {
 		return _rectangleButton;
-	}
-
-	/**
-	 * Get the toolbar's rectangle grid button.
-	 *
-	 * @return the toolbar's rectangle grid button.
-	 */
-	public RectGridButton getRectGridButton() {
-		return _rectgridButton;
 	}
 
 	/**

@@ -151,13 +151,6 @@ public class ClasIoPresentBankPanel extends JPanel {
 		ClasIoEventManager.getInstance().addClasIoEventListener(_eventListener, 1);
 	}
 
-	@Override
-	public Dimension getMinimumSize() {
-		Dimension d = super.getMinimumSize();
-		d.height = 800;
-		return d;
-
-	}
 
 	@Override
 	public Dimension getPreferredSize() {
