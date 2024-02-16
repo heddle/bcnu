@@ -783,4 +783,23 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 	}
+	
+	
+    /**
+     * Checks if the given view is visible within the bounds of its parent container.
+     * 
+     * @return true if the view is fully visible within its parent, false otherwise.
+     */
+    public boolean isViewVisible() {
+        // Ensure the internal frame and its parent are not null
+        if (this.getParent() == null) {
+            return false;
+        }
+
+        Rectangle frameBounds = getBounds();
+        Rectangle parentBounds = getParent().getBounds();
+
+        // Check if the view bounds intersects the parent's bounds
+        return parentBounds.intersects(frameBounds);
+    }
 }

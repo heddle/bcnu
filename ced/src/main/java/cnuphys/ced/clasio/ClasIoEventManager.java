@@ -29,6 +29,7 @@ import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
+import cnuphys.bCNU.graphics.container.TimerRefresher;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
@@ -1016,6 +1017,7 @@ public class ClasIoEventManager {
 		};
 
 		Thread t = new Thread(runner);
+
 		t.start();
 		try {
 			t.join();

@@ -72,9 +72,6 @@ public class VirtualView extends BaseView
 	// for public access
 	private static VirtualView _instance;
 
-	//refresh pending?
-	private boolean _refreshPending;
-
 	/**
 	 * Create a virtual view view
 	 *
@@ -138,8 +135,6 @@ public class VirtualView extends BaseView
 				view.getVirtualItem().setLocation();
 			}
 		}
-
-		_refreshPending = true;
 	}
 
 	private void setOffsets() {
@@ -300,7 +295,6 @@ public class VirtualView extends BaseView
 			if (view.getVirtualItem() != null) {
 				view.getVirtualItem().setLocation();
 				view.getVirtualItem().setVisible(true);
-				_refreshPending = true;
 			}
 		}
 	}
@@ -315,7 +309,6 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(false);
-			_refreshPending = true;
 
 		}
 	}
@@ -326,7 +319,6 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(false);
-			_refreshPending = true;
 		}
 	}
 
@@ -336,7 +328,6 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(true);
-			_refreshPending = true;
 		}
 	}
 
@@ -349,7 +340,6 @@ public class VirtualView extends BaseView
 			getContainer().getAnnotationLayer().sendToFront(view.getVirtualItem());
 			view.getVirtualItem().getStyle().setFillColor(_vwfillActive);
 			view.getVirtualItem().getStyle().setLineColor(Color.white);
-			_refreshPending = true;
 		}
 	}
 
@@ -361,14 +351,12 @@ public class VirtualView extends BaseView
 			view.getVirtualItem().setVisible(true);
 			view.getVirtualItem().getStyle().setFillColor(_vwfillInactive);
 			view.getVirtualItem().getStyle().setLineColor(Color.blue);
-			_refreshPending = true;
 		}
 	}
 
 	@Override
 	public void viewAdded(BaseView view) {
 		addView(view);
-		_refreshPending = true;
 	}
 
 	@Override
@@ -378,7 +366,6 @@ public class VirtualView extends BaseView
 
 			if (view.getVirtualItem() != null) {
 				getContainer().getAnnotationLayer().remove(view.getVirtualItem());
-				_refreshPending = true;
 			}
 
 			_views.remove(view);
@@ -405,31 +392,26 @@ public class VirtualView extends BaseView
 			@Override
 			public void componentResized(ComponentEvent e) {
 				vitem.setLocation();
-				_refreshPending = true;
 			}
 
 			@Override
 			public void componentMoved(ComponentEvent e) {
 				vitem.setLocation();
-				_refreshPending = true;
 			}
 
 			@Override
 			public void componentShown(ComponentEvent e) {
 				vitem.setLocation();
-				_refreshPending = true;
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent e) {
 				vitem.setLocation();
-				_refreshPending = true;
 			}
 
 		};
 
 		view.addComponentListener(cl);
-		_refreshPending = true;
 	}
 
 	@Override
@@ -492,7 +474,6 @@ public class VirtualView extends BaseView
 		}
 
 		_currentCol = clickCol;
-		_refreshPending = true;
 	}
 
 	private Rectangle getColRect(int col) {
@@ -853,7 +834,6 @@ public class VirtualView extends BaseView
 		}
 
 		_currentCol = col;
-		_refreshPending = true;
 
 	}
 

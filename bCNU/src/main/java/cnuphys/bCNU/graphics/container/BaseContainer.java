@@ -258,6 +258,8 @@ public class BaseContainer extends JComponent
 		if (_afterDraw != null) {
 			_afterDraw.draw(g, this);
 		}
+		
+		setDirty(false);
 
 	}
 
@@ -486,21 +488,34 @@ public class BaseContainer extends JComponent
 	}
 
 
-	int refCount = 0;
+	int refCnt = 0;
+	
 	/**
 	 * Refresh the container. Base implementation is the offscreen refresh. Sets the
 	 * offscreen buffer to dirty.
 	 */
 	@Override
 	public void refresh() {
+		
+		TimerRefresher.getInstance().refresh(this);
+		
+		
+//		if (getView().isViewVisible()) {
+//			Refresher.queueRefresh(this);
+//		}
 
-		repaint();
-
-		if (getToolBar() != null) {
-			if (getToolBar().getUserComponent() != null) {
-				getToolBar().getUserComponent().repaint();
-			}
-		}
+//		System.err.println("container refresh called " + getView().getTitle()  + " " + refCnt++);
+//		MethodName.printMethodName(System.err);
+//		(new Throwable()).printStackTrace(System.err);
+//
+//		
+//		repaint();
+//
+//		if (getToolBar() != null) {
+//			if (getToolBar().getUserComponent() != null) {
+//				getToolBar().getUserComponent().repaint();
+//			}
+//		}
 	}
 
 	/**

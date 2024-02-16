@@ -9,8 +9,27 @@ public abstract class ABlockingQueue<T> extends Vector<T>{
 	 * @param element the object to put in the queue
 	 */
 	public synchronized void queue(T object) {
-		System.err.println("QUEUE");
 		if (object != null) {
+			add(object);
+
+			// notify a SINGLE thread among all threads
+			// waiting for an object to be queued
+			notify();
+		}
+	}
+	
+	/**
+	 * Put an object in the FIFO queue. Any thread can do this.
+	 * If the object is already in the queue, it is not added.
+	 * @param object the object to put in the queue
+	 */
+	public synchronized void queueUnique(T object) {
+		if (object != null) {
+			
+			if (contains(object)) {
+				return;
+			}
+			
 			add(object);
 
 			// notify a SINGLE thread among all threads
