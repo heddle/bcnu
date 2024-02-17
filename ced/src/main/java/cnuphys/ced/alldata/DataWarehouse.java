@@ -2,15 +2,16 @@ package cnuphys.ced.alldata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-
-import javax.swing.event.EventListenerList;
+import java.util.concurrent.ExecutionException;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
 
+import cnuphys.bCNU.threading.EventNotifier;
 import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
@@ -21,7 +22,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	//the singleton
 	private static volatile DataWarehouse _instance;
 
-	// all the known banks in the current evenr
+	// all the known banks in the current event
 	private ArrayList<String> _knownBanks = new ArrayList<>();
 
 	//the current schema factory (dictionary)
@@ -31,9 +32,6 @@ public class DataWarehouse implements IClasIoEventListener {
 	private DataWarehouse() {
 		ClasIoEventManager.getInstance().addClasIoEventListener(this, 0);
 	}
-
-	// list of data container listeners
-	private static EventListenerList _listeners;
 
 	/** type is unknown */
 	public static final int UNKNOWN = 0;
@@ -80,6 +78,8 @@ public class DataWarehouse implements IClasIoEventListener {
 	/** the column data used by the node panel */
 	private ArrayList<ColumnData> _columnData = new ArrayList<>();
 	
+	
+	private EventNotifier<Object> eventNotifier = new EventNotifier<>();
 	/**
 	 * Public access to the singleton
 	 *
@@ -106,6 +106,23 @@ public class DataWarehouse implements IClasIoEventListener {
 		_knownBanks.toArray(kbArray);
 		return kbArray;
 	}
+	
+	/**
+	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
+	 * current event.
+	 *
+	 * @param bankName the bank name
+	 * @return <code>true</code> if the bank is in the curent event.
+	 */
+	public boolean isBankInCurrentEvent(String bankName) {
+		if ((bankName == null) || (_knownBanks == null)) {
+			return false;
+		}
+
+		int index = Collections.binarySearch(_knownBanks, bankName);
+		return index >= 0;
+	}
+
 	
 	/**
 	 * Does the current event have a bank with the given name?
@@ -325,18 +342,10 @@ public class DataWarehouse implements IClasIoEventListener {
 	 */
 	public void notifyListeners(DataEvent event) {
 
-		if (_listeners != null) {
-
-			// Guaranteed to return a non-null array
-			Object[] listeners = _listeners.getListenerList();
-
-			// This weird loop is the bullet proof way of notifying all
-			// listeners.
-			for (int i = listeners.length - 2; i >= 0; i -= 2) {
-				if (listeners[i] == IDataContainer.class) {
-					((IDataContainer) listeners[i + 1]).update(event);
-				}
-			}
+		try {
+			eventNotifier.triggerEvent(event);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -346,18 +355,10 @@ public class DataWarehouse implements IClasIoEventListener {
 	 */
 	public void notifyListeners() {
 
-		if (_listeners != null) {
-
-			// Guaranteed to return a non-null array
-			Object[] listeners = _listeners.getListenerList();
-
-			// This weird loop is the bullet proof way of notifying all
-			// listeners.
-			for (int i = listeners.length - 2; i >= 0; i -= 2) {
-				if (listeners[i] == IDataContainer.class) {
-					((IDataContainer) listeners[i + 1]).clear();
-				}
-			}
+		try {
+			eventNotifier.triggerEvent(null);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -407,16 +408,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	 * @param listener the data container listener to add.
 	 */
 	public void addDataContainerListener(IDataContainer listener) {
-
-		if (listener == null) {
-			return;
-		}
-
-		if (_listeners == null) {
-			_listeners = new EventListenerList();
-		}
-
-		_listeners.add(IDataContainer.class, listener);
+		eventNotifier.addListener(new DataListener(listener));
 	}
 
 

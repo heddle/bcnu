@@ -43,6 +43,9 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 	// the event manager
 	private static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+	
+	//data warehouse
+	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// hash table
 	private Hashtable<String, ActionLabel> _alabels = new Hashtable<>(193);
@@ -216,7 +219,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 			if (alabel != null) {
 
-				boolean inCurrent = _eventManager.isBankInCurrentEvent(s);
+				boolean inCurrent = _dataWarehouse.isBankInCurrentEvent(s);
 				alabel.setEnabled(inCurrent);
 			}
 		}
@@ -231,7 +234,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (_eventManager.isBankInCurrentEvent(label)) {
+				if (_dataWarehouse.isBankInCurrentEvent(label)) {
 					int clickCount = e.getClickCount();
 
 					if ((_nodeTable != null) && (clickCount == 1)) {
@@ -267,7 +270,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				if (_eventManager.isBankInCurrentEvent(label)) {
+				if (_dataWarehouse.isBankInCurrentEvent(label)) {
 					alabel.setBackground(Color.yellow);
 				}
 

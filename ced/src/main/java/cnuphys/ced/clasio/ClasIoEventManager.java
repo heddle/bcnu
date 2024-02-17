@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
@@ -30,6 +31,7 @@ import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
+import cnuphys.bCNU.threading.EventNotifier;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
@@ -48,9 +50,6 @@ public class ClasIoEventManager {
 
 	// Unique lund ids in the event (if any)
 	private Vector<LundId> _uniqueLundIds = new Vector<>();
-
-	// A sorted list of banks present in the current event
-	private String _currentBanks[];
 
 	// used in pcal and ec hex gradient displays
 	private double maxEDepCal[] = { Double.NaN, Double.NaN, Double.NaN };
@@ -127,8 +126,8 @@ public class ClasIoEventManager {
 
 	// the current event
 	private DataEvent _currentEvent;
-
-	// private constructor for singleton
+	
+	
 	private ClasIoEventManager() {
 		_dataSource = new HipoDataSource();
 	}
@@ -979,6 +978,44 @@ public class ClasIoEventManager {
 		if (_currentEvent == null) {
 			return;
 		}
+		
+		Swimming.setNotifyOn(false); // prevent refreshes
+		Swimming.clearAllTrajectories();
+		Swimming.setNotifyOn(true); // prevent refreshes
+
+		_uniqueLundIds = null;
+		Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
+
+		for (int index = 0; index < 3; index++) {
+			if (_viewListenerList[index] != null) {
+				EventNotifier<Object> eventNotifier = new EventNotifier<>();
+								// Guaranteed to return a non-null array
+				Object[] listeners = _viewListenerList[index].getListenerList();
+
+				// This weird loop is the bullet proof way of notifying all
+				// listeners.
+				for (int i = listeners.length - 2; i >= 0; i -= 2) {
+					IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
+					eventNotifier.addListener(new EventListener(listener));
+				}
+				try {
+					eventNotifier.triggerEvent(_currentEvent);
+					eventNotifier.shutdown();
+				} catch (InterruptedException | ExecutionException e) {
+					e.printStackTrace();
+				}
+			}
+		} // index loop
+		finalSteps();
+
+	}
+	
+	
+	protected void XnotifyEventListeners() {
+
+		if (_currentEvent == null) {
+			return;
+		}
 
 		Runnable runner = new Runnable() {
 
@@ -990,11 +1027,6 @@ public class ClasIoEventManager {
 
 				_uniqueLundIds = null;
 				Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
-				_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
-
-				if (_currentBanks != null) {
-					Arrays.sort(_currentBanks);
-				}
 
 				for (int index = 0; index < 3; index++) {
 					if (_viewListenerList[index] != null) {
@@ -1024,6 +1056,7 @@ public class ClasIoEventManager {
 			e.printStackTrace();
 		}
 	}
+
 
 	// final steps
 	private void finalSteps() {
@@ -1111,21 +1144,6 @@ public class ClasIoEventManager {
 		_viewListenerList[index].add(IClasIoEventListener.class, listener);
 	}
 
-	/**
-	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
-	 * current event.
-	 *
-	 * @param bankName the bank name
-	 * @return <code>true</code> if the bank is in the curent event.
-	 */
-	public boolean isBankInCurrentEvent(String bankName) {
-		if ((bankName == null) || (_currentBanks == null)) {
-			return false;
-		}
-
-		int index = Arrays.binarySearch(_currentBanks, bankName);
-		return index >= 0;
-	}
 
 
 }

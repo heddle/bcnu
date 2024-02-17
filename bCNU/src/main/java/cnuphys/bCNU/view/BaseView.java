@@ -770,14 +770,18 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	@Override
 	public void componentMoved(ComponentEvent arg0) {
+		// hard to believe necessary but funny things happen without it
+		if (_desktop != null) {
+			_desktop.repaint();
+		}
 	}
 
 	@Override
 	public void componentResized(ComponentEvent arg0) {
-//		// hard to believe necessary but funny things happen without it
-//		if (_desktop != null) {
-//			_desktop.repaint();
-//		}
+		// hard to believe necessary but funny things happen without it
+		if (_desktop != null) {
+			_desktop.repaint();
+		}
 	}
 
 	@Override
