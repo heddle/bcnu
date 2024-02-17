@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
+import cnuphys.bCNU.threading.EventNotifier;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoMonteCarloView;
 import cnuphys.lund.LundId;
@@ -18,7 +19,7 @@ import cnuphys.swim.Swimming;
  *
  */
 public class SwimAllMC implements ISwimAll {
-
+	
 	// integration cutoff
 	private static final double PATHMAX = 900;
 
@@ -44,8 +45,7 @@ public class SwimAllMC implements ISwimAll {
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
-
-		ArrayList<SwimThread> swimThreads = new ArrayList<>();
+		
 
 		Swimming.clearMCTrajectories(); // clear all existing trajectories
 
@@ -60,6 +60,7 @@ public class SwimAllMC implements ISwimAll {
 		//used to avoid swimming duplicates
 		ArrayList<String> swam = new ArrayList<>();
 
+		EventNotifier<Object> swimNotifier = new EventNotifier<>();
 
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
@@ -71,25 +72,25 @@ public class SwimAllMC implements ISwimAll {
 							trd.getMomentum(), trd.getTheta(), trd.getPhi());
 
 					if (swam.contains(summaryStr)) {
-//						System.err.println("Skipping duplicate swim, probably MC::Particle and MC::Lund [" + lid.getName() + "]");
 						continue;
 					}
 
 					swam.add(summaryStr);
-					SwimThread st = new SwimThread(trd, PATHMAX, stepSize, tolerance);
-					swimThreads.add(st);
-					st.start();
+					
+					SwimData swimData = new SwimData(trd, PATHMAX, stepSize, tolerance);
+					swimNotifier.addListener(new SwimListener(swimData));
+					
 			}
 
 		} //for trd
-
-		for (SwimThread st : swimThreads) {
-			try {
-				st.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		
+		try {
+			swimNotifier.triggerEvent(null);
+			swimNotifier.shutdown();
+		} catch (InterruptedException | java.util.concurrent.ExecutionException e) {
+			e.printStackTrace();
 		}
+
 
 	}
 

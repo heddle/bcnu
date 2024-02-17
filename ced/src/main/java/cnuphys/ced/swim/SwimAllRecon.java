@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
+import cnuphys.bCNU.threading.EventNotifier;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoReconEventView;
 import cnuphys.lund.LundId;
@@ -44,8 +45,6 @@ public class SwimAllRecon implements ISwimAll {
 			return;
 		}
 
-		ArrayList<SwimThread> swimThreads = new ArrayList<>();
-
 		Swimming.clearReconTrajectories();
 
 		Vector<TrajectoryRowData> data = getRowData();
@@ -55,6 +54,8 @@ public class SwimAllRecon implements ISwimAll {
 
 		double stepSize = 1.0e-3;
 		double tolerance = 1.0e-6;
+
+		EventNotifier<Object> swimNotifier = new EventNotifier<>();
 
 		for (TrajectoryRowData trd : data) {
 			LundId lid = LundSupport.getInstance().get(trd.getId());
@@ -66,19 +67,17 @@ public class SwimAllRecon implements ISwimAll {
 				if ((source != null) && (source.contains("CVT"))) {
 					sf = 150; //shorter max path for cvt tracks
 				}
-				SwimThread st = new SwimThread(trd, sf, stepSize, tolerance);
-				swimThreads.add(st);
-				st.start();
+				SwimData swimData = new SwimData(trd, sf, stepSize, tolerance);
+				swimNotifier.addListener(new SwimListener(swimData));
 
 			}
 		} //for trd
 
-		for (SwimThread st : swimThreads) {
-			try {
-				st.join();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		try {
+			swimNotifier.triggerEvent(null);
+			swimNotifier.shutdown();
+		} catch (InterruptedException | java.util.concurrent.ExecutionException e) {
+			e.printStackTrace();
 		}
 	}
 
