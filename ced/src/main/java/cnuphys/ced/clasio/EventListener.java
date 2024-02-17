@@ -6,7 +6,7 @@ import cnuphys.bCNU.threading.IEventListener;
 
 public class EventListener<Object> implements IEventListener<Object> {
 	
-	
+	//the listener that gets called
 	private IClasIoEventListener listener;
 	
 	public EventListener(IClasIoEventListener listener) {
@@ -26,5 +26,8 @@ public class EventListener<Object> implements IEventListener<Object> {
 		}
 	}
 	
+	public IClasIoEventListener getListener() {
+		return listener;
+	}
 
 }

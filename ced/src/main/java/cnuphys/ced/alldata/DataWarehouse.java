@@ -78,8 +78,9 @@ public class DataWarehouse implements IClasIoEventListener {
 	/** the column data used by the node panel */
 	private ArrayList<ColumnData> _columnData = new ArrayList<>();
 	
-	
+	//for notifying about new data
 	private EventNotifier<Object> eventNotifier = new EventNotifier<>();
+	
 	/**
 	 * Public access to the singleton
 	 *

@@ -3,14 +3,12 @@ package cnuphys.ced.clasio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Vector;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.EventListenerList;
 
 import org.jlab.detector.decode.CLASDecoder4;
 import org.jlab.io.base.DataBank;
@@ -87,14 +85,15 @@ public class ClasIoEventManager {
 	// flag that set set to <code>true</code> if we are quickly scanning events events
 	private boolean _scanning = false;
 
+	
+	
 
-	// list of view listeners. There are actually three lists. Those in index 0
+	// list of event listeners. There are actually three lists. Those in index 0
 	// are notified first. Then those in index 1. Finally those in index 2. The
-	// Data
-	// containers should be in index 0. The trajectory and noise in index 1, and
-	// the
-	// regular views in index 2 (they are notified last)
-	private EventListenerList _viewListenerList[] = new EventListenerList[3];
+	// Data containers should be in index 0. The trajectory and noise in index 1, and
+	// the regular views in index 2 (they are notified last)
+	
+	private EventNotifier<Object> eventNotifier[] = new EventNotifier[3];
 
 	// someone who can swim all MC particles
 	private ISwimAll _allMCSwimmer;
@@ -127,9 +126,12 @@ public class ClasIoEventManager {
 	// the current event
 	private DataEvent _currentEvent;
 	
-	
+	// private constructor for singleton
 	private ClasIoEventManager() {
 		_dataSource = new HipoDataSource();
+		for (int index = 0; index < 3; index++) {
+			eventNotifier[index] = new EventNotifier<>();
+		}
 	}
 
 	/**
@@ -910,18 +912,14 @@ public class ClasIoEventManager {
 			_currentEventIndex = 0;
 		}
 
+		Swimming.setNotifyOn(false); // prevent refreshes
+		Swimming.clearAllTrajectories();
+		Swimming.setNotifyOn(true); // prevent refreshes
 		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
-
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					if (listeners[i] == IClasIoEventListener.class) {
-						((IClasIoEventListener) listeners[i + 1]).changedEventSource(source);
-					}
-				}
+			try {
+				eventNotifier[index].triggerEvent(source);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -931,40 +929,18 @@ public class ClasIoEventManager {
 	// new event file notification
 	private void notifyEventListeners(File file) {
 		
-		Runnable runner = new Runnable() {
-
-			@Override
-			public void run() {
-				Swimming.clearAllTrajectories();
-				for (int index = 0; index < 3; index++) {
-					if (_viewListenerList[index] != null) {
-						// Guaranteed to return a non-null array
-						Object[] listeners = _viewListenerList[index].getListenerList();
-
-						// This weird loop is the bullet proof way of notifying all
-						// listeners.
-						for (int i = listeners.length - 2; i >= 0; i -= 2) {
-							if (listeners[i] == IClasIoEventListener.class) {
-								((IClasIoEventListener) listeners[i + 1]).openedNewEventFile(file.getAbsolutePath());
-							}
-						}
-					}
-				}
-
+		Swimming.setNotifyOn(false); // prevent refreshes
+		Swimming.clearAllTrajectories();
+		Swimming.setNotifyOn(true); // prevent refreshes
+		for (int index = 0; index < 3; index++) {
+			try {
+				eventNotifier[index].triggerEvent(file.getAbsolutePath());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
-		};
-
-		Thread t = new Thread(runner);
-		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 
-
 		Ced.getCed().fixTitle();
-
 	}
 
 
@@ -986,76 +962,18 @@ public class ClasIoEventManager {
 		_uniqueLundIds = null;
 		Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
 
+		Swimming.clearAllTrajectories();
 		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				EventNotifier<Object> eventNotifier = new EventNotifier<>();
-								// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
-
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
-					eventNotifier.addListener(new EventListener(listener));
-				}
-				try {
-					eventNotifier.triggerEvent(_currentEvent);
-					eventNotifier.shutdown();
-				} catch (InterruptedException | ExecutionException e) {
-					e.printStackTrace();
-				}
+			try {
+				eventNotifier[index].triggerEvent(_currentEvent);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
-		} // index loop
+		}
 		finalSteps();
 
 	}
 	
-	
-	protected void XnotifyEventListeners() {
-
-		if (_currentEvent == null) {
-			return;
-		}
-
-		Runnable runner = new Runnable() {
-
-			@Override
-			public void run() {
-				Swimming.setNotifyOn(false); // prevent refreshes
-				Swimming.clearAllTrajectories();
-				Swimming.setNotifyOn(true); // prevent refreshes
-
-				_uniqueLundIds = null;
-				Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
-
-				for (int index = 0; index < 3; index++) {
-					if (_viewListenerList[index] != null) {
-						// Guaranteed to return a non-null array
-						Object[] listeners = _viewListenerList[index].getListenerList();
-
-						// This weird loop is the bullet proof way of notifying all
-						// listeners.
-						for (int i = listeners.length - 2; i >= 0; i -= 2) {
-							IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
-							if (listeners[i] == IClasIoEventListener.class) {
-								listener.newClasIoEvent(_currentEvent);
-							}
-						}
-					}
-				} // index loop
-				finalSteps();
-			}
-		};
-
-		Thread t = new Thread(runner);
-
-		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-	}
 
 
 	// final steps
@@ -1088,8 +1006,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-
-
 	/**
 	 * Get the maximum energy deposited in the cal for the current event. Might be
 	 * NaN if there are no "true" (gemc) banks
@@ -1108,15 +1024,8 @@ public class ClasIoEventManager {
 	 * @param listener the IClasIoEventListener listener to remove.
 	 */
 	public void removeClasIoEventListener(IClasIoEventListener listener) {
-
-		if (listener == null) {
-			return;
-		}
-
 		for (int i = 0; i < 3; i++) {
-			if (_viewListenerList[i] != null) {
-				_viewListenerList[i].remove(IClasIoEventListener.class, listener);
-			}
+			eventNotifier[i].removeListener(listener);
 		}
 	}
 
@@ -1132,16 +1041,7 @@ public class ClasIoEventManager {
 	 *                 are notified last)
 	 */
 	public void addClasIoEventListener(IClasIoEventListener listener, int index) {
-
-		if (listener == null) {
-			return;
-		}
-
-		if (_viewListenerList[index] == null) {
-			_viewListenerList[index] = new EventListenerList();
-		}
-
-		_viewListenerList[index].add(IClasIoEventListener.class, listener);
+		eventNotifier[index].addListener(listener);
 	}
 
 

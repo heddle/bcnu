@@ -496,26 +496,19 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void refresh() {
-		
-		TimerRefresher.getInstance().refresh(this);
-		
-		
-//		if (getView().isViewVisible()) {
-//			Refresher.queueRefresh(this);
-//		}
 
-//		System.err.println("container refresh called " + getView().getTitle()  + " " + refCnt++);
-//		MethodName.printMethodName(System.err);
-//		(new Throwable()).printStackTrace(System.err);
-//
-//		
-//		repaint();
-//
-//		if (getToolBar() != null) {
-//			if (getToolBar().getUserComponent() != null) {
-//				getToolBar().getUserComponent().repaint();
-//			}
-//		}
+//		TimerRefresher.getInstance().refresh(this);
+
+		if (getView().isViewVisible()) {
+
+			repaint();
+
+			if (getToolBar() != null) {
+				if (getToolBar().getUserComponent() != null) {
+					getToolBar().getUserComponent().repaint();
+				}
+			}
+		}
 	}
 
 	/**

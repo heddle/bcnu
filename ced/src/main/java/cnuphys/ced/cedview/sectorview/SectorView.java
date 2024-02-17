@@ -448,7 +448,6 @@ public class SectorView extends SliceView implements ChangeListener {
 			public void draw(Graphics g, IContainer container) {
 
 				if (ClasIoEventManager.getInstance().isAccumulating()) {
-					System.err.println("SD AFTER");
 					return;
 				}
 
