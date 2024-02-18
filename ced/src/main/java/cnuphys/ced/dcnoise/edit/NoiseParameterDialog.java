@@ -23,8 +23,8 @@ import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.frame.Ced;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.noise.NoiseManager;
 import cnuphys.snr.NoiseReductionParameters;
@@ -326,7 +326,7 @@ public class NoiseParameterDialog extends JDialog {
 							.copyEditableParameters(_clonedParameters[superLayer]);
 				}
 			}
-			ViewManager.getInstance().refreshAllViews();
+			Ced.refresh();
 
 			if (reason == DialogUtilities.OK_RESPONSE) {
 				setVisible(false);

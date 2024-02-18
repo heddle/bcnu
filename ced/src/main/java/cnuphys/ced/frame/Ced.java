@@ -15,10 +15,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jlab.logging.DefaultLogger;
 
@@ -775,7 +777,28 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * Refresh all views (with containers)
 	 */
 	public static void refresh() {
-		ViewManager.getInstance().refreshAllViews();
+
+		if (SwingUtilities.isEventDispatchThread()) {
+			refreshAllViews();
+		} else {
+			System.out.println("refreshing from non-EDT");
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						refreshAllViews();
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void refreshAllViews() {
+	    for (JInternalFrame frame : Desktop.getInstance().getAllFrames()) {
+	        frame.repaint();
+	    }
 	}
 
 	/**

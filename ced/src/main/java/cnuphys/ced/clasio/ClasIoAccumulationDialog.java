@@ -26,6 +26,7 @@ import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.event.AccumulationManager;
+import cnuphys.ced.frame.Ced;
 
 public class ClasIoAccumulationDialog extends JDialog {
 
@@ -281,7 +282,7 @@ public class ClasIoAccumulationDialog extends JDialog {
 								// reload last event
 								_eventManager.reloadCurrentEvent();
 
-								ViewManager.getInstance().refreshAllViews();
+								Ced.refresh();
 
 							}
 						});
