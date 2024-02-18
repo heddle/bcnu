@@ -46,7 +46,6 @@ import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.bCNU.visible.VisibilityTableScrollPane;
 
 /**
  * This the primary component. It contains a list of layers (each containing a
@@ -75,10 +74,6 @@ public class BaseContainer extends JComponent
 	 */
 	protected BaseToolBar _toolBar;
 
-	/**
-	 * The logical layer visibility control. It is created when requested.
-	 */
-	protected VisibilityTableScrollPane _visTable;
 
 	/**
 	 * The optional feedback pane.
@@ -1273,19 +1268,6 @@ public class BaseContainer extends JComponent
 		AItem item = new PolylineItem(layer, wp);
 
 		return item;
-	}
-
-	/**
-	 * Get a scroll pane with a table for controlling logical layer visibility
-	 *
-	 * @return a scroll pane with a table for controlling logical layer visibility
-	 */
-	@Override
-	public VisibilityTableScrollPane getVisibilityTableScrollPane() {
-		if (_visTable == null) {
-			_visTable = new VisibilityTableScrollPane(this, _layers, "Layers (drag to reorder)");
-		}
-		return _visTable;
 	}
 
 	/**

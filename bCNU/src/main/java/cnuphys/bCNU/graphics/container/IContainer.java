@@ -22,7 +22,6 @@ import cnuphys.bCNU.item.AItem;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.bCNU.visible.VisibilityTableScrollPane;
 
 public interface IContainer {
 
@@ -163,13 +162,6 @@ public interface IContainer {
 	 * Undo that last zoom.
 	 */
 	public void undoLastZoom();
-
-	/**
-	 * Get a scroll pane with a table for controlling logical layer visibility
-	 *
-	 * @return a scroll pane with a table for controlling logical layer visibility
-	 */
-	public VisibilityTableScrollPane getVisibilityTableScrollPane();
 
 	/**
 	 * This is called when we have completed a rubber banding. pane.
