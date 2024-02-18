@@ -781,7 +781,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		if (SwingUtilities.isEventDispatchThread()) {
 			refreshAllViews();
 		} else {
-			System.out.println("refreshing from non-EDT");
 			try {
 				SwingUtilities.invokeAndWait(new Runnable() {
 					@Override

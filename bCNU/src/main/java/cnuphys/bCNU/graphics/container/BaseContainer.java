@@ -42,7 +42,6 @@ import cnuphys.bCNU.item.PolylineItem;
 import cnuphys.bCNU.item.RadArcItem;
 import cnuphys.bCNU.item.RectangleItem;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.layer.LayerControl;
 import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Point2DSupport;
@@ -204,8 +203,6 @@ public class BaseContainer extends JComponent
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
-		// add a controller that listens for layer changes.
-		_layers.addDrawableListener(new LayerControl(this));
 	}
 
 	/**
