@@ -10,7 +10,7 @@ import java.util.List;
 import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.DCGeometry;
@@ -25,11 +25,11 @@ public class DCHexSectorItem extends HexSectorItem {
 	/**
 	 * Get a hex sector item
 	 *
-	 * @param logLayer the logical layer
+	 * @param itemList the item list
 	 * @param sector   the 1-based sector
 	 */
-	public DCHexSectorItem(LogicalLayer logLayer, DCXYView view, int sector) {
-		super(logLayer, view, sector);
+	public DCHexSectorItem(ItemList itemList, DCXYView view, int sector) {
+		super(itemList, view, sector);
 	}
 
 	/**

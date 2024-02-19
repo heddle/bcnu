@@ -3,18 +3,17 @@ package cnuphys.bCNU.item;
 import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 public class PolygonItem extends PathBasedItem {
 
 	/**
 	 * Create a world polygon item
 	 *
-	 * @param layer  the Layer this item is on.
+	 * @param itemList  the list this item is on.
 	 * @param points the points of the polygon
 	 */
-	public PolygonItem(LogicalLayer layer, Point2D.Double points[]) {
-		super(layer);
+	public PolygonItem(ItemList itemList, Point2D.Double points[]) {
+		super(itemList);
 
 		// set the path
 		if (points != null) {
@@ -25,10 +24,10 @@ public class PolygonItem extends PathBasedItem {
 	/**
 	 * Create a world polygon item
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 */
-	public PolygonItem(LogicalLayer layer) {
-		super(layer);
+	public PolygonItem(ItemList itemList) {
+		super(itemList);
 	}
 
 	/**

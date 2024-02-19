@@ -273,10 +273,10 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 			container.selectAllItems(false);
 		}
 
-		// call the layer to set the select state because it calls the item
+		// call the list to set the select state because it calls the item
 		// listeners
 		if ((item != null) && (!item.isLocked())) {
-			item.getLayer().selectItem(item, true);
+			item.getItemList().selectItem(item, true);
 		}
 		container.getToolBar().checkButtonState();
 		container.setDirty(true);
@@ -295,10 +295,10 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 		Vector<AItem> enclosedItems = container.getEnclosedItems(b);
 		if (enclosedItems != null) {
 			for (AItem item : enclosedItems) {
-				// call the layer to set the select state because it calls the
+				// call the list to set the select state because it calls the
 				// item listeners
 				if ((item != null) && (!item.isLocked())) {
-					item.getLayer().selectItem(item, true);
+					item.getItemList().selectItem(item, true);
 				}
 			}
 		}

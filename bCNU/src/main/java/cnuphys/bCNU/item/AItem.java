@@ -30,7 +30,6 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.IStyled;
 import cnuphys.bCNU.graphics.style.Styled;
 import cnuphys.bCNU.item.ItemModification.ModificationType;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 
@@ -84,7 +83,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	/**
 	 * What layer the item is on.
 	 */
-	protected LogicalLayer _layer;
+	protected ItemList _itemList;
 
 	/**
 	 * The parent of this item.
@@ -193,13 +192,13 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	/**
 	 * Create an item on a specific layer.
 	 *
-	 * @param layer the layer it is on.
+	 * @param itemList the list it is on.
 	 */
-	public AItem(LogicalLayer layer) {
-		_layer = layer;
-		_layer.add(this);
+	public AItem(ItemList itemList) {
+		_itemList = itemList;
+		_itemList.add(this);
 
-		_layer.getContainer().getFeedbackControl().addFeedbackProvider(this);
+		_itemList.getContainer().getFeedbackControl().addFeedbackProvider(this);
 
 	}
 
@@ -427,7 +426,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 */
 	public void setSelected(boolean selected) {
 		_selected = selected;
-		_layer.getContainer().refresh();
+		_itemList.getContainer().refresh();
 	}
 
 	/**
@@ -690,15 +689,15 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	public void stopModification() {
 		switch (_modification.getType()) {
 		case DRAG:
-			_layer.notifyDrawableChangeListeners(this, DrawableChangeType.MOVED);
+			_itemList.notifyDrawableChangeListeners(this, DrawableChangeType.MOVED);
 			break;
 
 		case ROTATE:
-			_layer.notifyDrawableChangeListeners(this, DrawableChangeType.ROTATED);
+			_itemList.notifyDrawableChangeListeners(this, DrawableChangeType.ROTATED);
 			break;
 
 		case RESIZE:
-			_layer.notifyDrawableChangeListeners(this, DrawableChangeType.RESIZED);
+			_itemList.notifyDrawableChangeListeners(this, DrawableChangeType.RESIZED);
 			break;
 		}
 		_modification = null;
@@ -794,12 +793,12 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	}
 
 	/**
-	 * Get the layer this item is on.
+	 * Get the list this item is on.
 	 *
-	 * @return the layer this item is on.
+	 * @return the list this item is on.
 	 */
-	public LogicalLayer getLayer() {
-		return _layer;
+	public ItemList getItemList() {
+		return _itemList;
 	}
 
 	/**
@@ -818,10 +817,9 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 * @return the rightClickable flag.
 	 */
 	public boolean isRightClickable() {
-		// turn off the layer check--allow even disabled layers
+		// turn off the list check--allow even disabled lists
 		// to process right clicks
 		return _rightClickable;
-		// return _rightClickable && isLayerEnabled();
 	}
 
 	/**
@@ -1037,7 +1035,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 		for (IDrawable drawable : clone) {
 			AItem item = (AItem) drawable;
 			if (item != null) {
-				item.getLayer().remove(item);
+				item.getItemList().remove(item);
 			}
 		}
 
@@ -1055,7 +1053,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 
 			_focus = null;
 			_lastDrawnPolygon = null;
-			_layer = null;
+			_itemList = null;
 			_path = null;
 			_secondaryPoints = null;
 			_style = null;
@@ -1117,7 +1115,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 * @return the container this item lives on.
 	 */
 	public IContainer getContainer() {
-		return getLayer().getContainer();
+		return getItemList().getContainer();
 	}
 
 	/**
@@ -1149,10 +1147,10 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 * @return <code>true</code> if the item's layer is enabled.
 	 */
 	public boolean isLayerEnabled() {
-		if (_layer == null) {
+		if (_itemList == null) {
 			return false;
 		}
-		return _layer.isEnabled();
+		return _itemList.isEnabled();
 	}
 
 }

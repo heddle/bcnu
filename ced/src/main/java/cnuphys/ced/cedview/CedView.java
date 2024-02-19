@@ -33,7 +33,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
 import cnuphys.bCNU.graphics.toolbar.UserToolBarComponent;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.ping.IPing;
 import cnuphys.bCNU.util.TextUtilities;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -186,7 +186,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		if (!fullFeatures) {
 			container.getFeedbackControl().addFeedbackProvider(this);
 			// add the magnetic field layer--mostly unused.
-			container.addLogicalLayer(_magneticFieldLayerName);
+			container.addItemList(_magneticFieldLayerName);
 			MagneticFields.getInstance().addMagneticFieldChangeListener(this);
 			if (_activeProbe == null) {
 				_activeProbe = FieldProbe.factory();
@@ -206,10 +206,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			container.getFeedbackControl().addFeedbackProvider(this);
 
 			// add the magnetic field layer--mostly unused.
-			container.addLogicalLayer(_magneticFieldLayerName);
+			container.addItemList(_magneticFieldLayerName);
 
 			// add the detector drawing layer
-			container.addLogicalLayer(_detectorLayerName);
+			container.addItemList(_detectorLayerName);
 		}
 
 		// listen for trajectory changes
@@ -416,8 +416,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * @param show the value of the display flag.
 	 */
 	public void showAnnotations(boolean show) {
-		if (getContainer().getAnnotationLayer() != null) {
-			getContainer().getAnnotationLayer().setVisible(show);
+		if (getContainer().getAnnotationList() != null) {
+			getContainer().getAnnotationList().setVisible(show);
 		}
 	}
 
@@ -1199,8 +1199,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 *
 	 * @return the detector layer.
 	 */
-	public LogicalLayer getDetectorLayer() {
-		return getContainer().getLogicalLayer(_detectorLayerName);
+	public ItemList getDetectorLayer() {
+		return getContainer().getItemList(_detectorLayerName);
 	}
 
 	/**
@@ -1208,8 +1208,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 *
 	 * @return the magnetic field layer.
 	 */
-	public LogicalLayer getMagneticFieldLayer() {
-		return getContainer().getLogicalLayer(_magneticFieldLayerName);
+	public ItemList getMagneticFieldLayer() {
+		return getContainer().getItemList(_magneticFieldLayerName);
 	}
 
 	/**

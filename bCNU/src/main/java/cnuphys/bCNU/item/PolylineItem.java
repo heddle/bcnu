@@ -5,18 +5,17 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 public class PolylineItem extends PathBasedItem {
 
 	/**
 	 * Create a world polyline item
 	 *
-	 * @param layer  the Layer this item is on.
+	 * @param itemList  the list this item is on.
 	 * @param points the points of the polygon
 	 */
-	public PolylineItem(LogicalLayer layer, Point2D.Double points[]) {
-		super(layer);
+	public PolylineItem(ItemList itemList, Point2D.Double points[]) {
+		super(itemList);
 
 		// get the path
 		_path = WorldGraphicsUtilities.worldPolygonToPath(points);

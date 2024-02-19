@@ -15,8 +15,8 @@ import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.RectangleItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.alldata.DataDrawSupport;
@@ -91,16 +91,16 @@ public class AllDCSuperLayer extends RectangleItem {
 	/**
 	 * Constructor for a geometrically unfaithful "all dc" superlayer.
 	 *
-	 * @param layer          the Layer this item is on.
+	 * @param itemList       the list this item is on.
 	 * @param alldc          the AllDCView parent
 	 * @param worldRectangle the boundaries which are not the real boundaries.
 	 * @param sector         the sector [0..5]
 	 * @param superLayer     the superLayer [0..5]
 	 * @param numWires       the number of wires per layer
 	 */
-	public AllDCSuperLayer(LogicalLayer layer, CedView view, Rectangle2D.Double worldRectangle, int sector,
+	public AllDCSuperLayer(ItemList itemList, CedView view, Rectangle2D.Double worldRectangle, int sector,
 			int superLayer, int numWires) {
-		super(layer, worldRectangle);
+		super(itemList, worldRectangle);
 		_worldRectangle = worldRectangle;
 		_view = (AllDCView) view;
 		_numWires = numWires;

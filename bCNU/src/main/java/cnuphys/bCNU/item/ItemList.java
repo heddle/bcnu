@@ -1,4 +1,4 @@
-package cnuphys.bCNU.layer;
+package cnuphys.bCNU.item;
 
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -8,20 +8,19 @@ import cnuphys.bCNU.drawable.DrawableChangeType;
 import cnuphys.bCNU.drawable.DrawableList;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.item.AItem;
 
 @SuppressWarnings("serial")
-public class LogicalLayer extends DrawableList {
+public class ItemList extends DrawableList {
 
 	// the owner container
 	protected IContainer _container;
 
 	/**
-	 * Create a layer for holding items.
+	 * Create a list for holding items.
 	 *
-	 * @param name the name of the layer.
+	 * @param name the name of the list.
 	 */
-	public LogicalLayer(IContainer container, String name) {
+	public ItemList(IContainer container, String name) {
 		super(name);
 		_container = container;
 	}
@@ -100,7 +99,7 @@ public class LogicalLayer extends DrawableList {
 	 */
 	public void deleteSelectedItems(IContainer container) {
 
-		// if the layer is not visible, do nothing.
+		// if the list is not visible, do nothing.
 		if (!isVisible()) {
 			return;
 		}
@@ -355,19 +354,6 @@ public class LogicalLayer extends DrawableList {
 			}
 			return null;
 		}
-	}
-
-	/**
-	 * Equality check.
-	 *
-	 * @return <code>true</code> if objects are equal.
-	 */
-	public boolean equals(LogicalLayer o) {
-
-		if (o != null) {
-			return (this == o);
-		}
-		return false;
 	}
 
 	/**

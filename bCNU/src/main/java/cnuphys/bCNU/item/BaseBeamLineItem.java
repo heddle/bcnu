@@ -7,7 +7,6 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
 
 public class BaseBeamLineItem extends LineItem {
@@ -19,10 +18,10 @@ public class BaseBeamLineItem extends LineItem {
 	/**
 	 * Create a beamline item which is a glorified line.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 */
-	public BaseBeamLineItem(LogicalLayer layer) {
-		super(layer, new Point2D.Double(-1000.0, 0.0), new Point2D.Double(1000.0, 0.0));
+	public BaseBeamLineItem(ItemList itemList) {
+		super(itemList, new Point2D.Double(-1000.0, 0.0), new Point2D.Double(1000.0, 0.0));
 		setName("Beamline");
 	}
 

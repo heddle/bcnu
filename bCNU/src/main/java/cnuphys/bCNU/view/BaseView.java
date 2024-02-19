@@ -34,6 +34,7 @@ import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.BaseContainer;
+import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.UserToolBarComponent;
@@ -164,7 +165,13 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 			// container in attributes? if not, use a BaseContainer
 			_container = PropertySupport.getContainer(_properties);
 			if (_container == null) {
-				_container = new BaseContainer(this, worldSystem);
+				String contType = PropertySupport.getContainerType(_properties);
+				if ((contType != null) && contType.equalsIgnoreCase("drawing")) {
+                    _container = new DrawingContainer(this, worldSystem);
+				} else {
+					_container = new BaseContainer(this, worldSystem);
+				}
+				
 			} else {
 				_container.setView(this);
 			}

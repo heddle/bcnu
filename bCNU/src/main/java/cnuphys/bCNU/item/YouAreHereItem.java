@@ -6,17 +6,16 @@ import java.util.List;
 
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 public class YouAreHereItem extends PointItem {
 
 	/**
 	 * Constructor for a YouAreHereItem which is like a reference point.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the item list
 	 */
-	public YouAreHereItem(LogicalLayer layer) {
-		super(layer, ImageManager.getInstance().loadImageIcon("images/youarehere.gif"));
+	public YouAreHereItem(ItemList itemList) {
+		super(itemList, ImageManager.getInstance().loadImageIcon("images/youarehere.gif"));
 
 		this.setAlignmentV(BOTTOM);
 	}
@@ -30,7 +29,7 @@ public class YouAreHereItem extends PointItem {
 	 * @return the create YouAreHereItem
 	 */
 	public static YouAreHereItem createYouAreHereItem(IContainer container, Point2D.Double location) {
-		LogicalLayer glassLayer = container.getGlassLayer();
+		ItemList glassLayer = container.getGlassList();
 		YouAreHereItem item = new YouAreHereItem(glassLayer);
 
 		container.setYouAreHereItem(item);

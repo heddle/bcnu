@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 /**
  * @author heddle
@@ -18,15 +17,15 @@ public class EllipseItem extends PolygonItem {
 	/**
 	 * Create a world rectangle object.
 	 *
-	 * @param layer   the Layer this item is on.
-	 * @param w       the width of the ellipse
-	 * @param h       the height of the ellipse
-	 * @param azimuth the rotation of the ellipse in degrees. 0 is north, 90 east,
-	 *                etc.
-	 * @param center  the center of the ellipse.
+	 * @param itemList the list this item is on.
+	 * @param w        the width of the ellipse
+	 * @param h        the height of the ellipse
+	 * @param azimuth  the rotation of the ellipse in degrees. 0 is north, 90 east,
+	 *                 etc.
+	 * @param center   the center of the ellipse.
 	 */
-	public EllipseItem(LogicalLayer layer, double w, double h, double azimuth, Point2D.Double center) {
-		super(layer, WorldGraphicsUtilities.getEllipsePoints(w, h, azimuth, 10, center));
+	public EllipseItem(ItemList itemList, double w, double h, double azimuth, Point2D.Double center) {
+		super(itemList, WorldGraphicsUtilities.getEllipsePoints(w, h, azimuth, 10, center));
 	}
 
 	/**

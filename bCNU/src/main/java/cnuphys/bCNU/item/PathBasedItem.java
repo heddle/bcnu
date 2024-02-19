@@ -13,7 +13,6 @@ import java.awt.geom.Rectangle2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 public class PathBasedItem extends AItem {
 
@@ -23,10 +22,10 @@ public class PathBasedItem extends AItem {
 	/**
 	 * Create an object that is based on a java Path2D object.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 */
-	public PathBasedItem(LogicalLayer layer) {
-		super(layer);
+	public PathBasedItem(ItemList itemList) {
+		super(itemList);
 	}
 
 	/**

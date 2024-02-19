@@ -29,7 +29,7 @@ import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
@@ -505,7 +505,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	@Override
 	protected void addItems() {
 		// BMT sectors for now only layers 5 & 6
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 
 		_bmtItems = new BMTSectorItem[3][6];
 		for (int sect = 1; sect <= 3; sect++) {

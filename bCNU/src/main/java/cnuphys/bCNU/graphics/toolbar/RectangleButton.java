@@ -3,6 +3,7 @@ package cnuphys.bCNU.graphics.toolbar;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 
+import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.rubberband.IRubberbanded;
 import cnuphys.bCNU.graphics.rubberband.Rubberband;
@@ -46,7 +47,10 @@ public class RectangleButton extends ToolBarToggleButton implements IRubberbande
 		if ((b.width < 3) || (b.height < 3)) {
 			return;
 		}
-		AItem item = container.createRectangleItem(container.getAnnotationLayer(), b);
+		
+		DrawingContainer dc	= (DrawingContainer) container;
+
+		AItem item = dc.createRectangleItem(container.getAnnotationList(), b);
 		if (item != null) {
 			item.setRightClickable(true);
 			item.setDraggable(true);

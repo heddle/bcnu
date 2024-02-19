@@ -6,6 +6,7 @@ package cnuphys.bCNU.graphics.toolbar;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.rubberband.IRubberbanded;
 import cnuphys.bCNU.graphics.rubberband.Rubberband;
@@ -92,7 +93,10 @@ public class RadArcButton extends ToolBarToggleButton implements IRubberbanded {
 		}
 
 		// create a rad arc item
-		AItem item = container.createRadArcItem(container.getAnnotationLayer(), pp[0], pp[1], arcAngle);
+		
+		DrawingContainer dc	= (DrawingContainer) container;
+
+		AItem item = dc.createRadArcItem(container.getAnnotationList(), pp[0], pp[1], arcAngle);
 
 		if (item != null) {
 			item.setRightClickable(true);

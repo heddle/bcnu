@@ -28,7 +28,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.graphics.world.WorldPolygon;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -640,11 +640,11 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		// add a field object, which won't do anything unless we can read in the
 		// field.
-		LogicalLayer magneticFieldLayer = getContainer().getLogicalLayer(_magneticFieldLayerName);
+		ItemList magneticFieldLayer = getContainer().getItemList(_magneticFieldLayerName);
 		new MagFieldItem(magneticFieldLayer, this);
 		magneticFieldLayer.setVisible(false);
 
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 		new BeamLineItem(detectorLayer);
 	}
 

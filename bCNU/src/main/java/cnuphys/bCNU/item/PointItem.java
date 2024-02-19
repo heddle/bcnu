@@ -11,7 +11,6 @@ import javax.swing.ImageIcon;
 import cnuphys.bCNU.graphics.SymbolDraw;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.SymbolType;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 /**
  * Basic point item
@@ -39,21 +38,21 @@ public class PointItem extends AItem {
 	/**
 	 * Constructor for a basic point item.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 */
-	public PointItem(LogicalLayer layer) {
-		super(layer);
+	public PointItem(ItemList itemList) {
+		super(itemList);
 		_focus = new Point2D.Double(Double.NaN, Double.NaN);
 	}
 
 	/**
 	 * Constructor for a basic point item.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 * @param icon  an icon to draw at the point
 	 */
-	public PointItem(LogicalLayer layer, ImageIcon icon) {
-		super(layer);
+	public PointItem(ItemList itemList, ImageIcon icon) {
+		super(itemList);
 		_imageIcon = icon;
 		_focus = new Point2D.Double(Double.NaN, Double.NaN);
 	}
@@ -61,11 +60,11 @@ public class PointItem extends AItem {
 	/**
 	 * Constructor for a basic point item.
 	 *
-	 * @param layer    the Layer this item is on.
+	 * @param itemList    the list this item is on.
 	 * @param location the location for the point.
 	 */
-	public PointItem(LogicalLayer layer, Point2D.Double location) {
-		super(layer);
+	public PointItem(ItemList itemList, Point2D.Double location) {
+		super(itemList);
 		_focus = new Point2D.Double(location.x, location.y);
 	}
 

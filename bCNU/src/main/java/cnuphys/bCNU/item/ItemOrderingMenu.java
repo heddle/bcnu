@@ -7,8 +7,6 @@ import java.text.MessageFormat;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
-import cnuphys.bCNU.layer.LogicalLayer;
-
 @SuppressWarnings("serial")
 public class ItemOrderingMenu extends JMenu implements ActionListener {
 	/**
@@ -98,7 +96,7 @@ public class ItemOrderingMenu extends JMenu implements ActionListener {
 
 		if (insertItemName) {
 			itemName = item.getName();
-			layerName = item.getLayer().getName();
+			layerName = item.getItemList().getName();
 		}
 
 		String o1 = "";
@@ -122,7 +120,7 @@ public class ItemOrderingMenu extends JMenu implements ActionListener {
 	/**
 	 * A menu item has been selected
 	 *
-	 * @param e
+	 * @param e the action event
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -131,19 +129,19 @@ public class ItemOrderingMenu extends JMenu implements ActionListener {
 			return;
 		}
 
-		LogicalLayer layer = hotItem.getLayer();
+		ItemList list = hotItem.getItemList();
 
 		Object source = e.getSource();
 		if (source == menuItems[BRINGTOFRONT]) {
-			layer.sendToFront(hotItem);
+			list.sendToFront(hotItem);
 		} else if (source == menuItems[SENDTOBACK]) {
-			layer.sendToBack(hotItem);
+			list.sendToBack(hotItem);
 		} else if (source == menuItems[BRINGFORWARD]) {
-			layer.sendForward(hotItem);
+			list.sendForward(hotItem);
 		} else if (source == menuItems[SENDBACKWARD]) {
-			layer.sendBackward(hotItem);
+			list.sendBackward(hotItem);
 		}
-		layer.getContainer().refresh();
+		list.getContainer().refresh();
 	}
 
 }

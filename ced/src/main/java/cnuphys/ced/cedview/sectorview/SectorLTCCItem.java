@@ -7,8 +7,8 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
@@ -47,14 +47,14 @@ public class SectorLTCCItem extends PolygonItem {
 	 * the constructor. The points will always be supplied by the setPoints method,
 	 * which will send projected wire positions (with a border of guard wires)
 	 *
-	 * @param logLayer   the Layer this item is on.
+	 * @param itemList   the list this item is on.
 	 * @param view       the view this item lives on.
 	 * @param sector     the 1-based sector [1..6]
 	 * @param half       the 1-based layer [1..2]
 	 * @param ring       the 1-based component [1..18]
 	 */
-	public SectorLTCCItem(LogicalLayer logLayer, SectorView view, byte sector, byte half, short ring) {
-		super(logLayer);
+	public SectorLTCCItem(ItemList itemList, SectorView view, byte sector, byte half, short ring) {
+		super(itemList);
 		_view = view;
 		_sector = sector;
 		_ring = ring;

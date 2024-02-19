@@ -23,7 +23,7 @@ public class VirtualWindowItem extends RectangleItem {
 	private BaseView _baseView;
 
 	public VirtualWindowItem(VirtualView vview, BaseView baseView) {
-		super(vview.getContainer().getAnnotationLayer(), getWorldRect(baseView));
+		super(vview.getContainer().getAnnotationList(), getWorldRect(baseView));
 		_vview = vview;
 		_baseView = baseView;
 		_baseView.setVirtualItem(this);

@@ -11,7 +11,7 @@ import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.item.AItem;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
 import cnuphys.ced.cedview.central.CentralZView;
@@ -61,11 +61,11 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 	/**
 	 * Create a magnetic field item. Only allowed on sector views
 	 *
-	 * @param layer the layer this item lives on
+	 * @param itemList the list this item lives on
 	 * @param view  the view--which must be a SectorView
 	 */
-	public MagFieldItem(LogicalLayer layer, CedView view) {
-		super(layer);
+	public MagFieldItem(ItemList itemList, CedView view) {
+		super(itemList);
 		_view = view;
 		_style.setFillColor(null);
 		_style.setLineColor(Color.red);

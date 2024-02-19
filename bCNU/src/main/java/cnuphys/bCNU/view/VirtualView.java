@@ -337,7 +337,7 @@ public class VirtualView extends BaseView
 		if (source instanceof BaseView) {
 			BaseView view = (BaseView) source;
 			view.getVirtualItem().setVisible(true);
-			getContainer().getAnnotationLayer().sendToFront(view.getVirtualItem());
+			getContainer().getAnnotationList().sendToFront(view.getVirtualItem());
 			view.getVirtualItem().getStyle().setFillColor(_vwfillActive);
 			view.getVirtualItem().getStyle().setLineColor(Color.white);
 		}
@@ -365,7 +365,7 @@ public class VirtualView extends BaseView
 			view.removeInternalFrameListener(this);
 
 			if (view.getVirtualItem() != null) {
-				getContainer().getAnnotationLayer().remove(view.getVirtualItem());
+				getContainer().getAnnotationList().remove(view.getVirtualItem());
 			}
 
 			_views.remove(view);

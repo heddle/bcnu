@@ -45,7 +45,7 @@ public class TextButton extends ToolBarToggleButton {
 			if (font != null) {
 				Point2D.Double wp = new Point2D.Double();
 				container.localToWorld(mouseEvent.getPoint(), wp);
-				TextItem item = new TextItem(container.getAnnotationLayer(), wp, font, resultString,
+				TextItem item = new TextItem(container.getAnnotationList(), wp, font, resultString,
 						labelDialog.getTextForeground(), labelDialog.getTextBackground(), null);
 				if (item != null) {
 					item.setDraggable(true);

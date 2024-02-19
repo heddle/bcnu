@@ -7,7 +7,7 @@ import javax.swing.event.EventListenerList;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.AItem;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 
 /**
  * A list of <code>IDrawable</code> objects. This is used in several places,
@@ -347,8 +347,8 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 
 		for (IDrawable drawable : this) {
 			String name = null;
-			if (drawable instanceof LogicalLayer) {
-				name = "  Layer: " + ((LogicalLayer) drawable).getName() + "[" + indexOf(drawable) + "]";
+			if (drawable instanceof ItemList) {
+				name = "  Layer: " + ((ItemList) drawable).getName() + "[" + indexOf(drawable) + "]";
 			} else if (drawable instanceof AItem) {
 				name = "  Item: " + ((AItem) drawable).getName();
 			} else {
@@ -403,8 +403,8 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	}
 
 	/**
-	 * Set whether this logical layer is enabled. If a layer is not enabled, items
-	 * on the layer cannot be selected.
+	 * Set whether this list is enabled. If a list is not enabled, items
+	 * on the list cannot be selected.
 	 *
 	 * @param enabled the new value of the enabled flag.
 	 */
@@ -414,10 +414,10 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	}
 
 	/**
-	 * Checks whether this logical layer is enabled. If a layer is not enabled,
-	 * items on the layer cannot be selected.
+	 * Checks whether this list is enabled. If a list is not enabled,
+	 * items on the list cannot be selected.
 	 *
-	 * @return <code>true</code> if the logical layer is enabled.
+	 * @return <code>true</code> if the list is enabled.
 	 */
 	@Override
 	public boolean isEnabled() {

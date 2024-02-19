@@ -1,7 +1,6 @@
 package cnuphys.bCNU.graphics.container;
 
 import java.awt.Component;
-import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -18,49 +17,27 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 
-import cnuphys.bCNU.drawable.DrawableChangeType;
-import cnuphys.bCNU.drawable.DrawableList;
-import cnuphys.bCNU.drawable.IDrawable;
-import cnuphys.bCNU.drawable.IDrawableListener;
 import cnuphys.bCNU.feedback.FeedbackControl;
 import cnuphys.bCNU.feedback.FeedbackPane;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
 import cnuphys.bCNU.graphics.world.WorldPolygon;
-import cnuphys.bCNU.item.AItem;
-import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.view.BaseView;
 
-/**
- * This the primary component. It contains a list of ItemList objects
- * list of items.)
- *
- * @author heddle
- *
- */
+public abstract class AContainer<T extends JComponent> implements IContainer, MouseListener, MouseMotionListener, MouseWheelListener {
 
-@SuppressWarnings("serial")
-public class BaseContainer extends JComponent
-		implements IContainer, MouseListener, MouseMotionListener, MouseWheelListener, IDrawableListener {
-
-	/**
-	 * A collection of item list. This is the container's model.
-	 */
-	protected DrawableList _itemLists = new DrawableList("ItemLists");
-
+	protected T _component;
+	
 	/**
 	 * Keeps track of current mouse position
 	 */
-	private Point _currentMousePoint;
+	protected Point _currentMousePoint;
 
 	/**
 	 * Each container may or may not have a tool bar.
@@ -76,27 +53,9 @@ public class BaseContainer extends JComponent
 	protected MouseEvent _lastLocationMouseEvent;
 
 	/**
-	 * This optional drawable is called after the lists are drawn.
-	 */
-	protected IDrawable _afterDraw;
-
-	/**
-	 * This optional drawable is called before the lists are drawn.
-	 */
-	protected IDrawable _beforeDraw;
-
-	/**
-	 * Option drawer for magnification window rather than just simple magnification
-	 */
-	protected IDrawable _magDraw;
-
-	/**
 	 * The view that holds this container (might be null for viewless container).
 	 */
 	protected BaseView _view;
-
-	// used for things like a YouAreHereItem reference point
-	private ItemList _glassList;
 
 	/**
 	 * The world coordinate system,
@@ -112,53 +71,29 @@ public class BaseContainer extends JComponent
 	 * Previous world system, for undoing the last zoom.
 	 */
 	protected Rectangle2D.Double _previousWorldSystem;
-
-	/**
-	 * The annotation list. Every container has one.
-	 */
-	protected ItemList _annotationList;
-
-	// A map of lists added by users.
-	private Hashtable<String, ItemList> _userItemLists = new Hashtable<>(47);
-
+	
+	// for world to local transformations (and vice versa)
+	protected int _lMargin = 0;
+	protected int _tMargin = 0;
+	protected int _rMargin = 0;
+	protected int _bMargin = 0;
+	protected AffineTransform localToWorld;
+	protected AffineTransform worldToLocal;
+	
 	/**
 	 * Controls the feedback for the container. You can add and remove feedback
 	 * providers to this object.
 	 */
 	protected FeedbackControl _feedbackControl;
-
+	
 	/**
 	 * Optional anchor item.
 	 */
 	protected YouAreHereItem _youAreHereItem;
 
-	// for world to local transformations (and vice versa)
-
-	private int _lMargin = 0;
-	private int _tMargin = 0;
-	private int _rMargin = 0;
-	private int _bMargin = 0;
-	protected AffineTransform localToWorld;
-	protected AffineTransform worldToLocal;
-
-	/**
-	 * Constructor for a container that does not live in a view. It might live on a
-	 * panel, for example
-	 *
-	 * @param worldSystem the default world system.
-	 */
-	public BaseContainer(Rectangle2D.Double worldSystem) {
-		this(null, worldSystem);
-	}
-
-	/**
-	 * Constructor
-	 *
-	 * @param view        Every container lives on one view. This is the view, which
-	 *                    is an internal frame, that owns this container.
-	 * @param worldSystem the default world system.
-	 */
-	public BaseContainer(BaseView view, Rectangle2D.Double worldSystem) {
+	
+	public AContainer(T component, BaseView view, Rectangle2D.Double worldSystem) {
+		_component = component;
 		_view = view;
 		_worldSystem = worldSystem;
 		_feedbackControl = new FeedbackControl(this);
@@ -166,150 +101,29 @@ public class BaseContainer extends JComponent
 		_defaultWorldSystem = copy(worldSystem);
 		_previousWorldSystem = copy(worldSystem);
 
-		// create the annotation list. (not added to userlist hash)
-		_annotationList = new ItemList(this, "Annotations");
-		addItemList(_annotationList);
+		
 
 		ComponentAdapter componentAdapter = new ComponentAdapter() {
 			@Override
 			public void componentResized(ComponentEvent ce) {
 				setDirty(true);
-				repaint();
+				_component.repaint();
 				setAffineTransforms();
 			}
 		};
 
-		addComponentListener(componentAdapter);
-		addMouseListener(this);
-		addMouseMotionListener(this);
+		_component.addComponentListener(componentAdapter);
+		_component.addMouseListener(this);
+		_component.addMouseMotionListener(this);
 
 	}
-
+	
 	/**
-	 * Share the model of another view. Note, this is not a copy, either view can
-	 * modify the items. This is primarily used for magnification windows.
+	 * This converts a screen or pixel point to a world point.
 	 *
-	 * @param sContainer the source container
+	 * @param pp contains the local (screen-pixel) point.
+	 * @param wp will hold the resultant world point.
 	 */
-	public void shareModel(BaseContainer sContainer) {
-		_itemLists = sContainer._itemLists;
-		_afterDraw = sContainer._afterDraw;
-		_beforeDraw = sContainer._beforeDraw;
-		_userItemLists = sContainer._userItemLists;
-		setBackground(sContainer.getBackground());
-		setForeground(sContainer.getForeground());
-	}
-
-
-	/**
-	 * Override the paint command. Draw all the lists.
-	 *
-	 * @param g the graphics context.
-	 */
-	@Override
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-
-		Rectangle b = getBounds();
-
-		setAffineTransforms();
-		if (localToWorld == null) {
-			return;
-		}
-
-		// normal drawing
-		g.setColor(getBackground());
-		g.fillRect(0, 0, b.width, b.height);
-
-		// any before lists drawing?
-		if (_beforeDraw != null) {
-			_beforeDraw.draw(g, this);
-		}
-
-		// draw the lists
-		if (_itemLists != null) {
-			_itemLists.draw(g, this);
-		}
-
-		// any post lists drawing?
-		if (_afterDraw != null) {
-			_afterDraw.draw(g, this);
-		}
-
-		setDirty(false);
-
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public ItemList addItemList(String name) {
-		if (name == null) {
-			return null;
-		}
-		ItemList itemList = _userItemLists.get(name);
-		if (itemList != null) {
-			Log.getInstance().warning("Asked to add an ItemList: " + name + " which already exists.");
-		} else {
-			itemList = new ItemList(this, name);
-			_userItemLists.put(name, itemList);
-			addItemList(itemList);
-		}
-		return itemList;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public void addItemList(ItemList itemList) {
-
-		_itemLists.add(itemList);
-		if (itemList != _annotationList) {
-			_itemLists.sendToFront(_annotationList);
-		}
-		itemList.addDrawableListener(this);
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public ItemList getAnnotationList() {
-		return _annotationList;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public ItemList getItemList(String name) {
-		ItemList itemList = _userItemLists.get(name);
-		if (itemList == null) {
-			Log.getInstance().warning("Requested nonexistent item list: " + name);
-		}
-		return itemList;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public void removeItemList(ItemList itemList) {
-		if (itemList != null) {
-			_itemLists.remove(itemList);
-			// also remove from hash
-			if (_userItemLists.contains(itemList)) {
-				_userItemLists.remove(itemList.getName());
-			}
-		}
-	}
-
-
-	/**
-	 * {@inheritDoc}
-     */
 	@Override
 	public void localToWorld(Point pp, Point2D.Double wp) {
 		if (localToWorld != null) {
@@ -318,8 +132,11 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * This converts a world point to a screen or pixel point.
+	 *
+	 * @param pp will hold the resultant local (screen-pixel) point.
+	 * @param wp contains world point.
+	 */
 	@Override
 	public void worldToLocal(Point pp, Point2D.Double wp) {
 		if (worldToLocal != null) {
@@ -334,8 +151,11 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * This converts a world rectangle to a screen or pixel rectangle.
+	 *
+	 * @param r  will hold the resultant local (screen-pixel) rectangle.
+	 * @param wr contains the world rectangle.
+	 */
 	@Override
 	public void worldToLocal(Rectangle r, Rectangle.Double wr) {
 		// New version to accommodate world with x decreasing right
@@ -354,8 +174,11 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * This converts a screen or local rectangle to a world rectangle.
+	 *
+	 * @param r  contains the local (screen-pixel) rectangle.
+	 * @param wr will hold the resultant world rectangle.
+	 */
 	@Override
 	public void localToWorld(Rectangle r, Rectangle.Double wr) {
 		Point p0 = new Point(r.x, r.y);
@@ -375,20 +198,28 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * This converts a world point to a screen or pixel point.
+	 *
+	 * @param pp will hold the resultant local (screen-pixel) point.
+	 * @param wx the world x coordinate.
+	 * @param wy the world y coordinate.
+	 */
 	@Override
 	public void worldToLocal(Point pp, double wx, double wy) {
 		worldToLocal(pp, new Point2D.Double(wx, wy));
 	}
+	
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * Pan the container.
+	 *
+	 * @param dh the horizontal step in pixels.
+	 * @param dv the vertical step in pixels.
+	 */
 	@Override
 	public void pan(int dh, int dv) {
 
-		Rectangle r = getBounds();
+		Rectangle r = _component.getBounds();
 		int xc = r.width / 2;
 		int yc = r.height / 2;
 
@@ -399,9 +230,12 @@ public class BaseContainer extends JComponent
 		recenter(p);
 	}
 
+	
 	/**
-	 * {@inheritDoc}
-     */
+	 * Recenter the container at the point of a click.
+	 *
+	 * @param pp the point in question. It will be the new center.
+	 */
 	@Override
 	public void recenter(Point pp) {
 		Point2D.Double wp = new Point2D.Double();
@@ -410,50 +244,58 @@ public class BaseContainer extends JComponent
 		setDirty(true);
 		refresh();
 	}
-
+	
 	/**
-	 * {@inheritDoc}
-     */
+	 * Recenter the world rectangle.
+	 *
+	 * @param wr        the affected rectangle
+	 * @param newCenter the new center.
+	 */
 	private void recenter(Rectangle2D.Double wr, Point2D.Double newCenter) {
 		wr.x = newCenter.x - wr.width / 2.0;
 		wr.y = newCenter.y - wr.height / 2.0;
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * Begin preparations for a zoom.
+	 */
 	@Override
 	public void prepareToZoom() {
 		_previousWorldSystem = copy(_worldSystem);
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * Restore the default world. This gets us back to the original zoom level.
+	 */
 	@Override
 	public void restoreDefaultWorld() {
 		_worldSystem = copy(_defaultWorldSystem);
 		setDirty(true);
 		refresh();
 	}
-
+	
 	/**
-	 * {@inheritDoc}
-     */
+	 * Refresh the container. 
+	 */
 	@Override
 	public void refresh() {
-		repaint();
+		if (getView().isViewVisible()) {
 
-		if (getToolBar() != null) {
-			if (getToolBar().getUserComponent() != null) {
-				getToolBar().getUserComponent().repaint();
+			_component.repaint();
+
+			if (getToolBar() != null) {
+				if (getToolBar().getUserComponent() != null) {
+					getToolBar().getUserComponent().repaint();
+				}
 			}
 		}
 	}
-
+	
 	/**
-	 * {@inheritDoc}
-     */
+	 * Convenience routine to scale the container.
+	 *
+	 * @param scaleFactor the scale factor.
+	 */
 	@Override
 	public void scale(double scaleFactor) {
 		prepareToZoom();
@@ -463,8 +305,11 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * {@inheritDoc}
-     */
+	 * Scale the world rectangle, keeping the center fixed.
+	 *
+	 * @param wr    the affected rectangle
+	 * @param scale the factor to scale by.
+	 */
 	private void scale(Rectangle2D.Double wr, double scale) {
 		double xc = wr.getCenterX();
 		double yc = wr.getCenterY();
@@ -474,9 +319,10 @@ public class BaseContainer extends JComponent
 		wr.y = yc - wr.height / 2.0;
 	}
 
+
 	/**
-	 * {@inheritDoc}
-     */
+	 * Undo that last zoom.
+	 */
 	@Override
 	public void undoLastZoom() {
 		Rectangle2D.Double temp = _worldSystem;
@@ -486,9 +332,13 @@ public class BaseContainer extends JComponent
 		refresh();
 	}
 
+
 	/**
-	 * {@inheritDoc}
-     */
+	 * This is called when we have completed a rubber banding. pane.
+	 *
+	 * @param b The rubber band bounds.
+	 */
+
 	@Override
 	public void rubberBanded(Rectangle b) {
 		// if too small, don't zoom
@@ -500,135 +350,16 @@ public class BaseContainer extends JComponent
 		refresh();
 	}
 
+	
+
 	/**
-	 * Convenience method for setting the dirty flag for all items on all item lists.
-	 * Things that make a container dirty:
-	 * <ol>
-	 * <li>container was resized
-	 * <li>zooming
-	 * <li>undo zooming
-	 * <li>scaling
-	 * <li>restoring default world
-	 * <li>panning
-	 * <li>recenter
-	 * </ol>
+	 * Zooms to the specified area.
 	 *
-	 * @param dirty the new value of the dirty flag.
+	 * @param xmin minimum x coordinate.
+	 * @param xmax maximum x coordinate.
+	 * @param ymin minimum y coordinate.
+	 * @param ymax maximum y coordinate.
 	 */
-	@Override
-	public void setDirty(boolean dirty) {
-
-		setAffineTransforms();
-
-		if (_itemLists != null) {
-			for (IDrawable list : _itemLists) {
-				list.setDirty(dirty);
-			}
-		}
-	}
-
-	/**
-	 * Find an item, if any, at the point.
-	 *
-	 * @param pp The pixel point in question.
-	 * @return the topmost satisfying item, or null.
-	 */
-	@Override
-	public AItem getItemAtPoint(Point pp) {
-		if (_itemLists == null) {
-			return null;
-		}
-
-		for (int i = _itemLists.size() - 1; i >= 0; i--) {
-			ItemList itemList = ((ItemList) _itemLists.get(i));
-			AItem item = itemList.getItemAtPoint(this, pp);
-			if (item != null) {
-				return item;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public Vector<AItem> getEnclosedItems(Rectangle rect) {
-
-		if (rect == null) {
-			return null;
-		}
-
-		Vector<AItem> items = new Vector<>(25);
-		for (IDrawable drawable : _itemLists) {
-			((ItemList) drawable).addEnclosedItems(this, items, rect);
-		}
-		return items;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public Vector<AItem> getItemsAtPoint(Point lp) {
-		Vector<AItem> items = new Vector<>(25, 10);
-
-		if (_itemLists != null) {
-			for (int i = _itemLists.size() - 1; i >= 0; i--) {
-				ItemList itemList = ((ItemList) _itemLists.get(i));
-				itemList.addItemsAtPoint(items, this, lp);
-			}
-		}
-
-		return items;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public boolean anySelectedItems() {
-		if (_itemLists != null) {
-			for (IDrawable drawable : _itemLists) {
-				ItemList itemList = (ItemList) drawable;
-				if (itemList.anySelected()) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public void deleteSelectedItems(IContainer container) {
-		if (_itemLists != null) {
-			for (IDrawable drawable : _itemLists) {
-				ItemList itemList = (ItemList) drawable;
-				itemList.deleteSelectedItems(container);
-			}
-		}
-	}
-
-	/**
-	 * {@inheritDoc}
-     */
-	@Override
-	public void selectAllItems(boolean select) {
-		if (_itemLists != null) {
-			for (IDrawable drawable : _itemLists) {
-				ItemList itemList = (ItemList) drawable;
-				itemList.selectAllItems(select);
-			}
-		}
-	}
-
-
-	/**
-	 * {@inheritDoc}
-     */
 	@Override
 	public void zoom(final double xmin, final double xmax, final double ymin, final double ymax) {
 		prepareToZoom();
@@ -665,8 +396,7 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void mouseClicked(MouseEvent mouseEvent) {
-
-		if (!isEnabled()) {
+		if (!_component.isEnabled()) {
 			Toolkit.getDefaultToolkit().beep();
 			return;
 		}
@@ -683,7 +413,7 @@ public class BaseContainer extends JComponent
 
 		ToolBarToggleButton mtb = getActiveButton();
 		if (mtb != null) {
-			setCursor(mtb.canvasCursor());
+			_component.setCursor(mtb.canvasCursor());
 		}
 	}
 
@@ -725,7 +455,7 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void mouseDragged(MouseEvent mouseEvent) {
-		if (!isEnabled()) {
+		if (!_component.isEnabled()) {
 			return;
 		}
 		locationUpdate(mouseEvent, true);
@@ -738,7 +468,7 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void mouseMoved(MouseEvent mouseEvent) {
-		if (!isEnabled()) {
+		if (!_component.isEnabled()) {
 			return;
 		}
 		_currentMousePoint = mouseEvent.getPoint();
@@ -844,71 +574,6 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * An item has changed.
-	 *
-	 * @param list     the ItemList it was on
-	 * @param drawable the drawable (item) that changed.
-	 * @param type     the type of the change.
-	 */
-	@Override
-	public void drawableChanged(DrawableList list, IDrawable drawable, DrawableChangeType type) {
-
-		AItem item = (drawable == null) ? null : (AItem) drawable;
-
-		switch (type) {
-		case ADDED:
-			break;
-
-		case DESELECTED:
-			break;
-
-		case DOUBLECLICKED:
-			break;
-
-		case HIDDEN:
-				break;
-
-		case MODIFIED:
-			break;
-
-		case MOVED:
-			break;
-
-		case REMOVED:
-			if (item == _youAreHereItem) {
-				_youAreHereItem = null;
-			}
-			break;
-
-		case RESIZED:
-			break;
-
-		case ROTATED:
-			break;
-
-		case SELECTED:
-			break;
-
-		case SHOWN:
-			break;
-
-		case LISTCLEARED:
-			break;
-
-		case LISTHIDDEN:
-			break;
-
-		case LISTSHOWN:
-			break;
-		}
-
-		// for now, lets not quibble
-		if (item != null) {
-			item.setDirty(true);
-		}
-	}
-
-	/**
 	 * Sets the feedback pane. This is an optional alternative to a HUD.
 	 *
 	 * @param feedbackPane the feedback pane.
@@ -958,23 +623,7 @@ public class BaseContainer extends JComponent
 	public void setYouAreHereItem(YouAreHereItem youAreHereItem) {
 		_youAreHereItem = youAreHereItem;
 	}
-
-	/**
-	 * This is sometimes used as needed (i.e., not created until requested). That
-	 * will generally make it the topmost view--so it is good for things like a
-	 * reference point (YouAreHereItem).
-	 *
-	 * @return the glass list.
-	 */
-	@Override
-	public ItemList getGlassList() {
-		if (_glassList == null) {
-			_glassList = new ItemList(this, "Glass List");
-			_itemLists.add(_glassList);
-		}
-		return _glassList;
-	}
-
+	
 	/**
 	 * Get the underlying component, which is me.
 	 *
@@ -982,65 +631,8 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public Component getComponent() {
-		return this;
+		return _component;
 	}
-
-	/**
-	 * Set the after-draw drawable for this container.
-	 *
-	 * @param afterDraw the new after-draw drawable.
-	 */
-	@Override
-	public void setAfterDraw(IDrawable afterDraw) {
-		_afterDraw = afterDraw;
-	}
-
-	/**
-	 * get the after drawer
-	 *
-	 * @return the after drawer
-	 */
-	public IDrawable getAfterDraw() {
-		return _afterDraw;
-	}
-
-	/**
-	 * Set the before-draw drawable.
-	 *
-	 * @param beforeDraw the new before-draw drawable.
-	 */
-	@Override
-	public void setBeforeDraw(IDrawable beforeDraw) {
-		_beforeDraw = beforeDraw;
-	}
-
-	/**
-	 * get the before drawer
-	 *
-	 * @return the before drawer
-	 */
-	public IDrawable getBeforeDraw() {
-		return _beforeDraw;
-	}
-
-	/**
-	 * Set the optional magnification drawer
-	 *
-	 * @param mdraw the optional magnification drawer
-	 */
-	public void setMagnificationDraw(IDrawable mdraw) {
-		_magDraw = mdraw;
-	}
-
-	/**
-	 * Get the optional magnification drawer
-	 *
-	 * @return the optional magnification drawer
-	 */
-	public IDrawable getMagnificationDraw() {
-		return _magDraw;
-	}
-
 
 	/**
 	 * Get a location string for a point
@@ -1086,6 +678,7 @@ public class BaseContainer extends JComponent
 		_worldSystem = new Rectangle2D.Double(wr.x, wr.y, wr.width, wr.height);
 	}
 
+	
 	// Get the transforms for world to local and vice versa
 	protected void setAffineTransforms() {
 		Rectangle bounds = getInsetRectangle();
@@ -1228,11 +821,6 @@ public class BaseContainer extends JComponent
 		_bMargin = bMargin;
 	}
 
-	// copier
-	private Rectangle2D.Double copy(Rectangle2D.Double wr) {
-		return new Rectangle2D.Double(wr.x, wr.y, wr.width, wr.height);
-	}
-
 	/**
 	 * The active toolbar button changed.
 	 *
@@ -1241,7 +829,7 @@ public class BaseContainer extends JComponent
 	@Override
 	public void activeToolBarButtonChanged(ToolBarToggleButton activeButton) {
 	}
-
+	
 	/**
 	 * Get the background image.
 	 *
@@ -1249,10 +837,15 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public BufferedImage getImage() {
-		BufferedImage image = GraphicsUtilities.getComponentImageBuffer(this);
-		GraphicsUtilities.paintComponentOnImage(this, image);
+		BufferedImage image = GraphicsUtilities.getComponentImageBuffer(_component);
+		GraphicsUtilities.paintComponentOnImage(_component, image);
 		return image;
+		
+	}
 
+	// copier
+	protected Rectangle2D.Double copy(Rectangle2D.Double wr) {
+		return new Rectangle2D.Double(wr.x, wr.y, wr.width, wr.height);
 	}
 
 
