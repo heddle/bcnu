@@ -52,7 +52,7 @@ public class DCXYView extends HexView {
 	private static final String _baseTitle = "DC XY";
 
 	// sector items
-	private DCHexSectorItem _hexItems[];
+	private DCXYSectorItem _hexItems[];
 
 	// used to draw swum trajectories (if any) in the after drawer
 	private SwimTrajectoryDrawerXY _swimTrajectoryDrawer;
@@ -198,10 +198,10 @@ public class DCXYView extends HexView {
 	protected void addItems() {
 		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 
-		_hexItems = new DCHexSectorItem[6];
+		_hexItems = new DCXYSectorItem[6];
 
 		for (int sector = 0; sector < 6; sector++) {
-			_hexItems[sector] = new DCHexSectorItem(detectorLayer, this, sector + 1);
+			_hexItems[sector] = new DCXYSectorItem(detectorLayer, this, sector + 1);
 			_hexItems[sector].getStyle().setFillColor(Color.lightGray);
 		}
 	}

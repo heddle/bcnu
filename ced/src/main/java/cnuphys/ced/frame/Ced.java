@@ -50,6 +50,7 @@ import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
+import cnuphys.ced.cedview.dchex.DCHexView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.ftof.FTOFView;
@@ -157,6 +158,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 //	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
+	private DCHexView _dcHexView;
 	private UrWELLXYView _urwellXyView;
 
 	private ECView _ecView;
@@ -284,7 +286,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_eventView, 5, VirtualView.CENTER);
 
 		// note no constraint means "center"
-		_virtualView.moveTo(_dcXyView, 6);
+		_virtualView.moveTo(_dcHexView, 6, VirtualView.CENTERLEFT);
+		_virtualView.moveTo(_dcXyView, 6, VirtualView.CENTERRIGHT);
 
 //		_virtualView.moveTo(_rtpcView, 7);
 		_virtualView.moveTo(_urwellXyView, 7, VirtualView.BOTTOMLEFT);
@@ -388,6 +391,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a DC XY View
 		_dcXyView = DCXYView.createDCXYView();
+		
+		// add a DC Hex View
+		_dcHexView = DCHexView.createDCHexView();
+
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
 

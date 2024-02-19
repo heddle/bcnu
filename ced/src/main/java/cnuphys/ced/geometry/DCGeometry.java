@@ -36,6 +36,10 @@ public class DCGeometry {
 	 * the sense wire.
 	 */
 	private static DriftChamberWire wires[][][];
+	
+	//useful for projection onto sector 1 midplane
+	private static 	Plane3D	sector1Midplane = GeometryManager.constantPhiPlane(0);
+
 
 	/**
 	 * Initialize the DC Geometry by loading all the wires
@@ -322,11 +326,6 @@ public class DCGeometry {
 		return GeometryManager.getProjectedPolygon(dcw, projectionPlane, 10, 6, wp, centroid);
 	}
 
-	public static boolean doesHexagonIntersect(int superlayer, int layer, int wire, Plane3D projectionPlane) {
-		DriftChamberWire dcw = DCGeometry.getWire(superlayer, layer, wire);
-		return GeometryManager.doesProjectedPolyIntersect(dcw, projectionPlane, 10, 6);
-	}
-
 	/**
 	 * Get the approximate center of the projected hexagon
 	 *
@@ -341,6 +340,7 @@ public class DCGeometry {
 	public static Point2D.Double getCenter(int superlayer, int layer, int wire, Plane3D projectionPlane) {
 
 		Point2D.Double centroid = new Point2D.Double();
+		projectionPlane = GeometryManager.constantPhiPlane(0);
 
 		DriftChamberWire dcw = DCGeometry.getWire(superlayer, layer, wire);
 		Line3D l3D = dcw.getLine();
@@ -353,59 +353,6 @@ public class DCGeometry {
 		return centroid;
 	}
 
-	/**
-	 * Get a super layer plane
-	 *
-	 * @param sector     the 1-based sector (result IS sector dependent)
-	 * @param superlayer the 1-based superlayer
-	 * @return the plane perpendicular to the wires for this superlayer
-	 */
-	public static Plane3D getSuperlayerPlane(int sector, int superlayer) {
-		// can use arbitrary wire
-		Line3D l3d = getWire(sector, superlayer, 3, 55);
-		Point3D origin = new Point3D(0, 0, 0);
-		return new Plane3D(origin, l3d.direction());
-	}
-
-	/**
-	 * Get the position of the sense wire in sector 0
-	 *
-	 * NOTE: the indices are 1-based
-	 *
-	 * @param superlayer the superlayer [1..6]
-	 * @param layer      the layer [1..6]
-	 * @param wire       the wire [1..112]
-	 * @param phi        the relative phi (degrees)
-	 *
-	 * @return the position of the sense wire
-	 */
-	public static Point2D.Double getCenter(int superlayer, int layer, int wire, double phi) {
-
-		double tanPhi = Math.tan(Math.toRadians(phi));
-		DriftChamberWire dcw = wires[superlayer - 1][layer - 1][wire - 1];
-		Line3D line3D = dcw.getLine();
-		double x0 = line3D.origin().x();
-		double y0 = line3D.origin().y();
-		double z0 = line3D.origin().z();
-		double x1 = line3D.end().x();
-		double y1 = line3D.end().y();
-		double z1 = line3D.end().z();
-		double dx = x1 - x0;
-		double dy = y1 - y0;
-		double dz = z1 - z0;
-		double t = (x0 * tanPhi - y0) / (dy - dx * tanPhi);
-
-		double x = x0 + t * dx;
-		double y = y0 + t * dy;
-		double z = z0 + t * dz;
-
-		Point2D.Double centroid = new Point2D.Double();
-
-		centroid.x = z;
-		centroid.y = Math.hypot(x, y);
-		return centroid;
-
-	}
 
 	/**
 	 * Get a point on either side of a layer
@@ -577,35 +524,45 @@ public class DCGeometry {
 		ext.x = p0.x + (p0.x - p1.x);
 		ext.y = p0.y + (p0.y - p1.y);
 	}
-
+	
 	/**
-	 * print the wire location
+	 * Get the position of the sense wire in sector 0
 	 *
-	 * @param superlayer the 0-based superlayer
-	 * @param layer      the zero based layer
-	 * @param wire       the zero based wire
+	 * NOTE: the indices are 1-based
+	 *
+	 * @param superlayer the superlayer [1..6]
+	 * @param layer      the layer [1..6]
+	 * @param wire       the wire [1..112]
+	 * @param phi        the relative phi (degrees)
+	 *
+	 * @return the position of the sense wire
 	 */
-	public static void printWire(int superlayer, int layer, int wire) {
-
-		DriftChamberWire dcw = wires[superlayer][layer][wire];
-		double x1 = dcw.getLine().origin().x();
-		double y1 = dcw.getLine().origin().y();
-		double z1 = dcw.getLine().origin().z();
-
-		double x2 = dcw.getLine().end().x();
-		double y2 = dcw.getLine().end().y();
-		double z2 = dcw.getLine().end().z();
-
-		double xm = dcw.getMidpoint().x();
-		double ym = dcw.getMidpoint().y();
-		double zm = dcw.getMidpoint().z();
-
-		System.out.println(String.format(
-				"supl %d lay %d wire %d end (%-4.1f, %-4.1f, %-4.1f) end (%-4.1f, %-4.1f, %-4.1f) mid (%-4.1f, %-4.1f, %-4.1f)",
-				superlayer + 1, layer + 1, wire + 1, x1, y1, z1, x2, y2, z2, xm, ym, zm));
+	public static Point2D.Double getCenter(int superlayer, int layer, int wire, double phi) {
+		
+		Line3D l3D = getWire(1, superlayer, layer, wire);
+		
+//get the intersection of the wire with the sector 1 midplane
+		Point3D p3 = l3D.midpoint();
+		sector1Midplane.intersection(l3D, p3);
+		
+		Point2D.Double centroid = new Point2D.Double(p3.x(), p3.z());
+		return centroid;
 
 	}
 
 
+
+	public static void main(String arg[]) {
+		initialize();
+		
+		for (int supl = 1; supl <= 6; supl++) {
+			for (int lay = 1; lay <= 6; lay++) {
+				for (int w = 1; w <= 112; w++) {
+					Point2D.Double p = getCenter(supl, lay, w, 0);
+					System.out.println("supl: " + supl + " lay: " + lay + " w: " + w + " x: " + p.x + " y: " + p.y);
+				}
+			}
+		}
+	}
 
 }

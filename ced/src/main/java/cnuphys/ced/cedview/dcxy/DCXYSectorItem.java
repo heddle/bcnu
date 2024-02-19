@@ -16,7 +16,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.DCGeometry;
 import cnuphys.ced.item.HexSectorItem;
 
-public class DCHexSectorItem extends HexSectorItem {
+public class DCXYSectorItem extends HexSectorItem {
 
 	// superlayer polygon
 	private Polygon polys[] = new Polygon[6];
@@ -28,7 +28,7 @@ public class DCHexSectorItem extends HexSectorItem {
 	 * @param itemList the item list
 	 * @param sector   the 1-based sector
 	 */
-	public DCHexSectorItem(ItemList itemList, DCXYView view, int sector) {
+	public DCXYSectorItem(ItemList itemList, DCXYView view, int sector) {
 		super(itemList, view, sector);
 	}
 
