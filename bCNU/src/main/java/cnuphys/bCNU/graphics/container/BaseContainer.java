@@ -41,7 +41,7 @@ import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.view.BaseView;
 
 /**
- * This the primary component. It contains a list of ItemList objects
+ * This the primary basic container. It contains a list of ItemList objects
  * list of items.)
  *
  * @author heddle
