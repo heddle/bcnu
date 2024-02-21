@@ -364,7 +364,7 @@ public class DCXYView extends HexView {
 		props.put(PropertySupport.PROPNAME, "DCXY");
 
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.65);
+		Dimension d = GraphicsUtilities.screenFraction(0.63);
 
 		props.put(PropertySupport.WORLDSYSTEM, _defaultWorld);
 		props.put(PropertySupport.WIDTH, (int) (0.866 * d.height));

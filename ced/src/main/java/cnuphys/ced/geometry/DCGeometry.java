@@ -533,11 +533,10 @@ public class DCGeometry {
 	 * @param superlayer the superlayer [1..6]
 	 * @param layer      the layer [1..6]
 	 * @param wire       the wire [1..112]
-	 * @param phi        the relative phi (degrees)
 	 *
 	 * @return the position of the sense wire
 	 */
-	public static Point2D.Double getCenter(int superlayer, int layer, int wire, double phi) {
+	public static Point2D.Double getCenter(int superlayer, int layer, int wire) {
 		
 		Line3D l3D = getWire(1, superlayer, layer, wire);
 		
@@ -549,20 +548,38 @@ public class DCGeometry {
 		return centroid;
 
 	}
-
-
-
+	
+	/**
+	 * Get all the wire centers from sector 1. For graphics purposes
+	 * they can be rotated to the other sector
+	 * @return the wire centers from sector 1
+	 */
+	public static Point2D.Double[][][] getCenters() {
+		Point2D.Double centers[][][] = new Point2D.Double[6][6][112];
+		for (int supl = 1; supl <= 6; supl++) {
+			for (int lay = 1; lay <= 6; lay++) {
+				for (int w = 1; w <= 112; w++) {
+					centers[supl - 1][lay - 1][w - 1] = getCenter(supl, lay, w);
+				}
+			}
+		}
+		return centers;
+	}
+	
 	public static void main(String arg[]) {
 		initialize();
+		
+		Point2D.Double centers[][][] = getCenters();
 		
 		for (int supl = 1; supl <= 6; supl++) {
 			for (int lay = 1; lay <= 6; lay++) {
 				for (int w = 1; w <= 112; w++) {
-					Point2D.Double p = getCenter(supl, lay, w, 0);
-					System.out.println("supl: " + supl + " lay: " + lay + " w: " + w + " x: " + p.x + " y: " + p.y);
+					System.out.println("supl: " + supl + " lay: " + lay + " wire: " + w + " center: "
+							+ centers[supl - 1][lay - 1][w - 1]);
 				}
 			}
 		}
 	}
+
 
 }

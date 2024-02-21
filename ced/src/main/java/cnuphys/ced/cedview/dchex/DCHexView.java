@@ -13,6 +13,7 @@ import java.util.Properties;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
+import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.ItemList;
@@ -42,10 +43,13 @@ public class DCHexView extends HexView  {
 
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+	
+	//superlayer items
+	private DCHexSuperlayerItem[][] _superLayerItems;
 
 
 	protected static Rectangle2D.Double _defaultWorld;
-
+	
 	static {
 		double _xsize = 1.02 * DCGeometry.getAbsMaxWireX();
 		double _ysize = 1.02 * _xsize * 1.154734;
@@ -61,7 +65,6 @@ public class DCHexView extends HexView  {
 	 */
 	private DCHexView(String title) {
 		super(getAttributes(title));
-
 
 		setBeforeDraw();
 		setAfterDraw();
@@ -118,6 +121,15 @@ public class DCHexView extends HexView  {
 			_hexItems[sector] = new DCHexSectorItem(detectorLayer, this, sector + 1);
 			_hexItems[sector].getStyle().setFillColor(Color.lightGray);
 		}
+		
+		//superlayer items
+		_superLayerItems = new DCHexSuperlayerItem[6][6];
+		for (int sector = 1; sector <= 6; sector++) {
+			for (int superlayer = 1; superlayer <= 6; superlayer++) {
+				_superLayerItems[sector - 1][superlayer - 1] = new DCHexSuperlayerItem(detectorLayer, this, sector,
+						superlayer);
+			}
+		}
 
 	}
 
@@ -150,8 +162,9 @@ public class DCHexView extends HexView  {
 
 				if (!_eventManager.isAccumulating()) {
 
+					// draw all the wires
 					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container, 400);
+					drawSectorNumbers(g, container, 75);
 				} // not accumulating
 			}
 		};
@@ -169,7 +182,7 @@ public class DCHexView extends HexView  {
 		props.put(PropertySupport.PROPNAME, "DCXY");
 
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.65);
+		Dimension d = GraphicsUtilities.screenFraction(0.63);
 
 		props.put(PropertySupport.WORLDSYSTEM, _defaultWorld);
 		props.put(PropertySupport.WIDTH, (int) (0.866 * d.height));
@@ -190,7 +203,37 @@ public class DCHexView extends HexView  {
 
 		container.worldToLocal(pp, wp);
 
-		super.getFeedbackStrings(container, pp, wp, feedbackStrings);
+		// get the sector
+		int sector = 0;
+		int superlayer = 0;
+		for (int i = 0; i < 6; i++) {
+			if (_hexItems[i].contains(container, pp)) {
+				sector = i + 1;
+				break;
+			}
+		}
+		if (sector > 0) {
+			for (int j = 0; j < 6; j++) {
+				if (_superLayerItems[sector - 1][j].contains(container, pp)) {
+					superlayer = j + 1;
+					break;
+				}
+			}
+		}	
+		
+		if (superlayer > 0) {
+			feedbackStrings.add("$aqua$sector " + sector + " superlayer " + superlayer);
+			double totalOcc = 100. * _dcData.totalOccupancy();
+			double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
+			double superlayerOcc = 100. * _dcData.totalSuperlayerOccupancy(sector, superlayer);
+			
+			String occStr = String.format("occ total %6.2f%% sect %6.2f%% suplay %6.2f%%", totalOcc,
+					sectorOcc, superlayerOcc);
+			feedbackStrings.add("$aqua$" + occStr);
+			
+		}
+		
+
 	}
 
 	/**

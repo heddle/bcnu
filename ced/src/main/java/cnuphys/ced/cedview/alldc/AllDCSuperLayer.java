@@ -321,7 +321,7 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		if (Ced.useOrderColoring()) {
 			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, OrderColors.getOrderColor(order),
-					CedColors.transLine);
+  					CedColors.transLine);
 			return;
 		}
 

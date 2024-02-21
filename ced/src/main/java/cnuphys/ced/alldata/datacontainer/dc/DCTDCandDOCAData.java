@@ -62,6 +62,10 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 	
 	//counts hits in each sector
 	private int _sectorCounts[] = new int[6];
+
+	//counts hits in each superlayer
+	private int _superlayerCounts[][] = new int[6][6];
+
 	
 	@Override
 	public void clear() {
@@ -77,6 +81,9 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 		
 		for (int i = 0; i < 6; i++) {
 			_sectorCounts[i] = 0;
+			for (int j = 0; j < 6; j++) {
+                _superlayerCounts[i][j] = 0;
+            }
 		}
 		
 	}
@@ -111,6 +118,7 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 				noise[i] = false;
 				
 				_sectorCounts[sector[i] - 1]++;
+				_superlayerCounts[sector[i] - 1][superlayer[i] - 1]++;
 			}
         }
         
@@ -212,7 +220,7 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 
 	/**
 	 * total DC occupancy for a sector
-	 *
+	 * @param sector the 1-based sector
 	 * @return total DC occupancy for a sector
 	 */
 	public double totalSectorOccupancy(int sector) {
@@ -222,5 +230,19 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 			return 0.;
 		}
 	}
+	
+	/**
+	 * total DC occupancy for a sector
+	 *
+	 * @return total DC occupancy for a sector
+	 */
+	public double totalSuperlayerOccupancy(int sector, int superlayer) {
+		if ((sector > 0) && (sector < 7)) {
+			return ((double) _superlayerCounts[sector-1][superlayer-1]) / 672.;
+		} else {
+			return 0.;
+		}
+	}
+
 
 }
