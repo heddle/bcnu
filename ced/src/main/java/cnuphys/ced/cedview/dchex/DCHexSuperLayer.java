@@ -5,23 +5,34 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 
+import cnuphys.bCNU.geometry.Line;
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.graphics.style.LineStyle;
+import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAIHitData;
+import cnuphys.ced.alldata.datacontainer.dc.HBTrkgHitData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAIHitData;
+import cnuphys.ced.alldata.datacontainer.dc.TBTrkgHitData;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.frame.Ced;
+import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.frame.OrderColors;
+import cnuphys.ced.geometry.GeoConstants;
 
-public class DCHexSuperlayerItem extends PolygonItem {
+public class DCHexSuperLayer extends PolygonItem {
 
 	// the tangent of 30 degrees
 	private static final double tan30 = 1.0 / Math.sqrt(3.0);
 	
 	// the radii and thicknesses of the superlayers
-	private static final double rad[] = {124, 165, 211, 256, 310, 365};
+	private static final double rad[] = {128, 169, 214, 260, 311, 365};
 	private static final double thk[] = {36, 36, 42, 42, 50, 50};
 
 	// the colors for alternating layers
@@ -34,7 +45,7 @@ public class DCHexSuperlayerItem extends PolygonItem {
 	private int _sector;
 	
 	// 1-based superlayer
-	private int _superlayer;
+	private int _superLayer;
 
 	// the container sector view
 	private DCHexView _view;
@@ -47,6 +58,10 @@ public class DCHexSuperlayerItem extends PolygonItem {
 	
 	// data containers
 	private DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
+	private HBTrkgHitData _hbData = HBTrkgHitData.getInstance();
+	private TBTrkgHitData _tbData = TBTrkgHitData.getInstance();
+	private HBTrkgAIHitData _hbAIData = HBTrkgAIHitData.getInstance();
+	private TBTrkgAIHitData _tbAIData = TBTrkgAIHitData.getInstance();
 	
 	//workspace
 	private Point2D.Double wirePoly[] = new Point2D.Double[4];
@@ -62,15 +77,15 @@ public class DCHexSuperlayerItem extends PolygonItem {
 	 * @param sector the 1-based sector
 	 * @param superlayer the 1-based superlayer
 	 */
-	public DCHexSuperlayerItem(ItemList itemList, DCHexView view, int sector, int superlayer) {
+	public DCHexSuperLayer(ItemList itemList, DCHexView view, int sector, int superlayer) {
 		super(itemList, getShell((DCHexView) itemList.getContainer().getView(), sector, superlayer));
 
 		_view = view;
 		_sector = sector;
-		_superlayer = superlayer;
+		_superLayer = superlayer;
 		
 		//cache the superlayer polygon
-		_superlayerPolygon = getShell(_view, _sector, _superlayer);
+		_superlayerPolygon = getShell(_view, _sector, _superLayer);
 		
 		//cache the layer polygons
 		for (int layer = 1; layer <= 6; layer++) {
@@ -130,11 +145,6 @@ public class DCHexSuperlayerItem extends PolygonItem {
 			g.setColor(lineColor);
 			g.drawPolygon(poly);
 			
-			Point2D.Double wirePoly[] = new Point2D.Double[4];
-			
-			for (int j = 0; j < 4; j++) {
-				wirePoly[j] = new Point2D.Double();
-			}
 			
 			if (_view.isSingleEventMode()) {
 				drawSingleEventData(g, container);
@@ -143,33 +153,75 @@ public class DCHexSuperlayerItem extends PolygonItem {
 				drawAccumulatedData(g, container);
 			}
 			
-// 		for (int wire = 1; wire <= 112; wire += 1) {
-//				getWirePolygon(layer, wire, wp, wirePoly);
-//				poly.reset();
-//				for (int i = 0; i < 4; i++) {
-//					container.worldToLocal(pp, wirePoly[i]);
-//					poly.addPoint(pp.x, pp.y);
-//				}
-//				g.setColor(Color.black);
-//				g.drawPolygon(poly);
-//			}
 		}
+	}
+	
+	/**
+	 * Get the cached superlayer polygon
+	 * @return the cached superlayer polygon
+	 */
+	public Point2D.Double[] getPolygon() {
+		return _superlayerPolygon;
 	}
 	
 	private void drawSingleEventData(Graphics g, IContainer container) {
 		// draw raw hits
-		//if (_view.showRawHits()) {
+		if (_view.showRawHits()) {
 
 			for (int i = 0; i < _dcData.count(); i++) {
 				// draw the hit
-				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superlayer)) {
-					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1,
-							_dcData.order[i]);
+				
+				Color color = Ced.useOrderColoring() ? OrderColors.getOrderColor(_dcData.order[i]) : Color.red;
+
+				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
+					drawDCHit(g, container, _dcData.layer6[i], _dcData.component[i], 
+							color);
 				}
 			}
-		//}
+		}
+		
+		// draw regular HB Hits
+		if (_view.showHBHits()) {
+			for (int i = 0; i < _hbData.count(); i++) {
+				// draw the hit
+				if ((_hbData.sector[i] == _sector) && (_hbData.superlayer[i] == _superLayer)) {
+					drawDCHit(g, container, _hbData.layer[i], _hbData.wire[i], CedColors.HB_COLOR);
+				}
+			}
+		}
+
+		// draw regular TB Hits
+		if (_view.showTBHits()) {
+			for (int i = 0; i < _tbData.count(); i++) {
+				// draw the hit
+				if ((_tbData.sector[i] == _sector) && (_tbData.superlayer[i] == _superLayer)) {
+					drawDCHit(g, container, _tbData.layer[i], _tbData.wire[i], CedColors.TB_COLOR);
+				}
+			}
+		}
+
+		// draw AI HB Hits
+		if (_view.showAIHBHits()) {
+			for (int i = 0; i < _hbAIData.count(); i++) {
+				// draw the hit
+				if ((_hbAIData.sector[i] == _sector) && (_hbAIData.superlayer[i] == _superLayer)) {
+					drawDCHit(g, container, _hbAIData.layer[i], _hbAIData.wire[i], CedColors.AIHB_COLOR);
+				}
+			}
+		}
+
+		// draw AI TB Hits
+		if (_view.showAITBHits()) {
+			for (int i = 0; i < _tbAIData.count(); i++) {
+				// draw the hit
+				if ((_tbAIData.sector[i] == _sector) && (_tbAIData.superlayer[i] == _superLayer)) {
+					drawDCHit(g, container, _tbAIData.layer[i], _tbAIData.wire[i], CedColors.AITB_COLOR);
+				}
+			}
+		}
 
 	}
+	
 	
 	/**
 	 * Draw a single dc hit
@@ -178,15 +230,11 @@ public class DCHexSuperlayerItem extends PolygonItem {
 	 * @param container the rendering container
 	 * @param layer     a 1-based layer
 	 * @param wire      the 1-based wire
-	 * @param noise     is this marked as a noise hit
-	 * @param pid       the gemc pid
-	 * @param order     for optional coloring
+	 * @param color     for fill colo
 	 */
-	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order) {
-		Point2D.Double wp[] = _layerPolygons[layer - 1];
-		getWirePolygon(layer, wire, wp, wirePoly);
+	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, Color color) {
+		getWirePolygon(layer, wire, wirePoly);
 		
-		Color color = Ced.useOrderColoring() ? OrderColors.getOrderColor(order) : Color.red;
 		ppoly.reset();
 		Point pp = new Point();
 		for (int i = 0; i < 4; i++) {
@@ -197,13 +245,50 @@ public class DCHexSuperlayerItem extends PolygonItem {
 		g.fillPolygon(ppoly);
 		g.drawPolygon(ppoly);
 	}
-	
+
+	//draw results of accumulation
 	private void drawAccumulatedData(Graphics g, IContainer container) {
+
+		Rectangle2D.Double wr = new Rectangle2D.Double(); // used over and over
+		int dcAccumulatedData[][][][] = AccumulationManager.getInstance().getAccumulatedDCData();
+
+		int maxHit = AccumulationManager.getInstance().getMaxDCCount(_superLayer - 1);
+
+		for (int layer = 1; layer <= 6; layer++) {
+
+			for (int wire = 1; wire <= 112; wire++) {
+				int hitCount = dcAccumulatedData[_sector - 1][_superLayer - 1][layer-1][wire-1];
+				getWirePolygon(layer, wire, wirePoly);
+				
+				ppoly.reset();
+				Point pp = new Point();
+				for (int i = 0; i < 4; i++) {
+					container.worldToLocal(pp, wirePoly[i]);
+					ppoly.addPoint(pp.x, pp.y);
+				}
+			
+
+				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
+				AccumulationManager.getInstance();
+				Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
+
+				drawDCHit(g, container, layer, wire, color);
+
+			}
+		}
 
 	}
 
-	
-	public void getWirePolygon(int layer, int wire, Point2D.Double poly[], Point2D.Double wp[]) {
+	/**
+	 * Get the polygon for a wire
+	 * @param layer the 1-based layer
+	 * @param wire the 1-based wire
+	 * @param wp will hold the world points of the wire
+	 */
+	public void getWirePolygon(int layer, int wire, Point2D.Double wp[]) {
+
+		Point2D.Double poly[] = _layerPolygons[layer - 1];
+
 		double fract1 = (double) (wire - 1) / 112.;
 		double fract2 = (double) (wire) / 112.;
 
@@ -286,5 +371,62 @@ public class DCHexSuperlayerItem extends PolygonItem {
 		wp1.setLocation(x, y);
 	}
 
+	/**
+	 * Get the 1-based layer containing the point.
+	 * @param container the container
+	 * @param screenPoint the point in screen coordinates
+	 * @return the 1-based layer, or -1 if none
+	 */
+	public int whichLayer(IContainer container, Point screenPoint) {
+		if (!contains(_view.getContainer(), screenPoint)) {
+			return -1;
+		}
+
+		Polygon poly = new Polygon();
+		Point pp = new Point();
+
+		for (int layer = 1; layer <= 6; layer++) {
+			Point2D.Double wp[] = _layerPolygons[layer - 1];
+			poly.reset();
+			for (int i = 0; i < 4; i++) {
+				container.worldToLocal(pp, wp[i]);
+				poly.addPoint(pp.x, pp.y);
+			}
+			if (poly.contains(screenPoint)) {
+				return layer;
+			}
+		}
+		return -1;
+	}
+	
+	/**
+	 * Get the 1-based wire containing the point.
+	 * @param container the container
+	 * @param layer the 1-based layer
+	 * @param screenPoint the point in screen coordinates
+	 * @return the 1-based wire, or -1 if none
+	 */
+	public int whichWire(IContainer container, int layer, Point screenPoint) {
+		if (!contains(_view.getContainer(), screenPoint)) {
+			return -1;
+		}
+
+		Polygon poly = new Polygon();
+		Point pp = new Point();
+		
+		for (int wire = 1; wire <= 112; wire++) {
+            getWirePolygon(layer, wire, wirePoly);
+            poly.reset();
+            for (int i = 0; i < 4; i++) {
+                container.worldToLocal(pp, wirePoly[i]);
+                poly.addPoint(pp.x, pp.y);
+            }
+            if (poly.contains(screenPoint)) {
+                return wire;
+            }
+        }
+		
+		return -1;
+	}
 
 }

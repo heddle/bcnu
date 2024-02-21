@@ -58,21 +58,18 @@ public class AllDCView extends CedView implements IRollOverListener {
 	private static final String TB_ROLLOVER = "Reg Time Based DC Clusters";
 	private static final String AIHB_ROLLOVER = "AI Hit Based DC Clusters";
 	private static final String AITB_ROLLOVER = "AI Time Based DC Clusters";
-	private static final String SNR_ROLLOVER = "SNR DC Clusters";
 
 	//rollover labels
 	private static String roLabels[] = {HB_ROLLOVER,
 			TB_ROLLOVER,
 			AIHB_ROLLOVER,
-			AITB_ROLLOVER,
-			SNR_ROLLOVER};
+			AITB_ROLLOVER};
 
 	//rollover boolean flags
 	private boolean _roShowHBDCClusters;
 	private boolean _roShowTBDCClusters;
 	private boolean _roShowAIHBDCClusters;
 	private boolean _roShowAITBDCClusters;
-	private boolean _roShowSNRDCClusters;
 
 
 	//cluster drawer
@@ -240,9 +237,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 
-				if (_roShowSNRDCClusters) {
-					_clusterDrawer.drawSNRDCClusters(g, container);
-				}
 
 				if (_roShowHBDCClusters) {
 					_clusterDrawer.drawHBDCClusters(g, container);
@@ -512,10 +506,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 			_roShowAITBDCClusters = true;
 		}
 
-		else if (text.contains(SNR_ROLLOVER)) {
-			_roShowSNRDCClusters = true;
-		}
-
 		label.setForeground(activeFG);
 		label.setBackground(activeBG);
 
@@ -541,9 +531,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 		}
 		else if (text.contains(AITB_ROLLOVER)) {
 			_roShowAITBDCClusters = false;
-		}
-		else if (text.contains(SNR_ROLLOVER)) {
-			_roShowSNRDCClusters = false;
 		}
 
 		label.setForeground(inactiveFG);

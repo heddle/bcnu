@@ -6,17 +6,23 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+
+import cnuphys.bCNU.component.IRollOverListener;
+import cnuphys.bCNU.component.RollOverPanel;
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
-import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.ItemList;
+import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
@@ -27,10 +33,37 @@ import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.DCGeometry;
 
-public class DCHexView extends HexView  {
+public class DCHexView extends HexView implements IRollOverListener {
+	
+	//rollover colors
+	private static final Color inactiveFG = Color.cyan;
+	private static final Color inactiveBG = Color.black;
+	private static final Color activeFG = Color.yellow;
+	private static final Color activeBG = Color.darkGray;
+
+	//roll over labels
+	private static final String HB_ROLLOVER = "Reg Hit Based DC Clusters";
+	private static final String TB_ROLLOVER = "Reg Time Based DC Clusters";
+	private static final String AIHB_ROLLOVER = "AI Hit Based DC Clusters";
+	private static final String AITB_ROLLOVER = "AI Time Based DC Clusters";
+
+	//rollover labels
+	private static String roLabels[] = {HB_ROLLOVER,
+			TB_ROLLOVER,
+			AIHB_ROLLOVER,
+			AITB_ROLLOVER};
+
+	//rollover boolean flags
+	private boolean _roShowHBDCClusters;
+	private boolean _roShowTBDCClusters;
+	private boolean _roShowAIHBDCClusters;
+	private boolean _roShowAITBDCClusters;
+
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
+	
+	private static final Color _fillColor = X11Colors.getX11Color("steel blue");
 
 	// base title
 	private static final String _baseTitle = "DC Hex";
@@ -39,14 +72,16 @@ public class DCHexView extends HexView  {
 	private DCHexSectorItem _hexItems[];
 
 	//bank matches
-	private static String _defMatches[] = {"DC:"};
+	private static String _defMatches[] = {"DC:", "HitBased", "TimeBased"};
 
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 	
 	//superlayer items
-	private DCHexSuperlayerItem[][] _superLayerItems;
+	private DCHexSuperLayer[][] _superLayerItems;
 
+	//rollover panel for drawing clusters
+	private RollOverPanel _rollOverPanel;
 
 	protected static Rectangle2D.Double _defaultWorld;
 	
@@ -69,8 +104,6 @@ public class DCHexView extends HexView  {
 		setBeforeDraw();
 		setAfterDraw();
 		getContainer().getComponent().setBackground(Color.gray);
-
-
 	}
 
 	// add the control panel
@@ -78,15 +111,15 @@ public class DCHexView extends HexView  {
 	protected void addControls() {
 
 		_controlPanel = new ControlPanel(this,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.FMTCROSSES + DisplayBits.RECPART
-						+ DisplayBits.GLOBAL_HB + DisplayBits.GLOBAL_TB + DisplayBits.GLOBAL_AIHB
-						+ DisplayBits.GLOBAL_AITB + DisplayBits.CVTRECTRACKS + DisplayBits.MCTRUTH
-						+ DisplayBits.SECTORCHANGE + DisplayBits.CVTP1TRACKS,
-				3, 5);
+				ControlPanel.DISPLAYARRAY
+				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL
+				+ ControlPanel.ALLDCDISPLAYPANEL,
+				DisplayBits.ACCUMULATION, 3, 5);
 
 		add(_controlPanel, BorderLayout.EAST);
+		
+		customize(this);
+
 
 		//i.e. if none were in the properties
 		if (hasNoBankMatches()) {
@@ -119,18 +152,31 @@ public class DCHexView extends HexView  {
 
 		for (int sector = 0; sector < 6; sector++) {
 			_hexItems[sector] = new DCHexSectorItem(detectorLayer, this, sector + 1);
-			_hexItems[sector].getStyle().setFillColor(Color.lightGray);
+			_hexItems[sector].getStyle().setFillColor(_fillColor);
+			_hexItems[sector].getStyle().setLineColor(null);
 		}
 		
 		//superlayer items
-		_superLayerItems = new DCHexSuperlayerItem[6][6];
+		_superLayerItems = new DCHexSuperLayer[6][6];
 		for (int sector = 1; sector <= 6; sector++) {
 			for (int superlayer = 1; superlayer <= 6; superlayer++) {
-				_superLayerItems[sector - 1][superlayer - 1] = new DCHexSuperlayerItem(detectorLayer, this, sector,
+				_superLayerItems[sector - 1][superlayer - 1] = new DCHexSuperLayer(detectorLayer, this, sector,
 						superlayer);
 			}
 		}
 
+	}
+
+	//add the rollover panel
+	private void customize(CedView view) {
+		JTabbedPane tabbedPane =  _controlPanel.getTabbedPane();
+		_rollOverPanel = new RollOverPanel("DC Clusters", 1, Fonts.mediumFont, inactiveFG, inactiveBG,
+				roLabels);
+
+		_rollOverPanel.addRollOverListener(this);
+		tabbedPane.add(_rollOverPanel, "DC Clusters");
+
+//		view._clusterDrawer = new ClusterDrawer(view);
 	}
 
 
@@ -144,7 +190,7 @@ public class DCHexView extends HexView  {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 				Rectangle b = container.getComponent().getBounds();
-				g.setColor(X11Colors.getX11Color("steel blue"));
+				g.setColor(_fillColor);
 				g.fillRect(0, 0, b.width, b.height);
 			}
 
@@ -162,9 +208,20 @@ public class DCHexView extends HexView  {
 
 				if (!_eventManager.isAccumulating()) {
 
-					// draw all the wires
-					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container, 75);
+					drawSectorNumbers(g, container, Color.cyan, 85);
+					
+					Point p0 = new Point();
+					Point p1 = new Point();
+					
+					for (int sect = 0; sect < 3; sect++) {
+						Point2D.Double poly0[] = _superLayerItems[sect][0].getPolygon();
+						Point2D.Double poly3[] = _superLayerItems[sect+3][0].getPolygon();
+						
+						container.worldToLocal(p0, poly0[0]);
+						container.worldToLocal(p1, poly3[0]);
+						g.setColor(Color.cyan);
+						g.drawLine(p0.x, p0.y, p1.x, p1.y);
+					}
 				} // not accumulating
 			}
 		};
@@ -182,7 +239,7 @@ public class DCHexView extends HexView  {
 		props.put(PropertySupport.PROPNAME, "DCXY");
 
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.63);
+		Dimension d = GraphicsUtilities.screenFraction(0.75);
 
 		props.put(PropertySupport.WORLDSYSTEM, _defaultWorld);
 		props.put(PropertySupport.WIDTH, (int) (0.866 * d.height));
@@ -223,17 +280,22 @@ public class DCHexView extends HexView  {
 		
 		if (superlayer > 0) {
 			feedbackStrings.add("$aqua$sector " + sector + " superlayer " + superlayer);
+			int layer = _superLayerItems[sector - 1][superlayer - 1].whichLayer(container, pp);
+			if (layer > 0) {
+				int wire = _superLayerItems[sector - 1][superlayer - 1].whichWire(container, layer, pp);
+				feedbackStrings.add("$aqua$layer " + layer + " wire " + wire);
+			}
+			
+			
 			double totalOcc = 100. * _dcData.totalOccupancy();
 			double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
 			double superlayerOcc = 100. * _dcData.totalSuperlayerOccupancy(sector, superlayer);
 			
-			String occStr = String.format("occ total %6.2f%% sect %6.2f%% suplay %6.2f%%", totalOcc,
+			String occStr = String.format("occ  total %-6.2f%%  sect %-6.2f%%  suplay %-6.2f%%", totalOcc,
 					sectorOcc, superlayerOcc);
 			feedbackStrings.add("$aqua$" + occStr);
 			
 		}
-		
-
 	}
 
 	/**
@@ -258,7 +320,104 @@ public class DCHexView extends HexView  {
 		DCHexView view = createDCHexView();
 		view.setBounds(vr);
 		return view;
+	}
+	
 
+	/**
+	 * Display raw DC hits?
+	 *
+	 * @return <code> if we should display raw hits
+	 */
+	public boolean showRawHits() {
+		return _controlPanel.getAllDCDisplayPanel().showRawHits();
+	}
+
+	/**
+	 * Display hit based hits?
+	 *
+	 * @return <code> if we should display hit based hits
+	 */
+	public boolean showHBHits() {
+		return _controlPanel.getAllDCDisplayPanel().showHBHits();
+	}
+
+	/**
+	 * Display time based hits?
+	 *
+	 * @return <code> if we should display time based hits
+	 */
+	public boolean showTBHits() {
+		return _controlPanel.getAllDCDisplayPanel().showTBHits();
+	}
+
+	/**
+	 * Display AI hit based hits?
+	 *
+	 * @return <code> if we should display AI hit based hits
+	 */
+	public boolean showAIHBHits() {
+		return _controlPanel.getAllDCDisplayPanel().showAIHBHits();
+	}
+
+	/**
+	 * Display AI time based hits?
+	 *
+	 * @return <code> if we should display AI time based hits
+	 */
+	public boolean showAITBHits() {
+		return _controlPanel.getAllDCDisplayPanel().showAITBHits();
+	}
+
+
+
+	@Override
+	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
+
+		String text = label.getText();
+		if (text.contains(HB_ROLLOVER)) {
+			_roShowHBDCClusters = true;
+		}
+		else if (text.contains(TB_ROLLOVER)) {
+			_roShowTBDCClusters = true;
+		}
+		else if (text.contains(AIHB_ROLLOVER)) {
+			_roShowAIHBDCClusters = true;
+		}
+		else if (text.contains(AITB_ROLLOVER)) {
+			_roShowAITBDCClusters = true;
+		}
+
+		label.setForeground(activeFG);
+		label.setBackground(activeBG);
+
+		refresh();
+	}
+
+	@Override
+	public void RollOverMouseExit(JLabel label, MouseEvent e) {
+
+		if (e.isAltDown() || e.isControlDown() || e.isMetaDown()) {
+			return;
+		}
+
+		String text = label.getText();
+		if (text.contains(HB_ROLLOVER)) {
+			_roShowHBDCClusters = false;
+		}
+		else if (text.contains(TB_ROLLOVER)) {
+			_roShowTBDCClusters = false;
+		}
+		else if (text.contains(AIHB_ROLLOVER)) {
+			_roShowAIHBDCClusters = false;
+		}
+		else if (text.contains(AITB_ROLLOVER)) {
+			_roShowAITBDCClusters = false;
+		}
+
+		label.setForeground(inactiveFG);
+		label.setBackground(inactiveBG);
+
+		refresh();
 	}
 
 }

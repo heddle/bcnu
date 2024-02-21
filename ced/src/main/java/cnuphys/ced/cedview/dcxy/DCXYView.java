@@ -260,8 +260,8 @@ public class DCXYView extends HexView {
 						_fmtCrossDrawer.draw(g, container);
 					}
 
-					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container, 400);
+					drawCoordinateSystem(g, container, null);
+					drawSectorNumbers(g, container, null, 400);
 				} // not acumulating
 			}
 
@@ -364,7 +364,7 @@ public class DCXYView extends HexView {
 		props.put(PropertySupport.PROPNAME, "DCXY");
 
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.63);
+		Dimension d = GraphicsUtilities.screenFraction(0.65);
 
 		props.put(PropertySupport.WORLDSYSTEM, _defaultWorld);
 		props.put(PropertySupport.WIDTH, (int) (0.866 * d.height));

@@ -27,6 +27,20 @@ public class Line {
 		_dp = new Vector(Point.difference(p1, po));
 		_dpLen = _dp.length();
 	}
+	
+	/**
+	 * Create a line from two points 
+	 * @param x1 x coordinate of one point
+	 * @param y1 y coordinate of one point
+	 * @param z1 z coordinate of one point
+	 * @param x2 x coordinate of the other point
+	 * @param y2 y coordinate of the other point
+	 * @param z2 z coordinate of the other point
+	 */
+	public Line(double x1, double y1, double z1, double x2, double y2, double z2) {
+		this(new Point(x1, y1, z1), new Point(x2, y2, z2));
+	}
+
 
 	/**
 	 * Get the po "start" point. This is just an arbitrary point on an infinite
@@ -104,7 +118,7 @@ public class Line {
 	}
 
 	/**
-	 * Get the shortest distance between two points
+	 * Get the shortest distance from point to line
 	 *
 	 * @param p a point
 	 * @return the perpendicular distance
@@ -113,6 +127,17 @@ public class Line {
 		Vector ap = new Vector(Point.difference(p, _po));
 		Vector c = Vector.cross(ap, _dp);
 		return c.length() / _dpLen;
+	}
+	
+	/**
+	 * Get the shortest distance from point to line
+	 * @param x x coordinate of the point
+	 * @param y y coordinate of the point
+	 * @param z z coordinate of the point
+	 * @return
+	 */
+	public double distance(double x, double y, double z) {
+		return distance(new Point(x, y, z));
 	}
 
 	/**

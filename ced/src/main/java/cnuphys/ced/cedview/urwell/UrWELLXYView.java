@@ -200,8 +200,8 @@ public class UrWELLXYView extends HexView {
 					//data selected highlight?
 					drawDataSelectedHighlight(g, container);
 
-					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container, 145);
+					drawCoordinateSystem(g, container, null);
+					drawSectorNumbers(g, container, null, 145);
 				} // not acumulating
 			}
 

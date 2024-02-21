@@ -21,7 +21,7 @@ import cnuphys.ced.frame.CedColors;
 public class AllDCDisplayPanel extends JPanel implements ActionListener {
 
 	// the parent view
-	private AllDCView _view;
+	private CedView _view;
 
 	// the toggle buttons
 	private JCheckBox _rawHitsButton;
@@ -31,7 +31,7 @@ public class AllDCDisplayPanel extends JPanel implements ActionListener {
 	private JCheckBox _aitbHitsButton;
 
 	public AllDCDisplayPanel(CedView view) {
-		_view = (AllDCView) view;
+		_view = view;
 		setup();
 	}
 

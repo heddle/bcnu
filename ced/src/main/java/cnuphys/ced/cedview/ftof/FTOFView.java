@@ -166,10 +166,10 @@ public class FTOFView extends HexView {
 					//highlight?
 					_highlightHandler.draw(g, container);
 
-					drawCoordinateSystem(g, container);
+					drawCoordinateSystem(g, container, null);
 
 					double xx = (displayPanel() != 2) ? 420 : 340;
-					drawSectorNumbers(g, container, xx);
+					drawSectorNumbers(g, container, null, xx);
 				} // not acumulating
 
 				g.setColor(TRANSTEXT2);
