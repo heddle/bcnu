@@ -6,6 +6,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -60,6 +62,10 @@ public class DCHexView extends HexView implements IRollOverListener {
 	private boolean _roShowAITBDCClusters;
 
 
+	//cluster drawer
+	private DCHexClusterDrawer _clusterDrawer;
+
+	
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 	
@@ -104,6 +110,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 		setBeforeDraw();
 		setAfterDraw();
 		getContainer().getComponent().setBackground(Color.gray);
+		_clusterDrawer = new DCHexClusterDrawer(this);
 	}
 
 	// add the control panel
@@ -115,6 +122,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL
 				+ ControlPanel.ALLDCDISPLAYPANEL,
 				DisplayBits.ACCUMULATION, 3, 5);
+		
 
 		add(_controlPanel, BorderLayout.EAST);
 		
@@ -126,8 +134,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 			setBankMatches(_defMatches);
 		}
 		_controlPanel.getMatchedBankPanel().update();
-
-
+		
 		pack();
 	}
 
@@ -175,8 +182,6 @@ public class DCHexView extends HexView implements IRollOverListener {
 
 		_rollOverPanel.addRollOverListener(this);
 		tabbedPane.add(_rollOverPanel, "DC Clusters");
-
-//		view._clusterDrawer = new ClusterDrawer(view);
 	}
 
 
@@ -207,6 +212,27 @@ public class DCHexView extends HexView implements IRollOverListener {
 			public void draw(Graphics g, IContainer container) {
 
 				if (!_eventManager.isAccumulating()) {
+					
+
+					if (_roShowHBDCClusters) {
+						_clusterDrawer.drawHBDCClusters(g, container);
+					}
+
+					if (_roShowTBDCClusters) {
+						_clusterDrawer.drawTBDCClusters(g, container);
+					}
+
+					if (_roShowAIHBDCClusters) {
+						_clusterDrawer.drawAIHBDCClusters(g, container);
+					}
+
+					if (_roShowAITBDCClusters) {
+						_clusterDrawer.drawAITBDCClusters(g, container);
+					}
+
+					//row selected on bank dialog
+					drawDataSelectedHighlight(g, container);
+
 
 					drawSectorNumbers(g, container, Color.cyan, 85);
 					
@@ -229,6 +255,24 @@ public class DCHexView extends HexView implements IRollOverListener {
 		getContainer().setAfterDraw(afterDraw);
 
 	}
+	
+	/**
+	 * Get the wire polygon for a given wire
+	 * @param sector 1-based sector
+	 * @param superLayer 1-based superlayer
+	 * @param layer 1-based layer
+	 * @param wire 1-based wire
+	 * @param poly the polygon to fill
+	 */
+	public void getWirePolygon(int sector, int superLayer, int layer, int wire, Point2D.Double[] poly) {
+		_superLayerItems[sector-1][superLayer - 1].getWirePolygon(layer, wire, poly);
+	}
+	
+
+	//draw data selected hightlight data
+	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
+	}
+
 
 	// get the attributes to pass to the super constructor
 	private static Object[] getAttributes(String title) {
@@ -242,7 +286,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 		Dimension d = GraphicsUtilities.screenFraction(0.75);
 
 		props.put(PropertySupport.WORLDSYSTEM, _defaultWorld);
-		props.put(PropertySupport.WIDTH, (int) (0.866 * d.height));
+		props.put(PropertySupport.WIDTH, (int) (0.88 * d.height));
 		props.put(PropertySupport.HEIGHT, d.height);
 
 		props.put(PropertySupport.TOOLBAR, true);
@@ -284,6 +328,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 			if (layer > 0) {
 				int wire = _superLayerItems[sector - 1][superlayer - 1].whichWire(container, layer, pp);
 				feedbackStrings.add("$aqua$layer " + layer + " wire " + wire);
+				_superLayerItems[sector - 1][superlayer - 1].addToFeedback(layer, wire, feedbackStrings);
 			}
 			
 			
@@ -294,6 +339,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 			String occStr = String.format("occ  total %-6.2f%%  sect %-6.2f%%  suplay %-6.2f%%", totalOcc,
 					sectorOcc, superlayerOcc);
 			feedbackStrings.add("$aqua$" + occStr);
+			
 			
 		}
 	}
@@ -419,5 +465,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 
 		refresh();
 	}
+	
+
 
 }

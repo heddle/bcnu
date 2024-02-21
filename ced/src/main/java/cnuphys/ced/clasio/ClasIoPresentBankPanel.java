@@ -158,6 +158,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 	@Override
 	public Dimension getPreferredSize() {
 		Dimension d = super.getPreferredSize();
+		d.width = 300;
 		d.height = preferredHeight;
 		return d;
 

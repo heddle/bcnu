@@ -24,7 +24,7 @@ public class HBTrkgHitData extends ATrkgHitData {
 	
 	@Override
 	public String bankName() {
-		return "HitBasedTrkg::HBHits";
+		return "HitBasedTrkg::Hits";
 	}
 
 

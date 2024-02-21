@@ -72,9 +72,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	// do not have a container)
 	private IContainer _container;
 
-	// an additional optional panel that can be added to the east
-	private JPanel _userPanel;
-
 	// view popup menu
 	private ViewPopupMenu _viewPopupMenu;
 
@@ -349,15 +346,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	 */
 	public String getPropertyName() {
 		return VIEWPROPNAME;
-	}
-
-	/**
-	 * Get the user panel for adding more widgets
-	 *
-	 * @return the userPanel
-	 */
-	public JPanel getUserPanel() {
-		return _userPanel;
 	}
 
 	/**

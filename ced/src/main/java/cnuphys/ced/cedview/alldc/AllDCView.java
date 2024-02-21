@@ -237,26 +237,28 @@ public class AllDCView extends CedView implements IRollOverListener {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 
+				if (!_eventManager.isAccumulating()) {
 
-				if (_roShowHBDCClusters) {
-					_clusterDrawer.drawHBDCClusters(g, container);
+					if (_roShowHBDCClusters) {
+						_clusterDrawer.drawHBDCClusters(g, container);
+					}
+
+					if (_roShowTBDCClusters) {
+						_clusterDrawer.drawTBDCClusters(g, container);
+					}
+
+					if (_roShowAIHBDCClusters) {
+						_clusterDrawer.drawAIHBDCClusters(g, container);
+					}
+
+					if (_roShowAITBDCClusters) {
+						_clusterDrawer.drawAITBDCClusters(g, container);
+					}
+
+					// row selected on bank dialog
+					drawDataSelectedHighlight(g, container);
+
 				}
-
-				if (_roShowTBDCClusters) {
-					_clusterDrawer.drawTBDCClusters(g, container);
-				}
-
-				if (_roShowAIHBDCClusters) {
-					_clusterDrawer.drawAIHBDCClusters(g, container);
-				}
-
-				if (_roShowAITBDCClusters) {
-					_clusterDrawer.drawAITBDCClusters(g, container);
-				}
-
-				//row selected on bank dialog
-				drawDataSelectedHighlight(g, container);
-
 			}
 
 		};

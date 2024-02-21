@@ -1,12 +1,14 @@
-package cnuphys.ced.cedview.alldc;
+package cnuphys.ced.cedview.dchex;
 
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Stroke;
 import java.awt.geom.Area;
+import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.datacontainer.dc.ATrkgClusterData;
@@ -20,12 +22,11 @@ import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAIHitData;
 import cnuphys.ced.alldata.datacontainer.dc.TBTrkgClusterData;
 import cnuphys.ced.alldata.datacontainer.dc.TBTrkgHitData;
 import cnuphys.ced.frame.CedColors;
-import cnuphys.snr.WireList;
 
-public class ClusterDrawer {
-
+public class DCHexClusterDrawer {
+	
 	//the parent view
-	private AllDCView _view;
+	private DCHexView _view;
 
 	public static final Stroke THICKLINE = new BasicStroke(2.0f);
 
@@ -40,11 +41,12 @@ public class ClusterDrawer {
 	private TBTrkgAIClusterData _tbAIClusterData = TBTrkgAIClusterData.getInstance();
 	
 	
+
 	/**
 	 * A cluster drawer for the all dc view
 	 * @param view the all dc parent view
 	 */
-	public ClusterDrawer(AllDCView view) {
+	public DCHexClusterDrawer(DCHexView view) {
 		_view = view;
 	}
 
@@ -76,6 +78,7 @@ public class ClusterDrawer {
 	public void drawAITBDCClusters(Graphics g, IContainer container) {
 		drawDCClusterList(g, container, _tbAIClusterData, _tbAIData, CedColors.AITB_COLOR);
 	}
+
 
 
 	//draws the HB or TB clusters
@@ -144,23 +147,28 @@ public class ClusterDrawer {
 		Stroke saveStroke = g2.getStroke();
 		g2.setStroke(THICKLINE);
 
-		Rectangle sr = new Rectangle();
-		Rectangle.Double wr = new Rectangle.Double();
 
 		Area area = new Area();
+		
+		Point2D.Double[] wirePoly = new Point2D.Double[4];
+		for (int i = 0; i < 4; i++) {
+			wirePoly[i] = new Point2D.Double();
+		}
+		Point pp = new Point();
 
 		for (int i = 0; i < wire.length; i++) {
+			
 			if ((wire[i] <= 0) || (layer[i] <= 0)) {
 				continue;
 			}
-
-			//drawing hack
-			int hackSL = (sector < 4) ? superlayer : 7-superlayer;
-			_view.getCell(sector, hackSL, layer[i], wire[i], wr);
-
-
-			container.worldToLocal(sr, wr);
-			area.add(new Area(sr));
+			_view.getWirePolygon(sector, superlayer, layer[i], wire[i], wirePoly);
+			
+			Polygon poly = new Polygon();
+			for (int j = 0; j < 4; j++) {
+				container.worldToLocal(pp, wirePoly[j]);
+				poly.addPoint(pp.x, pp.y);
+			}
+			area.add(new Area(poly));
 		}
 
 		if (!area.isEmpty()) {
@@ -172,7 +180,6 @@ public class ClusterDrawer {
 
 		g2.setStroke(saveStroke);
 	}
-
 
 
 

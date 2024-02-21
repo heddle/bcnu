@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.List;
 
 import cnuphys.bCNU.geometry.Line;
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -14,6 +15,7 @@ import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.alldata.datacontainer.dc.HBTrkgAIHitData;
 import cnuphys.ced.alldata.datacontainer.dc.HBTrkgHitData;
@@ -32,7 +34,7 @@ public class DCHexSuperLayer extends PolygonItem {
 	private static final double tan30 = 1.0 / Math.sqrt(3.0);
 	
 	// the radii and thicknesses of the superlayers
-	private static final double rad[] = {128, 169, 214, 260, 311, 365};
+	private static final double rad[] = {129, 169, 214, 260, 311, 365};
 	private static final double thk[] = {36, 36, 42, 42, 50, 50};
 
 	// the colors for alternating layers
@@ -164,6 +166,65 @@ public class DCHexSuperLayer extends PolygonItem {
 		return _superlayerPolygon;
 	}
 	
+	/**
+	 * Add data infor to feedback
+	 * @param layer
+	 * @param wire
+	 * @param feedbackStrings
+	 */
+	protected void addToFeedback(int layer, int wire, List<String> feedbackStrings) {
+		
+		if (_view.showRawHits()) {
+
+			for (int i = 0; i < _dcData.count(); i++) {
+                if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer) &&
+                    (_dcData.layer6[i] == layer) && (_dcData.component[i] == wire)) {
+                	String fbs = String.format("$red$raw hit  tdc %d,  order %d", _dcData.tdc[i], _dcData.order[i]);
+                    feedbackStrings.add(fbs);
+                    break;
+               }
+            }
+		}
+
+		// regular HB Hits
+		if (_view.showHBHits()) {
+			fbStr(_hbData, layer, wire, "HB hit", CedColors.HB_COLOR_STRING, feedbackStrings);
+		}
+
+		// regular TB Hits
+		if (_view.showTBHits()) {
+			fbStr(_tbData, layer, wire, "TB hit", CedColors.TB_COLOR_STRING, feedbackStrings);
+		}
+		
+		// AI HB Hits
+		if (_view.showAIHBHits()) {
+			fbStr(_hbAIData, layer, wire, "AI HB hit", CedColors.AIHB_COLOR_STRING, feedbackStrings);
+		}
+		
+		// AI TB Hits
+		if (_view.showAITBHits()) {
+			fbStr(_tbAIData, layer, wire, "AI TB hit", CedColors.AITB_COLOR_STRING, feedbackStrings);
+		}
+
+
+		
+	}
+	
+	//common feedback string
+	private void fbStr(ATrkgHitData data, int layer, int wire, String name, String color, List<String> feedbackStrings) {
+		for (int i = 0; i < data.count(); i++) {
+			if ((data.sector[i] == _sector) && (data.superlayer[i] == _superLayer) && (data.layer[i] == layer)
+					&& (data.wire[i] == wire)) {
+				String fbs = String.format("$%s$%s cluster %d  status %d trkDOCA %-5.3f", color,
+						name, data.clusterID[i], data.status[i], data.trkDoca[i]);
+				feedbackStrings.add(fbs);
+				return;
+			}
+		}
+	}
+	
+	
+	//draw data in single hit mode
 	private void drawSingleEventData(Graphics g, IContainer container) {
 		// draw raw hits
 		if (_view.showRawHits()) {
@@ -287,6 +348,7 @@ public class DCHexSuperLayer extends PolygonItem {
 	 */
 	public void getWirePolygon(int layer, int wire, Point2D.Double wp[]) {
 
+		try {
 		Point2D.Double poly[] = _layerPolygons[layer - 1];
 
 		double fract1 = (double) (wire - 1) / 112.;
@@ -296,6 +358,9 @@ public class DCHexSuperLayer extends PolygonItem {
 		cut(poly[1], poly[2], fract2, wp[1]);
 		cut(poly[0], poly[3], fract2, wp[2]);
 		cut(poly[0], poly[3], fract1, wp[3]);
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
 	}
 	
 	/**
