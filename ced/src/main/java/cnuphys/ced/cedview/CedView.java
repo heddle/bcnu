@@ -40,7 +40,6 @@ import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.ced.alldata.DataWarehouse;
-import cnuphys.ced.alldata.datacontainer.AdcColorScale;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
@@ -69,11 +68,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	//for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
-
-	//for 0 adc values
-	private static final Color ASDZERO1 = new Color(0, 0, 0, 64);
-	private static final Color ASDZERO1T = new Color(0, 0, 0, 0);
-
 
 	// are we showing single events or are we showing accumulated data
 	public enum Mode {
@@ -283,17 +277,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Clear the text area
-	 * @param s text to appear at top
-	 */
-	public void clearTextArea(String s) {
-		if (_controlPanel != null) {
-			_controlPanel.clearTextArea(s);
-		}
-	}
-
-
-	/**
 	 * Append to the text area
 	 * @param s the text to append
 	 */
@@ -302,7 +285,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_controlPanel.appendToTextArea(s);
 		}
 	}
-
 
 	/**
 	 * Get banks of interest for matching banks
@@ -408,17 +390,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	private void resetHovering() {
 		hoverStartCheck = -1;
 		closeHoverWindow();
-	}
-
-	/**
-	 * Show or hide the annotation layer.
-	 *
-	 * @param show the value of the display flag.
-	 */
-	public void showAnnotations(boolean show) {
-		if (getContainer().getAnnotationList() != null) {
-			getContainer().getAnnotationList().setVisible(show);
-		}
 	}
 
 	/**
@@ -1071,13 +1042,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		refresh();
 	}
 
-	/**
-	 * Refresh the view. Base implementation works only for container views.
-	 */
-	@Override
-	public void refresh() {
-		super.refresh();
-	}
 
 	// we are hovering
 	protected void hovering(MouseEvent me) {
@@ -1189,9 +1153,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		if (sector > 0) {
 			feedbackStrings.add("Sector " + sector);
 		}
-
-//		String pixStr = "$Sky Blue$ScreenXY: [" + pp.x + ", " + pp.y + "]";
-//		feedbackStrings.add(pixStr);
 	}
 
 	/**
@@ -1247,11 +1208,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 */
 	public void setMode(Mode mode) {
 		_mode = mode;
-
-//		JSlider slider = _controlPanel.getAccumulationSlider();
-//		if (slider != null) {
-//			slider.setEnabled(_mode == Mode.ACCUMULATED);
-//		}
 	}
 
 	/**
@@ -1468,14 +1424,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Some views (e.g., RTPC) have a threshold. Thay must override.
-	 * @return the adc threshold for viewing hits
-	 */
-	public int getAdcThreshold() {
-		return 0;
-	}
-
-	/**
 	 * Get the default value for the adc threshold
 	 * @return the default value for the adc threshold
 	 */
@@ -1563,30 +1511,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	}
 
-
-	/**
-	 * Get a color with alpha based of relative adc
-	 *
-	 * @param hit    the hit
-	 * @param maxAdc the max adc value
-	 * @return a fill color for adc hits
-	 */
-	public Color adcColor(int adc, int maxAdc) {
-
-		if(adc < 1) {
-			return (adc == 0) ? ASDZERO1 : ASDZERO1T;
-		}
-
-		double maxadc = Math.max(1, maxAdc);
-
-		double fract = adc / maxadc;
-		fract = Math.max(0, Math.min(1.0, fract));
-
-		int alpha = 128 + (int) (127 * fract);
-		alpha = Math.min(255, alpha);
-
-		return AdcColorScale.getInstance().getAlphaColor(fract, alpha);
-	}
 	/**
 	 * Clone the view.
 	 *

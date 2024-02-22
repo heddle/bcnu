@@ -6,74 +6,44 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 import java.util.Properties;
 
-import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
-import cnuphys.bCNU.component.IRollOverListener;
-import cnuphys.bCNU.component.RollOverPanel;
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.ItemList;
-import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.HexView;
+import cnuphys.ced.cedview.RollOverDCPanel;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.DCGeometry;
 
-public class DCHexView extends HexView implements IRollOverListener {
-	
-	//rollover colors
-	private static final Color inactiveFG = Color.cyan;
-	private static final Color inactiveBG = Color.black;
-	private static final Color activeFG = Color.yellow;
-	private static final Color activeBG = Color.darkGray;
-
-	//roll over labels
-	private static final String HB_ROLLOVER = "Reg Hit Based DC Clusters";
-	private static final String TB_ROLLOVER = "Reg Time Based DC Clusters";
-	private static final String AIHB_ROLLOVER = "AI Hit Based DC Clusters";
-	private static final String AITB_ROLLOVER = "AI Time Based DC Clusters";
-
-	//rollover labels
-	private static String roLabels[] = {HB_ROLLOVER,
-			TB_ROLLOVER,
-			AIHB_ROLLOVER,
-			AITB_ROLLOVER};
-
-	//rollover boolean flags
-	private boolean _roShowHBDCClusters;
-	private boolean _roShowTBDCClusters;
-	private boolean _roShowAIHBDCClusters;
-	private boolean _roShowAITBDCClusters;
+public class DCHexView extends HexView {
 
 
 	//cluster drawer
 	private DCHexClusterDrawer _clusterDrawer;
 
-	
+
 	// for naming clones
 	private static int CLONE_COUNT = 0;
-	
+
 	private static final Color _fillColor = X11Colors.getX11Color("steel blue");
 
 	// base title
 	private static final String _baseTitle = "DC Hex";
-	
+
 	// sector items
 	private DCHexSectorItem _hexItems[];
 
@@ -82,15 +52,15 @@ public class DCHexView extends HexView implements IRollOverListener {
 
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
-	
+
 	//superlayer items
 	private DCHexSuperLayer[][] _superLayerItems;
 
 	//rollover panel for drawing clusters
-	private RollOverPanel _rollOverPanel;
+	private RollOverDCPanel _rollOverPanel;
 
 	protected static Rectangle2D.Double _defaultWorld;
-	
+
 	static {
 		double _xsize = 1.02 * DCGeometry.getAbsMaxWireX();
 		double _ysize = 1.02 * _xsize * 1.154734;
@@ -122,19 +92,18 @@ public class DCHexView extends HexView implements IRollOverListener {
 				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL
 				+ ControlPanel.ALLDCDISPLAYPANEL,
 				DisplayBits.ACCUMULATION, 3, 5);
-		
+
 
 		add(_controlPanel, BorderLayout.EAST);
-		
-		customize(this);
 
+		customize(this);
 
 		//i.e. if none were in the properties
 		if (hasNoBankMatches()) {
 			setBankMatches(_defMatches);
 		}
 		_controlPanel.getMatchedBankPanel().update();
-		
+
 		pack();
 	}
 
@@ -162,7 +131,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 			_hexItems[sector].getStyle().setFillColor(_fillColor);
 			_hexItems[sector].getStyle().setLineColor(null);
 		}
-		
+
 		//superlayer items
 		_superLayerItems = new DCHexSuperLayer[6][6];
 		for (int sector = 1; sector <= 6; sector++) {
@@ -177,10 +146,9 @@ public class DCHexView extends HexView implements IRollOverListener {
 	//add the rollover panel
 	private void customize(CedView view) {
 		JTabbedPane tabbedPane =  _controlPanel.getTabbedPane();
-		_rollOverPanel = new RollOverPanel("DC Clusters", 1, Fonts.mediumFont, inactiveFG, inactiveBG,
-				roLabels);
+		_rollOverPanel = new RollOverDCPanel(this,
+				"DC Clusters", 1);
 
-		_rollOverPanel.addRollOverListener(this);
 		tabbedPane.add(_rollOverPanel, "DC Clusters");
 	}
 
@@ -212,21 +180,21 @@ public class DCHexView extends HexView implements IRollOverListener {
 			public void draw(Graphics g, IContainer container) {
 
 				if (!_eventManager.isAccumulating()) {
-					
 
-					if (_roShowHBDCClusters) {
+
+					if (_rollOverPanel.roShowHBDCClusters) {
 						_clusterDrawer.drawHBDCClusters(g, container);
 					}
 
-					if (_roShowTBDCClusters) {
+					if (_rollOverPanel.roShowTBDCClusters) {
 						_clusterDrawer.drawTBDCClusters(g, container);
 					}
 
-					if (_roShowAIHBDCClusters) {
+					if (_rollOverPanel.roShowAIHBDCClusters) {
 						_clusterDrawer.drawAIHBDCClusters(g, container);
 					}
 
-					if (_roShowAITBDCClusters) {
+					if (_rollOverPanel.roShowAITBDCClusters) {
 						_clusterDrawer.drawAITBDCClusters(g, container);
 					}
 
@@ -235,14 +203,14 @@ public class DCHexView extends HexView implements IRollOverListener {
 
 
 					drawSectorNumbers(g, container, Color.cyan, 85);
-					
+
 					Point p0 = new Point();
 					Point p1 = new Point();
-					
+
 					for (int sect = 0; sect < 3; sect++) {
 						Point2D.Double poly0[] = _superLayerItems[sect][0].getPolygon();
 						Point2D.Double poly3[] = _superLayerItems[sect+3][0].getPolygon();
-						
+
 						container.worldToLocal(p0, poly0[0]);
 						container.worldToLocal(p1, poly3[0]);
 						g.setColor(Color.cyan);
@@ -255,7 +223,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 		getContainer().setAfterDraw(afterDraw);
 
 	}
-	
+
 	/**
 	 * Get the wire polygon for a given wire
 	 * @param sector 1-based sector
@@ -267,7 +235,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 	public void getWirePolygon(int sector, int superLayer, int layer, int wire, Point2D.Double[] poly) {
 		_superLayerItems[sector-1][superLayer - 1].getWirePolygon(layer, wire, poly);
 	}
-	
+
 
 	//draw data selected hightlight data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
@@ -320,8 +288,8 @@ public class DCHexView extends HexView implements IRollOverListener {
 					break;
 				}
 			}
-		}	
-		
+		}
+
 		if (superlayer > 0) {
 			feedbackStrings.add("$aqua$sector " + sector + " superlayer " + superlayer);
 			int layer = _superLayerItems[sector - 1][superlayer - 1].whichLayer(container, pp);
@@ -330,17 +298,17 @@ public class DCHexView extends HexView implements IRollOverListener {
 				feedbackStrings.add("$aqua$layer " + layer + " wire " + wire);
 				_superLayerItems[sector - 1][superlayer - 1].addToFeedback(layer, wire, feedbackStrings);
 			}
-			
-			
+
+
 			double totalOcc = 100. * _dcData.totalOccupancy();
 			double sectorOcc = 100. * _dcData.totalSectorOccupancy(sector);
 			double superlayerOcc = 100. * _dcData.totalSuperlayerOccupancy(sector, superlayer);
-			
+
 			String occStr = String.format("occ  total %-6.2f%%  sect %-6.2f%%  suplay %-6.2f%%", totalOcc,
 					sectorOcc, superlayerOcc);
 			feedbackStrings.add("$aqua$" + occStr);
-			
-			
+
+
 		}
 	}
 
@@ -367,7 +335,7 @@ public class DCHexView extends HexView implements IRollOverListener {
 		view.setBounds(vr);
 		return view;
 	}
-	
+
 
 	/**
 	 * Display raw DC hits?
@@ -414,58 +382,6 @@ public class DCHexView extends HexView implements IRollOverListener {
 		return _controlPanel.getAllDCDisplayPanel().showAITBHits();
 	}
 
-
-
-	@Override
-	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
-
-		String text = label.getText();
-		if (text.contains(HB_ROLLOVER)) {
-			_roShowHBDCClusters = true;
-		}
-		else if (text.contains(TB_ROLLOVER)) {
-			_roShowTBDCClusters = true;
-		}
-		else if (text.contains(AIHB_ROLLOVER)) {
-			_roShowAIHBDCClusters = true;
-		}
-		else if (text.contains(AITB_ROLLOVER)) {
-			_roShowAITBDCClusters = true;
-		}
-
-		label.setForeground(activeFG);
-		label.setBackground(activeBG);
-
-		refresh();
-	}
-
-	@Override
-	public void RollOverMouseExit(JLabel label, MouseEvent e) {
-
-		if (e.isAltDown() || e.isControlDown() || e.isMetaDown()) {
-			return;
-		}
-
-		String text = label.getText();
-		if (text.contains(HB_ROLLOVER)) {
-			_roShowHBDCClusters = false;
-		}
-		else if (text.contains(TB_ROLLOVER)) {
-			_roShowTBDCClusters = false;
-		}
-		else if (text.contains(AIHB_ROLLOVER)) {
-			_roShowAIHBDCClusters = false;
-		}
-		else if (text.contains(AITB_ROLLOVER)) {
-			_roShowAITBDCClusters = false;
-		}
-
-		label.setForeground(inactiveFG);
-		label.setBackground(inactiveBG);
-
-		refresh();
-	}
-	
 
 
 }
