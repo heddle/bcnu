@@ -11,7 +11,7 @@ import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.item.AItem;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.fastMCed.streaming.StreamManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.MagFieldDisplayArray;
@@ -59,7 +59,7 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 	 * @param layer the layer this item lives on
 	 * @param view  the view
 	 */
-	public MagFieldItem(LogicalLayer layer, AView view) {
+	public MagFieldItem(ItemList layer, AView view) {
 		super(layer);
 		_view = view;
 		_style.setFillColor(null);

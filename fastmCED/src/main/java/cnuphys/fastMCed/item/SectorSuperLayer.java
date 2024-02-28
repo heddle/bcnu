@@ -9,8 +9,8 @@ import java.util.List;
 import org.jlab.geom.prim.Plane3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.fastMCed.eventio.PhysicsEventManager;
 import cnuphys.fastMCed.geometry.DCGeometry;
 import cnuphys.fastMCed.geometry.GeometryManager;
@@ -54,7 +54,7 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 	 * @param sector     the 1-based sector [1..6]
 	 * @param superLayer the 1-based superlayer [1..6]
 	 */
-	public SectorSuperLayer(LogicalLayer logLayer, SectorView view, int sector, int superLayer) {
+	public SectorSuperLayer(ItemList logLayer, SectorView view, int sector, int superLayer) {
 		super(logLayer);
 		_view = view;
 		_sector = sector;

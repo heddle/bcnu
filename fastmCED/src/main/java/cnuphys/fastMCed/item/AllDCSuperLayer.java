@@ -20,8 +20,8 @@ import cnuphys.snr.NoiseReductionParameters;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.RectangleItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -87,7 +87,7 @@ public class AllDCSuperLayer extends RectangleItem {
 	 * @param superLayer     the superLayer [0..5]
 	 * @param numWires       the number of wires per layer
 	 */
-	public AllDCSuperLayer(LogicalLayer layer, AllDCView view, Rectangle2D.Double worldRectangle, int sector,
+	public AllDCSuperLayer(ItemList layer, AllDCView view, Rectangle2D.Double worldRectangle, int sector,
 			int superLayer, int numWires) {
 		super(layer, worldRectangle);
 		_worldRectangle = worldRectangle;

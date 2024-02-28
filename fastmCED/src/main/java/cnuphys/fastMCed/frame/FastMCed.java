@@ -16,9 +16,11 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
 import org.jlab.clas.physics.PhysicsEvent;
 import org.jlab.geom.DetectorId;
@@ -59,7 +61,6 @@ import cnuphys.fastMCed.view.data.DataView;
 import cnuphys.fastMCed.view.sector.DisplaySectors;
 import cnuphys.fastMCed.view.sector.SectorView;
 import cnuphys.fastMCed.view.trajinfo.TrajectoryInfoView;
-import cnuphys.magfield.FastMath;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
 import cnuphys.splot.example.MemoryUsageDialog;
@@ -361,7 +362,27 @@ public class FastMCed extends BaseMDIApplication
 	 * Refresh all views (with containers)
 	 */
 	public static void refresh() {
-		ViewManager.getInstance().refreshAllViews();
+
+		if (SwingUtilities.isEventDispatchThread()) {
+			refreshAllViews();
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						refreshAllViews();
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void refreshAllViews() {
+	    for (JInternalFrame frame : Desktop.getInstance().getAllFrames()) {
+	        frame.repaint();
+	    }
 	}
 
 	// fix the event number label

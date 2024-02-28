@@ -83,9 +83,9 @@ public class ConsumerManager extends Vector<PhysicsEventConsumer>
 		add(csvConsumer);
 
 		// always add a test consumer
-//		AcceptanceMapperConsumer accConsumer = new AcceptanceMapperConsumer();
-//		accConsumer.setActive(true);
-//		add(accConsumer);
+		AcceptanceMapperConsumer accConsumer = new AcceptanceMapperConsumer();
+		accConsumer.setActive(true);
+		add(accConsumer);
 
 		SNRThreeLevelTestConsumer snr3Consumer = new SNRThreeLevelTestConsumer();
 		snr3Consumer.setActive(false);

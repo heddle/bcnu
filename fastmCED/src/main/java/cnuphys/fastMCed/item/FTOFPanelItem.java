@@ -8,8 +8,8 @@ import java.awt.geom.Point2D;
 import java.util.List;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.fastMCed.geometry.FTOFPanel;
 import cnuphys.fastMCed.geometry.GeometryManager;
 import cnuphys.fastMCed.streaming.StreamManager;
@@ -37,7 +37,7 @@ public class FTOFPanelItem extends PolygonItem {
 	 * 
 	 * @param logLayer the Layer this item is on.
 	 */
-	public FTOFPanelItem(LogicalLayer logLayer, FTOFPanel panel, int sector) {
+	public FTOFPanelItem(ItemList logLayer, FTOFPanel panel, int sector) {
 		super(logLayer, getShell((SectorView) logLayer.getContainer().getView(), panel, sector));
 
 		_ftofPanel = panel;
@@ -48,7 +48,8 @@ public class FTOFPanelItem extends PolygonItem {
 		// _style.setFillColor(X11Colors.getX11Color("Wheat", 128));
 		_style.setFillColor(Color.white);
 		_style.setLineWidth(0);
-		_view = (SectorView) getLayer().getContainer().getView();
+		_view = (SectorView) getItemList
+				().getContainer().getView();
 	}
 
 	/**

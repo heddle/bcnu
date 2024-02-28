@@ -5,6 +5,7 @@ import java.util.Vector;
 import org.jlab.clas.physics.Particle;
 import org.jlab.clas.physics.PhysicsEvent;
 
+import cnuphys.adaptiveSwim.SwimType;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.lund.LundId;
@@ -80,7 +81,7 @@ public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 			double theta = Math.toDegrees(Math.acos(pzo / p));
 			double phi = Math.toDegrees(Math.atan2(pyo, pxo));
 
-			v.add(new TrajectoryRowData(index, lid, x, y, z, p, theta, phi, 0, "FastMC"));
+			v.add(new TrajectoryRowData(index, lid, x, y, z, p, theta, phi, 0, "FastMC", SwimType.MCSWIM));
 		}
 
 		return v;
