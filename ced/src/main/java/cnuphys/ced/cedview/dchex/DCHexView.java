@@ -88,7 +88,7 @@ public class DCHexView extends HexView {
 	protected void addControls() {
 
 		_controlPanel = new ControlPanel(this,
-				ControlPanel.DISPLAYARRAY
+				ControlPanel.NOISECONTROL + ControlPanel.DISPLAYARRAY
 				+ ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND + ControlPanel.MATCHINGBANKSPANEL
 				+ ControlPanel.ALLDCDISPLAYPANEL,
 				DisplayBits.ACCUMULATION, 3, 5);

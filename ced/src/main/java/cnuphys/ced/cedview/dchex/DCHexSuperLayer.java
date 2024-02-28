@@ -8,9 +8,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
-import cnuphys.bCNU.geometry.Line;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
@@ -27,6 +25,8 @@ import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.frame.OrderColors;
 import cnuphys.ced.geometry.GeoConstants;
+import cnuphys.ced.noise.NoiseManager;
+import cnuphys.snr.NoiseReductionParameters;
 
 public class DCHexSuperLayer extends PolygonItem {
 
@@ -69,6 +69,8 @@ public class DCHexSuperLayer extends PolygonItem {
 	private Point2D.Double wirePoly[] = new Point2D.Double[4];
 	private Polygon ppoly = new Polygon();
 	
+	// convenient access to the noise manager
+	NoiseManager _noiseManager = NoiseManager.getInstance();
 
 
 	
@@ -226,17 +228,27 @@ public class DCHexSuperLayer extends PolygonItem {
 	
 	//draw data in single hit mode
 	private void drawSingleEventData(Graphics g, IContainer container) {
+		
+		
+		// draw results of noise reduction? If so will need the parameters
+		// (which have the results)
+		NoiseReductionParameters parameters = _noiseManager.getParameters(_sector - 1, _superLayer - 1);
+
+
+		// show the noise segment masks?
+		if (_view.showMasks()) {
+			drawMasks(g, container, parameters);
+		}
+		
+		
 		// draw raw hits
 		if (_view.showRawHits()) {
 
 			for (int i = 0; i < _dcData.count(); i++) {
 				// draw the hit
-				
-				Color color = Ced.useOrderColoring() ? OrderColors.getOrderColor(_dcData.order[i]) : Color.red;
-
 				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
-					drawDCHit(g, container, _dcData.layer6[i], _dcData.component[i], 
-							color);
+					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i], 
+							_dcData.noise[i], _dcData.order[i]);
 				}
 			}
 		}
@@ -283,6 +295,106 @@ public class DCHexSuperLayer extends PolygonItem {
 
 	}
 	
+	/**
+	 * Draw the masks showing the effect of the noise finding algorithm
+	 *
+	 * @param g          the graphics context
+	 * @param container  the rendering container
+	 * @param parameters the noise algorithm parameters
+	 */
+	private void drawMasks(Graphics g, IContainer container, NoiseReductionParameters parameters) {
+
+		Rectangle2D.Double wr = new Rectangle2D.Double();
+
+		for (int wire = 0; wire < parameters.getNumWire(); wire++) {
+			boolean leftSeg = parameters.getLeftSegments().checkBit(wire);
+			boolean rightSeg = parameters.getRightSegments().checkBit(wire);
+			if (leftSeg || rightSeg) {
+				if (leftSeg) {
+					drawMask(g, container, wire, parameters.getLeftLayerShifts(), 1, wr);
+				}
+				if (rightSeg) {
+					drawMask(g, container, wire, parameters.getRightLayerShifts(), -1, wr);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Draws the masking that shows where the noise algorithm thinks there are
+	 * segments. Anything not masked is noise.
+	 *
+	 * @param g         the graphics context.
+	 * @param container the rendering container
+	 * @param wire      the ZERO BASED wire 0..
+	 * @param shifts    the parameter shifts for this direction
+	 * @param sign      the direction 1 for left -1 for right
+	 * @param wr        essentially workspace
+	 */
+	private void drawMask(Graphics g, IContainer container, int wire, int shifts[], int sign, Rectangle2D.Double wr) {
+
+		wire++; // convert to 1-based
+
+		Color fill;
+		if (sign == 1) {
+			fill = NoiseManager.maskFillLeft;
+		} else {
+			fill = NoiseManager.maskFillRight;
+		}
+
+		Point pp = new Point();
+		
+		
+		for (int layer = 1; layer <= 6; layer++) {
+			fillWirePoly(g, container, layer, wire, pp, fill);
+
+
+			// ugh -- shifts are 0-based
+			for (int shift = 1; shift <= shifts[layer - 1]; shift++) {
+				int tempWire = wire + sign * shift;
+				if ((tempWire > 0) && (tempWire <= 112)) {
+					fillWirePoly(g, container, layer, tempWire, pp, fill);
+				}
+			}
+		}
+
+	}
+	
+	// fill a wire polygon
+	private void fillWirePoly(Graphics g, IContainer container, int layer, int wire, Point pp, Color color) {
+		getWirePolygon(layer, wire, wirePoly);			
+
+		ppoly.reset();
+		for (int i = 0; i < 4; i++) {
+			container.worldToLocal(pp, wirePoly[i]);
+			ppoly.addPoint(pp.x, pp.y);
+		}
+		g.setColor(color);
+		g.fillPolygon(ppoly);
+		g.drawPolygon(ppoly);
+    }
+	
+	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int order) {
+		// abort if hiding noise and this is noise
+		if (_view.hideNoise() && noise) {
+			return;
+		}
+		
+		if (Ced.useOrderColoring()) {
+			Color color =OrderColors.getOrderColor(order);
+			fillWirePoly(g, container, layer, wire, new Point(), color);
+			return;
+		}
+		
+		if ((_view.showNoiseAnalysis()) && noise) {
+			fillWirePoly(g, container, layer, wire, new Point(), Color.black);
+		} else {
+			fillWirePoly(g, container, layer, wire, new Point(), Color.red);
+		}
+
+
+	}
+
 	
 	/**
 	 * Draw a single dc hit
@@ -294,46 +406,26 @@ public class DCHexSuperLayer extends PolygonItem {
 	 * @param color     for fill colo
 	 */
 	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, Color color) {
-		getWirePolygon(layer, wire, wirePoly);
-		
-		ppoly.reset();
-		Point pp = new Point();
-		for (int i = 0; i < 4; i++) {
-			container.worldToLocal(pp, wirePoly[i]);
-			ppoly.addPoint(pp.x, pp.y);
-		}
-		g.setColor(color);
-		g.fillPolygon(ppoly);
-		g.drawPolygon(ppoly);
+		fillWirePoly(g, container, layer, wire, new Point(), color);
 	}
 
 	//draw results of accumulation
 	private void drawAccumulatedData(Graphics g, IContainer container) {
 
-		Rectangle2D.Double wr = new Rectangle2D.Double(); // used over and over
 		int dcAccumulatedData[][][][] = AccumulationManager.getInstance().getAccumulatedDCData();
 
 		int maxHit = AccumulationManager.getInstance().getMaxDCCount(_superLayer - 1);
+
+		Point pp = new Point();
 
 		for (int layer = 1; layer <= 6; layer++) {
 
 			for (int wire = 1; wire <= 112; wire++) {
 				int hitCount = dcAccumulatedData[_sector - 1][_superLayer - 1][layer-1][wire-1];
-				getWirePolygon(layer, wire, wirePoly);
-				
-				ppoly.reset();
-				Point pp = new Point();
-				for (int i = 0; i < 4; i++) {
-					container.worldToLocal(pp, wirePoly[i]);
-					ppoly.addPoint(pp.x, pp.y);
-				}
-			
-
 				double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 				AccumulationManager.getInstance();
 				Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
-
-				drawDCHit(g, container, layer, wire, color);
+				fillWirePoly(g, container, layer, wire, pp, color);
 
 			}
 		}
