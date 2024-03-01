@@ -432,10 +432,9 @@ public class GeometryManager {
 		Path3D path = new Path3D();
 		if (traj != null) {
 			for (double[] tp : traj) {
-				// convert to cm
-				double x = 100. * tp[0];
-				double y = 100. * tp[1];
-				double z = 100. * tp[2];
+				double x = tp[0];
+				double y = tp[1];
+				double z = tp[2];
 				path.addPoint(x, y, z);
 			}
 		}

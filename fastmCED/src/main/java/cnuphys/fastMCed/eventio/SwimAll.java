@@ -22,8 +22,8 @@ import cnuphys.swim.Swimming;
 public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 
 	// integration cutoff
-	private static final double RMAX = 8;
-	private static final double PATHMAX = 10.0;
+	private static final double RMAX = 800;
+	private static final double PATHMAX = 1000.0;
 
 	private static Swimmer _swimmer = null;
 	private DefaultSwimStopper _stopper;
@@ -48,9 +48,9 @@ public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 			double pzo = particle.pz(); // leave in GeV
 
 			// note conversions from mm to cm
-			double x = particle.vertex().x() / 100.; // cm to meters
-			double y = particle.vertex().y() / 100.; // cm to meters
-			double z = particle.vertex().z() / 100.; // cm to meters
+			double x = particle.vertex().x();
+			double y = particle.vertex().y();
+			double z = particle.vertex().z();
 
 			swim(lid, pxo, pyo, pzo, x, y, z);
 		}
