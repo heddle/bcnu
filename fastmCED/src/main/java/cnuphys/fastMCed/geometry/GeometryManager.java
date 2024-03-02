@@ -27,10 +27,6 @@ public class GeometryManager {
 
 		// DC Geometry
 		DCGeometry.initialize();
-
-		// get the FTOF geometry
-		FTOFGeometry.initialize();
-
 	}
 
 	/**

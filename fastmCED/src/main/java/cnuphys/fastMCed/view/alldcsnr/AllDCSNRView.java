@@ -1,4 +1,4 @@
-package cnuphys.fastMCed.view.alldc;
+package cnuphys.fastMCed.view.alldcsnr;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -21,26 +20,26 @@ import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.bCNU.view.BaseView;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.ControlPanel;
 
 /**
- * The AllDC view is a non-faithful representation of all six sectors of
- * driftchambers. It is very useful for occupancy plots.
+ * The AllDC_SRN view is a non-faithful representation of all six sectors of
+ * driftchambers. It shows the SNR data used for machine learning.
  * 
  * @author heddle
  * 
  */
+
 @SuppressWarnings("serial")
-public class AllDCView extends AView {
+public class AllDCSNRView extends AView {
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 
 	// base title
-	private static final String _baseTitle = "All Drift Chambers";
+	private static final String _baseTitle = "SNR Machine Learning Inputs";
 
 	/**
 	 * A sector rectangle for each sector
@@ -54,19 +53,16 @@ public class AllDCView extends AView {
 	 * Used for drawing the sector rects.
 	 */
 	private Styled _sectorStyle;
+	
 
 	// The optional "before" drawer for this view
 	private IDrawable _beforeDraw;
-
-	private static final int NUM_SUPERLAYER = 6;
-	private static final int NUM_WIRE = 112;
-	private static final int NUM_SECTOR = 6;
 
 	// transparent color
 	private static final Color TRANS = new Color(255, 255, 0, 80);
 
 	/**
-	 * The all dc view is rendered on 2x3 grid. Each grid is 1x1 in world
+	 * The all dc snr view is rendered on 2x3 grid. Each grid is 1x1 in world
 	 * coordinates. Thus the whole view has width = 3 and height = 2. These offesets
 	 * move the sector to the right spot on the grid.
 	 */
@@ -80,16 +76,16 @@ public class AllDCView extends AView {
 	private static double _yoffset[] = { 1.0, 1.0, 1.0, 0.0, 0.0, 0.0 };
 
 	// all the superlayer items indexed by sector (0..5) and superlayer (0..5)
-	private AllDCSuperLayer _superLayerItems[][];
+	private AllDCSNRSuperLayer _superLayerItems[][];
 
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(0.0, 0.0, 3.0, 2.0);
-
+	
 	/**
 	 * Create an allDCView
 	 * 
 	 * @param keyVals variable set of arguments.
 	 */
-	private AllDCView(Object... keyVals) {
+	private AllDCSNRView(Object... keyVals) {
 		super(keyVals);
 
 		setSectorWorldRects();
@@ -97,43 +93,13 @@ public class AllDCView extends AView {
 		setAfterDraw();
 		addItems();
 	}
-
-	/**
-	 * Convenience method for creating an AllDC View.
-	 * 
-	 * @return a new AllDCView.
-	 */
-	public static AllDCView createAllDCView() {
-		AllDCView view = null;
-
-		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.65);
-
-		// create the view
-		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, // container
-																													// width,
-																													// not
-																													// total
-																													// view
-																													// width
-				PropertySupport.HEIGHT, d.height, // container height, not total view width
-				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, AView.TOOLBARBITS, PropertySupport.VISIBLE,
-				true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
-				PropertySupport.STANDARDVIEWDECORATIONS, true);
-
-		view._controlPanel = new ControlPanel(view, ControlPanel.NOISECONTROL + ControlPanel.FEEDBACK, 0, 3, 5);
-
-		view.add(view._controlPanel, BorderLayout.EAST);
-		view.pack();
-		return view;
-	}
-
+	
 	/**
 	 * Create the before drawer to draw the sector outlines.
 	 */
 	private void setBeforeDraw() {
 		// style for sector rects
-		_sectorStyle = new Styled(X11Colors.getX11Color("dark slate gray"));
+		_sectorStyle = new Styled(X11Colors.getX11Color("dark green"));
 		_sectorStyle.setLineColor(Color.lightGray);
 
 		// use a before-drawer to sector dividers and labels
@@ -142,7 +108,7 @@ public class AllDCView extends AView {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 				g.setFont(labelFont);
-				for (int sector = 0; sector < NUM_SECTOR; sector++) {
+				for (int sector = 0; sector < 6; sector++) {
 					WorldGraphicsUtilities.drawWorldRectangle(g, container, _sectorWorldRects[sector], _sectorStyle);
 					double left = _sectorWorldRects[sector].x;
 					double top = _sectorWorldRects[sector].y + _sectorWorldRects[sector].height;
@@ -155,7 +121,7 @@ public class AllDCView extends AView {
 
 		getContainer().setBeforeDraw(_beforeDraw);
 	}
-
+	
 	/**
 	 * Set the views before draw
 	 */
@@ -214,15 +180,15 @@ public class AllDCView extends AView {
 		double superLayerGap = 0.02; // between superlayers
 		double regionGap = 0.04; // between regions
 		double whiteSpace = bottomMargin + topMargin + 3 * superLayerGap + 2 * regionGap;
-		double height = (1.0 - whiteSpace) / NUM_SUPERLAYER;
-
+		double height = (1.0 - whiteSpace) / 6.0;
 		// cache all the superlayer items we are about to create
-		_superLayerItems = new AllDCSuperLayer[NUM_SECTOR][NUM_SUPERLAYER];
+		// cache all the superlayer items we are about to create
+		_superLayerItems = new AllDCSNRSuperLayer[6][6];
 
 		// loop over the sectors and add 6 superlayer items for each sector
-		for (int sector = 0; sector < NUM_SECTOR; sector++) {
+		for (int sector = 0; sector < 6; sector++) {
 			double yo = bottomMargin;
-			for (int superLayer = 0; superLayer < NUM_SUPERLAYER; superLayer++) {
+			for (int superLayer = 0; superLayer < 6; superLayer++) {
 				Rectangle2D.Double wr = new Rectangle2D.Double(_xoffset[sector] + xo, _yoffset[sector] + yo, width,
 						height);
 
@@ -232,11 +198,11 @@ public class AllDCView extends AView {
 
 				_superLayerItems[sector][superLayer] = null;
 				if (sector < 3) {
-					_superLayerItems[sector][superLayer] = new AllDCSuperLayer(detectorLayer, this, wr, sector,
-							superLayer, NUM_WIRE);
+					_superLayerItems[sector][superLayer] = new AllDCSNRSuperLayer(detectorLayer, this, wr, sector,
+							superLayer);
 				} else {
-					_superLayerItems[sector][superLayer] = new AllDCSuperLayer(detectorLayer, this, wr, sector,
-							5 - superLayer, NUM_WIRE);
+					_superLayerItems[sector][superLayer] = new AllDCSNRSuperLayer(detectorLayer, this, wr, sector,
+							5 - superLayer);
 				}
 
 				if ((superLayer % 2) == 0) {
@@ -247,24 +213,52 @@ public class AllDCView extends AView {
 			}
 
 		}
+
 	}
 
+
 	/**
-	 * Get the AllDCSuperLayer item for the given sector and superlayer.
+	 * Convenience method for creating an AllDC View.
 	 * 
-	 * @param sector     the zero-based sector [0..5]
-	 * @param superLayer the zero based super layer [0..5]
-	 * @return the AllDCSuperLayer item for the given sector and superlayer (or
-	 *         <code>null</code>).
+	 * @return a new AllDCView.
 	 */
-	public AllDCSuperLayer getAllDCSuperLayer(int sector, int superLayer) {
-		if ((sector < 0) || (sector >= NUM_SECTOR)) {
-			return null;
+	public static AllDCSNRView createAllDCSNRView() {
+		AllDCSNRView view = null;
+
+		// set to a fraction of screen
+		Dimension d = GraphicsUtilities.screenFraction(0.75);
+
+		// create the view
+		view = new AllDCSNRView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, 
+				PropertySupport.HEIGHT, d.height,
+				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, AView.TOOLBARBITS, PropertySupport.VISIBLE,
+				true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
+				PropertySupport.STANDARDVIEWDECORATIONS, true);
+
+		view._controlPanel = new ControlPanel(view, ControlPanel.FEEDBACK, 0, 3, 5);
+
+		view.add(view._controlPanel, BorderLayout.EAST);
+		view.pack();
+		return view;
+	}
+
+
+	/**
+	 * Get the sector corresponding to the current pointer location..
+	 * 
+	 * @param container   the base container for the view.
+	 * @param screenPoint the pixel point
+	 * @param worldPoint  the corresponding world location.
+	 * @return the sector [1..6] or -1 for none.
+	 */
+	@Override
+	public int getSector(IContainer container, Point screenPoint, Point2D.Double worldPoint) {
+		for (int sector = 0; sector < 6; sector++) {
+			if (_sectorWorldRects[sector].contains(worldPoint)) {
+				return sector + 1; // convert to 1-based index
+			}
 		}
-		if ((superLayer < 0) || (superLayer >= NUM_SUPERLAYER)) {
-			return null;
-		}
-		return _superLayerItems[sector][superLayer];
+		return -1;
 	}
 
 	/**
@@ -281,72 +275,11 @@ public class AllDCView extends AView {
 
 		// get the common information
 		super.getFeedbackStrings(container, screenPoint, worldPoint, feedbackStrings);
-		// feedbackStrings.add("#DC hits: " + _numHits);
 
 		int sector = getSector(container, screenPoint, worldPoint);
 
 		if (sector > 0) {
-			boolean leftTrack = SNRManager.getInstance().potentialLeftTrack(sector - 1);
-			boolean rightTrack = SNRManager.getInstance().potentialRightTrack(sector - 1);
-			feedbackStrings.add("potential left  track: " + leftTrack);
-			feedbackStrings.add("potential right track: " + rightTrack);
 		}
-
-	}
-
-	/**
-	 * Get the sector corresponding to the current pointer location..
-	 * 
-	 * @param container   the base container for the view.
-	 * @param screenPoint the pixel point
-	 * @param worldPoint  the corresponding world location.
-	 * @return the sector [1..6] or -1 for none.
-	 */
-	@Override
-	public int getSector(IContainer container, Point screenPoint, Point2D.Double worldPoint) {
-		for (int sector = 0; sector < NUM_SECTOR; sector++) {
-			if (_sectorWorldRects[sector].contains(worldPoint)) {
-				return sector + 1; // convert to 1-based index
-			}
-		}
-		return -1;
-	}
-
-	/**
-	 * Get the world rectangle for a given cell (the wire is in the center)
-	 * 
-	 * @param sector     the 1-based sector
-	 * @param superLayer the 1-based super layer
-	 * @param layer      the 1-based layer [1..6]
-	 * @param wire       the 1-based wire [1..] return the world rectangle cell for
-	 *                   this layer, wire
-	 */
-	public void getCell(int sector, int superLayer, int layer, int wire, Rectangle2D.Double wr) {
-		_superLayerItems[sector - 1][superLayer - 1].getCell(layer, wire, wr);
-	}
-
-	/**
-	 * Clone the view.
-	 * 
-	 * @return the cloned view
-	 */
-	@Override
-	public BaseView cloneView() {
-		super.cloneView();
-		CLONE_COUNT++;
-
-		// limit
-		if (CLONE_COUNT > 2) {
-			return null;
-		}
-
-		Rectangle vr = getBounds();
-		vr.x += 40;
-		vr.y += 40;
-
-		AllDCView view = createAllDCView();
-		view.setBounds(vr);
-		return view;
 
 	}
 

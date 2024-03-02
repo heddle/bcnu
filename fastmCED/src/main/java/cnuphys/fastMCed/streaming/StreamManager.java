@@ -151,7 +151,6 @@ public class StreamManager {
 		}
 
 		_listeners.add(IStreamProcessor.class, listener);
-		System.err.println("num stream listeners " + _listeners.getListenerCount());
 	}
 
 	/**

@@ -26,7 +26,6 @@ import org.jlab.clas.physics.PhysicsEvent;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.fastMCed.eventgen.GeneratorManager;
 import cnuphys.fastMCed.eventgen.IEventSource;
 
 /**
@@ -48,7 +47,7 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 	private int reason;
 
 	// random number generator
-	private Random _rand;
+	private Random _rand = new Random();
 
 	// convenient access to south button panel
 	private JPanel buttonPanel;

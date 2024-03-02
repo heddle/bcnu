@@ -8,7 +8,6 @@ import org.jlab.geom.DetectorId;
 import org.jlab.geom.prim.Path3D;
 
 import cnuphys.fastMCed.geometry.DCGeometry;
-import cnuphys.fastMCed.geometry.FTOFGeometry;
 import cnuphys.lund.GeneratedParticleRecord;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -71,7 +70,6 @@ public class ParticleHits {
 			HitHolder ftofHH = new HitHolder(6, 0);
 
 			dcHH.fill(DCGeometry.getHits(path));
-			ftofHH.fill(FTOFGeometry.getHits(path));
 			hits.put(DetectorId.DC, dcHH);
 			hits.put(DetectorId.FTOF, ftofHH);
 		}

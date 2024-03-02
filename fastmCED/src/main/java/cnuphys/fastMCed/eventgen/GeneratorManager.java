@@ -3,13 +3,10 @@ package cnuphys.fastMCed.eventgen;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JMenu;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JMenuItem;
 
-import cnuphys.fastMCed.eventgen.filegen.LundFileEventGenerator;
 import cnuphys.fastMCed.eventgen.random.RandomEventGenerator;
-import cnuphys.fastMCed.eventgen.sweep.SweepEventGenerator;
 import cnuphys.fastMCed.eventio.PhysicsEventManager;
 
 public class GeneratorManager implements ActionListener {
@@ -24,15 +21,15 @@ public class GeneratorManager implements ActionListener {
 
 	// menu stuff
 	private JMenu _menu;
-	private static JRadioButtonMenuItem _fileGenerator;
-	private static JRadioButtonMenuItem _sweepGenerator;
-	private static JRadioButtonMenuItem _randomGenerator;
+	private static JMenuItem _randomGenerator;
 
 	// singleton
 	private static GeneratorManager instance;
 
 	// private constructor for
 	private GeneratorManager() {
+		RandomEventGenerator generator = RandomEventGenerator.createRandomGenerator(false);
+		PhysicsEventManager.getInstance().setEventGenerator(generator);
 	}
 
 	/**
@@ -61,53 +58,29 @@ public class GeneratorManager implements ActionListener {
 
 	// create the menu
 	private void createMenu() {
-		ButtonGroup bgroup = new ButtonGroup();
-		_menu = new JMenu("Generators");
-		_sweepGenerator = menuItem("Sweep Generator...", bgroup);
-		_fileGenerator = menuItem("Lund File Generator...", bgroup);
-		_randomGenerator = menuItem("Random Generator...", bgroup);
+		_menu = new JMenu("Random Generator");
+		_randomGenerator = menuItem("Ranges...");
 	}
 
-	private JRadioButtonMenuItem menuItem(String label, ButtonGroup bg) {
+	private JMenuItem menuItem(String label) {
 
-		JRadioButtonMenuItem item = new JRadioButtonMenuItem(label);
-		bg.add(item);
+		JMenuItem item = new JMenuItem(label);
 		item.addActionListener(this);
 		_menu.add(item);
 
 		return item;
 	}
 
-	/**
-	 * Set the file generator as the selected generator
-	 */
-	public void setFileGeneratorSelected() {
-		System.err.println("Selecting file generator radio item");
-		_fileGenerator.setSelected(true);
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
 
-		if (source == _fileGenerator) {
-			LundFileEventGenerator lfgenerator = PhysicsEventManager.getInstance().getFileEventGenerator();
-
-			if (lfgenerator != null) {
-				PhysicsEventManager.getInstance().setEventGenerator(lfgenerator);
-				PhysicsEventManager.getInstance().reloadCurrentEvent();
-			}
-		} else if (source == _randomGenerator) {
-			RandomEventGenerator generator = RandomEventGenerator.createRandomGenerator();
+        if (source == _randomGenerator) {
+			RandomEventGenerator generator = RandomEventGenerator.createRandomGenerator(true);
 			if (generator != null) {
 				PhysicsEventManager.getInstance().setEventGenerator(generator);
 			}
-		} else if (source == _sweepGenerator) {
-			SweepEventGenerator generator = SweepEventGenerator.createSweepGenerator();
-			if (generator != null) {
-				PhysicsEventManager.getInstance().setEventGenerator(generator);
-			}
-		}
+		} 
 	}
 
 	public static double getPMin() {

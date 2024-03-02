@@ -1,20 +1,17 @@
 package cnuphys.fastMCed.eventio;
 
-import java.io.File;
 import java.util.List;
 import java.util.Vector;
 
-import javax.swing.JFileChooser;
 import javax.swing.event.EventListenerList;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jlab.clas.physics.PhysicsEvent;
 import org.jlab.geom.prim.Path3D;
+
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.fastMCed.eventgen.AEventGenerator;
-import cnuphys.fastMCed.eventgen.GeneratorManager;
-import cnuphys.fastMCed.eventgen.filegen.LundFileEventGenerator;
 import cnuphys.fastMCed.fastmc.ParticleHits;
 import cnuphys.fastMCed.frame.FastMCed;
 import cnuphys.fastMCed.geometry.GeometryManager;
@@ -26,7 +23,7 @@ import cnuphys.swim.Swimming;
 
 /**
  * Manager class for the PhysicsEvent data provided by the FastMC engine
- * 
+ *
  * @author heddle
  *
  */
@@ -35,23 +32,16 @@ public class PhysicsEventManager {
 	// particle hits corresponding to the current event.
 	// these are the results from the FastMC engine given the tracks
 	// found in Lund file event and swum by Swimmer
-	private Vector<ParticleHits> _currentParticleHits = new Vector<ParticleHits>();
+	private Vector<ParticleHits> _currentParticleHits = new Vector<>();
 
 	// the current event generator
 	private AEventGenerator _eventGenerator;
 
-	/** Last selected data file */
-	private static String dataFilePath = Environment.getInstance().getCurrentWorkingDirectory() + "/../../../data";
-
 	/** possible lund file extensions */
 	public static String extensions[] = { "dat", "DAT", "lund" };
 
-	// filter to look for lund files
-	private static FileNameExtensionFilter _lundFileFilter = new FileNameExtensionFilter("Lund Event Files",
-			extensions);
-
 	// Unique lund ids in the event (if any)
-	private Vector<LundId> _uniqueLundIds = new Vector<LundId>();
+	private Vector<LundId> _uniqueLundIds = new Vector<>();
 
 	// manager singleton
 	private static PhysicsEventManager instance;
@@ -63,9 +53,6 @@ public class PhysicsEventManager {
 	// someone who can swim all particles in the current event
 	private ISwimAll _allSwimmer;
 
-	// cache the lund file generator
-	LundFileEventGenerator _lundFileGenerator;
-
 	// private constructor for manager
 	private PhysicsEventManager() {
 		_allSwimmer = new SwimAll();
@@ -73,7 +60,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Public access to the singleton
-	 * 
+	 *
 	 * @return
 	 */
 	public static PhysicsEventManager getInstance() {
@@ -83,36 +70,10 @@ public class PhysicsEventManager {
 		return instance;
 	}
 
-	/**
-	 * Get the current event generator
-	 * 
-	 * @return the current event generator
-	 */
-	public AEventGenerator getEventGenerator() {
-		return _eventGenerator;
-	}
-
-	/**
-	 * The file generator gets cached so that it can be restored
-	 * 
-	 * @return the cached file generator
-	 */
-	public LundFileEventGenerator getFileEventGenerator() {
-		return _lundFileGenerator;
-	}
-
-	/**
-	 * Set the lund file generator
-	 * 
-	 * @param generator the lund file generator
-	 */
-	public void setFileEventGenerator(LundFileEventGenerator generator) {
-		_lundFileGenerator = generator;
-	}
 
 	/**
 	 * Set the event generator
-	 * 
+	 *
 	 * @param generator the new event generator
 	 */
 	public void setEventGenerator(AEventGenerator generator) {
@@ -124,12 +85,11 @@ public class PhysicsEventManager {
 
 		_eventGenerator = generator;
 		reset();
-		notifyEventListeners(_eventGenerator);
 	}
 
 	/**
 	 * Accessor for the all swimmer
-	 * 
+	 *
 	 * @return the all swimmer
 	 */
 	public ISwimAll getAllSwimmer() {
@@ -138,7 +98,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Get a collection of unique LundIds in the current event
-	 * 
+	 *
 	 * @return a collection of unique LundIds
 	 */
 	public Vector<LundId> uniqueLundIds() {
@@ -163,7 +123,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Get the next event from the active generator.
-	 * 
+	 *
 	 * @return the next event from the generator
 	 */
 	public PhysicsEvent nextEvent() {
@@ -245,7 +205,7 @@ public class PhysicsEventManager {
 	 * Get the hits for all particles in the current event These are the results
 	 * from the FastMC engine given the tracks found in Lund file event and swum by
 	 * Swimmer
-	 * 
+	 *
 	 * @return the detector hits for the current event
 	 */
 	public Vector<ParticleHits> getParticleHits() {
@@ -254,7 +214,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Get the current event number from the active generator
-	 * 
+	 *
 	 * @return the current event number
 	 */
 	public int eventNumber() {
@@ -263,7 +223,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Get the event count from the active generator
-	 * 
+	 *
 	 * @return the current event count
 	 */
 	public int getEventCount() {
@@ -272,7 +232,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Are there any more events?
-	 * 
+	 *
 	 * @return <code>true</code> if we have not reached the end of the stream
 	 */
 	public boolean moreEvents() {
@@ -281,7 +241,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Get the number of remaining events
-	 * 
+	 *
 	 * @return the number of remaining events
 	 */
 	public int getNumRemainingEvents() {
@@ -290,7 +250,7 @@ public class PhysicsEventManager {
 
 	/**
 	 * Get a description of the active event generator
-	 * 
+	 *
 	 * @return a description of the active event generator
 	 */
 	public String getGeneratorDescription() {
@@ -298,40 +258,12 @@ public class PhysicsEventManager {
 	}
 
 	/**
-	 * Set the default directory in which to look for event files.
-	 * 
-	 * @param defaultDataDir default directory in which to look for event files
-	 */
-	public static void setDefaultDataDir(String defaultDataDir) {
-		dataFilePath = defaultDataDir;
-	}
-
-	/**
 	 * Get the current eventfrom the active generator
-	 * 
+	 *
 	 * @return the current generated event
 	 */
 	public PhysicsEvent getCurrentEvent() {
 		return (_eventGenerator == null) ? null : _eventGenerator.getCurrentEvent();
-	}
-
-	/**
-	 * Open a Lund File
-	 * 
-	 * @return the lund file
-	 */
-	public void openFile() {
-		JFileChooser chooser = new JFileChooser(dataFilePath);
-		chooser.setSelectedFile(null);
-		chooser.setFileFilter(_lundFileFilter);
-		int returnVal = chooser.showOpenDialog(null);
-		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			File file = chooser.getSelectedFile();
-			dataFilePath = file.getParent();
-			GeneratorManager.getInstance().setFileGeneratorSelected();
-			_lundFileGenerator = new LundFileEventGenerator(file);
-			setEventGenerator(_lundFileGenerator);
-		}
 	}
 
 	/**
@@ -344,34 +276,13 @@ public class PhysicsEventManager {
 
 	/**
 	 * Determines whether any next event control should be enabled.
-	 * 
+	 *
 	 * @return <code>true</code> if any next event control should be enabled.
 	 */
 	public boolean isNextOK() {
 		return (moreEvents());
 	}
 
-	// notify listeners that we have changed generators
-	public void notifyEventListeners(AEventGenerator newGenerator) {
-
-		Swimming.clearAllTrajectories();
-
-		for (int index = 0; index < 3; index++) {
-			if (_listeners[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _listeners[index].getListenerList();
-
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					if (listeners[i] == IPhysicsEventListener.class) {
-						((IPhysicsEventListener) listeners[i + 1]).newEventGenerator(newGenerator);
-					}
-				}
-			}
-		}
-		FastMCed.getFastMCed().fixTitle();
-	}
 
 	// notify the listeners
 	private void notifyPhysicsListeners(PhysicsEvent event) {
@@ -398,7 +309,7 @@ public class PhysicsEventManager {
 	/**
 	 * Remove a IPhysicsEventListener. IPhysicsEventListener listeners listen for
 	 * new physics events.
-	 * 
+	 *
 	 * @param listener the IPhysicsEventListener listener to remove.
 	 */
 	public void removePhysicsListener(IPhysicsEventListener listener) {
@@ -417,7 +328,7 @@ public class PhysicsEventManager {
 	/**
 	 * Add a IPhysicsEventListener. IPhysicsEventListener listeners listen for new
 	 * events.
-	 * 
+	 *
 	 * @param listener the IPhysicsEventListener listener to add.
 	 * @param index    Determines gross notification order. Those in index 0 are
 	 *                 notified first. Then those in index 1. Finally those in index
@@ -436,13 +347,6 @@ public class PhysicsEventManager {
 		}
 
 		_listeners[index].add(IPhysicsEventListener.class, listener);
-
-		int c0 = (_listeners[0] == null) ? 0 : _listeners[0].getListenerCount();
-		int c1 = (_listeners[1] == null) ? 0 : _listeners[1].getListenerCount();
-		int c2 = (_listeners[2] == null) ? 0 : _listeners[2].getListenerCount();
-
-		System.err.println("num event listeners " + (c0 + c1 + c2));
-
 	}
 
 }

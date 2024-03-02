@@ -26,16 +26,19 @@ public class RandomEventGenerator extends AEventGenerator {
 	 * 
 	 * @return a random event generator
 	 */
-	public static RandomEventGenerator createRandomGenerator() {
+	public static RandomEventGenerator createRandomGenerator(boolean useDialog) {
 		RandomEvGenDialog dialog = new RandomEvGenDialog(null, 4);
-		dialog.setVisible(true);
 
-		if (dialog.getReason() == DialogUtilities.OK_RESPONSE) {
-			return new RandomEventGenerator(dialog);
-		} else {
-			return null;
+		if (useDialog) {
+			dialog.setVisible(true);
+
+			if (dialog.getReason() == DialogUtilities.OK_RESPONSE) {
+				return new RandomEventGenerator(dialog);
+			}
 		}
+		return new RandomEventGenerator(dialog);
 	}
+
 
 	@Override
 	public String generatorDescription() {

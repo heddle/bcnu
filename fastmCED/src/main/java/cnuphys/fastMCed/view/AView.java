@@ -489,15 +489,6 @@ public abstract class AView extends BaseView
 		return title;
 	}
 
-	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
-	}
-
 	public Shape clipView(Graphics g) {
 		Shape oldClip = g.getClip();
 

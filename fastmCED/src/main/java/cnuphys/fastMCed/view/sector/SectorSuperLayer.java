@@ -1,4 +1,4 @@
-package cnuphys.fastMCed.item;
+package cnuphys.fastMCed.view.sector;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -15,9 +15,6 @@ import cnuphys.fastMCed.eventio.PhysicsEventManager;
 import cnuphys.fastMCed.geometry.DCGeometry;
 import cnuphys.fastMCed.geometry.GeometryManager;
 import cnuphys.fastMCed.streaming.StreamManager;
-import cnuphys.fastMCed.view.sector.ISuperLayer;
-import cnuphys.fastMCed.view.sector.SectorView;
-import cnuphys.fastMCed.view.sector.SuperLayerDrawing;
 
 /**
  * Used in SectorView views.

@@ -24,6 +24,7 @@ import javax.swing.SwingUtilities;
 
 import org.jlab.clas.physics.PhysicsEvent;
 import org.jlab.geom.DetectorId;
+import org.jlab.logging.DefaultLogger;
 
 import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
@@ -57,6 +58,7 @@ import cnuphys.fastMCed.streaming.StreamManager;
 import cnuphys.fastMCed.streaming.StreamProcessStatus;
 import cnuphys.fastMCed.streaming.StreamReason;
 import cnuphys.fastMCed.view.alldc.AllDCView;
+import cnuphys.fastMCed.view.alldcsnr.AllDCSNRView;
 import cnuphys.fastMCed.view.data.DataView;
 import cnuphys.fastMCed.view.sector.DisplaySectors;
 import cnuphys.fastMCed.view.sector.SectorView;
@@ -92,9 +94,6 @@ public class FastMCed extends BaseMDIApplication
 	// event number label on menu bar
 	private static JLabel _eventNumberLabel;
 
-	// generator
-	private static JLabel _generatorLabel;
-
 	// memory usage dialog
 	private MemoryUsageDialog _memoryUsage;
 
@@ -112,6 +111,7 @@ public class FastMCed extends BaseMDIApplication
 	private VirtualView _virtualView;
 	private TrajectoryInfoView _trajInfoView;
 	private AllDCView _allDCView;
+	private AllDCSNRView _allDCSNRView;
 	private DataView _dcDataView;
 	private DataView _ftofDataView;
 	private SectorView _sectorView14;
@@ -223,10 +223,11 @@ public class FastMCed extends BaseMDIApplication
 
 		_virtualView.moveTo(_plotView, 0, VirtualView.CENTER);
 
-		_virtualView.moveTo(_allDCView, 1);
+		_virtualView.moveTo(_allDCSNRView, 1);
+		_virtualView.moveTo(_allDCView, 2);
 		_virtualView.moveTo(_trajInfoView, 0, VirtualView.UPPERRIGHT);
-		_virtualView.moveTo(_dcDataView, 2, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_ftofDataView, 2, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_dcDataView, 3, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_ftofDataView, 3, VirtualView.BOTTOMRIGHT);
 
 		_virtualView.moveTo(_logView, 5, VirtualView.UPPERRIGHT);
 
@@ -251,6 +252,10 @@ public class FastMCed extends BaseMDIApplication
 		_sectorView25 = SectorView.createSectorView(DisplaySectors.SECTORS25);
 		_sectorView14 = SectorView.createSectorView(DisplaySectors.SECTORS14);
 		ViewManager.getInstance().getViewMenu().addSeparator();
+
+		
+		// add an alldc snr  view
+		_allDCSNRView = AllDCSNRView.createAllDCSNRView();
 
 		// add an alldc view
 		_allDCView = AllDCView.createAllDCView();
@@ -291,7 +296,6 @@ public class FastMCed extends BaseMDIApplication
 			_instance.createMenus();
 			_instance.placeViewsOnVirtualDesktop();
 
-			FastMCed._generatorLabel = _instance.createLabel(" GENERATOR  none");
 			FastMCed._streamLabel = _instance.createLabel(" STREAM " + StreamReason.STOPPED);
 			FastMCed._eventNumberLabel = _instance.createLabel("  Event #                 ");
 			MagneticFields.getInstance().addMagneticFieldChangeListener(_instance);
@@ -335,8 +339,6 @@ public class FastMCed extends BaseMDIApplication
 	private void addToFileMenu() {
 		MenuManager mmgr = MenuManager.getInstance();
 		JMenu fmenu = mmgr.getFileMenu();
-
-		fmenu.insertSeparator(0);
 
 		// restore default config
 		final JMenuItem defConItem = new JMenuItem("Restore Default Configuration");
@@ -399,10 +401,6 @@ public class FastMCed extends BaseMDIApplication
 		_streamLabel.setText(" STREAM " + reason);
 	}
 
-	// fix the generator label
-	private void fixGeneratorLabel() {
-		_generatorLabel.setText(" GENERATOR " + PhysicsEventManager.getInstance().getGeneratorDescription());
-	}
 
 	/**
 	 * public access to the singleton
@@ -524,15 +522,6 @@ public class FastMCed extends BaseMDIApplication
 
 	}
 
-	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
-		fixGeneratorLabel();
-	}
 
 	@Override
 	public void newPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
@@ -588,6 +577,10 @@ public class FastMCed extends BaseMDIApplication
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
+		
+		//this is supposed to create less pounding of ccdb
+		DefaultLogger.initialize();
+
 
 		// read in userprefs
 		PropertiesManager.getInstance();

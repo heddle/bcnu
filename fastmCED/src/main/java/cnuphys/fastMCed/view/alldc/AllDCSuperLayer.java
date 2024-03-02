@@ -1,4 +1,4 @@
-package cnuphys.fastMCed.item;
+package cnuphys.fastMCed.view.alldc;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -33,7 +33,6 @@ import cnuphys.fastMCed.geometry.DCGeometry;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.streaming.StreamManager;
 import cnuphys.fastMCed.view.AView;
-import cnuphys.fastMCed.view.alldc.AllDCView;
 
 public class AllDCSuperLayer extends RectangleItem {
 
@@ -415,30 +414,6 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		SNRManager.getInstance().addParametersToFeedback(_sector, _superLayer, feedbackStrings);
 
-//		feedbackStrings.add(DataSupport.prelimColor
-//				+ "Raw Superlayer Occ "
-//				+ DoubleFormat.doubleFormat(
-//						100.0 * parameters.getRawOccupancy(), 2) + "%");
-//		feedbackStrings
-//				.add(DataSupport.prelimColor
-//						+ "Reduced Superlayer Occ "
-//						+ DoubleFormat.doubleFormat(
-//								100.0 * parameters.getNoiseReducedOccupancy(),
-//								2) + "%");
-//		
-//		DCTdcHitList hits = DC.getInstance().getTDCHits();
-//
-//		DCTdcHit hit = null;
-//		if ((hits != null) && !hits.isEmpty()) {
-//			hit = hits.getHit(_sector, _superLayer, layer, wire);
-//		}
-//		
-//		if (hit == null) {
-//			
-//		}
-//		else {
-//			hit.tdcAdcFeedback(_view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);
-//		}
 	}
 
 	/**
