@@ -97,7 +97,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.6.1";
+	private static final String _release = "1.6.2";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -1154,6 +1154,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
+		
+		Environment.setLookAndFeel();
+
 
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();

@@ -17,10 +17,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.plaf.metal.MetalIconFactory;
 
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.ImageManager;
@@ -76,7 +72,6 @@ public final class Desktop extends JDesktopPane {
 	 *                        "images/background.png".
 	 */
 	private Desktop(Color background, String backgroundImage) {
-		initializeLookAndFeel();
 
 		setDragMode(JDesktopPane.OUTLINE_DRAG_MODE); // faster
 		setDoubleBuffered(true);
@@ -325,48 +320,6 @@ public final class Desktop extends JDesktopPane {
 		}
 	}
 
-	/**
-	 * Initialize the look and feel.
-	 */
-
-	public void initializeLookAndFeel() {
-
-		LookAndFeelInfo[] lnfinfo = UIManager.getInstalledLookAndFeels();
-
-		String preferredLnF[];
-
-		if (Environment.getInstance().isWindows()) {
-			String arry[] = { UIManager.getSystemLookAndFeelClassName(), "Metal", "CDE/Motif", "Nimbus",
-					UIManager.getCrossPlatformLookAndFeelClassName() };
-			preferredLnF = arry;
-		} else {
-			String arry[] = { UIManager.getSystemLookAndFeelClassName(), "Windows",
-					UIManager.getCrossPlatformLookAndFeelClassName() };
-			preferredLnF = arry;
-		}
-
-		if ((lnfinfo == null) || (lnfinfo.length < 1)) {
-			System.err.println("No installed look and feels");
-			return;
-		}
-
-		for (String targetLnF : preferredLnF) {
-			for (LookAndFeelInfo element : lnfinfo) {
-				String linfoName = element.getClassName();
-				if (linfoName.indexOf(targetLnF) >= 0) {
-					try {
-						UIManager.setLookAndFeel(element.getClassName());
-						UIDefaults defaults = UIManager.getDefaults();
-
-						defaults.put("RadioButtonMenuItem.checkIcon", MetalIconFactory.getRadioButtonMenuItemIcon());
-						return;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		} // end for
-	}
 
 	/**
 	 * Checks whether all views are ready for display.

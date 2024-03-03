@@ -1,6 +1,7 @@
 package cnuphys.bCNU.util;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
@@ -15,6 +16,13 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
+import javax.swing.JComponent;
+import javax.swing.Painter;
+import javax.swing.UIDefaults;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.plaf.metal.MetalIconFactory;
 
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
@@ -357,24 +365,6 @@ public final class Environment {
 	}
 
 	/**
-	 * On Mac, uses the say command to say something.
-	 *
-	 * @param sayThis the string to say
-	 */
-	public void say(String sayThis) {
-		if (sayThis == null) {
-			return;
-		}
-		if (isMac()) {
-			try {
-				Runtime.getRuntime().exec("say -v Karen " + sayThis);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
 	 * Singleton objects cannot be cloned, so we override clone to throw a
 	 * CloneNotSupportedException.
 	 */
@@ -540,8 +530,7 @@ public final class Environment {
 	 * @return a short summary string
 	 */
 	public String summaryString() {
-		return " [" + _userName + "]" + " [" + _osName + "]" + " [" + _currentWorkingDirectory
-				+ "]";
+		return " [" + _userName + "]" + " [" + _osName + "]" + " [" + _currentWorkingDirectory + "]";
 	}
 
 	/**
@@ -627,14 +616,74 @@ public final class Environment {
 	}
 
 	/**
+	 * Initialize the look and feel.
+	 */
+	public static void setLookAndFeel() {
+
+		try {
+			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+			return;
+		} catch (Exception e) {
+		}
+
+		LookAndFeelInfo[] lnfinfo = UIManager.getInstalledLookAndFeels();
+
+		String preferredLnF[];
+
+		if (Environment.getInstance().isWindows()) {
+			String arry[] = { UIManager.getSystemLookAndFeelClassName(), "Metal", "CDE/Motif", "Nimbus",
+					UIManager.getCrossPlatformLookAndFeelClassName() };
+			preferredLnF = arry;
+		} else {
+			String arry[] = { "Mac OS X", UIManager.getSystemLookAndFeelClassName(), "Windows",
+					UIManager.getCrossPlatformLookAndFeelClassName() };
+			preferredLnF = arry;
+		}
+
+		if ((lnfinfo == null) || (lnfinfo.length < 1)) {
+			System.err.println("No installed look and feels");
+			return;
+		}
+
+		for (String targetLnF : preferredLnF) {
+			for (LookAndFeelInfo element : lnfinfo) {
+				String linfoName = element.getName();
+				if (linfoName.indexOf(targetLnF) >= 0) {
+					try {
+						UIManager.setLookAndFeel(element.getClassName());
+						return;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} // end for
+	}
+
+	/**
+	 * list the look and feels
+     */
+	public static void listLookAndFeels() {
+		LookAndFeelInfo[] lookAndFeels = UIManager.getInstalledLookAndFeels();
+		for (LookAndFeelInfo lookAndFeelInfo : lookAndFeels) {
+			System.out.println(lookAndFeelInfo.getName());
+		}
+
+		String sysLNF = UIManager.getSystemLookAndFeelClassName();
+		System.out.println("System Look and Feel: " + sysLNF);
+		String cpLNF = UIManager.getCrossPlatformLookAndFeelClassName();
+		System.out.println("Cross Platform Look and Feel: " + cpLNF);
+	}
+
+	/**
 	 * Main program for testing.
 	 *
 	 * @param arg command line arguments (ignored).
 	 */
 	public static void main(String arg[]) {
 		Environment env = Environment.getInstance();
-		env.say("Hello " + env.getUserName() + ", this is the bCNU Environment test.");
 		System.out.println(env);
+		listLookAndFeels();
 		System.out.println("Done.");
 
 	}

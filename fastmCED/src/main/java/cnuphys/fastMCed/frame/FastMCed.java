@@ -578,6 +578,8 @@ public class FastMCed extends BaseMDIApplication
 	 */
 	public static void main(String[] arg) {
 		
+		Environment.setLookAndFeel();
+		
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 

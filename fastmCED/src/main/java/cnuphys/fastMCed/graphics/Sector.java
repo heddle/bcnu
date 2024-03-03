@@ -27,6 +27,20 @@ public enum Sector {
 	public String getName() {
 		return names.get(this);
 	}
+	
+	/**
+	 * Get the sector from the name
+	 * @param name the nice name
+	 * @return the sector or null
+	 */
+	public static Sector fromName(String name) {
+		for (Sector sector : Sector.values()) {
+			if (sector.getName().equals(name)) {
+				return sector;
+			}
+		}
+		return null;
+	}
 
 
 }

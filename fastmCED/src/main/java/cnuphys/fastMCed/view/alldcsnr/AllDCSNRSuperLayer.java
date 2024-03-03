@@ -8,32 +8,51 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import org.jlab.geom.DetectorId;
+
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.RectangleItem;
+import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.fastMCed.eventio.PhysicsEventManager;
+import cnuphys.fastMCed.fastmc.AugmentedDetectorHit;
+import cnuphys.fastMCed.fastmc.ParticleHits;
+import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.streaming.StreamManager;
 import cnuphys.fastMCed.view.alldc.AllDCView;
+import cnuphys.lund.LundId;
+import cnuphys.lund.LundStyle;
+import cnuphys.snr.NoiseReductionParameters;
 
 public class AllDCSNRSuperLayer extends RectangleItem {
 
-	public static final int RIGHT = 0;
-	public static final int LEFT = 1;
-	public static final String[] leanStrings = { "R", "L" };
-	public static final Color[] leanColors = {X11Colors.getX11Color("ghost white"),
-			X11Colors.getX11Color("honeydew") };
+	public static final int LAYER6 = 0;
+	public static final int LAYER5 = 1;
+	public static final int LAYER4 = 2;
+	public static final int LAYER3 = 3;
+	public static final int LAYER2 = 4;
+	public static final int LAYER1 = 5;
+
+	public static final int RIGHT = 6;
+	public static final int LEFT  = 7;
+	
+	// for hits cells
+	private static final Color _defaultHitCellFill = Color.red;
+	private static final Color _defaultHitCellLine = X11Colors.getX11Color("Dark Red");
+
+
+	public static final String[] rowNames = { " L6", " L5", " L4", " L3", " L2", " L1", " R", " L", };
+	public static final Color[] rowColors = { X11Colors.getX11Color("ghost white"),
+			X11Colors.getX11Color("light yellow")};
 
 	// convenient access to the event manager
 	private PhysicsEventManager _eventManager = PhysicsEventManager.getInstance();
 
 	// font for label text
-	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
-
-	// the sector [1..6]
-	private int _sector;
+	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 14);
 
 	// the super layer [1..6]
 	private int _superLayer;
@@ -49,7 +68,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 	private Rectangle2D.Double _worldRectangle;
 	
 	// result rects two per superlayer (L and R(
-	private Rectangle2D.Double _resultWorldRects[] = new Rectangle2D.Double[2];
+	private Rectangle2D.Double _resultWorldRects[] = new Rectangle2D.Double[8];
 	
 	// cache the "position" rects which span the superlayer. 
 	//That is, a wire is the intersection of the layer rect and the position rect
@@ -66,36 +85,33 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 	 * @param sector         the sector [0..5]
 	 * @param superLayer     the superLayer [0..5]
 	 */
-	public AllDCSNRSuperLayer(ItemList layer, AllDCSNRView view, Rectangle2D.Double worldRectangle, int sector,
-			int superLayer) {
+	public AllDCSNRSuperLayer(ItemList layer, AllDCSNRView view, 
+			Rectangle2D.Double worldRectangle, int superLayer) {
 		super(layer, worldRectangle);
 		_worldRectangle = worldRectangle;
 		_view = view;
 
 		_style.setFillColor(Color.white);
 		_style.setLineColor(Color.black);
-		_sector = sector + 1; // convert to 1-based
 		
 		setResultRects();
 		setPositionRects();
 
 
 		_superLayer = superLayer + 1; // convert to 1-based
-		_name = "Sector: " + _sector + " SuperLayer: " + _superLayer;
 
 	}
 	
 	// cache the result outline rectangles
 	private void setResultRects() {
-		double dy = _worldRectangle.height / 2;
+		double dy = _worldRectangle.height / 8;
 		double x = _worldRectangle.x;
 		double y = _worldRectangle.y;
 		double w = _worldRectangle.width;
 
-		for (int i = 0; i < 2; i++) {
+		for (int i = 7; i >= 0; i--) {
 			// trick to invert layers in lower sector
-			int recIndex = (_sector < 4) ? i : (1 - i);
-			_resultWorldRects[recIndex] = new Rectangle2D.Double(x, y, w, dy);
+			_resultWorldRects[i] = new Rectangle2D.Double(x, y, w, dy);
 			y += dy;
 		}
 	}
@@ -115,6 +131,12 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 			x += dx;
 		}
 	}
+	
+	//get the sector from the view [1..6]
+	private int sector() {
+		return _view.getSector();
+	}
+
 
 	/**
 	 * Custom drawer for the item.
@@ -134,13 +156,22 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 
 		// shade the result rectangles
 		g.setFont(labelFont);
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 8; i++) {
 			Rectangle2D.Double wr = _resultWorldRects[i];
-			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, leanColors[i], Color.black);
-			g.setColor(Color.cyan);
+			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, rowColors[i%2], Color.black);
+			g.setColor(Color.black);
 			WorldGraphicsUtilities.drawWorldText(g, container, wr.x, wr.y, 
-					"" + _superLayer + leanStrings[i], -15, -9);
+					"" + _superLayer + rowNames[i], -30, -5);
 		}
+		
+		// draw SNR masks?
+		if (_view.showMasks()) {
+			drawSNRMasks(g, container);
+		}
+
+		// now the data
+		drawHitData(g, container);
+
 		
 		// causes cell shading
 		for (int i = 0; i < 112; i += 2) {
@@ -154,6 +185,150 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 		g.drawPolygon(_lastDrawnPolygon);
 
 	}
+	
+	// draw the SNR mask data where SNR thinks segments mught start
+	private void drawSNRMasks(Graphics g, IContainer container) {
+		// need zero based sector and super layer
+		NoiseReductionParameters parameters = SNRManager.getInstance().getParameters(sector() - 1, _superLayer - 1);
+
+		Rectangle2D.Double wr = new Rectangle2D.Double();
+
+		for (int wire = 0; wire < parameters.getNumWire(); wire++) {
+			// where it thinks segments start
+			boolean leftSeg = parameters.getLeftSegments().checkBit(wire);
+			boolean rightSeg = parameters.getRightSegments().checkBit(wire);
+			if (leftSeg || rightSeg) {
+				if (leftSeg) {
+					drawMask(g, container, wire, parameters.getLeftLayerShifts(), 1, wr);
+				}
+				if (rightSeg) {
+					drawMask(g, container, wire, parameters.getRightLayerShifts(), -1, wr);
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Draws the masking that shows where the noise algorithm thinks there are
+	 * segments. Anything not masked is noise.
+	 * 
+	 * @param g         the graphics context.
+	 * @param container the rendering container
+	 * @param wire      the ZERO BASED wire 0..
+	 * @param shifts    the parameter shifts for this direction
+	 * @param sign      the direction 1 for left -1 for right
+	 * @param wr        essentially workspace
+	 */
+	private void drawMask(Graphics g, IContainer container, int wire, int shifts[], int sign, Rectangle2D.Double wr) {
+
+		wire++; // convert to 1-based
+
+		Color fill;
+		if (sign == 1) {
+			fill = SNRManager.maskFillLeft;
+		} else {
+			fill = SNRManager.maskFillRight;
+		}
+
+		for (int layer = 1; layer <= 6; layer++) {
+			int row = 6 - layer;
+
+			getCell(row, wire, wr);
+			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, fill, null);
+
+			// ugh -- shifts are 0-based
+			for (int shift = 1; shift <= shifts[layer - 1]; shift++) {
+				int tempWire = wire + sign * shift;
+				if ((tempWire > 0) && (tempWire <= 112)) {
+					getCell(row, tempWire, wr);
+					WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, fill, null);
+				}
+			}
+		}
+
+	}
+
+	
+	/**
+	 * Draw in single event mode
+	 * 
+	 * @param g         the graphics context
+	 * @param container the rendering container
+	 */
+	private void drawHitData(Graphics g, IContainer container) {
+
+		Rectangle2D.Double wr = new Rectangle2D.Double(); // used over and over
+
+		List<ParticleHits> hits = _eventManager.getParticleHits();
+
+		if (hits != null) {
+			for (ParticleHits particleHits : hits) { // essentially a loop over tracks
+				LundId lid = particleHits.getLundId();
+
+				List<AugmentedDetectorHit> augHits = particleHits.getHits(DetectorId.DC, sector() - 1, _superLayer - 1);
+
+				if (augHits != null) {
+					for (AugmentedDetectorHit hit : augHits) {
+						// get 1-based
+						int layer = hit.getLayerId() + 1;
+						int wire = hit.getComponentId() + 1;
+
+						drawDCHit(g, container, layer, wire, hit.isNoise(), lid, wr);
+					}
+				}
+			}
+		}
+	}
+
+	/**
+	 * Draw a single dc hit
+	 * 
+	 * @param g         the graphics context
+	 * @param container the rendering container
+	 * @param layer     the 1-based layer
+	 * @param wire      the 1-based wire
+	 * @param noise     is it noise?
+	 * @param lid       the lund id
+	 * @param wr        essentially workspace
+	 */
+	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, LundId lid,
+			Rectangle2D.Double wr) {
+
+		// might not even draw it if it is noise
+		if (noise && _view.hideNoise()) {
+			return;
+		}
+
+		if (wire > 112) {
+			String msg = "Bad wire number in drawGemcDCHit " + wire + " event number " + _eventManager.eventNumber();
+			Log.getInstance().warning(msg);
+			System.err.println(msg);
+			return;
+		}
+
+		//convert layer to row
+		int row = 6 - layer;
+		getCell(row, wire, wr);
+
+		Color hitFill = _defaultHitCellFill;
+		Color hitLine = _defaultHitCellLine;
+
+		// do we have simulated "truth" data?
+		if (lid != null) {
+			LundStyle style = lid.getStyle();
+			if (style != null) {
+				hitFill = lid.getStyle().getFillColor();
+				hitLine = hitFill.darker();
+			}
+		}
+
+		if (noise && _view.showNoiseAnalysis()) {
+			hitFill = Color.black;
+		}
+
+		WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, hitFill, hitLine);
+	}
+	
 	
 	/**
 	 * For the given world point return the 1-based wire.
@@ -176,22 +351,20 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 	/**
 	 * Get the world rectangle for a given cell (the wire is in the center)
 	 * 
-	 * @param lean the 1-based layer [0 or 1 for R, L]
+	 * @param row the 0-based row [0..6 for layers 6..1, 7 for R, 8 for L]
 	 * @param wire  the 1-based wire [1..] return the world rectangle cell for this
 	 *              layer, wire
 	 */
-	public void getCell(int lean, int wire, Rectangle2D.Double wr) {
+	public void getCell(int row, int wire, Rectangle2D.Double wr) {
 
 		int wm1 = wire - 1;
 
-		Rectangle2D.Double leanRect = _resultWorldRects[lean];
+		Rectangle2D.Double leanRect = _resultWorldRects[row];
 		Rectangle2D.Double positionRect = _positionWorldRects[wm1];
 		wr.setFrame(positionRect.x, leanRect.y, positionRect.width, leanRect.height);
 
 	}
 
-
-	
 	/**
 	 * Add any appropriate feedback strings panel.
 	 * 
@@ -211,24 +384,71 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 		if (_worldRectangle.contains(worldPoint)) {
 			feedbackStrings.add("superlayer " + _superLayer);
 
-			int lean = getLean(worldPoint); // 0: R 1: L
+			int row = getRow(worldPoint); // 0: R 1: L
 			int wire = getWire(worldPoint); // 1-based
 
-			if ((wire > 0) && (wire <= 112)) {
-				feedbackStrings.add("lean " + leanStrings[lean] + " wire " + wire);
+			if ((wire > 0) && (wire <= 112) && (row >= 0)) {
+				feedbackStrings.add(rowNames[row] + " wire " + wire);
+				
+				int layer = 6 - row;
+				if (layer > 0) {
+				feedbackStrings.add("layer " + layer);
+					singleEventFeedbackStrings(layer, wire, feedbackStrings);
+
+				}
 			}
 		}
+	}
+	
+	/**
+	 * Get the feedback strings for single event mode
+	 * 
+	 * @param layer           [1..6]
+	 * @param wire            [1..112]
+	 * @param feedbackStrings
+	 */
+	private void singleEventFeedbackStrings(int layer, int wire, List<String> feedbackStrings) {
+
+		List<ParticleHits> hits = _eventManager.getParticleHits();
+		int wire0 = wire - 1;
+
+		if (hits != null) {
+			for (ParticleHits particleHits : hits) {
+				LundId lid = particleHits.getLundId();
+
+				List<AugmentedDetectorHit> augHits = particleHits.getHits(DetectorId.DC, sector() - 1, _superLayer - 1);
+
+				if (augHits != null) {
+					for (AugmentedDetectorHit hit : augHits) {
+						if (hit.getComponentId() == wire0) {
+
+							// might not even care if it is noise
+							if (hit.isNoise() && _view.hideNoise()) {
+								break;
+							}
+
+							ParticleHits.addHitFeedback(hit, lid, feedbackStrings);
+							break;
+						}
+					}
+				}
+			}
+
+		}
+
+		SNRManager.getInstance().addParametersToFeedback(sector(), _superLayer, feedbackStrings);
+
 	}
 	
 	/**
 	 * For the given world point return the 1-based layer.
 	 * 
 	 * @param worldPoint the point in question
-	 * @return the layer [1..6]
+	 * @return the 0-based row [0..6 for layers 6..1, 7 for R, 8 for L]
 	 */
-	private int getLean(Point2D.Double worldPoint) {
+	private int getRow(Point2D.Double worldPoint) {
 		if (_worldRectangle.contains(worldPoint)) {
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 8; i++) {
 				if (_resultWorldRects[i].contains(worldPoint)) {
 					return i;
 				}

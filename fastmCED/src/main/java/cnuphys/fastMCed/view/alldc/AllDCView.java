@@ -110,12 +110,7 @@ public class AllDCView extends AView {
 		Dimension d = GraphicsUtilities.screenFraction(0.65);
 
 		// create the view
-		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, // container
-																													// width,
-																													// not
-																													// total
-																													// view
-																													// width
+		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, 
 				PropertySupport.HEIGHT, d.height, // container height, not total view width
 				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, AView.TOOLBARBITS, PropertySupport.VISIBLE,
 				true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),

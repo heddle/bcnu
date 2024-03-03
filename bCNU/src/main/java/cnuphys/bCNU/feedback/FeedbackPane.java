@@ -33,7 +33,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	/**
 	 * Background for feedback panel
 	 */
-	private static Color _background = X11Colors.getX11Color("Black");
+	private static Color _background = Color.black;
 
 	/**
 	 * Cyan style. The last two booleans represent italics and bold.
@@ -58,12 +58,13 @@ public class FeedbackPane extends TextPaneScrollPane {
 	 * @param width the preferred width.
 	 */
 	public FeedbackPane(int width, int height) {
-//		setPreferredSize(new Dimension(width, height));
+		super(_background);
 
 		Border etchedBorder = BorderFactory.createEtchedBorder();
 		Border lineBorder = BorderFactory.createLineBorder(Color.black, 2);
 		setBorder(BorderFactory.createCompoundBorder(etchedBorder, lineBorder));
 
+		getViewport().setBackground(_background);
 		setBackground(_background);
 	}
 
@@ -142,5 +143,9 @@ public class FeedbackPane extends TextPaneScrollPane {
 
 		}
 	}
+	
+	
+	
+	
 
 }

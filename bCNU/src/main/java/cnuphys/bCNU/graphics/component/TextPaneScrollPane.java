@@ -82,12 +82,21 @@ public class TextPaneScrollPane extends JScrollPane {
 	protected StyledDocument document;
 
 	protected SimpleAttributeSet defaultStyle = BLACK_SS_12_P;
+	
+	public TextPaneScrollPane() {
+		this(null, Color.white);
+	}
+	
+	public TextPaneScrollPane(String label) {
+		this(label, Color.white);
+	}
+
 
 	/**
 	 * Constructor will also create the text pane itself.
 	 */
-	public TextPaneScrollPane() {
-		this(null);
+	public TextPaneScrollPane(Color bgColor) {
+		this(null, bgColor);
 	}
 
 	/**
@@ -95,28 +104,21 @@ public class TextPaneScrollPane extends JScrollPane {
 	 *
 	 * @param label if not null, will use for a border.
 	 */
-	public TextPaneScrollPane(String label) {
+	public TextPaneScrollPane(String label, Color bgColor) {
 		super();
 		if (label != null) {
 			this.setBorder(new CommonBorder(label));
 		}
+		
+		
 		createTextPane();
-		textPane.setBackground(Color.white);
+		textPane.setBackground(bgColor);
 		getViewport().add(textPane);
+		
+		getViewport().setBackground(bgColor);
+		setBackground(bgColor);
 	}
 
-	/**
-	 * Set the background, by setting the underlying text pane's background.
-	 *
-	 * @param c the color to use.
-	 */
-	@Override
-	public void setBackground(Color c) {
-		// super.setBackground(c);
-		if (textPane != null) {
-			textPane.setBackground(c);
-		}
-	}
 
 	/**
 	 * Create a style, not underlined, no with default spacing.
