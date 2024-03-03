@@ -10,6 +10,8 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
+import javax.swing.SwingConstants;
+
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -20,6 +22,7 @@ import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.fastMCed.graphics.SectorSelector;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.ControlPanel;
@@ -92,7 +95,41 @@ public class AllDCSNRView extends AView {
 		setBeforeDraw();
 		setAfterDraw();
 		addItems();
+		
+		// add the sector selector
+		SectorSelector selector = new SectorSelector(Fonts.defaultLargeFont, SwingConstants.HORIZONTAL);
+        selector.addSelectionChangeListener(e -> {
+            System.out.println("Selection changed to: " + e.getActionCommand());
+        });
+        
+        add(selector, BorderLayout.SOUTH);
 	}
+	
+	/**
+	 * Convenience method for creating an AllDC View.
+	 * 
+	 * @return a new AllDCView.
+	 */
+	public static AllDCSNRView createAllDCSNRView() {
+		AllDCSNRView view = null;
+
+		// set to a fraction of screen
+		Dimension d = GraphicsUtilities.screenFraction(0.75);
+
+		// create the view
+		view = new AllDCSNRView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, 
+				PropertySupport.HEIGHT, d.height,
+				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, AView.TOOLBARBITS, PropertySupport.VISIBLE,
+				true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
+				PropertySupport.STANDARDVIEWDECORATIONS, true);
+
+		view._controlPanel = new ControlPanel(view, ControlPanel.FEEDBACK, 0, 3, 5);
+
+		view.add(view._controlPanel, BorderLayout.EAST);
+		view.pack();
+		return view;
+	}
+
 	
 	/**
 	 * Create the before drawer to draw the sector outlines.
@@ -217,30 +254,6 @@ public class AllDCSNRView extends AView {
 	}
 
 
-	/**
-	 * Convenience method for creating an AllDC View.
-	 * 
-	 * @return a new AllDCView.
-	 */
-	public static AllDCSNRView createAllDCSNRView() {
-		AllDCSNRView view = null;
-
-		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.75);
-
-		// create the view
-		view = new AllDCSNRView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, 
-				PropertySupport.HEIGHT, d.height,
-				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, AView.TOOLBARBITS, PropertySupport.VISIBLE,
-				true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
-				PropertySupport.STANDARDVIEWDECORATIONS, true);
-
-		view._controlPanel = new ControlPanel(view, ControlPanel.FEEDBACK, 0, 3, 5);
-
-		view.add(view._controlPanel, BorderLayout.EAST);
-		view.pack();
-		return view;
-	}
 
 
 	/**

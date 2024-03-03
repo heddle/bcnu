@@ -15,8 +15,6 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
-import javax.swing.JComponent;
-import javax.swing.UIManager;
 
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
@@ -386,22 +384,6 @@ public final class Environment {
 	}
 
 	/**
-	 * Get the UIManager's choice for panel background color
-	 *
-	 * @return the UIManager's choice for panel background color
-	 */
-	public Color getDefaultPanelBackgroundColor() {
-		if (_defaultPanelBackgroundColor == null) {
-			_defaultPanelBackgroundColor = UIManager.getColor("Panel.background");
-			if (_defaultPanelBackgroundColor == null) {
-				_defaultPanelBackgroundColor = new Color(238, 238, 238);
-			}
-		}
-
-		return _defaultPanelBackgroundColor;
-	}
-
-	/**
 	 * Get a File object representing the preferences file. No guarantee that it
 	 * exists.
 	 *
@@ -525,18 +507,6 @@ public final class Environment {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	/**
-	 * Useful for making common look components
-	 *
-	 * @param component the component
-	 * @param color     the background color--if <code>null</code> use default.
-	 */
-	public void commonize(JComponent component, Color color) {
-		component.setOpaque(true);
-		color = (color == null) ? _defaultPanelBackgroundColor : color;
-		component.setBackground(color);
 	}
 
 	/**
