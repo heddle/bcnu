@@ -31,7 +31,7 @@ public class RandomEventGenerator extends AEventGenerator {
 	 */
 	public static RandomEventGenerator createRandomGenerator(boolean useDialog) {
 		if (_dialog == null) {
-			_dialog = new RandomEvGenDialog(null, 4);
+			_dialog = new RandomEvGenDialog(null, 5);
 		}
 
 		if (useDialog) {

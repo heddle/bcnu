@@ -12,8 +12,6 @@ import cnuphys.fastMCed.eventio.PhysicsEventManager;
 public class GeneratorManager implements ActionListener {
 
 	// suggestions
-	private static double _pMin = 1.0; // GeV/c
-	private static double _pMax = 8.0; // GeV/c
 	private static double _thetaMin = 10.; // degrees
 	private static double _thetaMax = 40.; // degrees
 	private static double _phiMin = -20; // degrees
@@ -83,21 +81,6 @@ public class GeneratorManager implements ActionListener {
 		} 
 	}
 
-	public static double getPMin() {
-		return _pMin;
-	}
-
-	public static void setpMin(double pMin) {
-		GeneratorManager._pMin = pMin;
-	}
-
-	public static double getPMax() {
-		return _pMax;
-	}
-
-	public static void setpMax(double pMax) {
-		GeneratorManager._pMax = pMax;
-	}
 
 	public static double getThetaMin() {
 		return _thetaMin;
