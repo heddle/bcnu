@@ -16,6 +16,9 @@ public class RandomEventGenerator extends AEventGenerator {
 
 	// most recent event
 	private PhysicsEvent _currentEvent;
+	
+	//the dialog
+	private static RandomEvGenDialog _dialog = null;
 
 	private RandomEventGenerator(IEventSource source) {
 		_eventSource = source;
@@ -27,16 +30,18 @@ public class RandomEventGenerator extends AEventGenerator {
 	 * @return a random event generator
 	 */
 	public static RandomEventGenerator createRandomGenerator(boolean useDialog) {
-		RandomEvGenDialog dialog = new RandomEvGenDialog(null, 4);
+		if (_dialog == null) {
+			_dialog = new RandomEvGenDialog(null, 4);
+		}
 
 		if (useDialog) {
-			dialog.setVisible(true);
+			_dialog.setVisible(true);
 
-			if (dialog.getReason() == DialogUtilities.OK_RESPONSE) {
-				return new RandomEventGenerator(dialog);
+			if (_dialog.getReason() == DialogUtilities.OK_RESPONSE) {
+				return new RandomEventGenerator(_dialog);
 			}
 		}
-		return new RandomEventGenerator(dialog);
+		return new RandomEventGenerator(_dialog);
 	}
 
 

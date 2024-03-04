@@ -12,8 +12,8 @@ import cnuphys.fastMCed.eventio.PhysicsEventManager;
 public class GeneratorManager implements ActionListener {
 
 	// suggestions
-	private static double _pMin = 6.0; // GeV/c
-	private static double _pMax = 11.5; // GeV/c
+	private static double _pMin = 1.0; // GeV/c
+	private static double _pMax = 8.0; // GeV/c
 	private static double _thetaMin = 10.; // degrees
 	private static double _thetaMax = 40.; // degrees
 	private static double _phiMin = -20; // degrees
@@ -59,7 +59,7 @@ public class GeneratorManager implements ActionListener {
 	// create the menu
 	private void createMenu() {
 		_menu = new JMenu("Random Generator");
-		_randomGenerator = menuItem("Ranges...");
+		_randomGenerator = menuItem("Settings...");
 	}
 
 	private JMenuItem menuItem(String label) {

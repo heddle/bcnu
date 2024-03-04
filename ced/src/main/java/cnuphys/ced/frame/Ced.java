@@ -887,7 +887,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		};
 
 		_eventMenu.addSeparator();
-		MenuManager.addMenuItem("Noise Algorithm Parameters...", _eventMenu, al2);
+		MenuManager.addMenuItem("SNR Parameters...", _eventMenu, al2);
 
 	}
 

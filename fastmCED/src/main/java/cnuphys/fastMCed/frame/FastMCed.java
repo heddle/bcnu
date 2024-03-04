@@ -38,20 +38,21 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
+import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
-import cnuphys.fastMCed.eventio.PhysicsEventManager;
-import cnuphys.fastMCed.eventio.RandomNoiseGenerator;
 import cnuphys.fastMCed.consumers.ConsumerManager;
-import cnuphys.fastMCed.eventgen.AEventGenerator;
 import cnuphys.fastMCed.eventgen.GeneratorManager;
 import cnuphys.fastMCed.eventio.IPhysicsEventListener;
+import cnuphys.fastMCed.eventio.PhysicsEventManager;
+import cnuphys.fastMCed.eventio.RandomNoiseGenerator;
 import cnuphys.fastMCed.fastmc.FastMCMenuAddition;
 import cnuphys.fastMCed.fastmc.ParticleHits;
 import cnuphys.fastMCed.geometry.GeometryManager;
 import cnuphys.fastMCed.properties.PropertiesManager;
+import cnuphys.fastMCed.snr.NoiseParameterDialog;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.streaming.IStreamProcessor;
 import cnuphys.fastMCed.streaming.StreamManager;
@@ -72,7 +73,7 @@ import cnuphys.swim.Swimming;
 /**
  * This is a brother to ced that works with the fastMC system rather than evio
  * or hipo
- * 
+ *
  * @author heddle
  *
  */
@@ -83,7 +84,7 @@ public class FastMCed extends BaseMDIApplication
 	private static FastMCed _instance;
 
 	// release (version) string
-	private static final String _release = "build 0.53";
+	private static final String _release = "build 0.60";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -125,7 +126,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Constructor (private--used to create singleton)
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of attributes in type-value
 	 *                pairs. For example, PropertySupport.NAME, "my application",
 	 *                PropertySupport.CENTER, true, etc.
@@ -253,7 +254,7 @@ public class FastMCed extends BaseMDIApplication
 		_sectorView14 = SectorView.createSectorView(DisplaySectors.SECTORS14);
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
-		
+
 		// add an alldc snr  view
 		_allDCSNRView = AllDCSNRView.createAllDCSNRView();
 
@@ -283,13 +284,13 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * private access to the FastMCed singleton.
-	 * 
+	 *
 	 * @return the singleton FastMCed (the main application frame.)
 	 */
 	private static FastMCed getInstance() {
 		if (_instance == null) {
 			_instance = new FastMCed(PropertySupport.TITLE, "fastmCED " + versionString(),
-//					PropertySupport.BACKGROUNDIMAGE, "images/cnuinv.png", 
+//					PropertySupport.BACKGROUNDIMAGE, "images/cnuinv.png",
 					PropertySupport.BACKGROUND, new Color(48, 48, 48), PropertySupport.FRACTION, 0.9);
 
 			_instance.addInitialViews();
@@ -312,7 +313,7 @@ public class FastMCed extends BaseMDIApplication
 		MenuManager mmgr = MenuManager.getInstance();
 
 		// create the mag field menu
-		MagneticFields.getInstance().setActiveField(MagneticFields.FieldType.TORUS);
+		MagneticFields.getInstance().setActiveField(MagneticFields.FieldType.COMPOSITE);
 		mmgr.addMenu(MagneticFields.getInstance().getMagneticFieldMenu());
 
 		// the swimmer menu
@@ -404,7 +405,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * public access to the singleton
-	 * 
+	 *
 	 * @return the singleton FastMCed (the main application frame.)
 	 */
 	public static FastMCed getFastMCed() {
@@ -413,7 +414,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Generate the version string
-	 * 
+	 *
 	 * @return the version string
 	 */
 	public static String versionString() {
@@ -444,7 +445,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Get the plot view
-	 * 
+	 *
 	 * @return the plot voew;
 	 */
 	public PlotView getPlotView() {
@@ -471,7 +472,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Get the parent frame
-	 * 
+	 *
 	 * @return the parent frame
 	 */
 	public static JFrame getFrame() {
@@ -483,6 +484,20 @@ public class FastMCed extends BaseMDIApplication
 
 		RandomNoiseGenerator.getInstance().addToMenu(omenu);
 		omenu.addSeparator();
+		// add the noise parameter menu item
+		ActionListener al2 = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				NoiseParameterDialog dialog = new NoiseParameterDialog();
+				dialog.setVisible(true);
+			}
+		};
+
+		
+		MenuManager.addMenuItem("SNR Parameters...", omenu, al2);
+		omenu.addSeparator();
+
+
 
 		omenu.add(MagnifyWindow.magificationMenu());
 		omenu.addSeparator();
@@ -546,7 +561,7 @@ public class FastMCed extends BaseMDIApplication
 	/**
 	 * Get the optional consumer classes directory provide by -p command line
 	 * argument
-	 * 
+	 *
 	 * @return the optional consumer classes directory path.
 	 */
 	public static String getUserConsumerDir() {
@@ -555,7 +570,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Launch the FastMCed GUI
-	 * 
+	 *
 	 * @param consumerPath an optional path to a folder that contains your consumer
 	 *                     classes. This allows you to load consumers at startup.
 	 */
@@ -573,13 +588,13 @@ public class FastMCed extends BaseMDIApplication
 	 * <p>
 	 * Command line arguments:</br>
 	 * -p [dir] dir is the default directory
-	 * 
+	 *
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-		
+
 		Environment.setLookAndFeel();
-		
+
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 
@@ -588,6 +603,10 @@ public class FastMCed extends BaseMDIApplication
 		PropertiesManager.getInstance();
 
 		FileUtilities.setDefaultDir("data");
+
+		// initialize magnetic fields
+		MagneticFields.getInstance().initializeMagneticFields();
+
 
 		// splash frame
 		final SplashWindowFastMCed splashWindow = new SplashWindowFastMCed("fastmCED", null, 920, _release);
@@ -628,8 +647,6 @@ public class FastMCed extends BaseMDIApplication
 			} // !done
 		} // end command arg processing
 
-		// initialize magnetic fields
-		MagneticFields.getInstance().initializeMagneticFields();
 
 		// initialize some managers
 		GeometryManager.getInstance();

@@ -43,10 +43,16 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 	private static final Color _defaultHitCellFill = Color.red;
 	private static final Color _defaultHitCellLine = X11Colors.getX11Color("Dark Red");
 
+	private static final Color rowCol1 = X11Colors.getX11Color("alice blue");
+	private static final Color rowCol2 = X11Colors.getX11Color("azure");
+	private static final Color rowCol3 = X11Colors.getX11Color("ghost white");
 
 	public static final String[] rowNames = { " L6", " L5", " L4", " L3", " L2", " L1", " R", " L", };
-	public static final Color[] rowColors = { X11Colors.getX11Color("ghost white"),
-			X11Colors.getX11Color("light yellow")};
+	public static final Color[] rowColors = { rowCol1, rowCol2, rowCol1, rowCol2, rowCol1, rowCol2, Color.white, rowCol3};
+	
+	private static final Color violet = X11Colors.getX11Color("violet");
+	private static final Color missingColors[] = { Color.red, Color.orange, Color.yellow, Color.green, Color.blue,
+			violet };
 
 	// convenient access to the event manager
 	private PhysicsEventManager _eventManager = PhysicsEventManager.getInstance();
@@ -58,7 +64,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 	private int _superLayer;
 	
 	// cell overlay transparent color
-	private static final Color cellOverlayColor = new Color(180, 180, 180, 64);
+	private static final Color cellOverlayColor = new Color(180, 180, 180, 32);
 
 	
 	// the view that owns this superlayer
@@ -158,7 +164,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 		g.setFont(labelFont);
 		for (int i = 0; i < 8; i++) {
 			Rectangle2D.Double wr = _resultWorldRects[i];
-			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, rowColors[i%2], Color.black);
+			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, rowColors[i], Color.black);
 			g.setColor(Color.black);
 			WorldGraphicsUtilities.drawWorldText(g, container, wr.x, wr.y, 
 					"" + _superLayer + rowNames[i], -30, -5);
@@ -169,9 +175,11 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 			drawSNRMasks(g, container);
 		}
 
-		// now the data
+		// now the raw data
 		drawHitData(g, container);
-
+		
+		// draw the snr segment locations
+		drawSNRSegmentLocations(g, container);
 		
 		// causes cell shading
 		for (int i = 0; i < 112; i += 2) {
@@ -186,7 +194,50 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 
 	}
 	
-	// draw the SNR mask data where SNR thinks segments mught start
+	// mark location SNR thinks segments might start
+	private void drawSNRSegmentLocations(Graphics g, IContainer container) {
+		// need zero based sector and super layer
+		NoiseReductionParameters parameters = SNRManager.getInstance().getParameters(sector() - 1, _superLayer - 1);
+
+		Rectangle2D.Double wr = new Rectangle2D.Double();
+
+		for (int wire = 0; wire < parameters.getNumWire(); wire++) {
+			// where it thinks segments start
+			boolean leftSeg = parameters.getLeftSegments().checkBit(wire);
+			boolean rightSeg = parameters.getRightSegments().checkBit(wire);
+			
+			
+			
+			if (leftSeg || rightSeg) {
+				if (leftSeg) {
+					int numMiss = parameters.missingLayersUsed(NoiseReductionParameters.LEFT_LEAN, wire);
+					drawSegmentLocation(g, container, LEFT, wire + 1, missingColors[numMiss], wr);
+				}
+				if (rightSeg) {
+					int numMiss = parameters.missingLayersUsed(NoiseReductionParameters.RIGHT_LEAN, wire);
+					drawSegmentLocation(g, container, RIGHT, wire + 1, missingColors[numMiss], wr);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Draw a segment location
+	 * 
+	 * @param g         the graphics context
+	 * @param container the rendering container
+	 * @param row       RIGHT or LEFT
+	 * @param wire      the 1-based wire
+	 * @param color     the color to use
+	 * @param wr        essentially workspace
+	 */
+	private void drawSegmentLocation(Graphics g, IContainer container, int row, int wire, Color color, Rectangle2D.Double wr) {
+		getCell(row, wire, wr);
+		WorldGraphicsUtilities.drawWorldOval(g, container, wr, color, Color.black);
+	}
+
+	
+	// draw the SNR mask data where SNR thinks segments might start
 	private void drawSNRMasks(Graphics g, IContainer container) {
 		// need zero based sector and super layer
 		NoiseReductionParameters parameters = SNRManager.getInstance().getParameters(sector() - 1, _superLayer - 1);
@@ -207,6 +258,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 			}
 		}
 	}
+	
 	
 	/**
 	 * Draws the masking that shows where the noise algorithm thinks there are
@@ -318,6 +370,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 			LundStyle style = lid.getStyle();
 			if (style != null) {
 				hitFill = lid.getStyle().getFillColor();
+				hitFill = new Color(hitFill.getRed(), hitFill.getGreen(), hitFill.getBlue(), 128);
 				hitLine = hitFill.darker();
 			}
 		}
@@ -392,9 +445,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 				
 				int layer = 6 - row;
 				if (layer > 0) {
-				feedbackStrings.add("layer " + layer);
 					singleEventFeedbackStrings(layer, wire, feedbackStrings);
-
 				}
 			}
 		}
@@ -411,6 +462,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 
 		List<ParticleHits> hits = _eventManager.getParticleHits();
 		int wire0 = wire - 1;
+		int layer0 = layer - 1;
 
 		if (hits != null) {
 			for (ParticleHits particleHits : hits) {
@@ -420,7 +472,7 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 
 				if (augHits != null) {
 					for (AugmentedDetectorHit hit : augHits) {
-						if (hit.getComponentId() == wire0) {
+						if ((hit.getLayerId() == layer0) && (hit.getComponentId() == wire0)) {
 
 							// might not even care if it is noise
 							if (hit.isNoise() && _view.hideNoise()) {
@@ -435,7 +487,8 @@ public class AllDCSNRSuperLayer extends RectangleItem {
 			}
 
 		}
-
+		
+		
 		SNRManager.getInstance().addParametersToFeedback(sector(), _superLayer, feedbackStrings);
 
 	}

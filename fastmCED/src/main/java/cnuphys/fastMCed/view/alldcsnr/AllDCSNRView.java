@@ -23,8 +23,10 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.fastMCed.graphics.Sector;
 import cnuphys.fastMCed.graphics.SectorSelector;
+import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.ControlPanel;
+import cnuphys.magfield.MagneticFields;
 
 /**
  * The AllDC_SRN view is a non-faithful representation of all six sectors of
@@ -58,10 +60,6 @@ public class AllDCSNRView extends AView {
 
 	// The optional "before" drawer for this view
 	private IDrawable _beforeDraw;
-
-	// transparent color
-	private static final Color TRANS = new Color(255, 255, 0, 80);
-
 
 	// all the superlayer items indexed by superlayer (0..5)
 	private AllDCSNRSuperLayer _superLayerItems[] = new AllDCSNRSuperLayer[6];
@@ -110,6 +108,8 @@ public class AllDCSNRView extends AView {
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view, ControlPanel.NOISECONTROL + ControlPanel.FEEDBACK, 0, 3, 5);
+		
+		view._controlPanel.setMinWidth(320);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
@@ -212,12 +212,32 @@ public class AllDCSNRView extends AView {
 
 		// get the common information
 		super.getFeedbackStrings(container, screenPoint, worldPoint, feedbackStrings);
-
-		int sector = getSector(container, screenPoint, worldPoint);
-
-		if (sector > 0) {
+		
+		for (int superLayer = 6; superLayer >= 1; superLayer--) {
+			segmentFeedback(getSector(), superLayer, feedbackStrings);
 		}
 
+
+	}
+	
+	//the SNR results
+	private void segmentFeedback(int sector, int superlayer, List<String> feedbackStrings) {
+		String leftEncode = SNRManager.getInstance().encodeSegments(SNRManager.LEFT, sector - 1, superlayer - 1);
+		String rightEncode = SNRManager.getInstance().encodeSegments(SNRManager.RIGHT, sector - 1, superlayer - 1);
+
+		String l1 = leftEncode.substring(0, 56);
+		String l2 = leftEncode.substring(56);
+		String r1 = rightEncode.substring(0, 56);
+		String r2 = rightEncode.substring(56);
+		
+		
+		feedbackStrings.add("$mono$" + "\n_______ superlayer " + superlayer + " _______________________");
+		feedbackStrings.add("$mono$" + r1 + " (right 1)");
+		feedbackStrings.add("$mono$" + r2 + " (right 2)");
+		feedbackStrings.add("$mono$" + "__________________________________________");
+		feedbackStrings.add("$mono$" + l1 + " (left 1)" );
+		feedbackStrings.add("$mono$" + l2 + " (left 2)");
+		
 	}
 
 }

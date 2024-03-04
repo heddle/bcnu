@@ -253,11 +253,9 @@ public class ParticleHits {
 			String lidName = (lid != null) ? lid.getName() : "???";
 			int lidId = (lid != null) ? lid.getId() : -99999;
 			feedbackStrings.add("$yellow$pid " + lidName + " (" + lidId + ")");
-			feedbackStrings.add("$yellow$energy dep " + DoubleFormat.doubleFormat(hit.getEnergy(), 4));
-			feedbackStrings.add("$yellow$time " + DoubleFormat.doubleFormat(hit.getTime(), 4));
 
 			if (hit.isDetectorHit(DetectorId.DC)) {
-				feedbackStrings.add("$white$called noise by SNR: " + (hit.isNoise() ? "yes" : "no"));
+				feedbackStrings.add("$white$called noise by snr: " + (hit.isNoise() ? "yes" : "no"));
 			}
 		}
 	}

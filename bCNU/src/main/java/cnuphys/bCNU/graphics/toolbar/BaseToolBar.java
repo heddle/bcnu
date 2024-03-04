@@ -322,7 +322,8 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 
 		// set the default button to on
 		if (getDefaultToggleButton() != null) {
-			getDefaultToggleButton().setSelected(true);
+			resetDefaultSelection();
+	//		getDefaultToggleButton().setSelected(true);
 		}
 
 	}
@@ -390,8 +391,9 @@ public class BaseToolBar extends CommonToolBar implements MouseListener, MouseMo
 		ToolBarToggleButton defaultButton = (ToolBarToggleButton) getDefaultToggleButton();
 
 		if (defaultButton != null) {
+			defaultButton.setSelected(true);
 			_container.getComponent().setCursor(defaultButton.canvasCursor());
-			defaultButton.requestFocus();
+	//		defaultButton.requestFocus();
 		}
 	}
 

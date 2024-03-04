@@ -386,17 +386,19 @@ public class AllDCSuperLayer extends RectangleItem {
 	private void singleEventFeedbackStrings(int layer, int wire, List<String> feedbackStrings) {
 
 		List<ParticleHits> hits = _eventManager.getParticleHits();
+		int layer0 = layer - 1;
 		int wire0 = wire - 1;
 
 		if (hits != null) {
 			for (ParticleHits particleHits : hits) {
-				LundId lid = particleHits.getLundId();
 
+				LundId lid = particleHits.getLundId();
+				
 				List<AugmentedDetectorHit> augHits = particleHits.getHits(DetectorId.DC, _sector - 1, _superLayer - 1);
 
 				if (augHits != null) {
 					for (AugmentedDetectorHit hit : augHits) {
-						if (hit.getComponentId() == wire0) {
+						if ((hit.getLayerId() == layer0) && (hit.getComponentId() == wire0)) {
 
 							// might not even care if it is noise
 							if (hit.isNoise() && _view.hideNoise()) {

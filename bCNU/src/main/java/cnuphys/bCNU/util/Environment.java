@@ -620,25 +620,9 @@ public final class Environment {
 	 */
 	public static void setLookAndFeel() {
 
-		try {
-			UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
-			return;
-		} catch (Exception e) {
-		}
-
 		LookAndFeelInfo[] lnfinfo = UIManager.getInstalledLookAndFeels();
 
-		String preferredLnF[];
-
-		if (Environment.getInstance().isWindows()) {
-			String arry[] = { UIManager.getSystemLookAndFeelClassName(), "Metal", "CDE/Motif", "Nimbus",
-					UIManager.getCrossPlatformLookAndFeelClassName() };
-			preferredLnF = arry;
-		} else {
-			String arry[] = { "Mac OS X", UIManager.getSystemLookAndFeelClassName(), "Windows",
-					UIManager.getCrossPlatformLookAndFeelClassName() };
-			preferredLnF = arry;
-		}
+		String preferredLnF[] = {UIManager.getSystemLookAndFeelClassName(),  UIManager.getCrossPlatformLookAndFeelClassName(), "Mac OS X", "Metal", "CDE/Motif", "Windows", "Nimbus"};
 
 		if ((lnfinfo == null) || (lnfinfo.length < 1)) {
 			System.err.println("No installed look and feels");

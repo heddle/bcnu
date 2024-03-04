@@ -68,7 +68,7 @@ public abstract class AView extends BaseView
 	// basic toolbar bits
 	protected static final int TOOLBARBITS = BaseToolBar.NODRAWING & ~BaseToolBar.TEXTFIELD
 			& ~BaseToolBar.CONTROLPANELBUTTON & ~BaseToolBar.RECTGRIDBUTTON & ~BaseToolBar.TEXTBUTTON
-			& ~BaseToolBar.DELETEBUTTON;
+			& ~BaseToolBar.DELETEBUTTON & ~BaseToolBar.CLONEBUTTON;
 
 	protected static final int NORANGETOOLBARBITS = TOOLBARBITS & ~BaseToolBar.RANGEBUTTON;
 
@@ -385,9 +385,6 @@ public abstract class AView extends BaseView
 		if (sector > 0) {
 			feedbackStrings.add("Sector " + sector);
 		}
-
-//		String pixStr = "$Sky Blue$ScreenXY: [" + pp.x + ", " + pp.y + "]";
-//		feedbackStrings.add(pixStr);
 	}
 
 	/**
