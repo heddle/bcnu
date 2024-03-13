@@ -76,7 +76,7 @@ public class MatchedBankPanel extends JPanel {
 
 	//create the bank panel
 	private void makeBankPanel() {
-		_presentBankPanel = ClasIoPresentBankPanel.createPresentBankPanel(_view, null, 16);
+		_presentBankPanel = ClasIoPresentBankPanel.createPresentBankPanel(_view, null, 18);
 		add(_presentBankPanel.getScrollPane(), BorderLayout.CENTER);
 	}
 

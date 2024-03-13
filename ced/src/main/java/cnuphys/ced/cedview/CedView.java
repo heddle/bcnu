@@ -212,6 +212,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		MagneticFields.getInstance().addMagneticFieldChangeListener(this);
 
 		_userComponentDrawer = new UserComponentLundDrawer(this);
+		
 
 		if (getUserComponent() != null) {
 			getUserComponent().setUserDraw(_userComponentDrawer);

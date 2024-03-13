@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
 import cnuphys.bCNU.util.X11Colors;
@@ -24,7 +23,6 @@ import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.frame.Ced;
 import cnuphys.ced.frame.CedColors;
 import cnuphys.ced.frame.OrderColors;
-import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.noise.NoiseManager;
 import cnuphys.snr.NoiseReductionParameters;
 
@@ -169,10 +167,10 @@ public class DCHexSuperLayer extends PolygonItem {
 	}
 	
 	/**
-	 * Add data infor to feedback
-	 * @param layer
-	 * @param wire
-	 * @param feedbackStrings
+	 * Add data info to feedback
+	 * @param layer the 1-based layer of the hit 
+	 * @param wire the 1-based wire of the hit
+	 * @param feedbackStrings the list of feedback strings
 	 */
 	protected void addToFeedback(int layer, int wire, List<String> feedbackStrings) {
 		
@@ -488,6 +486,7 @@ public class DCHexSuperLayer extends PolygonItem {
 	 * @param view   the view being rendered.
 	 * @param panel  the panel holding the geometry data
 	 * @param sector the 1-based sector 1..6
+	 * @param superlayer the 1-based superlayer 1..6
 	 * @return
 	 */
 	
@@ -497,11 +496,14 @@ public class DCHexSuperLayer extends PolygonItem {
 		double r = rad[superlayer-1];
 		double t = thk[superlayer-1];
 		double rho = r + t;
+
+		double shrink = 0.95 + 0.005 * (superlayer - 1);
+
+		wp[0] = new Point2D.Double(-tan30*r*shrink, r);
+		wp[1] = new Point2D.Double(-tan30*rho*shrink, rho);
+		wp[2] = new Point2D.Double(tan30*rho*shrink, rho);
+		wp[3] = new Point2D.Double(tan30*r*shrink, r);
 		
-		wp[0] = new Point2D.Double(-tan30*r, r);
-		wp[1] = new Point2D.Double(-tan30*rho, rho);
-		wp[2] = new Point2D.Double(tan30*rho, rho);
-		wp[3] = new Point2D.Double(tan30*r, r);
 		
 		double phi = Math.toRadians(-90 + 60 * (sector - 1));
 		double cosPhi = Math.cos(phi);

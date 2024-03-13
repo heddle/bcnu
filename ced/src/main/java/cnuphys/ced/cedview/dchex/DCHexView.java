@@ -129,7 +129,7 @@ public class DCHexView extends HexView {
 		for (int sector = 0; sector < 6; sector++) {
 			_hexItems[sector] = new DCHexSectorItem(detectorLayer, this, sector + 1);
 			_hexItems[sector].getStyle().setFillColor(_fillColor);
-			_hexItems[sector].getStyle().setLineColor(null);
+			_hexItems[sector].getStyle().setLineColor(Color.cyan);
 		}
 
 		//superlayer items
@@ -151,6 +151,18 @@ public class DCHexView extends HexView {
 
 		tabbedPane.add(_rollOverPanel, "DC Clusters");
 	}
+
+	/**
+	 * Convenience method to see it we show the montecarlo truth.
+	 *
+	 * @return <code>true</code> if we are to show the montecarlo truth, if it is
+	 *         available.
+	 */
+	@Override
+	public boolean showMcTruth() {
+		return true;
+	}
+	
 
 
 	/**
@@ -204,18 +216,18 @@ public class DCHexView extends HexView {
 
 					drawSectorNumbers(g, container, Color.cyan, 85);
 
-					Point p0 = new Point();
-					Point p1 = new Point();
-
-					for (int sect = 0; sect < 3; sect++) {
-						Point2D.Double poly0[] = _superLayerItems[sect][0].getPolygon();
-						Point2D.Double poly3[] = _superLayerItems[sect+3][0].getPolygon();
-
-						container.worldToLocal(p0, poly0[0]);
-						container.worldToLocal(p1, poly3[0]);
-						g.setColor(Color.cyan);
-						g.drawLine(p0.x, p0.y, p1.x, p1.y);
-					}
+//					Point p0 = new Point();
+//					Point p1 = new Point();
+//
+//					for (int sect = 0; sect < 3; sect++) {
+//						Point2D.Double poly0[] = _superLayerItems[sect][0].getPolygon();
+//						Point2D.Double poly3[] = _superLayerItems[sect+3][0].getPolygon();
+//
+//						container.worldToLocal(p0, poly0[0]);
+//						container.worldToLocal(p1, poly3[0]);
+//						g.setColor(Color.cyan);
+//						g.drawLine(p0.x, p0.y, p1.x, p1.y);
+//					}
 				} // not accumulating
 			}
 		};
@@ -295,8 +307,12 @@ public class DCHexView extends HexView {
 			int layer = _superLayerItems[sector - 1][superlayer - 1].whichLayer(container, pp);
 			if (layer > 0) {
 				int wire = _superLayerItems[sector - 1][superlayer - 1].whichWire(container, layer, pp);
-				feedbackStrings.add("$aqua$layer " + layer + " wire " + wire);
-				_superLayerItems[sector - 1][superlayer - 1].addToFeedback(layer, wire, feedbackStrings);
+
+				if (wire > 0) {
+					feedbackStrings.add("$aqua$layer " + layer + " wire " + wire);
+ 			     	_superLayerItems[sector - 1][superlayer - 1].addToFeedback(layer, wire, feedbackStrings);
+				}
+
 			}
 
 

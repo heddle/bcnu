@@ -39,7 +39,7 @@ public class DCGeometry {
 	
 	//useful for projection onto sector 1 midplane
 	private static 	Plane3D	sector1Midplane = GeometryManager.constantPhiPlane(0);
-
+	
 
 	/**
 	 * Initialize the DC Geometry by loading all the wires
@@ -549,37 +549,7 @@ public class DCGeometry {
 
 	}
 	
-	/**
-	 * Get all the wire centers from sector 1. For graphics purposes
-	 * they can be rotated to the other sector
-	 * @return the wire centers from sector 1
-	 */
-	public static Point2D.Double[][][] getCenters() {
-		Point2D.Double centers[][][] = new Point2D.Double[6][6][112];
-		for (int supl = 1; supl <= 6; supl++) {
-			for (int lay = 1; lay <= 6; lay++) {
-				for (int w = 1; w <= 112; w++) {
-					centers[supl - 1][lay - 1][w - 1] = getCenter(supl, lay, w);
-				}
-			}
-		}
-		return centers;
-	}
-	
-	public static void main(String arg[]) {
-		initialize();
-		
-		Point2D.Double centers[][][] = getCenters();
-		
-		for (int supl = 1; supl <= 6; supl++) {
-			for (int lay = 1; lay <= 6; lay++) {
-				for (int w = 1; w <= 112; w++) {
-					System.out.println("supl: " + supl + " lay: " + lay + " wire: " + w + " center: "
-							+ centers[supl - 1][lay - 1][w - 1]);
-				}
-			}
-		}
-	}
+
 
 
 }

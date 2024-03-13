@@ -168,6 +168,17 @@ public class AllDCView extends CedView  {
 	}
 
 	/**
+	 * Convenience method to see it we show the montecarlo truth.
+	 *
+	 * @return <code>true</code> if we are to show the montecarlo truth, if it is
+	 *         available.
+	 */
+	@Override
+	public boolean showMcTruth() {
+		return true;
+	}
+	
+	/**
 	 * Create the before drawer to draw the sector outlines.
 	 */
 	private void setBeforeDraw() {
