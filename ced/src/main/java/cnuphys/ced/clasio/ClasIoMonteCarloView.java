@@ -1,5 +1,7 @@
 package cnuphys.ced.clasio;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 
 import org.jlab.io.base.DataEvent;
@@ -18,7 +20,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 	private static volatile ClasIoMonteCarloView instance;
 
 	// one row for each reconstructed trajectory
-	private static Vector<TrajectoryRowData> _trajData = new Vector<>();
+	private static ArrayList<TrajectoryRowData> _trajData = new ArrayList<>();
 
 
 	private ClasIoMonteCarloView() {
@@ -42,7 +44,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 	}
 
 	@Override
-	public Vector<TrajectoryRowData> getRowData() {
+	public List<TrajectoryRowData> getRowData() {
 		return _trajData;
 	}
 
@@ -66,7 +68,7 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 	}
 
 	// add tracks
-	private void addTracks(Vector<TrajectoryRowData> data, String bankName) {
+	private void addTracks(ArrayList<TrajectoryRowData> data, String bankName) {
 		try {
 
 
@@ -88,7 +90,6 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 					if (lid == null) {
 						//can't swim if don't know the charge!
-					//	System.err.println("Cannot swim unknown LundID: " + pid[i]);
 						continue;
 					}
 
@@ -102,11 +103,6 @@ public class ClasIoMonteCarloView extends ClasIoTrajectoryInfoView {
 
 					double p = Math.sqrt(pxo * pxo + pyo * pyo + pzo * pzo); // GeV/c
 
-//					if (p < 1.0e-3) {
-//						System.err.println(String.format("Skipping extremely low momentum track %-5.3f GeV/c for %s",
-//								p, lid.getName()));
-//						continue;
-//					}
 					double phi = Math.atan2(pyo, pxo);
 					double theta = Math.acos(pzo / p);
 

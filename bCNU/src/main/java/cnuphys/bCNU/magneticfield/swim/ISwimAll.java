@@ -1,6 +1,6 @@
 package cnuphys.bCNU.magneticfield.swim;
 
-import java.util.Vector;
+import java.util.List;
 
 import cnuphys.lund.TrajectoryRowData;
 
@@ -17,5 +17,5 @@ public interface ISwimAll {
 	 * @param manager the swim manager
 	 * @return a vector of TrajectoryRowData objects.
 	 */
-	public Vector<TrajectoryRowData> getRowData();
+	public List<TrajectoryRowData> getRowData();
 }

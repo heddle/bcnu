@@ -82,7 +82,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	protected String _rendererStr;
 
 	/*
-	 * The panel that holds the 3D objects
+	 * The panel that holds the 3D objectsz
 	 *
 	 * @param angleX the initial x rotation angle in degrees
 	 *
