@@ -38,8 +38,8 @@ public class Molecules extends GrowablePointSets3D {
 	 * @param y the y coordinate
 	 * @param z the z coordinate
 	 */
-	public void addMolecule(float x, float y, float z) {
-        _molecules.add(x, y, z);
+	public void addMolecule(Molecule molecule) {
+        _molecules.add(molecule);
     }
 
 }
