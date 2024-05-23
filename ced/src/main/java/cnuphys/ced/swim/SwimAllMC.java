@@ -1,7 +1,7 @@
 package cnuphys.ced.swim;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Vector;
 
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.bCNU.threading.EventNotifier;
@@ -30,7 +30,7 @@ public class SwimAllMC implements ISwimAll {
 	 * @return a vector of TrajectoryRowData objects.
 	 */
 	@Override
-	public List<TrajectoryRowData> getRowData() {
+	public Vector<TrajectoryRowData> getRowData() {
 		return ClasIoMonteCarloView.getInstance().getRowData();
 	}
 
@@ -49,7 +49,7 @@ public class SwimAllMC implements ISwimAll {
 
 		Swimming.clearMCTrajectories(); // clear all existing trajectories
 
-		List<TrajectoryRowData> data = getRowData();
+		Vector<TrajectoryRowData> data = getRowData();
 		if (data == null) {
 			return;
 		}

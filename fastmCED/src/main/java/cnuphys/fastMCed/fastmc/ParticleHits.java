@@ -45,10 +45,8 @@ public class ParticleHits {
 
 		hits = new EnumMap<>(DetectorId.class);
 		HitHolder dcHH = new HitHolder(6, 6);
-		HitHolder ftofHH = new HitHolder(6, 0);
 
 		hits.put(DetectorId.DC, dcHH);
-		hits.put(DetectorId.FTOF, ftofHH);
 	}
 
 	/**
@@ -67,11 +65,9 @@ public class ParticleHits {
 		hits = new EnumMap<>(DetectorId.class);
 		if (charge != 0) {
 			HitHolder dcHH = new HitHolder(6, 6);
-			HitHolder ftofHH = new HitHolder(6, 0);
 
 			dcHH.fill(DCGeometry.getHits(path));
 			hits.put(DetectorId.DC, dcHH);
-			hits.put(DetectorId.FTOF, ftofHH);
 		}
 	}
 

@@ -7,8 +7,15 @@ import org.jlab.clas.physics.PhysicsEvent;
 import cnuphys.fastMCed.fastmc.ParticleHits;
 import cnuphys.fastMCed.streaming.StreamProcessStatus;
 import cnuphys.fastMCed.streaming.StreamReason;
+import cnuphys.fastMCed.socket.DataStreamerServer;
 
 public class SocketConsumer extends ASNRConsumer {
+
+	//the port to listen on
+	private int _port = 49152;
+	
+	//the server for sending dtat
+	private DataStreamerServer _server;
 
 	@Override
 	public String getConsumerName() {
@@ -44,7 +51,19 @@ public class SocketConsumer extends ASNRConsumer {
 	 */
 	@Override
 	public StreamProcessStatus streamingPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
-        System.out.println("SocketConsumer.streamingPhysicsEvent: " + count++);
+		
+		if (_server == null) {
+			try {
+				_server = new DataStreamerServer(_port);
+				System.out.println("Server created on port " + _port);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		_server.streamPhysicsEvent(event);
+		
+        System.out.println("SocketConsumer.streamingPhysicsEvent: " + (++count));
 		return null;
 	}
 

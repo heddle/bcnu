@@ -317,7 +317,7 @@ public class GeometryManager {
 	}
 
 	/**
-	 * Get a world 2D polygon from a clas geo object like a FTOF slab.
+	 * Get a world 2D polygon from a clas geo object.
 	 * 
 	 * @param geoObj          the geometric object
 	 * @param projectionPlane the projection plane

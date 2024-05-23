@@ -1,6 +1,6 @@
 package cnuphys.fastMCed.view.trajinfo;
 
-import java.util.List;
+import java.util.Vector;
 
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
@@ -33,6 +33,6 @@ public abstract class ATrajectoryInfoView extends BaseView implements IPhysicsEv
 	 * 
 	 * @return a vector of TrajectoryRowData objects.
 	 */
-	protected abstract List<TrajectoryRowData> getRowData();
+	protected abstract Vector<TrajectoryRowData> getRowData();
 
 }

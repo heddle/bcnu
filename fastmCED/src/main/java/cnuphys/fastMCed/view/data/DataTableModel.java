@@ -65,10 +65,6 @@ public class DataTableModel extends DefaultTableModel {
 			cnames[COL_COMPONENT] = "Wire";
 			break;
 
-		case FTOF:
-			cnames[COL_COMPONENT] = "Paddle";
-			break;
-
 		default:
 		}
 

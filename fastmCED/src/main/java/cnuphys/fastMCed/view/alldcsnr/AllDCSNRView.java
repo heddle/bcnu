@@ -3,7 +3,6 @@ package cnuphys.fastMCed.view.alldcsnr;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
@@ -26,7 +25,6 @@ import cnuphys.fastMCed.graphics.SectorSelector;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.ControlPanel;
-import cnuphys.magfield.MagneticFields;
 
 /**
  * The AllDC_SRN view is a non-faithful representation of all six sectors of
@@ -45,9 +43,6 @@ public class AllDCSNRView extends AView {
 	// base title
 	private static final String _baseTitle = "SNR Machine Learning Inputs";
 
-
-	// font for label text
-	private static final Font labelFont = Fonts.commonFont(Font.PLAIN, 11);
 
 	/**
 	 * Used for drawing the sector rects.

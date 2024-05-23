@@ -38,7 +38,6 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
-import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
@@ -114,7 +113,6 @@ public class FastMCed extends BaseMDIApplication
 	private AllDCView _allDCView;
 	private AllDCSNRView _allDCSNRView;
 	private DataView _dcDataView;
-	private DataView _ftofDataView;
 	private SectorView _sectorView14;
 	private SectorView _sectorView25;
 	private SectorView _sectorView36;
@@ -227,8 +225,7 @@ public class FastMCed extends BaseMDIApplication
 		_virtualView.moveTo(_allDCSNRView, 1);
 		_virtualView.moveTo(_allDCView, 2);
 		_virtualView.moveTo(_trajInfoView, 0, VirtualView.UPPERRIGHT);
-		_virtualView.moveTo(_dcDataView, 3, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_ftofDataView, 3, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_dcDataView, 3);
 
 		_virtualView.moveTo(_logView, 5, VirtualView.UPPERRIGHT);
 
@@ -266,7 +263,6 @@ public class FastMCed extends BaseMDIApplication
 
 		// data views
 		_dcDataView = new DataView("Drift Chamber Hits", DetectorId.DC);
-		_ftofDataView = new DataView("FTOF Hits", DetectorId.FTOF);
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
 		// plot view

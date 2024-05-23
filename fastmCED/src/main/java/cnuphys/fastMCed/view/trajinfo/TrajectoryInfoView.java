@@ -20,7 +20,7 @@ public class TrajectoryInfoView extends ATrajectoryInfoView {
 	}
 
 	@Override
-	protected List<TrajectoryRowData> getRowData() {
+	protected Vector<TrajectoryRowData> getRowData() {
 		return null;
 	}
 
