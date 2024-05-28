@@ -11,11 +11,26 @@ import cnuphys.fastMCed.socket.DataStreamerServer;
 
 public class SocketConsumer extends ASNRConsumer {
 
-	//the port to listen on
-	private int _port = 49152;
-	
 	//the server for sending dtat
-	private DataStreamerServer _server;
+	private static DataStreamerServer _server;
+	static {
+		try {
+			_server = new DataStreamerServer();
+			
+			Runnable r = () -> {
+				try {
+					_server.startServer();
+					System.out.println("Created DataStreamServer");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			};
+			new Thread(r).start();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
 	@Override
 	public String getConsumerName() {
@@ -54,8 +69,7 @@ public class SocketConsumer extends ASNRConsumer {
 		
 		if (_server == null) {
 			try {
-				_server = new DataStreamerServer(_port);
-				System.out.println("Server created on port " + _port);
+				_server = new DataStreamerServer();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

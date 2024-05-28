@@ -1,54 +1,53 @@
 package cnuphys.fastMCed.socket;
 
-import java.io.DataInputStream;
-import java.io.IOException;
-import java.net.Socket;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
 
 public class DataStreamerClient {
+    private static final int PORT = 49152;
+    private static final String SERVER_IP = "127.0.0.1"; // Change this to the server IP if needed
 
     public static void main(String[] args) {
-        String serverName = "localhost"; // Server name or IP
-        int port = 12345; // Port must match the server's listening port
-
-        try (Socket server = new Socket(serverName, port);
-             DataInputStream dis = new DataInputStream(server.getInputStream())) {
-        	
-//        	if (dis.available() == 0) {
-//				System.out.println("No data available.");
-//				return;
-//        	}
-//            
-            // Read an int
-            int intValue = dis.readInt();
-            System.out.println("Received int: " + intValue);
-
-            // Read six reals (doubles)
-            double[] reals = new double[6];
-            for (int i = 0; i < reals.length; i++) {
-                reals[i] = dis.readDouble();
-                System.out.println("Received real #" + (i + 1) + ": " + reals[i]);
-            }
-
-            // Read twelve byte arrays
-            byte[][] byteArrays = new byte[12][112];
-            for (int i = 0; i < byteArrays.length; i++) {
-                dis.readFully(byteArrays[i]); // Ensure reading exactly 112 bytes for each array
-                System.out.println("Received byte array #" + (i + 1) + ": " + byteArrayToHex(byteArrays[i]));
-            }
- 
-        } catch (UnknownHostException e) {
-            System.err.println("Host unknown: " + e.getMessage());
-        } catch (IOException e) {
-            System.err.println("I/O Error: " + e.getMessage());
-        }
+        new DataStreamerClient().connectToServer();
     }
 
-    // Helper method to convert byte array to a hex string for readable output
-    private static String byteArrayToHex(byte[] a) {
-        StringBuilder sb = new StringBuilder(a.length * 2);
-        for(byte b: a)
-            sb.append(String.format("%02x", b));
-        return sb.toString();
+    public void connectToServer() {
+        try {
+            Socket socket = new Socket(SERVER_IP, PORT);
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+
+            while (true) {
+                try {
+                	if (in.available()==0) {
+                        System.out.println("No data available, sleeping for 1000ms...");
+                        Thread.sleep(1000);
+                		continue;
+                	}
+                    int numParticles = in.readInt();
+                    System.out.println("Number of particles: " + numParticles);
+
+                    for (int i = 0; i < numParticles; i++) {
+                        System.out.println("Particle " + i + ":");
+                        System.out.println("q: " + in.readInt());
+                        System.out.println("x: " + in.readDouble());
+                        System.out.println("y: " + in.readDouble());
+                        System.out.println("z: " + in.readDouble());
+                        System.out.println("p: " + in.readDouble());
+                        System.out.println("theta: " + in.readDouble());
+                        System.out.println("phi: " + in.readDouble());
+                    }
+
+                    byte[][] snrData = new byte[12][112];
+                    for (int i = 0; i < 12; i++) {
+                        in.readFully(snrData[i]);
+                    }
+                } catch (EOFException | SocketException e) {
+                    System.out.println("No data available, sleeping for 100ms...");
+                    Thread.sleep(100);
+                }
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
