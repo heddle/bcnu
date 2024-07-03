@@ -21,6 +21,10 @@ public class Advisor extends Person implements ITabled {
 
 	/** the department */
 	public Department department;
+	
+	/** the "special" column */
+	public String special;
+
 
 	/** the advisor's primary subject. might be same as depart. Or in come cases a major like music
 	 * ASSIGNED FROM SCHEDULE! */
@@ -48,11 +52,14 @@ public class Advisor extends Person implements ITabled {
 	 * @param name full name: last, first
 	 * @param id faculty id
 	 * @param dept academic department
+	 * @param email email address
+	 * @param special the special column (e.g., ALC)
 	 */
-	public Advisor(String name, String id, String dept, String email) {
+	public Advisor(String name, String id, String dept, String email, String special) {
 		this.name = name.replace("\"", "");
 		this.id = DataManager.fixId(id);
 		this.email = email;
+		this.special = special;
 
 		String deptstr = dept.replace("\"", "");
 
@@ -68,7 +75,7 @@ public class Advisor extends Person implements ITabled {
 		subject = Major.getValue(department.name());
 
 		if (subject == null) {
-			System.err.println("\nCOULD not subject to department [" + department.name() + "]");
+			System.err.println("\nCOULD not match subject to department [" + department.name() + "]");
 			System.exit(1);
 		}
 
@@ -141,6 +148,15 @@ public class Advisor extends Person implements ITabled {
 	public String nameAndDepartment() {
 		return String.format("%s  [%s]", name, department);
 	}
+	
+	/**
+	 * full name (last, first) and department is a single string
+	 * @return full name (last, first) and department is a single string
+	 */
+	public String nameAndDepartmentAndSpecial() {
+		return String.format("%s  [%s] [%s]", name, department, special);
+	}
+
 
 	/**
 	 * The number of assigned advisees

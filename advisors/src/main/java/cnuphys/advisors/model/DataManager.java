@@ -38,9 +38,6 @@ public class DataManager {
 	//the student data
 	private static StudentData _studentData;
 
-	//ILCs
-	private static ILCData _ilcData;
-
 	//Learning Communities
 	private static LearningCommunityData _learningCommunityData;
 
@@ -92,6 +89,8 @@ public class DataManager {
 	public static final DataAttribute emailAtt = new DataAttribute("ADVISOR_EMAIL", 170, "email", "student_email");
 	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);
 
+	public static final DataAttribute specialAtt = new DataAttribute("SPECIAL", 50);
+
 
 	/* the director of the honors program, if also a core advisor */
 	public static Advisor honorsDirector;
@@ -102,7 +101,6 @@ public class DataManager {
 	 */
 	public static void init() {
 		_advisorData = new AdvisorData(_advisorBaseName);
-		_ilcData = new ILCData(_ilcsBaseName);
 
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
@@ -135,14 +133,6 @@ public class DataManager {
 		}
 
 		return fixedId;
-	}
-
-	/**
-	 * Get the data for all core advisors
-	 * @return the advisor data
-	 */
-	public static ILCData getILCData() {
-		return _ilcData;
 	}
 
 	/**

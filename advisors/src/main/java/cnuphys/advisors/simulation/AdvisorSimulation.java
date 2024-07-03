@@ -77,7 +77,10 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		if (_inited) {
 			return;
 		}
+		
+		//this will cause all data to be read in
 		DataManager.init();
+		
 		InputOutput.init();
 		_inited = true;
 	}

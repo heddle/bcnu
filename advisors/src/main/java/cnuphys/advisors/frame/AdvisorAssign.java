@@ -56,7 +56,7 @@ public class AdvisorAssign extends JFrame {
 	private static AdvisorAssign _instance;
 
 	//what semester are we dealing with
-	private static Semester _semester = Semester.Fall2023;
+	private static Semester _semester = Semester.Fall2024;
 
 	//a label on the menu bar for the semester
 	private static JLabel _infoLabel;
@@ -76,7 +76,7 @@ public class AdvisorAssign extends JFrame {
 
 	//private constructor for singleton
 	private AdvisorAssign() {
-		super("CNU Core Advisor Assignments");
+		super("CNU Fall 2024 Core Advisor Assignments");
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		// set up what to do if the window is closed

@@ -12,17 +12,19 @@ public class DataStreamerClient {
     }
 
     public void connectToServer() {
+    	Socket socket = null;
         try {
-            Socket socket = new Socket(SERVER_IP, PORT);
+            socket = new Socket(SERVER_IP, PORT);
             DataInputStream in = new DataInputStream(socket.getInputStream());
 
             while (true) {
+            	if (in.available()==0) {
+                    System.out.println("No data available, sleeping for 1000ms...");
+                    Thread.sleep(1000);
+            		continue;
+            	}
+
                 try {
-                	if (in.available()==0) {
-                        System.out.println("No data available, sleeping for 1000ms...");
-                        Thread.sleep(1000);
-                		continue;
-                	}
                     int numParticles = in.readInt();
                     System.out.println("Number of particles: " + numParticles);
 
@@ -48,6 +50,11 @@ public class DataStreamerClient {
             }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            try {
+				socket.close();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
         }
     }
 }

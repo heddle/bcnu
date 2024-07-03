@@ -80,7 +80,6 @@ public class AdvisorDialog extends SimpleDialog {
 		np.add(makeLabel(ccs + pls + pss + bts + wds + mts));
 
 		np.add(makeLabel(ynString("HONORS", _advisor.honors())));
-		np.add(makeLabel(ilcString() ));
 
 		np.add(preferred2ndMajor());
 		np.add(specialty());
@@ -217,19 +216,6 @@ public class AdvisorDialog extends SimpleDialog {
 		return label;
 	}
 
-	private String ilcString() {
-		if (_advisor.ilc()) {
-			ILCCourse course = DataManager.getILCData().getILCCourse(_advisor);
-			if (course == null) {
-				System.err.println("\nERROR: Unexpected null ILC course in AdvisorDialog");
-				System.exit(1);
-			}
-			return String.format("ILC: %s %s%s LC: %s", course.crn, course.subject, course.course, course.learningCommunity);
-		}
-		else {
-			return ynString("ILC", false);
-		}
-	}
 
 	private String valString(String prompt, String value) {
 		return prompt + ": " + value + "    ";

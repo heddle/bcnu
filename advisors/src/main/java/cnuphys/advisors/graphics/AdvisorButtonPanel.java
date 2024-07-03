@@ -275,11 +275,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("Departments and Majors");
 	}
 
-	//handle click on ILCs button
-	private void handleILCs() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getILCData().getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("All ILCs");
-	}
 
 	//handle click on LCs button
 	private void handleLearningCommunities() {
@@ -356,14 +351,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _departMajorButton) {
 			handleDepartmentMajor();
 		}
-		else if (button == _ilcsButton) {
-			handleILCs();
-		}
 		else if (button == _lcsButton) {
 			handleLearningCommunities();
-		}
-		else if (button == _ilcsButton) {
-			handleILCs();
 		}
 		else if (button == _assignedStudentButton) {
 			handleAssignedStudents();
