@@ -56,7 +56,7 @@ public class StudentDialog extends SimpleDialog {
 		String phs = ynString("PSP", _student.psp());
 		np.add(makeLabel(ccs + pls + pss + bts + wds + phs ));
 
-		np.add(makeLabel(ynString("ILC", _student.ilc())));
+		np.add(makeLabel(ynString("ALC", _student.alc())));
   	    np.add(makeLabel(ynString("HONORS", _student.honors())));
 
 		np.setBorder(new CommonBorder("Basic student information"));

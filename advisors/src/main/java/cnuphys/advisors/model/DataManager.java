@@ -45,7 +45,6 @@ public class DataManager {
 
 	public static final DataAttribute rowAtt = new DataAttribute(" ", 40);
 
-
 	public static final DataAttribute inClassAtt = new DataAttribute(UnicodeSupport.SMILEYFACE, 18);
 	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 72, "id", "cnuid");
 	public static final DataAttribute advisorAtt = new DataAttribute("ADVISOR", 150);
@@ -76,7 +75,7 @@ public class DataManager {
 	public static final DataAttribute locationAtt = new DataAttribute("LOC", 70, "location");
 	public static final DataAttribute instructorAtt = new DataAttribute("INSTRUCTOR", 150);
 
-	public static final DataAttribute ilcAtt = new DataAttribute("ILC", 35);
+	public static final DataAttribute alcAtt = new DataAttribute("ALC", 35);
 	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 38);
 	public static final DataAttribute windAtt = new DataAttribute("WIND", 38);
 	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 38);

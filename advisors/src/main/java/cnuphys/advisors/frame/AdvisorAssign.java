@@ -250,6 +250,15 @@ public class AdvisorAssign extends JFrame {
 	public static boolean useChemFamily() {
 		return _optionsDialog.useChemFamily();
 	}
+	
+	/**
+	 * Are we grouping engineering related majors?
+	 * @return true if we are grouping engineering related majors
+	 */
+	public static boolean useEngFamily() {
+		return _optionsDialog.useEngFamily();
+	}
+
 
 	/**
 	 * Called when all done!

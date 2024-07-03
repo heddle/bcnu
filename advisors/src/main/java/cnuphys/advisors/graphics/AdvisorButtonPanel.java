@@ -25,7 +25,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _allAdvisorsButton;
 	private JButton _honAdvisorsButton;
 	private JButton _pspAdvisorsButton;
-	private JButton _ilcAdvisorsButton;
+	private JButton _alcAdvisorsButton;
 	private JButton _musTheaAdvisorsButton;
 	private JButton _allStudentButton;
 	private JButton _assignedStudentButton;
@@ -35,7 +35,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 	private JButton _musicTheaterButton;
 	private JButton _assignmentsButton;
-	private JButton _ilcsButton;
+	private JButton _alcsButton;
 	private JButton _lcsButton;
 	private JButton _classesButton;
 	private JButton _commCaptButton;
@@ -79,7 +79,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 
 	    _allAdvisorsButton = createButton("All", true, _rows[1]);
-		_ilcAdvisorsButton = createButton("ILC", true, _rows[1]);
+		_alcAdvisorsButton = createButton("ALC", true, _rows[1]);
 		_honAdvisorsButton = createButton("Honors", true, _rows[1]);
 		_pspAdvisorsButton = createButton("PreMed Sch", true, _rows[1]);
 		_musTheaAdvisorsButton = createButton("Musc/Thea", true, _rows[1]);
@@ -88,7 +88,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_prelawAdvisorsButton = createButton("PreLaw", true, _rows[1]);
 		_presScholarAdvisorsButton = createButton("Pres Sch", true, _rows[1]);
 
-		_ilcsButton = createButton("ILCs", true, _rows[2]);
+		_alcsButton = createButton("ALCs", true, _rows[2]);
 		_lcsButton = createButton("LCs", true, _rows[2]);
 		_classesButton = createButton("Classes", true, _rows[2]);
 		_departMajorButton = createButton("Dept/Maj", true, _rows[2]);
@@ -152,9 +152,9 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 
 	//handle click on honors advisors button
-	private void handleILCAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.ILC).getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("ILC Advisors");
+	private void handleALCAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.ALC).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("ALC Advisors");
 	}
 
 
@@ -303,8 +303,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _pspAdvisorsButton) {
 			handlePSPAdvisors();
 		}
-		else if (button == _ilcAdvisorsButton) {
-			handleILCAdvisors();
+		else if (button == _alcAdvisorsButton) {
+			handleALCAdvisors();
 		}
 		else if (button == _musTheaAdvisorsButton) {
 			handleMusTheaAdvisors();

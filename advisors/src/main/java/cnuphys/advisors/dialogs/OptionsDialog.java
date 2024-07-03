@@ -164,7 +164,7 @@ public class OptionsDialog extends SimpleDialog {
 		_busnFamilyCB = new JCheckBox("Group ACCT, BUSN, FIN, MARKT, and MGMT together", true);
 		_bioFamilyCB = new JCheckBox("Group BIOL, CELLMB, KINES, and OEBIO together", true);
 		_chemFamilyCB = new JCheckBox("Group BIOCHEM and CHEM together", true);
-		_engrFamilyCB = new JCheckBox("Group Electrical and Computer Engineering together", true);
+		_engrFamilyCB = new JCheckBox("Group EE and CPEN together", true);
 
 
 		checkBoxPanel.setLayout(new GridLayout(0, 1));
@@ -324,7 +324,7 @@ public class OptionsDialog extends SimpleDialog {
 	 * 
 	 * @return <code>true</code> if we group
 	 */
-	public boolean useEngrFamily() {
+	public boolean useEngFamily() {
 		return _engrFamilyCB.isSelected();
 	}
 

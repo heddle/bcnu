@@ -189,7 +189,7 @@ public class AdvisorData extends DataModel {
 		if ((column == 1) && advisor.locked()) {
 			return Color.gray;
 		} else {
-			return (advisor.ilc()) ? Color.red : Color.black;
+			return (advisor.alc()) ? Color.red : Color.black;
 		}
 	}
 

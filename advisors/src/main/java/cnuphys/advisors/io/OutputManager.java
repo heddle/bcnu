@@ -81,7 +81,7 @@ public class OutputManager {
 		sArr[0] = "\"\t" + student.id + "\"";  //will get leading 0's
 		sArr[1] = student.lastName;
 		sArr[2] = student.firstName;
-		sArr[3] = student.ilc() ? "ILC" : "";
+		sArr[3] = student.alc() ? "ALC" : "";
 		sArr[4] = student.plp() ? "PLP" : "";
 		sArr[5] = student.honors() ? "HON": "";
 		sArr[6] = student.prsc() ? "PRSC": "";

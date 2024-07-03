@@ -34,14 +34,14 @@ public class Student extends Person implements ITabled {
 	public List<Course> schedule = new ArrayList<>();
 
 
-	public Student(String id, String lastName, String firstName, String plp, String honr, String prsc,
+	public Student(String id, String lastName, String firstName, String alc, String plp, String honr, String prsc,
 			String psp, String prelaw, String wind, String ccap, String btmg, String maj) {
 		super();
 
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
 		this.firstName = firstName.replace("\"", "").trim();
-		this.setILC(false);   //will be assigned in ILC step
+		this.set(Person.ALC, checkString(alc, "ALC"));  
 		this.set(Person.PLP, checkString(plp, "PLP"));
 		this.setHonors(checkString(honr, "HO"));
 		this.set(Person.PRESSCHOLAR, checkString(prsc, "PRS"));
@@ -215,7 +215,7 @@ public class Student extends Person implements ITabled {
 			return firstName;
 		}
 		else if (col == 4) {
-			return ilc() ? "ILC" : "";
+			return alc() ? "ALC" : "";
 		}
 		else if (col == 5) {
 			return plp() ? "PLP" : "";

@@ -30,7 +30,7 @@ public class StudentData extends DataModel {
 	//attributes for student data
 	private static final DataAttribute studentAttributes[] = { DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt, 
-			DataManager.ilcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
+			DataManager.alcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
 			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt, DataManager.reasonAtt, DataManager.inClassAtt };
 
@@ -89,6 +89,7 @@ public class StudentData extends DataModel {
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int lastIndex = getColumnIndex(DataManager.lastNameAtt);
 		int firstIndex = getColumnIndex(DataManager.firstNameAtt);
+		int alcIndex = getColumnIndex(DataManager.alcAtt);
 		int prscIndex = getColumnIndex(DataManager.prscAtt);
 		int windIndex = getColumnIndex(DataManager.windAtt);
 		int ccapIndex = getColumnIndex(DataManager.ccapAtt);
@@ -105,6 +106,7 @@ public class StudentData extends DataModel {
 			String id = s[idIndex];
     		String lastName = s[lastIndex];
 			String firstName = s[firstIndex];
+			String alc = s[alcIndex];
 
 			String prsc = s[prscIndex];
 			String wind = s[windIndex];
@@ -118,7 +120,7 @@ public class StudentData extends DataModel {
 			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
 
-			_tableData.add(new Student(id, lastName, firstName, plp, honr, prsc, psp, prelaw, wind, ccap, btmg, major));
+			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, prelaw, wind, ccap, btmg, major));
 		}
 
 		//raw data not needed
