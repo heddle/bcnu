@@ -9,7 +9,6 @@ import cnuphys.advisors.checklist.steps.CommunityCaptainStep;
 import cnuphys.advisors.checklist.steps.HonorsAlgorithmStep;
 import cnuphys.advisors.checklist.steps.HonorsMajorStep;
 import cnuphys.advisors.checklist.steps.HonorsStudentInClassStep;
-import cnuphys.advisors.checklist.steps.ILCStep;
 import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PSPStep;
 import cnuphys.advisors.checklist.steps.PrelawStep;
@@ -32,7 +31,7 @@ public class CheckList extends JPanel {
 	private CheckListLaunchable presScholarStep;
 
 	//assign ILC advisors
-	private CheckListLaunchable ilcStep;
+//	private CheckListLaunchable ilcStep;
 
 	//assign music and theater
 	private CheckListLaunchable musTheaStep;
@@ -96,7 +95,6 @@ public class CheckList extends JPanel {
 
 
 		presScholarStep = new PresScholarStep("Presidential scholars", true);
-		ilcStep = new ILCStep("ILC students", false);
 		ccptStep = new CommunityCaptainStep("Community Captains", false);
 		musTheaStep = new MusTheaStep("Music & Theater majors", false);
 		btmgStep = new BTMGStep("Bio Tech & Management students",false);
@@ -116,7 +114,7 @@ public class CheckList extends JPanel {
 		studentsAlgorithmStep = new StudentsAlgorithmStep("Remaining students by algorithm", false);
 
 		add(presScholarStep);
-		add(ilcStep);
+//		add(ilcStep);
 		add(ccptStep);
 		add(musTheaStep);
 		add(btmgStep);
@@ -148,7 +146,7 @@ public class CheckList extends JPanel {
 	public void initRun() {
 		ThreadManager tm = ThreadManager.getInstance();
 		tm.queue(presScholarStep);
-		tm.queue(ilcStep);
+//		tm.queue(ilcStep);
 		tm.queue(ccptStep);
 		tm.queue(musTheaStep);
 		tm.queue(btmgStep);
@@ -164,7 +162,7 @@ public class CheckList extends JPanel {
 		boolean inClass = (ealg == EAlgorithm.PutInFCAOptNumMaj);
 
 		boolean presScholarStepDone = presScholarStep.done;
-		boolean ilcStepDone = ilcStep.done;
+//		boolean ilcStepDone = ilcStep.done;
 		boolean musTheaStepDone = musTheaStep.done;
 		boolean ccptStepDone = ccptStep.done;
 		boolean btmgStepDone = btmgStep.done;
@@ -177,8 +175,8 @@ public class CheckList extends JPanel {
 
 
 		presScholarStep.setEnabled(!presScholarStepDone);
-		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
-		musTheaStep.setEnabled(ilcStepDone && !musTheaStepDone);
+//		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
+//		musTheaStep.setEnabled(ilcStepDone && !musTheaStepDone);
 		ccptStep.setEnabled(musTheaStepDone && !ccptStepDone);
 		btmgStep.setEnabled(ccptStepDone && !btmgStepDone);
 		prelawStep.setEnabled(btmgStepDone && !prelawStepDone);

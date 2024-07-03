@@ -57,11 +57,11 @@ public class LearningCommunityCourse implements ITabled {
 		this.llc = llc.replace("\"", "").trim();
 		this.notes = notes.replace("\"", "").trim();
 
-		ILCCourse  ilcCourse =  DataManager.getILCData().getILCCourse(this.crn);
-		if (ilcCourse != null) {
-			ilc = true;
-			instructor = ilcCourse.instructor;
-		}
+//		ILCCourse  ilcCourse =  DataManager.getILCData().getILCCourse(this.crn);
+//		if (ilcCourse != null) {
+//			ilc = true;
+//			instructor = ilcCourse.instructor;
+//		}
 	}
 
 	/**

@@ -114,27 +114,27 @@ public class Schedule extends DataModel {
 
 
 		//mark the ILCs including instructors
-		List<ILCCourse> ilcs = DataManager.getILCData().getILCs();
-		for (ILCCourse ilc : ilcs) {
-			Course course = getCourseFromCRN(ilc.crn);
-
-			if (course == null) {
-				System.err.println("\nERROR: Did not find course corresponding to ILC with crn: [" + ilc.crn + "]");
-				System.exit(1);
-			}
-
-			course.isILC = true;
-
-			//mark advisor as an ILC instructor
-			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
-			if (advisor == null) {
-				System.err.println("\n ERROR Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
-				System.exit(1);
-			}
-
-			ilc.instructor  = advisor;
-			advisor.setILC();
-		}
+//		List<ILCCourse> ilcs = DataManager.getILCData().getILCs();
+//		for (ILCCourse ilc : ilcs) {
+//			Course course = getCourseFromCRN(ilc.crn);
+//
+//			if (course == null) {
+//				System.err.println("\nERROR: Did not find course corresponding to ILC with crn: [" + ilc.crn + "]");
+//				System.exit(1);
+//			}
+//
+//			course.isILC = true;
+//
+//			//mark advisor as an ILC instructor
+//			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
+//			if (advisor == null) {
+//				System.err.println("\n ERROR Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
+//				System.exit(1);
+//			}
+//
+//			ilc.instructor  = advisor;
+//			advisor.setILC();
+//		}
 
 
 
