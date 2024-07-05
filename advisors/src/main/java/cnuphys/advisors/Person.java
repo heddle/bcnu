@@ -15,6 +15,7 @@ public abstract class Person implements ITabled {
 	public static final int PRESSCHOLAR    = 010;
 	public static final int PLP            = 020;
 	public static final int MUSICTHEATER   = 0100;
+	public static final int ENGR           = 0200;
 	public static final int HONOR          = 0400;
 	public static final int WIND           = 01000;
 	public static final int LOCKED         = 02000;

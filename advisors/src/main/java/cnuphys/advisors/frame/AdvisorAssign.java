@@ -230,6 +230,16 @@ public class AdvisorAssign extends JFrame {
 		MessageDialog messageDialog = new MessageDialog("Secondary Majors and Specialties", true, text, Fonts.defaultFont);
 		messageDialog.setVisible(true);
 	}
+	
+	/**
+	 * Check if we force buines students onto business advisors
+	 * 
+	 * @return <code>true</code> if we group
+	 */
+	public boolean forceBusiness() {
+		return _optionsDialog.forceBusiness();
+	}
+
 
 	public static boolean useBusinessFamily() {
 		return _optionsDialog.useBusinessFamily();

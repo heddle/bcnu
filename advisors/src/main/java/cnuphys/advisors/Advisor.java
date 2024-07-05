@@ -70,6 +70,10 @@ public class Advisor extends Person implements ITabled {
 			System.err.println("\nCOULD not match department [" + deptstr + "]");
 			System.exit(1);
 		}
+		
+		if (name.toLowerCase().contains("kesh")) {
+			System.out.println("");
+		}
 
 		//default the subject nased of department name
 		subject = Major.getValue(department.name());
@@ -81,6 +85,7 @@ public class Advisor extends Person implements ITabled {
 
 		set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
 		set(Person.PREBUS, subject.isPreBusiness());
+		set(Person.ENGR, subject.isEngineering());
 		set(Person.ALC, special.contains("ALC"));
 
 
@@ -156,7 +161,7 @@ public class Advisor extends Person implements ITabled {
 	 * @return full name (last, first) and department is a single string
 	 */
 	public String nameAndDepartmentAndSpecial() {
-		return String.format("%s  [%s] [%s]", name, department, special);
+		return String.format("%s  [%s] [%s] [%s]", name, department, subject, special);
 	}
 
 

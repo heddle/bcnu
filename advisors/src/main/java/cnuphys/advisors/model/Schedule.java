@@ -7,6 +7,7 @@ import java.util.List;
 import javax.swing.event.ListSelectionEvent;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -105,6 +106,11 @@ public class Schedule extends DataModel {
 				}
 				else {
 					advisor.subject = major;
+					
+					//recheck the major based on class taught
+					advisor.set(Person.PREBUS, major.isPreBusiness());
+			     	advisor.set(Person.ENGR, major.isEngineering());
+
 				}
 
 				_tableData.add(

@@ -32,6 +32,7 @@ public class OptionsDialog extends SimpleDialog {
 	private JCheckBox _engrFamilyCB;
 	
 	//checkboxes for force assignment
+	private JCheckBox _forceBusinessCB;
 	private JCheckBox _forceEngineeringCB;
 	private JCheckBox _forceComputerScienceCB;
 	private JCheckBox _forceCyberCB;
@@ -110,6 +111,7 @@ public class OptionsDialog extends SimpleDialog {
 
 		};
 		
+		_forceBusinessCB = new JCheckBox("Force Pre-business majors on Luter Advisors", true);
 		_forceEngineeringCB = new JCheckBox("Force Engineering majors on Engineering Advisors", true);
 		_forceComputerScienceCB = new JCheckBox("Force Computer Science majors on Computer Science Advisors", true);
 		_forceCyberCB = new JCheckBox("Force Cybersecurity majors on Cybersecurity Advisors", true);
@@ -117,7 +119,8 @@ public class OptionsDialog extends SimpleDialog {
 		_forcePhysicsCB = new JCheckBox("Force Physics majors on Physics Advisors", true);
 		
 		checkBoxPanel.setLayout(new GridLayout(0, 1));
-        checkBoxPanel.add(_forceEngineeringCB);
+        checkBoxPanel.add(_forceBusinessCB);
+       checkBoxPanel.add(_forceEngineeringCB);
         checkBoxPanel.add(_forceComputerScienceCB);
         checkBoxPanel.add(_forceCyberCB);
         checkBoxPanel.add(_forceInformationScienceCB);
@@ -192,6 +195,13 @@ public class OptionsDialog extends SimpleDialog {
 		return algPanel;
 	}
 	
+	/**
+	 * Check if we force assignment of pre biz majors
+	 * 
+	 * @return <code>true</code> if we force
+	 */
+	public boolean forceBusiness() { return _forceBusinessCB.isSelected(); }
+
 	
 	/**
 	 * Check if we force assignment of physics majors

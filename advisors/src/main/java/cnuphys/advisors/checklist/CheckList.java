@@ -174,7 +174,6 @@ public class CheckList extends JPanel {
 
 
 		presScholarStep.setEnabled(!presScholarStepDone);
-//		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
 //		musTheaStep.setEnabled(ilcStepDone && !musTheaStepDone);
 		ccptStep.setEnabled(musTheaStepDone && !ccptStepDone);
 

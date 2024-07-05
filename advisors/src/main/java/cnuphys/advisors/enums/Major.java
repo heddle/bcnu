@@ -146,6 +146,14 @@ public enum Major {
 	public boolean isPreBusiness() {
 		return (this == ACCT) || (this == BUSN) || (this == FIN) || (this == MARKT) || (this == MGMT);
 	}
+	
+	/**
+	 * Is this major in the engineering family
+	 * @return <code>true</code> if this major is in the engineering family
+	 */
+	public boolean isEngineering() {
+		return (this == COMENG) || (this == EE);
+	}
 
 	public boolean isInMajorFamily(Major major) {
 		if (this == major) {

@@ -59,6 +59,8 @@ public class Student extends Person implements ITabled {
 
 		this.set(Person.MUSICTHEATER, (major == Major.MUSIC) || (major == Major.THEA));
 		this.set(Person.PREBUS, major.isPreBusiness());
+		set(Person.ENGR, major.isEngineering());
+
 	}
 
 	//check a string for a pattern

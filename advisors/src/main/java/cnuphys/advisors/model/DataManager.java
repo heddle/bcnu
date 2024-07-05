@@ -465,6 +465,23 @@ public class DataManager {
 		return students;
 	}
 
+	/**
+	 * Get a list of unassigned students with a given bit set
+	 *
+	 * @param specialty the bit to check
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedStudentsWithBit(int bit) {
+		ArrayList<Student> students = new ArrayList<>();
+
+			for (Student student : _studentData.getStudents()) {
+				if (!student.assigned() && student.check(bit)) {
+					students.add(student);
+				}
+		}
+
+		return students;
+	}
 
 	/**
 	 * Get the schedule of classes data

@@ -3,11 +3,13 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
+import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
+import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.DataManager;
 
 public class StudentsMajorStep extends CheckListLaunchable {
@@ -20,7 +22,21 @@ public class StudentsMajorStep extends CheckListLaunchable {
 	@Override
 	public void launch() {
 		
-		//first for specialty
+		//first by "force"
+		
+		if (AdvisorAssign.getInstance().forceBusiness()) {
+			List<Student> students = DataManager.getUnassignedStudentsWithBit(Person.PREBUS);
+			List<Advisor> advisors = DataManager.getFilteredAdvisorData(Person.PREBUS).getAdvisors();
+
+			//remove locked students and advisors
+			students.removeIf(x -> x.locked());
+			advisors.removeIf(x -> x.locked());
+
+			DataManager.roundRobinAssign(advisors, students, true, "Students by Pre-bus force", EReason.MAJOR);
+
+}
+		
+		//now for specialty
 		for (Specialty specialty : Specialty.values()) {
 			if (specialty != Specialty.NONE) {
 				//get unassigned honors students and honors advisor
