@@ -34,7 +34,7 @@ public class Student extends Person implements ITabled {
 
 
 	public Student(String id, String lastName, String firstName, String alc, String plp, String honr, String prsc,
-			String psp, String prelaw, String wind, String ccap, String btmg, String maj) {
+			String psp, String wind, String ccap, String maj) {
 		super();
 
 		this.id = DataManager.fixId(id);
@@ -45,10 +45,8 @@ public class Student extends Person implements ITabled {
 		this.setHonors(checkString(honr, "HO"));
 		this.set(Person.PRESSCHOLAR, checkString(prsc, "PRS"));
 		this.set(Person.PREMEDSCHOLAR, checkString(psp, "PSP"));
-		this.set(Person.PRELAW, checkString(prelaw, "LW"));
 		this.set(Person.WIND, checkString(wind, "WIN"));
 		this.set(Person.CCPT, checkString(ccap, "CCAP"));
-		this.set(Person.BTMG, checkString(btmg, "BTM"));
 
 
 		String majorstr = maj.replace("\"", "").trim();
@@ -60,6 +58,7 @@ public class Student extends Person implements ITabled {
 		}
 
 		this.set(Person.MUSICTHEATER, (major == Major.MUSIC) || (major == Major.THEA));
+		this.set(Person.PREBUS, major.isPreBusiness());
 	}
 
 	//check a string for a pattern
@@ -154,11 +153,11 @@ public class Student extends Person implements ITabled {
 	}
 
 	/**
-	 * Is the student prelaw?
+	 * Is the student prebus?
 	 * @return true if the student is prelaw
 	 */
-	public boolean prelaw() {
-		return check(Person.PRELAW);
+	public boolean prebus() {
+		return check(Person.PREBUS);
 	}
 
 	/**
@@ -175,14 +174,6 @@ public class Student extends Person implements ITabled {
 	 */
 	public boolean ccpt() {
 		return check(Person.CCPT);
-	}
-
-	/**
-	 * Is the student in biotech management?
-	 * @return true if the student is in biotech management
-	 */
-	public boolean btmg() {
-		return check(Person.BTMG);
 	}
 
 
@@ -213,7 +204,7 @@ public class Student extends Person implements ITabled {
 			return psp() ? "PSP" : "";
 		}
 		else if (col == 9) {
-			return prelaw() ? "PLW" : "";
+			return prebus() ? "PREBUS" : "";
 		}
 		else if (col == 10) {
 			return wind() ? "WIND" : "";
@@ -222,7 +213,7 @@ public class Student extends Person implements ITabled {
 			return ccpt() ? "CCAP" : "";
 		}
 		else if (col == 12) {
-			return btmg() ? "BTMG" : "";
+			return ""; //use something else
 		}
 		else if (col == 13) {
 			return major.name();

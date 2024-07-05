@@ -9,13 +9,12 @@ import cnuphys.bCNU.util.Bits;
 public abstract class Person implements ITabled {
 
 	/** bitwise properties */
-	public static final int PRELAW         = 01;
+	public static final int PREBUS         = 01;
 	public static final int CCPT           = 02;
 	public static final int PREMEDSCHOLAR  = 04;
 	public static final int PRESSCHOLAR    = 010;
 	public static final int PLP            = 020;
 	public static final int MUSICTHEATER   = 0100;
-	public static final int BTMG           = 0200;
 	public static final int HONOR          = 0400;
 	public static final int WIND           = 01000;
 	public static final int LOCKED         = 02000;

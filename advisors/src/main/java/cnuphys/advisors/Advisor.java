@@ -80,6 +80,7 @@ public class Advisor extends Person implements ITabled {
 		}
 
 		set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
+		set(Person.PREBUS, subject.isPreBusiness());
 		set(Person.ALC, special.contains("ALC"));
 
 

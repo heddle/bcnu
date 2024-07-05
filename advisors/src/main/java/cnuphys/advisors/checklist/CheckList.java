@@ -14,6 +14,7 @@ import cnuphys.advisors.checklist.steps.PSPStep;
 import cnuphys.advisors.checklist.steps.PresScholarStep;
 import cnuphys.advisors.checklist.steps.StudentInClassStep;
 import cnuphys.advisors.checklist.steps.StudentsAlgorithmStep;
+import cnuphys.advisors.checklist.steps.StudentsInALCStep;
 import cnuphys.advisors.checklist.steps.StudentsMajorStep;
 import cnuphys.advisors.dialogs.OptionsDialog;
 import cnuphys.advisors.enums.EAlgorithm;
@@ -29,8 +30,8 @@ public class CheckList extends JPanel {
 	//assign pres scholars
 	private CheckListLaunchable presScholarStep;
 
-	//assign ILC advisors
-//	private CheckListLaunchable ilcStep;
+	//assign ALC advisors
+	private CheckListLaunchable alcStep;
 
 	//assign music and theater
 	private CheckListLaunchable musTheaStep;
@@ -96,6 +97,7 @@ public class CheckList extends JPanel {
 		musTheaStep = new MusTheaStep("Music & Theater majors", false);
 		
 		honorsStudentInALCStep = new HonorsInALCStep("Honors in Honors ALC Class", false);
+		alcStep = new StudentsInALCStep("Sdutents in ALCs", false);
 
 		if (inClass) {
 			honorsStudentInClassStep = new HonorsStudentInClassStep("Honors in Honors FCA Class", false);
@@ -111,7 +113,6 @@ public class CheckList extends JPanel {
 		studentsAlgorithmStep = new StudentsAlgorithmStep("Remaining students by algorithm", false);
 
 		add(presScholarStep);
-//		add(ilcStep);
 		add(ccptStep);
 		add(musTheaStep);
 		
@@ -124,6 +125,8 @@ public class CheckList extends JPanel {
 		add(honorsMajorStep);
 		add(honorsAlgorithmStep);
 		add(pspStep);
+		
+		add(alcStep);
 
 		if (inClass) {
 			add(studentInClassStep);
@@ -143,7 +146,6 @@ public class CheckList extends JPanel {
 	public void initRun() {
 		ThreadManager tm = ThreadManager.getInstance();
 		tm.queue(presScholarStep);
-//		tm.queue(ilcStep);
 		tm.queue(ccptStep);
 		tm.queue(musTheaStep);
 	}
@@ -157,7 +159,7 @@ public class CheckList extends JPanel {
 		boolean inClass = (ealg == EAlgorithm.PutInFCAOptNumMaj);
 
 		boolean presScholarStepDone = presScholarStep.done;
-//		boolean ilcStepDone = ilcStep.done;
+		boolean alcStepDone = alcStep.done;
 		boolean musTheaStepDone = musTheaStep.done;
 		boolean ccptStepDone = ccptStep.done;
 		
@@ -185,7 +187,8 @@ public class CheckList extends JPanel {
 			honorsMajorStep.setEnabled(honorsStudentInClassStepDone && !honorsMajorStepDone);
 			honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
 			pspStep.setEnabled(honorsAlgorithmStepDone && !pspStepDone);
-			studentInClassStep.setEnabled(pspStepDone && !studentInClassStepDone);
+			alcStep.setEnabled(pspStepDone && !alcStepDone);
+			studentInClassStep.setEnabled(alcStepDone && !studentInClassStepDone);
 			studentsMajorStep.setEnabled(studentInClassStepDone && !studentsMajorStepDone);
 			studentsAlgorithmStep.setEnabled(studentsMajorStepDone && !studentsAlgorithmStepDone);
 		}
@@ -194,7 +197,8 @@ public class CheckList extends JPanel {
 			honorsMajorStep.setEnabled(!honorsMajorStepDone);
 			honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
 			pspStep.setEnabled(honorsAlgorithmStepDone && !pspStepDone);
-			studentsMajorStep.setEnabled(pspStepDone && !studentsMajorStepDone);
+			alcStep.setEnabled(pspStepDone && !alcStepDone);
+			studentsMajorStep.setEnabled(alcStepDone && !studentsMajorStepDone);
 			studentsAlgorithmStep.setEnabled(studentsMajorStepDone && !studentsAlgorithmStepDone);
 		}
 

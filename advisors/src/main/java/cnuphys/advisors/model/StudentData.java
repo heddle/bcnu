@@ -111,8 +111,6 @@ public class StudentData extends DataModel {
 			String prsc = s[prscIndex];
 			String wind = s[windIndex];
 			String ccap = s[ccapIndex];
-//			String btmg = s[btmgIndex];
-			String btmg = "";
 
 			String plp = s[plpIndex];
 			String honr = s[honrIndex];
@@ -120,7 +118,7 @@ public class StudentData extends DataModel {
 			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
 
-			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, prelaw, wind, ccap, btmg, major));
+			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, wind, ccap, major));
 		}
 
 		//raw data not needed

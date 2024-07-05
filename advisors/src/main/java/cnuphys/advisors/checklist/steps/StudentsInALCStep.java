@@ -12,25 +12,25 @@ import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 
-public class HonorsInALCStep extends CheckListLaunchable {
+public class StudentsInALCStep extends CheckListLaunchable {
 
-	public HonorsInALCStep(String info, boolean enabled) {
-		super("Hon Students in HONR ALC", info, enabled);
+	public StudentsInALCStep(String info, boolean enabled) {
+		super("Students in ALC", info, enabled);
 	}
 
 	@Override
 	public void launch() {
 
-		List<Student> students = DataManager.getUnassignedHonorsStudents();
+		List<Student> students = DataManager.getUnassignedStudents();
 
 		for (Student student : students) {
 			
 			//get the schedule
 			for (Course course : student.schedule) {
-				if (course.isALC && course.honors()) {
+				if (course.isALC) {
 					Advisor adv = DataManager.getAdvisorData().getAdvisorFromId(course.id);
-                    if (adv != null && adv.honors()) {
-                        System.out.println("  ** HONR ALC BEST MATCH " + adv.name);
+                    if (adv != null && adv.alc()) {
+                        System.out.println("  ** ALC BEST MATCH " + adv.name);
                         adv.addAdvisee(student, true, EReason.ALC);
                         
                         //do not lock the advisor
@@ -42,12 +42,12 @@ public class HonorsInALCStep extends CheckListLaunchable {
 		//now lock down if full cohort
 		
 		int target = AdvisorAssign.targetAverage();
-		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);
+		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.ALC);
 
 		for (Advisor advisor : advisorData.getAdvisors()) {
 			if (advisor.adviseeCount() >= target) {
 				advisor.setLocked();
-				System.out.println("Honors Advisor " + advisor.name + " is now locked.");
+				System.out.println("ALC Advisor " + advisor.name + " is now locked.");
 			}
 		}
 		

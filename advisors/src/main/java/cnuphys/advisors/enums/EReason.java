@@ -7,5 +7,5 @@ package cnuphys.advisors.enums;
  *
  */
 public enum EReason {
-	ALG, CCPT, CLASS, HONR, ILC, MAJOR, MAJ2ND, MUSC, NONE, PLP, PRSC, PSP, SPEC, THEA, WIND
+	ALG, CCPT, CLASS, HONR, ALC, MAJOR, MAJ2ND, MUSC, NONE, PLP, PRSC, PSP, SPEC, THEA, WIND
 }

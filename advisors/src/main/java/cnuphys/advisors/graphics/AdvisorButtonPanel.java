@@ -22,11 +22,15 @@ import cnuphys.bCNU.util.Fonts;
 public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 
+	private JButton _preBusAdvisorsButton;
 	private JButton _allAdvisorsButton;
 	private JButton _honAdvisorsButton;
 	private JButton _pspAdvisorsButton;
 	private JButton _alcAdvisorsButton;
 	private JButton _musTheaAdvisorsButton;
+	
+	
+	private JButton _preBusStudentButton;
 	private JButton _allStudentButton;
 	private JButton _assignedStudentButton;
 	private JButton _unassignedStudentButton;
@@ -34,7 +38,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _musicTheaterButton;
 	private JButton _assignmentsButton;
 	private JButton _alcsButton;
-//	private JButton _lcsButton;
 	private JButton _classesButton;
 	private JButton _commCaptButton;
 	private JButton _honorsButton;
@@ -47,12 +50,12 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _departMajorButton;
 	
 
-	private String rowLabels[] = {"  STUDENTS ", "  ADVISORS  ", " "};
+	private String rowLabels[] = {" STUDENTS", " ADVISORS", " "};
 	private JPanel _rows[] = new JPanel[rowLabels.length];
 
 	private JButton _lastButton;
 
-	private static final Font _font = Fonts.smallFont;
+	private static final Font _font = Fonts.tinyFont;
 
 
 	public AdvisorButtonPanel() {
@@ -67,21 +70,21 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_unassignedStudentButton = createButton("Unassigned", true, _rows[0]);
 		_honorsButton = createButton("Honors", true, _rows[0]);
 		_musicTheaterButton = createButton("Musc/Thea", true, _rows[0]);
-		_commCaptButton = createButton("Comm Cptns", true, _rows[0]);
-		_premedScholarButton = createButton("PreMed Sch", true, _rows[0]);
+		_commCaptButton = createButton("CCptns", true, _rows[0]);
+		_premedScholarButton = createButton("PreMed", true, _rows[0]);
 		_presScholarButton = createButton("Pres Sch", true, _rows[0]);
-
+        _preBusStudentButton = createButton("PreBus", true, _rows[0]);
 
 	    _allAdvisorsButton = createButton("All", true, _rows[1]);
 		_alcAdvisorsButton = createButton("ALC", true, _rows[1]);
 		_honAdvisorsButton = createButton("Honors", true, _rows[1]);
-		_pspAdvisorsButton = createButton("PreMed Sch", true, _rows[1]);
+		_pspAdvisorsButton = createButton("PreMed", true, _rows[1]);
 		_musTheaAdvisorsButton = createButton("Musc/Thea", true, _rows[1]);
-		_ccptAdvisorsButton = createButton("Comm Cptns", true, _rows[1]);
+		_ccptAdvisorsButton = createButton("CCptns", true, _rows[1]);
 		_presScholarAdvisorsButton = createButton("Pres Sch", true, _rows[1]);
+		_preBusAdvisorsButton = createButton("PreBus", true, _rows[1]);
 
 		_alcsButton = createButton("ALCs", true, _rows[2]);
-//		_lcsButton = createButton("LCs", true, _rows[2]);
 		_classesButton = createButton("Classes", true, _rows[2]);
 		_departMajorButton = createButton("Dept/Maj", true, _rows[2]);
 
@@ -98,7 +101,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		final JPanel rp = new JPanel();
 		rp.setFont(_font);
 
-		rp.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		rp.setLayout(new FlowLayout(FlowLayout.LEFT, -2, 0));
 		rp.setBorder(BorderFactory.createEtchedBorder());
 
 		JLabel label = new JLabel(text) {
@@ -149,6 +152,12 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("ALC Advisors");
 	}
 
+	//handle click on pre bus advisors button
+	private void handlePreBusAdvisors() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PREBUS).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Active Pre-Business Advisors");
+	}
+
 
 	//handle click on musics theater advisors button
 	private void handleMusTheaAdvisors() {
@@ -161,20 +170,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.CCPT).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Community Captain Advisors");
 	}
-
-	//handle click on BGMT advisors button
-	private void handleBGMTAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.BTMG).getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("Bio Tech and Management Advisors");
-	}
-
-	//handle click on PreLat advisors button
-	private void handlePreLawAdvisors() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PRELAW).getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("Pre-Law Advisors");
-	}
-
-
+	
 	//handle click on pres scholar advisors button
 	private void handlePresScholarAdvisors() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PRESSCHOLAR).getScrollPane());
@@ -207,16 +203,10 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorInfoLabel.getInstance().setText("Honors Students");
 	}
 
-	//handle click on biotech mgmt button
-	private void handleBTMG() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.BTMG).getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("Bio Tech and Management Students");
-	}
-
-	//handle click on prelaw button
-	private void handlePrelaw() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.PRELAW).getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("Pre-Law Students");
+	//handle click on prebus button
+	private void handlePreBus() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.PREBUS).getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("Pre-Business Students");
 	}
 
 	//handle click on premed scholars button
@@ -312,6 +302,10 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _presScholarAdvisorsButton) {
 			handlePresScholarAdvisors();
 		}
+		else if (button == _preBusAdvisorsButton) {
+			handlePreBusAdvisors();
+		}
+
 		else if (button == _commCaptButton) {
 			handleCommunityCaptains();
 		}
@@ -321,6 +315,10 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _presScholarButton) {
 			handlePresScholars();
 		}
+		else if (button == _preBusStudentButton) {
+			handlePreBus();
+		}
+
 		else if (button == _musicTheaterButton) {
 			handleMusicTheaterStudents();
 		}

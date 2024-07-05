@@ -138,6 +138,14 @@ public enum Major {
 		departments.put(UNDEC, Department.NONE);
 
 	}
+	
+	/** Is this major in the business family? 
+	 * 
+	 * @return <code>true</code> if this major is in the business family
+     */
+	public boolean isPreBusiness() {
+		return (this == ACCT) || (this == BUSN) || (this == FIN) || (this == MARKT) || (this == MGMT);
+	}
 
 	public boolean isInMajorFamily(Major major) {
 		if (this == major) {

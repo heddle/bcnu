@@ -86,10 +86,10 @@ public class OutputManager {
 		sArr[5] = student.honors() ? "HON": "";
 		sArr[6] = student.prsc() ? "PRSC": "";
 		sArr[7] = student.psp() ? "PSP" : "";
-		sArr[8] = student.prelaw() ? "PLW" : "";
+		sArr[8] = student.prebus() ? "PREBUS" : "";
 		sArr[9] = student.wind() ? "WIND" : "";
 		sArr[10] = student.ccpt() ? "CCAP" : "";
-		sArr[11] = student.btmg() ? "BTMG" : "";
+		sArr[11] = ""; //use for someting else
 		sArr[12] = student.major.name();
 		sArr[13] = "\"" + advisor.name + "\"";
 		sArr[14] = "\"\t" + advisor.id + "\"";  //will get leading 0's

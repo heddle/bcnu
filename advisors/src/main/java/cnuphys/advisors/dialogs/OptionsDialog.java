@@ -32,16 +32,11 @@ public class OptionsDialog extends SimpleDialog {
 	private JCheckBox _engrFamilyCB;
 	
 	//checkboxes for force assignment
-	private JCheckBox _forceMusicCB;
-	private JCheckBox _forceTheaterAndDanceCB;
 	private JCheckBox _forceEngineeringCB;
 	private JCheckBox _forceComputerScienceCB;
 	private JCheckBox _forceCyberCB;
 	private JCheckBox _forceInformationScienceCB;
 	private JCheckBox _forcePhysicsCB;
-	private JCheckBox _forceHonorsCB;
-	private JCheckBox _forcePresScholarsCB;
-	private JCheckBox _forceCommCaptCB;
 	
 	//done button
 	private JButton _doneButton;
@@ -115,23 +110,13 @@ public class OptionsDialog extends SimpleDialog {
 
 		};
 		
-		_forceMusicCB = new JCheckBox("Force Music majors on Music Advisors", true);
-		_forceTheaterAndDanceCB = new JCheckBox("Force Theater and Dance majors on Theater and Dance Advisors", true);
 		_forceEngineeringCB = new JCheckBox("Force Engineering majors on Engineering Advisors", true);
 		_forceComputerScienceCB = new JCheckBox("Force Computer Science majors on Computer Science Advisors", true);
 		_forceCyberCB = new JCheckBox("Force Cybersecurity majors on Cybersecurity Advisors", true);
 		_forceInformationScienceCB = new JCheckBox("Force Information Science majors on Information Science Advisors", true);
 		_forcePhysicsCB = new JCheckBox("Force Physics majors on Physics Advisors", true);
-		_forceHonorsCB = new JCheckBox("Force Honors College students on Honors College Advisors", true);
-		_forcePresScholarsCB = new JCheckBox("Force Presidential Scholars on Presidential Scholars Advisors", true);
-		_forceCommCaptCB = new JCheckBox("Force Community Captains on Community Captains Advisors", true);
 		
 		checkBoxPanel.setLayout(new GridLayout(0, 1));
-        checkBoxPanel.add(_forceHonorsCB);
-        checkBoxPanel.add(_forcePresScholarsCB);
-		checkBoxPanel.add(_forceCommCaptCB);
-        checkBoxPanel.add(_forceMusicCB);
-        checkBoxPanel.add(_forceTheaterAndDanceCB);
         checkBoxPanel.add(_forceEngineeringCB);
         checkBoxPanel.add(_forceComputerScienceCB);
         checkBoxPanel.add(_forceCyberCB);
@@ -207,32 +192,6 @@ public class OptionsDialog extends SimpleDialog {
 		return algPanel;
 	}
 	
-	/**
-	 * Check if we force assignment of honors college students
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceHonors() {
-		return _forceHonorsCB.isSelected();
-	}
-	
-	/**
-	 * Check if we force assignment of presidential scholars
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forcePresScholars() {
-		return _forcePresScholarsCB.isSelected();
-	}
-	
-	/**
-	 * Check if we force assignment of community captains
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceCommCapt() {
-		return _forceCommCaptCB.isSelected();
-	}
 	
 	/**
 	 * Check if we force assignment of physics majors
@@ -255,24 +214,7 @@ public class OptionsDialog extends SimpleDialog {
 	 */
 	public boolean forceCyber() { return _forceCyberCB.isSelected(); }
 
-	/**
-	 * Check if we force assignment of music majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceMusic() {
-		return _forceMusicCB.isSelected();
-	}
-	
-	/**
-	 * Check if we force assignment of theater and dance majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceTheaterAndDance() {
-		return _forceTheaterAndDanceCB.isSelected();
-	}
-	
+
 	/**
 	 * Check if we force assignment of engineering majors
 	 * 
