@@ -229,5 +229,18 @@ public class Advisor extends Person implements ITabled {
 		return null;
 	}
 
+	/**
+	 * Does this advisor teach the given crn?
+	 * @param crn the course
+	 * @return <code>true</code> if the advisor teaches the course
+	 */
+	public boolean hasCRN(String crn) {
+		for (Course course : schedule) {
+			if (course.crn.equals(crn)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

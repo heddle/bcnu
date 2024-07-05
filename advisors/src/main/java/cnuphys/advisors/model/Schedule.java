@@ -111,37 +111,22 @@ public class Schedule extends DataModel {
 						new Course(crn, subject, course, section, title, instructor, id));
 			}
 		}
-
-
-		//mark the ILCs including instructors
-//		List<ILCCourse> ilcs = DataManager.getILCData().getILCs();
-//		for (ILCCourse ilc : ilcs) {
-//			Course course = getCourseFromCRN(ilc.crn);
-//
-//			if (course == null) {
-//				System.err.println("\nERROR: Did not find course corresponding to ILC with crn: [" + ilc.crn + "]");
-//				System.exit(1);
-//			}
-//
-//			course.isILC = true;
-//
-//			//mark advisor as an ILC instructor
-//			Advisor advisor = DataManager.getAdvisorData().getAdvisorFromId(course.id);
-//			if (advisor == null) {
-//				System.err.println("\n ERROR Did not find advisor corresponding to course with advisor Id: [" + course.id + "]");
-//				System.exit(1);
-//			}
-//
-//			ilc.instructor  = advisor;
-//			advisor.setILC();
-//		}
-
-
-
+		
 		//raw data not needed
 		deleteRawData();
 
 	}
+	
+	public Advisor getAdvisorFromCRN(String crn) {
+		
+		for (Advisor advisor : DataManager.getAdvisorData().getAdvisors()) {
+			if (advisor.hasCRN(crn)) {
+				return advisor;
+			}
+		}
+		return null;
+	}
+
 
 
 	/**
@@ -168,7 +153,7 @@ public class Schedule extends DataModel {
     @Override
 	public Color getHighlightTextColor(int row, int column) {
   		Course course = getCourseFromRow(row);
-		return (course.isILC) ? Color.red : Color.black;
+		return (course.isALC) ? Color.red : Color.black;
 	}
 
 

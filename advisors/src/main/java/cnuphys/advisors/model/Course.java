@@ -26,8 +26,8 @@ public class Course implements ITabled {
 	/** the instructor ID */
 	public String id;
 
-	/** is it an ILC? */
-	public boolean isILC;
+	/** is it an ALC? */
+	public boolean isALC;
 
 	public Course(String crn, String subject, String course, String section, String title, String instructor, String id) {
 		super();

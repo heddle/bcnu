@@ -103,51 +103,7 @@ public class LearningCommunityData extends DataModel {
 		}
 	}
 
-	/**
-	 * Get all the ILC courses in a list
-	 *
-	 * @return all the ILC courses
-	 */
-	public List<ILCCourse> getILCs() {
-
-		ArrayList<ILCCourse> list = new ArrayList<>();
-		for (ITabled itabled : _tableData) {
-			ILCCourse course = (ILCCourse) itabled;
-			list.add(course);
-		}
-
-		return list;
-	}
-
-	/**
-	 * Is the given crn an ILC course?
-	 * @param crn
-	 * @return ILC course or nll
-	 */
-	public boolean isILC(String crn) {
-		for (ILCCourse ilc : getILCs()) {
-			if (ilc.crn.equals(crn)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	/**
-	 * Get the ilc course from the crn
-	 * @param crn the crn
-	 * @return the ILC course, or null.
-	 */
-	public ILCCourse getILCCourse(String crn) {
-		for (ILCCourse ilc : getILCs()) {
-			if (ilc.crn.equals(crn)) {
-				return ilc;
-			}
-		}
-
-		return null;
-	}
-
+	
 	@Override
 	public void valueChanged(ListSelectionEvent e) {
 	}

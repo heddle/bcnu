@@ -17,7 +17,6 @@ import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
-import cnuphys.advisors.model.ILCCourse;
 import cnuphys.bCNU.component.EnumComboBox;
 import cnuphys.bCNU.dialog.SimpleDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
@@ -108,7 +107,7 @@ public class AdvisorDialog extends SimpleDialog {
 		for (Course course : _advisor.schedule) {
 
 			String info = course.infoString() + "    \n";
-			if (course.isILC) {
+			if (course.isALC) {
 				sp.append(info, RED_PLAIN);
 			}
 			else {

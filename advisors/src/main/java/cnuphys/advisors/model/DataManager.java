@@ -19,7 +19,7 @@ public class DataManager {
     private static final String _advisorBaseName = "advisors.csv";
     private static final String _scheduleBaseName = "scheduleofclasses.csv";
     private static final String _studentsBaseName = "students.csv";
-    private static final String _ilcsBaseName = "ilcs.csv";
+    private static final String _alcsBaseName = "alcs.csv";
     private static final String _honAdvBaseName = "honorsadvisors.csv";
     private static final String _pspAdvBaseName = "pspadvisors.csv";  //pre health scholars
     private static final String _presScholarAdvBaseName = "presscholaradvisors.csv";
@@ -40,6 +40,9 @@ public class DataManager {
 
 	//Learning Communities
 	private static LearningCommunityData _learningCommunityData;
+	
+	//ALCs
+	private static ALCData _alcData;
 
 	//synonym lists
 
@@ -103,6 +106,9 @@ public class DataManager {
 
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
+		_alcData = new ALCData(_alcsBaseName);
+		
+		
 		_learningCommunityData = new LearningCommunityData(_lcBaseName);
 
 		new HonorsAdvisors(_honAdvBaseName);
@@ -132,6 +138,15 @@ public class DataManager {
 		}
 
 		return fixedId;
+	}
+	
+	/**
+	 * Get the data for all ALCs
+	 * 
+	 * @return the ALC data
+	 */
+	public static ALCData getALCData() {
+		return _alcData;
 	}
 
 	/**

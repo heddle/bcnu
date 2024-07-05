@@ -3,7 +3,7 @@ package cnuphys.advisors.model;
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.ITabled;
 
-public class ILCCourse implements ITabled {
+public class ALCCourse implements ITabled {
 
 	/** learning community */
 	public String learningCommunity;
@@ -17,12 +17,6 @@ public class ILCCourse implements ITabled {
 	/** course, e.g. 109L */
 	public String course;
 
-	/** llc if any */
-	public String llc;
-
-	/** notes */
-	public String notes;
-
 	/** the instructor */
 	public Advisor instructor;
 
@@ -30,14 +24,14 @@ public class ILCCourse implements ITabled {
 	public int count;
 
 
-	public ILCCourse(String learningCommunity, String crn, String subject, String course, String llc, String notes) {
+	public ALCCourse(String learningCommunity, String crn, String subject, String course) {
 		super();
 		this.learningCommunity = learningCommunity.replace("\"", "").trim();
 		this.crn = crn.replace("\"", "").trim();
 		this.subject = subject.replace("\"", "").trim();
 		this.course = course.replace("\"", "").trim();
-		this.llc = llc.replace("\"", "").trim();
-		this.notes = notes.replace("\"", "").trim();
+		
+		instructor = DataManager.getSchedule().getAdvisorFromCRN(crn);
 	}
 
 	/**
@@ -56,12 +50,8 @@ public class ILCCourse implements ITabled {
 		case 4:
 			return course;
 		case 5:
-			return llc;
-		case 6:
-			return notes;
-		case 7:
 			return (instructor == null) ? "---" : instructor.name;
-		case 8:
+		case 6:
 			return "" + count;
 		default:
 			System.err.println("\nERROR: Bad column in ILC Course getValueAt [" + col + "]");
@@ -71,6 +61,16 @@ public class ILCCourse implements ITabled {
 
 		return null;
 	}
+	
+	/**
+	 * get an info string
+	 * @return full name (last, first) and department is a single string
+	 */
+	public String infoString() {
+		String iname = (instructor == null) ? "---" : instructor.name;
+		return String.format("%s  [%s] [%s] [%s]", learningCommunity, crn, subject + course, iname);
+	}
+
 
 
 	@Override
