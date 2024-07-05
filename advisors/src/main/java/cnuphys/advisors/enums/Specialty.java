@@ -6,7 +6,7 @@ import cnuphys.advisors.Person;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Specialty {
-	NONE, PRELAW, CCPT, PREMEDSCHOLAR, PLP, BTMG;
+	NONE, CCPT, PREMEDSCHOLAR, PLP;
 	
 	/**
 	 * A map for the nice names of the specialties
@@ -15,8 +15,6 @@ public enum Specialty {
 	
 	static {
 		names.put(PLP, "PLP (Pres. Leadership Program)");
-		names.put(BTMG, "BTMG (Biotech management");
-		names.put(PRELAW, "PRELAW (Prelaw)");
 		names.put(CCPT, "CCPT (Commumity Captains)");
 		names.put(PREMEDSCHOLAR, "PSP (Premed Scholars)");
 		names.put(NONE, "NONE");
@@ -30,8 +28,6 @@ public enum Specialty {
 
 	static {
 		bits.put(PLP, Person.PLP);
-		bits.put(BTMG, Person.BTMG);
-		bits.put(PRELAW, Person.PRELAW);
 		bits.put(CCPT, Person.CCPT);
 		bits.put(PREMEDSCHOLAR, Person.PREMEDSCHOLAR);
 		bits.put(NONE, 0);

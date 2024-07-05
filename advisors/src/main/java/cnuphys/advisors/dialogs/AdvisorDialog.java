@@ -71,12 +71,10 @@ public class AdvisorDialog extends SimpleDialog {
 		np.add(makeLabel(ds + ss));
 
 		String ccs = ynString("CCPT", _advisor.check(Person.CCPT));
-		String pls = ynString("PRELAW", _advisor.check(Person.CCPT));
 		String pss = ynString("PRESSCH", _advisor.check(Person.PRESSCHOLAR));
-		String bts = ynString("BTMG", _advisor.check(Person.BTMG));
 		String wds = ynString("WIND", _advisor.check(Person.WIND));
 		String mts = ynString("MUSCTHEA", _advisor.check(Person.MUSICTHEATER));
-		np.add(makeLabel(ccs + pls + pss + bts + wds + mts));
+		np.add(makeLabel(ccs + pss + wds + mts));
 
 		np.add(makeLabel(ynString("HONORS", _advisor.honors())));
 

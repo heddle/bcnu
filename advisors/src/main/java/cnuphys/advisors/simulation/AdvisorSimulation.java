@@ -166,6 +166,10 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	public void exchangeStudents(Student studentA, Student studentB) {
 		Advisor advisorA = studentA.advisor;
 		Advisor advisorB = studentB.advisor;
+		
+		if (advisorA.locked() || advisorB.locked()) {
+			return;
+		}
 
 		advisorA.removeAdvisee(studentA);
 		advisorB.removeAdvisee(studentB);

@@ -30,19 +30,15 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _allStudentButton;
 	private JButton _assignedStudentButton;
 	private JButton _unassignedStudentButton;
-	private JButton _btmgAdvisorsButton;
-	private JButton _prelawAdvisorsButton;
 
 	private JButton _musicTheaterButton;
 	private JButton _assignmentsButton;
 	private JButton _alcsButton;
-	private JButton _lcsButton;
+//	private JButton _lcsButton;
 	private JButton _classesButton;
 	private JButton _commCaptButton;
 	private JButton _honorsButton;
 
-	private JButton _btmgButton;
-	private JButton _prelawButton;
 	private JButton _premedScholarButton;
 	private JButton _presScholarButton;
 	private JButton _presScholarAdvisorsButton;
@@ -72,8 +68,6 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_honorsButton = createButton("Honors", true, _rows[0]);
 		_musicTheaterButton = createButton("Musc/Thea", true, _rows[0]);
 		_commCaptButton = createButton("Comm Cptns", true, _rows[0]);
-		_btmgButton = createButton("BTMG", true, _rows[0]);
-		_prelawButton = createButton("PreLaw", true, _rows[0]);
 		_premedScholarButton = createButton("PreMed Sch", true, _rows[0]);
 		_presScholarButton = createButton("Pres Sch", true, _rows[0]);
 
@@ -84,12 +78,10 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		_pspAdvisorsButton = createButton("PreMed Sch", true, _rows[1]);
 		_musTheaAdvisorsButton = createButton("Musc/Thea", true, _rows[1]);
 		_ccptAdvisorsButton = createButton("Comm Cptns", true, _rows[1]);
-		_btmgAdvisorsButton = createButton("BTMG", true, _rows[1]);
-		_prelawAdvisorsButton = createButton("PreLaw", true, _rows[1]);
 		_presScholarAdvisorsButton = createButton("Pres Sch", true, _rows[1]);
 
 		_alcsButton = createButton("ALCs", true, _rows[2]);
-		_lcsButton = createButton("LCs", true, _rows[2]);
+//		_lcsButton = createButton("LCs", true, _rows[2]);
 		_classesButton = createButton("Classes", true, _rows[2]);
 		_departMajorButton = createButton("Dept/Maj", true, _rows[2]);
 
@@ -274,13 +266,18 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(new DepartmentMajorPane());
 		AdvisorInfoLabel.getInstance().setText("Departments and Majors");
 	}
+	
+	private void handleALCs() {
+		AdvisorDisplay.getInstance().setContent(DataManager.getALCData().getScrollPane());
+		AdvisorInfoLabel.getInstance().setText("All ALCs");
+	}
 
 
 	//handle click on LCs button
-	private void handleLearningCommunities() {
-		AdvisorDisplay.getInstance().setContent(DataManager.getLearningCommunityData().getScrollPane());
-		AdvisorInfoLabel.getInstance().setText("All Learning Communities");
-	}
+//	private void handleLearningCommunities() {
+//		AdvisorDisplay.getInstance().setContent(DataManager.getLearningCommunityData().getScrollPane());
+//		AdvisorInfoLabel.getInstance().setText("All Learning Communities");
+//	}
 
 	//used to refresh tables
 	public void redoLastButton() {
@@ -312,23 +309,11 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _ccptAdvisorsButton) {
 			handleCCPTAdvisors();
 		}
-		else if (button == _btmgAdvisorsButton) {
-			handleBGMTAdvisors();
-		}
-		else if (button == _prelawAdvisorsButton) {
-			handlePreLawAdvisors();
-		}
 		else if (button == _presScholarAdvisorsButton) {
 			handlePresScholarAdvisors();
 		}
 		else if (button == _commCaptButton) {
 			handleCommunityCaptains();
-		}
-		else if (button == _btmgButton) {
-			handleBTMG();
-		}
-		else if (button == _prelawButton) {
-			handlePrelaw();
 		}
 		else if (button == _premedScholarButton) {
 			handlePremedScholars();
@@ -351,8 +336,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		else if (button == _departMajorButton) {
 			handleDepartmentMajor();
 		}
-		else if (button == _lcsButton) {
-			handleLearningCommunities();
+		else if (button == _alcsButton) {
+			handleALCs();
 		}
 		else if (button == _assignedStudentButton) {
 			handleAssignedStudents();

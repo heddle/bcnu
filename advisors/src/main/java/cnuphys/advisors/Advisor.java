@@ -79,7 +79,8 @@ public class Advisor extends Person implements ITabled {
 			System.exit(1);
 		}
 
-		this.set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
+		set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
+		set(Person.ALC, special.contains("ALC"));
 
 
 		advisees = new ArrayList<>();

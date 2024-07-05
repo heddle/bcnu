@@ -25,9 +25,6 @@ public class DataManager {
     private static final String _presScholarAdvBaseName = "presscholaradvisors.csv";
     private static final String _studentSchedulesBaseName = "studentschedules.csv";
     private static final String _ccptAdvBaseName = "ccptadvisors.csv";
-    private static final String _btmgAdvBaseName = "btmgadvisors.csv";
-    private static final String _lcBaseName = "learningcommunities.csv";
-    private static final String _prelawAdvBaseName = "prelawadvisors.csv";
 
     //the advisor data
 	private static AdvisorData _advisorData;
@@ -39,7 +36,7 @@ public class DataManager {
 	private static StudentData _studentData;
 
 	//Learning Communities
-	private static LearningCommunityData _learningCommunityData;
+//	private static LearningCommunityData _learningCommunityData;
 	
 	//ALCs
 	private static ALCData _alcData;
@@ -107,9 +104,6 @@ public class DataManager {
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
 		_alcData = new ALCData(_alcsBaseName);
-		
-		
-		_learningCommunityData = new LearningCommunityData(_lcBaseName);
 
 		new HonorsAdvisors(_honAdvBaseName);
 		new PSPAdvisors(_pspAdvBaseName);
@@ -117,8 +111,6 @@ public class DataManager {
 		new StudentSchedules(_studentSchedulesBaseName);
 		new PresScholarAdvisors(_presScholarAdvBaseName);
 		new CCPTAdvisors(_ccptAdvBaseName);
-		new BTMGAdvisors(_btmgAdvBaseName);
-		new PrelawAdvisors(_prelawAdvBaseName);
 
 		//run the initial steps
 		CheckList.getInstance().initRun();
@@ -147,14 +139,6 @@ public class DataManager {
 	 */
 	public static ALCData getALCData() {
 		return _alcData;
-	}
-
-	/**
-	 * Get the data for learning communities
-	 * @return the advisor data
-	 */
-	public static LearningCommunityData getLearningCommunityData() {
-		return _learningCommunityData;
 	}
 
 	/**

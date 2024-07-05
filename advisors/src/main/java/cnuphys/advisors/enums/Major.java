@@ -45,7 +45,7 @@ public enum Major {
 		names.put(ARTHIST, new String[] {"art history", "arth"});
 		names.put(BIOCHM, new String[] {"biochemistry", "mbch", "bchm"});
 		names.put(BIOL, new String[] {"biology", "phys biology", "integrative biology", "biol", "pmed"});
-		names.put(BUSN, new String[] {"business-undeclared", "business administration", "lutr", "btmg"});
+		names.put(BUSN, new String[] {"business-undeclared", "business administration", "lutr"});
 		names.put(CAM, new String[] {"computational & applied math"});
 		names.put(CELLMB, new String[] {"cell, molecular & phys biology", "biol"});
 		names.put(CHEM, new String[] {"chemistry"});

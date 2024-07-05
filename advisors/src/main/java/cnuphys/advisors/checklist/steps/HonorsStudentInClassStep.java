@@ -38,6 +38,7 @@ public class HonorsStudentInClassStep extends CheckListLaunchable {
 		}
 	}
 
+	//get the best fit
 	private Advisor bestInClassAdvisor(Student student) {
 
 		int target = AdvisorAssign.targetAverage();

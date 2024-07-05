@@ -8,7 +8,6 @@ import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
-import cnuphys.advisors.model.LearningCommunityCourse;
 
 public class Student extends Person implements ITabled {
 
@@ -128,22 +127,6 @@ public class Student extends Person implements ITabled {
 	 */
 	public String fullNameAndID() {
 		return String.format("%s, %s [%s]", lastName, firstName, id);
-	}
-
-	/**
-	 * Is a course in the student's Learning community?
-	 * @param crn the crn
-	 * @return true if the course is in the students LC
-	 */
-	public boolean courseInLC(String crn) {
-
-		for (LearningCommunityCourse lc : DataManager.getLearningCommunityData().getLearningCommunityCourses()) {
-			if (crn.equals(lc.crn)) {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	/**

@@ -4,14 +4,13 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import cnuphys.advisors.checklist.steps.BTMGStep;
 import cnuphys.advisors.checklist.steps.CommunityCaptainStep;
 import cnuphys.advisors.checklist.steps.HonorsAlgorithmStep;
+import cnuphys.advisors.checklist.steps.HonorsInALCStep;
 import cnuphys.advisors.checklist.steps.HonorsMajorStep;
 import cnuphys.advisors.checklist.steps.HonorsStudentInClassStep;
 import cnuphys.advisors.checklist.steps.MusTheaStep;
 import cnuphys.advisors.checklist.steps.PSPStep;
-import cnuphys.advisors.checklist.steps.PrelawStep;
 import cnuphys.advisors.checklist.steps.PresScholarStep;
 import cnuphys.advisors.checklist.steps.StudentInClassStep;
 import cnuphys.advisors.checklist.steps.StudentsAlgorithmStep;
@@ -38,12 +37,10 @@ public class CheckList extends JPanel {
 
 	//assign community captains
 	private CheckListLaunchable ccptStep;
+	
+	//assign honors students in honors advisor's class
+	private CheckListLaunchable honorsStudentInALCStep;
 
-	//assign bio tech and management
-	private CheckListLaunchable btmgStep;
-
-	//assign prelaw students
-	private CheckListLaunchable prelawStep;
 
 	//assign honors students in honors advisor's class
 	private CheckListLaunchable honorsStudentInClassStep;
@@ -97,8 +94,8 @@ public class CheckList extends JPanel {
 		presScholarStep = new PresScholarStep("Presidential scholars", true);
 		ccptStep = new CommunityCaptainStep("Community Captains", false);
 		musTheaStep = new MusTheaStep("Music & Theater majors", false);
-		btmgStep = new BTMGStep("Bio Tech & Management students",false);
-		prelawStep = new PrelawStep("Prelaw students", false);
+		
+		honorsStudentInALCStep = new HonorsInALCStep("Honors in Honors ALC Class", false);
 
 		if (inClass) {
 			honorsStudentInClassStep = new HonorsStudentInClassStep("Honors in Honors FCA Class", false);
@@ -117,8 +114,8 @@ public class CheckList extends JPanel {
 //		add(ilcStep);
 		add(ccptStep);
 		add(musTheaStep);
-		add(btmgStep);
-		add(prelawStep);
+		
+		add(honorsStudentInALCStep);
 
 		if (inClass) {
 			add(honorsStudentInClassStep);
@@ -149,8 +146,6 @@ public class CheckList extends JPanel {
 //		tm.queue(ilcStep);
 		tm.queue(ccptStep);
 		tm.queue(musTheaStep);
-		tm.queue(btmgStep);
-		tm.queue(prelawStep);
 	}
 
 	/**
@@ -165,8 +160,10 @@ public class CheckList extends JPanel {
 //		boolean ilcStepDone = ilcStep.done;
 		boolean musTheaStepDone = musTheaStep.done;
 		boolean ccptStepDone = ccptStep.done;
-		boolean btmgStepDone = btmgStep.done;
-		boolean prelawStepDone = prelawStep.done;
+		
+		boolean honorsStudentInALCStepDone = honorsStudentInALCStep.done;
+		honorsStudentInALCStep.setEnabled(!honorsStudentInALCStepDone);
+		
 		boolean honorsMajorStepDone = honorsMajorStep.done;
 		boolean honorsAlgorithmStepDone = honorsAlgorithmStep.done;
 		boolean pspStepDone = pspStep.done;
@@ -178,15 +175,13 @@ public class CheckList extends JPanel {
 //		ilcStep.setEnabled(presScholarStepDone && !ilcStepDone);
 //		musTheaStep.setEnabled(ilcStepDone && !musTheaStepDone);
 		ccptStep.setEnabled(musTheaStepDone && !ccptStepDone);
-		btmgStep.setEnabled(ccptStepDone && !btmgStepDone);
-		prelawStep.setEnabled(btmgStepDone && !prelawStepDone);
 
 		if (inClass) {
 
 			boolean honorsStudentInClassStepDone = honorsStudentInClassStep.done;
 			boolean studentInClassStepDone = studentInClassStep.done;
 
-			honorsStudentInClassStep.setEnabled(prelawStepDone && !honorsStudentInClassStepDone);
+			honorsStudentInClassStep.setEnabled(honorsStudentInALCStepDone && !honorsStudentInClassStepDone);
 			honorsMajorStep.setEnabled(honorsStudentInClassStepDone && !honorsMajorStepDone);
 			honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
 			pspStep.setEnabled(honorsAlgorithmStepDone && !pspStepDone);
@@ -196,7 +191,7 @@ public class CheckList extends JPanel {
 		}
 
 		else {
-			honorsMajorStep.setEnabled(prelawStepDone && !honorsMajorStepDone);
+			honorsMajorStep.setEnabled(!honorsMajorStepDone);
 			honorsAlgorithmStep.setEnabled(honorsMajorStepDone && !honorsAlgorithmStepDone);
 			pspStep.setEnabled(honorsAlgorithmStepDone && !pspStepDone);
 			studentsMajorStep.setEnabled(pspStepDone && !studentsMajorStepDone);

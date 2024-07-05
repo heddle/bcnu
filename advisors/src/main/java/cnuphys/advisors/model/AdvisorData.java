@@ -28,7 +28,7 @@ public class AdvisorData extends DataModel {
 	// attributes for advisor data
 	private static final DataAttribute advisorAttributes[] = {
 			DataManager.rowAtt, DataManager.advisorAtt, DataManager.departmentNameAtt,
-			DataManager.subjectAtt, DataManager.emailAtt, DataManager.specialAtt,
+			DataManager.subjectAtt, DataManager.emailAtt,
 			DataManager.idAtt, DataManager.numAdviseeAtt, DataManager.numMajorAtt };
 
 	/**
