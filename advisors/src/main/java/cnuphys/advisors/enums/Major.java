@@ -147,6 +147,10 @@ public enum Major {
 		return (this == ACCT) || (this == BUSN) || (this == FIN) || (this == MARKT) || (this == MGMT);
 	}
 	
+	public boolean isCS() {
+		return (this == COMSCI) || (this == CYBER) || (this == INFSCI);
+	}
+	
 	/**
 	 * Is this major in the engineering family
 	 * @return <code>true</code> if this major is in the engineering family
@@ -195,6 +199,14 @@ public enum Major {
 			}
 			break;
 
+		case COMSCI:
+		case CYBER:
+		case INFSCI:	
+			if (AdvisorAssign.useCSFamily()) {
+				return ((major == COMSCI) || (major == CYBER) || (major == INFSCI));
+			}
+			break;
+			
 		default:
 			return false;
 		}

@@ -57,7 +57,7 @@ public class AdvisorDialog extends SimpleDialog {
 
 		addInfoPanel();
 		addListPanels();
-		setSize(600, 600);
+		setSize(800, 600);
 	}
 
 	private void addInfoPanel() {
@@ -125,7 +125,7 @@ public class AdvisorDialog extends SimpleDialog {
 			boolean locked = student.locked();
 			boolean plp = student.check(Person.PLP);
 
-			String info = String.format("%s (%s)   \n", student.fullNameAndID(), student.major.name());
+			String info = String.format("%s (%s) [%s] {%s} \n", student.fullNameAndID(), student.major.name(), student.bannerBlock, student.reason.name());
 
 			if (student.honors()) {
 				if (locked && plp) {

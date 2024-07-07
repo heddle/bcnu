@@ -4,8 +4,11 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.ITabled;
 
 public class ALCCourse implements ITabled {
+	
+	/** learning community number */
+	public String lcNum;
 
-	/** learning community */
+	/** learning community title */
 	public String learningCommunity;
 
 	/** course CRN */
@@ -20,12 +23,11 @@ public class ALCCourse implements ITabled {
 	/** the instructor */
 	public Advisor instructor;
 
-	/** number of students enrolled */
-	public int count;
 
-
-	public ALCCourse(String learningCommunity, String crn, String subject, String course) {
+	public ALCCourse(String lcNum, String learningCommunity, String crn, String subject, String course) {
 		super();
+		
+		this.lcNum = lcNum.replace("\"", "");
 		this.learningCommunity = learningCommunity.replace("\"", "").trim();
 		this.crn = crn.replace("\"", "").trim();
 		this.subject = subject.replace("\"", "").trim();
@@ -42,19 +44,19 @@ public class ALCCourse implements ITabled {
 
 		switch (col) {
 		case 1:
-			return learningCommunity;
+			return lcNum;
 		case 2:
-			return crn;
+			return learningCommunity;
 		case 3:
-			return subject;
+			return crn;
 		case 4:
-			return course;
+			return subject;
 		case 5:
-			return (instructor == null) ? "---" : instructor.name;
+			return course;
 		case 6:
-			return "" + count;
+			return (instructor == null) ? "---" : instructor.name;
 		default:
-			System.err.println("\nERROR: Bad column in ILC Course getValueAt [" + col + "]");
+			System.err.println("\nERROR: Bad column in ALC Course getValueAt [" + col + "]");
 			System.exit(0);
 
 		}

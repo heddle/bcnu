@@ -167,6 +167,11 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		Advisor advisorA = studentA.advisor;
 		Advisor advisorB = studentB.advisor;
 		
+		if ((advisorA == null) || (advisorB == null)) {
+			System.err.println("Null advisor in exchangeStudents");
+			System.exit(0);
+		}
+		
 		if (advisorA.locked() || advisorB.locked()) {
 			return;
 		}

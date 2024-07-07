@@ -30,15 +30,9 @@ public class OptionsDialog extends SimpleDialog {
 	private JCheckBox _bioFamilyCB;
 	private JCheckBox _chemFamilyCB;
 	private JCheckBox _engrFamilyCB;
-	
-	//checkboxes for force assignment
-	private JCheckBox _forceBusinessCB;
-	private JCheckBox _forceEngineeringCB;
-	private JCheckBox _forceComputerScienceCB;
-	private JCheckBox _forceCyberCB;
-	private JCheckBox _forceInformationScienceCB;
-	private JCheckBox _forcePhysicsCB;
-	
+	private JCheckBox _csFamilyCB;
+
+		
 	//done button
 	private JButton _doneButton;
 	
@@ -76,10 +70,7 @@ public class OptionsDialog extends SimpleDialog {
 	@Override
 	protected Component createSouthComponent() {
 		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout(0, 8));
-		
-		panel.add(createForceAssignPanel(), BorderLayout.CENTER);
-		
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		_doneButton = new JButton("Done");
 		
 		_doneButton.addActionListener(new ActionListener() {
@@ -88,50 +79,11 @@ public class OptionsDialog extends SimpleDialog {
 				setVisible(false);
 			}
 		});
-		
 		panel.add(_doneButton, BorderLayout.SOUTH);
-		
+
 		return panel;
 	}
 	
-	/**
-	 * Create the panel that holds the checkboxes for bold and italic.
-	 *
-	 * @return the panel that holds the checkboxes for bold and italic.
-	 */
-	private JPanel createForceAssignPanel() {
-		
-		
-		JPanel checkBoxPanel = new JPanel() {
-			@Override
-			public Insets getInsets() {
-				Insets def = super.getInsets();
-				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
-			}
-
-		};
-		
-		_forceBusinessCB = new JCheckBox("Force Pre-business majors on Luter Advisors", true);
-		_forceEngineeringCB = new JCheckBox("Force Engineering majors on Engineering Advisors", true);
-		_forceComputerScienceCB = new JCheckBox("Force Computer Science majors on Computer Science Advisors", true);
-		_forceCyberCB = new JCheckBox("Force Cybersecurity majors on Cybersecurity Advisors", true);
-		_forceInformationScienceCB = new JCheckBox("Force Information Science majors on Information Science Advisors", true);
-		_forcePhysicsCB = new JCheckBox("Force Physics majors on Physics Advisors", true);
-		
-		checkBoxPanel.setLayout(new GridLayout(0, 1));
-        checkBoxPanel.add(_forceBusinessCB);
-       checkBoxPanel.add(_forceEngineeringCB);
-        checkBoxPanel.add(_forceComputerScienceCB);
-        checkBoxPanel.add(_forceCyberCB);
-        checkBoxPanel.add(_forceInformationScienceCB);
-        checkBoxPanel.add(_forcePhysicsCB);
-        
-		
-		checkBoxPanel.setBorder(new CommonBorder("Force certain majors on certain advisors"));
-
-		return checkBoxPanel;
-
-	}
 
 
 	/**
@@ -153,6 +105,7 @@ public class OptionsDialog extends SimpleDialog {
 		_bioFamilyCB = new JCheckBox("Group BIOL, CELLMB, KINES, and OEBIO together", true);
 		_chemFamilyCB = new JCheckBox("Group BIOCHEM and CHEM together", true);
 		_engrFamilyCB = new JCheckBox("Group EE and CPEN together", true);
+		_csFamilyCB = new JCheckBox("Group CS, IS, and CYBER together", true);
 
 
 		checkBoxPanel.setLayout(new GridLayout(0, 1));
@@ -160,6 +113,7 @@ public class OptionsDialog extends SimpleDialog {
 		checkBoxPanel.add(_bioFamilyCB);
 		checkBoxPanel.add(_chemFamilyCB);
 		checkBoxPanel.add(_engrFamilyCB);
+		checkBoxPanel.add(_csFamilyCB);
 
 		checkBoxPanel.setBorder(new CommonBorder("Group certain similar majors together"));
 
@@ -195,53 +149,6 @@ public class OptionsDialog extends SimpleDialog {
 		return algPanel;
 	}
 	
-	/**
-	 * Check if we force assignment of pre biz majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceBusiness() { return _forceBusinessCB.isSelected(); }
-
-	
-	/**
-	 * Check if we force assignment of physics majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forcePhysics() { return _forcePhysicsCB.isSelected(); }
-	
-	/**
-	 * Check if we force assignment of information science majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceInformationScience() { return _forceInformationScienceCB.isSelected(); }
-	
-	/**
-	 * Check if we force assignment of cybersecurity majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceCyber() { return _forceCyberCB.isSelected(); }
-
-
-	/**
-	 * Check if we force assignment of engineering majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceEngineering() {
-		return _forceEngineeringCB.isSelected();
-	}
-	
-	/**
-	 * Check if we force assignment of computer science majors
-	 * 
-	 * @return <code>true</code> if we force
-	 */
-	public boolean forceComputerScience() {
-		return _forceComputerScienceCB.isSelected();
-	}
 
 	
 	/**
@@ -272,6 +179,15 @@ public class OptionsDialog extends SimpleDialog {
 	}
 	
 	/**
+	 * Check if we group certain cs majors together
+	 * 
+	 * @return <code>true</code> if we group
+	 */
+	public boolean useCSFamily() {
+		return _csFamilyCB.isSelected();
+	}
+	
+	/**
 	 * Check if we group certain engineering majors together
 	 * 
 	 * @return <code>true</code> if we group
@@ -279,6 +195,7 @@ public class OptionsDialog extends SimpleDialog {
 	public boolean useEngFamily() {
 		return _engrFamilyCB.isSelected();
 	}
+
 
 	@Override
 	public Insets getInsets() {

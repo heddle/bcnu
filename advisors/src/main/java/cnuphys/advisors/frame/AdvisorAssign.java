@@ -222,22 +222,13 @@ public class AdvisorAssign extends JFrame {
 		int studentCount = DataManager.getStudentData().count();
 
 		double avgReq = ((double)studentCount)/advisorCount;
-		return (int)Math.ceil(avgReq);
+		return 1 + (int)Math.ceil(avgReq);
 	}
 
 	public static void showMessage(String text) {
 
 		MessageDialog messageDialog = new MessageDialog("Secondary Majors and Specialties", true, text, Fonts.defaultFont);
 		messageDialog.setVisible(true);
-	}
-	
-	/**
-	 * Check if we force buines students onto business advisors
-	 * 
-	 * @return <code>true</code> if we group
-	 */
-	public boolean forceBusiness() {
-		return _optionsDialog.forceBusiness();
 	}
 
 
@@ -269,6 +260,13 @@ public class AdvisorAssign extends JFrame {
 		return _optionsDialog.useEngFamily();
 	}
 
+	/**
+	 * Are we grouping cs related majors?
+	 * @return true if we are grouping cs related majors
+	 */
+	public static boolean useCSFamily() {
+		return _optionsDialog.useCSFamily();
+	}
 
 	/**
 	 * Called when all done!

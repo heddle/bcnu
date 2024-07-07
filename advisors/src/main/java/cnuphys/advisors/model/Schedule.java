@@ -206,6 +206,29 @@ public class Schedule extends DataModel {
 
     	return null;
     }
+    
+    /**
+     * Get a alc course from a crn
+     * @param crn the crn
+     * @return the matching course or null
+     */
+    public ALCCourse getALCCourseFromCRN(String crn) {
+    	if (crn == null) {
+    		System.err.println("\nERROR: null crn passed to getALCCourseFromCRN");
+    		return null;
+    	}
+    	crn = crn.trim();
+
+    	 List<ALCCourse> courses = DataManager.getALCData().getALCs();
+    	 for (ALCCourse course : courses) {
+    		 if (crn.equals(course.crn)) {
+    			 return course;
+    		 }
+    	 }
+
+    	return null;
+    }
+
 
 	@Override
 	public void valueChanged(ListSelectionEvent e) {

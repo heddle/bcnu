@@ -32,7 +32,8 @@ public class StudentData extends DataModel {
 			DataManager.firstNameAtt, 
 			DataManager.alcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
-			DataManager.btmgAtt, DataManager.majorAtt, DataManager.advisorAtt, DataManager.reasonAtt, DataManager.inClassAtt };
+			DataManager.majorAtt, DataManager.bannerBlockAtt,
+			DataManager.advisorAtt, DataManager.reasonAtt, DataManager.inClassAtt };
 
 	public StudentData(String baseName) {
 		super(baseName, studentAttributes);
@@ -93,7 +94,6 @@ public class StudentData extends DataModel {
 		int prscIndex = getColumnIndex(DataManager.prscAtt);
 		int windIndex = getColumnIndex(DataManager.windAtt);
 		int ccapIndex = getColumnIndex(DataManager.ccapAtt);
-	//	int btmgIndex = getColumnIndex(DataManager.btmgAtt);
 
 
 		int plpIndex = getColumnIndex(DataManager.plpAtt);
@@ -101,6 +101,7 @@ public class StudentData extends DataModel {
 		int pspIndex = getColumnIndex(DataManager.pspAtt);
 		int prelawIndex = getColumnIndex(DataManager.prelawAtt);
 		int majorIndex = getColumnIndex(DataManager.majorAtt);
+		int bannerBlockIndex = getColumnIndex(DataManager.bannerBlockAtt);
 
 		for (String s[] : _data) {
 			String id = s[idIndex];
@@ -117,8 +118,10 @@ public class StudentData extends DataModel {
 			String psp = s[pspIndex];
 			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
+			String bannerBlock = s[bannerBlockIndex];
+			
 
-			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, wind, ccap, major));
+			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, wind, ccap, major, bannerBlock));
 		}
 
 		//raw data not needed

@@ -13,9 +13,10 @@ import cnuphys.advisors.io.ITabled;
 public class ALCData extends DataModel {
 
 	// attributes for student data
-	private static final DataAttribute attributes[] = { DataManager.rowAtt, DataManager.lcAtt, DataManager.crnAtt,
+	private static final DataAttribute attributes[] = { DataManager.rowAtt, 
+			DataManager.lcNumAtt, DataManager.lcAtt, DataManager.crnAtt,
 			DataManager.subjectAtt, DataManager.courseAtt, 
-			DataManager.instructorAtt, DataManager.enrollmentAtt};
+			DataManager.instructorAtt};
 
 	public ALCData(String baseName) {
 		super(baseName, attributes);
@@ -23,12 +24,14 @@ public class ALCData extends DataModel {
 
 	@Override
 	protected void processData() {
+		int lcNumIndex = getColumnIndex(DataManager.lcNumAtt);
 		int lcIndex = getColumnIndex(DataManager.lcAtt);
 		int crnIndex = getColumnIndex(DataManager.crnAtt);
 		int subjectIndex = getColumnIndex(DataManager.subjectAtt);
 		int courseIndex = getColumnIndex(DataManager.courseAtt);
 
 		for (String s[] : _data) {
+			String lcNum = s[lcNumIndex];
 			String lcTitle = s[lcIndex];
 			lcTitle = lcTitle.replace("(ILC)", "");
 
@@ -36,7 +39,7 @@ public class ALCData extends DataModel {
 			String subject = s[subjectIndex];
 			String course = s[courseIndex];
 
-			_tableData.add(new ALCCourse(lcTitle, crn, subject, course));
+			_tableData.add(new ALCCourse(lcNum, lcTitle, crn, subject, course));
 		}
 		
 		for (ITabled itabled : _tableData) {

@@ -24,8 +24,19 @@ public class StudentsAlgorithmStep extends CheckListLaunchable {
 
 		List<Advisor> advisors = advisorData.getAdvisors();
 		advisors.removeIf(x -> x.locked());
+		
+		int target= AdvisorAssign.targetAverage();
+		
+		//what is out availability of unlocked slots?
+		int available = 0;
+		for (Advisor advisor : advisors) {
+			available += target - advisor.adviseeCount();
+		}
+		
 
 		List<Student> students = DataManager.getUnassignedStudents();
+		
+		System.out.println("advisor slots: " + available + " unassigned students: " + students.size());
 
 		Algorithm.runAlgorithm(students, advisors);
 
@@ -44,7 +55,7 @@ public class StudentsAlgorithmStep extends CheckListLaunchable {
 		}
 
 		//lock down any advisors at target
-		int target = AdvisorAssign.targetAverage();
+		target = AdvisorAssign.targetAverage();
 		for (Advisor advisor : advisors) {
 			if (advisor.adviseeCount() >= target) {
 				advisor.setLocked();

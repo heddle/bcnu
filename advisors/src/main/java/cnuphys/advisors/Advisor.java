@@ -71,10 +71,6 @@ public class Advisor extends Person implements ITabled {
 			System.exit(1);
 		}
 		
-		if (name.toLowerCase().contains("kesh")) {
-			System.out.println("");
-		}
-
 		//default the subject nased of department name
 		subject = Major.getValue(department.name());
 

@@ -58,7 +58,7 @@ public class DataManager {
 	public static final DataAttribute reasonAtt = new DataAttribute("Reason", 44);
 
 	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");
-//	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
+	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
 
 
 	public static final DataAttribute crnAtt = new DataAttribute("CRN", 40);
@@ -79,7 +79,6 @@ public class DataManager {
 	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 38);
 	public static final DataAttribute windAtt = new DataAttribute("WIND", 38);
 	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 38);
-	public static final DataAttribute btmgAtt = new DataAttribute("BTMG", 38);
 	public static final DataAttribute plpAtt = new DataAttribute("PLP", 35);
 	public static final DataAttribute honrAtt = new DataAttribute("HONR", 38);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
@@ -89,6 +88,7 @@ public class DataManager {
 	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);
 
 	public static final DataAttribute specialAtt = new DataAttribute("SPECIAL", 50);
+	public static final DataAttribute bannerBlockAtt = new DataAttribute("BANNER_BLOCK_CODE", 40);
 
 
 	/* the director of the honors program, if also a core advisor */
@@ -369,7 +369,7 @@ public class DataManager {
 
 		return students;
 	}
-
+	
 	/**
 	 * Get a list of unassigned honors students
 	 *

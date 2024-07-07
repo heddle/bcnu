@@ -6,6 +6,7 @@ import java.util.List;
 import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.ALCCourse;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
 
@@ -26,6 +27,9 @@ public class Student extends Person implements ITabled {
 	/** the assigned advisor */
 	public Advisor advisor;
 	
+	/** block from banner */
+	public String bannerBlock;
+	
 	/** thereason for the assignment */
 	public EReason reason = EReason.NONE;
 
@@ -34,7 +38,7 @@ public class Student extends Person implements ITabled {
 
 
 	public Student(String id, String lastName, String firstName, String alc, String plp, String honr, String prsc,
-			String psp, String wind, String ccap, String maj) {
+			String psp, String wind, String ccap, String maj, String bannerBlock) {
 		super();
 
 		this.id = DataManager.fixId(id);
@@ -47,6 +51,7 @@ public class Student extends Person implements ITabled {
 		this.set(Person.PREMEDSCHOLAR, checkString(psp, "PSP"));
 		this.set(Person.WIND, checkString(wind, "WIN"));
 		this.set(Person.CCPT, checkString(ccap, "CCAP"));
+		this.bannerBlock = bannerBlock;
 
 
 		String majorstr = maj.replace("\"", "").trim();
@@ -215,10 +220,10 @@ public class Student extends Person implements ITabled {
 			return ccpt() ? "CCAP" : "";
 		}
 		else if (col == 12) {
-			return ""; //use something else
+			return major.name();
 		}
 		else if (col == 13) {
-			return major.name();
+			return bannerBlock;
 		}
 		else if (col == 14) {
 			return advisor == null ? "---" : advisor.name;
@@ -237,5 +242,39 @@ public class Student extends Person implements ITabled {
 
 		return null;
 	}
+	
+	/**
+	 * Is the student in an ALC's learning community?
+	 * 
+	 * @return true if the student is in an ALC
+	 */
+	public boolean inALC_LC(ALCCourse alc) {
+		
+		if (!alc()) {
+			return false;
+		}
+		
+		int alcNum = extractNumber(alc.lcNum);
+		if (alcNum <= 0) {
+			return false;
+		}
+		
+		int lcnum = extractNumber(bannerBlock);
+		return alcNum == lcnum;
+	}
+	
+	private int extractNumber(String input) {
+	        // Use a regular expression to replace all non-numeric characters with an empty string
+	        String numericString = input.replaceAll("[^0-9]", "");
+
+	        // If the numericString is empty, return 0
+	        if (numericString.isEmpty()) {
+	            return 0;
+	        }
+
+	        // Convert the numeric string to an integer
+	        return Integer.parseInt(numericString);
+	    }
+
 
 }
