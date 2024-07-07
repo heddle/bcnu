@@ -116,7 +116,6 @@ public class StudentData extends DataModel {
 			String plp = s[plpIndex];
 			String honr = s[honrIndex];
 			String psp = s[pspIndex];
-			String prelaw = s[prelawIndex];
 			String major = s[majorIndex];
 			String bannerBlock = s[bannerBlockIndex];
 			

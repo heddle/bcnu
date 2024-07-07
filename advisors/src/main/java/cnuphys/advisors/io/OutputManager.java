@@ -62,7 +62,7 @@ public class OutputManager {
 
 		};
 
-		String sArr[] = new String[16];
+		String sArr[] = new String[15];
 		for (Advisor advisor : advisors) {
 
 			List<Student> students = advisor.advisees;
@@ -86,14 +86,13 @@ public class OutputManager {
 		sArr[5] = student.honors() ? "HON": "";
 		sArr[6] = student.prsc() ? "PRSC": "";
 		sArr[7] = student.psp() ? "PSP" : "";
-		sArr[8] = student.prebus() ? "PREBUS" : "";
-		sArr[9] = student.wind() ? "WIND" : "";
-		sArr[10] = student.ccpt() ? "CCAP" : "";
-		sArr[11] = student.major.name();
-		sArr[12] = "\"" + advisor.name + "\"";
-		sArr[13] = "\"\t" + advisor.id + "\"";  //will get leading 0's
-		sArr[14] = advisor.department.name();
-		sArr[15] = student.reason.name();
+		sArr[8] = student.wind() ? "WIND" : "";
+		sArr[9] = student.ccpt() ? "CCAP" : "";
+		sArr[10] = student.major.name();
+		sArr[11] = "\"" + advisor.name + "\"";
+		sArr[12] = "\"\t" + advisor.id + "\"";  //will get leading 0's
+		sArr[13] = advisor.department.name();
+		sArr[14] = student.reason.name();
 
 		csvw.writeRow(sArr);
 	}
@@ -107,14 +106,13 @@ public class OutputManager {
 				"HONR", // 6
 				"PRSC", // 7
 				"PSP", // 8
-				"PREBUS", // 9
-				"WIND", // 10
-				"CCAP", // 11
-				"MAJOR_1ST", // 12
-				"ADVISOR", // 13
-				"ADV_ID", // 14
-				"ADV1_DEPT", // 15
-				"REASON" // 16
+				"WIND", // 9
+				"CCAP", // 10
+				"MAJOR_1ST", // 11
+				"ADVISOR", // 12
+				"ADV_ID", // 13
+				"ADV1_DEPT", // 14
+				"REASON" // 15
 		);
 	}
 
