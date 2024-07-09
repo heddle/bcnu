@@ -1,7 +1,7 @@
 ﻿ID,LAST,FIRST,PREFERRED_NAME,ALC,PLP,HONR,CCAP,BONN,PLW,WIND,PSP,PMD,PRSC,MAJOR_1ST,BANNER_BLOCK_CODE,BANNER_BLOCK_CODE_DESC
 01049948,Abbott,Katelyn,Katelyn,,,,,,,,,,,Accounting,LC52,Learning Community #52
 01050812,Abt,Thomas,Thomas,,,,,,,,,,,Business-Undeclared,LC54,Learning Community #54
-01051447,Adams,Natalie,Natalie,,,,,,,,,,,Studio Art,LC65,Learning Community #65
+01051447,Adams,Natalie,Natalie,ALC,,,,,,,,,,Studio Art,LC65,Learning Community #65
 01051694,Adams,Rachel,Rachel,ALC,PLP,,,,,,,,,Communication Studies,LC12,Learning Community #12
 01047296,Adcock,Ava,Ava,,,,,,,,,,,Business-Undeclared,LC29,Learning Community #29
 01048145,Adkins,Landon,Landon,,,,,,,,,,,Psychology,LC68,Learning Community #68
@@ -11,7 +11,7 @@
 01048988,Ahrens,Alaric,Alaric,,,,,,,,,,,Undeclared,LC26,Learning Community #26
 01046189,Akers,Jordan,Jordan,ALC,,,,,,,,PMD,,Finance,LC53,Learning Community #53
 01056166,Akinyoola,Iretimofe,Iretimofe,,,,,,,,,,,Criminology,LC41,Learning Community #41
-01050571,Al-rubaye,Haider,Haider,,,,,,,,,PMD,,Computer Engineering,LC17,Learning Community #17
+01050571,Al-rubaye,Haider,Haider,ALC,,,,,,,,PMD,,Computer Engineering,LC17,Learning Community #17
 01053597,Alcarese,Ashton,Ashton,,PLP,,,,,,,,,Computer Science,LC16,Learning Community #16
 01047284,Aleksak,Mya,Mya,,PLP,HON,,,PLW,,,,,Criminology,LC37,Learning Community #37
 01051483,Alekseyev,Princess,Princess,,,,,,,,,PMD,,Undeclared,LC68,Learning Community #68
@@ -19,12 +19,12 @@
 01046161,Alexander,Justice,Justice,,,,,BONN,,,,,,Environmental Studies,LC23,Learning Community #23
 01050755,Alexandre,Darmani,Dar,,,,,,,,,PMD,,Kinesiology,LC9,Learning Community #9
 01051141,Alger,Caroline,Caroline,,,,,,,,,PMD,,Biology,LC23,Learning Community #23
-01049151,Allen,Claire,Claire,,,,,,,,,,,Biology,LC1,Learning Community #1
+01049151,Allen,Claire,Claire,ALC,,,,,,,,,,Biology,LC1,Learning Community #1
 01050089,Allen,Heather,Heather,ALC,,,,,,,,,,Business-Undeclared,LC30,Learning Community #30
 01053123,Alleyne,Michael,Michael,ALC,,,,,,,,,,Communication Studies,LC58,Learning Community #58
 01051620,Almassy,Abigail,Abby,,PLP,HON,,,,WIND,PSP,PMD,,Undeclared,LC39,Learning Community #39
 01049133,Ambrose,Kaplan,Kaplan,,PLP,,,,,,,PMD,,Criminology,LC19,Learning Community #19
-01053649,Amiree,Farza,Farza,ALC,,,,,,,,,,Computer Science,LC2,Learning Community #2
+01053649,Amiree,Farza,Farza,,,,,,,,,,,Computer Science,LC2,Learning Community #2
 01051449,Ammons,Caleb,Caleb,ALC,PLP,,,,,,,,,Criminology,LC32,Learning Community #32
 01050995,Amoah,Prince,Prince,,,,,,,,,,,Undeclared,LC42,Learning Community #42
 01050944,Amonette,William,Will,,PLP,,,,PLW,,,,,Political Science,LC3,Learning Community #3
@@ -32,7 +32,7 @@
 01051732,Amos,John,John Henry,,PLP,HON,,,,,PSP,PMD,,Biochemistry,LC37,Learning Community #37
 01051417,Anania,Charles,Charlie,ALC,PLP,HON,,,,,,,,Economics,LC35,Learning Community #35
 01053780,Anderson,Dale,Dale,,,,,,,,,,,Computer Science,LC16,Learning Community #16
-01053479,Anderson,Mia,Mia,,PLP,HON,,,,,,,,Computer Science,LC15,Learning Community #15
+01053479,Anderson,Mia,Mia,ALC,PLP,HON,,,,,,,,Computer Science,LC15,Learning Community #15
 01051727,Anderson,Robert,Robert,,PLP,,,,,,,,,Psychology,LC66,Learning Community #66
 01054070,Angebrand,Mathew,Mathew,,,,,,,,,,,Kinesiology,LC22,Learning Community #22
 01053373,Antezana,Sophia,Sophia,,,,,,,,,,,Environmental Studies,LC31,Learning Community #31
@@ -67,7 +67,7 @@
 01047534,Bane,Lillian,Lilly,ALC,,,,,PLW,,,,,History,LC30,Learning Community #30
 01047218,Barbour,Annabel,Annabel,,,,,,,,,,,Business-Undeclared,LC54,Learning Community #54
 01049616,Bardach,Tyler,Tyler,,,,,,,,,,,Undeclared,LC5,Learning Community #5
-01049464,Barefoot,Ansley,Ansley,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01049464,Barefoot,Ansley,Ansley,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01047708,Barnes,Maria,Maria,,PLP,HON,,,,,PSP,PMD,,Kinesiology,LC39,Learning Community #39
 01054803,Barnett,Benjamin,Ben,,,,,,,,,,,Undeclared,LC42,Learning Community #42
 01049081,Barnett,Molly,Molly,ALC,,,,,,,,,,Undeclared,LC27,Learning Community #27
@@ -75,7 +75,7 @@
 01052099,Basta,Jacob,Jake,,PLP,,,,,,,,,Computer Science,LC15,Learning Community #15
 01049434,Basta,Luke,Luke,,PLP,,,,,,,,,Computer Science,LC15,Learning Community #15
 01049009,Bastek,Carley,Carley,,PLP,HON,,,,,,PMD,,Neuroscience,LC46,Learning Community #46
-01052304,Batbold,Elena,Elena,,,,,,,,,PMD,,Biology,LC7,Learning Community #7
+01052304,Batbold,Elena,Elena,ALC,,,,,,,,PMD,,Biology,LC7,Learning Community #7
 01048690,Baum,Nathaniel,Nate,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
 01051366,Bautista,Juliana,Juliana,,,,,,,,,PMD,,Psychology,LC6,Learning Community #6
 01048262,Baylor,Trinity,Trinity,,,HON,,,,,,,,Undeclared,LC40,Learning Community #40
@@ -83,17 +83,16 @@
 01051529,Beachum,Luke,Luke,,,,,,,,,,,Business-Undeclared,LC29,Learning Community #29
 01052462,Beasley,Jack,Jack,,,,,,,,,,,Business-Undeclared,LC42,Learning Community #42
 01049447,Beaty,Brooklynn,Brooklynn,,PLP,HON,,,,,PSP,PMD,,Biochemistry,LC38,Learning Community #38
-01052055,Beaudet,Katelyn,Katie,ALC,PLP,,,,,,,PMD,,Kinesiology,LC30,Learning Community #30
+01052055,Beaudet,Katelyn,Katie,ALC,PLP,,,,,,PSP,PMD,,Kinesiology,LC30,Learning Community #30
 01048396,Beck,Ava,Ava,,,,,,,,,,,Marketing,LC5,Learning Community #5
 01046667,Becker,Constentine,Constentine,,,,,,,,,,,Undeclared,LC6,Learning Community #6
 01049053,Beckett,Ava,Ava,ALC,,,,,PLW,,,PMD,,Undeclared,LC2,Learning Community #2
 01049315,Beeman,Matthew,Matthew,,,,,,,,,,,Undeclared,LC65,Learning Community #65
 01050457,Beitzel,Samantha,Sam,,,,,,,,,,,Criminology,LC29,Learning Community #29
-01055704,Bell,Brandon,Brandon,,,,,,,,,,,Biology,LC7,Learning Community #7
 01051485,Bell,Ezekiel,Ezekiel,ALC,,,,,PLW,,,,,Political Science,LC33,Learning Community #33
 01052571,Beniger,Adam,Adam,ALC,,,,,,,,,,Criminology,LC2,Learning Community #2
 01054437,Benson,Peter,Peter,ALC,,,,,,,,,,Communication Studies,LC58,Learning Community #58
-01054109,Benton-smith,Eva,Eva,,,,,,,,,,,Chemistry,LC24,Learning Community #24
+01054109,Benton-smith,Eva,Eva,ALC,,,,,,,,,,Chemistry,LC24,Learning Community #24
 01049301,Berg,Charis,Charis,ALC,,,,,PLW,,,,,Political Science,LC43,Learning Community #43
 01049638,Bergelin,Lindsey,Lindsey,ALC,PLP,,,,,,,,,Communication Studies,LC45,Learning Community #45
 01051250,Berger,Blake,Blake,ALC,,,,,,,,,,Business-Undeclared,LC53,Learning Community #53
@@ -103,7 +102,7 @@
 01048907,Bethea,Terrance,Terrance,,,,,,,,,,,Criminology,LC19,Learning Community #19
 01049902,Biller,Jonathan,Jon,,PLP,,,,,,,,,Business-Undeclared,LC54,Learning Community #54
 01049100,Bingham,James,James,ALC,,,,,,,,,,Biochemistry,LC7,Learning Community #7
-01051589,Bishop,Adeline,Addie,,,,,,,,,,,Studio Art,LC1,Learning Community #1
+01051589,Bishop,Adeline,Addie,ALC,,,,,,,,,,Studio Art,LC1,Learning Community #1
 01051884,Bjonnes,Johnathan,Johnathan,ALC,,,,,,,,,,Music,LC55,Learning Community #55
 01051283,Black,Kyron,Kyron,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
 01046819,Blagg,Lena,Lena,,,,,,,,,,,Psychology,LC57,Learning Community #57
@@ -124,13 +123,13 @@
 01047074,Brannam,Christopher,Cj,,,,,,,,,,,Undeclared,LC69,Learning Community #69
 01047331,Brantley,Blake,Blake,ALC,PLP,HON,,,,,,,,Business-Undeclared,LC47,Learning Community #47
 01046745,Bretney,Lauren,Lauren,,PLP,,,,,,,,,Business-Undeclared,LC48,Learning Community #48
-01051101,Brewer,Sydney,Sydney,ALC,PLP,HON,,,,,,PMD,PRSC,Undeclared,LC25,Learning Community #25
+01051101,Brewer,Sydney,Sydney,ALC,PLP,HON,,,,,,PMD,,Undeclared,LC25,Learning Community #25
 01047885,Brinkmann,Mackenzie,Mackenzie,ALC,PLP,,,,,,,,,Communication Studies,LC45,Learning Community #45
-01053522,Britos,Sophia,Sophia,,,,,,,,,,,Undeclared,LC1,Learning Community #1
+01053522,Britos,Sophia,Sophia,ALC,,,,,,,,,,Undeclared,LC1,Learning Community #1
 01052479,Britt,Jaylen,Jaylen,,,,,,,,,,,Computer Engineering,LC5,Learning Community #5
 01052507,Bronson,Walter,Walter,,,,,,,,,,,Undeclared,LC42,Learning Community #42
 01054186,Brooks,Kristin,Kristin,,,,,,,,,,,Psychology,LC31,Learning Community #31
-01051926,Brown,Darcy,Darcy,,PLP,,,,,,PSP,PMD,,Biology,LC10,Learning Community #10
+01051926,Brown,Darcy,Darcy,ALC,PLP,,,,,,PSP,PMD,,Biology,LC10,Learning Community #10
 01045716,Brown,Kendal,Kendal,,PLP,,,,,,PSP,PMD,,Biology,LC29,Learning Community #29
 01049082,Brown,Lorelai,Lorelai,ALC,PLP,,,,,,,,,Music,LC55,Learning Community #55
 01046004,Brown,Pharoah,Pharoah,,,,CCAP,,,,,PMD,,Cybersecurity,LC72,Learning Community #72
@@ -152,7 +151,7 @@
 01048478,Busenlehner,Annaka,Annaka,,PLP,,,,,,,,,Organismal & Environ Biology,LC31,Learning Community #31
 01051959,Busey,Olivia,Olivia,,,,,,,,,,,Undeclared,LC19,Learning Community #19
 01050579,Butchko,Natasha,Natasha,ALC,,,,,,,,PMD,,Kinesiology,LC27,Learning Community #27
-01048036,Butler,Hailey,Hailey,,PLP,HON,,,,,,,PRSC,Undeclared,LC40,Learning Community #40
+01048036,Butler,Hailey,Hailey,,PLP,HON,,,,,,,,Undeclared,LC40,Learning Community #40
 01047840,Butler,Jerel,Jerel,,PLP,,,,,,,PMD,,Undeclared,LC31,Learning Community #31
 01048731,Byrd,Alison,Alison,,,HON,,,PLW,,,,,Business-Undeclared,LC39,Learning Community #39
 01048721,Bytyqi,Aldion,Aldion,,,,,,,,,PMD,,Kinesiology,LC18,Learning Community #18
@@ -178,8 +177,8 @@
 01050534,Carrasquillo,Marcelo,Marcelo,ALC,PLP,,,,,,,PMD,,Undeclared,LC45,Learning Community #45
 01048801,Carrington,Xzaevion,Xzaevion,,,,,,,,,,,Psychology,LC11,Learning Community #11
 01053357,Carter,Briana,Bri,,,,,,PLW,,,,,Environmental Studies,LC31,Learning Community #31
-01051737,Carter,Lydia,Lydia,,,,,,,,,PMD,,Biology,LC58,Learning Community #58
-01054376,Casarez,Nicholas,Nick,,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
+01051737,Carter,Lydia,Lydia,ALC,,,,,,,,PMD,,Biology,LC58,Learning Community #58
+01054376,Casarez,Nicholas,Nick,ALC,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
 01052013,Casciaro,Ryan,Ryan,,,,,,,,,,,Business-Undeclared,LC70,Learning Community #70
 01048530,Casoni,Katherine,Simon,ALC,,,,,,,,,,Music,LC55,Learning Community #55
 01047109,Cassidy,Anne,Anne,,PLP,,,,,,,,,Psychology,LC66,Learning Community #66
@@ -199,12 +198,12 @@
 01050574,Chizuk,Christopher,Christopher,,,,,,,,,,,Cybersecurity,LC15,Learning Community #15
 01050821,Chowning,Allison,Allison,ALC,,,,,,,,,,Communication Studies,LC12,Learning Community #12
 01049085,Christ,Mitchell,Mitchell,ALC,,,,,,,,,,History,LC64,Learning Community #64
-01048006,Christesen,Leah,Leah,,,,,,,,,,,Communication Studies,LC45,Learning Community #45
+01048006,Christesen,Leah,Leah,ALC,,,,,,,,,,Communication Studies,LC45,Learning Community #45
 01051574,Christiansen,Rainer,Rainer,,PLP,HON,,,,,,,,Business-Undeclared,LC50,Learning Community #50
 01052652,Christopher,Cooper,Cooper,,,,,,,,,,,Communication Studies,LC11,Learning Community #11
 01047475,Cinella,Kate,Kate,,,,,,,,,,,Undeclared,LC5,Learning Community #5
 01054069,Ciner,Cengiz,Cengiz,ALC,,,,,,,,,,Finance,LC58,Learning Community #58
-01048827,Clark,Jena,Jena,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01048827,Clark,Jena,Jena,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01050348,Clark,Patrick,Patrick,ALC,PLP,,,,,,,,,Computer Engineering,LC17,Learning Community #17
 01048719,Cleghorn,Shannon,Shannon,ALC,,,,,PLW,,,,,Political Science,LC43,Learning Community #43
 01052023,Clements,Sydney,Sydney,,,HON,,,,,,,,Kinesiology,LC36,Learning Community #36
@@ -225,12 +224,12 @@
 01052388,Conrad,Walker,Walker,ALC,PLP,,,,,,,,,Business-Undeclared,LC33,Learning Community #33
 01047776,Conway,Brett,Brett,ALC,PLP,,,,PLW,,,,,Theater,LC71,Learning Community #71
 01053359,Cook,Mark,Mark,,,,,,,,,,,Business-Undeclared,LC52,Learning Community #52
-01045161,Cookenour,Abigail,Grayce,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01045161,Cookenour,Abigail,Grayce,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01049915,Cooper,Noah,Noah,,PLP,,,,,,,PMD,,Physics,LC46,Learning Community #46
 01053647,Cork,Teagan,Teagan,,,,,,,,,,,Undeclared,LC18,Learning Community #18
-01049248,Cosgrove,Genevieve,Genevieve,,PLP,,,,,,,,,Marketing,LC51,Learning Community #51
+01049248,Cosgrove,Genevieve,Genevieve,ALC,PLP,,,,,,,,,Marketing,LC51,Learning Community #51
 01047529,Costanzo,Ashley,Ashley,,,,,,,,,,,Communication Studies,LC26,Learning Community #26
-01051083,Costanzo,Emma,Emma,,,,,,,,,,,Kinesiology,LC10,Learning Community #10
+01051083,Costanzo,Emma,Emma,ALC,,,,,,,,,,Kinesiology,LC10,Learning Community #10
 01052444,Coston,Jayden,Jayden,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
 01050673,Cottral,Katherine,Katherine,,PLP,,,,,,,,,Integrative Biology,LC48,Learning Community #48
 01053437,Coulon,Liam,Liam,ALC,,,,,,,,,,Business-Undeclared,LC30,Learning Community #30
@@ -238,7 +237,7 @@
 01051535,Cowardin,Alese,Alese,ALC,PLP,HON,,,PLW,,,,,Political Science,LC35,Learning Community #35
 01051020,Cowell,Fredrick,Freddie,ALC,PLP,HON,,,,,,PMD,,Kinesiology,LC47,Learning Community #47
 01050479,Cramp,William,Will,,PLP,,,,,,,,,Undeclared,LC69,Learning Community #69
-01053151,Crawford,Jack,Jack,,,,,,,,,,,Computer Science,LC16,Learning Community #16
+01053151,Crawford,Jack,Jack,ALC,,,,,,,,,,Computer Science,LC16,Learning Community #16
 01048061,Crenshaw,Eli,Eli,ALC,PLP,,,,,,,,,English,LC47,Learning Community #47
 01047185,Critelli,Summer,Summer,,,,,,,,,,,Psychology,LC68,Learning Community #68
 01047661,Critzer,Victoria,Tori,,PLP,HON,,,,,,,,Computer Science,LC15,Learning Community #15
@@ -249,14 +248,14 @@
 01048048,Cunningham,Caden,Caden,,PLP,,,,,,,,,Undeclared,LC57,Learning Community #57
 01047699,Cunningham,Ryan,Ryan,,,,,,,,,,,Computer Science,LC16,Learning Community #16
 01048892,Curtis,De'Asia,De'Asia,,,,,,,,,,,Biology,LC24,Learning Community #24
-01046047,Curtis,Megan,Megan,,PLP,,,,,,PSP,PMD,,Undeclared,LC7,Learning Community #7
+01046047,Curtis,Megan,Megan,ALC,PLP,,,,,,PSP,PMD,,Undeclared,LC7,Learning Community #7
 01051278,Custalow,Reginald,Reggie,,,,,,,,,PMD,,Undeclared,LC27,Learning Community #27
 01047200,Custidero,Dominic,Dominic,,,,,,,,,,,Environmental Studies,LC22,Learning Community #22
 01050229,D'Ambrosio,Lindsey,Lindsey,ALC,,,,,,,,,,Criminology,LC32,Learning Community #32
 01053697,Daily,James,James,,,,,,,,,,,Undeclared,LC15,Learning Community #15
 01049807,Dakos,Katerina,Katerina,,PLP,,,,PLW,,,PMD,,Undeclared,LC5,Learning Community #5
 01053872,Dale,Alesia,Alesia,,PLP,,,,PLW,,,,,Political Science,LC48,Learning Community #48
-01046010,Dalzell,Brietta,Brietta,,PLP,HON,,,,,,,PRSC,Neuroscience,LC38,Learning Community #38
+01046010,Dalzell,Brietta,Brietta,,PLP,HON,,,,,,,,Neuroscience,LC38,Learning Community #38
 01047952,Daniels,Damon,Damon,ALC,,,,,,,,,,Business-Undeclared,LC60,Learning Community #60
 01049339,Daniels,Dillon,Dillon,,,,,,PLW,,,,,Business-Undeclared,LC31,Learning Community #31
 01048476,Darnell,Matthew,Matthew,,,,,,,,,,,Business-Undeclared,LC50,Learning Community #50
@@ -270,16 +269,16 @@
 01048603,Davis,Nia,Nia,,PLP,,,,,,,,,Political Science,LC41,Learning Community #41
 01046946,Davis,Nyshaell,Nyshaell,,,,,,,,,PMD,,Chemistry,LC23,Learning Community #23
 01054029,Davis,Owen,Owen,,,,,,,,,,,Physics,LC14,Learning Community #14
-01046883,Davis,Taylor,Taylor,,PLP,HON,,,PLW,,,,PRSC,American Studies,LC37,Learning Community #37
+01046883,Davis,Taylor,Taylor,,PLP,HON,,,PLW,,,,,American Studies,LC37,Learning Community #37
 01048292,De La Madrid Sanchez,Elizabeth,Elizabeth,,PLP,,CCAP,BONN,,,,,,Business-Undeclared,LC72,Learning Community #72
-01051148,DePumpo,Ella,Ella,,,,,,,,,,,Psychology,LC1,Learning Community #1
-01048195,Dean,Austin,Austin,,PLP,HON,,BONN,,WIND,PSP,PMD,PRSC,Biochemistry,LC39,Learning Community #39
-01053855,Decker,Lauren,Lauren,,,,,,,,,PMD,,Kinesiology,LC7,Learning Community #7
+01051148,DePumpo,Ella,Ella,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
+01048195,Dean,Austin,Austin,ALC,PLP,HON,,BONN,,WIND,PSP,PMD,,Biochemistry,LC39,Learning Community #39
+01053855,Decker,Lauren,Lauren,ALC,,,,,,,,PMD,,Kinesiology,LC7,Learning Community #7
 01050420,Degrenier,Olivia,Olivia,,PLP,,,,,,,,,Undeclared,LC46,Learning Community #46
 01050302,Deleon,Aaliyah,Aaliyah,,PLP,,,,,,PSP,PMD,,"Cell, Molecular & Phys Biology",LC65,Learning Community #65
-01055366,Destin,Jonathan,Jonathan,,,,,,,,,,,Computer Engineering,LC17,Learning Community #17
+01055366,Destin,Jonathan,Jonathan,ALC,,,,,,,,,,Computer Engineering,LC17,Learning Community #17
 01051906,Devlin,Willliam,Will,,PLP,HON,,,,,PSP,PMD,,Biology,LC37,Learning Community #37
-01053041,Deyoung,Dylan,Dylan,,PLP,HON,,,,,,,,Computer Engineering,LC30,Learning Community #30
+01053041,Deyoung,Dylan,Dylan,ALC,PLP,HON,,,,,,,,Computer Engineering,LC30,Learning Community #30
 01054881,Diacoumis,Zoe,Zoe,ALC,,,,,,,,,,Sociology,LC56,Learning Community #56
 01053972,Dickey,Ameliah,Ameliah,,,,,,,,,,,History,LC58,Learning Community #58
 01050421,Diehl,Ellie,Ellie,,PLP,,,,,,,PMD,,Psychology,LC66,Learning Community #66
@@ -307,13 +306,13 @@
 01051437,Dunn,Eamon,Eamon,ALC,,,,,,,,,,Business-Undeclared,LC2,Learning Community #2
 01051681,Dunn,Todd,Todd,,,,,,,,,,,Management,LC52,Learning Community #52
 01053798,Durcsak,Lauren,Lauren,ALC,,,,,,,,,,History,LC27,Learning Community #27
-01051870,Earley,Camden,Camden,,,,,,,,,PMD,,Biology,LC60,Learning Community #60
-01047859,Easter,Quintin,Quintin,,,,CCAP,,,,,,,Marketing,LC72,Learning Community #72
+01051870,Earley,Camden,Camden,ALC,,,,,,,,PMD,,Biology,LC60,Learning Community #60
+01047859,Easter,Quintin,Quintin,ALC,,,CCAP,,,,,,,Marketing,LC72,Learning Community #72
 01049844,Easterling,Hannah,Hannah,,,,,,,,,PMD,,Psychology,LC57,Learning Community #57
 01049277,Eaves,Sianna,Sianna,,,,,,,,,,,Criminology,LC19,Learning Community #19
 01051991,Edmonds,Marques,Marques,,,,,,,,,,,Computer Engineering,LC17,Learning Community #17
 01049137,Edwards,Jordan,Jordan,,,,,,,,,,,Cybersecurity,LC72,Learning Community #72
-01046805,Edwards,Kyler,Kyler,ALC,PLP,HON,,,,,,,,Cybersecurity,LC45,Learning Community #45
+01046805,Edwards,Kyler,Kyler,,PLP,HON,,,,,,,,Cybersecurity,LC45,Learning Community #45
 01051741,Edwards,Mason,Mason,ALC,,,,,PLW,,,,,Computer Science,LC43,Learning Community #43
 01053664,Edwards,Tristan,Tristan,,,,,,,,,,,Business-Undeclared,LC50,Learning Community #50
 01052839,Ehrlich,Sawyer,Sawyer,,,,,,,,,,,Business-Undeclared,LC52,Learning Community #52
@@ -327,7 +326,7 @@
 01046921,Ellwanger,Aiden,Aiden,,PLP,HON,,,,,PSP,PMD,,Neuroscience,LC39,Learning Community #39
 01053590,Enge,Lars,Lars,ALC,,,,,,,,,,Undeclared,LC30,Learning Community #30
 01049781,Englehart,Megan,Megan,,PLP,,,,,,,,,Undeclared,LC48,Learning Community #48
-01050121,Enochs,Luke,Luke,,,,,,,,,,,Studio Art,LC1,Learning Community #1
+01050121,Enochs,Luke,Luke,ALC,,,,,,,,,,Studio Art,LC1,Learning Community #1
 01050799,Epperly,Erica,Erica,,,,,,,,,PMD,,Biology,LC23,Learning Community #23
 01049418,Erfe,Joseph,Joseph,,,,,,,,,PMD,,Biology,LC70,Learning Community #70
 01047559,Ericson,Sarah,Sarah,ALC,PLP,,,,,,,PMD,,Undeclared,LC10,Learning Community #10
@@ -346,8 +345,8 @@
 01051239,Fenick,Reeve,Reeve,,PLP,,,BONN,,,,,,Undeclared,LC66,Learning Community #66
 01053269,Fero,Marcus,Marcus,,PLP,HON,,,,,,,,Accounting,LC38,Learning Community #38
 01049602,Ferreira,Benjamin,Benjamin,,,,,,,,,,,Undeclared,LC11,Learning Community #11
-01051177,Fisher,Aspen,Aspen,,,,,,,,,,,Undeclared,LC56,Learning Community #56
-01051818,Fisher,Emma,Emma,,,,,,,,,PMD,,International Affairs,LC58,Learning Community #58
+01051177,Fisher,Aspen,Aspen,ALC,,,,,,,,,,Undeclared,LC56,Learning Community #56
+01051818,Fisher,Emma,Emma,ALC,,,,,,,,PMD,,Neuroscience,LC58,Learning Community #58
 01054027,Fisher,Luke,Luke,,,,,,,,,PMD,,Kinesiology,LC9,Learning Community #9
 01048981,Flannigan,Noah,Noah,ALC,,,,,,,,,,International Affairs,LC64,Learning Community #64
 01046114,Flory,Hayden,Hayden,ALC,PLP,,,,,,,,,Accounting,LC53,Learning Community #53
@@ -356,8 +355,8 @@
 01050263,Foster,Colton John,Colton,,PLP,,,,PLW,,,,,Political Science,LC44,Learning Community #44
 01048886,Foti,Jacob,Jacob,,PLP,,,,,,,,,Business-Undeclared,LC54,Learning Community #54
 01054176,Fowler,Jacquelyn,Jacquelyn,,,,,,,,,,,Undeclared,LC63,Learning Community #63
-01053927,Fox,Charles,Charlie,,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
-01053880,Friedlein,Carson,Carson,,PLP,,,,,,PSP,PMD,,Biology,LC4,Learning Community #4
+01053927,Fox,Charles,Charlie,ALC,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
+01053880,Friedlein,Carson,Carson,ALC,PLP,,,,,,PSP,PMD,,Biology,LC4,Learning Community #4
 01055017,Friel,Erika,Erika,ALC,PLP,,,,,,,,,Political Science,LC62,Learning Community #62
 01047755,Fritz,Rex,Rex,ALC,,,,,,,,,,English,LC27,Learning Community #27
 01051315,Fuller,Sarah,Sarah,ALC,PLP,HON,,,,,,PMD,,Psychology,LC34,Learning Community #34
@@ -371,12 +370,12 @@
 01053907,Garcia Rodriguez,Amira,Amira,ALC,,,,,,,,,,Psychology,LC27,Learning Community #27
 01047644,Gardner,Harley,Harley,,,,,,,,,,,Business-Undeclared,LC52,Learning Community #52
 01052688,Garnett,Alexis,Alexis,,,,,,,,,,,History,LC28,Learning Community #28
-01051564,Garnett,Elliott,Elliott,,,,,,,,,,,Biology,LC7,Learning Community #7
+01051564,Garnett,Elliott,Elliott,ALC,,,,,,,,,,Biology,LC7,Learning Community #7
 01046793,Garnett,Kate,Kate,,,,,,PLW,,,,,Political Science,LC69,Learning Community #69
 01050461,Garrett,Giacomo,Giacomo,,,,,,,,,,,Undeclared,LC11,Learning Community #11
 01051378,Gary,Payten,Payten,,PLP,HON,,BONN,,,PSP,PMD,,Neuroscience,LC39,Learning Community #39
 01051157,Garzon,Grace,Grace,ALC,,,,,,,,,,Criminology,LC60,Learning Community #60
-01051880,Geddes,William,Will,,,,,,,,,,,Cybersecurity,LC51,Learning Community #51
+01051880,Geddes,William,Will,ALC,,,,,,,,,,Cybersecurity,LC51,Learning Community #51
 01046015,Gesswein,Aidan,Aidan,,,,,,,,,,,Physics,LC14,Learning Community #14
 01050982,Gillette,Aiden,Aiden,,PLP,,,,,,,,,Undeclared,LC3,Learning Community #3
 01048750,Gilligan,Savanah,Savanah,,PLP,,,,,,,,,Business-Undeclared,LC48,Learning Community #48
@@ -385,14 +384,15 @@
 01050310,Gilman,William,William,,,,,,,,,PMD,,Biology,LC69,Learning Community #69
 01046849,Gilmore,Benjamin,Ben,,,,,,,,,,,Psychology,LC63,Learning Community #63
 01052342,Gilpin,Taevon,Taevon,ALC,,,,,PLW,,,,,Business-Undeclared,LC49,Learning Community #49
-01051478,Gingerich,Ashley,Ashley,,PLP,HON,,,,,PSP,PMD,PRSC,Chemistry,LC39,Learning Community #39
-01052034,Gingerich,Sarah,Sarah,,PLP,HON,,,,,,,PRSC,Theater,LC39,Learning Community #39
+01051478,Gingerich,Ashley,Ashley,,PLP,HON,,,,,PSP,PMD,,Chemistry,LC39,Learning Community #39
+01052034,Gingerich,Sarah,Sarah,,PLP,HON,,,,,,,,Theater,LC39,Learning Community #39
 01048285,Girard,Caden,Caden,,,,,,,,,PMD,,Marketing,LC50,Learning Community #50
 01048922,Givens,Brooklynn,Brooklynn,,PLP,HON,,,,,,,,History,LC40,Learning Community #40
 01046749,Godfrey,Piper,Piper,,PLP,,,,,,,,,Psychology,LC66,Learning Community #66
 01051187,Goetsch,Gavin,Gavin,ALC,,,,,,,,,,Marketing,LC53,Learning Community #53
 01053200,Gojer,Eden,Eden,,,,,,,,,,,Undeclared,LC19,Learning Community #19
 01050408,Goldsworthy,Kallianna,Kalli,,PLP,,,,PLW,,,,,Political Science,LC30,Learning Community #30
+01053147,Gomez,Michelle,Michelle,ALC,,,,,,,,,,Business-Undeclared,LC60,Learning Community #60
 01054801,Gonzalez Bonilla,Ethan,Ethan,ALC,,,,,,,,,,Accounting,LC33,Learning Community #33
 01053020,Goodlow,Hannah,Hannah,,,,,,,,,PMD,,Kinesiology,LC5,Learning Community #5
 01053184,Goodman,Ethan,Ethan,ALC,,,,,,,,,,Music,LC55,Learning Community #55
@@ -402,7 +402,7 @@
 01050583,Gotta,Jordan,Jordan,ALC,PLP,,,,,,,,,Communication Studies,LC45,Learning Community #45
 01049934,Govert,Nathan,Nate,,,,,,,,,,,Psychology,LC65,Learning Community #65
 01027829,Graham,Jayce,Jayce,,,,,,,,,PMD,,Undeclared,LC18,Learning Community #18
-01049303,Greathouse,Amelia,Amelia,,PLP,,,,,,,,,Marketing,LC15,Learning Community #15
+01049303,Greathouse,Amelia,Amelia,ALC,PLP,,,,,,,,,Marketing,LC15,Learning Community #15
 01049198,Greer,Selah,Selah,,,,,,,,,,,Social Work,LC19,Learning Community #19
 01051526,Grewe,Bennett,Bennett,,PLP,,,,,,,,,Marketing,LC50,Learning Community #50
 01048196,Grim,Daniel,Daniel,ALC,PLP,,,,,,,,,Finance,LC51,Learning Community #51
@@ -413,7 +413,7 @@
 01050998,Guillen,Christian,Christian,ALC,,,,,,,,,,Marketing,LC30,Learning Community #30
 01047723,Gulilat,Samuale,Samuale,,,,,,,,,,,Marketing,LC31,Learning Community #31
 01048435,Gulnac,Zachary,Zachary,,PLP,,,,,,,PMD,,Biology,LC7,Learning Community #7
-01049537,Gunn,Charles,Charlie,,,,,,,,,PMD,,Business-Undeclared,LC49,Learning Community #49
+01049537,Gunn,Charles,Charlie,ALC,,,,,,,,PMD,,Business-Undeclared,LC49,Learning Community #49
 01047097,Gupta,Tej,Tej,ALC,,,,,,,,,,Computer Science,LC58,Learning Community #58
 01051235,Gutierrez,Grayson,Grayson,ALC,,,,,,,,,,Undeclared,LC30,Learning Community #30
 01053810,Gutierrez,Paulina,Paulina,,,,,,,,,PMD,,Biochemistry,LC7,Learning Community #7
@@ -423,7 +423,7 @@
 01051608,Haar,Logan,Logan,,,,,,,,,PMD,,Undeclared,LC3,Learning Community #3
 01045689,Haase,Sienna,Sienna,,,,,,,,PSP,PMD,,Biology,LC22,Learning Community #22
 01049044,Hairston,Cephis,Cephis,,PLP,,,,,,,,,Marketing,LC30,Learning Community #30
-01046816,Halvorsen,Samuel,Sam,ALC,PLP,HON,,,,,,,PRSC,Finance,LC35,Learning Community #35
+01046816,Halvorsen,Samuel,Sam,ALC,PLP,HON,,,,,,,,Finance,LC35,Learning Community #35
 01048046,Ham,John,John,ALC,,,,,,,,,,Computer Engineering,LC17,Learning Community #17
 01051281,Hamers,Richard,Rick,,,,,,,,PSP,PMD,,Organismal & Environ Biology,LC9,Learning Community #9
 01046954,Hamrick,Heidi,Heidi,,PLP,,,,,,,,,Biology,LC46,Learning Community #46
@@ -453,10 +453,10 @@
 01050925,Henderson,Edwin,Edwin,,PLP,,,,,,,,,Business Administration,LC3,Learning Community #3
 01047670,Hendricks,Ashton,Ashton,,,,,,,,,,,Environmental Studies,LC22,Learning Community #22
 01053986,Hendricks,Victoria,Vicky,,,,,,,,,PMD,,"Cell, Molecular & Phys Biology",LC9,Learning Community #9
-01051910,Henin,Kyrillos,Kyrillos,ALC,PLP,,,,,,,PMD,,Computer Engineering,LC17,Learning Community #17
+01051910,Henin,Kyrillos,Kyrillos,,PLP,,,,,,,PMD,,Computer Engineering,LC17,Learning Community #17
 01047024,Henry,Jacquellia,Jacquellia,ALC,,,,,,,,,,Biology,LC60,Learning Community #60
 01051631,Henseler,Alexandra,Alexandra,,,,,,,,,,,Marketing,LC52,Learning Community #52
-01049532,Herbert,Grace,Grace,,PLP,,,,,,,PMD,,Kinesiology,LC10,Learning Community #10
+01049532,Herbert,Grace,Grace,ALC,PLP,,,,,,,PMD,,Kinesiology,LC10,Learning Community #10
 01049722,Herron,Jack,Jack,,,,,,,,,,,Undeclared,LC65,Learning Community #65
 01051595,Hess,Trinity,Trinity,,,,,,,,,,,Criminology,LC19,Learning Community #19
 01052221,Hicks,Travis,Travis,,,HON,,,,,,,,Computational & Applied Math,LC37,Learning Community #37
@@ -465,17 +465,17 @@
 01049552,Hiser,Roman,Roman,ALC,,,,,,,,,,Business-Undeclared,LC53,Learning Community #53
 01050102,Hittle,Annalise,Anna,ALC,,,,,,,,PMD,,Computer Science,LC27,Learning Community #27
 01049640,Hixenbaugh,Kole,Kole,,,,,,,,,,,Undeclared,LC42,Learning Community #42
-01046908,Hockensmith,Zoe,Zoe,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01046908,Hockensmith,Zoe,Zoe,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01051918,Hockman,Morgan,Morgan,,PLP,,,,,,,,,Undeclared,LC46,Learning Community #46
 01050103,Hoexum,Preston,Preston,,PLP,,,,,,,,,Business-Undeclared,LC42,Learning Community #42
 01050864,Hofer,Ethan,Ethan,,,,,,PLW,,,,,Computer Science,LC15,Learning Community #15
 01054160,Hoffler,William,William,,,,,,,,,,,Communication Studies,LC42,Learning Community #42
 01050123,Holdcroft,Justin,Justin,,PLP,,,,,,,,,Business-Undeclared,LC52,Learning Community #52
-01050155,Holley,Michayla,Michayla,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01050155,Holley,Michayla,Michayla,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01048372,Holmes,Zachary,Zachary,,,,,,PLW,,,,,Political Science,LC44,Learning Community #44
 01053038,Hook,Nathaniel,Nate,,,,,,,,,PMD,,Business-Undeclared,LC70,Learning Community #70
 01050539,Hopkins,Lane,Lane,,PLP,,,,PLW,,,,,Political Science,LC3,Learning Community #3
-01051513,Hornbaker,Kaylah,Kaylah,,,,,,,,,,,Business-Undeclared,LC51,Learning Community #51
+01051513,Hornbaker,Kaylah,Kaylah,ALC,,,,,,,,,,Business-Undeclared,LC51,Learning Community #51
 01046915,Hotmar,Jordan,Jordan,,PLP,,,,,,,PMD,,Psychology,LC1,Learning Community #1
 01050544,Hottle,Gabriella,Gabriella,,,,,,,,,,,Anthropology,LC70,Learning Community #70
 01051130,Houchins,Ellora,Ellora,ALC,PLP,,,,PLW,,,,,International Affairs,LC45,Learning Community #45
@@ -524,7 +524,7 @@
 01052868,Jones,Beckham,Beckham,,,,,,,,,,,Marketing,LC5,Learning Community #5
 01047043,Jones,Eric,Eric,ALC,,HON,,,,,,,,Electrical Engineering,LC30,Learning Community #30
 01048410,Jones,Jayveon,Jayveon,,,,,,,,,PMD,,Undeclared,LC28,Learning Community #28
-01054201,Jones,Kayla,Kayla,,,,,,,,,,,Organismal & Environ Biology,LC7,Learning Community #7
+01054201,Jones,Kayla,Kayla,ALC,,,,,,,,,,Organismal & Environ Biology,LC7,Learning Community #7
 01045722,Jones,Kimberly,Kimberly,ALC,,,,,,,,,,Undeclared,LC27,Learning Community #27
 01051719,Jones,Mia,Mia,ALC,,,,,,,,PMD,,Kinesiology,LC12,Learning Community #12
 01052464,Jones,Timothy,Timothy,,,,,,,,,,,Undeclared,LC31,Learning Community #31
@@ -533,12 +533,12 @@
 01051272,Joshi,Soham,Soham,,,,,,,,,,,Computer Engineering,LC16,Learning Community #16
 01047815,Joshua,Kertis,Kertis,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
 01050022,Jurgilanis,Jayce,Jayce,,,,,,,,,,,Cybersecurity,LC70,Learning Community #70
-01047999,Kaderli,Trinity,Trinity,ALC,,,,,,,,PMD,,Theater,LC71,Learning Community #71
+01047999,Kaderli,Trinity,Trinity,,,,,,,,,PMD,,Theater,LC71,Learning Community #71
 01049843,Kalaikannan,Devan,Devan,,,,,,,,,,,Information Science,LC14,Learning Community #14
-01053832,Kamber,Morgan,Morgan,,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
+01053832,Kamber,Morgan,Morgan,ALC,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
 01052705,Kamran,Shaheer,Shaheer,,,,,,,,PSP,PMD,,Biochemistry,LC63,Learning Community #63
 01047139,Kanyan,Duncan,Duncan,ALC,,,,,,,,,,Finance,LC49,Learning Community #49
-01052527,Karney,Declan,Declan,,PLP,HON,,,,,,,,Electrical Engineering,LC4,Learning Community #4
+01052527,Karney,Declan,Declan,ALC,PLP,HON,,,,,,,,Electrical Engineering,LC4,Learning Community #4
 01053656,Kasey,David,David,,,,,,,,,PMD,,Business-Undeclared,LC26,Learning Community #26
 01048159,Kattmann,Mary,Mary,ALC,,,,,,,,PMD,,Undeclared,LC27,Learning Community #27
 01051562,Katz,Hanna,Hanna,,PLP,,,,,,,PMD,,Psychology,LC46,Learning Community #46
@@ -547,11 +547,11 @@
 01050623,Kelley,Joseph,Joe,,,,,,,,,,,Cybersecurity,LC42,Learning Community #42
 01051204,Kelley,Kathleen,Katie,,,,,,,,,PMD,,"Cell, Molecular & Phys Biology",LC8,Learning Community #8
 01049527,Kelly,Logan,Logan,ALC,,,,,,,,,,Undeclared,LC27,Learning Community #27
-01054659,Kelly,Neve,Neve,,,,,,,,,PMD,,Kinesiology,LC24,Learning Community #24
-01049314,Kelly,Paige,Paige,,PLP,HON,,,,,,,PRSC,Theater,LC3,Learning Community #3
+01054659,Kelly,Neve,Neve,ALC,,,,,,,,PMD,,Kinesiology,LC24,Learning Community #24
+01049314,Kelly,Paige,Paige,,PLP,HON,,,,,,,,Theater,LC3,Learning Community #3
 01046052,Kenney,Ryan,Ryan,ALC,,,,,,,,PMD,,Music,LC55,Learning Community #55
 01050305,Ketchum,Lauren,Lulu,,PLP,,,,,,,,,Electrical Engineering,LC14,Learning Community #14
-01050733,Ketron,Reece,Reece,,PLP,,,,,,,,,Finance,LC49,Learning Community #49
+01050733,Ketron,Reece,Reece,ALC,PLP,,,,,,,,,Finance,LC49,Learning Community #49
 01054097,Khamkheuang,Grant,Grant,ALC,,,,,,,,,,English,LC12,Learning Community #12
 01040871,Kilpatrick,Tristan,Tristan,,PLP,HON,,,,,,,,Chemistry,LC46,Learning Community #46
 01052154,Kim,Christian,Christian,ALC,,,,,,,,,,Accounting,LC60,Learning Community #60
@@ -564,7 +564,7 @@
 01049544,Knight,Christa,Christa,,,,,,,,,PMD,,Marketing,LC22,Learning Community #22
 01050287,Kortman,Michaela,Michaela,,PLP,,,,,,,,,English,LC31,Learning Community #31
 01053562,Kostic,Natalija,Natalija,,,,,,,,,,,Undeclared,LC68,Learning Community #68
-01046833,Koutsouftikis,Samuel,Sam,,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
+01046833,Koutsouftikis,Samuel,Sam,ALC,,,,,,,,,,Business-Undeclared,LC49,Learning Community #49
 01053270,Kristof,Anderson,Anderson,ALC,,,,,,,,,,Management,LC49,Learning Community #49
 01050300,Kung,Calvin,Calvin,,PLP,HON,,,,,PSP,PMD,,Biochemistry,LC39,Learning Community #39
 01048684,Kurutz,Gage,Gage,,PLP,,,,,,,,,Computer Science,LC15,Learning Community #15
@@ -595,7 +595,7 @@
 01054131,Lemley,Faith,Faith,,,,,,,,,,,Marketing,LC69,Learning Community #69
 01050688,Lenertz,Mckenna,Mckenna,ALC,PLP,,,,,,,PMD,,Undeclared,LC10,Learning Community #10
 01050410,Lentz,Justin,Justin,,,,,,,,,,,Political Science,LC44,Learning Community #44
-01047106,Lepkowicz,Alexander,Alex,,,,,,,,,,,Mathematics,LC63,Learning Community #63
+01047106,Lepkowicz,Alexander,Alex,ALC,,,,,,,,,,Mathematics,LC63,Learning Community #63
 01051867,Leroy,Mella,Mella,,PLP,,,,,,,PMD,,Kinesiology,LC46,Learning Community #46
 01048763,Levi,Grace,Grace,,PLP,,,,,,,PMD,,Social Work,LC12,Learning Community #12
 01050185,Lianez,Elijah,Eli,,PLP,,,,,,,,,Organismal & Environ Biology,LC23,Learning Community #23
@@ -626,7 +626,7 @@
 01049107,Lowe,Natalie,Natalie,,PLP,,,,,,,PMD,,Kinesiology,LC22,Learning Community #22
 01049297,Loza,Mateo,Mateo,,,,,,,,,,,Business-Undeclared,LC42,Learning Community #42
 01051555,Lubinskas,Joseph,Joe,,,,,,,,,,,Criminology,LC11,Learning Community #11
-01047434,Lubinski,Elizabeth,Ellie,,PLP,,,,,,,,,Marketing,LC54,Learning Community #54
+01047434,Lubinski,Elizabeth,Ellie,ALC,PLP,,,,,,,,,Marketing,LC54,Learning Community #54
 01050913,Lucks,Sofia,Kai,ALC,PLP,,,,,,,,,English,LC33,Learning Community #33
 01048878,Ludwick,Molly,Molly,,,,,,,,,PMD,,Biochemistry,LC28,Learning Community #28
 01049392,Lugo,Markus,Markus,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
@@ -641,7 +641,7 @@
 01050172,Mahaffey,Jaden,Jaden,ALC,,,,,,,,,,Undeclared,LC33,Learning Community #33
 01053481,Maldonado,Andrew,Andrew,ALC,,,,,,,,,,Computer Engineering,LC17,Learning Community #17
 01047943,Malnak,William,Will,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
-01054309,Malone,Kira,Kira,,PLP,,,,,,PSP,PMD,,"Cell, Molecular & Phys Biology",LC10,Learning Community #10
+01054309,Malone,Kira,Kira,ALC,PLP,,,,,,PSP,PMD,,"Cell, Molecular & Phys Biology",LC10,Learning Community #10
 01052550,Malucci,Charles,Charlie,,,,,,,,,,,Business-Undeclared,LC52,Learning Community #52
 01053898,Manahan,Danielle,Danielle,,,,,,,,,PMD,,English,LC70,Learning Community #70
 01048925,Mangus,Reece,Reece,ALC,,,,,,,,,,Undeclared,LC12,Learning Community #12
@@ -651,11 +651,11 @@
 01051035,Markowitz,Emma,Emma,,,,,,,,,,,Psychology,LC57,Learning Community #57
 01052781,Marquez,Torin,Torin,ALC,,,,,,,,,,Business-Undeclared,LC51,Learning Community #51
 01050588,Marrow,Kashawn,Kashawn,,,,,,,,,PMD,,Psychology,LC69,Learning Community #69
-01052513,Marsh,Juliet,Juliet,ALC,,,,,,,,,,Theater,LC71,Learning Community #71
+01052513,Marsh,Juliet,Juliet,,,,,,,,,,,Theater,LC71,Learning Community #71
 01051109,Marshall,Hannah,Hannah,,,,,,,,,PMD,,Biology,LC7,Learning Community #7
 01047905,Marshall-Harvey,Mauriana,Mauriana,,,,,,,,,,,Undeclared,LC5,Learning Community #5
 01051815,Marticio,Ariana Thea,Ariana,,,,,,,,,,,Business-Undeclared,LC42,Learning Community #42
-01050267,Martin,Cassandra,Cassandra,,,,,,,,,,,Business-Undeclared,LC57,Learning Community #57
+01050267,Martin,Cassandra,Cassandra,ALC,,,,,,,,,,Business-Undeclared,LC57,Learning Community #57
 01048243,Martin,Mark,Sean,ALC,PLP,,,,,,,,,Business-Undeclared,LC51,Learning Community #51
 01048633,Martin,William,William,,PLP,,,,,,,,,History,LC67,Learning Community #67
 01046481,Martinez,Allison,Alli,,,,,,,,,PMD,,Kinesiology,LC22,Learning Community #22
@@ -673,7 +673,7 @@
 01045549,Maurer,Jacob,Jacob,,,HON,,,,,,,,Computer Science,LC38,Learning Community #38
 01050746,Mazulewicz,Alexandra,Alex,,PLP,,,,,,,,,Kinesiology,LC23,Learning Community #23
 01053289,McBride,Isabell,Isabell,,,,,,,,,,,Biology,LC7,Learning Community #7
-01050713,McBride,Liam,Liam,,PLP,,,,,WIND,,,,Psychology,LC24,Learning Community #24
+01050713,McBride,Liam,Liam,ALC,PLP,,,,,WIND,,,,Psychology,LC24,Learning Community #24
 01051639,McCall,Austin,Austin,,,,,,,,,,,Marketing,LC50,Learning Community #50
 01050772,McCarthy,Keith,Keith,,,,,,,,,,,Computer Engineering,LC5,Learning Community #5
 01048170,McClosky,Madeline,Madeline,ALC,PLP,,,,,,,,,Organismal & Environ Biology,LC10,Learning Community #10
@@ -706,13 +706,13 @@
 01048676,Messick,Maya,Allyn,ALC,PLP,,,,,,,,,Communication Studies,LC45,Learning Community #45
 01050803,Meyer,Benjamin,Ben,,,,,,,,,,,Finance,LC52,Learning Community #52
 01049952,Meza-Alonso,Angel,Angel,,PLP,,,,,,,,,Cybersecurity,LC14,Learning Community #14
-01046959,Michaelson,Kate,Kate,ALC,PLP,HON,,,PLW,,,,PRSC,English,LC45,Learning Community #45
+01046959,Michaelson,Kate,Kate,ALC,PLP,HON,,,PLW,,,,,English,LC45,Learning Community #45
 01054312,Mickles,Carson,Carson,,,,,,,,,,,Political Science,LC44,Learning Community #44
-01047190,Mielke,Keelin,Keelin,,PLP,HON,,,,,,,,Business-Undeclared,LC54,Learning Community #54
+01047190,Mielke,Keelin,Keelin,ALC,PLP,HON,,,,,,,,Business-Undeclared,LC54,Learning Community #54
 01050630,Mihalap,Isaak,Isaak,,,,,,,,,,,Business-Undeclared,LC52,Learning Community #52
 01050656,Mikhael,Thomas,Thomas,,,,,,,,,,,Business-Undeclared,LC29,Learning Community #29
 01050829,Milausnic,Joseph,Joey,,PLP,,,,,,,,,Computer Science,LC15,Learning Community #15
-01047781,Miller,Katelyn,Katelyn,,PLP,,,,,,,PMD,,Kinesiology,LC62,Learning Community #62
+01047781,Miller,Katelyn,Katelyn,ALC,PLP,,,,,,,PMD,,Kinesiology,LC62,Learning Community #62
 01047920,Miller,Margaret,Maggie,ALC,PLP,,,,,,,PMD,,Psychology,LC45,Learning Community #45
 01053106,Miller,Myles,Myles,,,,,,,,,,,Biology,LC22,Learning Community #22
 01053341,Minnery,Mary,Mary,,PLP,,,,PLW,,,,,English,LC3,Learning Community #3
@@ -725,7 +725,7 @@
 01047144,Monihan,Lauren,Lauren,,,,,,,,,,,Undeclared,LC11,Learning Community #11
 01054324,Monir,Raquibul,Rocko,,,,,,,,,,,Management,LC54,Learning Community #54
 01048409,Monroe,Turner,Fabel,,,,,,,,,,,Undeclared,LC6,Learning Community #6
-01052474,Monzon,Joshua,Joshua,,PLP,HON,,,,,,PMD,PRSC,Business-Undeclared,LC53,Learning Community #53
+01052474,Monzon,Joshua,Joshua,,PLP,HON,,,,,,PMD,,Business-Undeclared,LC53,Learning Community #53
 01051600,Moody,Dawson,Dawson,,PLP,,,,,,,,,Computer Science,LC15,Learning Community #15
 01052593,Moody,Trevor,Trevor,,,,,,,,,,,Undeclared,LC17,Learning Community #17
 01053152,Moore,Jada,Jada,,PLP,,,,,,,,,Global Commerce and Culture,LC48,Learning Community #48
@@ -741,7 +741,7 @@
 01052092,Moyle,Melissa,Melissa,ALC,PLP,,,,,,,,,International Affairs,LC62,Learning Community #62
 01047606,Muller,Amelia,Amelia,,,,,,,,,,,Sociology,LC19,Learning Community #19
 01050068,Muller,Jacob,Jacob,ALC,,,,,,,,,,Finance,LC49,Learning Community #49
-01054563,Munden,Breshauna,Breshauna,,PLP,,,,PLW,,,PMD,,Biochemistry,LC10,Learning Community #10
+01054563,Munden,Breshauna,Breshauna,ALC,PLP,,,,PLW,,,PMD,,Biochemistry,LC10,Learning Community #10
 01048356,Mundie,Ciera,Ciera,,PLP,,,,,,,,,Undeclared,LC46,Learning Community #46
 01050279,Murphy,Adam,Adam,ALC,,,,,,,,,,Undeclared,LC30,Learning Community #30
 01050953,Murphy,Ava,Ava,ALC,PLP,,,,,,,,,Studio Art,LC58,Learning Community #58
@@ -754,15 +754,15 @@
 01052354,Myles,Cayden,Cayden,,,,,,,,,,,Computer Science,LC15,Learning Community #15
 01049095,Nadder,Ava,Ava,,,,,,PLW,,,PMD,,Political Science,LC31,Learning Community #31
 01049578,Nagel,Ellie,Ellie,,,,,,,,,,,Organismal & Environ Biology,LC7,Learning Community #7
-01051909,Narron,Bodie,Bodie,ALC,,,,,,,,PMD,,Business-Undeclared,LC53,Learning Community #53
-01048815,Naupari,Kayleen,Kayleen,,,,,,,,,,,Undeclared,LC60,Learning Community #60
+01051909,Narron,Bodie,Bodie,,,,,,,,,PMD,,Business-Undeclared,LC53,Learning Community #53
+01048815,Naupari,Kayleen,Kayleen,ALC,,,,,,,,,,Undeclared,LC60,Learning Community #60
 01049530,Navarro,Jack,Jack,ALC,,,,,,,,,,Accounting,LC53,Learning Community #53
 01050380,Navarro Cortes,Meygan,Meygan,,,,,,,,,PMD,,Biology,LC9,Learning Community #9
 01053187,Negron,Ella,Ella,,,,,,,,PSP,PMD,,Kinesiology,LC9,Learning Community #9
 01047166,Nelson,Shannon,Shannon,ALC,PLP,,,,,,,,,Accounting,LC49,Learning Community #49
 01052478,Newell,Donovan,Donovan,,,,,,,,,,,Business-Undeclared,LC70,Learning Community #70
 01049269,Newsom,Alexander,Alexander,,,,,,,,,,,Information Science,LC70,Learning Community #70
-01052052,Nice,Samantha,Samantha,,,,,,,,,,,Undeclared,LC67,Learning Community #67
+01052052,Nice,Samantha,Samantha,ALC,,,,,,,,,,Undeclared,LC67,Learning Community #67
 01047790,Nichols,Clara,Clara,ALC,,,,,,,,,,Psychology,LC58,Learning Community #58
 01050282,Nichols,Sarah,Sarah,,,,,,,,,,,Marketing,LC52,Learning Community #52
 01045698,Nicolosi,Aidan,Aidan,ALC,,,,,,,,,,Undeclared,LC58,Learning Community #58
@@ -782,7 +782,7 @@
 01053161,Olguin-Arellano,Rene,Rene,,,,,,,,,,,Finance,LC52,Learning Community #52
 01049299,Olsen,Emma-Mae,Em,,,,,,,,,PMD,,Biology,LC70,Learning Community #70
 01051497,Orlando,Nico,Nico,,,,,,,,PSP,PMD,,Undeclared,LC69,Learning Community #69
-01051015,Orrison,Nellie,Nellie,,,,,,,,,,,Undeclared,LC1,Learning Community #1
+01051015,Orrison,Nellie,Nellie,ALC,,,,,,,,,,Undeclared,LC1,Learning Community #1
 01052007,Ortiz,Christian,Christian,,,,,,,,,,,Kinesiology,LC23,Learning Community #23
 01049678,Osborne,Reid,Reid,ALC,,,,,,,,,,Marketing,LC2,Learning Community #2
 01047746,Osman,Nedda,Nedda,,,,,,,,,,,Biology,LC7,Learning Community #7
@@ -801,7 +801,7 @@
 01045724,Pearson,Nathaniel,Nathaniel,,PLP,HON,,,,,,,,Electrical Engineering,LC16,Learning Community #16
 01053319,Pegalis,Brooklyn,Brooklyn,,,,,,,,,,,Biology,LC70,Learning Community #70
 01051075,Pellicano,Jed,Jed,,PLP,,,,,,,,,Undeclared,LC57,Learning Community #57
-01046244,Penner,Kaila,Kaila,,PLP,,CCAP,,,,,,,Biology,LC72,Learning Community #72
+01046244,Penner,Kaila,Kaila,ALC,PLP,,CCAP,,,,,,,Biology,LC72,Learning Community #72
 01050247,Pennington,Katherine,Katherine,,,,,,,,,,,Accounting,LC52,Learning Community #52
 01053033,Pepsin,Aaron,Aaron,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
 01048321,Perdieu,Trevor,Trevor,,PLP,,,,,,,,,Cybersecurity,LC13,Learning Community #13
@@ -813,7 +813,7 @@
 01050518,Pfost,Cailyn,Cailyn,ALC,PLP,,,,,,,,,History,LC62,Learning Community #62
 01053550,Pham,Quoc,Draco,,,,,,,,PSP,PMD,,Biochemistry,LC8,Learning Community #8
 01051848,Pham Nguyen,Nhi,Nhi,ALC,,,,,,,,PMD,,Chemistry,LC67,Learning Community #67
-01047030,Phan,Catlynh,Catlynh,,PLP,HON,,,,,PSP,PMD,PRSC,Biology,LC39,Learning Community #39
+01047030,Phan,Catlynh,Catlynh,,PLP,HON,,,,,PSP,PMD,,Biology,LC39,Learning Community #39
 01051193,Phillipson,Merrill,Merrill,,,HON,,,,,,,,Communication Studies,LC36,Learning Community #36
 01048338,Philpot,Emma,Emma,ALC,PLP,,,,,,,,,Theater,LC58,Learning Community #58
 01046031,Piercy,William,Liam,,,,,,,,,,,Cybersecurity,LC13,Learning Community #13
@@ -823,7 +823,7 @@
 01050143,Platner,Jackson,Jackson,,PLP,HON,,,,,,,,Undeclared,LC65,Learning Community #65
 01050540,Plofchan,Peter,Alec,ALC,PLP,,,,,,,PMD,,Management,LC49,Learning Community #49
 01050918,Plonsky,Alina,Alina,,PLP,HON,,,PLW,,,,,Business-Undeclared,LC54,Learning Community #54
-01048462,Plude,Milana,Milana,ALC,PLP,,,,,,,,,Theater,LC71,Learning Community #71
+01048462,Plude,Milana,Milana,,PLP,,,,,,,,,Theater,LC71,Learning Community #71
 01047558,Podolskiy,Julia,Julia,,,,,,,,,,,Undeclared,LC26,Learning Community #26
 01048606,Poe,Jackson,Jack,,,,,,,,,,,Undeclared,LC69,Learning Community #69
 01053430,Pope,Joshua,Josh,,,,,,,,,,,Finance,LC69,Learning Community #69
@@ -854,13 +854,13 @@
 01050299,Quillian,Karlyn,Karlyn,ALC,PLP,,,,,,,,,Neuroscience,LC10,Learning Community #10
 01048940,Quinnan,Collin,Collin,,,,,,,,,,,Computer Science,LC16,Learning Community #16
 01049390,Rahbaran,Darius,Darius,ALC,,,,,,,,,,Business-Undeclared,LC30,Learning Community #30
-01047400,Rahman,Andre,Andre,,PLP,HON,,,,,,,PRSC,Cybersecurity,LC39,Learning Community #39
+01047400,Rahman,Andre,Andre,,PLP,HON,,,,,,,,Cybersecurity,LC39,Learning Community #39
 01050655,Raiford,Nathan,Nathan,,,,,,,,,PMD,,Music,LC55,Learning Community #55
 01046032,Ramirez,Emelio,Emelio,,,,,,,,,,,Biology,LC5,Learning Community #5
 01048523,Ramirez,Giorgio,Rene,ALC,,,,,,,,,,Criminology,LC32,Learning Community #32
 01049792,Ramsey,Catalina,Catalina,,,,,,,,,,,Environmental Studies,LC6,Learning Community #6
 01048204,Ramsey,Sarah,Sarah,ALC,PLP,,,,PLW,,,,,Undeclared,LC53,Learning Community #53
-01050124,Rash,Brayden,Brayden,,,,,,,,,,,Computer Engineering,LC15,Learning Community #15
+01050124,Rash,Brayden,Brayden,ALC,,,,,,,,,,Computer Engineering,LC15,Learning Community #15
 01049358,Rasnake,Quinn,Quinn,,PLP,,,,,,PSP,PMD,,Neuroscience,LC4,Learning Community #4
 01048119,Rastovski,Joseph,Joseph,ALC,PLP,HON,,,,,,,,History,LC34,Learning Community #34
 01047819,Raugh,Cameron,Cameron,ALC,,,,,,,,,,Business-Undeclared,LC30,Learning Community #30
@@ -875,8 +875,8 @@
 01051942,Reno,Kevin,Kevin,ALC,,,,,,,,,,Business-Undeclared,LC2,Learning Community #2
 01050594,Rexter,James,Rowan,ALC,,,,,,,,,,Business-Undeclared,LC53,Learning Community #53
 01052140,Reynolds,Brooke,Brooke,,PLP,,,,PLW,,,,,Political Science,LC44,Learning Community #44
-01047692,Richey,Emma,Emma,,PLP,HON,,,,,,,PRSC,Mathematics,LC40,Learning Community #40
-01047698,Richey,Katelyn,Katelyn,,PLP,HON,,,,,,,PRSC,Mathematics,LC40,Learning Community #40
+01047692,Richey,Emma,Emma,,PLP,HON,,,,,,,,Mathematics,LC40,Learning Community #40
+01047698,Richey,Katelyn,Katelyn,,PLP,HON,,,,,,,,Mathematics,LC40,Learning Community #40
 01047341,Riley,Ava,Ava,,PLP,,,,,,PSP,PMD,,Psychology,LC66,Learning Community #66
 01049421,Rinker,Gabriel,Gabriel,,PLP,,,,,,,,,Computer Science,LC46,Learning Community #46
 01052946,Rivera,Aiden,Aiden,,PLP,,,,,,,,,Business-Undeclared,LC50,Learning Community #50
@@ -900,7 +900,7 @@
 01049519,Rose,George,Will,ALC,PLP,,,,PLW,,,,,Philosophy,LC33,Learning Community #33
 01051403,Rose,Lisaad,Lisaad,ALC,,,,,,,,,,Undeclared,LC60,Learning Community #60
 01046626,Rose,William,William,,PLP,,,,,,,,,Computer Science,LC15,Learning Community #15
-01049760,Rossomondo,Clare,Clare,,PLP,,,,,,,,,Psychology,LC1,Learning Community #1
+01049760,Rossomondo,Clare,Clare,ALC,PLP,,,,,,,,,Psychology,LC1,Learning Community #1
 01046615,Rothkopf,Lyndsye,Lyndsye,ALC,,,,,,,,,,English,LC56,Learning Community #56
 01051956,Rubaai,Alexander,Alexander,,,,,,,,,,,Business-Undeclared,LC50,Learning Community #50
 01053453,Rulli,Levi,Levi,,,,,,,,,,,Organismal & Environ Biology,LC11,Learning Community #11
@@ -928,7 +928,7 @@
 01054303,Scaia,Makenna,Makenna,,,HON,,,PLW,,PSP,PMD,,"Cell, Molecular & Phys Biology",LC39,Learning Community #39
 01051556,Scalia,Luke,Luke,,,,,,PLW,,,,,Business-Undeclared,LC42,Learning Community #42
 01050215,Scharlat,Katherine,Katie,,PLP,,,,,,,,,Criminology,LC31,Learning Community #31
-01046119,Schatzberg,Ryan,Ryan,,PLP,,,,,,,,,Computer Science,LC1,Learning Community #1
+01046119,Schatzberg,Ryan,Ryan,ALC,PLP,,,,,,,,,Computer Science,LC1,Learning Community #1
 01047873,Scheiman,Noah,Noah,,,,,,,,,,,Business-Undeclared,LC42,Learning Community #42
 01045703,Schelby,Jordyn,Jordyn,,PLP,,,,,,,,,"Cell, Molecular & Phys Biology",LC7,Learning Community #7
 01052234,Schnabel,Kaitlyn,Kate,ALC,,,,,,,,,,Undeclared,LC27,Learning Community #27
@@ -936,7 +936,7 @@
 01047782,Schroeder,Nicholas,Nick,ALC,PLP,HON,,,,,,,,Undeclared,LC34,Learning Community #34
 01049333,Schultz,Gabriel,Gabriel,ALC,,,,,,,,,,Music,LC55,Learning Community #55
 01047000,Scott,Madison,Madison,,PLP,,,,,,,,,Biology,LC8,Learning Community #8
-01051428,Scott,Thomas,Thomas,,,,,,,,,,,Business-Undeclared,LC51,Learning Community #51
+01051428,Scott,Thomas,Thomas,ALC,,,,,,,,,,Business-Undeclared,LC51,Learning Community #51
 01054003,Scroggins,Ashley,Ashley,,,,,,,,,PMD,,Biology,LC22,Learning Community #22
 01051946,Serrano,Hailey,Hailey,,,,,,,,PSP,PMD,,Undeclared,LC7,Learning Community #7
 01046766,Shank,Micah,Micah,,PLP,,,,,,,PMD,,Undeclared,LC3,Learning Community #3
@@ -947,7 +947,7 @@
 01054565,Shearin,Madison,Madison,ALC,,,,,,,,,,Criminology,LC32,Learning Community #32
 01051301,Shelton,Cara,Cara,ALC,PLP,,,,,,,,,Criminology,LC32,Learning Community #32
 01053536,Shelton,Ya'Ves,Ya'Ves,,,,,,,,,,,Computer Engineering,LC13,Learning Community #13
-01051105,Shepherd,Mason,Mason,,,,,,PLW,,,,,Criminology,LC12,Learning Community #12
+01051105,Shepherd,Mason,Mason,ALC,,,,,PLW,,,,,Criminology,LC12,Learning Community #12
 01048667,Sherfey,Meredith,Meredith,ALC,,,,,,,,,,Undeclared,LC67,Learning Community #67
 01051389,Shields,Hailey,Hailey,ALC,PLP,,,,,,,PMD,,"Cell, Molecular & Phys Biology",LC10,Learning Community #10
 01053703,Shields,Nathan,Nathan,,,,,,,,,,,Business-Undeclared,LC29,Learning Community #29
@@ -961,7 +961,7 @@
 01051029,Siefke,Leeanne,Leeanne,,,,,,,,,,,Undeclared,LC5,Learning Community #5
 01046767,Sigley,Olivia,Olivia,,,,,,,,,,,Environmental Studies,LC4,Learning Community #4
 01050230,Signorello,Sophia,Sophia,ALC,PLP,,,,,,PSP,PMD,,Neuroscience,LC10,Learning Community #10
-01047800,Silver,Lily,Lily,,,,,,,,PSP,PMD,,Biology,LC33,Learning Community #33
+01047800,Silver,Lily,Lily,ALC,,,,,,,PSP,PMD,,Biology,LC33,Learning Community #33
 01050924,Silveria,Braden,Braden,ALC,,,,,,,,,,Biology,LC58,Learning Community #58
 01051372,Silvino,Isabel,Izzy,,,,,,,,,,,Management,LC50,Learning Community #50
 01051341,Simien,Korina,Korina,ALC,,,,,,,,,,Criminology,LC32,Learning Community #32
@@ -976,7 +976,7 @@
 01050271,Smith,Benjamin,Noah,,PLP,HON,,,,,,,,Physics,LC31,Learning Community #31
 01053062,Smith,Brayden,Brayden,,,,,,,,,,,Undeclared,LC70,Learning Community #70
 01054463,Smith,Caroline,Caroline,ALC,,,,,,,,,,French,LC33,Learning Community #33
-01053717,Smith,Caroline,Caroline,,,,,,,,PSP,PMD,,Biology,LC60,Learning Community #60
+01053717,Smith,Caroline,Caroline,ALC,,,,,,,PSP,PMD,,Biology,LC60,Learning Community #60
 01047287,Smith,Ella,Ella,ALC,PLP,,,,,,,,,Undeclared,LC25,Learning Community #25
 01051090,Smith,James,James,,,,,,,,,,,Economics,LC42,Learning Community #42
 01052725,Smith,Jason,Jason,,,,,,PLW,,,,,Neuroscience,LC8,Learning Community #8
@@ -986,19 +986,19 @@
 01049131,Smith,Ross,Ross,,,,,,,,,PMD,,Kinesiology,LC5,Learning Community #5
 01047002,Smith,Taylor,Taylor,,PLP,,,,,,,,,Psychology,LC68,Learning Community #68
 01047044,Smorto,Joseph,Joseph,ALC,PLP,HON,,,,,,,,Physics,LC35,Learning Community #35
-01047098,Snell,Kaitlynn,Kaitlynn,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01047098,Snell,Kaitlynn,Kaitlynn,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01051100,Snyder,Madison,Madison,ALC,,,,,,,,,,Undeclared,LC2,Learning Community #2
 01053390,Snyder,Thomas,Thomas,,,,,,,,,,,Business-Undeclared,LC65,Learning Community #65
 01049652,Solano,Faith,Faith,ALC,PLP,,,,,,,,,Marketing,LC51,Learning Community #51
 01054093,Soohoo,Chloe,Chloe,ALC,,,,,,,,,,Psychology,LC27,Learning Community #27
 01050125,Sorensen,Elissa,Elissa,ALC,PLP,,,,,,,,,English,LC27,Learning Community #27
 01050891,Sorrell,Jaxson,Jaxson,,PLP,,,,,,,,,Cybersecurity,LC13,Learning Community #13
-01048790,Sosa,Ava,Ava,,,,,,,,,,,Psychology,LC25,Learning Community #25
+01048790,Sosa,Ava,Ava,ALC,,,,,,,,,,Psychology,LC25,Learning Community #25
 01048672,Sowinski,Savannah,Savannah,ALC,,,,,,,,,,Communication Studies,LC12,Learning Community #12
 01048427,Spangler-Domi,Leo,Leo,,,,,,,,,,,Psychology,LC6,Learning Community #6
 01048126,Sparrow,Colin,Colin,,PLP,,,,,,,,,Accounting,LC52,Learning Community #52
 01049967,Speice,Kaley,Kaley,,PLP,,,,,,,,,Criminology,LC46,Learning Community #46
-01049734,Spell,Avery,Avery,,PLP,,,,,,,,,Marketing,LC53,Learning Community #53
+01049734,Spell,Avery,Avery,ALC,PLP,,,,,,,,,Marketing,LC53,Learning Community #53
 01049359,Spencer,Andrea,Andrea,,,,,,,,,,,English,LC11,Learning Community #11
 01045704,Spinelli,Lucia,Luci,,,,,,,,,,,Business-Undeclared,LC57,Learning Community #57
 01053598,Staggs,Liana,Liana,ALC,,,,,,,,,,Music,LC55,Learning Community #55
@@ -1020,7 +1020,7 @@
 01051052,Streeter,Katherine,Katherine,,,HON,,,,,PSP,PMD,,Kinesiology,LC38,Learning Community #38
 01050662,Strickland,Jalissa,Jalissa,,,,,,,,,,,Accounting,LC52,Learning Community #52
 01050180,Stuart,Jonathan,Jonathan,,PLP,,,,,,,,,Biology,LC23,Learning Community #23
-01048553,Stuart,Rachel,Rachel,,,,,,,,,PMD,,Psychology,LC1,Learning Community #1
+01048553,Stuart,Rachel,Rachel,ALC,,,,,,,,PMD,,Psychology,LC1,Learning Community #1
 01053606,Sullivan,Benjamin,Ben,,PLP,HON,,,,,PSP,PMD,,Undeclared,LC62,Learning Community #62
 01047054,Sutherland,Adriana,Adriana,,,,,,,,,,,Undeclared,LC29,Learning Community #29
 01051364,Suydam,Thomas,Thomas,,,,,,,,,PMD,,Undeclared,LC18,Learning Community #18
@@ -1038,7 +1038,7 @@
 01055803,Taylor,Sariya,Sariya,ALC,,,,,PLW,,,,,Criminology,LC32,Learning Community #32
 01049572,Tellish,Annabella,Annabella,,,,,,,,,PMD,,Neuroscience,LC22,Learning Community #22
 01051523,Tempalski,Wyatt,Wyatt,ALC,,,,,,,,,,Criminology,LC60,Learning Community #60
-01048260,Temple,Cecilia,Cecilia,,,,,,,,,,,Undeclared,LC67,Learning Community #67
+01048260,Temple,Cecilia,Cecilia,ALC,,,,,,,,,,Undeclared,LC67,Learning Community #67
 01051833,Temple,Nicholas,Nick,,,,,,,,,,,English,LC59,Learning Community #59
 01047664,Terrell,Taleah,Taleah,,,,,,,,,,,Business-Undeclared,LC24,Learning Community #24
 01051491,Terry,Carly,Carly,ALC,PLP,,,,,,,,,Criminology,LC45,Learning Community #45
@@ -1048,13 +1048,14 @@
 01049144,Thomas,Steven,Steven,,,,,,,,,,,Electrical Engineering,LC14,Learning Community #14
 01051440,Thompson,Blake,Blake,,PLP,,,,,,,,,Mathematics,LC14,Learning Community #14
 01046789,Thompson,Christopher,Christopher,ALC,PLP,,,,,,,,,Undeclared,LC47,Learning Community #47
-01053355,Thompson,Gavin,Gavin,ALC,,,,,,,,,,Marketing,LC49,Learning Community #49
+01053355,Thompson,Gavin,Gavin,,,,,,,,,,,Marketing,LC49,Learning Community #49
+01051430,Thompson,Martha,Martha,ALC,,,,,,,,,,Business-Undeclared,LC30,Learning Community #30
 01052808,Thorpe,Katherine,Katherine,,,,,,PLW,,PSP,PMD,,Cybersecurity,LC15,Learning Community #15
 01050428,Thorsten,Andrew,Andrew,,,,,,,,,,,Undeclared,LC42,Learning Community #42
 01048342,Thrift,Davis,Davis,,PLP,,,,,,,PMD,,Kinesiology,LC46,Learning Community #46
 01050303,Timberlake,Haley,Haley,,,,,,,,,,,Business-Undeclared,LC6,Learning Community #6
 01054274,Time,Tristan,Tristan,,,,,,,,,,,Criminology,LC19,Learning Community #19
-01053100,Tingler,Faith,Faith,,,,,,,,,PMD,,Psychology,LC67,Learning Community #67
+01053100,Tingler,Faith,Faith,ALC,,,,,,,,PMD,,Psychology,LC67,Learning Community #67
 01048708,Titko,Mackenzie,Mackenzie,ALC,PLP,,,,,,,,,Undeclared,LC45,Learning Community #45
 01048368,Tompkins,Trinity,Trinity,ALC,PLP,,,,,,,,,Business-Undeclared,LC53,Learning Community #53
 01050301,Torgerson,Charlotte,Charlotte,,PLP,HON,,,,,,,,Marketing,LC37,Learning Community #37
@@ -1078,7 +1079,7 @@
 01051735,Tyler,Nathan,Nathan,,,,,,,,,,,Computer Science,LC16,Learning Community #16
 01053730,Ubelhart,Caterina,Caterina,,,,,,,,,,,Psychology,LC68,Learning Community #68
 01051217,Uddin,En'Dia,En'Dia,,PLP,,,BONN,,,,,,Psychology,LC68,Learning Community #68
-01053463,Urias,Natalie,Natalie,,,,,,,,,,,Psychology,LC1,Learning Community #1
+01053463,Urias,Natalie,Natalie,ALC,,,,,,,,,,Psychology,LC1,Learning Community #1
 01054113,Uzzle,Shomari,Shomari,,,,,,,,,,,Computer Engineering,LC17,Learning Community #17
 01047115,Vair,Norah,Norah,ALC,PLP,,,,,,,,,Business-Undeclared,LC10,Learning Community #10
 01046924,Valiulis,Charles,Charles,,PLP,HON,,,,,,,,Business-Undeclared,LC37,Learning Community #37
@@ -1104,9 +1105,9 @@
 01053769,Ward,Jonathan,Jonathan,ALC,,,,,,,,,,Business-Undeclared,LC53,Learning Community #53
 01050850,Wark,Christina,Christina,ALC,,,,,,,,,,Studio Art,LC56,Learning Community #56
 01051794,Washington,Olivia,Olivia,ALC,PLP,,,,,,,PMD,,Business-Undeclared,LC53,Learning Community #53
-01049425,Wasserman,Reese,Reese,,PLP,,,,,,,,,Psychology,LC58,Learning Community #58
+01049425,Wasserman,Reese,Reese,ALC,PLP,,,,,,,,,Psychology,LC58,Learning Community #58
 01050080,Watkins,Elle,Elle,,,,,,,,,PMD,,Biology,LC7,Learning Community #7
-01052366,Watson,Nicholas,Nick,ALC,,,,,,,,,,Business-Undeclared,LC33,Learning Community #33
+01052366,Watson,Nicholas,Nick,,,,,,,,,,,Business-Undeclared,LC33,Learning Community #33
 01054388,Watson,Sadie,Sadie,,,,,,,,,,,Psychology,LC68,Learning Community #68
 01046790,Watts,Maceo,Maceo,,PLP,,,,,,,,,Cybersecurity,LC13,Learning Community #13
 01055950,Watts,Markel,Markel,ALC,PLP,,,,,,,,,Theater,LC71,Learning Community #71
@@ -1116,7 +1117,7 @@
 01050367,Welsh,Cooper,Cooper,ALC,,,,,,,,,,History,LC61,Learning Community #61
 01054147,Welsh,N'asia,N'asia,ALC,,,,,,,,,,Studio Art,LC58,Learning Community #58
 01054439,West,Avery,Avery,,,,,,,,,,,Cybersecurity,LC15,Learning Community #15
-01050202,Weygand,Alana,Alana,,,,,,,,,PMD,,Psychology,LC60,Learning Community #60
+01050202,Weygand,Alana,Alana,ALC,,,,,,,,PMD,,Psychology,LC60,Learning Community #60
 01050063,Wheatley,John,Jack,ALC,PLP,,,,PLW,,,,,Undeclared,LC30,Learning Community #30
 01050617,White,Caleb,Caleb,,,,,,,,,PMD,,Kinesiology,LC22,Learning Community #22
 01053583,White,Miranda,Miranda,,PLP,,,,,,,,,Psychology,LC66,Learning Community #66
@@ -1142,7 +1143,7 @@
 01051798,Wu,Max,Max,,PLP,HON,,,,,,,,Computer Science,LC37,Learning Community #37
 01049737,Wyche,Shmount,Shmount,,,,,,,,,,,Business-Undeclared,LC59,Learning Community #59
 01051999,Wynes,Jenna,Jenna,,PLP,HON,,,,,,,,Marketing,LC37,Learning Community #37
-01050382,Yarney,Jewel,Jewel,,PLP,,,,,,,,,Undeclared,LC25,Learning Community #25
+01050382,Yarney,Jewel,Jewel,ALC,PLP,,,,,,,,,Undeclared,LC25,Learning Community #25
 01048486,Yesbeck,Anna,Anna,,,,,,,,PSP,PMD,,Undeclared,LC60,Learning Community #60
 01050245,Yi,Daniel,Daniel,ALC,,,,,,,,,,Studio Art,LC56,Learning Community #56
 01050983,Yoder,Jocelyn,Jocelyn,ALC,,,,,,,,,,Theater,LC71,Learning Community #71
@@ -1150,7 +1151,7 @@
 01052700,Young,Jacob,Jacob,,PLP,,,,,,,PMD,,Chemistry,LC46,Learning Community #46
 01047242,Young,Mitchell,Mitchell,,,,,,,,,PMD,,Kinesiology,LC22,Learning Community #22
 01054465,Young,Sophia,Sophie,ALC,,,,,,,,,,Criminology,LC32,Learning Community #32
-01052328,Zagorianos,Emmanuel,Manoli,,,,,,,,,PMD,,Biology,LC7,Learning Community #7
+01052328,Zagorianos,Emmanuel,Manoli,ALC,,,,,,,,PMD,,Biology,LC7,Learning Community #7
 01051240,Zaslow,Rebecca,Rebecca,,,,,,,,,PMD,,Undeclared,LC22,Learning Community #22
 01051622,Zeigler,Camryn,Camy,,,,,,,,,,,Computer Science,LC5,Learning Community #5
 01049300,Zimba,Emily,Emily,ALC,PLP,,,,,,PSP,PMD,,Kinesiology,LC10,Learning Community #10
