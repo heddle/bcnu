@@ -97,7 +97,7 @@ public class CheckList extends JPanel {
 		musTheaStep = new MusTheaStep("Music & Theater majors", false);
 		
 		honorsStudentInALCStep = new HonorsInALCStep("Honors in Honors ALC Class", false);
-		alcStep = new StudentsInALCStep("Sdutents in ALCs", false);
+		alcStep = new StudentsInALCStep("Students in ALC Class", false);
 
 		if (inClass) {
 			honorsStudentInClassStep = new HonorsStudentInClassStep("Honors in Honors FCA Class", false);

@@ -24,6 +24,8 @@ public class StudentsInALCStep extends CheckListLaunchable {
 
 		List<Student> students = DataManager.getUnassignedStudents();
 
+		int target = AdvisorAssign.targetAverage();
+
 		for (Student student : students) {
 
 			// get the schedule
@@ -33,27 +35,20 @@ public class StudentsInALCStep extends CheckListLaunchable {
 					if (student.inALC_LC(alc)) {
 
 						Advisor adv = DataManager.getAdvisorData().getAdvisorFromId(course.id);
-						if (adv != null && adv.alc()) {
+						if (adv != null && adv.alc() && !adv.locked()) {
 							System.out.println("  ** ALC BEST MATCH " + adv.name);
 							adv.addAdvisee(student, true, EReason.ALC);
 
-							// do not lock the advisor
+							if (adv.adviseeCount() >= target) {
+								adv.setLocked();
+								System.out.println("ALC Advisor " + adv.name + " is now locked.");
+							}
 						}
 					}
 				}
 			}
 		}
 
-		// now lock down if full cohort
-
-		int target = AdvisorAssign.targetAverage();
-
-		for (Advisor advisor : DataManager.getAdvisorData().getAdvisors()) {
-			if (!advisor.locked() && advisor.adviseeCount() >= target) {
-				advisor.setLocked();
-				System.out.println("Advisor " + advisor.name + " is now locked.");
-			}
-		}
 		
 	}
 

@@ -92,6 +92,7 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01053776",Pritchett,Jason,,,,,,,,CYBER,"Brash, Edward J.","	00465510",PCSE,MAJOR
 "	01051781",Quaynor,Giovanna,,,,,,,,CYBER,"Brash, Edward J.","	00465510",PCSE,MAJOR
 "	01052403",Rivers,Tyler,,,,,,,,COMSCI,"Brash, Edward J.","	00465510",PCSE,MAJOR
+"	01051090",Smith,James,,,,,,,,ECON,"Brash, Edward J.","	00465510",PCSE,ALG
 "	01050891",Sorrell,Jaxson,,PLP,,,,,,CYBER,"Brash, Edward J.","	00465510",PCSE,MAJOR
 "	01049286",Tuzik,Aidan,,PLP,,,,,,CYBER,"Brash, Edward J.","	00465510",PCSE,MAJOR
 "	01051735",Tyler,Nathan,,,,,,,,COMSCI,"Brash, Edward J.","	00465510",PCSE,MAJOR
@@ -197,25 +198,25 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01047152",Tarjan,Ava,,PLP,,,,,,GERMAN,"Camaioni, Molly B.","	00248579",LDSP,CLASS
 "	01046789",Thompson,Christopher,ALC,PLP,,,,,,UNDEC,"Camaioni, Molly B.","	00248579",LDSP,ALC
 "	01049425",Wasserman,Reese,ALC,PLP,,,,,,PSYCH,"Camaioni, Molly B.","	00248579",LDSP,CLASS
-"	01047284",Aleksak,Mya,,PLP,HON,,,,,CRIM,"Camobreco, John F.","	00249701",POLS,ALG
+"	01051732",Amos,John,,PLP,HON,,PSP,,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
+"	01049447",Beaty,Brooklynn,,PLP,HON,,PSP,,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
+"	01047331",Brantley,Blake,ALC,PLP,HON,,,,,BUSN,"Camobreco, John F.","	00249701",POLS,ALG
+"	01052173",Coffey,Sarah,,PLP,HON,,,,,MARKT,"Camobreco, John F.","	00249701",POLS,ALG
 "	01053872",Dale,Alesia,,PLP,,,,,,POLSCI,"Camobreco, John F.","	00249701",POLS,MAJOR
-"	01046010",Dalzell,Brietta,,PLP,HON,,,,,NEURO,"Camobreco, John F.","	00249701",POLS,ALG
 "	01048603",Davis,Nia,,PLP,,,,,,POLSCI,"Camobreco, John F.","	00249701",POLS,MAJOR
+"	01048195",Dean,Austin,ALC,PLP,HON,,PSP,WIND,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
 "	01048517",Dowse,Michael,,,,,,,,POLSCI,"Camobreco, John F.","	00249701",POLS,MAJOR
 "	01053978",Elliott,Kyleigh,,PLP,,,,,,POLSCI,"Camobreco, John F.","	00249701",POLS,MAJOR
-"	01046921",Ellwanger,Aiden,,PLP,HON,,PSP,,,NEURO,"Camobreco, John F.","	00249701",POLS,ALG
-"	01053269",Fero,Marcus,,PLP,HON,,,,,ACCT,"Camobreco, John F.","	00249701",POLS,ALG
-"	01051378",Gary,Payten,,PLP,HON,,PSP,,,NEURO,"Camobreco, John F.","	00249701",POLS,ALG
+"	01047810",Gilman,Makayla,,PLP,HON,,PSP,,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
+"	01051478",Gingerich,Ashley,,PLP,HON,,PSP,,,CHEM,"Camobreco, John F.","	00249701",POLS,ALG
+"	01049066",Harrington,Emma,,,HON,,PSP,,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
+"	01052221",Hicks,Travis,,,HON,,,,,CAM,"Camobreco, John F.","	00249701",POLS,ALG
 "	01047025",Hinton,Luca,,PLP,HON,,,,,FIN,"Camobreco, John F.","	00249701",POLS,ALG
-"	01046359",Jordan,Frederick,,,HON,,PSP,,,NEURO,"Camobreco, John F.","	00249701",POLS,ALG
+"	01050300",Kung,Calvin,,PLP,HON,,PSP,,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
 "	01037757",MacKinnon,Ryan,,PLP,HON,,,,,BUSN,"Camobreco, John F.","	00249701",POLS,ALG
-"	01052474",Monzon,Joshua,,PLP,HON,,,,,BUSN,"Camobreco, John F.","	00249701",POLS,ALG
-"	01051193",Phillipson,Merrill,,,HON,,,,,COMM,"Camobreco, John F.","	00249701",POLS,ALG
-"	01050271",Smith,Benjamin,,PLP,HON,,,,,PHYS,"Camobreco, John F.","	00249701",POLS,ALG
-"	01050301",Torgerson,Charlotte,,PLP,HON,,,,,MARKT,"Camobreco, John F.","	00249701",POLS,ALG
-"	01054690",Tucker,Emily,,,HON,,,,,INTAFF,"Camobreco, John F.","	00249701",POLS,ALG
-"	01046924",Valiulis,Charles,,PLP,HON,,,,,BUSN,"Camobreco, John F.","	00249701",POLS,ALG
-"	01050117",Waldemar,Charlotte,,PLP,HON,,,,,MGMT,"Camobreco, John F.","	00249701",POLS,ALG
+"	01046065",Margulies,Philip,ALC,PLP,HON,,,,,FIN,"Camobreco, John F.","	00249701",POLS,ALG
+"	01050187",Pritz,Sarah,,PLP,HON,,,,,BUSN,"Camobreco, John F.","	00249701",POLS,ALG
+"	01051928",Walter,Micah,,PLP,HON,,PSP,,,BIOCHM,"Camobreco, John F.","	00249701",POLS,ALG
 "	01051999",Wynes,Jenna,,PLP,HON,,,,,MARKT,"Camobreco, John F.","	00249701",POLS,ALG
 "	01048145",Adkins,Landon,,,,,,,,PSYCH,"Campolattaro, Matthew M.","	00892266",PSYC,MAJOR
 "	01049833",Appleton,Andrew,,PLP,,,,,,PSYCH,"Campolattaro, Matthew M.","	00892266",PSYC,MAJOR
@@ -297,24 +298,24 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01049678",Osborne,Reid,ALC,,,,,,,MARKT,"Cartwright, Charlotte","	00920922",HIST,ALC
 "	01051942",Reno,Kevin,ALC,,,,,,,BUSN,"Cartwright, Charlotte","	00920922",HIST,ALC
 "	01051100",Snyder,Madison,ALC,,,,,,,UNDEC,"Cartwright, Charlotte","	00920922",HIST,ALC
-"	01050755",Alexandre,Darmani,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
-"	01050482",Burton,Christopher,,,,,,,,FIN,"Connable, Sean T.","	00719546",COMM,ALG
-"	01048721",Bytyqi,Aldion,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
 "	01052652",Christopher,Cooper,,,,,,,,COMM,"Connable, Sean T.","	00719546",COMM,MAJOR
-"	01053855",Decker,Lauren,ALC,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
-"	01051526",Grewe,Bennett,,PLP,,,,,,MARKT,"Connable, Sean T.","	00719546",COMM,ALG
+"	01046793",Garnett,Kate,,,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
 "	01052387",Harper,Preston,,PLP,,,,,,COMM,"Connable, Sean T.","	00719546",COMM,MAJOR
-"	01051134",Harris,Brayden,,,,,,,,FIN,"Connable, Sean T.","	00719546",COMM,ALG
 "	01049859",Hurst,Jonathan,,PLP,,,,,,COMM,"Connable, Sean T.","	00719546",COMM,MAJOR
-"	01047530",Ihm,Paxton,,PLP,,,,,,FIN,"Connable, Sean T.","	00719546",COMM,ALG
-"	01048784",Inglett,Lauren,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
-"	01051019",McKinney,Macey,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
-"	01054194",Murray,Casey,,,,,,,,CELLMB,"Connable, Sean T.","	00719546",COMM,ALG
-"	01050282",Nichols,Sarah,,,,,,,,MARKT,"Connable, Sean T.","	00719546",COMM,ALG
-"	01053430",Pope,Joshua,,,,,,,,FIN,"Connable, Sean T.","	00719546",COMM,ALG
-"	01049892",Romesburg,Elana,,PLP,,,,,,OEBIO,"Connable, Sean T.","	00719546",COMM,ALG
+"	01048743",Linnet,Annika,,,,,,,,CELLMB,"Connable, Sean T.","	00719546",COMM,ALG
+"	01054312",Mickles,Carson,,,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
+"	01047781",Miller,Katelyn,ALC,PLP,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
+"	01050542",Minor,Julianna,,PLP,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
+"	01049307",Music,Grace,,PLP,,,,,,CELLMB,"Connable, Sean T.","	00719546",COMM,ALG
+"	01050317",Myers,Baylor,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
+"	01049095",Nadder,Ava,,,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
+"	01046362",Pearson,Jayden,,PLP,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
+"	01047065",Peter,Luke,,,,,,,,CELLMB,"Connable, Sean T.","	00719546",COMM,ALG
 "	01048780",Stiehm,Liam,,,,,,,,COMM,"Connable, Sean T.","	00719546",COMM,MAJOR
-"	01049868",Taylor,Maxwell,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
+"	01053984",Trevino,Saraia,,,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
+"	01050617",White,Caleb,,,,,,,,KINES,"Connable, Sean T.","	00719546",COMM,ALG
+"	01051102",Williams,Wayne,,PLP,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
+"	01054410",Zimmerman,Jillian,,PLP,,,,,,POLSCI,"Connable, Sean T.","	00719546",COMM,ALG
 "	01050537",Aguayo,Isabella,,PLP,,,,,,MARKT,"Connell, William F.","	00441839",HIST,CLASS
 "	01051727",Anderson,Robert,,PLP,,,,,,PSYCH,"Connell, William F.","	00441839",HIST,CLASS
 "	01050848",Arlando,Samantha Trista,,,,,,,,NEURO,"Connell, William F.","	00441839",HIST,CLASS
@@ -355,100 +356,103 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01049312",Larson,Alexis,ALC,PLP,HON,,PSP,,,BIOCHM,"Cusher, Brent E.","	00740738",LDSP,ALC
 "	01047190",Mielke,Keelin,ALC,PLP,HON,,,,,BUSN,"Cusher, Brent E.","	00740738",LDSP,HONR
 "	01047044",Smorto,Joseph,ALC,PLP,HON,,,,,PHYS,"Cusher, Brent E.","	00740738",LDSP,ALC
-"	01046667",Becker,Constentine,,,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01050755",Alexandre,Darmani,,,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
 "	01049100",Bingham,James,ALC,,,,,,,BIOCHM,"Dobrescu, Mihaela L.","	00585913",MATH,ALC
-"	01050664",Cargo,Glyssa,,,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
 "	01049915",Cooper,Noah,,PLP,,,,,,PHYS,"Dobrescu, Mihaela L.","	00585913",MATH,CLASS
 "	01054029",Davis,Owen,,,,,,,,PHYS,"Dobrescu, Mihaela L.","	00585913",MATH,CLASS
 "	01046015",Gesswein,Aidan,,,,,,,,PHYS,"Dobrescu, Mihaela L.","	00585913",MATH,CLASS
-"	01051918",Hockman,Morgan,,PLP,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
-"	01047130",Johnson,Alana,,PLP,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
-"	01048410",Jones,Jayveon,,,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01053058",Hyderkhan,Colin,,,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01054201",Jones,Kayla,ALC,,,,,,,OEBIO,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
 "	01054357",Limon Duparcmeur,Nouela,,,,,,,,PHYS,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
 "	01046175",Massey,McKenzie,,PLP,,,,,,COMSCI,"Dobrescu, Mihaela L.","	00585913",MATH,CLASS
-"	01047778",Moyer,Josiah,,,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
-"	01048356",Mundie,Ciera,,PLP,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
-"	01052179",Powell,Joshua,,,,,,,,UNDEC,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01051019",McKinney,Macey,,,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01051768",Minnitti,Annalisa,,,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01048001",Patrick,Douglas,,,,,,,,CELLMB,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01049131",Smith,Ross,,,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01050173",Taylor,Jayvee Lynne,,PLP,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
+"	01049868",Taylor,Maxwell,,,,,,,,KINES,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
 "	01048615",Thomas,Gavin,,,,,,,,PHYS,"Dobrescu, Mihaela L.","	00585913",MATH,ALG
 "	01049144",Thomas,Steven,,,,,,,,EE,"Dobrescu, Mihaela L.","	00585913",MATH,CLASS
 "	01051440",Thompson,Blake,,PLP,,,,,,MATH,"Dobrescu, Mihaela L.","	00585913",MATH,CLASS
 "	01053434",Zurita,Pedro,,,,,,,,MATH,"Dobrescu, Mihaela L.","	00585913",MATH,MAJOR
 "	01049948",Abbott,Katelyn,,,,,,,,ACCT,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01054075",Arnette,Cameron,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01049339",Daniels,Dillon,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01047995",Dinkelacker,Theodore,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01053927",Fox,Charles,ALC,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01049537",Gunn,Charles,ALC,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01051442",Howard,Graydon,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01054170",Lloyd,Carter,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01047742",Amos,Alessandra,,PLP,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01053359",Cook,Mark,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01049199",Davidson,Keely,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01048886",Foti,Jacob,,PLP,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01048750",Gilligan,Savanah,,PLP,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01053038",Hook,Nathaniel,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01051168",Jean-Francois,Christopher,,PLP,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
 "	01055904",Macedo,Paige,,,,,,,,ACCT,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01051815",Marticio,Ariana Thea,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01046775",McCormick,Dylan,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01051909",Narron,Bodie,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01054045",Parks,Norah,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01052550",Malucci,Charles,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01052588",Martonosi,Joseph,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01050630",Mihalap,Isaak,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01052478",Newell,Donovan,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01050594",Rexter,James,ALC,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
 "	01051956",Rubaai,Alexander,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
 "	01047873",Scheiman,Noah,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
 "	01053703",Shields,Nathan,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01045704",Spinelli,Lucia,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01053171",Steffensmeier,Logan,,,,,,,,ACCT,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01047664",Terrell,Taleah,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
-"	01053974",Trombly,Stephen,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01053849",Smith,Paul,ALC,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01048126",Sparrow,Colin,,PLP,,,,,,ACCT,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01054057",Stapf,Nicholas,,,,,,,,BUSN,"Donaldson, William M.","	00704724",LUTR,MAJOR
+"	01051447",Adams,Natalie,ALC,,,,,,,STDART,"Eleftheriou, Joanna C.","	00986068",ENGL,ALG
 "	01047462",Baldwin,Riley,,,,,,,,CRIM,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
+"	01050162",Beach,Emma,,,,,,,,STDART,"Eleftheriou, Joanna C.","	00986068",ENGL,ALG
 "	01054881",Diacoumis,Zoe,ALC,,,,,,,SOCIOL,"Eleftheriou, Joanna C.","	00986068",ENGL,ALC
 "	01052181",Donovan,Benjamin,,,,,,,,BUSN,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
 "	01050263",Foster,Colton John,,PLP,,,,,,POLSCI,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
 "	01049975",Gordon,Alexah,,,,,,,,UNDEC,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
 "	01046954",Hamrick,Heidi,,PLP,,,,,,BIOL,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
+"	01054441",Hancock,Elizabeth,,,,,,,,STDART,"Eleftheriou, Joanna C.","	00986068",ENGL,ALG
 "	01050979",Lang,Brady,,,,,,,,BIOL,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
-"	01049480",Marzitello,Sophia,,PLP,,,,,,POLSCI,"Eleftheriou, Joanna C.","	00986068",ENGL,ALG
 "	01047606",Muller,Amelia,,,,,,,,SOCIOL,"Eleftheriou, Joanna C.","	00986068",ENGL,ALG
 "	01047504",Quenzer,Caroline,,PLP,,,,,,POLSCI,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
 "	01046032",Ramirez,Emelio,,,,,,,,BIOL,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
 "	01046615",Rothkopf,Lyndsye,ALC,,,,,,,ENGL,"Eleftheriou, Joanna C.","	00986068",ENGL,ALC
 "	01045727",Sawyer,Elizabeth,,PLP,,,,,,PSYCH,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
-"	01048210",Thomas,Corinne,,PLP,,,,,,PSYCH,"Eleftheriou, Joanna C.","	00986068",ENGL,ALG
 "	01050850",Wark,Christina,ALC,,,,,,,STDART,"Eleftheriou, Joanna C.","	00986068",ENGL,ALC
 "	01052597",Wilson,La'vant,,,,,,,,PSYCH,"Eleftheriou, Joanna C.","	00986068",ENGL,CLASS
 "	01051046",Wolfe,Samantha,ALC,,,,,,,ENGL,"Eleftheriou, Joanna C.","	00986068",ENGL,ALC
 "	01050245",Yi,Daniel,ALC,,,,,,,STDART,"Eleftheriou, Joanna C.","	00986068",ENGL,ALC
-"	01050812",Abt,Thomas,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01046745",Bretney,Lauren,,PLP,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01048476",Darnell,Matthew,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01052839",Ehrlich,Sawyer,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01047644",Gardner,Harley,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01050103",Hoexum,Preston,,PLP,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01050577",Humphrey,Dillon,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01054075",Arnette,Cameron,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01049339",Daniels,Dillon,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01047995",Dinkelacker,Theodore,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01053927",Fox,Charles,ALC,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01049537",Gunn,Charles,ALC,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01051442",Howard,Graydon,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
 "	01051228",Lane,Isabella,,,,,,,,ACCT,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01047903",Mack,Paige,,PLP,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01050267",Martin,Cassandra,ALC,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01050630",Mihalap,Isaak,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01052478",Newell,Donovan,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01054170",Lloyd,Carter,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01051815",Marticio,Ariana Thea,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01046775",McCormick,Dylan,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01050656",Mikhael,Thomas,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01047871",Ottaviano,Allyson,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
 "	01050247",Pennington,Katherine,,,,,,,,ACCT,"Emre Kirac","	01001887",LUTR,MAJOR
 "	01052946",Rivera,Aiden,,PLP,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
 "	01051287",Saffell,Kaitlyn,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
 "	01051428",Scott,Thomas,ALC,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01050560",Simonnet,Katie,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01054057",Stapf,Nicholas,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01050303",Timberlake,Haley,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
-"	01052565",Villanueva,Dylan,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01051023",Sidhu,Gavinder,ALC,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01053390",Snyder,Thomas,,,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01053171",Steffensmeier,Logan,,,,,,,,ACCT,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01048671",Tasikas,Theodore,,PLP,,,,,,BUSN,"Emre Kirac","	01001887",LUTR,MAJOR
+"	01050664",Cargo,Glyssa,,,,,,,,UNDEC,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01053812",Chicas,Stephanie,ALC,,,,,,,UNDEC,"Finley, Sarah E.","	00921523",MCLL,ALC
 "	01047952",Daniels,Damon,ALC,,,,,,,BUSN,"Finley, Sarah E.","	00921523",MCLL,ALC
-"	01050745",Donahoe,Griffin,,,,,,,,MGMT,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01047473",Ellars,Julia,ALC,,,,,,,CRIM,"Finley, Sarah E.","	00921523",MCLL,ALC
 "	01050799",Epperly,Erica,,,,,,,,BIOL,"Finley, Sarah E.","	00921523",MCLL,CLASS
 "	01051157",Garzon,Grace,ALC,,,,,,,CRIM,"Finley, Sarah E.","	00921523",MCLL,ALC
 "	01053147",Gomez,Michelle,ALC,,,,,,,BUSN,"Finley, Sarah E.","	00921523",MCLL,ALC
+"	01051526",Grewe,Bennett,,PLP,,,,,,MARKT,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01047024",Henry,Jacquellia,ALC,,,,,,,BIOL,"Finley, Sarah E.","	00921523",MCLL,ALC
 "	01052154",Kim,Christian,ALC,,,,,,,ACCT,"Finley, Sarah E.","	00921523",MCLL,ALC
 "	01053562",Kostic,Natalija,,,,,,,,UNDEC,"Finley, Sarah E.","	00921523",MCLL,CLASS
-"	01050746",Mazulewicz,Alexandra,,PLP,,,,,,KINES,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01052040",McEntyre,Caleb,ALC,,,,,,,COMSCI,"Finley, Sarah E.","	00921523",MCLL,ALC
-"	01047117",Mosca,Caroline,,,,,,,,MARKT,"Finley, Sarah E.","	00921523",MCLL,ALG
+"	01052007",Ortiz,Christian,,,,,,,,KINES,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01051403",Rose,Lisaad,ALC,,,,,,,UNDEC,"Finley, Sarah E.","	00921523",MCLL,ALC
-"	01053453",Rulli,Levi,,,,,,,,OEBIO,"Finley, Sarah E.","	00921523",MCLL,ALG
+"	01048811",Rutledge,Derek,,,,,,,,MGMT,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01051523",Tempalski,Wyatt,ALC,,,,,,,CRIM,"Finley, Sarah E.","	00921523",MCLL,ALC
+"	01051016",Torrisi,Isabella,,,,,,,,BUSN,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01054752",Walker,Darren,,,,,,,,CYBER,"Finley, Sarah E.","	00921523",MCLL,CLASS
-"	01050617",White,Caleb,,,,,,,,KINES,"Finley, Sarah E.","	00921523",MCLL,ALG
+"	01054451",Williams,Suzanna,,,,,,,,OEBIO,"Finley, Sarah E.","	00921523",MCLL,ALG
 "	01049766",Axtell,Morgan,,,,,,,,KINES,"Garmon, Frank W.","	00471645",LDSP,CLASS
 "	01049301",Berg,Charis,ALC,,,,,,,POLSCI,"Garmon, Frank W.","	00471645",LDSP,ALC
 "	01054295",Campos-Chanez,Kiara,,,,,,,,BIOL,"Garmon, Frank W.","	00471645",LDSP,CLASS
@@ -469,38 +473,39 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	00765893",Meehan,Natalie,,,,,,,,ACCT,"Garmon, Frank W.","	00471645",LDSP,CLASS
 "	01050380",Navarro Cortes,Meygan,,,,,,,,BIOL,"Garmon, Frank W.","	00471645",LDSP,CLASS
 "	01051264",Proce,Natalie,,,,,,,,KINES,"Garmon, Frank W.","	00471645",LDSP,CLASS
+"	01049893",Ashby,Isabelle,,,,,,,,MARKT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01051718",Austin,Rebecca,,,,,,,,SOWK,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01052846",Bertotti,Megan,,,,,,,,MGMT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01053979",Burney,Aria,,,,,,,,MGMT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01049248",Cosgrove,Genevieve,ALC,PLP,,,,,,MARKT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01047175",Davis,Jasmine,,,,,,,,SOWK,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01049309",Dieterle,Jacob,,,,,,,,MARKT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01049198",Greer,Selah,,,,,,,,SOWK,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
 "	01053235",Harmison,Annika,,,,,,,,ENGL,"Garton-Gundling, Kyle R.","	00983143",ENGL,MAJOR
-"	01054201",Jones,Kayla,ALC,,,,,,,OEBIO,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01048485",Knapp,Kinsey,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01050185",Lianez,Elijah,,PLP,,,,,,OEBIO,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01046481",Martinez,Allison,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01047781",Miller,Katelyn,ALC,PLP,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01049578",Nagel,Ellie,,,,,,,,OEBIO,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01052007",Ortiz,Christian,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01048001",Patrick,Douglas,,,,,,,,CELLMB,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01050406",Jensen,Hannah,,,,,,,,SOWK,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01050733",Ketron,Reece,ALC,PLP,,,,,,FIN,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01048763",Levi,Grace,,PLP,,,,,,SOWK,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01047434",Lubinski,Elizabeth,ALC,PLP,,,,,,MARKT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01050702",Odom,Coby,ALC,,,,,,,MARKT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01049962",Sanders,Connor,,PLP,,,,,,MARKT,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
 "	01052814",Sanders,Loralei,,,,,,,,ENGL,"Garton-Gundling, Kyle R.","	00983143",ENGL,MAJOR
-"	01051090",Smith,James,,,,,,,,ECON,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01051238",Swartzbaugh,Michael,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01048276",Talkington,Garrett,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01048342",Thrift,Davis,,PLP,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01048955",Williams,Kavontae,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01054451",Williams,Suzanna,,,,,,,,OEBIO,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01051380",Woodruff,Meredith,,PLP,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01047242",Young,Mitchell,,,,,,,,KINES,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
-"	01053979",Burney,Aria,,,,,,,,MGMT,"Gerousis, Costa P.","	00430157",PCSE,ALG
+"	01050303",Timberlake,Haley,,,,,,,,BUSN,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
+"	01052565",Villanueva,Dylan,,,,,,,,BUSN,"Garton-Gundling, Kyle R.","	00983143",ENGL,ALG
 "	01050348",Clark,Patrick,ALC,PLP,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,ALC
-"	01053739",Dubnowski,Alexander,,,,,,,,FIN,"Gerousis, Costa P.","	00430157",PCSE,ALG
-"	01047723",Gulilat,Samuale,,,,,,,,MARKT,"Gerousis, Costa P.","	00430157",PCSE,ALG
+"	01054596",Grom,Sarah,,,,,,,,KINES,"Gerousis, Costa P.","	00430157",PCSE,ALG
 "	01048046",Ham,John,ALC,,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,ALC
 "	01051910",Henin,Kyrillos,,PLP,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,CLASS
+"	01049532",Herbert,Grace,ALC,PLP,,,,,,KINES,"Gerousis, Costa P.","	00430157",PCSE,ALG
 "	01050305",Ketchum,Lauren,,PLP,,,,,,EE,"Gerousis, Costa P.","	00430157",PCSE,MAJOR
+"	01050393",Lackey,Noel,,,,,,,,KINES,"Gerousis, Costa P.","	00430157",PCSE,ALG
 "	01053481",Maldonado,Andrew,ALC,,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,ALC
+"	01046481",Martinez,Allison,,,,,,,,KINES,"Gerousis, Costa P.","	00430157",PCSE,ALG
+"	01050746",Mazulewicz,Alexandra,,PLP,,,,,,KINES,"Gerousis, Costa P.","	00430157",PCSE,ALG
 "	01050829",Milausnic,Joseph,,PLP,,,,,,COMSCI,"Gerousis, Costa P.","	00430157",PCSE,CLASS
-"	01053161",Olguin-Arellano,Rene,,,,,,,,FIN,"Gerousis, Costa P.","	00430157",PCSE,ALG
 "	01046031",Piercy,William,,,,,,,,CYBER,"Gerousis, Costa P.","	00430157",PCSE,CLASS
 "	01051633",Redd,Collins,,,,,,,,EE,"Gerousis, Costa P.","	00430157",PCSE,MAJOR
 "	01049217",Rodriguez,Isla,ALC,,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,ALC
-"	01051974",Sanchez,Julian,,PLP,,,,,,FIN,"Gerousis, Costa P.","	00430157",PCSE,ALG
+"	01049892",Romesburg,Elana,,PLP,,,,,,OEBIO,"Gerousis, Costa P.","	00430157",PCSE,ALG
 "	01053536",Shelton,Ya'Ves,,,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,MAJOR
 "	01051619",Sindicic,Andrew,,PLP,,,,,,EE,"Gerousis, Costa P.","	00430157",PCSE,MAJOR
 "	01051089",Smith,Naseer,,,,,,,,COMENG,"Gerousis, Costa P.","	00430157",PCSE,MAJOR
@@ -525,41 +530,43 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01051170",Svatek,Chloe,,PLP,,,PSP,WIND,,BIOCHM,"Grau, Harold J.","	00114307",MBCH,PSP
 "	01050080",Watkins,Elle,,,,,,,,BIOL,"Grau, Harold J.","	00114307",MBCH,MAJOR
 "	01053524",Wells,Sarah,ALC,PLP,,,PSP,,,KINES,"Grau, Harold J.","	00114307",MBCH,PSP
-"	01053168",Atherton,Audrey,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
 "	01053065",Baker,Douglas,ALC,,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
 "	01049082",Brown,Lorelai,ALC,PLP,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
 "	01053602",Campbell,Jayshaun,,,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
-"	01049894",Daub,McKinley,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
-"	01050420",Degrenier,Olivia,,PLP,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
-"	01049781",Englehart,Megan,,PLP,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
-"	01053200",Gojer,Eden,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01053855",Decker,Lauren,ALC,,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01054266",Gangai,Dominic,,,,,,,,OEBIO,"Hamm, Chelsey","	00970475",PFAR,ALG
 "	01053184",Goodman,Ethan,ALC,,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
-"	01052464",Jones,Timothy,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
-"	01052593",Moody,Trevor,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
-"	01051075",Pellicano,Jed,,PLP,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
-"	01048606",Poe,Jackson,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01053511",Layman,Cooper,,,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01050185",Lianez,Elijah,,PLP,,,,,,OEBIO,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01047996",McDonald,Larissa,,,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
 "	01050635",Porter-miller,Micah,ALC,PLP,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
-"	01050079",Saunders,Creston,,,,,,,,UNDEC,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01053453",Rulli,Levi,,,,,,,,OEBIO,"Hamm, Chelsey","	00970475",PFAR,ALG
 "	01049333",Schultz,Gabriel,ALC,,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
 "	01053598",Staggs,Liana,ALC,,,,,,,MUSIC,"Hamm, Chelsey","	00970475",PFAR,MUSC
+"	01048276",Talkington,Garrett,,,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01053992",Torres Montes,Zara,,,,,,,,CELLMB,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01051137",Wilk,David,,,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01051380",Woodruff,Meredith,,PLP,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
 "	01052700",Young,Jacob,,PLP,,,,,,CHEM,"Hamm, Chelsey","	00970475",PFAR,CLASS
-"	01048988",Ahrens,Alaric,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01054415",Barnum,Joshua,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01049315",Beeman,Matthew,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01053647",Cork,Teagan,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01049602",Ferreira,Benjamin,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01048372",Holmes,Zachary,,,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01054976",Kirk,Morgan,,,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01050410",Lentz,Justin,,,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01051711",Lowe,Melvin,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01053973",Medina Guardado,Susana,,PLP,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01054312",Mickles,Carson,,,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01050542",Minor,Julianna,,PLP,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01051210",Mitchell,Alexandra,,PLP,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01046362",Pearson,Jayden,,PLP,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01051029",Siefke,Leeanne,,,,,,,,UNDEC,"Harris, Christi","	00469372",FAAH,ALG
-"	01053984",Trevino,Saraia,,,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
-"	01054410",Zimmerman,Jillian,,PLP,,,,,,POLSCI,"Harris, Christi","	00469372",FAAH,ALG
+"	01047242",Young,Mitchell,,,,,,,,KINES,"Hamm, Chelsey","	00970475",PFAR,ALG
+"	01053829",Bakeman,Ella,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01052356",Bryant,Ryleigh,,PLP,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01048721",Bytyqi,Aldion,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01046800",Hylton,Christopher,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01048784",Inglett,Lauren,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01048485",Knapp,Kinsey,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01049107",Lowe,Natalie,,PLP,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01048633",Martin,William,,PLP,,,,,,HIST,"Harris, Christi","	00469372",FAAH,ALG
+"	01053070",Morris,Elizabeth,,,,,,,,HIST,"Harris, Christi","	00469372",FAAH,ALG
+"	01054194",Murray,Casey,,,,,,,,CELLMB,"Harris, Christi","	00469372",FAAH,ALG
+"	01049578",Nagel,Ellie,,,,,,,,OEBIO,"Harris, Christi","	00469372",FAAH,ALG
+"	01046841",Oleyar,Julia,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01050338",Price-krivan,Rubie,,,,,,,,OEBIO,"Harris, Christi","	00469372",FAAH,ALG
+"	01051056",Roethel,Hannah-Louise,,PLP,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01051238",Swartzbaugh,Michael,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01048342",Thrift,Davis,,PLP,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
+"	01049494",Waggoner,Sydney,,,,,,,,HIST,"Harris, Christi","	00469372",FAAH,ALG
+"	01048955",Williams,Kavontae,,,,,,,,KINES,"Harris, Christi","	00469372",FAAH,ALG
 "	01049133",Ambrose,Kaplan,,PLP,,,,,,CRIM,"Harris, Jaime D.","	00755768",SOCL,CLASS
 "	01051449",Ammons,Caleb,ALC,PLP,,,,,,CRIM,"Harris, Jaime D.","	00755768",SOCL,ALC
 "	01051053",Aurelio,Caiden,,PLP,,,,,,BIOL,"Harris, Jaime D.","	00755768",SOCL,CLASS
@@ -599,6 +606,7 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01047072",Tarallo,Claire,,PLP,,,,,,BIOL,"Hench, Jessica W.","	00924495",LDSP,CLASS
 "	01047115",Vair,Norah,ALC,PLP,,,,,,BUSN,"Hench, Jessica W.","	00924495",LDSP,ALC
 "	01055661",Villalobos,Mallory,ALC,PLP,,,,,,BIOCHM,"Hench, Jessica W.","	00924495",LDSP,ALC
+"	01051794",Washington,Olivia,ALC,PLP,,,,,,BUSN,"Hench, Jessica W.","	00924495",LDSP,CLASS
 "	01053597",Alcarese,Ashton,,PLP,,,,,,COMSCI,"Homan, Matthew H.","	00891242",PHIL,CLASS
 "	01053780",Anderson,Dale,,,,,,,,COMSCI,"Homan, Matthew H.","	00891242",PHIL,CLASS
 "	01051597",Bahrami,Zameer,,,,,,,,COMSCI,"Homan, Matthew H.","	00891242",PHIL,CLASS
@@ -619,24 +627,24 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01053264",Liga,Owen,,,,,,,,COMSCI,"Homan, Matthew H.","	00891242",PHIL,CLASS
 "	01052896",Lopez,Isabella,,,,,,,,SOWK,"Homan, Matthew H.","	00891242",PHIL,CLASS
 "	01049260",Moericke,Tobias,,,,,,,,UNDEC,"Homan, Matthew H.","	00891242",PHIL,CLASS
-"	01048144",Cassise,Brandon,,PLP,,,,,,INTAFF,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01049346",Galm,Spencer,,,,,,,,INTAFF,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01054266",Gangai,Dominic,,,,,,,,OEBIO,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01049532",Herbert,Grace,ALC,PLP,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01053058",Hyderkhan,Colin,,,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01046800",Hylton,Christopher,,,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01053511",Layman,Cooper,,,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01046161",Alexander,Justice,,,,,,,,ENVSTD,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01050482",Burton,Christopher,,,,,,,,FIN,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01047200",Custidero,Dominic,,,,,,,,ENVSTD,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01050745",Donahoe,Griffin,,,,,,,,MGMT,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01048285",Girard,Caden,,,,,,,,MARKT,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01047723",Gulilat,Samuale,,,,,,,,MARKT,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01052537",Harrell,Ava,,,,,,,,MARKT,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01047670",Hendricks,Ashton,,,,,,,,ENVSTD,"Hopkins, Patricia D.","	00571141",ENGL,ALG
 "	01051375",Leckie,Maeve,,,,,,,,ENGL,"Hopkins, Patricia D.","	00571141",ENGL,MAJOR
-"	01048743",Linnet,Annika,,,,,,,,CELLMB,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01049107",Lowe,Natalie,,PLP,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01050317",Myers,Baylor,,,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01046841",Oleyar,Julia,,,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01050338",Price-krivan,Rubie,,,,,,,,OEBIO,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01051056",Roethel,Hannah-Louise,,PLP,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01054131",Lemley,Faith,,,,,,,,MARKT,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01050803",Meyer,Benjamin,,,,,,,,FIN,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01053161",Olguin-Arellano,Rene,,,,,,,,FIN,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01051675",Pizzie,Nicholas,,PLP,,,,,,FIN,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01049792",Ramsey,Catalina,,,,,,,,ENVSTD,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01054778",Roane,Bryan,,,,,,,,ENVSTD,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01046767",Sigley,Olivia,,,,,,,,ENVSTD,"Hopkins, Patricia D.","	00571141",ENGL,ALG
 "	01049359",Spencer,Andrea,,,,,,,,ENGL,"Hopkins, Patricia D.","	00571141",ENGL,MAJOR
-"	01050173",Taylor,Jayvee Lynne,,PLP,,,,,,KINES,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01053992",Torres Montes,Zara,,,,,,,,CELLMB,"Hopkins, Patricia D.","	00571141",ENGL,ALG
-"	01049848",Vidal,Hailey,,,,,,,,INTAFF,"Hopkins, Patricia D.","	00571141",ENGL,ALG
+"	01051146",Workman,Carter,ALC,PLP,,,,,,FIN,"Hopkins, Patricia D.","	00571141",ENGL,ALG
 "	01050571",Al-rubaye,Haider,ALC,,,,,,,COMENG,"Hutchinson, Dawn L.","	00026236",PHIL,CLASS
 "	01050944",Amonette,William,,PLP,,,,,,POLSCI,"Hutchinson, Dawn L.","	00026236",PHIL,CLASS
 "	01048296",Aracich,Olivia,,PLP,,,,,,UNDEC,"Hutchinson, Dawn L.","	00026236",PHIL,CLASS
@@ -657,54 +665,57 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01049421",Rinker,Gabriel,,PLP,,,,,,COMSCI,"Hutchinson, Dawn L.","	00026236",PHIL,CLASS
 "	01046766",Shank,Micah,,PLP,,,,,,UNDEC,"Hutchinson, Dawn L.","	00026236",PHIL,CLASS
 "	01045706",Thexton,Samantha,,PLP,,,,,,BIOL,"Hutchinson, Dawn L.","	00026236",PHIL,CLASS
+"	01054415",Barnum,Joshua,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
 "	01051884",Bjonnes,Johnathan,ALC,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
 "	01055916",Burnsed,Felix,ALC,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
 "	01048530",Casoni,Katherine,ALC,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
+"	01048144",Cassise,Brandon,,PLP,,,,,,INTAFF,"Irving, John","	00938913",PFAR,ALG
+"	01046939",Cheatham,Mikayla,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
+"	01049781",Englehart,Megan,,PLP,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
+"	01049346",Galm,Spencer,,,,,,,,INTAFF,"Irving, John","	00938913",PFAR,ALG
+"	01049722",Herron,Jack,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
 "	01046052",Kenney,Ryan,ALC,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
-"	01052177",Lang,Cade,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
-"	01047144",Monihan,Lauren,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
-"	01049236",Patton,Arielle,,PLP,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
+"	01053973",Medina Guardado,Susana,,PLP,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
+"	01052041",Palmer,Isla,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
 "	01047558",Podolskiy,Julia,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
 "	01050655",Raiford,Nathan,,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
+"	01050079",Saunders,Creston,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
 "	01051458",Smith,Allison,ALC,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
-"	01053062",Smith,Brayden,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
-"	01048503",Toussaint,Julia,,,,,,,,ANTH,"Irving, John","	00938913",PFAR,ALG
-"	01049723",Traynor,Ryan,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
-"	01045898",Whitten,Raegan,,,,,,,,ANTH,"Irving, John","	00938913",PFAR,ALG
-"	01054229",Willebeek-Lemair,Angela,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
+"	01049848",Vidal,Hailey,,,,,,,,INTAFF,"Irving, John","	00938913",PFAR,ALG
 "	01056188",Williams,Kendel,,,,,,,,MUSIC,"Irving, John","	00938913",PFAR,MUSC
-"	01051240",Zaslow,Rebecca,,,,,,,,UNDEC,"Irving, John","	00938913",PFAR,ALG
-"	01046161",Alexander,Justice,,,,,,,,ENVSTD,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
-"	01052356",Bryant,Ryleigh,,PLP,,,,,,KINES,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
-"	01047200",Custidero,Dominic,,,,,,,,ENVSTD,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01053739",Dubnowski,Alexander,,,,,,,,FIN,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
 "	01052034",Gingerich,Sarah,,PLP,HON,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
-"	01054596",Grom,Sarah,,,,,,,,KINES,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
-"	01047670",Hendricks,Ashton,,,,,,,,ENVSTD,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
 "	01049314",Kelly,Paige,,PLP,HON,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
 "	01052513",Marsh,Juliet,,,,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
-"	01051768",Minnitti,Annalisa,,,,,,,,KINES,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
 "	01048338",Philpot,Emma,ALC,PLP,,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
-"	01049792",Ramsey,Catalina,,,,,,,,ENVSTD,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
-"	01054778",Roane,Bryan,,,,,,,,ENVSTD,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
 "	01053462",Sapack,Julia,ALC,,,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
-"	01046767",Sigley,Olivia,,,,,,,,ENVSTD,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
 "	01052853",Smart,Imani,ALC,,,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
-"	01051137",Wilk,David,,,,,,,,KINES,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01048210",Thomas,Corinne,,PLP,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01053100",Tingler,Faith,ALC,,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01053730",Ubelhart,Caterina,,,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01051217",Uddin,En'Dia,,PLP,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01050467",Villegas-Sanchez,Ashly,ALC,,,,,,,MARKT,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01054388",Watson,Sadie,,,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01050202",Weygand,Alana,ALC,,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01053583",White,Miranda,,PLP,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
 "	01050983",Yoder,Jocelyn,ALC,,,,,,,THEA,"Jaremski, Kathleen M.","	00430162",PFAR,THEA
-"	01051447",Adams,Natalie,ALC,,,,,,,STDART,"Keener, Steven T.","	00687219",SOCL,ALG
-"	01050162",Beach,Emma,,,,,,,,STDART,"Keener, Steven T.","	00687219",SOCL,ALG
+"	01051516",York,Graham,,,,,,,,MARKT,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01053652",Zuzma,Lanie,,,,,,,,PSYCH,"Jaremski, Kathleen M.","	00430162",PFAR,ALG
+"	01053647",Cork,Teagan,,,,,,,,UNDEC,"Keener, Steven T.","	00687219",SOCL,ALG
 "	01048378",Davis,Michaela,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
-"	01054441",Hancock,Elizabeth,,,,,,,,STDART,"Keener, Steven T.","	00687219",SOCL,ALG
 "	01051595",Hess,Trinity,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
-"	01049940",Johnston,Janasia,,,,,,,,LDSP,"Keener, Steven T.","	00687219",SOCL,ALG
 "	01051555",Lubinskas,Joseph,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01049251",Mercer,Charlotte,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
+"	01053152",Moore,Jada,,PLP,,,,,,GCOMCUL,"Keener, Steven T.","	00687219",SOCL,ALG
 "	01047732",Noto,Mayah,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01050430",Redash,Natalie,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
+"	01046813",Rusin,Sophia,,,,,,,,GCOMCUL,"Keener, Steven T.","	00687219",SOCL,ALG
+"	01052453",Sabri,Abdullah,,,,,,,,GCOMCUL,"Keener, Steven T.","	00687219",SOCL,ALG
 "	01050370",Saunders,Taylor,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01051105",Shepherd,Mason,ALC,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01049967",Speice,Kaley,,PLP,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01050182",Taylor,Addison,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
+"	01048260",Temple,Cecilia,ALC,,,,,,,UNDEC,"Keener, Steven T.","	00687219",SOCL,ALG
 "	01054274",Time,Tristan,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01051774",Vyge,Trinity,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
 "	01048075",von Berg,Sydney,,,,,,,,CRIM,"Keener, Steven T.","	00687219",SOCL,MAJOR
@@ -728,24 +739,24 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01052275",Rivera,Nathan,,,,,,,CCAP,UNDEC,"Kelly, James","	00922466",MATH,CCPT
 "	01048397",Roberts,Sanai,,,,,,,CCAP,THEA,"Kelly, James","	00922466",MATH,CCPT
 "	01050553",Saad,Miroula,,,,,,,CCAP,BIOL,"Kelly, James","	00922466",MATH,CCPT
+"	01049894",Daub,McKinley,,,,,,,,UNDEC,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01055366",Destin,Jonathan,ALC,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
 "	01051991",Edmonds,Marques,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
 "	01050316",Gutsfeld,Benjamin,,,,,,,,EE,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
+"	01049940",Johnston,Janasia,,,,,,,,LDSP,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01053882",Lindgren Baltzell,Zane,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
-"	01048633",Martin,William,,PLP,,,,,,HIST,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01050772",McCarthy,Keith,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
 "	01046309",Mercer,Jaylah,,,,,,,,EE,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
-"	01053152",Moore,Jada,,PLP,,,,,,GCOMCUL,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
-"	01053070",Morris,Elizabeth,,,,,,,,HIST,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
+"	01052593",Moody,Trevor,,,,,,,,UNDEC,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
+"	01048815",Naupari,Kayleen,ALC,,,,,,,UNDEC,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
+"	01048606",Poe,Jackson,,,,,,,,UNDEC,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01053519",Pryear,Avion,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
 "	01053004",Pyron,Mason,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
 "	01050124",Rash,Brayden,ALC,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
-"	01046813",Rusin,Sophia,,,,,,,,GCOMCUL,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
-"	01052453",Sabri,Abdullah,,,,,,,,GCOMCUL,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01053246",Schrader,Jason,,,,,,,,EE,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
 "	01050838",Shinaba,Anif,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
+"	01049723",Traynor,Ryan,,,,,,,,UNDEC,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01054113",Uzzle,Shomari,,,,,,,,COMENG,"Keshtkar Vanashi, Hessam","	00966067",PCSE,MAJOR
-"	01049494",Waggoner,Sydney,,,,,,,,HIST,"Keshtkar Vanashi, Hessam","	00966067",PCSE,ALG
 "	01045716",Brown,Kendal,,PLP,,,PSP,,,BIOL,"Knight, William D.","	00190350",MBCH,PSP
 "	01047894",Conrad,Ethan,,,,,PSP,,,BIOL,"Knight, William D.","	00190350",MBCH,PSP
 "	01050302",Deleon,Aaliyah,,PLP,,,PSP,,,CELLMB,"Knight, William D.","	00190350",MBCH,PSP
@@ -766,41 +777,43 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01047896",Van Der Ven,Charles,,,,,,,,BIOL,"Knight, William D.","	00190350",MBCH,MAJOR
 "	01048486",Yesbeck,Anna,,,,,PSP,,,UNDEC,"Knight, William D.","	00190350",MBCH,PSP
 "	01052328",Zagorianos,Emmanuel,ALC,,,,,,,BIOL,"Knight, William D.","	00190350",MBCH,MAJOR
-"	01051718",Austin,Rebecca,,,,,,,,SOWK,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01047175",Davis,Jasmine,,,,,,,,SOWK,"Liskin, Dmitry V.","	00880506",MBCH,ALG
 "	01048654",Doherty,Roberto,,,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01051717",Evans,William,,PLP,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01049303",Greathouse,Amelia,ALC,PLP,,,,,,MARKT,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01049198",Greer,Selah,,,,,,,,SOWK,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01050406",Jensen,Hannah,,,,,,,,SOWK,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01050733",Ketron,Reece,ALC,PLP,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01052163",Knapp,Austin,,,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01048763",Levi,Grace,,PLP,,,,,,SOWK,"Liskin, Dmitry V.","	00880506",MBCH,ALG
-"	01050217",Litvany,Graham,,,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01053200",Gojer,Eden,,,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01047130",Johnson,Alana,,PLP,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01052464",Jones,Timothy,,,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
 "	01048878",Ludwick,Molly,,,,,,,,BIOCHM,"Liskin, Dmitry V.","	00880506",MBCH,MAJOR
+"	01047905",Marshall-Harvey,Mauriana,,,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
 "	01050508",Martinez Estrada,Stella,,,,,,,,BIOCHM,"Liskin, Dmitry V.","	00880506",MBCH,MAJOR
-"	01048320",Matic,Luka,,,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01051639",McCall,Austin,,,,,,,,MARKT,"Liskin, Dmitry V.","	00880506",MBCH,ALG
 "	01054563",Munden,Breshauna,ALC,PLP,,,,,,BIOCHM,"Liskin, Dmitry V.","	00880506",MBCH,MAJOR
-"	01048811",Rutledge,Derek,,,,,,,,MGMT,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01050282",Nichols,Sarah,,,,,,,,MARKT,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01049236",Patton,Arielle,,PLP,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01051075",Pellicano,Jed,,PLP,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01048204",Ramsey,Sarah,ALC,PLP,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01051974",Sanchez,Julian,,PLP,,,,,,FIN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
 "	01054307",Sanchez Zapata,Ashley,,PLP,,,,,,BIOCHM,"Liskin, Dmitry V.","	00880506",MBCH,MAJOR
+"	01051029",Siefke,Leeanne,,,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01053974",Trombly,Stephen,,,,,,,,BUSN,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01054229",Willebeek-Lemair,Angela,,,,,,,,UNDEC,"Liskin, Dmitry V.","	00880506",MBCH,ALG
+"	01048988",Ahrens,Alaric,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01047776",Conway,Brett,ALC,PLP,,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
-"	01027829",Graham,Jayce,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
-"	01049722",Herron,Jack,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
+"	01050420",Degrenier,Olivia,,PLP,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
+"	01047267",Harrison,Armer James,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01051244",Internicola,Ava,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,CLASS
+"	01047718",Jamshidi,Nikki,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01052318",Johnson,Nia,,,,,,,,ENGL,"Lloyd, Laura A.","	00317349",PFAR,CLASS
 "	01047999",Kaderli,Trinity,,,,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
-"	01053797",Littlefield,Abigale,,PLP,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01048738",Maddox,Adreyanna,ALC,,,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
-"	01047905",Marshall-Harvey,Mauriana,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01049850",McKenzie,Madison,ALC,PLP,,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
-"	01048815",Naupari,Kayleen,ALC,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
+"	01047778",Moyer,Josiah,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
+"	01050619",Myers,Katherine,,PLP,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01048462",Plude,Milana,,PLP,,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
 "	01052089",Proulx,John,,PLP,,,,,,ENGL,"Lloyd, Laura A.","	00317349",PFAR,CLASS
+"	01052718",Robinson,Daniel,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01049305",Sison,Annalise,,PLP,HON,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
 "	01054040",Sites,Taylor,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,CLASS
 "	01050428",Thorsten,Andrew,,,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01055950",Watts,Markel,ALC,PLP,,,,,,THEA,"Lloyd, Laura A.","	00317349",PFAR,THEA
-"	01050382",Yarney,Jewel,ALC,PLP,,,,,,UNDEC,"Lloyd, Laura A.","	00317349",PFAR,ALG
 "	01052335",Attivie,Selasie,,,,,,,,CYBER,"McElfresh, Scott A.","	00986069",PCSE,MAJOR
 "	01056160",Bond,Brandon,,,,,,,,COMSCI,"McElfresh, Scott A.","	00986069",PCSE,MAJOR
 "	01052444",Coston,Jayden,,,,,,,,CYBER,"McElfresh, Scott A.","	00986069",PCSE,MAJOR
@@ -821,22 +834,22 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01051622",Zeigler,Camryn,,,,,,,,COMSCI,"McElfresh, Scott A.","	00986069",PCSE,MAJOR
 "	01048006",Christesen,Leah,ALC,,,,,,,COMM,"Meyer, Michaela D.","	00462245",COMM,MAJOR
 "	01047529",Costanzo,Ashley,,,,,,,,COMM,"Meyer, Michaela D.","	00462245",COMM,MAJOR
-"	01048285",Girard,Caden,,,,,,,,MARKT,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01051717",Evans,William,,PLP,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01049303",Greathouse,Amelia,ALC,PLP,,,,,,MARKT,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01051134",Harris,Brayden,,,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
 "	01054160",Hoffler,William,,,,,,,,COMM,"Meyer, Michaela D.","	00462245",COMM,MAJOR
-"	01054131",Lemley,Faith,,,,,,,,MARKT,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01047434",Lubinski,Elizabeth,ALC,PLP,,,,,,MARKT,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01047530",Ihm,Paxton,,PLP,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01050217",Litvany,Graham,,,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
 "	01055804",Matheny,Lucas,,,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01054460",McKenney,Stefan,,,,,,,,MGMT,"Meyer, Michaela D.","	00462245",COMM,ALG
 "	01049746",Patterson,Hunter,,PLP,,,,,,COMM,"Meyer, Michaela D.","	00462245",COMM,MAJOR
-"	01050350",Robinson,Sean,,,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01053430",Pope,Joshua,,,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01051372",Silvino,Isabel,,,,,,,,MGMT,"Meyer, Michaela D.","	00462245",COMM,ALG
 "	01053556",Stover,Caden,,,,,,,,FIN,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01053355",Thompson,Gavin,,,,,,,,MARKT,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01053100",Tingler,Faith,ALC,,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01053730",Ubelhart,Caterina,,,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01051217",Uddin,En'Dia,,PLP,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01054388",Watson,Sadie,,,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01050202",Weygand,Alana,ALC,,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01053583",White,Miranda,,PLP,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
-"	01053652",Zuzma,Lanie,,,,,,,,PSYCH,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01048503",Toussaint,Julia,,,,,,,,ANTH,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01052366",Watson,Nicholas,,,,,,,,BUSN,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01045898",Whitten,Raegan,,,,,,,,ANTH,"Meyer, Michaela D.","	00462245",COMM,ALG
+"	01049737",Wyche,Shmount,,,,,,,,BUSN,"Meyer, Michaela D.","	00462245",COMM,ALG
 "	01051173",Dorio,Kaitlyn,ALC,PLP,,,,,,PSYCH,"Niehaus, Jeffrey L.","	00876978",PSYC,ALC
 "	01046849",Gilmore,Benjamin,,,,,,,,PSYCH,"Niehaus, Jeffrey L.","	00876978",PSYC,MAJOR
 "	01053019",Gorry,Meredith,ALC,PLP,,,,,,PSYCH,"Niehaus, Jeffrey L.","	00876978",PSYC,ALC
@@ -857,22 +870,22 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01047054",Sutherland,Adriana,,,,,,,,UNDEC,"Niehaus, Jeffrey L.","	00876978",PSYC,CLASS
 "	01046810",Via,Kelly,ALC,,,,,,,PSYCH,"Niehaus, Jeffrey L.","	00876978",PSYC,ALC
 "	01054031",Webb,Alison,,,,,,,,ENVSTD,"Niehaus, Jeffrey L.","	00876978",PSYC,CLASS
-"	01051732",Amos,John,,PLP,HON,,PSP,,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01049447",Beaty,Brooklynn,,PLP,HON,,PSP,,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01050480",Bower,Tyler,ALC,PLP,HON,,,,,COMENG,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01047284",Aleksak,Mya,,PLP,HON,,,,,CRIM,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01050478",Baker,Rose,,,HON,,,,,BUSN,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01048731",Byrd,Alison,,,HON,,,,,BUSN,"Paul, Jay S.","	00001300",ENGL,ALG
 "	01050788",Capeland,Alizarin,,PLP,HON,,,,,ENGL,"Paul, Jay S.","	00001300",ENGL,MAJOR
 "	01050940",Caracappa,Bella,,PLP,HON,,,,,ENGL,"Paul, Jay S.","	00001300",ENGL,MAJOR
-"	01048195",Dean,Austin,ALC,PLP,HON,,PSP,WIND,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01052379",Dryden,Autumn,,PLP,HON,,,,,EE,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01047810",Gilman,Makayla,,PLP,HON,,PSP,,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01051478",Gingerich,Ashley,,PLP,HON,,PSP,,,CHEM,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01049066",Harrington,Emma,,,HON,,PSP,,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01052527",Karney,Declan,ALC,PLP,HON,,,,,EE,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01050300",Kung,Calvin,,PLP,HON,,PSP,,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01052477",Childers,Hope,,PLP,HON,,,,,COMSCI,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01046805",Edwards,Kyler,,PLP,HON,,,,,CYBER,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01048922",Givens,Brooklynn,,PLP,HON,,,,,HIST,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01045549",Maurer,Jacob,,,HON,,,,,COMSCI,"Paul, Jay S.","	00001300",ENGL,ALG
 "	01046959",Michaelson,Kate,ALC,PLP,HON,,,,,ENGL,"Paul, Jay S.","	00001300",ENGL,MAJOR
-"	01048404",Morgan,Jackson,,PLP,HON,,,,,EE,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01045724",Pearson,Nathaniel,,PLP,HON,,,,,EE,"Paul, Jay S.","	00001300",ENGL,ALG
-"	01051928",Walter,Micah,,PLP,HON,,PSP,,,BIOCHM,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01050918",Plonsky,Alina,,PLP,HON,,,,,BUSN,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01047400",Rahman,Andre,,PLP,HON,,,,,CYBER,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01050271",Smith,Benjamin,,PLP,HON,,,,,PHYS,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01050301",Torgerson,Charlotte,,PLP,HON,,,,,MARKT,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01047035",Wahl,Kaylee,,,HON,,,,,COMSCI,"Paul, Jay S.","	00001300",ENGL,ALG
+"	01051798",Wu,Max,,PLP,HON,,,,,COMSCI,"Paul, Jay S.","	00001300",ENGL,ALG
 "	01053193",Agnew,Jacob,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
 "	01046189",Akers,Jordan,ALC,,,,,,,FIN,"Perry, James A.","	00910773",MATH,ALC
 "	01048281",Austin,Brittan,ALC,,,,,,,MARKT,"Perry, James A.","	00910773",MATH,ALC
@@ -893,22 +906,6 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01048612",Lima,Sarah,ALC,,,,,,,MGMT,"Perry, James A.","	00910773",MATH,ALC
 "	01054337",Lopez-soto,Abrielle,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
 "	01048024",McGrath,Carisma,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01053315",Meakem,Eric,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01050486",Moore,Shyanne,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01049530",Navarro,Jack,ALC,,,,,,,ACCT,"Perry, James A.","	00910773",MATH,ALC
-"	01050702",Odom,Coby,ALC,,,,,,,MARKT,"Perry, James A.","	00910773",MATH,ALC
-"	01052732",Primanzon,Connor,ALC,,,,,,,ACCT,"Perry, James A.","	00910773",MATH,ALC
-"	01048204",Ramsey,Sarah,ALC,PLP,,,,,,UNDEC,"Perry, James A.","	00910773",MATH,ALC
-"	01050594",Rexter,James,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01051023",Sidhu,Gavinder,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01053849",Smith,Paul,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01049734",Spell,Avery,ALC,PLP,,,,,,MARKT,"Perry, James A.","	00910773",MATH,ALC
-"	01048095",Stotler,Wesley,ALC,PLP,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01048368",Tompkins,Trinity,ALC,PLP,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01050467",Villegas-Sanchez,Ashly,ALC,,,,,,,MARKT,"Perry, James A.","	00910773",MATH,ALC
-"	01053769",Ward,Jonathan,ALC,,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01051794",Washington,Olivia,ALC,PLP,,,,,,BUSN,"Perry, James A.","	00910773",MATH,ALC
-"	01051146",Workman,Carter,ALC,PLP,,,,,,FIN,"Perry, James A.","	00910773",MATH,ALC
 "	01051485",Bell,Ezekiel,ALC,,,,,,,POLSCI,"Pollio, David M.","	00467400",MCLL,ALC
 "	01046865",Boris,Kiersten,ALC,PLP,,,,,,HIST,"Pollio, David M.","	00467400",MCLL,ALC
 "	01051402",Bostaph,Joseph,ALC,PLP,,,,,,CYBER,"Pollio, David M.","	00467400",MCLL,ALC
@@ -929,26 +926,26 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01052062",Shaw,Colby,ALC,,,,,,,ENVSTD,"Pollio, David M.","	00467400",MCLL,ALC
 "	01054463",Smith,Caroline,ALC,,,,,,,FRENCH,"Pollio, David M.","	00467400",MCLL,ALC
 "	01048679",Wood,Rylan,ALC,PLP,,,,,,STDART,"Pollio, David M.","	00467400",MCLL,ALC
-"	01050478",Baker,Rose,,,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01051620",Almassy,Abigail,,PLP,HON,,PSP,WIND,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01048262",Baylor,Trinity,,,HON,,,,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
 "	01048067",Bland,Sarah,,PLP,HON,,PSP,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
-"	01047331",Brantley,Blake,ALC,PLP,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01048731",Byrd,Alison,,,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01051574",Christiansen,Rainer,,PLP,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01052173",Coffey,Sarah,,PLP,HON,,,,,MARKT,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01047386",Fantinato,Joseph,,PLP,HON,,,,,FIN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01048922",Givens,Brooklynn,,PLP,HON,,,,,HIST,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01046065",Margulies,Philip,ALC,PLP,HON,,,,,FIN,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01050480",Bower,Tyler,ALC,PLP,HON,,,,,COMENG,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01051101",Brewer,Sydney,ALC,PLP,HON,,,,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01048036",Butler,Hailey,,PLP,HON,,,,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01052379",Dryden,Autumn,,PLP,HON,,,,,EE,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01052527",Karney,Declan,ALC,PLP,HON,,,,,EE,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01047932",Larson,Ryan,,PLP,HON,,,,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01048404",Morgan,Jackson,,PLP,HON,,,,,EE,"Pressley, Timothy M.","	00924125",PSYC,ALG
 "	01050786",Oh,Daniel,ALC,PLP,HON,,,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
+"	01045724",Pearson,Nathaniel,,PLP,HON,,,,,EE,"Pressley, Timothy M.","	00924125",PSYC,ALG
 "	01052210",Perry,Kathryn,,,,,,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
-"	01050918",Plonsky,Alina,,PLP,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01050187",Pritz,Sarah,,PLP,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01049402",Puckett,Molly,,PLP,HON,,,,,BUSN,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01047692",Richey,Emma,,PLP,HON,,,,,MATH,"Pressley, Timothy M.","	00924125",PSYC,ALG
-"	01047698",Richey,Katelyn,,PLP,HON,,,,,MATH,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01050143",Platner,Jackson,,PLP,HON,,,,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
 "	01050360",Roberts,Ryan,,,HON,,,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
 "	01052153",Saunders,Audrey,,PLP,,,,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
 "	01048790",Sosa,Ava,ALC,,,,,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
 "	01049412",Stephan,Jenna,,PLP,,,,,,PSYCH,"Pressley, Timothy M.","	00924125",PSYC,MAJOR
+"	01053606",Sullivan,Benjamin,,PLP,HON,,PSP,,,UNDEC,"Pressley, Timothy M.","	00924125",PSYC,ALG
+"	01054690",Tucker,Emily,,,HON,,,,,INTAFF,"Pressley, Timothy M.","	00924125",PSYC,ALG
 "	01048690",Baum,Nathaniel,,,,,,,,CYBER,"Puaca, Laura M.","	00610327",HIST,CLASS
 "	01050673",Cottral,Katherine,,PLP,,,,,,BIOL,"Puaca, Laura M.","	00610327",HIST,CLASS
 "	01048048",Cunningham,Caden,,PLP,,,,,,UNDEC,"Puaca, Laura M.","	00610327",HIST,CLASS
@@ -989,61 +986,62 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01047098",Snell,Kaitlynn,ALC,,,,,,,PSYCH,"Richardson, Margaret A.","	00281834",FAAH,ALC
 "	01048553",Stuart,Rachel,ALC,,,,,,,PSYCH,"Richardson, Margaret A.","	00281834",FAAH,ALC
 "	01053463",Urias,Natalie,ALC,,,,,,,PSYCH,"Richardson, Margaret A.","	00281834",FAAH,ALC
-"	01053829",Bakeman,Ella,,,,,,,,KINES,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01046939",Cheatham,Mikayla,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01050398",Chenard,Emily,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01053168",Atherton,Audrey,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01046667",Becker,Constentine,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01049315",Beeman,Matthew,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01049602",Ferreira,Benjamin,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01054176",Fowler,Jacquelyn,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
 "	01050461",Garrett,Giacomo,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01047267",Harrison,Armer James,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01047718",Jamshidi,Nikki,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01050393",Lackey,Noel,,,,,,,,KINES,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01047996",McDonald,Larissa,,,,,,,,KINES,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01049307",Music,Grace,,PLP,,,,,,CELLMB,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01050619",Myers,Katherine,,PLP,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01052041",Palmer,Isla,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01047065",Peter,Luke,,,,,,,,CELLMB,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01049131",Smith,Ross,,,,,,,,KINES,"Rollins, Leslie A.","	00905916",PSYC,ALG
-"	01048366",Steele,Zoey,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01051918",Hockman,Morgan,,PLP,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01049544",Knight,Christa,,,,,,,,MARKT,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01052177",Lang,Cade,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01048320",Matic,Luka,,,,,,,,FIN,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01048356",Mundie,Ciera,,PLP,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01052179",Powell,Joshua,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01050350",Robinson,Sean,,,,,,,,FIN,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01053062",Smith,Brayden,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
 "	01049572",Tellish,Annabella,,,,,,,,NEURO,"Rollins, Leslie A.","	00905916",PSYC,MAJOR
-"	01048260",Temple,Cecilia,ALC,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
 "	01048273",Torres Salas,Wendy,,,,,,,,NEURO,"Rollins, Leslie A.","	00905916",PSYC,MAJOR
-"	01047742",Amos,Alessandra,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01053359",Cook,Mark,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01049199",Davidson,Keely,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01048886",Foti,Jacob,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01048750",Gilligan,Savanah,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01053038",Hook,Nathaniel,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01051168",Jean-Francois,Christopher,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01050382",Yarney,Jewel,ALC,PLP,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01051240",Zaslow,Rebecca,,,,,,,,UNDEC,"Rollins, Leslie A.","	00905916",PSYC,ALG
+"	01050812",Abt,Thomas,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01046745",Bretney,Lauren,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01048476",Darnell,Matthew,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01052839",Ehrlich,Sawyer,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01047644",Gardner,Harley,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01050103",Hoexum,Preston,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01050577",Humphrey,Dillon,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
 "	01052431",Lokonon,Maeva,,,,,,,,ACCT,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01052550",Malucci,Charles,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01052588",Martonosi,Joseph,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01050656",Mikhael,Thomas,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01047871",Ottaviano,Allyson,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01047903",Mack,Paige,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01050267",Martin,Cassandra,ALC,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01053315",Meakem,Eric,ALC,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01051909",Narron,Bodie,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01054045",Parks,Norah,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01052732",Primanzon,Connor,ALC,,,,,,,ACCT,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
 "	01051096",Rogers,Colin,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
 "	01051556",Scalia,Luke,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
 "	01049049",Shealer,Morgan,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01053390",Snyder,Thomas,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01048126",Sparrow,Colin,,PLP,,,,,,ACCT,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01048671",Tasikas,Theodore,,PLP,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01051016",Torrisi,Isabella,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01052366",Watson,Nicholas,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
-"	01051620",Almassy,Abigail,,PLP,HON,,PSP,WIND,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01048262",Baylor,Trinity,,,HON,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01051101",Brewer,Sydney,ALC,PLP,HON,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01048036",Butler,Hailey,,PLP,HON,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01052477",Childers,Hope,,PLP,HON,,,,,COMSCI,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01050560",Simonnet,Katie,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01045704",Spinelli,Lucia,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01047664",Terrell,Taleah,,,,,,,,BUSN,"Shaltayev, Dmitriy S.","	00501366",LUTR,MAJOR
+"	01051574",Christiansen,Rainer,,PLP,HON,,,,,BUSN,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01046010",Dalzell,Brietta,,PLP,HON,,,,,NEURO,"Shollen, S. L.","	00703584",LDSP,ALG
 "	01046883",Davis,Taylor,,PLP,HON,,,,,AMSTD,"Shollen, S. L.","	00703584",LDSP,MAJOR
-"	01046805",Edwards,Kyler,,PLP,HON,,,,,CYBER,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01054176",Fowler,Jacquelyn,,,,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01052221",Hicks,Travis,,,HON,,,,,CAM,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01047932",Larson,Ryan,,PLP,HON,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01045549",Maurer,Jacob,,,HON,,,,,COMSCI,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01046180",O'Conner,Koral,,,,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01050143",Platner,Jackson,,PLP,HON,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01047400",Rahman,Andre,,PLP,HON,,,,,CYBER,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01052718",Robinson,Daniel,,,,,,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01053606",Sullivan,Benjamin,,PLP,HON,,PSP,,,UNDEC,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01047035",Wahl,Kaylee,,,HON,,,,,COMSCI,"Shollen, S. L.","	00703584",LDSP,ALG
-"	01051798",Wu,Max,,PLP,HON,,,,,COMSCI,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01046921",Ellwanger,Aiden,,PLP,HON,,PSP,,,NEURO,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01047386",Fantinato,Joseph,,PLP,HON,,,,,FIN,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01053269",Fero,Marcus,,PLP,HON,,,,,ACCT,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01051378",Gary,Payten,,PLP,HON,,PSP,,,NEURO,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01046359",Jordan,Frederick,,,HON,,PSP,,,NEURO,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01052163",Knapp,Austin,,,,,,,,FIN,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01052474",Monzon,Joshua,,PLP,HON,,,,,BUSN,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01047117",Mosca,Caroline,,,,,,,,MARKT,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01051193",Phillipson,Merrill,,,HON,,,,,COMM,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01049402",Puckett,Molly,,PLP,HON,,,,,BUSN,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01047692",Richey,Emma,,PLP,HON,,,,,MATH,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01047698",Richey,Katelyn,,PLP,HON,,,,,MATH,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01053355",Thompson,Gavin,,,,,,,,MARKT,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01046924",Valiulis,Charles,,PLP,HON,,,,,BUSN,"Shollen, S. L.","	00703584",LDSP,ALG
+"	01050117",Waldemar,Charlotte,,PLP,HON,,,,,MGMT,"Shollen, S. L.","	00703584",LDSP,ALG
 "	01050714",Ceja,Adrian,,PLP,,,,,,MARKT,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
 "	01047185",Critelli,Summer,,,,,,,,PSYCH,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
 "	01053972",Dickey,Ameliah,,,,,,,,HIST,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
@@ -1061,27 +1059,27 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01045703",Schelby,Jordyn,,PLP,,,,,,CELLMB,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
 "	01050400",Shifflett,Anna,,,,,,,,KINES,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
 "	01052725",Smith,Jason,,,,,,,,NEURO,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
+"	01049734",Spell,Avery,ALC,PLP,,,,,,MARKT,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
 "	01050662",Strickland,Jalissa,,,,,,,,ACCT,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
 "	01052098",Turner,Sear'Tis,,,,,,,,COMSCI,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
-"	01051102",Williams,Wayne,,PLP,,,,,,POLSCI,"Siewe Seuchie, Patricia A.","	00893676",MCLL,CLASS
-"	01049309",Dieterle,Jacob,,,,,,,,MARKT,"Teekell, Anna","	00919810",ENGL,ALG
-"	01046793",Garnett,Kate,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
-"	01052537",Harrell,Ava,,,,,,,,MARKT,"Teekell, Anna","	00919810",ENGL,ALG
+"	01050398",Chenard,Emily,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
+"	01027829",Graham,Jayce,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
+"	01048372",Holmes,Zachary,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
 "	01052612",Jacob,Furaha,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
-"	01049544",Knight,Christa,,,,,,,,MARKT,"Teekell, Anna","	00919810",ENGL,ALG
+"	01048410",Jones,Jayveon,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
+"	01054976",Kirk,Morgan,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
+"	01050410",Lentz,Justin,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
+"	01053797",Littlefield,Abigale,,PLP,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
+"	01051711",Lowe,Melvin,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
 "	01053898",Manahan,Danielle,,,,,,,,ENGL,"Teekell, Anna","	00919810",ENGL,MAJOR
-"	01051639",McCall,Austin,,,,,,,,MARKT,"Teekell, Anna","	00919810",ENGL,ALG
-"	01054460",McKenney,Stefan,,,,,,,,MGMT,"Teekell, Anna","	00919810",ENGL,ALG
-"	01050803",Meyer,Benjamin,,,,,,,,FIN,"Teekell, Anna","	00919810",ENGL,ALG
-"	01049095",Nadder,Ava,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
-"	01051675",Pizzie,Nicholas,,PLP,,,,,,FIN,"Teekell, Anna","	00919810",ENGL,ALG
+"	01049480",Marzitello,Sophia,,PLP,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
+"	01051210",Mitchell,Alexandra,,PLP,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
+"	01047144",Monihan,Lauren,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
+"	01046180",O'Conner,Koral,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
 "	01052140",Reynolds,Brooke,,PLP,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
 "	01048694",Sampilo,Isabella,,,,,,,,POLSCI,"Teekell, Anna","	00919810",ENGL,ALG
-"	01049962",Sanders,Connor,,PLP,,,,,,MARKT,"Teekell, Anna","	00919810",ENGL,ALG
-"	01051372",Silvino,Isabel,,,,,,,,MGMT,"Teekell, Anna","	00919810",ENGL,ALG
+"	01048366",Steele,Zoey,,,,,,,,UNDEC,"Teekell, Anna","	00919810",ENGL,ALG
 "	01051833",Temple,Nicholas,,,,,,,,ENGL,"Teekell, Anna","	00919810",ENGL,MAJOR
-"	01049737",Wyche,Shmount,,,,,,,,BUSN,"Teekell, Anna","	00919810",ENGL,ALG
-"	01051516",York,Graham,,,,,,,,MARKT,"Teekell, Anna","	00919810",ENGL,ALG
 "	01047708",Barnes,Maria,,PLP,HON,,PSP,,,KINES,"Thompson, Jessica S.","	00609593",OENB,MAJOR
 "	01047709",Campbell,Molly,ALC,PLP,HON,,,,,KINES,"Thompson, Jessica S.","	00609593",OENB,MAJOR
 "	01049367",Cerven,Mara,,PLP,HON,,PSP,,,CELLMB,"Thompson, Jessica S.","	00609593",OENB,MAJOR
@@ -1122,23 +1120,25 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01054355",Santiago,Lana,ALC,,HON,,,,,PSYCH,"Thompson, John M.","	00465514",PHIL,ALC
 "	01047782",Schroeder,Nicholas,ALC,PLP,HON,,,,,UNDEC,"Thompson, John M.","	00465514",PHIL,ALC
 "	01024226",Shore,Lydia,ALC,,HON,,,,,PSYCH,"Thompson, John M.","	00465514",PHIL,ALC
-"	01049893",Ashby,Isabelle,,,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALG
 "	01047935",Bergeron,Bailey,ALC,PLP,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
-"	01052846",Bertotti,Megan,,,,,,,,MGMT,"Tweedt, Christopher E.","	00946868",PHIL,ALG
 "	01050112",Blomberg,Ally,ALC,PLP,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01051878",Bullock,Andras,ALC,,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01047381",Call,Addison,ALC,PLP,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01048194",Carr,James,ALC,,,,,,,FIN,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01054376",Casarez,Nicholas,ALC,,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
-"	01049248",Cosgrove,Genevieve,ALC,PLP,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALG
 "	01048196",Grim,Daniel,ALC,PLP,,,,,,FIN,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01052781",Marquez,Torin,ALC,,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01048243",Martin,Mark,ALC,PLP,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01046955",Mensah,Mawusi,ALC,,,,,,,ACCT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01047133",Mercer,Caden,,PLP,,,,,,FIN,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
+"	01050486",Moore,Shyanne,ALC,,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
 "	01052012",Morris,Alvie,ALC,,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,ALC
+"	01049530",Navarro,Jack,ALC,,,,,,,ACCT,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
 "	01050672",Re'Alis,Ethan,ALC,,,,,,,MGMT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01049652",Solano,Faith,ALC,PLP,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
+"	01048095",Stotler,Wesley,ALC,PLP,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
+"	01048368",Tompkins,Trinity,ALC,PLP,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
+"	01053769",Ward,Jonathan,ALC,,,,,,,BUSN,"Tweedt, Christopher E.","	00946868",PHIL,CLASS
 "	01050442",Wisniewski,India,ALC,PLP,,,,,,MARKT,"Tweedt, Christopher E.","	00946868",PHIL,ALC
 "	01053123",Alleyne,Michael,ALC,,,,,,,COMM,"Waldron, Linda M.","	00464209",SOCL,ALC
 "	01049294",Arora,Vaanya,,,,,,,,UNDEC,"Waldron, Linda M.","	00464209",SOCL,CLASS
@@ -1159,4 +1159,4 @@ ID,Last,FIRST,ALC,PLP,HONR,PRSC,PSP,WIND,CCAP,MAJOR_1ST,ADVISOR,ADV_ID,ADV1_DEPT
 "	01050924",Silveria,Braden,ALC,,,,,,,BIOL,"Waldron, Linda M.","	00464209",SOCL,ALC
 "	01050715",Torrisi,Francesca,ALC,,,,,,,BUSN,"Waldron, Linda M.","	00464209",SOCL,ALC
 "	01054147",Welsh,N'asia,ALC,,,,,,,STDART,"Waldron, Linda M.","	00464209",SOCL,ALC
-"	01052383",Williamson,Payton,ALC,,,,,,,UNDEC,"Waldron, L
+"	01052383",Williamson,Payton,ALC,,,,,,,UNDEC,"Waldron, Linda M.","	00464209",SOCL,ALC

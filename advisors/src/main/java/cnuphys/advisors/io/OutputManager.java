@@ -28,7 +28,51 @@ public class OutputManager {
 		_outputDir.mkdir();
 
 		writeAssignmentsFile();
+		writeIndividualFiles();
 	}
+	
+	private static void writeIndividualFiles() {
+		List<Advisor> advisors = DataManager.getAdvisorData().getAdvisors();
+		for (Advisor advisor : advisors) {
+			writeAdvisorFile(advisor);
+		}
+	}
+	
+	private static void writeAdvisorFile(Advisor advisor) {
+		File af = new File(_outputDir, removeNonLetters(advisor.name) + ".csv");
+		af.delete();
+
+		CSVWriter csvw = new CSVWriter(af.getAbsolutePath());
+		writeHeader(csvw);
+		
+		Comparator<Student> scomp = new Comparator<>() {
+
+			@Override
+			public int compare(Student s1, Student s2) {
+				int c1 = s1.lastName.compareTo(s2.lastName);
+				return (c1 != 0) ? c1 : s1.firstName.compareTo(s2.firstName);
+			}
+
+		};
+
+
+		List<Student> students = advisor.advisees;
+		
+		Collections.sort(students, scomp);
+
+		String sArr[] = new String[15];
+		for (Student student : students) {
+			writeAssignment(csvw, advisor, student, sArr);
+		}
+		csvw.close();
+	}
+	
+	   public static String removeNonLetters(String input) {
+	        // Use a regular expression to replace all non-letter characters and whitespace with an empty string
+	        String cleanedString = input.replaceAll("[^a-zA-Z]", "");
+	        return cleanedString;
+	    }
+
 
 
 	//write the all important assignments file
@@ -72,6 +116,8 @@ public class OutputManager {
 				writeAssignment(csvw, advisor, student, sArr);
 			}
 		}
+		
+		csvw.close();
 	}
 
 
