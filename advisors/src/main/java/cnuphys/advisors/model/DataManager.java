@@ -90,6 +90,15 @@ public class DataManager {
 	public static final DataAttribute specialAtt = new DataAttribute("SPECIAL", 50);
 	public static final DataAttribute bannerBlockAtt = new DataAttribute("BANNER_BLOCK_CODE", 40);
 
+	public static final DataAttribute prefFirstAtt = new DataAttribute("PREFIRST", 72);
+	public static final DataAttribute cnuEmailAtt = new DataAttribute("CNU_EMAIL", 170);
+	public static final DataAttribute bannerSportAtt = new DataAttribute("BANNER_SPRT", 70);
+	public static final DataAttribute prStr1Att = new DataAttribute("PRSTR1", 70);
+	public static final DataAttribute prStr2Att = new DataAttribute("PRSTR2", 70);
+	public static final DataAttribute prCityAtt = new DataAttribute("PRCITY", 70);
+	public static final DataAttribute prStAtt = new DataAttribute("PRST", 70);
+	public static final DataAttribute prZipAtt = new DataAttribute("PRZIP", 70);
+
 
 	/* the director of the honors program, if also a core advisor */
 	public static Advisor honorsDirector;
@@ -175,6 +184,41 @@ public class DataManager {
 
 		return advisors;
 	}
+	
+	/**
+	 * Get a list of advisors whose subject matches a major and are not alc advisors
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForMajorNotALC(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (major.isInMajorFamily(advisor.subject) && !advisor.alc()) {
+				advisors.add(advisor);
+			}
+		}
+
+		return advisors;
+	}
+
+	/**
+	 * Get a list of advisors whose subject matches a major and are  alc advisors
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForMajorALC(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (major.isInMajorFamily(advisor.subject) && advisor.alc()) {
+				advisors.add(advisor);
+			}
+		}
+
+		return advisors;
+	}
+
 
 	/**
 	 * Get a list of honors advisors whose subject matches a major

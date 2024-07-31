@@ -102,6 +102,15 @@ public class StudentData extends DataModel {
 		int prelawIndex = getColumnIndex(DataManager.prelawAtt);
 		int majorIndex = getColumnIndex(DataManager.majorAtt);
 		int bannerBlockIndex = getColumnIndex(DataManager.bannerBlockAtt);
+		
+		int prefFirstIndex = getColumnIndex(DataManager.prefFirstAtt);
+		int emailIndex = getColumnIndex(DataManager.cnuEmailAtt);
+		int sportIndex = getColumnIndex(DataManager.bannerSportAtt);
+		int prStr1Index = getColumnIndex(DataManager.prStr1Att);
+		int prStr2Index = getColumnIndex(DataManager.prStr2Att);
+		int prCityIndex = getColumnIndex(DataManager.prCityAtt);
+		int prStateIndex = getColumnIndex(DataManager.prStAtt);
+		int prZipIndex = getColumnIndex(DataManager.prZipAtt);
 
 		for (String s[] : _data) {
 			String id = s[idIndex];
@@ -119,8 +128,18 @@ public class StudentData extends DataModel {
 			String major = s[majorIndex];
 			String bannerBlock = s[bannerBlockIndex];
 			
+			String prefFirst = s[prefFirstIndex];
+			String email = s[emailIndex];
+			String sport = s[sportIndex];
+			String prStr1 = s[prStr1Index];
+			String prStr2 = s[prStr2Index];
+			String prCity = s[prCityIndex];
+			String prState = s[prStateIndex];
+		    String prZip = s[prZipIndex];
+			
 
-			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, wind, ccap, major, bannerBlock));
+			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, wind, ccap, major, bannerBlock,
+					prefFirst, email, sport, prStr1, prStr2, prCity, prState, prZip));
 		}
 
 		//raw data not needed

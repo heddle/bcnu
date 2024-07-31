@@ -60,7 +60,7 @@ public class OutputManager {
 		
 		Collections.sort(students, scomp);
 
-		String sArr[] = new String[15];
+		String sArr[] = new String[23];
 		for (Student student : students) {
 			writeAssignment(csvw, advisor, student, sArr);
 		}
@@ -106,7 +106,7 @@ public class OutputManager {
 
 		};
 
-		String sArr[] = new String[15];
+		String sArr[] = new String[23];
 		for (Advisor advisor : advisors) {
 
 			List<Student> students = advisor.advisees;
@@ -127,38 +127,54 @@ public class OutputManager {
 		sArr[0] = "\"\t" + student.id + "\"";  //will get leading 0's
 		sArr[1] = student.lastName;
 		sArr[2] = student.firstName;
-		sArr[3] = student.alc() ? "ALC" : "";
-		sArr[4] = student.plp() ? "PLP" : "";
-		sArr[5] = student.honors() ? "HON": "";
-		sArr[6] = student.prsc() ? "PRSC": "";
-		sArr[7] = student.psp() ? "PSP" : "";
-		sArr[8] = student.wind() ? "WIND" : "";
-		sArr[9] = student.ccpt() ? "CCAP" : "";
-		sArr[10] = student.major.name();
-		sArr[11] = "\"" + advisor.name + "\"";
-		sArr[12] = "\"\t" + advisor.id + "\"";  //will get leading 0's
-		sArr[13] = advisor.department.name();
-		sArr[14] = student.reason.name();
+		sArr[3] = student.prefFirst;
+		sArr[4] = student.sport;
+		sArr[5] = student.alc() ? "ALC" : "";
+		sArr[6] = student.plp() ? "PLP" : "";
+		sArr[7] = student.honors() ? "HON": "";
+		sArr[8] = student.prsc() ? "PRSC": "";
+		sArr[9] = student.psp() ? "PSP" : "";
+		sArr[10] = student.wind() ? "WIND" : "";
+		sArr[11] = student.ccpt() ? "CCAP" : "";
+		sArr[12] = student.major.name();
+		sArr[13] = student.email;
+		sArr[14] = student.prstr1;
+		sArr[15] = student.prstr2;
+		sArr[16] = student.prcity;
+		sArr[17] = student.prstate;
+		sArr[18] = student.przip;
+		sArr[19] = "\"" + advisor.name + "\"";
+		sArr[20] = "\"\t" + advisor.id + "\"";  //will get leading 0's
+		sArr[21] = advisor.department.name();
+		sArr[22] = student.reason.name();
 
 		csvw.writeRow(sArr);
 	}
 
 	private static void writeHeader(CSVWriter csvw) {
-		csvw.writeRow("ID", // 1
-				"Last", // 2
-				"FIRST", // 3
-				"ALC", // 4
-				"PLP", // 5
-				"HONR", // 6
-				"PRSC", // 7
-				"PSP", // 8
-				"WIND", // 9
-				"CCAP", // 10
-				"MAJOR_1ST", // 11
-				"ADVISOR", // 12
-				"ADV_ID", // 13
-				"ADV1_DEPT", // 14
-				"REASON" // 15
+		csvw.writeRow("ID", // 0
+				"Last", // 1
+				"FIRST", // 2
+				"PREF_FIRST", // 3
+				"SPORT", // 4
+				"ALC", // 5
+				"PLP", // 6
+				"HONR", // 
+				"PRSC", // 8
+				"PSP", // 9
+				"WIND", // 10
+				"CCAP", // 11
+				"MAJOR_1ST", // 12
+				"EMAIL", // 13
+				"PR_STR1", // 14
+				"PR_STR2", // 15
+				"PR_CITY", // 16
+				"PR_STATE", // 17
+				"PR_ZIP", // 18
+				"ADVISOR", // 19
+				"ADV_ID", // 20
+				"ADV1_DEPT", // 21
+				"REASON" // 22
 		);
 	}
 

@@ -33,7 +33,7 @@ public class StudentSchedules extends DataModel {
 				Student student = DataManager.getStudentData().getStudentFromId(id);
 
 				if (student == null) {
-					System.err.println("\nDid not find student with ID: [" + id + "] in StudentSchedule");
+					System.err.println("\nDid not find student with ID: [" + id + "] even though they are in the schedule.");
 				} else {
 					student.addCourse(course);
 					//assignCourse(student, course);

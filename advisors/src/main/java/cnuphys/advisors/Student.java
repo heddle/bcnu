@@ -30,6 +30,30 @@ public class Student extends Person implements ITabled {
 	/** block from banner */
 	public String bannerBlock;
 	
+	/** the student's preferred first name */
+	public String prefFirst;
+	
+	/** the student's email */
+	public String email;
+	
+	/** the student's sport */
+	public String sport;
+	
+	/** part of student address */
+	public String prstr1;
+	
+	/** part of student address */
+	public String prstr2;
+	
+	/** part of student address */
+	public String prcity;
+	
+	/** part of student address */
+	public String prstate;
+	
+	/** part of student address */
+	public String przip;
+	
 	/** thereason for the assignment */
 	public EReason reason = EReason.NONE;
 
@@ -38,7 +62,9 @@ public class Student extends Person implements ITabled {
 
 
 	public Student(String id, String lastName, String firstName, String alc, String plp, String honr, String prsc,
-			String psp, String wind, String ccap, String maj, String bannerBlock) {
+			String psp, String wind, String ccap, String maj, String bannerBlock,
+			String prefFirst, String email, String sport, String prstr1, String prstr2, String prcity, String prstate,
+			String przip) {
 		super();
 
 		this.id = DataManager.fixId(id);
@@ -52,6 +78,16 @@ public class Student extends Person implements ITabled {
 		this.set(Person.WIND, checkString(wind, "WIN"));
 		this.set(Person.CCPT, checkString(ccap, "CCAP"));
 		this.bannerBlock = bannerBlock;
+		
+		this.prefFirst = prefFirst;
+		this.email = email;
+		this.sport = sport;
+		this.prstr1 = prstr1;
+		this.prstr2 = prstr2;
+		this.prcity = prcity;
+		this.prstate = prstate;
+	    this.przip = przip;
+			
 
 
 		String majorstr = maj.replace("\"", "").trim();
