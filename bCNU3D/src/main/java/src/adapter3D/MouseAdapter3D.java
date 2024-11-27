@@ -7,10 +7,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import com.jogamp.opengl.GLAutoDrawable;
-import com.jogamp.opengl.GLProfile;
 import com.jogamp.opengl.awt.GLJPanel;
 
 import bCNU3D.Panel3D;
+import bCNU3D.Vector3f;
 
 public class MouseAdapter3D implements MouseListener, MouseMotionListener, MouseWheelListener {
 
@@ -36,44 +36,60 @@ public class MouseAdapter3D implements MouseListener, MouseMotionListener, Mouse
 	@Override
 	public void mouseDragged(MouseEvent e) {
 
-		final int x = e.getX();
-		final int y = e.getY();
-		int width = 0, height = 0;
-		Object source = e.getSource();
+	    final int x = e.getX();
+	    final int y = e.getY();
+	    int width = 0, height = 0;
 
-		if (source instanceof GLJPanel) {
-			GLJPanel window = (GLJPanel) source;
-			width = window.getSurfaceWidth();
-			height = window.getSurfaceHeight();
-		} else if (source instanceof GLAutoDrawable) {
-			GLAutoDrawable glad = (GLAutoDrawable) source;
-			width = glad.getSurfaceWidth();
-			height = glad.getSurfaceHeight();
-		} else if (GLProfile.isAWTAvailable() && source instanceof java.awt.Component) {
-			java.awt.Component comp = (java.awt.Component) source;
-			width = comp.getWidth();
-			height = comp.getHeight();
-		} else {
-			throw new RuntimeException("Event source neither Window nor Component: " + source);
-		}
-		float theta1 = 360.0f * ((float) (x - prevMouseX) / (float) width);
-		float theta2 = 360.0f * ((float) (prevMouseY - y) / (float) height);
+	    Object source = e.getSource();
+	    if (source instanceof GLJPanel) {
+	        GLJPanel window = (GLJPanel) source;
+	        width = window.getSurfaceWidth();
+	        height = window.getSurfaceHeight();
+	    } else if (source instanceof GLAutoDrawable) {
+	        GLAutoDrawable glad = (GLAutoDrawable) source;
+	        width = glad.getSurfaceWidth();
+	        height = glad.getSurfaceHeight();
+	    }
 
-		prevMouseX = x;
-		prevMouseY = y;
+	    // Normalize mouse coordinates to [-1, 1]
+	    float prevX = (2.0f * prevMouseX - width) / width;
+	    float prevY = (height - 2.0f * prevMouseY) / height;
+	    float currX = (2.0f * x - width) / width;
+	    float currY = (height - 2.0f * y) / height;
 
-		if (e.isControlDown()) {
-			_panel3D.setRotationY(_panel3D.getRotationY() + theta1);
-			_panel3D.setRotationZ(_panel3D.getRotationZ() + theta2);
-		} else if (e.isShiftDown()) {
-			_panel3D.setRotationZ(_panel3D.getRotationZ() + theta1);
-			_panel3D.setRotationX(_panel3D.getRotationX() + theta2);
-		} else {
-			_panel3D.setRotationX(_panel3D.getRotationX() + theta1);
-			_panel3D.setRotationY(_panel3D.getRotationY() + theta2);
-		}
-		_panel3D.refresh();
+	    // Map to the virtual arcball sphere
+	    Vector3f prevVec = mapToSphere(prevX, prevY);
+	    Vector3f currVec = mapToSphere(currX, currY);
 
+	    // Calculate rotation axis and angle
+	    Vector3f axis = prevVec.cross(currVec);
+	    float angle = (float) Math.acos(Math.min(1.0f, prevVec.dot(currVec)));
+
+	    if (axis.length() > 0.0001f) {
+	        axis.normalize();
+	        _panel3D.rotate(axis, -angle);
+	    }
+
+	    prevMouseX = x;
+	    prevMouseY = y;
+
+	    _panel3D.refresh();
+
+	}
+
+	/**
+	 * Maps 2D normalized device coordinates to a 3D point on the arcball sphere.
+	 */
+	private Vector3f mapToSphere(float x, float y) {
+	    float lengthSquared = x * x + y * y;
+	    if (lengthSquared <= 1.0f) {
+	        // Point lies on the sphere
+	        return new Vector3f(x, y, (float) Math.sqrt(1.0f - lengthSquared));
+	    } else {
+	        // Point is outside the sphere, normalize to the edge of the sphere
+	        float length = (float) Math.sqrt(lengthSquared);
+	        return new Vector3f(x / length, y / length, 0.0f);
+	    }
 	}
 
 	@Override
@@ -92,13 +108,33 @@ public class MouseAdapter3D implements MouseListener, MouseMotionListener, Mouse
 	public void mouseExited(MouseEvent e) {
 	}
 
+	
+	private long lastWheelEventTime = 0;
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		int clicks = e.getWheelRotation();
+		
+		long now = System.currentTimeMillis();
+		long del = now - lastWheelEventTime;
+		
+		if (del < 100) {
+			return;
+		}
+		
+		lastWheelEventTime = now;
+		
+		
+	    int clicks = e.getWheelRotation();
+	    float maxZoomStep = _panel3D.getZStep() * 5; // Cap maximum zoom step
+	    float dz = _panel3D.getZStep() * clicks;
 
-		float dz = _panel3D.getZStep() * clicks;
-		_panel3D.deltaZ(dz);
-		_panel3D.refresh();
+	    // Clamp dz to avoid excessive zooming
+	    if (dz > maxZoomStep) {
+	        dz = maxZoomStep;
+	    } else if (dz < -maxZoomStep) {
+	        dz = -maxZoomStep;
+	    }
+
+	    _panel3D.deltaZ(dz);
+	    _panel3D.refresh();
 	}
-
 }

@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
@@ -271,6 +273,17 @@ public final class Environment {
 	 * @return the host name.
 	 */
 	public String getHostAddress() {
+		try {
+            // Get the local host address
+            InetAddress localhost = InetAddress.getLocalHost();
+            
+            // Print the host address (IP address) and host name
+            System.out.println("Local Host Address: " + localhost.getHostAddress());
+            System.out.println("Local Host Name: " + localhost.getHostName());
+            return localhost.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 		return _hostAddress;
 	}
 

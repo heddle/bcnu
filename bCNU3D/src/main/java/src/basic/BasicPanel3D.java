@@ -1,12 +1,7 @@
 package basic;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.swing.JFrame;
 
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.GLEventListener;
@@ -57,36 +52,4 @@ public class BasicPanel3D extends GLJPanel implements GLEventListener {
 		System.out.println("Got a GLEventListener reshape event.");
 	}
 
-	/**
-	 * main program for testing
-	 *
-	 * @param arg command line arguments (ignored)
-	 */
-	public static void main(String arg[]) {
-		final JFrame testFrame = new JFrame("Test Frame");
-		testFrame.setLayout(new BorderLayout(8, 8));
-
-		BasicPanel3D panel3D = new BasicPanel3D(null);
-		testFrame.add(panel3D, BorderLayout.CENTER);
-
-		// set up what to do if the window is closed
-		WindowAdapter windowAdapter = new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent event) {
-				System.err.println("Done");
-				System.exit(1);
-			}
-		};
-
-		testFrame.addWindowListener(windowAdapter);
-		testFrame.pack();
-
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				testFrame.setVisible(true);
-			}
-		});
-
-	}
 }

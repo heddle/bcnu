@@ -19,7 +19,6 @@ import bCNU3D.Panel3D;
 public class KeyBindings3D {
 
 	private Panel3D _panel3D;
-	private int _factor = 1;
 	private static final float DTHETA = 2f; // degrees
 
 	public KeyBindings3D(Panel3D panel) {
@@ -70,7 +69,6 @@ public class KeyBindings3D {
 
 		public KeyAction(String name) {
 			super(name);
-//	        putValue(Action.NAME, name);
 			putValue(ACTION_COMMAND_KEY, name);
 		}
 
@@ -83,71 +81,65 @@ public class KeyBindings3D {
 				}
 
 			String command = e.getActionCommand();
+			
+			float step = _panel3D.getZStep();
+			
 			if ("u".equals(command)) {
-				float dz = _panel3D.getZStep();
-				_panel3D.deltaY(_factor * dz);
+				_panel3D.deltaY(step);
 				_panel3D.refresh();
 			} else if ("d".equals(command)) {
-				float dz = -_panel3D.getZStep();
-				_panel3D.deltaY(_factor * dz);
+				_panel3D.deltaY(-step);
 				_panel3D.refresh();
 			} else if ("l".equals(command)) {
-				float dz = -_panel3D.getZStep();
-				_panel3D.deltaX(_factor * dz);
+				_panel3D.deltaX(-step);
 				_panel3D.refresh();
 			} else if ("r".equals(command)) {
-				float dz = _panel3D.getZStep();
-				_panel3D.deltaX(_factor * dz);
+				_panel3D.deltaX(step);
+				_panel3D.refresh();
+			} else if ("j".equals(command)) {
+				_panel3D.deltaZ(step);
+				_panel3D.refresh();
+			} else if ("k".equals(command)) {
+				_panel3D.deltaZ(-step);
 				_panel3D.refresh();
 			} else if ("x".equals(command)) {
-				_panel3D.setRotationX(_panel3D.getRotationX() + _factor * DTHETA);
+				_panel3D.rotateX(DTHETA);
 				_panel3D.refresh();
 			} else if ("y".equals(command)) {
-				_panel3D.setRotationY(_panel3D.getRotationY() + _factor * DTHETA);
+				_panel3D.rotateY( DTHETA);
 				_panel3D.refresh();
 			} else if ("z".equals(command)) {
-				_panel3D.setRotationZ(_panel3D.getRotationZ() + _factor * DTHETA);
+			    _panel3D.rotateZ( DTHETA);
 				_panel3D.refresh();
 			} else if ("X".equals(command)) {
-				_panel3D.setRotationX(_panel3D.getRotationX() - _factor * DTHETA);
+				_panel3D.rotateX(-DTHETA);
 				_panel3D.refresh();
 			} else if ("Y".equals(command)) {
-				_panel3D.setRotationY(_panel3D.getRotationY() - _factor * DTHETA);
+				_panel3D.rotateY(-DTHETA);
 				_panel3D.refresh();
 			} else if ("Z".equals(command)) {
-				_panel3D.setRotationZ(_panel3D.getRotationZ() - _factor * DTHETA);
+				_panel3D.rotateZ(-DTHETA);
 				_panel3D.refresh();
 			}
 
 			else if ("1".equals(command)) {
-				_panel3D.setRotationX(180f);
-				_panel3D.setRotationY(90f);
-				_panel3D.setRotationZ(0f);
+				_panel3D.loadIdentityMatrix();
+				_panel3D.rotateX(180f);
+				_panel3D.rotateY(90f);
 				_panel3D.refresh();
 			} else if ("2".equals(command)) {
-				_panel3D.setRotationX(90f);
-				_panel3D.setRotationY(90f);
-				_panel3D.setRotationZ(0f);
+				_panel3D.loadIdentityMatrix();
+				_panel3D.rotateZ(-90f);
+				_panel3D.rotateY(-90f);
 				_panel3D.refresh();
 			} else if ("3".equals(command)) {
-				_panel3D.setRotationX(0f);
-				_panel3D.setRotationY(0f);
-				_panel3D.setRotationZ(0f);
+				_panel3D.loadIdentityMatrix();
 				_panel3D.refresh();
 			} else if ("4".equals(command)) {
-				_panel3D.setRotationX(0f);
-				_panel3D.setRotationY(180f);
-				_panel3D.setRotationZ(0f);
+				_panel3D.loadIdentityMatrix();
+				_panel3D.rotateY(180f);
 				_panel3D.refresh();
-			} else if ("j".equals(command)) {
-				float dz = _panel3D.getZStep();
-				_panel3D.deltaZ(_factor * dz);
-				_panel3D.refresh();
-			} else if ("k".equals(command)) {
-				float dz = -_panel3D.getZStep();
-				_panel3D.deltaZ(_factor * dz);
-				_panel3D.refresh();
-			}
+			} 
 
 		}
 	}
