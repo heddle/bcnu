@@ -4,9 +4,13 @@ import chimera.util.MathUtil;
 import chimera.util.ThetaPhi;
 
 public class SphericalGrid {
+	
+	//will assume normalized sphere
+	public static final double R = 1;
+	
+	
     private final Grid1D thetaGrid;  // Grid for theta (polar angle)
     private final Grid1D phiGrid;    // Grid for phi (azimuthal angle)
-    private final double radius;    // Radius of the sphere
     private double alpha;     // Rotation about the x-axis
     private double beta;      // Rotation about the new z-axis
     
@@ -25,7 +29,6 @@ public class SphericalGrid {
     public SphericalGrid(int numTheta, int numPhi, double radius, double alpha, double beta) {
         this.thetaGrid = new Grid1D(0.0, Math.PI, numTheta);
         this.phiGrid = new Grid1D(-Math.PI, Math.PI, numPhi);
-        this.radius = radius;
         this.alpha = alpha;
         this.beta = beta;
         
@@ -80,9 +83,6 @@ public class SphericalGrid {
 		phiGrid.setNum(numPhi);
 	}
 
-	public double getRadius() {
-		return radius;
-	}
 
     /**
      * Copy constructor to create a deep copy of the source SphericalGrid
@@ -91,7 +91,6 @@ public class SphericalGrid {
 	public SphericalGrid(SphericalGrid source) {
 		this.thetaGrid = new Grid1D(source.thetaGrid);
 		this.phiGrid = new Grid1D(source.phiGrid);
-		this.radius = source.radius;
 		this.alpha = source.alpha;
 		this.beta = source.beta;
 		this.sina = source.sina;
@@ -139,9 +138,9 @@ public class SphericalGrid {
      */
     private double[] rotateGlobalToLocal(double theta, double phi) {
         // Convert spherical to Cartesian coordinates
-        double x = radius * Math.sin(theta) * Math.cos(phi);
-        double y = radius * Math.sin(theta) * Math.sin(phi);
-        double z = radius * Math.cos(theta);
+        double x = R * Math.sin(theta) * Math.cos(phi);
+        double y = R * Math.sin(theta) * Math.sin(phi);
+        double z = R * Math.cos(theta);
 
         // First rotation: Rotate about the x-axis by alpha
         double zRot1 = z * cosa - y * sina;
@@ -154,7 +153,7 @@ public class SphericalGrid {
         double zRot2 = zRot1;
 
         // Convert back to spherical coordinates
-        double thetaRot = Math.acos(zRot2 / radius);  // New theta
+        double thetaRot = Math.acos(zRot2 / R);  // New theta
         double phiRot = Math.atan2(yRot2, xRot2);     // New phi
         return new double[]{thetaRot, MathUtil.normalizeAngle(phiRot)};
     }

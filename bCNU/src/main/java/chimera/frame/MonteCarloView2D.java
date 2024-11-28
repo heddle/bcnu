@@ -18,6 +18,7 @@ import chimera.grid.ChimeraGrid;
 import chimera.grid.SphericalGrid;
 import chimera.grid.mapping.IMapProjection;
 import chimera.grid.mapping.MollweideProjection;
+import chimera.grid.mapping.OrthographicProjection;
 import chimera.monteCarlo.MonteCarloPoint;
 import chimera.util.Point3D;
 import chimera.util.ThetaPhi;
@@ -32,7 +33,7 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 	private static final int WIDTH = 1200;
 	
 	//the map projection
-	private MollweideProjection _projection;
+	private IMapProjection _projection;
 	
 	/**
 	 * For a status line feedback string.
@@ -59,7 +60,8 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 	
 	
 		//the map projection
-		_projection = new MollweideProjection(getRadius());
+	//	_projection = new MollweideProjection(getRadius());
+		_projection = new OrthographicProjection(getRadius(), Math.toRadians(-15), Math.toRadians(10));
 		
 		_status = new JTextArea(1, 200);
 		_status.setBackground(Color.black);
@@ -74,7 +76,7 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 	}
 		
 	private static double getRadius() {
-		return Chimera.getInstance().getChimeraGrid().getSphericalGrid().getRadius();
+		return SphericalGrid.R;
 	}
 
 	private static Rectangle2D.Double getWorldSystem() {
@@ -133,6 +135,10 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 			ThetaPhi thetaPhi = mcp.thetaPhi;
 			latLon.x = thetaPhi.getPhi();
 			latLon.y = thetaPhi.getLatitude();
+			if (!_projection.isPointVisible(latLon)) {
+				continue;
+			}
+
 			_projection.latLonToXY(latLon, xy);
 			container.worldToLocal(pp, xy);
 			g.setColor(mcp.getColor());

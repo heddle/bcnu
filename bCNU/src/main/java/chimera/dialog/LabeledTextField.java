@@ -117,18 +117,5 @@ public class LabeledTextField extends JPanel {
         textField.setText(text);
     }
 
-    public static void main(String[] args) {
-        // Test the LabeledTextField component
-        JFrame frame = new JFrame("LabeledTextField Test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLayout(new FlowLayout());
 
-        LabeledTextField field = new LabeledTextField("Label:", 7, "units", true, 15, 14, 1);
-        field.setFocusLostCallback(text -> System.out.println("Focus Lost: " + text));
-        field.setEnterKeyCallback(text -> System.out.println("Enter Pressed: " + text));
-
-        frame.add(field);
-        frame.setSize(400, 100);
-        frame.setVisible(true);
-    }
 }

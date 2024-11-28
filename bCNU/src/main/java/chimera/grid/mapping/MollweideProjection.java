@@ -87,6 +87,8 @@ public class MollweideProjection implements IMapProjection {
 		int numLat = sgrid.getNumTheta(); // Number of latitude samples
 		int numLon = sgrid.getNumPhi(); // Number of longitude samples
 
+		drawBoundary(g, container, Color.black);
+
 		for (int i = 0; i < numLat; i++) {
 			double lat = Math.PI / 2 - i * latStep;
 			drawLatitudeLine(g2, container, lat);
@@ -97,10 +99,10 @@ public class MollweideProjection implements IMapProjection {
 			drawLongitudeLine(g2, container, lon);
 		}
 		
-		drawBoundary(g, container, Color.red);
 	}
 	
-	private void drawLatitudeLine(Graphics2D g2, IContainer container, double latitude) {
+	@Override
+	public void drawLatitudeLine(Graphics2D g2, IContainer container, double latitude) {
 		//latitude lines are straight lines in Mollweide projection
 		Point2D.Double xy1 = new Point2D.Double();
 		Point2D.Double xy2 = new Point2D.Double();
@@ -112,11 +114,14 @@ public class MollweideProjection implements IMapProjection {
 		Point screenPoint2 = new Point();
 		container.worldToLocal(screenPoint1, xy1);
 		container.worldToLocal(screenPoint2, xy2);
-		g2.setColor(Color.black);
+		
+		boolean isEquator = Math.abs(latitude) < 1e-6;
+		g2.setColor(isEquator ? Color.red : Color.black);
 		g2.drawLine(screenPoint1.x, screenPoint1.y, screenPoint2.x, screenPoint2.y);
 	}
 	
-	private void drawLongitudeLine(Graphics2D g2, IContainer container, double longitude) {
+	@Override
+	public void drawLongitudeLine(Graphics2D g2, IContainer container, double longitude) {
 		GeneralPath path = new GeneralPath();
 		int numPoints = 50;
 		Point2D.Double xy = new Point2D.Double();
@@ -140,11 +145,18 @@ public class MollweideProjection implements IMapProjection {
                 path.lineTo(screenPoint.x, screenPoint.y);
             }
 		}
-		g2.setColor(Color.black);
+		
+		boolean isPrimeMeridian = Math.abs(longitude) < 1e-6;
+		g2.setColor(isPrimeMeridian ? Color.red : Color.black);
 		g2.draw(path);
 		
 	}
 
+    @Override
+	public boolean isPointVisible(Point2D.Double latLon) {
+		return true;
+	}
+	
 	@Override
 	/**
      * Check if a given (x, y) point is on the Mollweide projection map.
@@ -162,6 +174,7 @@ public class MollweideProjection implements IMapProjection {
         return (xy.x * xy.x) / (a * a) + (xy.y * xy.y) / (b * b) <= 1.0;
     }
 	
+	//draw the overall boundary of the map
     protected void drawBoundary(Graphics g, IContainer container, Color lc) {
         Graphics2D g2 = (Graphics2D) g;
 
