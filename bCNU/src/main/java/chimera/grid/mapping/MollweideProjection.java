@@ -38,22 +38,22 @@ public class MollweideProjection implements IMapProjection {
 
         // Compute x and y
         xy.x = 2 * _radius * lon / Math.PI * Math.cos(theta);
-        xy.y = _radius * Math.sin(theta);
+        xy.y = 1.3265*_radius * Math.sin(theta);
     }
 
     @Override
     public void latLonFromXY(Point2D.Double latLon, Point2D.Double xy) {
-        double theta = Math.asin(xy.y / _radius); // Compute theta from y
+        // Normalize the y-coordinate by removing the scale factor
+        double y = xy.y / (1.3265 * _radius);
+
+        // Compute theta from the normalized y
+        double theta = Math.asin(y);
 
         // Compute latitude (phi) from theta
-        double lat = Math.asin((2 * theta + Math.sin(2 * theta)) / Math.PI);
+        latLon.y = Math.asin((2 * theta + Math.sin(2 * theta)) / Math.PI);
 
-        // Compute longitude (lambda) from x
-        double lon = xy.x * Math.PI / (2 * _radius * Math.cos(theta));
-
-        latLon.x = lon; // Longitude
-        latLon.y = lat;    // Latitude
-    }
+        // Compute longitude (lambda) from x and theta
+        latLon.x = Math.PI * xy.x / (2 * _radius * Math.cos(theta));    }
 
     /**
      * Solve for theta using an iterative method for the Mollweide equation:
@@ -77,27 +77,27 @@ public class MollweideProjection implements IMapProjection {
  
 	@Override
 	public void drawMapOutline(Graphics g, IContainer container) {
-	       Graphics2D g2 = (Graphics2D) g;
-	       ChimeraGrid grid = Chimera.getInstance().getChimeraGrid();
-	       SphericalGrid sgrid = grid.getSphericalGrid();
-	       
-	        // Define ranges and step sizes for sampling
-	        double latStep = sgrid.getThetaDel();  // Step size for latitude (radians)
-	        double lonStep = sgrid.getPhiDel();    // Step size for longitude (radians)
-	        int numLat = sgrid.getNumTheta();       // Number of latitude samples
-	        int numLon = sgrid.getNumPhi();         // Number of longitude samples
-	        
-			for (int i = 0; i < numLat; i++) {
-				double lat = Math.PI / 2 - i * latStep;
-				drawLatitudeLine(g2, container, lat);
-			}
+		Graphics2D g2 = (Graphics2D) g;
+		ChimeraGrid grid = Chimera.getInstance().getChimeraGrid();
+		SphericalGrid sgrid = grid.getSphericalGrid();
 
-	        
-			for (int i = 0; i < numLon; i++) {
-				double lon = -Math.PI + i * lonStep;
-	//			System.out.println("lon = " + Math.toDegrees(lon));
-				drawLongitudeLine(g2, container, lon);
-			}
+		// Define ranges and step sizes for sampling
+		double latStep = sgrid.getThetaDel(); // Step size for latitude (radians)
+		double lonStep = sgrid.getPhiDel(); // Step size for longitude (radians)
+		int numLat = sgrid.getNumTheta(); // Number of latitude samples
+		int numLon = sgrid.getNumPhi(); // Number of longitude samples
+
+		for (int i = 0; i < numLat; i++) {
+			double lat = Math.PI / 2 - i * latStep;
+			drawLatitudeLine(g2, container, lat);
+		}
+
+		for (int i = 0; i < numLon; i++) {
+			double lon = -Math.PI + i * lonStep;
+			drawLongitudeLine(g2, container, lon);
+		}
+		
+		drawBoundary(g, container, Color.red);
 	}
 	
 	private void drawLatitudeLine(Graphics2D g2, IContainer container, double latitude) {
@@ -160,6 +160,44 @@ public class MollweideProjection implements IMapProjection {
 
         // Check the ellipse equation
         return (xy.x * xy.x) / (a * a) + (xy.y * xy.y) / (b * b) <= 1.0;
+    }
+	
+    protected void drawBoundary(Graphics g, IContainer container, Color lc) {
+        Graphics2D g2 = (Graphics2D) g;
+
+        // Semi-axes of the ellipse
+        double a = 2 * _radius;           // Semi-major axis (horizontal)
+        double b = 1.3265 * _radius;      // Semi-minor axis (vertical)
+
+        // Parameters for ellipse sampling
+        double step = 0.01; // Increment for parametric angle t (in radians)
+
+        // Prepare to draw the ellipse
+        Point screenPoint = new Point();
+        Point2D.Double worldPoint = new Point2D.Double();
+        GeneralPath path = new GeneralPath();
+
+        // Generate points along the ellipse
+        for (double t = 0; t < 2 * Math.PI; t += step) {
+            // Compute (x, y) on the ellipse
+            worldPoint.x = a * Math.cos(t);
+            worldPoint.y = b * Math.sin(t);
+
+            // Convert to screen coordinates
+            container.worldToLocal(screenPoint, worldPoint);
+
+            // Add the point to the path
+            if (t == 0) {
+                path.moveTo(screenPoint.x, screenPoint.y); // Start the path
+            } else {
+                path.lineTo(screenPoint.x, screenPoint.y); // Connect to the next point
+            }
+        }
+        path.closePath(); // Close the path to complete the ellipse
+
+        // Draw the ellipse outline
+        g2.setColor(lc);
+        g2.draw(path);
     }
 	
 }

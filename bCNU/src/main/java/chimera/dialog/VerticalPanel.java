@@ -17,12 +17,23 @@ public class VerticalPanel extends JPanel {
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
 	
+	/**
+	 * Add a component to the panel using the component's preferred height
+	 * 
+	 * @param component the component to add
+	 */
 	public void addItem(JComponent component) {
 		addItem(component, -1);
 	}
 	
 
-	public void addItem(JComponent component, int height) {
+	/**
+	 * Add a component to the panel
+	 * 
+	 * @param component the component to add
+	 * @param height    the height of the component
+	 */
+	   public void addItem(JComponent component, int height) {
 		
 		if (height < 1) {
 			height = component.getPreferredSize().height + 2;

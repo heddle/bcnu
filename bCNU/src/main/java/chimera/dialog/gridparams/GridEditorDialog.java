@@ -1,8 +1,14 @@
 package chimera.dialog.gridparams;
-import javax.swing.*;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.event.EventListenerList;
 import javax.swing.table.DefaultTableModel;
 
+import chimera.dialog.LabeledTextField;
+import chimera.dialog.VerticalPanel;
+import chimera.frame.Chimera;
 import chimera.grid.CartesianGrid;
 import chimera.grid.ChimeraGrid;
 import chimera.grid.IGridChangeListener;
@@ -12,6 +18,13 @@ import cnuphys.bCNU.dialog.SimpleDialog;
 import java.awt.*;
 
 public class GridEditorDialog extends SimpleDialog {
+	/** The small theta character */
+	public static final String SMALL_ALPHA = "\u03B1";
+	
+	/** The small phi character */
+    public static final String SMALL_BETA = "\u03B2";
+ 
+    
     private CartesianGrid cartesianGridCopy;
     private SphericalGrid sphericalGridCopy;
     
@@ -26,8 +39,20 @@ public class GridEditorDialog extends SimpleDialog {
     
     //the grid param table
     private GridTable _table;
+    
+	private LabeledTextField _xotf;
+	private LabeledTextField _yotf;
+	private LabeledTextField _zotf;
+	private LabeledTextField _alphatf;
+	private LabeledTextField _betatf;
+	
 
 
+    /**
+     * A dialog for editing grid parameters
+     * @param owner the owner frame
+     * @param grid the grid to edit
+     */
     public GridEditorDialog(Frame owner, ChimeraGrid grid) {
         super("Grid Parameters", false, "OK", "Cancel"); // Modeless dialog
         this.grid = grid;
@@ -37,40 +62,65 @@ public class GridEditorDialog extends SimpleDialog {
         setLocationRelativeTo(null);
     }
     
-    
+    //makes a fresh copy of the grid for editing
     private void reset() {
         //edit copies
         this.cartesianGridCopy = new CartesianGrid(grid.getCartesianGrid()); // Make a copy
         this.sphericalGridCopy = new SphericalGrid(grid.getSphericalGrid()); // Make a copy);
-
         gridCopy = new ChimeraGrid(cartesianGridCopy, sphericalGridCopy);
 
     }
     
     @Override
 	protected JComponent createNorthComponent() {
-		return new JLabel("Distances are in radii, angles in degrees.");
+		return new JLabel(" Distances are in radii, angles in degrees.");
 	}
     
-    @Override
-        protected JComponent createCenterComponent() {
-    	  JPanel panel = new JPanel() {
-  			@Override
-  			public Insets getInsets() {
-  				Insets def = super.getInsets();
-  				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
-  			}
+	@Override
+	protected JComponent createCenterComponent() {
 
-    	  };
-    	  
-    	  panel.setLayout(new BorderLayout(6,6));
-    	  
-    	  _table = new GridTable();
-    	 panel.add(new JScrollPane(_table), BorderLayout.CENTER);
-    	 
-    	 return panel;
-    }
+		JPanel panel = new JPanel() {
+			@Override
+			public Insets getInsets() {
+				Insets def = super.getInsets();
+				return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
+			}
+
+		};
+
+		panel.setLayout(new BorderLayout(6, 6));
+
+		_table = new GridTable();
+		panel.add(new JScrollPane(_table), BorderLayout.CENTER);
+
+		JPanel vPanel = new JPanel();
+		vPanel.setLayout(new BorderLayout(4, 4));
+		vPanel.add(panel, BorderLayout.CENTER);
+		
+		vPanel.add(createParameterPanel(), BorderLayout.SOUTH);
+		return vPanel;
+	}
     
+	private VerticalPanel createParameterPanel() {
+		
+		ChimeraGrid grid = Chimera.getInstance().getChimeraGrid();
+		CartesianGrid cg = grid.getCartesianGrid();
+		SphericalGrid sg = grid.getSphericalGrid();
+		
+		VerticalPanel panel = new VerticalPanel();
+		_xotf = new LabeledTextField("Cartesian xo", cg.getXOffset(), "(units of sphere radii)", true, 8, -1, 2);
+		panel.addItem(_xotf);
+		_yotf = new LabeledTextField("Cartesian yo", cg.getYOffset(), "(units of sphere radii)", true, 8, -1, 2);
+		panel.addItem(_yotf);
+		_zotf = new LabeledTextField("Cartesian zo", cg.getZOffset(), "(units of sphere radii)", true, 8, -1, 2);
+		panel.addItem(_zotf);
+		_alphatf = new LabeledTextField(SMALL_ALPHA + " (polar rotation)", Math.toDegrees(sg.getAlpha()), "degrees", true, 8, -1, 2);
+		panel.addItem(_alphatf);
+		_betatf = new LabeledTextField(SMALL_BETA + " (azimuthal rotation)", Math.toDegrees(sg.getBeta()), "degrees", true, 8, -1, 2);
+		panel.addItem(_betatf);
+		return panel;
+
+	}
     
     /**
      * Get the grid copy (being edited)

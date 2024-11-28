@@ -9,10 +9,10 @@ public class ThetaPhi extends Point2D.Double {
 	
 	/** The small phi character */
     public static final String SMALL_PHI = "\u03C6";
-    
+   
     /** The degree character */
     public static final String DEGREE = "\u00B0";
-    
+     
 
     /**
      * Constructor for ThetaPhi.

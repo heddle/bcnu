@@ -203,6 +203,12 @@ public class Chimera extends BaseMDIApplication implements IGridChangeListener {
 	}
 
 
+	@Override
+	public void gridChanged() {
+		System.err.println("Grid changed");
+		_points.clear();
+		refresh();
+	}
 
 	/**
 	 * The main program
@@ -224,12 +230,6 @@ public class Chimera extends BaseMDIApplication implements IGridChangeListener {
 			}
 
 		});
-	}
-
-
-	@Override
-	public void gridChanged() {
-		System.err.println("Grid changed");
 	}
 
 }
