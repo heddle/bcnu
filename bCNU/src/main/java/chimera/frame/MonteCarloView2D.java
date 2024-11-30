@@ -17,6 +17,7 @@ import chimera.grid.CartesianGrid;
 import chimera.grid.ChimeraGrid;
 import chimera.grid.SphericalGrid;
 import chimera.grid.mapping.IMapProjection;
+import chimera.grid.mapping.MercatorProjection;
 import chimera.grid.mapping.MollweideProjection;
 import chimera.grid.mapping.OrthographicProjection;
 import chimera.monteCarlo.MonteCarloPoint;
@@ -61,7 +62,8 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 	
 		//the map projection
 	//	_projection = new MollweideProjection(getRadius());
-		_projection = new OrthographicProjection(getRadius(), Math.toRadians(-15), Math.toRadians(10));
+	//	_projection = new OrthographicProjection(getRadius(), Math.toRadians(-15), Math.toRadians(10));
+		_projection = new MercatorProjection();
 		
 		_status = new JTextArea(1, 200);
 		_status.setBackground(Color.black);
