@@ -212,5 +212,14 @@ public class MollweideProjection implements IMapProjection {
         g2.setColor(lc);
         g2.draw(path);
     }
-	
+    
+	@Override
+	public EProjection getProjection() {
+		return EProjection.MOLLWEIDE;
+	}
+
+	@Override
+	public String name() {
+		return getProjection().getName();
+	}	
 }

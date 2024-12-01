@@ -96,4 +96,15 @@ public class MercatorProjection implements IMapProjection {
         double lat = latLon.y;
         return lat >= -MAX_LAT && lat <= MAX_LAT;
     }
+
+	@Override
+	public EProjection getProjection() {
+		return EProjection.MERCATOR;
+	}
+	
+	@Override
+	public String name() {
+		return getProjection().getName();
+	}
+
 }

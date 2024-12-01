@@ -66,5 +66,18 @@ public interface IMapProjection {
 	 * @return <code>true</code> if the point is visible
 	 */
 	public boolean isPointVisible(Point2D.Double latLon);
+	
+	/**
+	 * Get the projection
+	 * 
+	 * @return the projection enum value
+	 */
+	public EProjection getProjection();
+	
+	/**
+	 * Get the name of the projection
+	 * @return the name of the projection
+	 */
+	public String name();
 
 }

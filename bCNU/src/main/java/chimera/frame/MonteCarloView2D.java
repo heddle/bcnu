@@ -77,10 +77,15 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 		setAfterDraw();
 	}
 		
+	//return the radius, though at least for now keep fixed at 1
 	private static double getRadius() {
 		return SphericalGrid.R;
 	}
 
+	/**
+     * Get the default world system 
+     * @return the world system
+     */
 	private static Rectangle2D.Double getWorldSystem() {
 		double radius = getRadius();
 		double xlim = 2.1 * radius;
@@ -148,14 +153,18 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 		}
 	}
 	
+	//update the status line
 	private void updateStatus(Point pp) {
 		Point2D.Double xy = new Point2D.Double();
 		Point2D.Double latLon = new Point2D.Double();
 		
 		getContainer().localToWorld(pp, xy);
 		
+		String nonMap = String.format(" projection: %s  screen: [%d, %d]   world: [%6.2f, %6.2f] ", _projection.name(),
+				pp.x, pp.y, xy.x, xy.y);
+		
 		if (!_projection.isPointOnMap(xy)) {
-			_status.setText("Off Map");
+			_status.setText("Off Map " + nonMap);
 			return;
 		}
 		
@@ -166,7 +175,7 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 		double lon = Math.toDegrees(latLon.x);
 		
 		if ((Double.isNaN(lat)) || (Math.abs(lon) > 180)) {
-			_status.setText(" Off Map");
+			_status.setText(" Off Map " + nonMap);
 			return;
 		}
 		
@@ -184,9 +193,9 @@ public class MonteCarloView2D extends BaseView implements MouseMotionListener {
 		int sindices[] = new int[2];
 		sgrid.getIndices(tp, sindices);
 		
-		String s = String.format( "Lat: %.2f Lon: %.2f   %s: %.2f %s: %.2f  (%d, %d, %d) (%d, %d)", 
+		String s = String.format( "Lat: %.2f Lon: %.2f   %s: %.2f %s: %.2f  (%d, %d, %d) (%d, %d) %s", 
 				lat, lon, ThetaPhi.SMALL_THETA,theta, ThetaPhi.SMALL_PHI, phi, 
-				cindices[0], cindices[1], cindices[2], sindices[0], sindices[1]);
+				cindices[0], cindices[1], cindices[2], sindices[0], sindices[1], nonMap);
 		
 		_status.setText(s);
 	}

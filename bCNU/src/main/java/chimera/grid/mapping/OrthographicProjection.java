@@ -366,4 +366,14 @@ public class OrthographicProjection implements IMapProjection {
         g2.setColor(lc);
         g2.draw(path);
     }
+    
+	@Override
+	public EProjection getProjection() {
+		return EProjection.ORTHOGRAPHIC;
+	}
+
+	@Override
+	public String name() {
+		return getProjection().getName();
+	}
 }
