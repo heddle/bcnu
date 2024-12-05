@@ -13,22 +13,22 @@ import chimera.grid.ChimeraGrid;
 import cnuphys.bCNU.dialog.SimpleDialog;
 
 public class MonteCarloDialog extends SimpleDialog {
-	
+
 	private static final String RUN = "Run";
-	
+
     //the overall grid
     private ChimeraGrid grid;
-    
+
     //the clear check box
     private JCheckBox _clearCheckBox;
-    
+
     //the number of points to generate
     private LabeledTextField _nPointsField;
-    
+
     //the progress bar
     private JProgressBar _progressBar;
-    
-	
+
+
     public MonteCarloDialog(Frame owner, ChimeraGrid grid) {
         super("Monte Carlo", false, RUN, "Cancel"); // Modeless dialog
         this.grid = grid;
@@ -36,29 +36,29 @@ public class MonteCarloDialog extends SimpleDialog {
         pack();
         setLocationRelativeTo(null);
     }
-    
-    
+
+
     @Override
     protected JComponent createCenterComponent() {
     	VerticalPanel vp = new VerticalPanel();
     	vp.addItem(new JLabel("Monte Carlo Parameters"));
-    	
+
     	//the clear data checkbox
     	_clearCheckBox = new JCheckBox("Clear existing data");
     	_clearCheckBox.setSelected(true);
     	vp.addItem(_clearCheckBox);
-    	
+
     	//the number of points to generate
     	_nPointsField = new LabeledTextField("Number of points", 2000000, null, true, 6, 0, 0);
     	vp.addItem(_nPointsField);
-    	    	
+
 		_progressBar = new JProgressBar(0, 100);
 		_progressBar.setStringPainted(true);
 		vp.addItem(_progressBar);
 
     	return vp;
     }
-    
+
 	@Override
 	public void handleCommand(String command) {
 		reason = command;
@@ -70,8 +70,8 @@ public class MonteCarloDialog extends SimpleDialog {
 			setVisible(false);
 		}
 	}
-    
-    
+
+
     /**
      * Get the clear existing data flag
      * @return <code>true</code> if existing data should be cleared.
@@ -79,10 +79,10 @@ public class MonteCarloDialog extends SimpleDialog {
 	public boolean clearExistingData() {
 		return _clearCheckBox.isSelected();
 	}
-	
+
 	/**
 	 * Get the number of points to generate
-	 * 
+	 *
 	 * @return the number of points to generate
 	 */
 	public int getNPoints() {

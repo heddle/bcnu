@@ -1,6 +1,7 @@
 package chimera.grid.mapping;
 
-import java.awt.*;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -101,7 +102,7 @@ public class MercatorProjection implements IMapProjection {
 	public EProjection getProjection() {
 		return EProjection.MERCATOR;
 	}
-	
+
 	@Override
 	public String name() {
 		return getProjection().getName();

@@ -59,4 +59,26 @@ public enum EProjection {
 	public static EnumComboBox getComboBox(EProjection defaultChoice) {
 		return new EnumComboBox(names, defaultChoice);
 	}
+
+	public static IMapProjection getProjection(String name) {
+		if (name == null) {
+            return null;
+        }
+
+		EProjection val = getValue(name);
+		if (val == null) {
+			return null;
+		}
+
+		switch (val) {
+		case MOLLWEIDE:
+			return new MollweideProjection();
+		case MERCATOR:
+			return new MercatorProjection();
+		case ORTHOGRAPHIC:
+			return new OrthographicProjection();
+		}
+       return null;
+
+	}
 }

@@ -3,16 +3,16 @@ import java.awt.geom.Point2D;
 import java.util.Random;
 
 public class ThetaPhi extends Point2D.Double {
-	
+
 	/** The small theta character */
 	public static final String SMALL_THETA = "\u03B8";
-	
+
 	/** The small phi character */
     public static final String SMALL_PHI = "\u03C6";
-   
+
     /** The degree character */
     public static final String DEGREE = "\u00B0";
-     
+
 
     /**
      * Constructor for ThetaPhi.
@@ -40,7 +40,7 @@ public class ThetaPhi extends Point2D.Double {
     public double getTheta() {
         return x; // Theta is stored in x
     }
-    
+
 	public double getThetaDegrees() {
 		return Math.toDegrees(getTheta());
 	}
@@ -66,7 +66,7 @@ public class ThetaPhi extends Point2D.Double {
     public double getPhi() {
         return y; // Phi is stored in y
     }
-    
+
 	/**
 	 * Gets the azimuthal angle phi in degrees.
 	 *
@@ -84,7 +84,7 @@ public class ThetaPhi extends Point2D.Double {
     public void setPhi(double phi) {
         y = MathUtil.normalizeAngle(phi); // Use MathUtil to normalize phi
     }
-    
+
     /**
      * Converts the spherical coordinates to Cartesian coordinates.
      * @param cartesian The Point3D.Double to store the Cartesian
@@ -95,7 +95,7 @@ public class ThetaPhi extends Point2D.Double {
 		cartesian.y = sinTheta * Math.sin(getPhi());
 		cartesian.z = Math.cos(getTheta());
 	}
-	
+
 
 	/**
 	 * Converts the spherical coordinates to Cartesian coordinates.
@@ -106,7 +106,7 @@ public class ThetaPhi extends Point2D.Double {
 		toCartesian(cartesian);
 		return cartesian;
 	}
-	
+
 	/**
 	 * Converts polar angle theta (0 to 180) to latitude (-90 to 90)
 	 * @return the latitude in radians
@@ -135,7 +135,7 @@ public class ThetaPhi extends Point2D.Double {
 
     @Override
     public String toString() {
-        return String.format("[%s = %.4f%s, %s = %.4f%s] ", 
+        return String.format("[%s = %.4f%s, %s = %.4f%s] ",
         		SMALL_THETA, getThetaDegrees(), DEGREE, SMALL_PHI, getPhiDegrees(), DEGREE);
     }
 

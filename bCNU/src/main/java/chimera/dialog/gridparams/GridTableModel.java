@@ -26,7 +26,7 @@ public class GridTableModel extends DefaultTableModel {
 
 	// the names of the columns
 	protected static final String colNames[] = { " ", "  Min", "  Max", "  Num", "  Del" };
-	
+
 	private static final String emptyNames[] = { " ", " ", " ", " ", " " };
 
 	// names of the rows

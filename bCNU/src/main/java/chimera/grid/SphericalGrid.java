@@ -4,16 +4,16 @@ import chimera.util.MathUtil;
 import chimera.util.ThetaPhi;
 
 public class SphericalGrid {
-	
+
 	//will assume normalized sphere
 	public static final double R = 1;
-	
-	
+
+
     private final Grid1D thetaGrid;  // Grid for theta (polar angle)
     private final Grid1D phiGrid;    // Grid for phi (azimuthal angle)
     private double alpha;     // Rotation about the x-axis
     private double beta;      // Rotation about the new z-axis
-    
+
     private double sina, cosa;      // Sine and cosine of alpha
     private double sinb, cosb;      // Sine and cosine of beta
 
@@ -31,34 +31,34 @@ public class SphericalGrid {
         this.phiGrid = new Grid1D(-Math.PI, Math.PI, numPhi);
         this.alpha = alpha;
         this.beta = beta;
-        
+
         // Precompute sine and cosine values for alpha and beta
         sina = Math.sin(alpha);
         cosa = Math.cos(alpha);
         sinb = Math.sin(beta);
         cosb = Math.cos(beta);
     }
-    
+
 	public void setAlpha(double alpha) {
 		this.alpha = alpha;
 		sina = Math.sin(alpha);
 		cosa = Math.cos(alpha);
 	}
-	
+
 	public void setBeta(double beta) {
 		this.beta = beta;
 		sinb = Math.sin(beta);
 		cosb = Math.cos(beta);
 	}
-	
+
 	public double getAlpha() {
 		return alpha;
 	}
-	
+
 	public double getBeta() {
 		return beta;
 	}
-	
+
     public int getNumTheta() {
         return thetaGrid.getNum();
     }
@@ -74,11 +74,11 @@ public class SphericalGrid {
     public double getPhiDel() {
         return phiGrid.getSpacing();
     }
-    
-	public void setNumTheta(int numTheta) { 
+
+	public void setNumTheta(int numTheta) {
 		thetaGrid.setNum(numTheta);
 	}
-	
+
 	public void setNumPhi(int numPhi) {
 		phiGrid.setNum(numPhi);
 	}

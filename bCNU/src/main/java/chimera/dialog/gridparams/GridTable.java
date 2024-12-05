@@ -33,13 +33,14 @@ public class GridTable extends JTable {
 					c.setFont(c.getFont().deriveFont(Font.BOLD));
 				} else {
 					c.setBackground(Color.WHITE);
-					if (!isEditable)
+					if (!isEditable) {
 						c.setForeground(Color.GRAY);
-					else {
-						if (hasFocus)
+					} else {
+						if (hasFocus) {
 							c.setForeground(Color.RED);
-						else
+						} else {
 							c.setForeground(Color.BLUE);
+						}
 					}
 				}
 
@@ -80,13 +81,15 @@ public class GridTable extends JTable {
 				}
 			}
 		});
-		
+
 		c.addFocusListener(new java.awt.event.FocusAdapter() {
+			@Override
 			public void focusGained(java.awt.event.FocusEvent evt) {
 				JTextField tf = (JTextField) c;
 				tf.selectAll();
 			}
-			
+
+			@Override
 			public void focusLost(java.awt.event.FocusEvent evt) {
 				handleEnterKey();
 			}
@@ -124,9 +127,9 @@ public class GridTable extends JTable {
 
 		Component editorComponent = getEditorComponent();
 		getCellEditor().stopCellEditing();
-		
-		
-		
+
+
+
 	    if (editorComponent instanceof JTextField) {
 	        String newValue = ((JTextField) editorComponent).getText().trim();
 
@@ -143,13 +146,13 @@ public class GridTable extends JTable {
 	            JOptionPane.showMessageDialog(this, "Invalid input. Please enter a valid number.", "Input Error", JOptionPane.ERROR_MESSAGE);
 	        }
 	    }
-		
+
 
 
 		revalidate();
 		repaint();
 	}
-	
+
 	/**
 	 * Parses the new value based on the row and column.
 	 *

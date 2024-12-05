@@ -16,25 +16,25 @@ public class VerticalPanel extends JPanel {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setAlignmentX(Component.CENTER_ALIGNMENT);
 	}
-	
+
 	/**
 	 * Add a component to the panel using the component's preferred height
-	 * 
+	 *
 	 * @param component the component to add
 	 */
 	public void addItem(JComponent component) {
 		addItem(component, -1);
 	}
-	
+
 
 	/**
 	 * Add a component to the panel
-	 * 
+	 *
 	 * @param component the component to add
 	 * @param height    the height of the component
 	 */
 	   public void addItem(JComponent component, int height) {
-		
+
 		if (height < 1) {
 			height = component.getPreferredSize().height + 2;
 		}
@@ -45,7 +45,7 @@ public class VerticalPanel extends JPanel {
 
 		// Align the component to the center
 		component.setAlignmentX(Component.CENTER_ALIGNMENT);
-		
+
 		// Add padding around each item
 		add(Box.createRigidArea(new Dimension(0, 10))); // Add spacing
 		add(component);

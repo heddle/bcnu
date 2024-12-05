@@ -1,5 +1,6 @@
 package chimera.monteCarlo;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -8,12 +9,13 @@ import javax.swing.JProgressBar;
 import javax.swing.SwingWorker;
 
 import chimera.frame.Chimera;
+import chimera.grid.Fiveplet;
 
 public class MonteCarlo {
 
 	/**
 	 * Run a Monte Carlo simulation with the given number of points
-	 * 
+	 *
 	 * @param numPoints the number of points to generate
 	 * @param clear     if true, clear the existing points
 	 * @param progressBar the progress bar to update
@@ -23,6 +25,7 @@ public class MonteCarlo {
 		// Disable the button while running
 		progressBar.setValue(0);
 		List<MonteCarloPoint> points =Chimera.getInstance().getMonteCarloPoints();
+		HashSet<Fiveplet> seenTuples = Chimera.getInstance().getMonteCarloSeenSet();
 		if (clear) {
 			points.clear();
 		}
@@ -31,10 +34,13 @@ public class MonteCarlo {
 		SwingWorker<List<MonteCarloPoint>, Integer> worker = new SwingWorker<>() {
 			@Override
 			protected List<MonteCarloPoint> doInBackground() {
-				
+
 				for (int i = 0; i < numPoints; i++) {
 					MonteCarloPoint point = new MonteCarloPoint();
 					points.add(point);
+
+                    // Add the tuple to the seen set
+					seenTuples.add(point.fiveplet);
 
 					// Publish progress
 					if (i % (numPoints / 100) == 0) { // Update progress every 1%

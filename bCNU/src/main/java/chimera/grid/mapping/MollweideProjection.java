@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 
 import chimera.frame.Chimera;
 import chimera.grid.ChimeraGrid;
@@ -16,23 +15,24 @@ import cnuphys.bCNU.graphics.container.IContainer;
 public class MollweideProjection implements IMapProjection {
 
     private double _radius = 1.0; // Sphere radius, normalized to 1 for simplicity
-    
+
     private static final double MAXLAT = Math.toRadians(89.999); // Maximum latitude in radians
     private static final double MINLAT = -MAXLAT; // Minimum latitude in raduians
-    
-    
+
+
 	public MollweideProjection(double radius) {
 		_radius = radius;
 	}
 
 	public MollweideProjection() {
+		this(SphericalGrid.R);
 	}
 
     @Override
     public void latLonToXY(Point2D.Double latLon, Point2D.Double xy) {
         double lon = latLon.x; // Longitude in radians
         double lat = latLon.y;    // Latitude in radians
-        
+
         // Solve for theta iteratively
         double theta = solveTheta(lat);
 
@@ -58,7 +58,7 @@ public class MollweideProjection implements IMapProjection {
     /**
      * Solve for theta using an iterative method for the Mollweide equation:
      * 2 * theta + sin(2 * theta) = PI * sin(phi)
-     * 
+     *
      * @param phi Latitude in radians
      * @return theta in radians
      */
@@ -73,8 +73,8 @@ public class MollweideProjection implements IMapProjection {
         } while (Math.abs(delta) > 1e-10); // Convergence tolerance
         return theta;
     }
-    
- 
+
+
 	@Override
 	public void drawMapOutline(Graphics g, IContainer container) {
 		Graphics2D g2 = (Graphics2D) g;
@@ -98,9 +98,9 @@ public class MollweideProjection implements IMapProjection {
 			double lon = -Math.PI + i * lonStep;
 			drawLongitudeLine(g2, container, lon);
 		}
-		
+
 	}
-	
+
 	@Override
 	public void drawLatitudeLine(Graphics2D g2, IContainer container, double latitude) {
 		//latitude lines are straight lines in Mollweide projection
@@ -114,12 +114,12 @@ public class MollweideProjection implements IMapProjection {
 		Point screenPoint2 = new Point();
 		container.worldToLocal(screenPoint1, xy1);
 		container.worldToLocal(screenPoint2, xy2);
-		
+
 		boolean isEquator = Math.abs(latitude) < 1e-6;
 		g2.setColor(isEquator ? Color.red : Color.black);
 		g2.drawLine(screenPoint1.x, screenPoint1.y, screenPoint2.x, screenPoint2.y);
 	}
-	
+
 	@Override
 	public void drawLongitudeLine(Graphics2D g2, IContainer container, double longitude) {
 		GeneralPath path = new GeneralPath();
@@ -129,34 +129,34 @@ public class MollweideProjection implements IMapProjection {
 		Point screenPoint = new Point();
 
 		latLon.x = longitude;
-		
+
 		double step = Math.PI / numPoints;
 		for (int i = 0; i <= numPoints; i++) {
 			double lat = -Math.PI / 2 + i * step;
 			lat = Math.max(MINLAT, Math.min(MAXLAT, lat));
-			
+
 			latLon.y = lat;
 			latLonToXY(latLon, xy);
 			container.worldToLocal(screenPoint, xy);
-			
+
             if (path.getCurrentPoint() == null) {
                 path.moveTo(screenPoint.x, screenPoint.y);
             } else {
                 path.lineTo(screenPoint.x, screenPoint.y);
             }
 		}
-		
+
 		boolean isPrimeMeridian = Math.abs(longitude) < 1e-6;
 		g2.setColor(isPrimeMeridian ? Color.red : Color.black);
 		g2.draw(path);
-		
+
 	}
 
     @Override
 	public boolean isPointVisible(Point2D.Double latLon) {
 		return true;
 	}
-	
+
 	@Override
 	/**
      * Check if a given (x, y) point is on the Mollweide projection map.
@@ -173,7 +173,7 @@ public class MollweideProjection implements IMapProjection {
         // Check the ellipse equation
         return (xy.x * xy.x) / (a * a) + (xy.y * xy.y) / (b * b) <= 1.0;
     }
-	
+
 	//draw the overall boundary of the map
     protected void drawBoundary(Graphics g, IContainer container, Color lc) {
         Graphics2D g2 = (Graphics2D) g;
@@ -212,7 +212,7 @@ public class MollweideProjection implements IMapProjection {
         g2.setColor(lc);
         g2.draw(path);
     }
-    
+
 	@Override
 	public EProjection getProjection() {
 		return EProjection.MOLLWEIDE;
@@ -221,5 +221,5 @@ public class MollweideProjection implements IMapProjection {
 	@Override
 	public String name() {
 		return getProjection().getName();
-	}	
+	}
 }

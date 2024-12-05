@@ -1,8 +1,13 @@
 package chimera.dialog;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 public class LabeledTextField extends JPanel {
     private final JLabel label;
@@ -32,20 +37,20 @@ public class LabeledTextField extends JPanel {
 
         // Set layout
         setLayout(new FlowLayout(FlowLayout.LEFT));
-        
+
 
         // Initialize components
         this.label = new JLabel(label);
-        
+
         Font font = (fontSize < 1) ? this.getFont() : new Font("Arial", Font.PLAIN, fontSize);
-        
+
         this.label.setFont(font);
 
         String initStr = (initVal != null) ? initVal.toString() : "";
         this.textField = new JTextField(initStr, width);
         this.textField.setEditable(editable);
         this.textField.setFont(font);
-  
+
         this.unitsLabel = (units != null && !units.isEmpty()) ? new JLabel(units) : null;
         if (this.unitsLabel != null) {
             this.unitsLabel.setFont(font);
@@ -74,7 +79,7 @@ public class LabeledTextField extends JPanel {
             }
         });
     }
- 
+
     // Set focus lost callback
     public void setFocusLostCallback(Callback callback) {
         this.focusLostCallback = callback;
@@ -116,6 +121,14 @@ public class LabeledTextField extends JPanel {
     public void setText(String text) {
         textField.setText(text);
     }
+
+	public double getDoubleValue() {
+		try {
+			return Double.parseDouble(textField.getText());
+		} catch (NumberFormatException e) {
+			return 0.0;
+		}
+	}
 
 
 }

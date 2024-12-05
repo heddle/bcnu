@@ -1,6 +1,9 @@
 package chimera.grid.mapping;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -15,19 +18,29 @@ public class OrthographicProjection implements IMapProjection {
     private final double _radius; // Sphere radius
     private final double centerLon; // Central longitude of the map in radians
     private final double centerLat; // Central latitude of the map in radians
-    
+
     private static final double MAXLAT = Math.toRadians(89.999); // Maximum latitude in radians
     private static final double MINLAT = -MAXLAT; // Minimum latitude in raduians
 
-    
+
     private ArrayList<double[]> _lonRanges;
     private ArrayList<double[]> _latRanges;
 
+	public OrthographicProjection() {
+		this(SphericalGrid.R, Math.toRadians(-15), Math.toRadians(10));
+	}
+
+    /**
+     * Create a new orthographic projection with a given radius and center.
+     * @param radius The radius of the sphere (usually = 1)
+     * @param centerLon The central longitude of the map in radians
+     * @param centerLat The central latitude of the map in radians
+     */
     public OrthographicProjection(double radius, double centerLon, double centerLat) {
     	_radius = radius;
         this.centerLon = centerLon;
         this.centerLat = centerLat;
-        
+
         _lonRanges = getVisibleLongitudeRange(centerLon);
         _latRanges = getVisibleLatitudeRange(centerLat);
     }
@@ -120,7 +133,7 @@ public class OrthographicProjection implements IMapProjection {
 
     @Override
     public void drawLatitudeLine(Graphics2D g2, IContainer container, double latitude) {
- 
+
 		GeneralPath path = new GeneralPath();
 		int numPoints = 50;
 		Point2D.Double xy = new Point2D.Double();
@@ -128,27 +141,27 @@ public class OrthographicProjection implements IMapProjection {
 		Point screenPoint = new Point();
 
 		latLon.y = latitude;
-		
+
 		double step = 2*Math.PI / numPoints;
 		for (int i = 0; i <= numPoints; i++) {
 			double lon = -Math.PI + i * step;
-			
+
 			latLon.x = lon;
-			
+
 			if (!isPointVisible(latLon)) {
                 continue;
 			}
-			
+
 			latLonToXY(latLon, xy);
 			container.worldToLocal(screenPoint, xy);
-			
+
             if (path.getCurrentPoint() == null) {
                 path.moveTo(screenPoint.x, screenPoint.y);
             } else {
                 path.lineTo(screenPoint.x, screenPoint.y);
             }
 		}
-		
+
 		boolean isEquator = Math.abs(latitude) < 1e-6;
 		g2.setColor(isEquator ? Color.red : Color.black);
 		g2.draw(path);
@@ -163,12 +176,12 @@ public class OrthographicProjection implements IMapProjection {
 		Point screenPoint = new Point();
 
 		latLon.x = longitude;
-		
+
 		double step = Math.PI / numPoints;
 		for (int i = 0; i <= numPoints; i++) {
 			double lat = -Math.PI / 2 + i * step;
 			lat = Math.max(MINLAT, Math.min(MAXLAT, lat));
-			
+
 			latLon.y = lat;
 			if (!isPointVisible(latLon)) {
                 continue;
@@ -176,14 +189,14 @@ public class OrthographicProjection implements IMapProjection {
 
 			latLonToXY(latLon, xy);
 			container.worldToLocal(screenPoint, xy);
-			
+
             if (path.getCurrentPoint() == null) {
                 path.moveTo(screenPoint.x, screenPoint.y);
             } else {
                 path.lineTo(screenPoint.x, screenPoint.y);
             }
 		}
-		
+
 		boolean isPrimeMeridian = Math.abs(longitude) < 1e-6;
 		g2.setColor(isPrimeMeridian ? Color.red : Color.black);
 		g2.draw(path);
@@ -205,7 +218,7 @@ public class OrthographicProjection implements IMapProjection {
         double z = Math.sin(centerLat) * sinLat + Math.cos(centerLat) * cosLat * cosDeltaLon;
         return z > 0; // True if point is on the visible hemisphere
     }
-    
+
     /**
      * Get the range of visible longitudes for a given central longitude.
      *
@@ -230,7 +243,7 @@ public class OrthographicProjection implements IMapProjection {
 
         return ranges;
     }
-    
+
     /**
      * Get the range of visible latitudes for a given central latitude.
      *
@@ -250,7 +263,7 @@ public class OrthographicProjection implements IMapProjection {
         ArrayList<double[]> ranges = new ArrayList<>();
         ranges.add(new double[]{minLat, maxLat});
         return ranges;    }
-    
+
     /**
      * Check if a given longitude is visible within the specified ranges.
      *
@@ -282,7 +295,7 @@ public class OrthographicProjection implements IMapProjection {
 
         return false;
     }
-    
+
     public boolean isLatVisible(double lat, ArrayList<double[]> ranges) {
         // Normalize latitude to the range [-PI/2, PI/2]
         lat = wrapLatitude(lat);
@@ -317,7 +330,7 @@ public class OrthographicProjection implements IMapProjection {
     public double wrapLongitude(double lon) {
         return lon - (2 * Math.PI) * Math.floor((lon + Math.PI) / (2 * Math.PI));
     }
-    
+
     /**
      * Wrap a latitude value to the range [-PI/2, PI/2].
      *
@@ -327,7 +340,7 @@ public class OrthographicProjection implements IMapProjection {
     public double wrapLatitude(double lat) {
         return lat - Math.PI * Math.floor((lat + Math.PI / 2) / Math.PI);
     }
-    
+
 	//draw the overall boundary of the map
     protected void drawBoundary(Graphics g, IContainer container, Color lc) {
         Graphics2D g2 = (Graphics2D) g;
@@ -366,7 +379,7 @@ public class OrthographicProjection implements IMapProjection {
         g2.setColor(lc);
         g2.draw(path);
     }
-    
+
 	@Override
 	public EProjection getProjection() {
 		return EProjection.ORTHOGRAPHIC;

@@ -16,12 +16,12 @@ public class CartesianGrid {
         xGrid = new Grid1D(xMin, xMax, numX);
         yGrid = new Grid1D(yMin, yMax, numY);
         zGrid = new Grid1D(zMin, zMax, numZ);
-        
+
         this.xo = xo;
         this.yo = yo;
         this.zo = zo;
     }
-    
+
     /**
      * Copy constructor to create a deep copy of the source CartesianGrid
      * @param source the source CartesianGrid to copy
@@ -34,7 +34,7 @@ public class CartesianGrid {
         yo = source.yo;
         zo = source.zo;
     }
-	
+
     // Convenience methods for the X grid
     public void setXGrid(double vmin, double vmax, int num) {
     	xGrid.setGrid(vmin, vmax, num);
@@ -43,15 +43,15 @@ public class CartesianGrid {
 	public void setXOffset(double xo) {
 		this.xo = xo;
 	}
-	
+
 	public double getXOffset() {
 		return xo;
 	}
-	
+
     public double getXMin() {
         return xGrid.getVmin();
     }
-    
+
     public double getXMax() {
         return xGrid.getVmax();
     }
@@ -80,7 +80,7 @@ public class CartesianGrid {
 	public void setYOffset(double yo) {
 		this.yo = yo;
 	}
-	
+
 	public double getYOffset() {
 		return yo;
 	}
@@ -116,7 +116,7 @@ public class CartesianGrid {
 	public void setZOffset(double zo) {
 		this.zo = zo;
 	}
-	
+
 	public double getZOffset() {
 		return zo;
 	}
@@ -143,16 +143,16 @@ public class CartesianGrid {
     public double getZDel() {
         return zGrid.getSpacing();
     }
-    
+
 	public void setNumX(int numX) {
 		xGrid.setNum(numX);
 	}
-	
+
 	public void setNumY(int numY) {
 		yGrid.setNum(numY);
 	}
-	
-	public void setNumZ(int numZ) { 
+
+	public void setNumZ(int numZ) {
 		zGrid.setNum(numZ);
 	}
 
@@ -174,8 +174,8 @@ public class CartesianGrid {
         indices[1] = yGrid.getIndex(y - yo); // Y index
         indices[2] = zGrid.getIndex(z - zo); // Z index
 
-        for (int i = 0; i < indices.length; i++) {
-            if (indices[i] == -1) {
+        for (int index : indices) {
+            if (index == -1) {
                 throw new IllegalArgumentException("Point is outside the grid bounds.");
             }
         }
@@ -183,8 +183,8 @@ public class CartesianGrid {
 
     // Get global coordinates from grid indices
     public Point3D.Double getCoordinates(int ix, int iy, int iz) {
-        if (ix < 0 || ix >= xGrid.getNum() || 
-            iy < 0 || iy >= yGrid.getNum() || 
+        if (ix < 0 || ix >= xGrid.getNum() ||
+            iy < 0 || iy >= yGrid.getNum() ||
             iz < 0 || iz >= zGrid.getNum()) {
             throw new IllegalArgumentException("Indices are out of bounds.");
         }

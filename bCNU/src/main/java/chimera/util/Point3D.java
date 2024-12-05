@@ -48,8 +48,12 @@ public class Point3D implements Serializable {
 
         @Override
         public boolean equals(Object obj) {
-            if (this == obj) return true;
-            if (obj == null || getClass() != obj.getClass()) return false;
+            if (this == obj) {
+				return true;
+			}
+            if (obj == null || getClass() != obj.getClass()) {
+				return false;
+			}
             Double other = (Double) obj;
             return java.lang.Double.compare(x, other.x) == 0 &&
                    java.lang.Double.compare(y, other.y) == 0 &&
