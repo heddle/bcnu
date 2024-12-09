@@ -45,6 +45,7 @@ import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmingTestView3D;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
@@ -97,7 +98,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.6.2";
+	private static final String _release = "1.7.0";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -153,7 +154,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private CentralXYView _centralXYView;
 	private CentralZView _centralZView;
 
-//	private AlertXYView _alertXYView;
+	private AlertXYView _alertXYView;
 
 //	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
@@ -294,16 +295,16 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_ftcalXyView, 9, VirtualView.CENTER);
 		_virtualView.moveTo(_dcXyView, 10);
 
-//		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
 
 
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 11, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 12, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 12, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_forward3DView, 12, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 13, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 13, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 13, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 14, VirtualView.CENTER);
 			}
 		}
 	}
@@ -364,7 +365,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a virtual view
 
-		int numVVCell = 11 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 12 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -416,7 +417,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		//add and ALERT XY view
-		//_alertXYView = AlertXYView.createAlertXYView();
+		_alertXYView = AlertXYView.createAlertXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();

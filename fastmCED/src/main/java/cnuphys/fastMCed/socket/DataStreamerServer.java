@@ -46,15 +46,18 @@ public class DataStreamerServer {
 					}
 				}).start();
 			}
-		} catch (IOException e) {
+		} catch (Exception e) {
+			System.err.println("Caught exception: " + e.getMessage());
 			e.printStackTrace();
 		}
+		System.out.println("Continuing.");
 	}
 
 	// Call this method to send data events
 	public void sendDataEvent(int numParticles, byte[][] snrData) {
 		try {
 			for (DataOutputStream out : clientStreams) {
+				numParticles = 2;
 				out.writeInt(numParticles);
 
 				for (int i = 0; i < numParticles; i++) {

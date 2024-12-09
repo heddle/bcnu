@@ -36,6 +36,9 @@ public class AlertXYView extends CedXYView {
 	// units are mm
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(120, -120, -240, 240);
 
+	// bank matches
+	private static String _defMatches[] = { "AHDC", "ATOF" };
+
 	/**
 	 * Create a Alert detector XY View
 	 *
@@ -72,6 +75,14 @@ public class AlertXYView extends CedXYView {
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
+		
+		// i.e. if none were in the properties
+		if (view.hasNoBankMatches()) {
+			view.setBankMatches(_defMatches);
+		}
+
+		view._controlPanel.getMatchedBankPanel().update();
+
 		return view;
 	}
 

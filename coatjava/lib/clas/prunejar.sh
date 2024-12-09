@@ -2,7 +2,7 @@
 #prune jars from the big coat java jar so that I can depend on projects
 
 #mv the jar 
-COAT=coat-libs-10.0.6-SNAPSHOT.jar
+COAT=coat-libs-11.0.4-SNAPSHOT.jar
 OLDCOAT=old_$COAT
 mv $COAT $OLDCOAT
 
@@ -29,4 +29,3 @@ cd ..
 rm -fr ./temp
 
 echo "done."
-

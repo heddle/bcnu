@@ -10,8 +10,7 @@
 		<property name="cnuphysdir" value="${user.home}/coatjava/common-tools/cnuphys"/>
 		
 		<!-- for making classpath -->
-		<property name="coat" value="coatjava/lib/clas/coat-libs-10.0.6-SNAPSHOT.jar"/>
-		<property name="vecm" value="coatjava/lib/clas/vecmath-1.3.1-2.jar"/>
+		<property name="coat" value="coatjava/lib/clas/coat-libs-11.0.4-SNAPSHOT.jar"/>
 		<property name="glue" value="JOGL/gluegen-rt.jar"/>
 		<property name="jogl" value="JOGL/jogl-all.jar"/>
 		<property name="f2j" value="numRec/lib/f2jutil.jar"/>
@@ -121,7 +120,7 @@
 			<!-- make it executable -->
 		    <manifest>
 		        <attribute name="Main-Class" value="cnuphys.ced.frame.Ced"/>
-		    	<attribute name="Class-Path" value="${coat} ${vecm} ${apache} ${glue} ${jogl} ${f2j} ${nr}"/>
+		    	<attribute name="Class-Path" value="${coat} ${apache} ${glue} ${jogl} ${f2j} ${nr}"/>
 		    </manifest>
 		</jar>
 		
