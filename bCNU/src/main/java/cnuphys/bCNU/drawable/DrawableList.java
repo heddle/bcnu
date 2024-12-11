@@ -1,7 +1,7 @@
 package cnuphys.bCNU.drawable;
 
 import java.awt.Graphics;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.event.EventListenerList;
 
@@ -18,7 +18,7 @@ import cnuphys.bCNU.item.ItemList;
  *
  */
 @SuppressWarnings("serial")
-public class DrawableList extends Vector<IDrawable> implements IDrawable {
+public class DrawableList extends ArrayList<IDrawable> implements IDrawable {
 
 	/**
 	 * Listener for drawable events
@@ -57,7 +57,7 @@ public class DrawableList extends Vector<IDrawable> implements IDrawable {
 	 * @param name the <code>DrawableList</code>'s name.
 	 */
 	public DrawableList(String name) {
-		super(100, 50);
+		super(100);
 		this._name = name;
 	}
 

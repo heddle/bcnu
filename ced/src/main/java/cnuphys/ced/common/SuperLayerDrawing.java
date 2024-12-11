@@ -324,10 +324,13 @@ public class SuperLayerDrawing {
 		if (!segmentsOnly) {
 			
 			Point pp = new Point();
+			
+			boolean useOrderColoring = Ced.useOrderColoring;
 
 			for (int i = 0; i < _dcData.count(); i++) {
 				if ((_dcData.sector[i] == _iSupl.sector()) && (_dcData.superlayer[i] == _iSupl.superlayer())) {
-					drawBasicDCHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1, _dcData.order[i]);
+					drawBasicDCHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1,
+							_dcData.order[i], useOrderColoring);
 					// just draw the wire again
 					drawOneWire(g, container, _dcData.layer6[i], _dcData.component[i], reallyClose, pp);
 				}
@@ -355,8 +358,10 @@ public class SuperLayerDrawing {
 	 * @param noise     is noise hit
 	 * @param pid       gemc particle id
 	 * @param order     tdc order
+	 * @param useOrderColoring use order coloring
 	 */
-	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order) {
+	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order,
+			boolean useOrderColoring) {
 
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
@@ -391,7 +396,7 @@ public class SuperLayerDrawing {
 			highlightNoiseHit(g, container, !showTruth, hexagon);
 		} else {
 
-			if (Ced.useOrderColoring()) {
+			if (useOrderColoring) { //for Gagik debugging
 				hitFill = OrderColors.getOrderColor(order);
 				hitLine = CedColors.transLine;
 			}
@@ -445,16 +450,17 @@ public class SuperLayerDrawing {
 	 * @param noise     is noise hit
 	 * @param pid       gemc particle id
 	 * @oaram order     from order column in tdc bank
+	 * @param useOrderColoring use order coloring
 	 */
 	private void drawBasicDCHit(Graphics g, IContainer container, int layer,
-			int wire, boolean noise, int pid, int order) {
+			int wire, boolean noise, int pid, int order, boolean useOrderColoring) {
 
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
 			return;
 		}
 
-		drawDCHit(g, container, layer, wire, noise, pid, order);
+		drawDCHit(g, container, layer, wire, noise, pid, order, useOrderColoring);
 	}
 
 	/**

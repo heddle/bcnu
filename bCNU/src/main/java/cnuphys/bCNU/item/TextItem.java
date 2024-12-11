@@ -12,7 +12,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -104,7 +104,7 @@ public class TextItem extends RectangleItem {
 
 		int width = 0;
 		int height = 0;
-		Vector<Snippet> snippets = Snippet.getSnippets(font, text, component);
+		ArrayList<Snippet> snippets = Snippet.getSnippets(font, text, component);
 		for (Snippet s : snippets) {
 			Dimension size = s.size(component);
 			width = Math.max(width, s.getDeltaX() + size.width);

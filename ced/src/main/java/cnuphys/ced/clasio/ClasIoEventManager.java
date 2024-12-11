@@ -3,7 +3,7 @@ package cnuphys.ced.clasio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Vector;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
@@ -47,7 +47,7 @@ import cnuphys.swim.Swimming;
 public class ClasIoEventManager {
 
 	// Unique lund ids in the event (if any)
-	private Vector<LundId> _uniqueLundIds = new Vector<>();
+	private ArrayList<LundId> _uniqueLundIds = new ArrayList<>();
 
 	// used in pcal and ec hex gradient displays
 	private double maxEDepCal[] = { Double.NaN, Double.NaN, Double.NaN };
@@ -176,13 +176,13 @@ public class ClasIoEventManager {
 	 *
 	 * @return a collection of unique LundIds
 	 */
-	public Vector<LundId> uniqueLundIds() {
+	public ArrayList<LundId> uniqueLundIds() {
 
 		if (_uniqueLundIds != null) {
 			return _uniqueLundIds;
 		}
 
-		_uniqueLundIds = new Vector<>();
+		_uniqueLundIds = new ArrayList<>();
 
 		if (_currentEvent != null) {
 			// use any bank with a true pid column

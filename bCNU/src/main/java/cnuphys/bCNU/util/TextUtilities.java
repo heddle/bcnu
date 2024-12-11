@@ -9,7 +9,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 public class TextUtilities {
 
@@ -101,25 +100,6 @@ public class TextUtilities {
 		int ascent = fm.getAscent();
 		int sw = fm.stringWidth(s);
 		return new Rectangle(pp.x, pp.y - ascent, sw, ascent + descent);
-	}
-
-	/**
-	 * Shallow clone of ine string list onto another.
-	 *
-	 * @param src the source list.
-	 * @return the destination list, which is a shallow cioy.
-	 */
-	public static List<String> cloneList(List<String> src) {
-		if (src == null) {
-			return null;
-		}
-
-		Vector<String> dest = new Vector<>();
-		for (String s : src) {
-			dest.add(s);
-		}
-
-		return dest;
 	}
 
 	/**

@@ -8,8 +8,8 @@ import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -44,7 +44,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 	}
 
 	// these are the 2D trajectories
-	protected Vector<SwimTrajectory2D> _trajectories2D = new Vector<>(20);
+	protected ArrayList<SwimTrajectory2D> _trajectories2D = new ArrayList<>(20);
 
 	protected SwimTrajectory2D _closestTrajectory;
 

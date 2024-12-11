@@ -171,12 +171,13 @@ public class AllDCSuperLayer extends RectangleItem {
 
 		// now the data
 		if (_view.isSingleEventMode()) {
+			boolean useOrderColoring = Ced.useOrderColoring;
 			// shade the layers
 			for (int i = 0; i < GeoConstants.NUM_LAYER; i += 2) {
 				WorldGraphicsUtilities.drawWorldRectangle(g, container, _layerWorldRects[i], cellOverlayColor, null);
 
 			}
-			singleEventDrawItem(g, container);
+			singleEventDrawItem(g, container, useOrderColoring);
 
 		} else {
 			accumulatedDrawItem(g, container);
@@ -193,7 +194,7 @@ public class AllDCSuperLayer extends RectangleItem {
 	 * @param g         the graphics context
 	 * @param container the rendering container
 	 */
-	private void singleEventDrawItem(Graphics g, IContainer container) {
+	private void singleEventDrawItem(Graphics g, IContainer container, boolean useOrderColoring) {
 
 		Rectangle2D.Double wr = new Rectangle2D.Double(); // used over and over
 		Rectangle pr = new Rectangle(); // used over and over
@@ -214,7 +215,7 @@ public class AllDCSuperLayer extends RectangleItem {
 				// draw the hit
 				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
 					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1,
-							_dcData.order[i], wr);
+							_dcData.order[i], wr, useOrderColoring);
 				}
 			}
 		}
@@ -298,9 +299,10 @@ public class AllDCSuperLayer extends RectangleItem {
 	 * @param pid       the gemc pid
 	 * @param order     for optional coloring
 	 * @param wr        workspace
+	 * @param useOrderColoring if <code>true</code> use order coloring
 	 */
 	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order,
-			Rectangle2D.Double wr) {
+			Rectangle2D.Double wr, boolean useOrderColoring) {
 
 		if (wire > GeoConstants.NUM_WIRE) {
 			String msg = "Bad wire number in drawDCHit " + wire + " seq event number "
@@ -319,7 +321,7 @@ public class AllDCSuperLayer extends RectangleItem {
 		// are we to show mc (MonteCarlo simulation) truth?
 		boolean showTruth = _view.showMcTruth();
 
-		if (Ced.useOrderColoring()) {
+		if (useOrderColoring) {
 			WorldGraphicsUtilities.drawWorldRectangle(g, container, wr, OrderColors.getOrderColor(order),
   					CedColors.transLine);
 			return;

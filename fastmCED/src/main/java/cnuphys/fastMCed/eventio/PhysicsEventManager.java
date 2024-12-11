@@ -1,19 +1,16 @@
 package cnuphys.fastMCed.eventio;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.event.EventListenerList;
-import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jlab.clas.physics.PhysicsEvent;
 import org.jlab.geom.prim.Path3D;
 
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
-import cnuphys.bCNU.util.Environment;
 import cnuphys.fastMCed.eventgen.AEventGenerator;
 import cnuphys.fastMCed.fastmc.ParticleHits;
-import cnuphys.fastMCed.frame.FastMCed;
 import cnuphys.fastMCed.geometry.GeometryManager;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.streaming.StreamManager;
@@ -32,7 +29,7 @@ public class PhysicsEventManager {
 	// particle hits corresponding to the current event.
 	// these are the results from the FastMC engine given the tracks
 	// found in Lund file event and swum by Swimmer
-	private Vector<ParticleHits> _currentParticleHits = new Vector<>();
+	private ArrayList<ParticleHits> _currentParticleHits = new ArrayList<>();
 
 	// the current event generator
 	private AEventGenerator _eventGenerator;
@@ -41,7 +38,7 @@ public class PhysicsEventManager {
 	public static String extensions[] = { "dat", "DAT", "lund" };
 
 	// Unique lund ids in the event (if any)
-	private Vector<LundId> _uniqueLundIds = new Vector<>();
+	private ArrayList<LundId> _uniqueLundIds = new ArrayList<>();
 
 	// manager singleton
 	private static PhysicsEventManager instance;
@@ -101,7 +98,7 @@ public class PhysicsEventManager {
 	 *
 	 * @return a collection of unique LundIds
 	 */
-	public Vector<LundId> uniqueLundIds() {
+	public ArrayList<LundId> uniqueLundIds() {
 		_uniqueLundIds.clear();
 		if (_eventGenerator != null) {
 			_eventGenerator.uniqueLundIds(_uniqueLundIds);
@@ -208,7 +205,7 @@ public class PhysicsEventManager {
 	 *
 	 * @return the detector hits for the current event
 	 */
-	public Vector<ParticleHits> getParticleHits() {
+	public ArrayList<ParticleHits> getParticleHits() {
 		return _currentParticleHits;
 	}
 

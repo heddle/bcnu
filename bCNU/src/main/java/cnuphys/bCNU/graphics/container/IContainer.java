@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.feedback.FeedbackControl;
@@ -184,7 +184,7 @@ public interface IContainer {
 	 * @return all items on all item lists enclosed by the rectangle.
 	 */
 
-	public Vector<AItem> getEnclosedItems(Rectangle rect);
+	public ArrayList<AItem> getEnclosedItems(Rectangle rect);
 
 	/**
 	 * Find all items, if any, at the point.
@@ -193,7 +193,7 @@ public interface IContainer {
 	 * @return all items across all item lists that contain the given point. It may be
 	 *         an empty vector, but it won't be <code>null</null>.
 	 */
-	public Vector<AItem> getItemsAtPoint(Point lp);
+	public ArrayList<AItem> getItemsAtPoint(Point lp);
 
 	/**
 	 * Check whether at least one item on any item list is selected.

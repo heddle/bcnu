@@ -16,7 +16,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -41,7 +41,7 @@ public class VirtualView extends BaseView
 
 	private static final String VVTITLE = "Desktop";
 
-	private Vector<BaseView> _views = new Vector<>();
+	private ArrayList<BaseView> _views = new ArrayList<>();
 
 	private static int _numcol = 8;
 

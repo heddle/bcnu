@@ -59,7 +59,7 @@ public class ColorMenu extends JMenu implements ActionListener {
 	 * Check whether we should use the DC TDC coloring based or the order column
 	 * @return true if we should use the DC TDC coloring
 	 */
-	public boolean useOrderColoring() {
+	private boolean useOrderColoring() {
 		return _dcOrderColorsRB.isSelected();
 	}
 
@@ -67,6 +67,7 @@ public class ColorMenu extends JMenu implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		Object source = e.getSource();
+		Ced.useOrderColoring = useOrderColoring();
 
 		if (source == _dcStandardColorsRB) {
 			_orderColorsItem.setEnabled(false);
@@ -82,6 +83,8 @@ public class ColorMenu extends JMenu implements ActionListener {
 		else if (source == _orderColorsItem) {
 			handleOrderColors();
 		}
+		
+		
 
 	}
 

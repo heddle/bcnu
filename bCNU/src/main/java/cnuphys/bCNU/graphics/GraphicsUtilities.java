@@ -27,8 +27,8 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -1265,7 +1265,7 @@ public class GraphicsUtilities {
 		// get the snippets in case some used latex encoding
 
 		g.setFont(font);
-		Vector<Snippet> snippets = Snippet.getSnippets(font, text, component);
+		ArrayList<Snippet> snippets = Snippet.getSnippets(font, text, component);
 		for (Snippet s : snippets) {
 			s.drawSnippet(g, x, y, azimuth);
 		}

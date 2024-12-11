@@ -8,8 +8,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 
@@ -88,7 +88,7 @@ public class PIDLegend extends JComponent {
 		}
 
 		// get the unique lundids found in this event
-		Vector<LundId> lids = getUniqueLundIds();
+		ArrayList<LundId> lids = getUniqueLundIds();
 
 		int numMC = (lids == null) ? 0 : lids.size();
 
@@ -176,7 +176,7 @@ public class PIDLegend extends JComponent {
 	 *
 	 * @return all the unique LundIds associated with this event.
 	 */
-	protected Vector<LundId> getUniqueLundIds() {
+	protected ArrayList<LundId> getUniqueLundIds() {
 		return _eventManager.uniqueLundIds();
 	}
 

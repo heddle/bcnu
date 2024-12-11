@@ -6,8 +6,8 @@ import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.Vector;
 
 import javax.swing.JLabel;
 
@@ -130,14 +130,14 @@ public class Snippet {
 	}
 
 	/**
-	 * Get an array of snippets from a compound string
+	 * Get an list of snippets from a compound string
 	 *
 	 * @param baseFont the baseline font. Each snippet will have this font or an
 	 *                 excursion from this font.
 	 * @param cstr     the compound string
-	 * @return the array of snippets
+	 * @return the list of snippets
 	 */
-	public static Vector<Snippet> getSnippets(Font baseFont, String cstr, Component component) {
+	public static ArrayList<Snippet> getSnippets(Font baseFont, String cstr, Component component) {
 
 		// first replace all special characters
 		cstr = UnicodeSupport.specialCharReplace(cstr);
@@ -152,7 +152,7 @@ public class Snippet {
 
 		boolean slashSet = false;
 		Font currentFont = cloneFont(baseFont);
-		Vector<Snippet> snippets = new Vector<>(tokens.length);
+		ArrayList<Snippet> snippets = new ArrayList<>(tokens.length);
 
 		int delX = 0;
 		int delY = 0;
@@ -312,26 +312,4 @@ public class Snippet {
 		return lines;
 	}
 
-	public static void main(String arg[]) {
-
-		Font baseFont = Fonts.commonFont(Font.PLAIN, 12);
-		JLabel label = new JLabel("");
-
-		String strs[] = { "\\\\This is a simple \\ntwo line string.\\gSome Greek\\rSome Roman.",
-				"plain\\iitalic\\bbold italic\\Bitalic" };
-
-		for (String str : strs) {
-			System.err.println(">>>>>>");
-			Vector<Snippet> snippets = getSnippets(baseFont, str, label);
-
-			if (snippets != null) {
-				for (Snippet s : snippets) {
-					System.err.println("--------------");
-					System.err.println(s.toString());
-				}
-			}
-
-		}
-
-	}
 }

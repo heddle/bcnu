@@ -201,8 +201,20 @@ public class AlertGeometry {
 		return tof.getPaddle(paddle);
 	}
 
+	//all 0 based
 	private static String hash(int sector, int superlayer, int layer) {
 		return String.format("%d|%d|%d", sector, superlayer, layer);
+	}
+	
+	/**
+     * Get the DC layer
+     * @param sector 0 based
+     * @param superlayer 0 based
+     * @param layer 0 based
+     * @return the DC layer
+     */
+	public static DCLayer getDCLayer(int sector, int superlayer, int layer) {
+		return _dcLayers.get(hash(sector, superlayer, layer));
 	}
 
 	public static void main(String[] arg) {

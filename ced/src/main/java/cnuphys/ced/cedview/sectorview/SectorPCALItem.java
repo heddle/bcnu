@@ -221,6 +221,9 @@ public class SectorPCALItem extends PolygonItem {
 		if (contains(container, screenPoint)) {
 			feedbackStrings.add(getName());
 		}
+		else {
+			return;
+		}
 
 		// which strip?
 		for (int strip0 = 0; strip0 < PCALGeometry.PCAL_NUMSTRIP[_viewType]; strip0++) {

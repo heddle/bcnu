@@ -1,4 +1,4 @@
-package cnuphys.ced.cedview.central;
+package cnuphys.ced.cedview.alert;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,9 +14,9 @@ import cnuphys.swim.SwimTrajectory2D;
 
 public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
-	private CentralXYView _view;
+	private AlertXYView _view;
 
-	public SwimTrajectoryDrawer(CentralXYView view) {
+	public SwimTrajectoryDrawer(AlertXYView view) {
 		_view = view;
 	}
 
@@ -26,7 +26,6 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 * @param g         the graphics context
 	 * @param container the base container
 	 */
-	@Override
 	public void draw(Graphics g, IContainer container) {
 
 		if (!ClasIoEventManager.getInstance().isAccumulating()) {
@@ -41,7 +40,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			g2.setClip(oldClip);
 		}
 	}
-
+	
 	/**
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)
@@ -114,5 +113,4 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 		return true;
 	}
-
 }

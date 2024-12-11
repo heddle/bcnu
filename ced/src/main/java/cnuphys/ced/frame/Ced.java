@@ -198,6 +198,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// set whether clusters are connected
 	private JCheckBoxMenuItem _connectClusterCB;
+	
+	
+	//got Gagik yo color DC hits based on order
+	public static boolean useOrderColoring = false;
 
 
 	/**
@@ -521,14 +525,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	}
 
-	/**
-	 * Check whether we should use the DC TDC coloring based or the order column
-	 * @return true if we should use the DC TDC coloring
-	 */
-	public static boolean useOrderColoring() {
-		return getInstance()._colorMenu.useOrderColoring();
-	}
-
 
 	// add items to the basic mag field menu
 	private void addToMagneticFieldMenu() {
@@ -833,15 +829,21 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param num the event number
 	 */
 	public static void setEventNumberLabel(int seqnum, int truenum) {
+	    if (ClasIoEventManager.getInstance().isAccumulating()) {
+	        return;
+	    }
+	    
+	    String newText;
+	    if (seqnum < 0) {
+	        newText = "  No Event           ";
+	    } else {
+	        newText = String.format("  Event Seq: %d  True: %d", seqnum, truenum);
+	    }
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-		if (seqnum < 0) {
-			_eventNumberLabel.setText("  No Event           ");
-		} else {
-			_eventNumberLabel.setText("  Event Seq: " + seqnum + "  True: " + truenum);
-		}
+	    // Update label only if the text has changed
+	    if (!_eventNumberLabel.getText().equals(newText)) {
+	        SwingUtilities.invokeLater(() -> _eventNumberLabel.setText(newText));
+	    }
 	}
 
 	/**
@@ -1157,6 +1159,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	public static void main(String[] arg) {
 		
 		Environment.setLookAndFeel();
+		System.setProperty("sun.java2d.opengl", "true");
 
 
 		//this is supposed to create less pounding of ccdb

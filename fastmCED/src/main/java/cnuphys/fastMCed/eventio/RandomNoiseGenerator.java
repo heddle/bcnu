@@ -3,7 +3,6 @@ package cnuphys.fastMCed.eventio;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenu;
@@ -82,14 +81,14 @@ public class RandomNoiseGenerator implements ActionListener {
 		return _generateNoiseCB.isSelected();
 	}
 
-	public void generateNoise(Vector<ParticleHits> hits) {
+	public void generateNoise(ArrayList<ParticleHits> hits) {
 		ParticleHits randomHits = new ParticleHits();
 
 		// for now 3% dc noise
 
 		HitHolder dcHits = randomHits.getHitHolder(DetectorId.DC);
 
-		// get the random occupance level
+		// get the random occupancy level
 		double randOcc = 0;
 
 		try {
@@ -124,11 +123,11 @@ public class RandomNoiseGenerator implements ActionListener {
 			}
 		}
 
-		hits.addElement(randomHits);
+		hits.add(randomHits);
 	}
 
 	// do not add a random hit on top of a real hit
-	private boolean hasHit(Vector<ParticleHits> hits, DetectorId id, int sect0, int supl0, int layer0, int comp0) {
+	private boolean hasHit(ArrayList<ParticleHits> hits, DetectorId id, int sect0, int supl0, int layer0, int comp0) {
 		if (hits != null) {
 			for (ParticleHits ph : hits) {
 				if (ph.hasHit(id, sect0, supl0, layer0, comp0)) {

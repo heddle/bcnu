@@ -243,10 +243,11 @@ public class DCHexSuperLayer extends PolygonItem {
 		if (_view.showRawHits()) {
 
 			for (int i = 0; i < _dcData.count(); i++) {
+				boolean useOrderColoring = Ced.useOrderColoring;
 				// draw the hit
 				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
 					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i], 
-							_dcData.noise[i], _dcData.order[i]);
+							_dcData.noise[i], _dcData.order[i], useOrderColoring);
 				}
 			}
 		}
@@ -372,13 +373,14 @@ public class DCHexSuperLayer extends PolygonItem {
 		g.drawPolygon(ppoly);
     }
 	
-	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int order) {
+	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int order,
+			boolean useOrderColoring) {
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
 			return;
 		}
 		
-		if (Ced.useOrderColoring()) {
+		if (useOrderColoring) {
 			Color color =OrderColors.getOrderColor(order);
 			fillWirePoly(g, container, layer, wire, new Point(), color);
 			return;

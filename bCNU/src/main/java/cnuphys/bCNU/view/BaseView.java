@@ -366,14 +366,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 		System.err.println("Control Panel Button Hit");
 	}
 
-	/**
-	 * Checks if the view is ready for display.
-	 *
-	 * @return <code>true</code> if the view is ready for display.
-	 */
-	public boolean isReady() {
-		return true;
-	}
 
 	/**
 	 * Set the view arrangement from the properties

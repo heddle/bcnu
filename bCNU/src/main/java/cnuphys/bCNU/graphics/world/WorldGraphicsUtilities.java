@@ -13,7 +13,7 @@ import java.awt.geom.Path2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.JComponent;
 
@@ -216,6 +216,21 @@ public class WorldGraphicsUtilities {
 	 *
 	 * @param g         the graphics context.
 	 * @param container the container on which it is rendered.
+	 * @param wp0       one end point.
+	 * @param wp1       another end point.
+	 * @param lineColor the line color (can be <code>null</code>).
+	 */
+	public static void drawWorldLine(Graphics g, IContainer container, Point2D.Double wp0, Point2D.Double wp1,
+			Color lineColor) {
+		drawWorldLine(g, container, wp0.x, wp0.y, wp1.x, wp1.y, lineColor, 1, LineStyle.SOLID);
+	}
+	
+
+	/**
+	 * Draw a world line 1 pixel wide in solid style
+	 *
+	 * @param g         the graphics context.
+	 * @param container the container on which it is rendered.
 	 * @param x1        x coordinate of start point.
 	 * @param y1        y coordinate of start point.
 	 * @param x2        x coordinate of end point.
@@ -226,6 +241,7 @@ public class WorldGraphicsUtilities {
 			Color lineColor) {
 		drawWorldLine(g, container, x1, y1, x2, y2, lineColor, 1, LineStyle.SOLID);
 	}
+
 
 	/**
 	 * Get pixel rectangle boundary of two wotld points
@@ -1035,8 +1051,8 @@ public class WorldGraphicsUtilities {
 	 * @param path the path in question
 	 * @return a collection of vertices
 	 */
-	public static Vector<Point2D.Double> getPoints(Path2D path) {
-		Vector<Point2D.Double> pointList = new Vector<>();
+	public static ArrayList<Point2D.Double> getPoints(Path2D path) {
+		ArrayList<Point2D.Double> pointList = new ArrayList<>();
 		double[] coords = new double[2];
 		int numSubPaths = 0;
 		for (PathIterator pi = path.getPathIterator(null); !pi.isDone(); pi.next()) {
@@ -1100,7 +1116,7 @@ public class WorldGraphicsUtilities {
 	 * @param path      the path being converted
 	 * @return the pixel polygon
 	 */
-	public static Polygon pathToPolygon(IContainer container, Path2D.Double path) {
+	public static Polygon XpathToPolygon(IContainer container, Path2D.Double path) {
 		if (path == null) {
 			return null;
 		}
@@ -1122,13 +1138,48 @@ public class WorldGraphicsUtilities {
 				poly.addPoint(p.x, p.y);
 				break;
 
-			// TODO curves
 			}
 			pi.next();
 		}
 
 		return poly;
 	}
+	
+	public static Polygon pathToPolygon(IContainer container, Path2D.Double path) {
+	    if (path == null) {
+	        return null;
+	    }
+
+	    // Estimate size if possible
+	    int estimatedSize = path.getCurrentPoint() != null ? (int) path.getCurrentPoint().distance(0, 0) : 100;
+	    int[] xpoints = new int[estimatedSize+1];
+	    int[] ypoints = new int[estimatedSize+1];
+	    int pointCount = 0;
+
+	    Point reusablePoint = new Point();
+	    PathIterator pi = path.getPathIterator(null);
+	    double[] coords = new double[6];
+
+	    while (!pi.isDone()) {
+	        int type = pi.currentSegment(coords);
+	        if (type == PathIterator.SEG_MOVETO || type == PathIterator.SEG_LINETO) {
+	            container.worldToLocal(reusablePoint, coords[0], coords[1]);
+	            if (pointCount >= xpoints.length) {
+	                // Grow arrays if needed
+	                xpoints = java.util.Arrays.copyOf(xpoints, xpoints.length * 2);
+	                ypoints = java.util.Arrays.copyOf(ypoints, ypoints.length * 2);
+	            }
+	            xpoints[pointCount] = reusablePoint.x;
+	            ypoints[pointCount] = reusablePoint.y;
+	            pointCount++;
+	        }
+	        pi.next();
+	    }
+
+	    // Create the Polygon from collected points
+	    return new Polygon(xpoints, ypoints, pointCount);
+	}
+
 
 	/**
 	 * Counts the needed capacity if you are going to pull out the points an put
@@ -1395,41 +1446,33 @@ public class WorldGraphicsUtilities {
 	 */
 	public static Point2D.Double[] pathToWorldPolygon(Path2D.Double path) {
 
-		if (path == null) {
-			return null;
-		}
+	    if (path == null) {
+	        return null;
+	    }
 
-		PathIterator pi = path.getPathIterator(null);
+	    PathIterator pi = path.getPathIterator(null);
 
-		Vector<Point2D.Double> v = null;
+	    ArrayList<Point2D.Double> pointsList = new ArrayList<>();
 
-		double coords[] = new double[6];
-		while (!pi.isDone()) {
-			int type = pi.currentSegment(coords);
-			switch (type) {
-			case PathIterator.SEG_MOVETO:
-			case PathIterator.SEG_LINETO:
-				if (v == null) {
-					v = new Vector<>(50, 25);
-				}
-				v.add(new Point2D.Double(coords[0], coords[1]));
-				break;
+	    double coords[] = new double[6];
+	    while (!pi.isDone()) {
+	        int type = pi.currentSegment(coords);
+	        switch (type) {
+	        case PathIterator.SEG_MOVETO:
+	        case PathIterator.SEG_LINETO:
+	            pointsList.add(new Point2D.Double(coords[0], coords[1]));
+	            break;
 
-			// TODO curves
-			}
-			pi.next();
-		}
+	        // TODO curves
+	        }
+	        pi.next();
+	    }
 
-		if (v == null) {
-			return null;
-		}
+	    if (pointsList.isEmpty()) {
+	        return null;
+	    }
 
-		Point2D.Double points[] = new Point2D.Double[v.size()];
-		for (int index = 0; index < v.size(); index++) {
-			points[index] = v.elementAt(index);
-		}
-		return points;
-
+	    return pointsList.toArray(new Point2D.Double[0]);
 	}
 
 	/**

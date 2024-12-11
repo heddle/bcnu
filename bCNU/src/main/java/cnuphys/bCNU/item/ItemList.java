@@ -2,7 +2,7 @@ package cnuphys.bCNU.item;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import cnuphys.bCNU.drawable.DrawableChangeType;
 import cnuphys.bCNU.drawable.DrawableList;
@@ -26,32 +26,30 @@ public class ItemList extends DrawableList {
 	}
 
 	/**
-	 * Add all the items on this layer that enclose a given point to a vector of
-	 * items. This will be used to collect all such items across all layers.
+	 * Add all the items that enclose a given point to a collection of
+	 * items. 
 	 *
 	 * @param items       the collection we are adding to.
 	 * @param container   the graphical container rendering the item.
 	 * @param screenPoint the point in question.
 	 */
-	public void addItemsAtPoint(Vector<AItem> items, IContainer container, Point screenPoint) {
-		Vector<AItem> itemsAtPoint = getItemsAtPoint(container, screenPoint);
+	public void addItemsAtPoint(ArrayList<AItem> items, IContainer container, Point screenPoint) {
+		ArrayList<AItem> itemsAtPoint = getItemsAtPoint(container, screenPoint);
 		if (itemsAtPoint != null) {
 			items.addAll(itemsAtPoint);
 		}
 	}
 
 	/**
-	 * Add all the selected items on this layer to an Items collection. This is used
-	 * to find all selected items across all layers.
+	 * Add all the selected items an Items list.
 	 *
-	 * @param items the collection to which we will add all selected items on this
+	 * @param items the list to which we will add all selected items on this
 	 *              layer.
 	 */
-	public void addSelectedItems(Vector<AItem> items) {
-
-		Vector<AItem> selectedItems = getSelectedItems();
+	public void addSelectedItems(ArrayList<AItem> items) {
+		ArrayList<AItem> selectedItems = getSelectedItems();
 		if (selectedItems != null) {
-			addAll(selectedItems);
+			items.addAll(selectedItems);
 		}
 	}
 
@@ -59,16 +57,14 @@ public class ItemList extends DrawableList {
 	 * Clears all the items. Not as simple as it appears. The main gotcha is that
 	 * items were probably added to the container's feedback control as feedback
 	 * providers. If they are not removed they will continue to produce feedback
-	 * (and will not be garbage collected) even if they are removed from the
-	 * layer--which itself only ensures that they will not be drawn.
-	 *
+	 * (and will not be garbage collected). So, we must remove them from the feedback control.
 	 * @param container
 	 */
 	public void clearAllItems(IContainer container) {
 
 		synchronized (this) {
 
-			Vector<AItem> allItems = getAllItems();
+			ArrayList<AItem> allItems = getAllItems();
 			if (allItems == null) {
 				return;
 			}
@@ -91,7 +87,7 @@ public class ItemList extends DrawableList {
 	}
 
 	/**
-	 * Deletes all selected (visible) items on this layer. Deleting simply means
+	 * Deletes all selected (visible) items. Deleting simply means
 	 * removing them from the list. They will no longer be drawn. Items that are not
 	 * deletable are not removed.
 	 *
@@ -105,7 +101,7 @@ public class ItemList extends DrawableList {
 		}
 
 		synchronized (this) {
-			Vector<AItem> selitems = getSelectedItems();
+			ArrayList<AItem> selitems = getSelectedItems();
 			if (selitems != null) {
 				for (AItem item : selitems) {
 					if (item.isDeletable()) {
@@ -167,9 +163,9 @@ public class ItemList extends DrawableList {
 	 * @return all items that contain the given point. If any, the topmost will be
 	 *         the first entry.
 	 */
-	public Vector<AItem> getItemsAtPoint(IContainer container, Point lp) {
+	public ArrayList<AItem> getItemsAtPoint(IContainer container, Point lp) {
 
-		Vector<AItem> locitems = null;
+		ArrayList<AItem> locitems = null;
 
 		synchronized (this) {
 
@@ -177,7 +173,7 @@ public class ItemList extends DrawableList {
 				AItem item = (AItem) get(i);
 				if (item.isVisible() && item.contains(container, lp)) {
 					if (locitems == null) {
-						locitems = new Vector<>(25, 10);
+						locitems = new ArrayList<>(25);
 					}
 					locitems.add(item);
 				}
@@ -188,9 +184,9 @@ public class ItemList extends DrawableList {
 	}
 
 	/**
-	 * Count how many items are selected on this layer.
+	 * Count how many items are selected.
 	 *
-	 * @return the number of selected items on this layer..
+	 * @return the number of selected items.
 	 */
 	public int getSelectedCount() {
 
@@ -223,19 +219,19 @@ public class ItemList extends DrawableList {
 	}
 
 	/**
-	 * Obtain a collection of selected items on this layer.
+	 * Obtain a collection of selected items.
 	 *
-	 * @return all selected items on this layer.
+	 * @return all selected items.
 	 */
-	public Vector<AItem> getSelectedItems() {
+	public ArrayList<AItem> getSelectedItems() {
 
-		Vector<AItem> selitems = null;
+		ArrayList<AItem> selitems = null;
 
 		synchronized (this) {
 			for (IDrawable drawable : this) {
 				if (((AItem) drawable).isSelected() && ((AItem) drawable).isVisible()) {
 					if (selitems == null) {
-						selitems = new Vector<>(25, 10);
+						selitems = new ArrayList<>(25);
 					}
 					selitems.add((AItem) drawable);
 				}
@@ -245,16 +241,16 @@ public class ItemList extends DrawableList {
 	}
 
 	/**
-	 * Get all the items into a vector All the items on this layer
+	 * Get all the items into a collection
 	 */
-	public Vector<AItem> getAllItems() {
+	public ArrayList<AItem> getAllItems() {
 
-		Vector<AItem> allitems = null;
+		ArrayList<AItem> allitems = null;
 
 		synchronized (this) {
 			for (IDrawable drawable : this) {
 				if (allitems == null) {
-					allitems = new Vector<>(25, 10);
+					allitems = new ArrayList<>(25);
 				}
 				allitems.add((AItem) drawable);
 
@@ -319,10 +315,10 @@ public class ItemList extends DrawableList {
 	 * Add all the enclosed items to a collection
 	 *
 	 * @param container the container being rendered.
-	 * @param items     the vector we are adding to.
+	 * @param items     the collection we are adding to.
 	 * @param rect      the enclosing rectangle.
 	 */
-	public void addEnclosedItems(IContainer container, Vector<AItem> items, Rectangle rect) {
+	public void addEnclosedItems(IContainer container, ArrayList<AItem> items, Rectangle rect) {
 
 		synchronized (this) {
 			if (size() > 0) {
@@ -337,11 +333,11 @@ public class ItemList extends DrawableList {
 	 * @param container the container being rendered.
 	 * @param rect      the rectangle in question.
 	 */
-	public Vector<AItem> getEnclosedItems(IContainer container, Rectangle rect) {
+	public ArrayList<AItem> getEnclosedItems(IContainer container, Rectangle rect) {
 
 		synchronized (this) {
 			if (size() > 0) {
-				Vector<AItem> encitems = new Vector<>(25);
+				ArrayList<AItem> encitems = new ArrayList<>(25);
 				for (IDrawable drawable : this) {
 					if (drawable instanceof AItem) {
 						AItem item = (AItem) drawable;
@@ -357,9 +353,9 @@ public class ItemList extends DrawableList {
 	}
 
 	/**
-	 * Get the container for this layer.
+	 * Get the container for this list.
 	 *
-	 * @return the container for this layer.
+	 * @return the container.
 	 */
 	public IContainer getContainer() {
 		return _container;

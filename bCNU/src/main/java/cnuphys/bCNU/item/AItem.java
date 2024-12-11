@@ -15,8 +15,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
@@ -96,7 +96,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 * selected, rotated and resized separately. When an item is deleted, all
 	 * descendants are deleted too, but not ancestors. Just like deleted a folder.
 	 */
-	protected Vector<AItem> _children;
+	protected ArrayList<AItem> _children;
 
 	/**
 	 * The style for this item.
@@ -984,7 +984,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 *
 	 * @return the children of this item.
 	 */
-	public Vector<AItem> getChildren() {
+	public ArrayList<AItem> getChildren() {
 		return _children;
 	}
 
@@ -1012,7 +1012,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	public void addChild(AItem child) {
 		if (child != null) {
 			if (_children == null) {
-				_children = new Vector<>(10);
+				_children = new ArrayList<>(10);
 			}
 			child.setParent(this);
 			_children.add(child);
@@ -1025,22 +1025,22 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 */
 	@SuppressWarnings("unchecked")
 	public void deleteAllChildren() {
-		if (_children == null) {
-			return;
-		}
+	    if (_children == null || _children.isEmpty()) {
+	        return;
+	    }
 
-		// use clone to avoid concurrency exception
-		Vector<AItem> clone = (Vector<AItem>) _children.clone();
+	    // Iterate over a shallow copy to prevent concurrency issues
+	    for (IDrawable drawable : new ArrayList<>(_children)) {
+	        if (drawable instanceof AItem item) {
+	            ItemList itemList = item.getItemList();
+	            if (itemList != null) {
+	                itemList.remove(item);
+	            }
+	        }
+	    }
 
-		for (IDrawable drawable : clone) {
-			AItem item = (AItem) drawable;
-			if (item != null) {
-				item.getItemList().remove(item);
-			}
-		}
-
-		_children = null;
-	}
+	    _children.clear();
+	   }
 
 	/**
 	 * Called when the drawable is about to be removed from a layer.
@@ -1069,7 +1069,7 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 * @param item the item in question
 	 * @param v    the vector, which should be instantiated.
 	 */
-	private static void addDescendants(AItem item, Vector<AItem> v) {
+	private static void addDescendants(AItem item, ArrayList<AItem> v) {
 		if (item.getChildren() != null) {
 			for (AItem child : item.getChildren()) {
 				v.add(child);
@@ -1084,12 +1084,12 @@ public abstract class AItem implements IDrawable, IFeedbackProvider {
 	 *
 	 * @return all descendants of all generations of this item.
 	 */
-	public Vector<AItem> getAllDescendants() {
+	public ArrayList<AItem> getAllDescendants() {
 		if (_children == null) {
 			return null;
 		}
 
-		Vector<AItem> allDescendents = new Vector<>(25, 5);
+		ArrayList<AItem> allDescendents = new ArrayList<>(25);
 		AItem.addDescendants(this, allDescendents);
 		return allDescendents;
 

@@ -73,7 +73,10 @@ public class DCLayer {
 
 	//workspace
 
-
+/**
+ * Create a DC layer from an alert DC layer
+ * @param geoAlertDCLayer the geoDatabase object
+ */
 	public DCLayer(AlertDCLayer geoAlertDCLayer) {
 		sector = geoAlertDCLayer.getSectorId();
 		superlayer = geoAlertDCLayer.getSuperlayerId();
@@ -90,11 +93,11 @@ public class DCLayer {
 		for (AlertDCWire aw : wireList) {
 			wires[index] = aw.getLine();
 
-			Point3D p3d = aw.getMidpoint();
-			midpoints[index] = new Point2D.Double(p3d.x(), p3d.y());
-
-//			double theta = Math.atan2(midpoints[index].y, midpoints[index].x);
-//			System.out.println("wire " + index + "   theta: " + Math.toDegrees(theta));
+			Point3D start = wires[index].origin();
+			Point3D end = wires[index].end();
+			Point3D midpoint = aw.getMidpoint();
+			
+			midpoints[index] = new Point2D.Double(midpoint.x(), midpoint.y());
 
 			index++;
 		}
@@ -187,19 +190,34 @@ public class DCLayer {
 		double rad = Math.hypot(wp.x, wp.y);
 		return (rad > innerMidPointRadius) && (rad < outerMidPointRadius);
 	}
+	
+	/**
+	 * Point contained by the wire oval?
+	 * @param wire the 0-based wire id
+	 * @param wp the world point
+	 * @return true if contained
+	 */
+	public boolean wireContainsXY(int wire, Point2D.Double wp) {
+		if ((wire < 0) || (wire >= numWires)) {
+			return false;
+		}
+		return _wr[wire].contains(wp);
+	}
 
 	/**
 	 * Basic fb string for XY view
 	 * @param feedbackStrings list to add to
 	 */
 	public void feedbackXYString(Point pp, Point2D.Double wp, List<String> feedbackStrings) {
-		feedbackStrings.add(
-				String.format("AlertDC sector: %d superlayer: %d layer: %d", sector + 1, superlayer + 1, layer + 1));
+		feedbackStrings.add(String.format("AlertDC sector: %d", sector + 1));
+		feedbackStrings.add(String.format("AlertDC superlayer: %d", superlayer + 1));
+		feedbackStrings.add(String.format("AlertDC layer: %d", layer + 1));
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {
 				if (_wr[wire].contains(wp)) {
 					feedbackStrings.add(String.format("AlertDC wire: %d", wire + 1));
+					break;
 				}
 			}
 		}
@@ -246,9 +264,13 @@ public class DCLayer {
 		g.setColor(fc);
 		g.drawLine(pp0.x-1, pp0.y, pp1.x+1, pp1.y);
 
-
 	}
 
+	/**
+	 * Draw the wires
+	 * @param g the graphics object
+	 * @param container the drawing container
+	 */
 	public void drawXYWires(Graphics g, IContainer container) {
 
 		for (int wire = 0; wire < numWires; wire++) {
@@ -256,14 +278,32 @@ public class DCLayer {
 		}
 	}
 
+	/**
+	 * Draw a wire
+	 * 
+	 * @param g         the graphics object
+	 * @param container the drawing container
+	 * @param wire      the 0-based wire id (data is 1-based!)
+	 */
 	public void drawXYWire(Graphics g, IContainer container, int wire) {
+		drawXYWire(g, container, wire, wireFill, Color.darkGray);
+	}
+	
+	/**
+	 * Draw a wire
+	 * 
+	 * @param g         the graphics object
+	 * @param container the drawing container
+	 * @param wire      the 0-based wire id (data is 1-based!)
+	 * @param fc        the fill color
+	 * @param lc        the line color
+	 */
+	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc) {
 		if (numWires < 1) {
 			return;
 		}
 
-		WorldGraphicsUtilities.drawWorldOval(g, container, _wr[wire], wireFill, Color.darkGray);
+		WorldGraphicsUtilities.drawWorldOval(g, container, _wr[wire], fc, lc);
 	}
-
-
 
 }

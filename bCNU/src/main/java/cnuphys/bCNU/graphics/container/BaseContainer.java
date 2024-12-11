@@ -18,8 +18,8 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 
@@ -553,13 +553,13 @@ public class BaseContainer extends JComponent
 	 * {@inheritDoc}
      */
 	@Override
-	public Vector<AItem> getEnclosedItems(Rectangle rect) {
+	public ArrayList<AItem> getEnclosedItems(Rectangle rect) {
 
 		if (rect == null) {
 			return null;
 		}
 
-		Vector<AItem> items = new Vector<>(25);
+		ArrayList<AItem> items = new ArrayList<>(25);
 		for (IDrawable drawable : _itemLists) {
 			((ItemList) drawable).addEnclosedItems(this, items, rect);
 		}
@@ -570,8 +570,8 @@ public class BaseContainer extends JComponent
 	 * {@inheritDoc}
      */
 	@Override
-	public Vector<AItem> getItemsAtPoint(Point lp) {
-		Vector<AItem> items = new Vector<>(25, 10);
+	public ArrayList<AItem> getItemsAtPoint(Point lp) {
+		ArrayList<AItem> items = new ArrayList<>(25);
 
 		if (_itemLists != null) {
 			for (int i = _itemLists.size() - 1; i >= 0; i--) {
