@@ -58,17 +58,26 @@ public class AlertDCHitDrawer {
 					byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 					byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
 
+					ADCGeometryNumbering adcGeom = new ADCGeometryNumbering();
+
 					for (int i = 0; i < count; i++) {
-						int superlayer = compLayer[i] / 10;
-						int layer = compLayer[i] % 10;
-						DCLayer dcl = AlertGeometry.getDCLayer(sector[i] - 1, superlayer - 1, layer - 1);
-						dcl.drawXYWire(g, container, component[i] - 1, Color.red, Color.black);
+						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i]);
+						DCLayer dcl = AlertGeometry.getDCLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
+						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.black);
 					}
 				}
 			}
 		}
 	}
 
+	/**
+	 * Get feedback strings for a hit
+	 * @param container the container 
+	 * @param pp the pixel point
+	 * @param wp the world point
+	 * @param dcl the DC layer
+	 * @param feedbackStrings the list of feedback strings to add to
+	 */
 	public void getHitFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, DCLayer dcl,
 			List<String> feedbackStrings) {
 
@@ -87,13 +96,14 @@ public class AlertDCHitDrawer {
 			if (count > 0) {
 				byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 				byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
+				
+				ADCGeometryNumbering adcGeom = new ADCGeometryNumbering();
 
 				for (int i = 0; i < count; i++) {
+					
+					adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i]);
 
-					int sect = sector[i] - 1;
-					int superlayer = compLayer[i] / 10 - 1;
-					int layer = compLayer[i] % 10 - 1;
-					if ((sect == dcl.sector) && (superlayer == dcl.superlayer) && (layer == dcl.layer)) {
+					if (adcGeom.match(dcl)) {
 						if (dcl.wireContainsXY(component[i] - 1, wp)) {
 							String bankName = "AHDC::adc";
 							AlertFeedbackSupport.handleInt(bankName, "ADC", i, "$orange$", feedbackStrings);
