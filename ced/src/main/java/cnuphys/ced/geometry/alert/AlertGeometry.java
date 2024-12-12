@@ -7,6 +7,7 @@ import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Hashtable;
+import java.util.List;
 
 import org.jlab.detector.calib.utils.DatabaseConstantProvider;
 import org.jlab.geom.component.ScintillatorPaddle;
@@ -14,6 +15,7 @@ import org.jlab.geom.detector.alert.AHDC.AlertDCDetector;
 import org.jlab.geom.detector.alert.AHDC.AlertDCFactory;
 import org.jlab.geom.detector.alert.ATOF.AlertTOFDetector;
 import org.jlab.geom.detector.alert.ATOF.AlertTOFFactory;
+import org.jlab.geom.detector.alert.ATOF.AlertTOFLayer;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.logging.DefaultLogger;
 
@@ -23,6 +25,9 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.frame.Ced;
 
 public class AlertGeometry {
+	
+	//for debugging
+	private static boolean _debug = false;
 
 	// the name of the detector
 	public static String NAME = "ALERT";
@@ -41,7 +46,7 @@ public class AlertGeometry {
 
 
 	/**
-	 * Init the uRwell geometry
+	 * Init the Alert geometry
 	 */
 	public static void initialize() {
 		System.out.println("\n=======================================");
@@ -55,6 +60,19 @@ public class AlertGeometry {
 		initializeTOF(cp);
 
 	}
+	
+	private static void debugPrint(String s, int option) {
+		if (_debug) {
+			if (option == 0) {
+				System.out.println("ALERT_DC  " + s);
+			} else if (option == 1){
+				System.out.println("ALERT_TOF " + s);
+			}
+			else {
+				System.out.println(s);
+			}
+		}
+	}
 
 	// init the drift chambers
 	private static void initializeDC(DatabaseConstantProvider cp) {
@@ -63,17 +81,28 @@ public class AlertGeometry {
 		AlertDCDetector dcCLASDetector = dcFactory.createDetectorCLAS(cp);
 
 		int numsect = dcCLASDetector.getNumSectors();
+		
+		debugPrint(String.format("numsect: %d", numsect), 0);
+		
 		for (int sect = 0; sect < numsect; sect++) {
+			debugPrint("", 2);
+			debugPrint(String.format("  for sect: %d", sect), 0);
+			
 			int numsupl = dcFactory.createSector(cp, sect).getNumSuperlayers();
+			
+			debugPrint(String.format("  numsuperlayer: %d", numsupl), 0);
 			for (int superlayer = 0; superlayer < numsupl; superlayer++) {
+				debugPrint(String.format("    for superlayer: %d", superlayer), 0);
 				int numlay = dcFactory.createSuperlayer(cp, sect, superlayer).getNumLayers();
+				debugPrint(String.format("    numlayer: %d", numlay), 0);
+
 				for (int layer = 0; layer < numlay; layer++) {
 					DCLayer dcLayer = new DCLayer(dcFactory.createLayer(cp, sect, superlayer, layer));
 					_dcLayers.put(hash(sect, superlayer, layer), dcLayer);
 				}
 			}
 		}
-
+		debugPrint("", 2);
 
 	}
 
@@ -84,15 +113,40 @@ public class AlertGeometry {
 		AlertTOFDetector tofCLASDetector = tofFactory.createDetectorCLAS(cp);
 
 		int numsect = tofCLASDetector.getNumSectors();
+		
+		debugPrint(String.format("numsect: %d", numsect), 1);
+		
 		for (int sect = 0; sect < numsect; sect++) {
+			debugPrint("", 2);
+			debugPrint(String.format("  for sect: %d", sect), 1);
 			int numsupl = tofFactory.createSector(cp, sect).getNumSuperlayers();
+			debugPrint(String.format("  numsuperlayer: %d", numsupl), 1);
+
 			for (int superlayer = 0; superlayer < numsupl; superlayer++) {
+				debugPrint(String.format("    for superlayer: %d", superlayer), 1);
+
 				int numlay = tofFactory.createSuperlayer(cp, sect, superlayer).getNumLayers();
-
-
+				debugPrint(String.format("    numlayer: %d", numlay), 1);
 
 				for (int layer = 0; layer < numlay; layer++) {
+					debugPrint(String.format("      for layer: %d", layer), 1);
+					
+					AlertTOFLayer alertTOFLayer = tofFactory.createLayer(cp, sect, superlayer, layer);
 					TOFLayer tofLayer = new TOFLayer(tofFactory.createLayer(cp, sect, superlayer, layer));
+					
+					int numpaddle = alertTOFLayer.getNumComponents();
+					debugPrint(String.format("      numpaddle: %d", numpaddle), 1);
+					
+					if (_debug) {
+					   List<ScintillatorPaddle> paddles = alertTOFLayer.getAllComponents();
+					   System.out.print("      numpaddle: " + numpaddle + " with ids: ");
+						for (int i = 0; i < numpaddle; i++) {
+							System.out.print(paddles.get(i).getComponentId() + " ");
+						}
+						System.out.println();
+					}
+
+
 					_tofLayers.put(hash(sect, superlayer, layer), tofLayer);
 				}
 			}
@@ -218,6 +272,7 @@ public class AlertGeometry {
 	}
 
 	public static void main(String[] arg) {
+		_debug = true;
 		// this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 

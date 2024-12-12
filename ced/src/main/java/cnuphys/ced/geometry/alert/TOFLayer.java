@@ -19,7 +19,7 @@ import cnuphys.lund.X11Colors;
 
 public class TOFLayer {
 
-	private static Color[] fillColors = {X11Colors.getX11Color("Cornsilk"), X11Colors.getX11Color("Blanched Almond")};
+	private static Color[] fillColors = {X11Colors.getX11Color("Cornsilk"), X11Colors.getX11Color("Light Cyan")};
 
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
@@ -82,6 +82,12 @@ public class TOFLayer {
 			}
 			else {
 				fc = fillColors[layer%2];
+				if (sector % 3 == 1) {
+					fc = fc.darker();
+				}
+				if (sector % 3 == 2) {
+					fc = fc.brighter();
+				}
 			}
 			drawPaddle(g, container, paddle, fc, Color.black);
 		}
