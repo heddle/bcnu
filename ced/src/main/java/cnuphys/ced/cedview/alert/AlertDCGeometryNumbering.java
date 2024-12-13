@@ -2,7 +2,7 @@ package cnuphys.ced.cedview.alert;
 
 import cnuphys.ced.geometry.alert.DCLayer;
 
-public class ADCGeometryNumbering  {
+public class AlertDCGeometryNumbering  {
 	
 	public int sector;  //0-based
 	public int superlayer; //0-based
@@ -11,10 +11,9 @@ public class ADCGeometryNumbering  {
 
 
 	/**
-	 * Create a geometry numbering
+	 * Create an Alert DC geometry numbering
 	 */
-	public ADCGeometryNumbering() {
-		// TODO Auto-generated constructor stub
+	public AlertDCGeometryNumbering() {
 	}
 
 	/**
@@ -22,13 +21,14 @@ public class ADCGeometryNumbering  {
 	 * @param sect the 1-based sector
 	 * @param compLayer the 1-based layer
 	 * @param comp the 1-based component (wire)
+	 * @param order 
 	 */
-	public void fromDataNumbering(int sect, int compLayer, int comp) {
+	public void fromDataNumbering(int sect, int compLayer, int comp, int order) {
 
 		sector = sect-1;
 
 		int sl1 = compLayer / 10;
-		int lay1 =compLayer % 10;
+		int lay1 = compLayer % 10;
 
 		superlayer = sl1 - 1;
 		layer = lay1 - 1;

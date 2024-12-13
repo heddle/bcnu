@@ -1,7 +1,6 @@
 package cnuphys.ced.cedview.alert;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -11,8 +10,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 
-import org.jlab.io.base.DataEvent;
-
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -20,11 +17,9 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
-import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.alert.AlertGeometry;
@@ -42,17 +37,17 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	private static final String _baseTitle = "ALERT XY";
 
 	// units are mm
-	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(120, -120, -240, 240);
+	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-120, -120, 240, 240);
 
 	// bank matches
 	private static String _defMatches[] = { "AHDC", "ATOF" };
-	
+
 	// used to draw swum trajectories (if any) in the after drawer
 	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
-	
+
 	//draw hits in the DC
 	private AlertDCHitDrawer _dcHitDrawer;
-	
+
 	//draw hits in the TOF
 	private AlertTOFHitDrawer _tofHitDrawer;
 
@@ -102,7 +97,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
-		
+
 		// i.e. if none were in the properties
 		if (view.hasNoBankMatches()) {
 			view.setBankMatches(_defMatches);
@@ -126,7 +121,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 					drawWires(g, container);
 					drawPaddles(g, container);
 
-					AlertGeometry.drawTOFSectorOutlines(g, container);
+					AlertGeometry.drawAlertTOFSectorOutlines(g, container);
 				}
 			}
 
@@ -137,6 +132,8 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 	@Override
 	protected void setAfterDraw() {
+		final AlertXYView view = this;
+
 		IDrawable afterDraw = new DrawableAdapter() {
 
 			@Override
@@ -144,17 +141,18 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 				if (!_eventManager.isAccumulating()) {
 
-					Rectangle screenRect = getActiveScreenRectangle(container);
-					
-					_dcHitDrawer.drawHits(g, container);
-					_tofHitDrawer.drawHits(g, container);
-					
-					
-					//overlay trajectories
-					_swimTrajectoryDrawer.draw(g, container);
+					if (view.isSingleEventMode()) {
+						drawSingleModeHits(g, container);
+					}
 
-					drawAxes(g, container, screenRect, false);
+					else {
+						drawAccumulatedHits(g, container);
+					}
 				}
+
+				Rectangle screenRect = getActiveScreenRectangle(container);
+				drawAxes(g, container, screenRect, false);
+
 			}
 
 		};
@@ -162,15 +160,26 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		getContainer().setAfterDraw(afterDraw);
 	}
 
+	private void drawSingleModeHits(Graphics g, IContainer container) {
+		_dcHitDrawer.drawHits(g, container);
+		_tofHitDrawer.drawHits(g, container);
+
+		//overlay trajectories
+		_swimTrajectoryDrawer.draw(g, container);
+
+	}
+
+	private void drawAccumulatedHits(Graphics g, IContainer container) {
+		_dcHitDrawer.drawAccumulatedHits(g, container);
+		_tofHitDrawer.drawAccumulatedHits(g, container);
+
+	}
+
+
 	@Override
 	protected void addItems() {
 	}
-	
 
-	
-	//draw the TOF hits
-	private void drawTOFHits(Graphics g, IContainer container, DataEvent dataEvent) {
-	}
 
 	//draw the dc wires
 	private void drawWires(Graphics g, IContainer container) {
@@ -209,11 +218,11 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		}
 
 	}
-	
+
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
 	 * the view)
-	 * 
+	 *
 	 * @param x  the CLAS12 x coordinate
 	 * @param y  the CLAS12 y coordinate
 	 * @param z  the CLAS12 z coordinate
@@ -224,7 +233,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		wp.x = x;
 		wp.y = y;
 	}
-	
+
 
 	/**
 	 * Clone the view.
@@ -289,11 +298,12 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		for (TOFLayer tof : tofLayers) {
 			if (tof.feedbackXYString(pp, wp, feedbackStrings)) {
+				_tofHitDrawer.getHitFeedbackStrings(container, pp, wp, tof, feedbackStrings);
 				return;
 			}
 
 		}
-		
+
 	}
 
 }

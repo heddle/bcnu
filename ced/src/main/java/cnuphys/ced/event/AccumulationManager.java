@@ -4,9 +4,11 @@ import java.awt.Color;
 
 import javax.swing.event.EventListenerList;
 
+import org.jlab.geom.component.ScintillatorPaddle;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.bst.BSTADCData;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
@@ -18,6 +20,8 @@ import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
 import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
+import cnuphys.ced.cedview.alert.AlertDCGeometryNumbering;
+import cnuphys.ced.cedview.alert.AlertTOFGeometryNumbering;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
@@ -26,6 +30,8 @@ import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.geometry.PCALGeometry;
+import cnuphys.ced.geometry.alert.AlertGeometry;
+import cnuphys.ced.geometry.alert.TOFLayer;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 /**
@@ -51,6 +57,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// common colorscale
 	public static ColorScaleModel colorScaleModel = new ColorScaleModel(getAccumulationValues(),
 			ColorScaleModel.getSimpleMapColors(8));
+	
+	//data warehouse used for some acccumulations
+	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
+
 
 	// the singleton
 	private static AccumulationManager instance;
@@ -82,6 +92,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// CTOF accumulated data
 	private int _CTOFAccumulatedData[];
+	
+	//ALERT DC accumulated data sector [0..0] superlay [0..4] lay [0..1] wire [0..99]
+	private int _AlertDCAccumulatedData[][][][];
 
 	// FTOF accumulated Data
 	private int _FTOF1AAccumulatedData[][];
@@ -129,6 +142,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		addAccumulationListener(this);
 		_eventManager.addClasIoEventListener(this, 1);
 
+		//Alert DC data
+		_AlertDCAccumulatedData = new int[1][5][2][100];
+		
 		// FTCAL data
 		_FTCALAccumulatedData = new int[476];
 
@@ -187,6 +203,17 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	@Override
 	public void clear() {
 		_eventCount = 0;
+		
+		//clear alert dc
+		for (int i = 0; i < _AlertDCAccumulatedData.length; i++) {
+			for (int j = 0; j < _AlertDCAccumulatedData[i].length; j++) {
+				for (int k = 0; k < _AlertDCAccumulatedData[i][j].length; k++) {
+					for (int l = 0; l < _AlertDCAccumulatedData[i][j][k].length; l++) {
+						_AlertDCAccumulatedData[i][j][k][l] = 0;
+					}
+				}
+			}
+		}
 
 		// clear ftcal
 		for (int i = 0; i < _FTCALAccumulatedData.length; i++) {
@@ -304,6 +331,14 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
+	 * Get the ALERT DC accumulated data
+	 * @return the accumulated alert dc data
+	 */
+	public int[][][][] getAccumulatedAlertDCData() {
+		return _AlertDCAccumulatedData;
+	}
+	
+	/**
 	 * Get the accumulated CTOF data
 	 *
 	 * @return the accumulated FTCAL data
@@ -385,6 +420,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 */
 	public int[][][][] getAccumulatedDCData() {
 		return _DCAccumulatedData;
+	}
+	
+	public int getMaxAlertDCCount() {
+		return getMax(_AlertDCAccumulatedData);
 	}
 
 	// // BST accumulated data (layer[0..7], sector[0..23])
@@ -626,6 +665,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 
 		_eventCount++;
+		
+		// Alert DC data
+		accumAlertDC();
 
 		// FTCal Data
 		accumFTCAL();
@@ -659,6 +701,32 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		// BST
 		accumBST();
+
+	}
+
+	private void accumAlertDC() {
+		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
+
+		if (dataEvent.hasBank("ATOF::adc")) {
+
+			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
+			if (component != null) {
+				int count = component.length;
+				if (count > 0) {
+					byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
+					byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
+					byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
+
+					AlertDCGeometryNumbering adcGeom = new AlertDCGeometryNumbering();
+
+					for (int i = 0; i < count; i++) {
+						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
+						_AlertDCAccumulatedData[0][adcGeom.superlayer][adcGeom.layer][adcGeom.component] += 1;
+					}
+				}
+
+			}
+		}
 
 	}
 

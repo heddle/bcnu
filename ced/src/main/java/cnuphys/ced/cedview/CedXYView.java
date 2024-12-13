@@ -89,9 +89,12 @@ public abstract class CedXYView extends CedView {
 
 		g.setColor(Color.black);
 		g.drawRect(sr.x, sr.y, sr.width, sr.height);
+		
 
 		// x values
 		double del = wr.width / 40.;
+		boolean xToLeft = (del < 0);
+		
 		wp.y = wr.y;
 		int bottom = sr.y + sr.height;
 		for (int i = 1; i <= 40; i++) {
@@ -161,19 +164,28 @@ public abstract class CedXYView extends CedView {
 		g.setColor(TRANS1);
 		g.fillRect(r.x, r.y, r.width, r.height);
 
-		g.setColor(X11Colors.getX11Color("dark red"));
-		g.drawLine(left, bottom, right, bottom);
-//		g.drawLine(left, bottom, left, top);
-		g.drawLine(right, bottom, right, top);
-
-		g.drawString("y", right + 3, top + fm.getHeight() / 2 - 1);
-		g.drawString("x", left - fm.stringWidth("x") - 2, bottom + fm.getHeight() / 2);
-//		g.drawString("y", left - fm.stringWidth("y") - 2, top + fm.getHeight() / 2 - 1);
-//		g.drawString("x", right+3,
-//				bottom + fm.getHeight() / 2);
+		if (xToLeft) {
+			g.setColor(X11Colors.getX11Color("dark red"));
+			g.drawLine(left, bottom, right, bottom);
+			g.drawLine(right, bottom, right, top);
+			g.drawString("y", right + 3, top + fm.getHeight() / 2 - 1);
+			g.drawString("x", left - fm.stringWidth("x") - 2, bottom + fm.getHeight() / 2);
+		}
+		else {
+			g.setColor(X11Colors.getX11Color("dark blue"));
+			g.drawLine(left, bottom, right, bottom);
+			g.drawLine(left, bottom, left, top);
+			g.drawString("y", left - fm.stringWidth("y") - 2, top + fm.getHeight() / 2 - 1);
+			g.drawString("x", right - fm.stringWidth("x") + 2, bottom + fm.getHeight() / 2 + 1);
+		}
 
 	}
 
+	/**
+	 * Get a double value as a string
+	 * @param val the value
+	 * @return the string
+	 */
 	protected String valueString(double val) {
 		if (Math.abs(val) < 1.0e-3) {
 			return "0";

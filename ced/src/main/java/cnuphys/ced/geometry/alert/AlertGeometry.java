@@ -19,6 +19,7 @@ import org.jlab.geom.detector.alert.ATOF.AlertTOFLayer;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.logging.DefaultLogger;
 
+import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.ced.cedview.CedView;
@@ -41,9 +42,6 @@ public class AlertGeometry {
 	//sector boundaries for XY view
 	//there are 1 sectors
 	public static Point2D.Double tofSectorXY[][] = new Point2D.Double[15][16];
-
-	private static Color[] sectFill = {new Color(255, 0, 0, 10), new Color(0, 255, 0, 10), new Color(0, 0, 255, 10)};
-
 
 	/**
 	 * Init the Alert geometry
@@ -190,30 +188,29 @@ public class AlertGeometry {
 	 * @param g the graphics context
 	 * @param container the conyainer
 	 */
-	public static void drawTOFSectorOutlines(Graphics g, IContainer container) {
+	public static void drawAlertTOFSectorOutlines(Graphics g, IContainer container) {
 
-		Point pp =new Point();
-		Polygon poly = new Polygon();
-		g.setFont(Fonts.hugeFont);
+		
+		Point[] anchorPP = new Point[15];
+		
 		for (int sect = 0; sect < 15; sect++) {
-			poly.reset();
-			for (int index = 0; index < 16; index++) {
-				container.worldToLocal(pp, tofSectorXY[sect][index]);
-				poly.addPoint(pp.x, pp.y);
-
-			}
-
-			g.setColor(sectFill[sect%3]);
-			g.fillPolygon(poly);
-			g.setColor(Color.black);
-			g.drawPolygon(poly);
-
 			Point2D.Double anchor = tofSectorXY[sect][11];
-			//drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Color color, Point2D.Double end,  boolean rotateText)
-			CedView.drawTextAtLineEnd(g, container, "" + (sect+1), Fonts.hugeFont, anchor);
+			anchorPP[sect] = new Point();		
+			container.worldToLocal(anchorPP[sect], anchor);
+		}
+		
+		//draw the sector numbers
+		g.setColor(Color.red);
+		for (int sect = 0; sect < 15; sect++) {
+			int oppSect = (sect + 7) % 15;
+			Point pp0 = anchorPP[sect];
+			Point pp1 = anchorPP[oppSect];
+			GraphicsUtilities.drawNumberAtEnd(g, (sect+1), pp1, pp0, 16, Fonts.hugeFont, Color.black);
 		}
 
 	}
+	
+	
 
 	public static Point2D.Double getCorner(ScintillatorPaddle paddle, int corner) {
 		Point3D p3d = paddle.getVolumePoint(corner);
@@ -270,6 +267,18 @@ public class AlertGeometry {
 	public static DCLayer getDCLayer(int sector, int superlayer, int layer) {
 		return _dcLayers.get(hash(sector, superlayer, layer));
 	}
+	
+	/**
+     * Get the TOF layer
+     * @param sector 0 based
+     * @param superlayer 0 based
+     * @param layer 0 based
+     * @return the DC layer
+     */
+	public static TOFLayer getTOFLayer(int sector, int superlayer, int layer) {
+		return _tofLayers.get(hash(sector, superlayer, layer));
+	}
+
 
 	public static void main(String[] arg) {
 		_debug = true;

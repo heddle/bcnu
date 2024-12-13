@@ -111,6 +111,10 @@ public class TOFLayer {
 
 	}
 
+	public boolean paddleContains(ScintillatorPaddle paddle, Point pp) {
+		Polygon poly = polyhash.get(paddle);
+		return (poly != null) && poly.contains(pp);
+	}
 
 	public  void drawPaddle(Graphics g, IContainer container, ScintillatorPaddle paddle, Color fillColor, Color lineColor) {
 
@@ -178,8 +182,10 @@ public class TOFLayer {
 			Polygon poly = polyhash.get(paddle);
 
 			if ((poly != null) && poly.contains(pp)) {
-				feedbackStrings.add(String.format("AlertTOF sector: %d superlayer: %d layer: %d", sector + 1, superlayer + 1, layer + 1));
-				feedbackStrings.add(String.format("AlertTOF paddle: %d", paddle.getComponentId()+1));
+				feedbackStrings.add(String.format("AlertTOF GeoDB sector: %d", sector + 1));
+				feedbackStrings.add(String.format("AlertTOF GeoDB superlayer: %d", superlayer + 1));
+				feedbackStrings.add(String.format("AlertTOF GeoDB layer: %d", layer + 1));
+				feedbackStrings.add(String.format("AlertTOF GeoDB paddle: %d", paddle.getComponentId()+1));
 				return true;
 			}
 		}

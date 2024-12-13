@@ -209,9 +209,9 @@ public class DCLayer {
 	 * @param feedbackStrings list to add to
 	 */
 	public void feedbackXYString(Point pp, Point2D.Double wp, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("AlertDC sector: %d", sector + 1));
-		feedbackStrings.add(String.format("AlertDC superlayer: %d", superlayer + 1));
-		feedbackStrings.add(String.format("AlertDC layer: %d", layer + 1));
+		feedbackStrings.add(String.format("AlertDC GeoDB sector: %d", sector + 1));
+		feedbackStrings.add(String.format("AlertDC GeoDB superlayer: %d", superlayer + 1));
+		feedbackStrings.add(String.format("AlertDC GeoDB layer: %d", layer + 1));
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {

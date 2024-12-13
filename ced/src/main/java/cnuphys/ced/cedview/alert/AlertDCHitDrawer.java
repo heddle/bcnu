@@ -49,7 +49,12 @@ public class AlertDCHitDrawer {
 
 	// draw the DC hits
 	private void drawDCHits(Graphics g, IContainer container, DataEvent dataEvent) {
-		if (dataEvent.hasBank("AHDC::adc")) {
+		
+		if (ClasIoEventManager.getInstance().isAccumulating()) {
+			return;
+		}
+
+		if (dataEvent.hasBank("AHDC::adc") && _view.showADCHits()) {
 
 			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
 			if (component != null) {
@@ -57,17 +62,31 @@ public class AlertDCHitDrawer {
 				if (count > 0) {
 					byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 					byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
+					byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
 
-					ADCGeometryNumbering adcGeom = new ADCGeometryNumbering();
+					AlertDCGeometryNumbering adcGeom = new AlertDCGeometryNumbering();
 
 					for (int i = 0; i < count; i++) {
-						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i]);
+						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
 						DCLayer dcl = AlertGeometry.getDCLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
+						if (dcl == null) {
+							System.err.println("DC layer not found for sector " + adcGeom.sector + ", superlayer "
+									+ adcGeom.superlayer + ", layer " + adcGeom.layer);
+							continue;
+						}
 						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.black);
 					}
 				}
 			}
 		}
+	}
+	
+	/**
+	 * Draw the accumulated hits
+	 * @param g
+	 * @param container
+	 */
+	public void drawAccumulatedHits(Graphics g, IContainer container) {
 	}
 
 	/**
@@ -80,6 +99,11 @@ public class AlertDCHitDrawer {
 	 */
 	public void getHitFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, DCLayer dcl,
 			List<String> feedbackStrings) {
+		
+		if (ClasIoEventManager.getInstance().isAccumulating() || _view.isAccumulatedMode()) {
+			return;
+		}
+
 
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 		if (dataEvent == null) {
@@ -96,12 +120,13 @@ public class AlertDCHitDrawer {
 			if (count > 0) {
 				byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 				byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
+				byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
 				
-				ADCGeometryNumbering adcGeom = new ADCGeometryNumbering();
+				AlertDCGeometryNumbering adcGeom = new AlertDCGeometryNumbering();
 
 				for (int i = 0; i < count; i++) {
 					
-					adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i]);
+					adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
 
 					if (adcGeom.match(dcl)) {
 						if (dcl.wireContainsXY(component[i] - 1, wp)) {
