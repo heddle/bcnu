@@ -18,13 +18,15 @@ public class AlertDCGeometryNumbering  {
 
 	/**
 	 * Set the geometry numbering from a data numbering
-	 * @param sect the 1-based sector
-	 * @param compLayer the 1-based layer
-	 * @param comp the 1-based component (wire)
-	 * @param order 
+	 * @param sect the 1-based sector in the ALERT hipo data
+	 * @param compLayer the 1-based layer in the ALERT hipo data
+	 * @param comp the 1-based component (wire or paddle) in the ALERT hipo data
+	 * @param order in the ALERT hipo data
 	 */
 	public void fromDataNumbering(int sect, int compLayer, int comp, int order) {
 
+		//convert to 0-based sector, superlayer, layer component for the 
+		// geometry database numbering
 		sector = sect-1;
 
 		int sl1 = compLayer / 10;

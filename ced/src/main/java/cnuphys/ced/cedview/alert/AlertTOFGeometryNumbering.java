@@ -35,7 +35,6 @@ public class AlertTOFGeometryNumbering {
 		
 		//edge case of 30
 		if (lay1 == 0) {
-			System.out.println("EDGE CASE compLayer: " + compLayer);
 			lay1 = 10;
 		}
 

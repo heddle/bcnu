@@ -4,7 +4,6 @@ import java.awt.Color;
 
 import javax.swing.event.EventListenerList;
 
-import org.jlab.geom.component.ScintillatorPaddle;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.colorscale.ColorScaleModel;
@@ -30,8 +29,6 @@ import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeoConstants;
 import cnuphys.ced.geometry.PCALGeometry;
-import cnuphys.ced.geometry.alert.AlertGeometry;
-import cnuphys.ced.geometry.alert.TOFLayer;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 
 /**
@@ -58,7 +55,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	public static ColorScaleModel colorScaleModel = new ColorScaleModel(getAccumulationValues(),
 			ColorScaleModel.getSimpleMapColors(8));
 	
-	//data warehouse used for some acccumulations
+	//data warehouse used for some accumulations
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 
@@ -95,6 +92,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	
 	//ALERT DC accumulated data sector [0..0] superlay [0..4] lay [0..1] wire [0..99]
 	private int _AlertDCAccumulatedData[][][][];
+	
+	//ALERT TOF accumulated data (superlayer 0) sector [0..14] lay [0..0] paddle [0..4]
+	private int _AlertTOFSL0AccumulatedData[][][];
+
+	//ALERT TOF accumulated data (superlayer 1) sector [0..14] lay [0..10] paddle [0..4]
+	private int _AlertTOFSL1AccumulatedData[][][];
 
 	// FTOF accumulated Data
 	private int _FTOF1AAccumulatedData[][];
@@ -142,8 +145,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		addAccumulationListener(this);
 		_eventManager.addClasIoEventListener(this, 1);
 
-		//Alert DC data
-		_AlertDCAccumulatedData = new int[1][5][2][100];
 		
 		// FTCAL data
 		_FTCALAccumulatedData = new int[476];
@@ -203,17 +204,42 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	@Override
 	public void clear() {
 		_eventCount = 0;
-		
-		//clear alert dc
-		for (int i = 0; i < _AlertDCAccumulatedData.length; i++) {
-			for (int j = 0; j < _AlertDCAccumulatedData[i].length; j++) {
-				for (int k = 0; k < _AlertDCAccumulatedData[i][j].length; k++) {
-					for (int l = 0; l < _AlertDCAccumulatedData[i][j][k].length; l++) {
-						_AlertDCAccumulatedData[i][j][k][l] = 0;
+
+		// clear alert dc
+		if (_AlertDCAccumulatedData != null) {
+			for (int i = 0; i < _AlertDCAccumulatedData.length; i++) {
+				for (int j = 0; j < _AlertDCAccumulatedData[i].length; j++) {
+					for (int k = 0; k < _AlertDCAccumulatedData[i][j].length; k++) {
+						for (int l = 0; l < _AlertDCAccumulatedData[i][j][k].length; l++) {
+							_AlertDCAccumulatedData[i][j][k][l] = 0;
+						}
 					}
 				}
 			}
 		}
+		
+		// clear alert tof superlayer 0
+		if (_AlertTOFSL0AccumulatedData != null) {
+			for (int i = 0; i < _AlertTOFSL0AccumulatedData.length; i++) {
+                for (int j = 0; j < _AlertTOFSL0AccumulatedData[i].length; j++) {
+                    for (int k = 0; k < _AlertTOFSL0AccumulatedData[i][j].length; k++) {
+                        _AlertTOFSL0AccumulatedData[i][j][k] = 0;
+                    }
+                }
+            }
+		}
+		
+		// clear alert tof superlayer 1
+		if (_AlertTOFSL1AccumulatedData != null) {
+			for (int i = 0; i < _AlertTOFSL1AccumulatedData.length; i++) {
+				for (int j = 0; j < _AlertTOFSL1AccumulatedData[i].length; j++) {
+					for (int k = 0; k < _AlertTOFSL1AccumulatedData[i][j].length; k++) {
+						_AlertTOFSL1AccumulatedData[i][j][k] = 0;
+					}
+				}
+			}
+		}
+
 
 		// clear ftcal
 		for (int i = 0; i < _FTCALAccumulatedData.length; i++) {
@@ -339,6 +365,23 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 	
 	/**
+	 * Get the ALERT TOF accumulated data for superlayer 0
+	 * @return the accumulated alert dc data
+	 */
+	public int[][][] getAccumulatedAlertTOFSL0Data() {
+		return _AlertTOFSL0AccumulatedData;
+	}
+	
+	/**
+	 * Get the ALERT TOF accumulated data for superlayer 1
+	 * 
+	 * @return the accumulated alert dc data
+	 */
+	public int[][][] getAccumulatedAlertTOFSL1Data() {
+		return _AlertTOFSL1AccumulatedData;
+	}
+	
+	/**
 	 * Get the accumulated CTOF data
 	 *
 	 * @return the accumulated FTCAL data
@@ -422,8 +465,31 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		return _DCAccumulatedData;
 	}
 	
+	/**
+	 * Get the max counts in the Alert DC data
+	 *
+	 * @return the max counts in the Alert DC data
+	 */
 	public int getMaxAlertDCCount() {
 		return getMax(_AlertDCAccumulatedData);
+	}
+	
+	/**
+	 * Get the max counts in the Alert TOF superlayer 0 data
+	 *
+	 * @return the max counts in the Alert TOF superlayer 0 data
+	 */
+	public int getMaxAlertTOFSL0Count() {
+		return getMax(_AlertTOFSL0AccumulatedData);
+	}
+	
+	/**
+	 * Get the max counts in the Alert TOF superlayer 1 data
+	 *
+	 * @return the max counts in the Alert TOF superlayer 1 data
+	 */
+	public int getMaxAlertTOFSL1Count() {
+		return getMax(_AlertTOFSL1AccumulatedData);
 	}
 
 	// // BST accumulated data (layer[0..7], sector[0..23])
@@ -669,6 +735,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		// Alert DC data
 		accumAlertDC();
 
+		// Alert TOF superlayer 0 data
+		accumAlertSL0TOF();
+		
+		//Alert TOF superlayer 1 data
+		accumAlertSL1TOF();
+
 		// FTCal Data
 		accumFTCAL();
 
@@ -704,10 +776,19 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	}
 
+	/**
+	 * Accumulate data for the Alert DC. Note: this uses the new accumulation
+	 * strategy using the data warehouse.
+	 */
 	private void accumAlertDC() {
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 
 		if (dataEvent.hasBank("ATOF::adc")) {
+
+			// Alert DC data
+			if (_AlertDCAccumulatedData == null) {
+				_AlertDCAccumulatedData = new int[1][5][2][100];
+			}
 
 			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
 			if (component != null) {
@@ -728,6 +809,78 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			}
 		}
 
+	}
+	
+	/**
+	 * Accumulate data for the Alert TOF superlayer 0. Note: this uses the new accumulation
+	 * strategy using the data warehouse.
+	 */
+	private void accumAlertSL0TOF() {
+		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
+
+		if (dataEvent.hasBank("ATOF::adc")) {
+
+			// Alert TOF data
+			if (_AlertTOFSL0AccumulatedData == null) {
+				_AlertTOFSL0AccumulatedData = new int[15][1][4];
+			}
+
+			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			if (component != null) {
+				int count = component.length;
+				if (count > 0) {
+					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
+					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
+					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
+
+					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+
+					for (int i = 0; i < count; i++) {
+						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
+						if (adcGeom.superlayer == 0) {
+							_AlertTOFSL0AccumulatedData[adcGeom.sector][adcGeom.layer][adcGeom.component % 4] += 1;
+						}
+					}
+				}
+
+			}
+		}
+	}
+	
+	/**
+	 * Accumulate data for the Alert TOF superlayer 1. Note: this uses the new
+	 * accumulation strategy using the data warehouse.
+	 */
+	private void accumAlertSL1TOF() {
+		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
+
+		if (dataEvent.hasBank("ATOF::adc")) {
+
+			// Alert TOF data
+			if (_AlertTOFSL1AccumulatedData == null) {
+				_AlertTOFSL1AccumulatedData = new int[15][11][4];
+			}
+
+			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			if (component != null) {
+				int count = component.length;
+				if (count > 0) {
+					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
+					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
+					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
+
+					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+
+					for (int i = 0; i < count; i++) {
+						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
+						if (adcGeom.superlayer == 1) {
+							_AlertTOFSL1AccumulatedData[adcGeom.sector][adcGeom.layer][adcGeom.component % 4] += 1;
+						}
+					}
+				}
+
+			}
+		}
 	}
 
 	// accumulate bst

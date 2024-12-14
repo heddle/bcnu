@@ -267,7 +267,7 @@ public class RTPCView extends CedXYView implements ChangeListener {
 					setRect(container, component, layer, hr, p0, p1);
 
 					double hitCount = counts[cm1][lm1];
-					double fract = (maxHit == 0) ? 0 : ((hitCount) / maxHit);
+					double fract = (maxHit == 0) ? 0 : (hitCount / maxHit);
 					Color color = AccumulationManager.getInstance().getColor(getColorScaleModel(), fract);
 					g.setColor(color);
 					g.fillRect(hr.x, hr.y, hr.width, hr.height);

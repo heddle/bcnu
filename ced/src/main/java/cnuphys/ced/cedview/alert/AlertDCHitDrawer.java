@@ -11,6 +11,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 
@@ -87,6 +88,28 @@ public class AlertDCHitDrawer {
 	 * @param container
 	 */
 	public void drawAccumulatedHits(Graphics g, IContainer container) {
+		int maxHit = AccumulationManager.getInstance().getMaxAlertDCCount();
+		int counts[][][][] = AccumulationManager.getInstance().getAccumulatedAlertDCData();
+		
+		if (counts == null) {
+			return;
+		}
+		
+		for (int sector = 0; sector < counts.length; sector++) {
+			for (int superlayer = 0; superlayer < counts[sector].length; superlayer++) {
+				for (int layer = 0; layer < counts[sector][superlayer].length; layer++) {
+					DCLayer dcl = AlertGeometry.getDCLayer(sector, superlayer, layer);
+					if (dcl != null) {
+						for (int wire = 0; wire < dcl.numWires; wire++) {
+							double count = counts[sector][superlayer][layer][wire];
+							double fract = (maxHit == 0) ? 0 : (count / maxHit);
+							Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
+							dcl.drawXYWire(g, container, wire, color, Color.black);
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**

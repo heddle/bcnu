@@ -12,6 +12,7 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.TOFLayer;
 
@@ -86,14 +87,54 @@ public class AlertTOFHitDrawer {
 
 	} // drawTOFHits
 	
+	public void drawAccumulatedHits(Graphics g, IContainer container) {
+		drawAccumulatedHitsSL(g, container, 0);
+		drawAccumulatedHitsSL(g, container, 1);
+
+	}
+
+	
 	/**
 	 * Draw the accumulated hits
 	 * @param g
 	 * @param container
 	 */
-	public void drawAccumulatedHits(Graphics g, IContainer container) {
-	}
+	private void drawAccumulatedHitsSL(Graphics g, IContainer container, int superlayer) {
+		
+		int maxHit;
+		int counts[][][];
+		
+		if (superlayer == 0) {
+			maxHit = AccumulationManager.getInstance().getMaxAlertTOFSL0Count();
+			counts = AccumulationManager.getInstance().getAccumulatedAlertTOFSL0Data();
+		} else {
+			maxHit = AccumulationManager.getInstance().getMaxAlertTOFSL1Count();
+			counts = AccumulationManager.getInstance().getAccumulatedAlertTOFSL1Data();
+		}
+		
 
+		if (counts == null) {
+			return;
+		}
+
+
+		for (int sector = 0; sector < counts.length; sector++) {
+			for (int layer = 0; layer < counts[sector].length; layer++) {
+				TOFLayer tofl = AlertGeometry.getTOFLayer(sector, superlayer, layer);
+				if (tofl == null) {
+					continue;
+				}
+
+				for (int paddle = 0; paddle < counts[sector][layer].length; paddle++) {
+					double count = counts[sector][layer][paddle];
+					double fract = (maxHit == 0) ? 0 : (count / maxHit);
+					Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
+					ScintillatorPaddle scintPaddle = tofl.getPaddle(paddle);
+					tofl.drawPaddle(g, container, scintPaddle, color, Color.black);
+				}
+			}
+		}
+	}
 
 	/**
 	 * Get feedback strings for a hit
