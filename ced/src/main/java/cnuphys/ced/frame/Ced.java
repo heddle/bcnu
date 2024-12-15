@@ -41,6 +41,7 @@ import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.bCNU.wordle.Wordle;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.ced3d.view.AlertView3D;
 import cnuphys.ced.ced3d.view.CentralView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
@@ -165,6 +166,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private ECView _ecView;
 	private PCALView _pcalView;
 	private ForwardView3D _forward3DView;
+	
+	private AlertView3D _alert3DView;
 
 	private SwimmingTestView3D _swimming3DView;
 	private CentralView3D _central3DView;
@@ -299,16 +302,16 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_ftcalXyView, 9, VirtualView.CENTER);
 		_virtualView.moveTo(_dcXyView, 10);
 
-		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
-
+		_virtualView.moveTo(_alertXYView, 11, VirtualView.CENTER);
 
 		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 12, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 13, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 13, VirtualView.BOTTOMRIGHT);
+			_virtualView.moveTo(_alert3DView, 12, VirtualView.CENTER);
+			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
+			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
+			_virtualView.moveTo(_ftCal3DView, 15, VirtualView.BOTTOMRIGHT);
 
 			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 14, VirtualView.CENTER);
+				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
 			}
 		}
 	}
@@ -367,9 +370,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// make sure accumulation manager is instantiated
 		AccumulationManager.getInstance();
 
-		// add a virtual view
+		// add a virtual view. Count how many cells are needed
 
-		int numVVCell = 12 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -444,6 +447,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 			_forward3DView = new ForwardView3D();
 			_central3DView = new CentralView3D();
 			_ftCal3DView = new FTCalView3D();
+			_alert3DView = new AlertView3D();
 
 			if (isExperimental()) {
 				_swimming3DView = new SwimmingTestView3D();
