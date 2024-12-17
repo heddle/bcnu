@@ -76,9 +76,6 @@ import cnuphys.swim.SwimTrajectory2D;
 public class SectorView extends SliceView implements ChangeListener {
 
 
-	// fill color
-	private static final Color BSTHITFILL = new Color(255, 128, 0, 64);
-
 	// HTCC Items, 8 per sector, not geometrically realistic
 	private SectorHTCCItem _htcc[][] = new SectorHTCCItem[4][2];
 
@@ -458,12 +455,7 @@ public class SectorView extends SliceView implements ChangeListener {
 				// draw reconstructed data
 				_reconDrawer.draw(g, container);
 
-
-				// draw bst panels
-				drawBSTPanels(g, container);
-
 				// draw reconstructed dc crosses
-
 				if (showDCHBCrosses()) {
 					_dcCrossDrawer.setMode(CrossDrawer.HB);
 					_dcCrossDrawer.draw(g, container);
@@ -755,180 +747,6 @@ public class SectorView extends SliceView implements ChangeListener {
 		canvas.getDataSet().getCurveStyle(index).setSymbolSize(6);
 		canvas.getDataSet().getCurve(index).getFit().setFitType(FitType.CUBICSPLINE);
 
-	}
-
-
-	// draw the BST panels
-	private void drawBSTPanels(Graphics g, IContainer container) {
-		List<BSTxyPanel> panels = GeometryManager.getBSTxyPanels();
-		if (panels == null) {
-			return;
-		}
-
-		int sector = 0;
-		switch (_displaySectors) {
-		case SECTORS14:
-			sector = 1;
-			break;
-
-		case SECTORS25:
-			sector = 2;
-			break;
-
-		case SECTORS36:
-			sector = 3;
-			break;
-		}
-
-		double phi = (sector - 1) * 60.0 + getSliderPhi();
-		double cosphi = Math.cos(Math.toRadians(phi));
-		double sinphi = Math.sin(Math.toRadians(phi));
-
-		// set the perp distance
-		for (BSTxyPanel panel : panels) {
-			Point2D.Double avgXY = panel.getXyAverage();
-			double perp = avgXY.y * cosphi - avgXY.x * sinphi;
-			panel.setPerp(perp);
-		}
-
-		Collections.sort(panels);
-
-		Graphics2D g2 = (Graphics2D) g;
-		Shape oldClip = g2.getClip();
-		// clip the active area
-		Rectangle sr = container.getInsetRectangle();
-		g2.clipRect(sr.x, sr.y, sr.width, sr.height);
-
-		Stroke oldStroke = g2.getStroke();
-		g2.setStroke(stroke);
-		g2.setColor(Color.black);
-
-		// there are 132 panels
-		// mark the hits if there is data
-		CentralSupport.markPanelHits(this, panels);
-
-		int index = 0;
-		for (BSTxyPanel panel : panels) {
-
-			int alpha = 10 + index / 3;
-			Color col = new Color(128, 128, 128, alpha);
-			Color col2 = new Color(128, 128, 128, alpha + 40);
-			WorldPolygon poly[] = getFromBSTPanel(panel, cosphi, sinphi);
-
-			for (int j = 0; j < 3; j++) {
-				boolean hit = panel.hit[j];
-
-				WorldGraphicsUtilities.drawWorldPolygon(g2, container, poly[j], hit ? BSTHITFILL : col, col2, 0,
-						LineStyle.SOLID);
-			}
-		}
-
-		// restore
-		g2.setStroke(oldStroke);
-		g2.setClip(oldClip);
-	}
-
-	/**
-	 * Get the world graphic coordinates from lab XYZ
-	 *
-	 * @param x  the lab x in cm
-	 * @param y  the lab y in cm
-	 * @param z  the lab z in cm
-	 * @param wp the world point
-	 */
-	private void labToWorldBST(double x, double y, double z, Point2D.Double wp, double cosphi, double sinphi) {
-		wp.x = z;
-		wp.y = x * cosphi + y * sinphi;
-
-	}
-
-	private WorldPolygon[] getFromBSTPanel(BSTxyPanel panel, double cosphi, double sinphi) {
-
-		WorldPolygon polys[] = new WorldPolygon[3];
-
-		// note conversion to cm from mm
-		double x1 = panel.getX1() / 10;
-		double x2 = panel.getX2() / 10;
-
-		double y1 = panel.getY1() / 10;
-		double y2 = panel.getY2() / 10;
-
-		double z0 = panel.getZ0() / 10;
-		double z1 = panel.getZ1() / 10;
-		double z2 = panel.getZ2() / 10;
-		double z3 = panel.getZ3() / 10;
-		double z4 = panel.getZ4() / 10;
-		double z5 = panel.getZ5() / 10;
-
-		double x[] = new double[5];
-		double y[] = new double[5];
-
-		Point2D.Double wp = new Point2D.Double();
-
-		labToWorldBST(x1, y1, z0, wp, cosphi, sinphi);
-		x[0] = wp.x;
-		y[0] = wp.y;
-
-		labToWorldBST(x2, y2, z0, wp, cosphi, sinphi);
-		x[1] = wp.x;
-		y[1] = wp.y;
-
-		labToWorldBST(x2, y2, z1, wp, cosphi, sinphi);
-		x[2] = wp.x;
-		y[2] = wp.y;
-
-		labToWorldBST(x1, y1, z1, wp, cosphi, sinphi);
-		x[3] = wp.x;
-		y[3] = wp.y;
-
-		x[4] = x[0];
-		y[4] = y[0];
-
-		polys[0] = new WorldPolygon(x, y, 5);
-
-		labToWorldBST(x1, y1, z2, wp, cosphi, sinphi);
-		x[0] = wp.x;
-		y[0] = wp.y;
-
-		labToWorldBST(x2, y2, z2, wp, cosphi, sinphi);
-		x[1] = wp.x;
-		y[1] = wp.y;
-
-		labToWorldBST(x2, y2, z3, wp, cosphi, sinphi);
-		x[2] = wp.x;
-		y[2] = wp.y;
-
-		labToWorldBST(x1, y1, z3, wp, cosphi, sinphi);
-		x[3] = wp.x;
-		y[3] = wp.y;
-
-		x[4] = x[0];
-		y[4] = y[0];
-
-		polys[1] = new WorldPolygon(x, y, 5);
-
-		labToWorldBST(x1, y1, z4, wp, cosphi, sinphi);
-		x[0] = wp.x;
-		y[0] = wp.y;
-
-		labToWorldBST(x2, y2, z4, wp, cosphi, sinphi);
-		x[1] = wp.x;
-		y[1] = wp.y;
-
-		labToWorldBST(x2, y2, z5, wp, cosphi, sinphi);
-		x[2] = wp.x;
-		y[2] = wp.y;
-
-		labToWorldBST(x1, y1, z5, wp, cosphi, sinphi);
-		x[3] = wp.x;
-		y[3] = wp.y;
-
-		x[4] = x[0];
-		y[4] = y[0];
-
-		polys[2] = new WorldPolygon(x, y, 5);
-
-		return polys;
 	}
 
 	/**

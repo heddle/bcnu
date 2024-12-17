@@ -6,6 +6,8 @@ import java.awt.Font;
 
 import cnuphys.ced.ced3d.view.CedView3D;
 import cnuphys.ced.geometry.BSTGeometry;
+import cnuphys.ced.geometry.alert.AlertGeometry;
+import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.lund.X11Colors;
 import item3D.Axes3D;
 
@@ -19,11 +21,10 @@ public class AlertPanel3D extends CedPanel3D {
 	private final float zmin = -20f;
 	
 	// labels for the check box
-	private static final String _cbaLabels[] = { SHOW_VOLUMES, SHOW_TRUTH, SHOW_BST, SHOW_BST_LAYER_1, SHOW_BST_LAYER_2,
-			SHOW_BST_LAYER_3, SHOW_BST_LAYER_4, SHOW_BST_LAYER_5, SHOW_BST_LAYER_6, SHOW_BST_LAYER_7, SHOW_BST_LAYER_8,
-			SHOW_BST_HITS, SHOW_BMT, SHOW_BMT_LAYER_1, SHOW_BMT_LAYER_2, SHOW_BMT_LAYER_3, SHOW_BMT_LAYER_4,
-			SHOW_BMT_LAYER_5, SHOW_BMT_LAYER_6, SHOW_BMT_HITS, SHOW_CTOF, SHOW_CND, SHOW_CND_LAYER_1, SHOW_CND_LAYER_2,
-			SHOW_CND_LAYER_3, SHOW_RECON_CROSSES, SHOW_TB_TRACK, SHOW_HB_TRACK, SHOW_CVTREC_TRACK, SHOW_CVTP1_TRACK, SHOW_COSMIC };
+	private static final String _cbaLabels[] = { SHOW_VOLUMES, SHOW_TRUTH, SHOW_RECON_CROSSES, SHOW_TB_TRACK,
+			SHOW_HB_TRACK, SHOW_COSMIC,
+			TOF_SUPLAY1_LAY1, TOF_SUPLAY2_LAY1, TOF_SUPLAY2_LAY2, TOF_SUPLAY2_LAY3, TOF_SUPLAY2_LAY4, TOF_SUPLAY2_LAY5,
+			TOF_SUPLAY2_LAY6, TOF_SUPLAY2_LAY7, TOF_SUPLAY2_LAY8, TOF_SUPLAY2_LAY9, TOF_SUPLAY2_LAY10,};
 
 	/**
 	 *
@@ -50,8 +51,44 @@ public class AlertPanel3D extends CedPanel3D {
 		// trajectory drawer
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
-	}
+		
+		// tof paddles superlayer 0
+		for (int sectorId = 0; sectorId < 15; sectorId++) {
+			for (int superlayerId = 0; superlayerId < 1; superlayerId++) {
+				for (int layerId = 0; layerId < 1; layerId++) {
+					for (int paddleId = 0; paddleId < 4; paddleId++) {
+						AlertPaddle3D tof = new AlertPaddle3D(this, sectorId, superlayerId, layerId, paddleId);
+						addItem(tof);
+					}
+				}
+			}
+		}
+		
+		// tof paddles superlayer 1-10
+		for (int sectorId = 0; sectorId < 15; sectorId++) {
+			for (int superlayerId = 1; superlayerId < 2; superlayerId++) {
+				for (int layerId = 0; layerId < 10; layerId++) {
+					for (int paddleId = 0; paddleId < 4; paddleId++) {
+						AlertPaddle3D tof = new AlertPaddle3D(this, sectorId, superlayerId, layerId, paddleId);
+						addItem(tof);
+					}
+				}
+			}
+		}
+		
+		for (int sectorId = 0; sectorId < 1; sectorId++) {
+			for (int superlayerId = 0; superlayerId < 5; superlayerId++) {
+				for (int layerId = 0; layerId < 2; layerId++) {
+					DCLayer dcLayer = AlertGeometry.getDCLayer(sectorId, superlayerId, layerId);
+					if ((dcLayer != null) && (dcLayer.numWires > 0)) {
+						AlertDCLayer3D dc = new AlertDCLayer3D(this, sectorId, superlayerId, layerId);
+						addItem(dc);
+					}
+				}
+			}
+		}
 
+	}
 
 	/**
 	 * This gets the z step used by the mouse and key adapters, to see how fast we

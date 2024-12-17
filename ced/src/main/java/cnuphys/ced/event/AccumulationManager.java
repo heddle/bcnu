@@ -90,8 +90,21 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// CTOF accumulated data
 	private int _CTOFAccumulatedData[];
 	
-	//ALERT DC accumulated data sector [0..0] superlay [0..4] lay [0..1] wire [0..99]
-	private int _AlertDCAccumulatedData[][][][];
+	//ALERT DC accumulated data (superlayer 0) sector[0..0] lay [0..1] wire [0..99]
+	private int _AlertDCSL0AccumulatedData[][][];
+	
+	//ALERT DC accumulated data (superlayer 1) sector[0..0] lay [0..1] wire [0..99]
+	private int _AlertDCSL1AccumulatedData[][][];
+	
+	//ALERT DC accumulated data (superlayer 2) sector[0..0] lay [0..1] wire [0..99]
+	private int _AlertDCSL2AccumulatedData[][][];
+	
+	//ALERT DC accumulated data (superlayer 3) sector[0..0] lay [0..1] wire [0..99]
+	private int _AlertDCSL3AccumulatedData[][][];
+	
+	//ALERT DC accumulated data (superlayer 4) sector[0..0] lay [0..1] wire [0..99]
+	private int _AlertDCSL4AccumulatedData[][][];
+	
 	
 	//ALERT TOF accumulated data (superlayer 0) sector [0..14] lay [0..0] paddle [0..4]
 	private int _AlertTOFSL0AccumulatedData[][][];
@@ -205,40 +218,18 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	public void clear() {
 		_eventCount = 0;
 
-		// clear alert dc
-		if (_AlertDCAccumulatedData != null) {
-			for (int i = 0; i < _AlertDCAccumulatedData.length; i++) {
-				for (int j = 0; j < _AlertDCAccumulatedData[i].length; j++) {
-					for (int k = 0; k < _AlertDCAccumulatedData[i][j].length; k++) {
-						for (int l = 0; l < _AlertDCAccumulatedData[i][j][k].length; l++) {
-							_AlertDCAccumulatedData[i][j][k][l] = 0;
-						}
-					}
-				}
-			}
-		}
+		// clear alert dc 
+		clear(_AlertDCSL0AccumulatedData);
+		clear(_AlertDCSL1AccumulatedData);
+		clear(_AlertDCSL2AccumulatedData);
+		clear(_AlertDCSL3AccumulatedData);
+		clear(_AlertDCSL4AccumulatedData);
 		
-		// clear alert tof superlayer 0
-		if (_AlertTOFSL0AccumulatedData != null) {
-			for (int i = 0; i < _AlertTOFSL0AccumulatedData.length; i++) {
-                for (int j = 0; j < _AlertTOFSL0AccumulatedData[i].length; j++) {
-                    for (int k = 0; k < _AlertTOFSL0AccumulatedData[i][j].length; k++) {
-                        _AlertTOFSL0AccumulatedData[i][j][k] = 0;
-                    }
-                }
-            }
-		}
 		
-		// clear alert tof superlayer 1
-		if (_AlertTOFSL1AccumulatedData != null) {
-			for (int i = 0; i < _AlertTOFSL1AccumulatedData.length; i++) {
-				for (int j = 0; j < _AlertTOFSL1AccumulatedData[i].length; j++) {
-					for (int k = 0; k < _AlertTOFSL1AccumulatedData[i][j].length; k++) {
-						_AlertTOFSL1AccumulatedData[i][j][k] = 0;
-					}
-				}
-			}
-		}
+		// clear alert tof data
+		clear(_AlertTOFSL0AccumulatedData);
+		clear(_AlertTOFSL1AccumulatedData);
+		
 
 
 		// clear ftcal
@@ -343,6 +334,19 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		notifyListeners(ACCUMULATION_CLEAR);
 	}
+	
+	//clar an array
+	private void clear(int[][][] data) {
+		if (data != null) {
+			for (int i = 0; i < data.length; i++) {
+				for (int j = 0; j < data[i].length; j++) {
+					for (int k = 0; k < data[i][j].length; k++) {
+						data[i][j][k] = 0;
+					}
+				}
+			}
+		}
+	}
 
 	/**
 	 * Public access to the singleton.
@@ -357,13 +361,28 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the ALERT DC accumulated data
-	 * @return the accumulated alert dc data
+	 * Get the ALERT DC accumulated data 
+	 * 
+	 * @param superlayer the superlayer 0..4
+	 * @return the accumulated alert dc data for superlayer 0
 	 */
-	public int[][][][] getAccumulatedAlertDCData() {
-		return _AlertDCAccumulatedData;
+	public int[][][] getAccumulatedAlertDCData(int superlayer) {
+		switch (superlayer) {
+		case 0:
+			return _AlertDCSL0AccumulatedData;
+		case 1:
+			return _AlertDCSL1AccumulatedData;
+		case 2:
+			return _AlertDCSL2AccumulatedData;
+		case 3:
+			return _AlertDCSL3AccumulatedData;
+		case 4:
+			return _AlertDCSL4AccumulatedData;
+		default:
+			return null;
+		}
 	}
-	
+
 	/**
 	 * Get the ALERT TOF accumulated data for superlayer 0
 	 * @return the accumulated alert dc data
@@ -466,14 +485,27 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 	
 	/**
-	 * Get the max counts in the Alert DC data
+	 * Get the max counts in the Alert DC superlayer 0 data
 	 *
-	 * @return the max counts in the Alert DC data
+	 * @return the max counts in the Alert DC superlayer 0 data
 	 */
-	public int getMaxAlertDCCount() {
-		return getMax(_AlertDCAccumulatedData);
+	public int getMaxAlertDCCount(int superlayer) {
+		switch (superlayer) {
+		case 0:
+			return getMax(_AlertDCSL0AccumulatedData);
+		case 1:
+			return getMax(_AlertDCSL1AccumulatedData);
+		case 2:
+			return getMax(_AlertDCSL2AccumulatedData);
+		case 3:
+			return getMax(_AlertDCSL3AccumulatedData);
+		case 4:
+			return getMax(_AlertDCSL4AccumulatedData);
+		default:
+			return 0;
+		}
 	}
-	
+
 	/**
 	 * Get the max counts in the Alert TOF superlayer 0 data
 	 *
@@ -734,11 +766,9 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		
 		// Alert DC data
 		accumAlertDC();
-
-		// Alert TOF superlayer 0 data
+			
+		// Alert TOF data
 		accumAlertSL0TOF();
-		
-		//Alert TOF superlayer 1 data
 		accumAlertSL1TOF();
 
 		// FTCal Data
@@ -777,7 +807,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Accumulate data for the Alert DC. Note: this uses the new accumulation
+	 * Accumulate data for the Alert DC superlayer 0. Note: this uses the new accumulation
 	 * strategy using the data warehouse.
 	 */
 	private void accumAlertDC() {
@@ -786,8 +816,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		if (dataEvent.hasBank("ATOF::adc")) {
 
 			// Alert DC data
-			if (_AlertDCAccumulatedData == null) {
-				_AlertDCAccumulatedData = new int[1][5][2][100];
+			if (_AlertDCSL0AccumulatedData == null) {
+				_AlertDCSL0AccumulatedData = new int[1][1][47];
+				_AlertDCSL1AccumulatedData = new int[1][2][56];
+				_AlertDCSL2AccumulatedData = new int[1][2][72];
+                _AlertDCSL3AccumulatedData = new int[1][2][87];
+                _AlertDCSL4AccumulatedData = new int[1][1][99];
 			}
 
 			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
@@ -802,7 +836,25 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 					for (int i = 0; i < count; i++) {
 						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
-						_AlertDCAccumulatedData[0][adcGeom.superlayer][adcGeom.layer][adcGeom.component] += 1;
+
+						switch (adcGeom.superlayer) {
+						case 0:
+							_AlertDCSL0AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
+							break;
+						case 1:
+							_AlertDCSL1AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
+							break;
+						case 2:
+							_AlertDCSL2AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
+							break;
+						case 3:
+							_AlertDCSL3AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
+							break;
+						case 4:
+							_AlertDCSL4AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
+							break;
+
+						}
 					}
 				}
 

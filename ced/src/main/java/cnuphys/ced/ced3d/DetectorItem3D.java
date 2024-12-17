@@ -41,13 +41,14 @@ public abstract class DetectorItem3D extends Item3D {
 			return;
 		}
 
+		if (!_eventManager.isAccumulating()) {
+			drawData(drawable);
+		}
+ 
 		if (_cedPanel3D.showVolumes() && (getVolumeAlpha() > 2)) {
 			drawShape(drawable);
 		}
 
-		if (!_eventManager.isAccumulating()) {
-			drawData(drawable);
-		}
 
 	}
 

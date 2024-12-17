@@ -116,6 +116,23 @@ public class DCLayer {
 
 //		System.out.println(String.format("sect: %d    supl: %d    lay: %d   nw:  %d rad: %8.4f", sector, superlayer, layer, numWires, midPointRadius));
 	}
+	
+	/**
+	 * Get the 3D coords of the wire used in 3D drawing
+	 * @param wire the 0-based wire id
+	 * @param coords the 3D coords
+	 */
+	public void getWireCoords(int wire, float coords[]) {
+		
+		Point3D p0 = wires[wire].origin();
+		Point3D p1 = wires[wire].end();
+		coords[0] = (float) p0.x();
+		coords[1] = (float) p0.y();
+		coords[2] = (float) p0.z();
+		coords[3] = (float) p1.x();
+		coords[4] = (float) p1.y();
+		coords[5] = (float) p1.z();
+	}
 
 	/**
 	 * Get a wire as a 3D line

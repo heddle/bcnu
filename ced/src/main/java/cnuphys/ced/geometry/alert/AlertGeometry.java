@@ -22,7 +22,6 @@ import org.jlab.logging.DefaultLogger;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.frame.Ced;
 
 public class AlertGeometry {
@@ -42,6 +41,11 @@ public class AlertGeometry {
 	//sector boundaries for XY view
 	//there are 1 sectors
 	public static Point2D.Double tofSectorXY[][] = new Point2D.Double[15][16];
+	
+	//the dc factory
+	private static AlertDCFactory dcFactory = new AlertDCFactory();
+	
+	private static DatabaseConstantProvider constantProvider;
 
 	/**
 	 * Init the Alert geometry
@@ -52,10 +56,10 @@ public class AlertGeometry {
 		System.out.println("=======================================");
 
 		String variationName = Ced.getGeometryVariation();
-		DatabaseConstantProvider cp = new DatabaseConstantProvider(11, variationName);
+		constantProvider = new DatabaseConstantProvider(11, variationName);
 
-		initializeDC(cp);
-		initializeTOF(cp);
+		initializeDC(constantProvider);
+		initializeTOF(constantProvider);
 
 	}
 	
@@ -75,7 +79,6 @@ public class AlertGeometry {
 	// init the drift chambers
 	private static void initializeDC(DatabaseConstantProvider cp) {
 
-		AlertDCFactory dcFactory = new AlertDCFactory();
 		AlertDCDetector dcCLASDetector = dcFactory.createDetectorCLAS(cp);
 
 		int numsect = dcCLASDetector.getNumSectors();
@@ -96,12 +99,27 @@ public class AlertGeometry {
 
 				for (int layer = 0; layer < numlay; layer++) {
 					DCLayer dcLayer = new DCLayer(dcFactory.createLayer(cp, sect, superlayer, layer));
+					
+					debugPrint(String.format("      for layer: %d  numwires: %d", layer, dcLayer.numWires), 0);
 					_dcLayers.put(hash(sect, superlayer, layer), dcLayer);
 				}
 			}
 		}
 		debugPrint("", 2);
 
+	}
+	
+	public static int getDCNumLayers(int sector, int superlayer) {
+		int numlay = dcFactory.createSuperlayer(constantProvider, sector, superlayer).getNumLayers();
+		return numlay;
+	}
+	
+	public static int getDCNumWires(int sector, int superlayer, int layer) {
+		DCLayer dcLayer = _dcLayers.get(hash(sector, superlayer, layer));
+		if (dcLayer != null) {
+			return dcLayer.numWires;
+		}
+		return 0;
 	}
 
 	// init the time of flight
@@ -186,7 +204,7 @@ public class AlertGeometry {
 	/**
 	 * Draw the TOF sector outlines
 	 * @param g the graphics context
-	 * @param container the conyainer
+	 * @param container the container
 	 */
 	public static void drawAlertTOFSectorOutlines(Graphics g, IContainer container) {
 
@@ -211,7 +229,12 @@ public class AlertGeometry {
 	}
 	
 	
-
+    /**
+     * Get the corner of a paddle
+     * @param paddle the paddle
+     * @param corner the corner 0..3
+     * @return the corner
+     */
 	public static Point2D.Double getCorner(ScintillatorPaddle paddle, int corner) {
 		Point3D p3d = paddle.getVolumePoint(corner);
 		return new Point2D.Double(p3d.x(), p3d.y());
@@ -252,6 +275,32 @@ public class AlertGeometry {
 		return tof.getPaddle(paddle);
 	}
 
+	
+	/**
+	 * Used by the 3D drawing
+	 * @param sector   the 0-based sector 0..14
+	 * @param superlayer  the 0-based layer 0..1
+	 * @param layer    the 0-based layer 0, 0..9
+	 * @param paddleId the 0-based paddle 0..3
+	 * @param coords   holds 8*3 = 24 values [x1, y1, z1, ..., x8, y8, z8]
+	 */
+	public static void paddleVertices(int sector, int superlayer, int layer, int paddleId, float[] coords) {
+
+		Point3D v[] = new Point3D[8];
+
+		ScintillatorPaddle paddle = getPaddle(sector, superlayer, layer, paddleId);
+		for (int i = 0; i < 8; i++) {
+			v[i] = new Point3D(paddle.getVolumePoint(i));
+		}
+
+		for (int i = 0; i < 8; i++) {
+			int j = 3 * i;
+			coords[j] = (float) v[i].x();
+			coords[j + 1] = (float) v[i].y();
+			coords[j + 2] = (float) v[i].z();
+		}
+	}	
+	
 	//all 0 based
 	private static String hash(int sector, int superlayer, int layer) {
 		return String.format("%d|%d|%d", sector, superlayer, layer);

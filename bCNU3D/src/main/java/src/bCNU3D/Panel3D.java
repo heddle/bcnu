@@ -281,28 +281,28 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
-	    GL2 gl = drawable.getGL().getGL2();
+		GL2 gl = drawable.getGL().getGL2();
 
-	    // Clear the buffers
-	    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
-	    gl.glLoadIdentity();
+		// Clear the buffers
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
+		gl.glLoadIdentity();
 
-	    // Translate and scale
-	    gl.glTranslatef(_xdist, _ydist, _zdist);
-	    gl.glScalef(_xscale, _yscale, _zscale);
+		// Translate and scale
+		gl.glTranslatef(_xdist, _ydist, _zdist);
+		gl.glScalef(_xscale, _yscale, _zscale);
 
-	    // Apply the rotation matrix
-	    gl.glMultMatrixf(rotationMatrix, 0);
+		// Apply the rotation matrix
+		gl.glMultMatrixf(rotationMatrix, 0);
 
-	    // Draw the 3D items
-	    gl.glPushMatrix();
-	    for (Item3D item : _itemList) {
-	        if (item.isVisible()) {
-	            item.drawItem(drawable);
-	        }
-	    }
-	    gl.glPopMatrix();	}
-
+		// Draw the 3D items
+		gl.glPushMatrix();
+		for (Item3D item : _itemList) {
+			if (item.isVisible()) {
+				item.drawItem(drawable);
+			}
+		}
+		gl.glPopMatrix();
+	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {

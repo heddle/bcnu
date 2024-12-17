@@ -14,6 +14,7 @@ import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.awt.GLJPanel;
 
 import bCNU3D.Panel3D;
+import bCNU3D.Support3D;
 import cnuphys.bCNU.component.checkboxarray.CheckBoxArray;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -34,8 +35,6 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	private static final Color _torusColor = new Color(0, 255, 255, 255);
 	private static final Color _solenoidColor = new Color(255, 0, 255, 255);
-
-
 
 	// labels for the check box
 	public static final String SHOW_VOLUMES = "Volumes";
@@ -88,7 +87,6 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String SHOW_AITB_CROSS = "AITB Cross";
 	public static final String SHOW_AIHB_CROSS = "AIHB Cross";
 
-
 	public static final String SHOW_TB_TRACK = "Reg TB Track";
 	public static final String SHOW_HB_TRACK = "Reg HB Track";
 
@@ -105,6 +103,19 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String SHOW_COSMIC = "Cosmics";
 
 	public static final String SHOW_REC_CAL = "REC Cal";
+
+	// for ALerrt
+	public static final String TOF_SUPLAY1_LAY1 = "TOF_Suplay1_Lay1";
+	public static final String TOF_SUPLAY2_LAY1 = "TOF_Suplay2_Lay1";
+	public static final String TOF_SUPLAY2_LAY2 = "TOF_Suplay2_Lay2";
+	public static final String TOF_SUPLAY2_LAY3 = "TOF_Suplay2_Lay3";
+	public static final String TOF_SUPLAY2_LAY4 = "TOF_Suplay2_Lay4";
+	public static final String TOF_SUPLAY2_LAY5 = "TOF_Suplay2_Lay5";
+	public static final String TOF_SUPLAY2_LAY6 = "TOF_Suplay2_Lay6";
+	public static final String TOF_SUPLAY2_LAY7 = "TOF_Suplay2_Lay7";
+	public static final String TOF_SUPLAY2_LAY8 = "TOF_Suplay2_Lay8";
+	public static final String TOF_SUPLAY2_LAY9 = "TOF_Suplay2_Lay9";
+	public static final String TOF_SUPLAY2_LAY10 = "TOF_Suplay2_Lay10";
 
 	// Check box array
 	protected CheckBoxArray _checkBoxArray;
@@ -132,16 +143,14 @@ public abstract class PlainPanel3D extends Panel3D {
 	 *
 	 * @param zdist the initial viewer z distance should be negative
 	 */
-	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist,
-			float bgRed, float bgGreen, float bgBlue,
-			String... cbaLabels) {
+	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist,
+			float zDist, float bgRed, float bgGreen, float bgBlue, String... cbaLabels) {
 
 		super(angleX, angleY, angleZ, xDist, yDist, zDist, bgRed, bgGreen, bgBlue);
 
 		_view = view;
 		_cbaLabels = cbaLabels;
 		_volumeAlphaSlider = new AlphaSlider(this, "Volume alpha");
-
 
 		gljpanel.setBorder(new CommonBorder());
 		final GLJPanel gljp = gljpanel;
@@ -150,7 +159,6 @@ public abstract class PlainPanel3D extends Panel3D {
 		addNorth();
 		addWest();
 		addSouth();
-
 
 		ActionListener al = new ActionListener() {
 
@@ -180,7 +188,6 @@ public abstract class PlainPanel3D extends Panel3D {
 		// trajectory drawer
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
-
 
 		// dc super layers
 		for (int sector = 1; sector <= 6; sector++) {
@@ -230,7 +237,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		if (VirtualView.getInstance().isViewVisible(_view)) {
 			super.display(drawable);
 		} else {
-			System.err.println("SKIPPED");
+	 		System.err.println("SKIPPED");
 		}
 	}
 
@@ -243,7 +250,6 @@ public abstract class PlainPanel3D extends Panel3D {
 	// add south panel
 	protected abstract void addSouth();
 
-
 	// add eastern panel
 	private void addEast() {
 		JPanel ep = new JPanel();
@@ -252,7 +258,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		ep.add(new KeyboardLegend(this));
 		_checkBoxArray = new CheckBoxArray(2, 4, 4, _cbaLabels);
 
-		AbstractButton ab =_checkBoxArray.getButton(SHOW_MAP_EXTENTS);
+		AbstractButton ab = _checkBoxArray.getButton(SHOW_MAP_EXTENTS);
 		if (ab != null) {
 			ab.setSelected(false);
 		}
@@ -262,7 +268,6 @@ public abstract class PlainPanel3D extends Panel3D {
 
 		add(ep, BorderLayout.EAST);
 	}
-
 
 	/**
 	 * Snapshot of the panel.
@@ -781,6 +786,150 @@ public abstract class PlainPanel3D extends Panel3D {
 			return showSector5();
 		case 6:
 			return showSector6();
+		}
+		return false;
+	}
+
+	// Show methods
+	/**
+	 * Show TOF_Suplay1_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay1_Lay1
+	 */
+	public boolean showTOF_SUPLAY1_LAY1() {
+		return show(PlainPanel3D.TOF_SUPLAY1_LAY1);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay1
+	 */
+	public boolean showTOF_SUPLAY2_LAY1() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY1);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay2
+	 */
+	public boolean showTOF_SUPLAY2_LAY2() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY2);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay3?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay3
+	 */
+	public boolean showTOF_SUPLAY2_LAY3() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY3);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay4?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay4
+	 */
+	public boolean showTOF_SUPLAY2_LAY4() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY4);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay5?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay5
+	 */
+	public boolean showTOF_SUPLAY2_LAY5() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY5);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay6?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay6
+	 */
+	public boolean showTOF_SUPLAY2_LAY6() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY6);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay7?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay7
+	 */
+	public boolean showTOF_SUPLAY2_LAY7() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY7);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay8?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay8
+	 */
+	public boolean showTOF_SUPLAY2_LAY8() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY8);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay9?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay9
+	 */
+	public boolean showTOF_SUPLAY2_LAY9() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY9);
+	}
+
+	/**
+	 * Show TOF_Suplay2_Lay10?
+	 *
+	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay10
+	 */
+	public boolean showTOF_SUPLAY2_LAY10() {
+		return show(PlainPanel3D.TOF_SUPLAY2_LAY10);
+	}
+
+	// Generalized method to call appropriate show methods
+	/**
+	 * Show TOF for the given superlayer and layer.
+	 *
+	 * @param superlayer Superlayer number
+	 * @param layer      Layer number
+	 * @return <code>true</code> if the appropriate layer is shown
+	 */
+	public boolean showTOF(int superlayer, int layer) {
+		switch (superlayer) {
+		case 1:
+			if (layer == 1)
+				return showTOF_SUPLAY1_LAY1();
+			break;
+		case 2:
+			switch (layer) {
+			case 1:
+				return showTOF_SUPLAY2_LAY1();
+			case 2:
+				return showTOF_SUPLAY2_LAY2();
+			case 3:
+				return showTOF_SUPLAY2_LAY3();
+			case 4:
+				return showTOF_SUPLAY2_LAY4();
+			case 5:
+				return showTOF_SUPLAY2_LAY5();
+			case 6:
+				return showTOF_SUPLAY2_LAY6();
+			case 7:
+				return showTOF_SUPLAY2_LAY7();
+			case 8:
+				return showTOF_SUPLAY2_LAY8();
+			case 9:
+				return showTOF_SUPLAY2_LAY9();
+			case 10:
+				return showTOF_SUPLAY2_LAY10();
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid superlayer or layer.");
 		}
 		return false;
 	}

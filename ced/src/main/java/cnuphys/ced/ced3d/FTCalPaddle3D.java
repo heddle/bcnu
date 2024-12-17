@@ -39,7 +39,7 @@ public class FTCalPaddle3D extends DetectorItem3D {
 	@Override
 	public void drawShape(GLAutoDrawable drawable) {
 		//hits use adc data
-		Color color = X11Colors.getX11Color("white", getVolumeAlpha());
+		Color color = X11Colors.getX11Color("alice blue", getVolumeAlpha());
 
 		// draw "hit" based on adc values
 		for (int i = 0; i < adcData.count(); i++) {
