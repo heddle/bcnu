@@ -104,7 +104,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	public static final String SHOW_REC_CAL = "REC Cal";
 
-	// for ALerrt
+	// for ALert TOF
 	public static final String TOF_SUPLAY1_LAY1 = "TOF_Suplay1_Lay1";
 	public static final String TOF_SUPLAY2_LAY1 = "TOF_Suplay2_Lay1";
 	public static final String TOF_SUPLAY2_LAY2 = "TOF_Suplay2_Lay2";
@@ -116,6 +116,20 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String TOF_SUPLAY2_LAY8 = "TOF_Suplay2_Lay8";
 	public static final String TOF_SUPLAY2_LAY9 = "TOF_Suplay2_Lay9";
 	public static final String TOF_SUPLAY2_LAY10 = "TOF_Suplay2_Lay10";
+	public static final String SHOW_TOF = "TOF";
+	
+	// for Alert DC
+	public static final String DC_SUPLAY1_LAY1 = "DC_Suplay1_Lay1";
+//	public static final String DC_SUPLAY1_LAY2 = "DC_Suplay1_Lay2";
+	public static final String DC_SUPLAY2_LAY1 = "DC_Suplay2_Lay1";
+	public static final String DC_SUPLAY2_LAY2 = "DC_Suplay2_Lay2";
+	public static final String DC_SUPLAY3_LAY1 = "DC_Suplay3_Lay1";
+	public static final String DC_SUPLAY3_LAY2 = "DC_Suplay3_Lay2";
+	public static final String DC_SUPLAY4_LAY1 = "DC_Suplay4_Lay1";
+	public static final String DC_SUPLAY4_LAY2 = "DC_Suplay4_Lay2";
+	public static final String DC_SUPLAY5_LAY1 = "DC_Suplay5_Lay1";
+//	public static final String DC_SUPLAY5_LAY2 = "DC_Suplay5_Lay2";
+	
 
 	// Check box array
 	protected CheckBoxArray _checkBoxArray;
@@ -890,15 +904,30 @@ public abstract class PlainPanel3D extends Panel3D {
 		return show(PlainPanel3D.TOF_SUPLAY2_LAY10);
 	}
 
+	/**
+	 * Show TOF?
+	 *
+	 * @return <code>true</code> if we are to show TOF
+	 */
+	public boolean showTOF() {
+		return show(PlainPanel3D.SHOW_TOF);
+	}
+	
+	
 	// Generalized method to call appropriate show methods
 	/**
 	 * Show TOF for the given superlayer and layer.
 	 *
-	 * @param superlayer Superlayer number
-	 * @param layer      Layer number
+	 * @param superlayer 1-based superlayer number
+	 * @param layer      1-based layer number
 	 * @return <code>true</code> if the appropriate layer is shown
 	 */
 	public boolean showTOF(int superlayer, int layer) {
+		
+		if (!showTOF()) {
+			return false;
+		}
+		
 		switch (superlayer) {
 		case 1:
 			if (layer == 1)
@@ -926,6 +955,134 @@ public abstract class PlainPanel3D extends Panel3D {
 				return showTOF_SUPLAY2_LAY9();
 			case 10:
 				return showTOF_SUPLAY2_LAY10();
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid superlayer or layer.");
+		}
+		return false;
+	}
+	
+	/**
+	 * Show DC_Suplay1_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay2_Lay1
+	 */
+	public boolean showDC_SUPLAY1_LAY11() {
+		return show(PlainPanel3D.DC_SUPLAY1_LAY1);
+	}
+	
+	/**
+	 * Show DC_Suplay2_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay2_Lay1
+	 */
+	public boolean showDC_SUPLAY2_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY2_LAY1);
+	}
+	
+	/**
+	 * Show DC_Suplay2_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay2_Lay2
+	 */
+	public boolean showDC_SUPLAY2_LAY2() {
+		return show(PlainPanel3D.DC_SUPLAY2_LAY2);
+	}
+	
+	/**
+	 * Show DC_Suplay3_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay3_Lay1
+	 */
+	public boolean showDC_SUPLAY3_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY3_LAY1);
+	}
+	
+	/**
+	 * Show DC_Suplay3_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay3_Lay2
+	 */
+	public boolean showDC_SUPLAY3_LAY2() {
+		return show(PlainPanel3D.DC_SUPLAY3_LAY2);
+	}
+	
+	/**
+	 * Show DC_Suplay4_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay4_Lay1
+	 */
+	public boolean showDC_SUPLAY4_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY4_LAY1);
+	}
+	
+	/**
+	 * Show DC_Suplay4_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay4_Lay2
+	 */
+	public boolean showDC_SUPLAY4_LAY2() {
+		return show(PlainPanel3D.DC_SUPLAY4_LAY2);
+	}
+	
+	/**
+	 * Show DC_Suplay5_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay5_Lay1
+	 */
+	public boolean showDC_SUPLAY5_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY5_LAY1);
+	}
+
+	
+	// Generalized method to call appropriate show methods
+	/**
+	 * Show DC for the given superlayer and layer.
+	 *
+	 * @param superlayer Superlayer number
+	 * @param layer      Layer number
+	 * @return <code>true</code> if the appropriate layer is shown
+	 */
+	public boolean showDC(int superlayer, int layer) {
+
+		if (!showDC()) {
+			return false;
+		}
+
+		switch (superlayer) {
+		case 1:
+			if (layer == 1)
+				return showDC_SUPLAY1_LAY11();
+			break;
+		case 2:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY2_LAY1();
+			case 2:
+				return showDC_SUPLAY2_LAY2();
+			}
+			break;
+		case 3:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY3_LAY1();
+			case 2:
+				return showDC_SUPLAY3_LAY2();
+			}
+			break;
+		case 4:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY4_LAY1();
+			case 2:
+				return showDC_SUPLAY4_LAY2();
+			}
+			break;
+		case 5:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY5_LAY1();
 			}
 			break;
 		default:

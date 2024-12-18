@@ -302,6 +302,10 @@ public class Panel3D extends JPanel implements GLEventListener {
 			}
 		}
 		gl.glPopMatrix();
+		
+		gl.glDepthMask(true);
+		gl.glDisable(GL.GL_BLEND);
+		gl.glLoadIdentity();
 	}
 
 	@Override

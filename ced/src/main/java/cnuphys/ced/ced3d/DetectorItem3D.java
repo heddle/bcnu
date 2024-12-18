@@ -42,10 +42,12 @@ public abstract class DetectorItem3D extends Item3D {
 		}
 
 		if (!_eventManager.isAccumulating()) {
+			Support3D.prepareForOpaque(drawable);
 			drawData(drawable);
 		}
  
 		if (_cedPanel3D.showVolumes() && (getVolumeAlpha() > 2)) {
+			Support3D.prepareForTransparent(drawable);
 			drawShape(drawable);
 		}
 

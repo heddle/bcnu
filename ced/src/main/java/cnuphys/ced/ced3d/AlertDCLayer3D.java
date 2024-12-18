@@ -99,7 +99,6 @@ public class AlertDCLayer3D extends DetectorItem3D {
 
 	@Override
 	protected boolean show() {
-		return true;
-	}
+		return _cedPanel3D.showDC(_superlayer+1, _layer+1);	}
 
 }

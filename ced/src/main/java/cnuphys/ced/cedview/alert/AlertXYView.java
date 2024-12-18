@@ -63,7 +63,6 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
 		_dcHitDrawer = new AlertDCHitDrawer(this);
 		_tofHitDrawer = new AlertTOFHitDrawer(this);
-
 	}
 
 	/**
@@ -81,18 +80,24 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		String title = _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")"));
 
 		final AlertXYView view = new AlertXYView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle,
-				PropertySupport.WIDTH, width, PropertySupport.HEIGHT, height, PropertySupport.LEFTMARGIN, LMARGIN,
-				PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN, RMARGIN, PropertySupport.BOTTOMMARGIN,
-				BMARGIN, PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
-				PropertySupport.VISIBLE, true, PropertySupport.TITLE, title, PropertySupport.PROPNAME, "AlertXY",
-				PropertySupport.STANDARDVIEWDECORATIONS,
-				true);
+				PropertySupport.WIDTH, width, 
+				PropertySupport.HEIGHT, height, 
+				PropertySupport.LEFTMARGIN, LMARGIN,
+				PropertySupport.TOPMARGIN, TMARGIN,
+				PropertySupport.RIGHTMARGIN, RMARGIN, 
+				PropertySupport.BOTTOMMARGIN, BMARGIN, 
+				PropertySupport.TOOLBAR, true, 
+				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
+				PropertySupport.VISIBLE, true, 
+				PropertySupport.TITLE, title, 
+				PropertySupport.PROPNAME, "AlertXY",
+				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
 				ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.RECONHITS
-						+ DisplayBits.ADCDATA,
+						+ DisplayBits.ADCDATA + DisplayBits.MCTRUTH,
 				3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
