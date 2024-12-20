@@ -38,7 +38,6 @@ import cnuphys.ced.item.MagFieldItem;
  */
 public class ControlPanel extends JPanel implements ChangeListener {
 	private static final int SLIDERWIDTH = 210;
-	private static final int FEEDBACKWIDTH = 220;
 
 	// widths of some optional widgets
 	private static final int FULLWIDTH = 220;
@@ -133,32 +132,38 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		setLayout(new BorderLayout(0, 2));
 
+		// Create a vertical box for components above the feedback
 		_northBox = Box.createVerticalBox();
 
-		// add the tabbed pane
+		// Add the tabbed pane at the top
 		_tabbedPane = addTabbedPane(view, controlPanelBits, displayArrayBits);
 		_northBox.add(_tabbedPane);
 
-		// feedback
+		// Feedback Pane initialization
 		if (Bits.checkBit(controlPanelBits, FEEDBACK)) {
-			_feedbackPane = new FeedbackPane(FEEDBACKWIDTH);
+			_feedbackPane = new FeedbackPane();
 			view.getContainer().setFeedbackPane(_feedbackPane);
 		}
 
+		// Add _northBox to the NORTH region
 		add(_northBox, BorderLayout.NORTH);
 
-		add(_feedbackPane, BorderLayout.CENTER);
+		// Add the FeedbackPane to the CENTER region to take remaining space
+		if (_feedbackPane != null) {
+			add(_feedbackPane, BorderLayout.CENTER);
+		}
+
 		validate();
 	}
-	
+
 	public void addComponent(JComponent component) {
 		System.out.println("Adding northbox component");
 		_northBox.add(component);
-		
+
+		// Adjust the preferred size to maintain the desired layout
 		Dimension d = component.getPreferredSize();
 		d.width = FULLWIDTH;
 		component.setPreferredSize(d);
-	//	validate();
 	}
 
 	/**
@@ -301,6 +306,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		//text area
 		_cpTextArea = new SimpleScrollableTextArea(10, 28);
+		
 		sp.add(_cpTextArea.getScrollPane());
 		_cpTextArea.setFont(Fonts.tweenFont);
 		clearTextArea();
@@ -311,9 +317,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
 			_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
 					"Relative Accumulation or ADC Value", 10, false, true);
-
 			sp.add(_colorPanel);
-
 		}
 
 		// adc threshold

@@ -70,8 +70,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 			addNorth(colorDefault);
 		}
 
-		add(_legend, BorderLayout.CENTER);
-//		add(_slider, BorderLayout.SOUTH);
+		add(_legend, BorderLayout.SOUTH);
 		setBorder(new CommonBorder(name));
 	}
 

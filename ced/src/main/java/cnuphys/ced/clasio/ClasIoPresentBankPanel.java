@@ -155,14 +155,14 @@ public class ClasIoPresentBankPanel extends JPanel {
 	}
 
 
-	@Override
-	public Dimension getPreferredSize() {
-		Dimension d = super.getPreferredSize();
-		d.width = 300;
-		d.height = preferredHeight;
-		return d;
-
-	}
+//	@Override
+//	public Dimension getPreferredSize() {
+//		Dimension d = super.getPreferredSize();
+//		d.width = 300;
+//		d.height = preferredHeight;
+//		return d;
+//
+//	}
 
 	// replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {

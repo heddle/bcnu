@@ -88,7 +88,7 @@ public class MonteCarloView2D extends MapView2D implements IFeedbackProvider {
 	private void setFeedback() {
 		FeedbackControl fbc = getContainer().getFeedbackControl();
 		fbc.addFeedbackProvider(this);
-		_feedbackPane = new FeedbackPane(200);
+		_feedbackPane = new FeedbackPane();
 		getContainer().setFeedbackPane(_feedbackPane);
 
 		Dimension dim = _feedbackPane.getPreferredSize();

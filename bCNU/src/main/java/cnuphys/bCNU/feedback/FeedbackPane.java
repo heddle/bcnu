@@ -43,15 +43,6 @@ public class FeedbackPane extends TextPaneScrollPane {
 	
 	public static final SimpleAttributeSet _smallMono = createStyle(Color.cyan, _background, "Monospaced", 6, false, true);
 
-	/**
-	 * Constructor Create a feedback pane to display mouse-over feedback. This is a
-	 * "low tech" alternative to using the HUD.
-	 *
-	 * @param width the preferred width.
-	 */
-	public FeedbackPane(int width) {
-		this(width, 500);
-	}
 
 	/**
 	 * Constructor Create a feedback pane to display mouse-over feedback. This is a
@@ -59,7 +50,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	 *
 	 * @param width the preferred width.
 	 */
-	public FeedbackPane(int width, int height) {
+	public FeedbackPane() {
 		super(_background);
 
 		Border etchedBorder = BorderFactory.createEtchedBorder();
