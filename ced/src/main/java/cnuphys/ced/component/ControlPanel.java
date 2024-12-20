@@ -113,6 +113,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// the tabbed pane
 	private JTabbedPane _tabbedPane;
+	
+	//holds components above feedback
+	private Box _northBox;
 
 	/**
 	 * Create a view control panel
@@ -130,11 +133,11 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		setLayout(new BorderLayout(0, 2));
 
-		Box box = Box.createVerticalBox();
+		_northBox = Box.createVerticalBox();
 
 		// add the tabbed pane
 		_tabbedPane = addTabbedPane(view, controlPanelBits, displayArrayBits);
-		box.add(_tabbedPane);
+		_northBox.add(_tabbedPane);
 
 		// feedback
 		if (Bits.checkBit(controlPanelBits, FEEDBACK)) {
@@ -142,10 +145,20 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			view.getContainer().setFeedbackPane(_feedbackPane);
 		}
 
-		add(box, BorderLayout.NORTH);
+		add(_northBox, BorderLayout.NORTH);
 
 		add(_feedbackPane, BorderLayout.CENTER);
 		validate();
+	}
+	
+	public void addComponent(JComponent component) {
+		System.out.println("Adding northbox component");
+		_northBox.add(component);
+		
+		Dimension d = component.getPreferredSize();
+		d.width = FULLWIDTH;
+		component.setPreferredSize(d);
+	//	validate();
 	}
 
 	/**

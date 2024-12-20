@@ -51,6 +51,8 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	//draw hits in the TOF
 	private AlertTOFHitDrawer _tofHitDrawer;
 
+	//wire projection
+	private DCWireProjectionPanel _dcPanel;
 
 	/**
 	 * Create a Alert detector XY View
@@ -75,7 +77,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		// make it square
 		int width = d.width;
-		int height = width;
+		int height = width-100;
 
 		String title = _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")"));
 
@@ -109,6 +111,10 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		view._controlPanel.getMatchedBankPanel().update();
+		
+		//add dc projection panel
+		view._dcPanel = new DCWireProjectionPanel(view);
+		view._controlPanel.addComponent(view._dcPanel);
 
 		return view;
 	}
@@ -121,8 +127,6 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 			public void draw(Graphics g, IContainer container) {
 
 				if (!_eventManager.isAccumulating()) {
-
-					drawLayerShells(g, container);
 					drawWires(g, container);
 					drawPaddles(g, container);
 
@@ -193,24 +197,11 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		for (DCLayer dcl : dcLayers) {
 			if (dcl.numWires >  0) {
-				dcl.drawXYWires(g, container);
+				dcl.drawXYWires(g, container, useWireMidpoint(), getFixedZ());
 			}
 		}
 	}
 
-
-	//draw all the layers shells
-	private void drawLayerShells(Graphics g, IContainer container) {
-
-		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
-
-		for (DCLayer dcl : dcLayers) {
-			if (dcl.numWires >  0) {
-				dcl.drawXYDonut(g, container);
-			}
-
-		}
-	}
 
 	private void drawPaddles(Graphics g, IContainer container) {
 		Collection<TOFLayer> tofLayers = AlertGeometry.getAllTOFLayers();
@@ -265,7 +256,23 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 	}
 
-
+	/**
+	 * Are we using the wire midpoints?
+	 * 
+	 * @return <code>true</code> if we are using the wire midpoints.
+	 */
+	public boolean useWireMidpoint() {
+		return _dcPanel.useWireMidpoint();
+	}
+	
+	/**
+	 * Get the fixed Z value if we are not using midpoints
+	 * 
+	 * @return the fixed Z value.
+	 */
+	public double getFixedZ() {
+		return _dcPanel.getFixedZ();
+	}
 
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings

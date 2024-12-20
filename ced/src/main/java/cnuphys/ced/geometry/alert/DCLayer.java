@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.jlab.geom.detector.alert.AHDC.AlertDCLayer;
@@ -32,11 +33,6 @@ public class DCLayer {
 	/** assumed half radial width of gap */
 	public static final double WIRERAD = 0.85*LAYERDR; // mm;
 
-
-	// for approximating arcs
-	private static final int NUMCIRCSTEP = 200;
-
-
 	/** the 0-based sector of this layer */
 	public final int sector;
 
@@ -55,21 +51,11 @@ public class DCLayer {
 	/** the midpoints of the wires */
 	public final Point2D.Double midpoints[];
 
-	/** XY radius at midpoint in mm */
-	public final double midPointRadius;
-
-	/** XY radius at midpoint in mm */
-	public final double innerMidPointRadius;
-
-	/** XY radius at midpoint in mm */
-	public final double outerMidPointRadius;
-
 	//for world xy shell
-	private double _x[];
-	private double _y[];
+	private Point2D.Double _shell[];
 
 	//for wire outline
-	private Rectangle2D.Double _wr[];
+	private Rectangle2D.Double _wrect[];
 
 	//workspace
 
@@ -90,32 +76,23 @@ public class DCLayer {
 		midpoints = new Point2D.Double[numWires];
 
 		int index = 0;
+
+		
 		for (AlertDCWire aw : wireList) {
 			wires[index] = aw.getLine();
-
-			Point3D start = wires[index].origin();
-			Point3D end = wires[index].end();
 			Point3D midpoint = aw.getMidpoint();
 			
 			midpoints[index] = new Point2D.Double(midpoint.x(), midpoint.y());
-
 			index++;
 		}
-
-		if (numWires == 0) {
-			midPointRadius = Double.NaN;
-			innerMidPointRadius = Double.NaN;
-			outerMidPointRadius = Double.NaN;
-
-		} else {
-			midPointRadius = Math.hypot(midpoints[0].x, midpoints[0].y);
-			innerMidPointRadius = midPointRadius - LAYERDR;
-			outerMidPointRadius = midPointRadius + LAYERDR;
-			shellWorldPoly();
+		
+		_wrect = new Rectangle2D.Double[numWires];
+ 		for (int wire = 0; wire < numWires; wire++) {
+			_wrect[wire] = new Rectangle2D.Double();
 		}
-
-//		System.out.println(String.format("sect: %d    supl: %d    lay: %d   nw:  %d rad: %8.4f", sector, superlayer, layer, numWires, midPointRadius));
 	}
+	
+	
 	
 	/**
 	 * Get the 3D coords of the wire used in 3D drawing
@@ -146,40 +123,7 @@ public class DCLayer {
 		return wires[wire];
 	}
 
-	private void shellWorldPoly() {
 
-		int N2 = 2 * NUMCIRCSTEP;
-		_x = new double[N2];
-		_y = new double[N2];
-
-		double delAng = (2 * Math.PI) / (NUMCIRCSTEP - 1);
-
-
-		for (int i = 0; i < NUMCIRCSTEP; i++) {
-			int j = i + NUMCIRCSTEP;
-			double theta = i * delAng;
-
-			double cos = Math.cos(theta);
-			double sin = Math.sin(theta);
-
-			_x[i] = innerMidPointRadius * cos;
-			_y[i] = innerMidPointRadius * sin;
-
-			_x[j] = outerMidPointRadius * cos;
-			_y[j] = outerMidPointRadius * sin;
-		}
-
-		_wr = new Rectangle2D.Double[numWires];
-
-		double r2 = 2*WIRERAD;
-		for (int wire = 0; wire < numWires; wire++) {
-			double xx = midpoints[wire].x;
-			double yy = midpoints[wire].y;
-			_wr[wire] = new Rectangle2D.Double(xx-WIRERAD, yy-WIRERAD, r2, r2);
-		}
-
-
-	}
 
 
 	/**
@@ -203,9 +147,8 @@ public class DCLayer {
 		if (numWires == 0) {
 			return false;
 		}
-
-		double rad = Math.hypot(wp.x, wp.y);
-		return (rad > innerMidPointRadius) && (rad < outerMidPointRadius);
+		
+		return WorldGraphicsUtilities.contains(_shell, wp);
 	}
 	
 	/**
@@ -218,7 +161,7 @@ public class DCLayer {
 		if ((wire < 0) || (wire >= numWires)) {
 			return false;
 		}
-		return _wr[wire].contains(wp);
+		return _wrect[wire].contains(wp);
 	}
 
 	/**
@@ -232,7 +175,7 @@ public class DCLayer {
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {
-				if (_wr[wire].contains(wp)) {
+				if (_wrect[wire].contains(wp)) {
 					feedbackStrings.add(String.format("AlertDC wire: %d", wire + 1));
 					break;
 				}
@@ -245,7 +188,7 @@ public class DCLayer {
 	 * @param g the graphics object
 	 * @param container the drawing container
 	 */
-	public void drawXYDonut(Graphics g, IContainer container) {
+	private void drawShell(Graphics g, IContainer container) {
 
 		if (numWires < 1) {
 			return;
@@ -259,14 +202,14 @@ public class DCLayer {
 
 		Polygon poly = new Polygon();
 
-		for (int i = 0; i < _x.length; i++) {
-			container.worldToLocal(pp, _x[i], _y[i]);
+		for (int i = 0; i < _shell.length; i++) {
+			container.worldToLocal(pp, _shell[i]);
 			poly.addPoint(pp.x, pp.y);
 
 			if (i == 0) {
 				pp0.setLocation(pp);
 			}
-			else if (i == NUMCIRCSTEP) {
+			else if (i == _shell.length/2) {
 				pp1.setLocation(pp);
 			}
 		}
@@ -282,30 +225,82 @@ public class DCLayer {
 		g.drawLine(pp0.x-1, pp0.y, pp1.x+1, pp1.y);
 
 	}
+	
+	public double getWireXYatZ(int wire, double z, Point2D.Double xy) {
+		Line3D line = wires[wire];
+		Point3D p0 = line.origin();
+		Point3D p1 = line.end();
+		double t = (z - p0.z()) / (p1.z() - p0.z());
+		xy.x = p0.x() + t * (p1.x() - p0.x());
+		xy.y = p0.y() + t * (p1.y() - p0.y());
+		return t;
+	}
+	
+	//get the shell poly
+	private void shellWorldPoly(boolean useMidpoint, double z) {
+		
+		ArrayList<Point2D.Double> points = new ArrayList<Point2D.Double>();
+		for (int wire = 0; wire < numWires; wire++) {
+			if (useMidpoint) {
+				points.add(midpoints[wire]);
+			} else {
+				Point2D.Double zp = new Point2D.Double();
+				double t = getWireXYatZ(wire, z, zp);
+				if ((t >= 0) && (t <= 1)) {
+					points.add(zp);
+				}
+			}
+		}
+		
+		if (points.size() < 2) {
+			return;
+		}
+		
+		int N2 = 2 * points.size();
+		_shell = new Point2D.Double[N2];
+		double x, y;
+		
+		int i = 0;
+		for (Point2D.Double p : points) {
+			int j = i + points.size();
+			double radius = Math.hypot(p.x, p.y);
+			double theta = Math.atan2(p.y, p.x);
+			double cos = Math.cos(theta);
+			double sin = Math.sin(theta);
+			
+			double innerMidPointRadius = radius - LAYERDR;
+			double outerMidPointRadius = radius + LAYERDR;
+
+			x = innerMidPointRadius * cos;
+			y = innerMidPointRadius * sin;
+			_shell[i] = new Point2D.Double(x, y);
+			
+			x = outerMidPointRadius * cos;
+			y = outerMidPointRadius * sin;
+			_shell[j] = new Point2D.Double(x, y);
+
+			i++;
+		}
+
+		System.out.println();
+
+	}
 
 	/**
 	 * Draw the wires
 	 * @param g the graphics object
 	 * @param container the drawing container
 	 */
-	public void drawXYWires(Graphics g, IContainer container) {
+	public void drawXYWires(Graphics g, IContainer container, boolean useMidpoint, double z) {
 
+		shellWorldPoly(useMidpoint, z);
+		//draw the poly
+		drawShell(g, container);
 		for (int wire = 0; wire < numWires; wire++) {
-			drawXYWire(g, container, wire);
+			drawXYWire(g, container, wire, wireFill, Color.darkGray, useMidpoint, z);
 		}
 	}
 
-	/**
-	 * Draw a wire
-	 * 
-	 * @param g         the graphics object
-	 * @param container the drawing container
-	 * @param wire      the 0-based wire id (data is 1-based!)
-	 */
-	public void drawXYWire(Graphics g, IContainer container, int wire) {
-		drawXYWire(g, container, wire, wireFill, Color.darkGray);
-	}
-	
 	/**
 	 * Draw a wire
 	 * 
@@ -315,12 +310,25 @@ public class DCLayer {
 	 * @param fc        the fill color
 	 * @param lc        the line color
 	 */
-	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc) {
+	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc, boolean useMidpoint, double z) {
 		if (numWires < 1) {
 			return;
 		}
-
-		WorldGraphicsUtilities.drawWorldOval(g, container, _wr[wire], fc, lc);
+		
+		if (useMidpoint) {
+			Point2D.Double mp = midpoints[wire];
+			_wrect[wire].setFrame(mp.x-WIRERAD, mp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
+			WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
+		} else {
+			Point2D.Double zp = new Point2D.Double();
+			double t = getWireXYatZ(wire, z, zp);
+			
+			if ((t < 0) || (t > 1)) {
+				return;
+			}
+			_wrect[wire].setFrame(zp.x-WIRERAD, zp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
+			WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
+		}
 	}
 
 }
