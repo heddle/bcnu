@@ -16,6 +16,7 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.util.PropertySupport;
+import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
@@ -52,7 +53,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	private AlertTOFHitDrawer _tofHitDrawer;
 
 	//wire projection
-	private DCWireProjectionPanel _dcPanel;
+	private AlertWireProjectionPanel _dcPanel;
 
 	/**
 	 * Create a Alert detector XY View
@@ -97,7 +98,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
-				ControlPanel.MATCHINGBANKSPANEL,
+				ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.RECONHITS
 						+ DisplayBits.ADCDATA + DisplayBits.MCTRUTH,
 				3, 5);
@@ -113,8 +114,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		view._controlPanel.getMatchedBankPanel().update();
 		
 		//add dc projection panel
-		view._dcPanel = new DCWireProjectionPanel(view);
-		view._controlPanel.addComponent(view._dcPanel);
+		view._dcPanel = view._controlPanel.getAlertDCPanel();
 
 		return view;
 	}
@@ -197,7 +197,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		for (DCLayer dcl : dcLayers) {
 			if (dcl.numWires >  0) {
-				dcl.drawXYWires(g, container, useWireMidpoint(), getFixedZ());
+				dcl.drawXYWires(g, container, getProjection(), getFixedZ(), getFixedTheta());
 			}
 		}
 	}
@@ -231,6 +231,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	}
 
 
+
 	/**
 	 * Clone the view.
 	 *
@@ -255,16 +256,16 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		return view;
 
 	}
-
-	/**
-	 * Are we using the wire midpoints?
-	 * 
-	 * @return <code>true</code> if we are using the wire midpoints.
-	 */
-	public boolean useWireMidpoint() {
-		return _dcPanel.useWireMidpoint();
-	}
 	
+	/**
+	 * Get the projection
+	 * 
+	 * @return the projection
+	 */
+	public E_DCProjection getProjection() {
+		return _dcPanel.getProjection();
+	}
+					
 	/**
 	 * Get the fixed Z value if we are not using midpoints
 	 * 
@@ -272,6 +273,15 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	public double getFixedZ() {
 		return _dcPanel.getFixedZ();
+	}
+	
+	/**
+	 * Get the fixed theta value if we are not using midpoints
+	 * 
+	 * @return the fixed theta value.
+	 */
+	public double getFixedTheta() {
+		return _dcPanel.getFixedTheta();
 	}
 
 	/**
@@ -287,6 +297,26 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 			List<String> feedbackStrings) {
 
 		basicFeedback(container, pp, wp, "mm", feedbackStrings);
+		
+		if (getProjection() == E_DCProjection.MIDPOINT) {
+			feedbackStrings.add("Using wire midpoints");
+		} else if (getProjection() == E_DCProjection.FIXED_Z) {
+			double z = getFixedZ();
+			feedbackStrings.add("Using fixed Z = " + getFixedZ() + " mm");
+			double r = Math.sqrt(wp.x * wp.x + wp.y * wp.y + z * z);
+			if (r > 0) {
+				double theta = Math.toDegrees(Math.acos(z / r));
+				feedbackStrings.add(UnicodeSupport.SMALL_THETA + " = " + theta + " degrees");
+			}
+		}
+		else {
+			feedbackStrings.add("Using fixed " + UnicodeSupport.SMALL_THETA + " = " + getFixedTheta() + " degrees");
+			double trad = Math.toRadians(getFixedTheta());
+			if (trad > 0.001) {
+                double z = Math.sqrt(wp.x * wp.x + wp.y * wp.y)/ Math.tan(trad);
+                feedbackStrings.add("z = " + z + " mm");
+			}
+		}
 
 		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
 

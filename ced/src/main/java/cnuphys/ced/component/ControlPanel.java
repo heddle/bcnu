@@ -24,6 +24,8 @@ import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.cedview.alert.AlertWireProjectionPanel;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCDisplayPanel;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.event.AccumulationManager;
@@ -50,6 +52,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** Bit used to create a torus legend */
 	public static final int FIELDLEGEND = 04;
+	
+	/** ALERT DC projections */
+	public static final int ALERTDC = 010;
+	
+	/** filtered banks */
+	public static final int MATCHINGBANKSPANEL = 020;
 
 	/** Bit used to create a feedback pane */
 	public static final int FEEDBACK = 040;
@@ -68,9 +76,6 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** all dc display panel */
 	public static final int ALLDCDISPLAYPANEL = 02000;
-
-	/** filtered banks */
-	public static final int MATCHINGBANKSPANEL = 04000;
 
 	// the view parent
 	private CedView _view;
@@ -115,6 +120,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	
 	//holds components above feedback
 	private Box _northBox;
+	
+	//just used on AlertXYView
+	private AlertWireProjectionPanel _alertDCPanel;
 
 	/**
 	 * Create a view control panel
@@ -252,6 +260,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			phiSlider = createPhiSlider(isBig);
 		}
 
+		// alert dc projections
+		if (Bits.checkBit(controlPanelBits, ALERTDC)) {
+			if (_view instanceof AlertXYView) {
+				_alertDCPanel = new AlertWireProjectionPanel((AlertXYView)view);
+			}
+		}
 
 		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
 			_matchedBankPanel = new MatchedBankPanel(view);
@@ -267,6 +281,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (daPanel != null) {
 			tabbedPane.add(daPanel, "display");
+		}
+		
+		if (_alertDCPanel != null) {
+			tabbedPane.add(_alertDCPanel, "Alert DC");
 		}
 
 		if (_matchedBankPanel != null) {
@@ -443,6 +461,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		return box;
 	}
 
+	/**
+	 * Get the AlertDCPanel	
+	 */
+	public AlertWireProjectionPanel getAlertDCPanel() {
+		return _alertDCPanel;
+	}
 	/**
 	 * Get the slider for adc threshold.
 	 *
