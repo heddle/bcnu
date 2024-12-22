@@ -10,6 +10,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 
+import org.jlab.geom.prim.Point3D;
+
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -215,6 +217,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 	}
 
+	private double zcamera = 450;
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
 	 * the view)
@@ -228,8 +231,62 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
 		wp.x = x;
 		wp.y = y;
+		
+		//use projection
+		
+		double zp = 150;
+		if (getProjection() == E_DCProjection.FIXED_Z) {
+            zp = getFixedZ();
+        }
+		
+		double scale = (zcamera - zp) / zcamera;
+		wp.x *= scale;
+		wp.y *= scale;
 	}
 
+	/**
+	 * Convert world coordinates to lab coordinates
+	 *
+	 * @param p is the input point in world coordinates
+	 * @param pout will hold the projected point in lab coordinates
+	 * @param theta is the angle of the cone (polar angle) in radians
+	 * @param zcamera the camera is at (0, 0, zcamera)
+	 */
+	private void thetaProjection(Point3D p, Point3D pout, double theta, double zcamera) {
+	    // Ensure the zcamera is greater than 0 to avoid invalid camera positioning
+	    if (zcamera <= 0) {
+	        throw new IllegalArgumentException("zcamera must be greater than 0");
+	    }
+
+	    // Extract input point coordinates
+	    double x = p.x();
+	    double y = p.y();
+	    double z = p.z();
+
+	    // Ensure the point is in front of the camera
+	    if (z >= zcamera) {
+	        throw new IllegalArgumentException("Point must be in front of the camera (z < zcamera)");
+	    }
+
+	    // Compute the distance from the z-axis in the x-y plane
+	    double r = Math.sqrt(x * x + y * y);
+
+	    // Compute the desired radius on the constant-theta cone
+	    double desiredR = (zcamera - z) * Math.tan(theta);
+
+	    // Scale the x and y coordinates to match the constant-theta cone
+	    double scale = (r == 0) ? 0 : (desiredR / r); // Avoid division by zero
+	    double xProjected = x * scale;
+	    double yProjected = y * scale;
+
+	    // The z-coordinate remains the same in the projected space
+	    double zProjected = z;
+
+	    // Set the output point coordinates
+	    pout.setX(xProjected);
+	    pout.setY(yProjected);
+	    pout.setZ(zProjected);
+	}
 
 
 	/**
