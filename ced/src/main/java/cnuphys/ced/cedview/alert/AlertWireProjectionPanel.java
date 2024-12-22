@@ -7,10 +7,8 @@ import javax.swing.event.ChangeListener;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
-import cnuphys.bCNU.util.UnicodeSupport;
 
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.Dictionary;
 import java.util.Enumeration;
 
@@ -19,14 +17,7 @@ public class AlertWireProjectionPanel extends JPanel {
     private final JSlider zSlider;
     private final JLabel zSliderLabel;
 
-    private final JSlider thetaSlider;
-    private final JLabel thetaSliderLabel;
-
-    private final AlertXYView alertXYView;
-
-    private final JRadioButton useWireMidpointButton;
-    private final JRadioButton fixedZButton;
-    private final JRadioButton fixedThetaButton;
+     private final AlertXYView alertXYView;
 
     private static final Font FONT = Fonts.tweenFont;
 
@@ -34,40 +25,18 @@ public class AlertWireProjectionPanel extends JPanel {
         this.alertXYView = alertXYView;
         setLayout(new VerticalFlowLayout());
 
-        // Radio Buttons
-        ButtonGroup projectionGroup = new ButtonGroup();
-        useWireMidpointButton = createRadioButton("Use wire midpoints", projectionGroup, e -> setSliderState(false, false));
-        fixedZButton = createRadioButton("Fixed z (xy plane)", projectionGroup, e -> setSliderState(true, false));
-        fixedThetaButton = createRadioButton("Fixed " + UnicodeSupport.SMALL_THETA, projectionGroup, e -> setSliderState(false, true));
-
-        useWireMidpointButton.setSelected(true);
-
-        add(useWireMidpointButton);
-        add(fixedZButton);
-        add(fixedThetaButton);
-        add(Box.createRigidArea(new Dimension(0, 8))); // Spacer
-
         // Z Slider
         zSliderLabel = createLabel();
         add(zSliderLabel);
 
-        zSlider = createSlider(0, 300, 150, 50, 10, this::updateZLabel);
+        zSlider = createSlider(0, 300, 150, 50, 10, this::updateZLabel, true);
         add(zSlider);
 
-        add(Box.createRigidArea(new Dimension(0, 8))); // Spacer
-
-        // Theta Slider
-        thetaSliderLabel = createLabel();
-        add(thetaSliderLabel);
-
-        thetaSlider = createSlider(0, 90, 10, 10, 5, this::updateThetaLabel);
-        add(thetaSlider);
-
-        setBorder(new CommonBorder("DC Wire Projection"));
+        setBorder(new CommonBorder("DC Wire Projection Plane"));
         updateZLabel(null);
-        updateThetaLabel(null);
     }
 
+    //helper method to create a label
     private JLabel createLabel() {
         JLabel label = new JLabel("  ");
         label.setFont(FONT);
@@ -75,15 +44,8 @@ public class AlertWireProjectionPanel extends JPanel {
         return label;
     }
 
-    private JRadioButton createRadioButton(String text, ButtonGroup group, ActionListener actionListener) {
-        JRadioButton radioButton = new JRadioButton(text);
-        radioButton.setFont(FONT);
-        radioButton.addActionListener(actionListener);
-        group.add(radioButton);
-        return radioButton;
-    }
-
-    private JSlider createSlider(int min, int max, int value, int major, int minor, ChangeListener changeListener) {
+    //helper method to create a slider
+    private JSlider createSlider(int min, int max, int value, int major, int minor, ChangeListener changeListener, boolean enabled) {
         JSlider slider = new JSlider(min, max, value) {
             @Override
             public Dimension getPreferredSize() {
@@ -97,12 +59,13 @@ public class AlertWireProjectionPanel extends JPanel {
         slider.setMinorTickSpacing(minor);
         slider.setPaintTicks(true);
         slider.setPaintLabels(true);
-        slider.setEnabled(false);
+        slider.setEnabled(enabled);
         customizeSliderLabels(slider);
         slider.addChangeListener(changeListener);
         return slider;
     }
 
+    //helper method to customize the slider labels
     private void customizeSliderLabels(JSlider slider) {
         Dictionary<?, ?> labelTable = slider.createStandardLabels(50);
         slider.setLabelTable(labelTable);
@@ -119,42 +82,20 @@ public class AlertWireProjectionPanel extends JPanel {
         }
     }
 
-    private void setSliderState(boolean zEnabled, boolean thetaEnabled) {
-        zSlider.setEnabled(zEnabled);
-        thetaSlider.setEnabled(thetaEnabled);
-        alertXYView.refresh();
-    }
-
+ 
+    //update the z label
     private void updateZLabel(ChangeEvent e) {
         zSliderLabel.setText("z = " + zSlider.getValue() + " mm");
         alertXYView.refresh();
     }
 
-    private void updateThetaLabel(ChangeEvent e) {
-        thetaSliderLabel.setText(UnicodeSupport.SMALL_THETA + " = " + thetaSlider.getValue() + " degrees");
-        alertXYView.refresh();
-    }
-    
-    /**
-     * Get the projection
-     * @return the projection
-     */
-	public E_DCProjection getProjection() {
-		if (useWireMidpointButton.isSelected()) {
-			return E_DCProjection.MIDPOINT;
-		} else if (fixedZButton.isSelected()) {
-			return E_DCProjection.FIXED_Z;
-		} else {
-			return E_DCProjection.FIXED_THETA;
-		}
-	}
-
  
+	/**
+	 * Get the fixed Z value
+	 * 
+	 * @return the fixed Z value
+	 */
     public double getFixedZ() {
         return zSlider.getValue();
-    }
-
-    public double getFixedTheta() {
-        return thetaSlider.getValue();
     }
 }

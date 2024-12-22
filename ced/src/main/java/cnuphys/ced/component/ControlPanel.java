@@ -281,11 +281,11 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (daPanel != null) {
 			tabbedPane.add(daPanel, "display");
+			if (_alertDCPanel != null) {
+				daPanel.add(_alertDCPanel);
+			}
 		}
 		
-		if (_alertDCPanel != null) {
-			tabbedPane.add(_alertDCPanel, "Alert DC");
-		}
 
 		if (_matchedBankPanel != null) {
 			tabbedPane.add(_matchedBankPanel, "Banks");

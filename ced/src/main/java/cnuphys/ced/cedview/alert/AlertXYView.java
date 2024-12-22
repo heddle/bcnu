@@ -32,6 +32,8 @@ import cnuphys.ced.geometry.alert.TOFLayer;
 public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 
+	// camera Z for projection
+	private double _zcamera = 450;
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
@@ -199,7 +201,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		for (DCLayer dcl : dcLayers) {
 			if (dcl.numWires >  0) {
-				dcl.drawXYWires(g, container, getProjection(), getFixedZ(), getFixedTheta());
+				dcl.drawXYWires(g, container, getFixedZ());
 			}
 		}
 	}
@@ -217,10 +219,10 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 	}
 
-	private double zcamera = 450;
+
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
-	 * the view)
+	 * the view). Used by the swim drawer.
 	 *
 	 * @param x  the CLAS12 x coordinate
 	 * @param y  the CLAS12 y coordinate
@@ -229,64 +231,13 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	@Override
 	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
-		wp.x = x;
-		wp.y = y;
-		
-		//use projection
-		
-		double zp = 150;
-		if (getProjection() == E_DCProjection.FIXED_Z) {
-            zp = getFixedZ();
-        }
-		
-		double scale = (zcamera - zp) / zcamera;
-		wp.x *= scale;
-		wp.y *= scale;
+		//do the projection
+		double zp = getFixedZ();
+		double scale = (_zcamera - zp) / _zcamera;
+		wp.x = x*scale;
+		wp.y = y*scale;
 	}
 
-	/**
-	 * Convert world coordinates to lab coordinates
-	 *
-	 * @param p is the input point in world coordinates
-	 * @param pout will hold the projected point in lab coordinates
-	 * @param theta is the angle of the cone (polar angle) in radians
-	 * @param zcamera the camera is at (0, 0, zcamera)
-	 */
-	private void thetaProjection(Point3D p, Point3D pout, double theta, double zcamera) {
-	    // Ensure the zcamera is greater than 0 to avoid invalid camera positioning
-	    if (zcamera <= 0) {
-	        throw new IllegalArgumentException("zcamera must be greater than 0");
-	    }
-
-	    // Extract input point coordinates
-	    double x = p.x();
-	    double y = p.y();
-	    double z = p.z();
-
-	    // Ensure the point is in front of the camera
-	    if (z >= zcamera) {
-	        throw new IllegalArgumentException("Point must be in front of the camera (z < zcamera)");
-	    }
-
-	    // Compute the distance from the z-axis in the x-y plane
-	    double r = Math.sqrt(x * x + y * y);
-
-	    // Compute the desired radius on the constant-theta cone
-	    double desiredR = (zcamera - z) * Math.tan(theta);
-
-	    // Scale the x and y coordinates to match the constant-theta cone
-	    double scale = (r == 0) ? 0 : (desiredR / r); // Avoid division by zero
-	    double xProjected = x * scale;
-	    double yProjected = y * scale;
-
-	    // The z-coordinate remains the same in the projected space
-	    double zProjected = z;
-
-	    // Set the output point coordinates
-	    pout.setX(xProjected);
-	    pout.setY(yProjected);
-	    pout.setZ(zProjected);
-	}
 
 
 	/**
@@ -315,15 +266,6 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	}
 	
 	/**
-	 * Get the projection
-	 * 
-	 * @return the projection
-	 */
-	public E_DCProjection getProjection() {
-		return _dcPanel.getProjection();
-	}
-					
-	/**
 	 * Get the fixed Z value if we are not using midpoints
 	 * 
 	 * @return the fixed Z value.
@@ -332,14 +274,6 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		return _dcPanel.getFixedZ();
 	}
 	
-	/**
-	 * Get the fixed theta value if we are not using midpoints
-	 * 
-	 * @return the fixed theta value.
-	 */
-	public double getFixedTheta() {
-		return _dcPanel.getFixedTheta();
-	}
 
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
@@ -355,24 +289,16 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		basicFeedback(container, pp, wp, "mm", feedbackStrings);
 		
-		if (getProjection() == E_DCProjection.MIDPOINT) {
-			feedbackStrings.add("Using wire midpoints");
-		} else if (getProjection() == E_DCProjection.FIXED_Z) {
-			double z = getFixedZ();
-			feedbackStrings.add("Using fixed Z = " + getFixedZ() + " mm");
-			double r = Math.sqrt(wp.x * wp.x + wp.y * wp.y + z * z);
-			if (r > 0) {
-				double theta = Math.toDegrees(Math.acos(z / r));
-				feedbackStrings.add(UnicodeSupport.SMALL_THETA + " = " + theta + " degrees");
-			}
-		}
-		else {
-			feedbackStrings.add("Using fixed " + UnicodeSupport.SMALL_THETA + " = " + getFixedTheta() + " degrees");
-			double trad = Math.toRadians(getFixedTheta());
-			if (trad > 0.001) {
-                double z = Math.sqrt(wp.x * wp.x + wp.y * wp.y)/ Math.tan(trad);
-                feedbackStrings.add("z = " + z + " mm");
-			}
+		double z = getFixedZ();
+		feedbackStrings.add("z: " + getFixedZ() + " mm");
+		double r = Math.sqrt(wp.x * wp.x + wp.y * wp.y + z * z);
+		if (r > 0) {
+			double theta = Math.toDegrees(Math.acos(z / r));
+			double phi = Math.toDegrees(Math.atan2(wp.y, wp.x));
+			String ts = String.format("%s: %-6.2f", UnicodeSupport.SMALL_THETA, theta);
+			String ps = String.format("%s: %-6.2f", UnicodeSupport.SMALL_PHI, phi);
+			feedbackStrings.add(ts);
+			feedbackStrings.add(ps);
 		}
 
 		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();
@@ -386,7 +312,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		for (DCLayer dcl : dcLayers) {
-			if (dcl.containsXY(wp)) {
+			if (dcl.containsXY(pp)) {
 				dcl.feedbackXYString(pp, wp, feedbackStrings);
 				_dcHitDrawer.getHitFeedbackStrings(container, pp, wp, dcl, feedbackStrings);
 				return;

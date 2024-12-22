@@ -75,7 +75,7 @@ public class AlertDCHitDrawer {
 									+ adcGeom.superlayer + ", layer " + adcGeom.layer);
 							continue;
 						}
-						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.black, _view.getProjection(), _view.getFixedZ(), _view.getFixedTheta());
+						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.black,  _view.getFixedZ());
 					}
 				}
 			}
@@ -104,7 +104,7 @@ public class AlertDCHitDrawer {
 							double count = counts[sector][layer][wire];
 							double fract = (maxHit == 0) ? 0 : (count / maxHit);
 							Color color = AccumulationManager.getInstance().getColor(_view.getColorScaleModel(), fract);
-							dcl.drawXYWire(g, container, wire, color, Color.black, _view.getProjection(), _view.getFixedZ(), _view.getFixedTheta());
+							dcl.drawXYWire(g, container, wire, color, Color.black, _view.getFixedZ());
 						}
 					}
 				}

@@ -2,6 +2,7 @@ package cnuphys.ced.geometry.alert;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.geom.Point2D;
@@ -16,7 +17,7 @@ import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.ced.cedview.alert.E_DCProjection;
+import cnuphys.ced.cedview.alert.AlertLayerDonut;
 import cnuphys.lund.X11Colors;
 
 public class DCLayer {
@@ -49,11 +50,8 @@ public class DCLayer {
 	/** the array of wires */
 	public final Line3D wires[];
 
-	/** the midpoints of the wires */
-	public final Point2D.Double midpoints[];
-
-	//for world xy shell
-	private Point2D.Double _shell[];
+	//for shell outline
+	private AlertLayerDonut _donut;
 
 	//for wire outline
 	private Rectangle2D.Double _wrect[];
@@ -74,16 +72,12 @@ public class DCLayer {
 		List<AlertDCWire> wireList = geoAlertDCLayer.getAllComponents();
 
 		wires = new Line3D[numWires];
-		midpoints = new Point2D.Double[numWires];
 
 		int index = 0;
 
 		
 		for (AlertDCWire aw : wireList) {
 			wires[index] = aw.getLine();
-			Point3D midpoint = aw.getMidpoint();
-			
-			midpoints[index] = new Point2D.Double(midpoint.x(), midpoint.y());
 			index++;
 		}
 		
@@ -126,30 +120,17 @@ public class DCLayer {
 
 
 
-
-	/**
-	 * Get midpoint of wire as a 2D point
-	 * @param wire the 0-based wire id
-	 * @return midpoint of wire, or null
-	 */
-	public Point2D.Double getMidpoint(int wire) {
-		if ((wire < 0) || (wire >= numWires)) {
-			return null;
-		}
-		return midpoints[wire];
-	}
-
 	/**
 	 * Contained in the XY view?
 	 * @param wp the world point
 	 * @return true if contained in this layer
 	 */
-	public boolean containsXY(Point2D.Double wp) {
-		if (numWires == 0) {
+	public boolean containsXY(Point pp) {
+		if ((numWires == 0)|| (_donut == null) || (_donut.area == null)) {
 			return false;
 		}
 		
-		return WorldGraphicsUtilities.contains(_shell, wp);
+		return _donut.area.contains(pp);
 	}
 	
 	/**
@@ -160,8 +141,10 @@ public class DCLayer {
 	 */
 	public boolean wireContainsXY(int wire, Point2D.Double wp) {
 		if ((wire < 0) || (wire >= numWires)) {
+			System.err.println("Bad wire id: " + wire);
 			return false;
 		}
+		
 		return _wrect[wire].contains(wp);
 	}
 
@@ -176,9 +159,9 @@ public class DCLayer {
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {
-				if (_wrect[wire].contains(wp)) {
+				if (wireContainsXY(wire, wp)) {
 					feedbackStrings.add(String.format("AlertDC wire: %d", wire + 1));
-					break;
+					return;
 				}
 			}
 		}
@@ -190,41 +173,17 @@ public class DCLayer {
 	 * @param container the drawing container
 	 */
 	private void drawShell(Graphics g, IContainer container) {
-
-		if (numWires < 1) {
+		if ((numWires == 0)|| (_donut == null) || (_donut.area == null)) {
 			return;
 		}
 
-		Point pp = new Point();
-
-		//to erase connecting line
-		Point pp0 = new Point();
-		Point pp1 = new Point();
-
-		Polygon poly = new Polygon();
-
-		for (int i = 0; i < _shell.length; i++) {
-			container.worldToLocal(pp, _shell[i]);
-			poly.addPoint(pp.x, pp.y);
-
-			if (i == 0) {
-				pp0.setLocation(pp);
-			}
-			else if (i == _shell.length/2) {
-				pp1.setLocation(pp);
-			}
-		}
-
+		Graphics2D g2d = (Graphics2D) g;
 
 		Color fc = shellColors[layer];
-		g.setColor(fc);
-		g.fillPolygon(poly);
-		g.setColor(Color.gray);
-		g.drawPolygon(poly);
-
-		g.setColor(fc);
-		g.drawLine(pp0.x-1, pp0.y, pp1.x+1, pp1.y);
-
+		g2d.setColor(fc);
+		g2d.fill(_donut.area);
+		g2d.setColor(Color.gray);
+		g2d.draw(_donut.area);
 	}
 	
 	public double getWireXYatZ(int wire, double z, Point2D.Double xy) {
@@ -237,107 +196,10 @@ public class DCLayer {
 		return t;
 	}
 	
-	public double getWireXYatTheta(int wire, double theta, Point2D.Double xy) {
-		theta = Math.toRadians(theta);
-		Line3D line = wires[wire];
-		Point3D p0 = line.origin();
-		Point3D p1 = line.end();
-		double theta0 = getTheta(p0);
-		double theta1 = getTheta(p1);
-		
-		if (theta < Math.min(theta0, theta1) || theta > Math.max(theta0, theta1)) {
-			return -1;
-		}
-		
-		if (theta0 > theta1) {
-			Point3D temp = p0;
-			p0 = p1;
-			p1 = temp;
-		}
-		
-		Point3D p3d = findPointWithTheta(p0, p1, theta);
-		if (p3d == null) {
-            return -1;
-		}
-		
-		xy.x = p3d.x();
-		xy.y = p3d.y();
-		
-//		double testTheta = Math.toDegrees(getTheta(p3d));
-//		System.out.println("theta: " + Math.toDegrees(theta) + "testTheta: " + testTheta);
-//		
-//
-		
-		return 0.5; //dummy,anything 0-1 will do
-	}
 
-	private double getTheta(Point3D p3d) {
-		double z = p3d.z();
-		
-		if (z < 1.0e-10) {
-			return Math.PI/2;
-		}
-		
-		double x = p3d.x();
-		double y = p3d.y();
-		double r = Math.sqrt(x * x + y * y + z * z);
-
-	    return Math.acos(z/r);
-	}
-	
 	//get the shell poly
-	private void shellWorldPoly( E_DCProjection projection, double z, double theta) {
-		
-		ArrayList<Point2D.Double> points = new ArrayList<Point2D.Double>();
-		for (int wire = 0; wire < numWires; wire++) {
-			if (projection == E_DCProjection.MIDPOINT) {
-				points.add(midpoints[wire]);
-			} else if (projection == E_DCProjection.FIXED_Z) {
-				Point2D.Double zp = new Point2D.Double();
-				double t = getWireXYatZ(wire, z, zp);
-				if ((t >= 0) && (t <= 1)) {
-					points.add(zp);
-				}
-			}
-			else { //fixed theta
-				Point2D.Double tp = new Point2D.Double();
-                double t = getWireXYatTheta(wire, theta, tp);
-                if ((t >= 0) && (t <= 1)) {
-                    points.add(tp);
-                }
-				
-			}
-		}
-		
-		if (points.size() < 2) {
-			return;
-		}
-		
-		int N2 = 2 * points.size();
-		_shell = new Point2D.Double[N2];
-		double x, y;
-		
-		int i = 0;
-		for (Point2D.Double p : points) {
-			int j = i + points.size();
-			double radius = Math.hypot(p.x, p.y);
-			double thet = Math.atan2(p.y, p.x);
-			double cos = Math.cos(thet);
-			double sin = Math.sin(thet);
-			
-			double innerMidPointRadius = radius - LAYERDR;
-			double outerMidPointRadius = radius + LAYERDR;
-
-			x = innerMidPointRadius * cos;
-			y = innerMidPointRadius * sin;
-			_shell[i] = new Point2D.Double(x, y);
-			
-			x = outerMidPointRadius * cos;
-			y = outerMidPointRadius * sin;
-			_shell[j] = new Point2D.Double(x, y);
-
-			i++;
-		}
+	private void shellWorldPoly(IContainer container, double z) {
+		_donut = new AlertLayerDonut(container, this, z);
 	}
 
 	/**
@@ -345,13 +207,13 @@ public class DCLayer {
 	 * @param g the graphics object
 	 * @param container the drawing container
 	 */
-	public void drawXYWires(Graphics g, IContainer container, E_DCProjection projection, double z, double theta) {
+	public void drawXYWires(Graphics g, IContainer container, double z) {
 
-		shellWorldPoly(projection, z, theta);
+		shellWorldPoly(container, z);
 		//draw the poly
 		drawShell(g, container);
 		for (int wire = 0; wire < numWires; wire++) {
-			drawXYWire(g, container, wire, wireFill, Color.darkGray, projection, z, theta);
+			drawXYWire(g, container, wire, wireFill, Color.darkGray, z);
 		}
 	}
 
@@ -364,84 +226,28 @@ public class DCLayer {
 	 * @param fc        the fill color
 	 * @param lc        the line color
 	 */
-	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc,  E_DCProjection projection, double z, double theta) {
+	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc,   double z) {
 		if (numWires < 1) {
 			return;
 		}
 		
 		
-		if (projection == E_DCProjection.MIDPOINT) {
-			Point2D.Double mp = midpoints[wire];
-			_wrect[wire].setFrame(mp.x-WIRERAD, mp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
-			WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
-		} else if (projection == E_DCProjection.FIXED_Z) {
-			Point2D.Double zp = new Point2D.Double();
-			double t = getWireXYatZ(wire, z, zp);
-			
-			if ((t < 0) || (t > 1)) {
-				return;
-			}
-			_wrect[wire].setFrame(zp.x-WIRERAD, zp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
-			WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
+		Point2D.Double zp = new Point2D.Double();
+		double t = getWireXYatZ(wire, z, zp);
+		
+		if ((t < 0) || (t > 1)) {
+			return;
 		}
-		else {  //fixed theta
-			Point2D.Double tp = new Point2D.Double();
-			double t = getWireXYatTheta(wire, theta, tp);
+		
+		if (wire == 0) {
+			lc = X11Colors.getX11Color("Coral");
+			fc = X11Colors.getX11Color("Alice Blue");
+		}
+		_wrect[wire].setFrame(zp.x-WIRERAD, zp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
+		WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
 
-			if ((t < 0) || (t > 1)) {
-				return;
-			}
-			_wrect[wire].setFrame(tp.x - WIRERAD, tp.y - WIRERAD, 2 * WIRERAD, 2 * WIRERAD);
-			WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
-			
-		}
 	}
 	
-	
-	  private static Point3D findPointWithTheta(Point3D p0, Point3D p1, double targetTheta) {
-	        double thetaEps = 1e-4; // Tolerance for theta
-	        double epsilon = 1e-10; // Tolerance for the binary search termination
 
-	        // Parametrize the line: p(t) = (1 - t) * p0 + t * p1
-	        double dx = p1.x() - p0.x();
-	        double dy = p1.y() - p0.y();
-	        double dz = p1.z() - p0.z();
-
-	        // Use a binary search to find t such that the interpolated point has theta == targetTheta
-	        double tLow = 0.0;
-	        double tHigh = 1.0;
-
-	        while (true) {
-	            double tMid = (tLow + tHigh) / 2.0;
-
-	            // Interpolated point at tMid
-	            double x = (1 - tMid) * p0.x() + tMid * p1.x();
-	            double y = (1 - tMid) * p0.y() + tMid * p1.y();
-	            double z = (1 - tMid) * p0.z() + tMid * p1.z();
-
-	            // Compute theta for the interpolated point
-	            double r = Math.sqrt(x * x + y * y + z * z);
-	            if (r == 0) {
-	            	return null;
-	       //         throw new IllegalArgumentException("Segment passes through the origin; theta is undefined at some point.");
-	            }
-	            double theta = Math.acos(z / r);
-
-	            if (Math.abs(theta - targetTheta) < thetaEps) {
-	                // Found the desired point
-	                return new Point3D(x, y, z);
-	            }
-
-	            if (theta < targetTheta) {
-	                tLow = tMid; // Move to the upper half
-	            } else {
-	                tHigh = tMid; // Move to the lower half
-	            }
-	            
-				if (Math.abs(tHigh - tLow) < epsilon) {
-	                return new Point3D(x, y, z);
-				}
-	        }
-	    }
 
 }
