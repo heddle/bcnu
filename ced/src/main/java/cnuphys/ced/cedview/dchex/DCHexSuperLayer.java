@@ -30,48 +30,48 @@ public class DCHexSuperLayer extends PolygonItem {
 
 	// the tangent of 30 degrees
 	private static final double tan30 = 1.0 / Math.sqrt(3.0);
-	
+
 	// the radii and thicknesses of the superlayers
 	private static final double rad[] = {129, 169, 214, 260, 311, 365};
 	private static final double thk[] = {36, 36, 42, 42, 50, 50};
 
 	// the colors for alternating layers
 	public static final Color[] layerColors = { X11Colors.getX11Color("azure"), X11Colors.getX11Color("alice blue") };
-	
+
 	// line color
 	public static final Color lineColor = X11Colors.getX11Color("misty rose");
-	
+
 	// 1-based sector
 	private int _sector;
-	
+
 	// 1-based superlayer
 	private int _superLayer;
 
 	// the container sector view
 	private DCHexView _view;
-	
+
 	//cache the superlayer polygon
 	private Point2D.Double _superlayerPolygon[] = new Point2D.Double[4];
-	
+
 	//cache the layer polygons
 	private Point2D.Double _layerPolygons[][] = new Point2D.Double[6][4];
-	
+
 	// data containers
 	private DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 	private HBTrkgHitData _hbData = HBTrkgHitData.getInstance();
 	private TBTrkgHitData _tbData = TBTrkgHitData.getInstance();
 	private HBTrkgAIHitData _hbAIData = HBTrkgAIHitData.getInstance();
 	private TBTrkgAIHitData _tbAIData = TBTrkgAIHitData.getInstance();
-	
+
 	//workspace
 	private Point2D.Double wirePoly[] = new Point2D.Double[4];
 	private Polygon ppoly = new Polygon();
-	
+
 	// convenient access to the noise manager
 	NoiseManager _noiseManager = NoiseManager.getInstance();
 
 
-	
+
 	/**
 	 * Create a superlayer item
 	 * @param itemList the list this item is on.
@@ -85,24 +85,24 @@ public class DCHexSuperLayer extends PolygonItem {
 		_view = view;
 		_sector = sector;
 		_superLayer = superlayer;
-		
+
 		//cache the superlayer polygon
 		_superlayerPolygon = getShell(_view, _sector, _superLayer);
-		
+
 		//cache the layer polygons
 		for (int layer = 1; layer <= 6; layer++) {
 			_layerPolygons[layer - 1] = getLayerPolygon(layer);
 		}
-		
+
 		//workspace
 		for (int i = 0; i < 4; i++) {
 			wirePoly[i] = new Point2D.Double();
 		}
-		
+
 		this.getStyle().setFillColor(Color.white);
 		this.getStyle().setLineColor(lineColor);
 	}
-	
+
 	private Point2D.Double[] getLayerPolygon(int layer) {
 		Point2D.Double wp[] = new Point2D.Double[4];
 
@@ -113,7 +113,7 @@ public class DCHexSuperLayer extends PolygonItem {
 		getLayerPolygon(layer, wp);
 		return wp;
 	}
-	
+
 	/**
 	 * Custom drawer for the item.
 	 *
@@ -127,10 +127,10 @@ public class DCHexSuperLayer extends PolygonItem {
 		}
 
 		super.drawItem(g, container);
-		
+
 		//draw the layers
 		Point pp = new Point();
-				
+
 		Polygon poly = new Polygon();
 
 		for (int layer = 1; layer <= 6; layer++) {
@@ -140,24 +140,24 @@ public class DCHexSuperLayer extends PolygonItem {
 				container.worldToLocal(pp, wp[i]);
 				poly.addPoint(pp.x, pp.y);
 			}
-			
+
 			g.setColor(layerColors[layer % 2]);
 			g.fillPolygon(poly);
-			
+
 			g.setColor(lineColor);
 			g.drawPolygon(poly);
-			
-			
+
+
 			if (_view.isSingleEventMode()) {
 				drawSingleEventData(g, container);
 			}
 			else {
 				drawAccumulatedData(g, container);
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * Get the cached superlayer polygon
 	 * @return the cached superlayer polygon
@@ -165,15 +165,15 @@ public class DCHexSuperLayer extends PolygonItem {
 	public Point2D.Double[] getPolygon() {
 		return _superlayerPolygon;
 	}
-	
+
 	/**
 	 * Add data info to feedback
-	 * @param layer the 1-based layer of the hit 
+	 * @param layer the 1-based layer of the hit
 	 * @param wire the 1-based wire of the hit
 	 * @param feedbackStrings the list of feedback strings
 	 */
 	protected void addToFeedback(int layer, int wire, List<String> feedbackStrings) {
-		
+
 		if (_view.showRawHits()) {
 
 			for (int i = 0; i < _dcData.count(); i++) {
@@ -195,21 +195,21 @@ public class DCHexSuperLayer extends PolygonItem {
 		if (_view.showTBHits()) {
 			fbStr(_tbData, layer, wire, "TB hit", CedColors.TB_COLOR_STRING, feedbackStrings);
 		}
-		
+
 		// AI HB Hits
 		if (_view.showAIHBHits()) {
 			fbStr(_hbAIData, layer, wire, "AI HB hit", CedColors.AIHB_COLOR_STRING, feedbackStrings);
 		}
-		
+
 		// AI TB Hits
 		if (_view.showAITBHits()) {
 			fbStr(_tbAIData, layer, wire, "AI TB hit", CedColors.AITB_COLOR_STRING, feedbackStrings);
 		}
 
 
-		
+
 	}
-	
+
 	//common feedback string
 	private void fbStr(ATrkgHitData data, int layer, int wire, String name, String color, List<String> feedbackStrings) {
 		for (int i = 0; i < data.count(); i++) {
@@ -222,12 +222,12 @@ public class DCHexSuperLayer extends PolygonItem {
 			}
 		}
 	}
-	
-	
+
+
 	//draw data in single hit mode
 	private void drawSingleEventData(Graphics g, IContainer container) {
-		
-		
+
+
 		// draw results of noise reduction? If so will need the parameters
 		// (which have the results)
 		NoiseReductionParameters parameters = _noiseManager.getParameters(_sector - 1, _superLayer - 1);
@@ -237,8 +237,8 @@ public class DCHexSuperLayer extends PolygonItem {
 		if (_view.showMasks()) {
 			drawMasks(g, container, parameters);
 		}
-		
-		
+
+
 		// draw raw hits
 		if (_view.showRawHits()) {
 
@@ -246,12 +246,12 @@ public class DCHexSuperLayer extends PolygonItem {
 				boolean useOrderColoring = Ced.useOrderColoring;
 				// draw the hit
 				if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
-					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i], 
+					drawDCRawHit(g, container, _dcData.layer6[i], _dcData.component[i],
 							_dcData.noise[i], _dcData.order[i], useOrderColoring);
 				}
 			}
 		}
-		
+
 		// draw regular HB Hits
 		if (_view.showHBHits()) {
 			for (int i = 0; i < _hbData.count(); i++) {
@@ -293,7 +293,7 @@ public class DCHexSuperLayer extends PolygonItem {
 		}
 
 	}
-	
+
 	/**
 	 * Draw the masks showing the effect of the noise finding algorithm
 	 *
@@ -342,8 +342,8 @@ public class DCHexSuperLayer extends PolygonItem {
 		}
 
 		Point pp = new Point();
-		
-		
+
+
 		for (int layer = 1; layer <= 6; layer++) {
 			fillWirePoly(g, container, layer, wire, pp, fill);
 
@@ -358,10 +358,10 @@ public class DCHexSuperLayer extends PolygonItem {
 		}
 
 	}
-	
+
 	// fill a wire polygon
 	private void fillWirePoly(Graphics g, IContainer container, int layer, int wire, Point pp, Color color) {
-		getWirePolygon(layer, wire, wirePoly);			
+		getWirePolygon(layer, wire, wirePoly);
 
 		ppoly.reset();
 		for (int i = 0; i < 4; i++) {
@@ -372,20 +372,20 @@ public class DCHexSuperLayer extends PolygonItem {
 		g.fillPolygon(ppoly);
 		g.drawPolygon(ppoly);
     }
-	
+
 	private void drawDCRawHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int order,
 			boolean useOrderColoring) {
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
 			return;
 		}
-		
+
 		if (useOrderColoring) {
 			Color color =OrderColors.getOrderColor(order);
 			fillWirePoly(g, container, layer, wire, new Point(), color);
 			return;
 		}
-		
+
 		if ((_view.showNoiseAnalysis()) && noise) {
 			fillWirePoly(g, container, layer, wire, new Point(), Color.black);
 		} else {
@@ -395,7 +395,7 @@ public class DCHexSuperLayer extends PolygonItem {
 
 	}
 
-	
+
 	/**
 	 * Draw a single dc hit
 	 *
@@ -443,8 +443,8 @@ public class DCHexSuperLayer extends PolygonItem {
 		try {
 		Point2D.Double poly[] = _layerPolygons[layer - 1];
 
-		double fract1 = (double) (wire - 1) / 112.;
-		double fract2 = (double) (wire) / 112.;
+		double fract1 = (wire - 1) / 112.;
+		double fract2 = (wire) / 112.;
 
 		cut(poly[1], poly[2], fract1, wp[0]);
 		cut(poly[1], poly[2], fract2, wp[1]);
@@ -454,34 +454,34 @@ public class DCHexSuperLayer extends PolygonItem {
 		e.printStackTrace();
 	}
 	}
-	
+
 	/**
 	 * Get the polygon for a layer
-	 * 
+	 *
 	 * @param layer the 1-based layer
 	 * @param wp    the world points
 	 */
 	public void getLayerPolygon(int layer, Point2D.Double wp[]) {
-			
-		double fract1 = (double)(layer - 1) / 6.;
-		double fract2 = (double)(layer) / 6.;
-		
+
+		double fract1 = (layer - 1) / 6.;
+		double fract2 = (layer) / 6.;
+
 		Point2D.Double poly[] = _superlayerPolygon;
-		
+
 		cut(poly[0], poly[1], fract1, wp[0]);
 		cut(poly[0], poly[1], fract2, wp[1]);
 		cut(poly[3], poly[2], fract2, wp[2]);
 		cut(poly[3], poly[2], fract1, wp[3]);
-	
+
 	}
-	
+
 	private void cut(Point2D.Double wp1, Point2D.Double wp2, double fract, Point2D.Double wp) {
 		double dx = wp2.x - wp1.x;
 		double dy = wp2.y - wp1.y;
 		wp.x = wp1.x + fract * dx;
 		wp.y = wp1.y + fract * dy;
 	}
-	
+
 	/**
 	 * Get the shell of the tof panel.
 	 *
@@ -491,10 +491,10 @@ public class DCHexSuperLayer extends PolygonItem {
 	 * @param superlayer the 1-based superlayer 1..6
 	 * @return
 	 */
-	
+
 	private static Point2D.Double[] getShell(DCHexView view, int sector, int superlayer) {
 		Point2D.Double wp[] = new Point2D.Double[4];
-		
+
 		double r = rad[superlayer-1];
 		double t = thk[superlayer-1];
 		double rho = r + t;
@@ -505,21 +505,21 @@ public class DCHexSuperLayer extends PolygonItem {
 		wp[1] = new Point2D.Double(-tan30*rho*shrink, rho);
 		wp[2] = new Point2D.Double(tan30*rho*shrink, rho);
 		wp[3] = new Point2D.Double(tan30*r*shrink, r);
-		
-		
+
+
 		double phi = Math.toRadians(-90 + 60 * (sector - 1));
 		double cosPhi = Math.cos(phi);
 		double sinPhi = Math.sin(phi);
-		
+
 		for (int i = 0; i < 4; i++) {
 			rotatePoint(wp[i], wp[i], cosPhi, sinPhi);
 		}
-		
+
 		return wp;
 	}
-	
+
 	/**
-	 * Rotate a point around the z axis 
+	 * Rotate a point around the z axis
 	 *
 	 * @param wp0  the point being rotated
 	 * @param wp1  the rotated point
@@ -559,7 +559,7 @@ public class DCHexSuperLayer extends PolygonItem {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Get the 1-based wire containing the point.
 	 * @param container the container
@@ -574,7 +574,7 @@ public class DCHexSuperLayer extends PolygonItem {
 
 		Polygon poly = new Polygon();
 		Point pp = new Point();
-		
+
 		for (int wire = 1; wire <= 112; wire++) {
             getWirePolygon(layer, wire, wirePoly);
             poly.reset();
@@ -586,7 +586,7 @@ public class DCHexSuperLayer extends PolygonItem {
                 return wire;
             }
         }
-		
+
 		return -1;
 	}
 

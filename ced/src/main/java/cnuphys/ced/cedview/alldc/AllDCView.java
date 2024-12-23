@@ -177,7 +177,7 @@ public class AllDCView extends CedView  {
 	public boolean showMcTruth() {
 		return true;
 	}
-	
+
 	/**
 	 * Create the before drawer to draw the sector outlines.
 	 */

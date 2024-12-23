@@ -49,7 +49,7 @@ public class PolygonButton extends ToolBarToggleButton implements IRubberbanded 
 		if ((pp == null) || (pp.length < 2)) {
 			return;
 		}
-		
+
 		DrawingContainer dc	= (DrawingContainer) container;
 
 		AItem item = dc.createPolygonItem(container.getAnnotationList(), pp);

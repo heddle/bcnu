@@ -4,10 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jlab.geom.detector.alert.AHDC.AlertDCLayer;
@@ -75,27 +73,27 @@ public class DCLayer {
 
 		int index = 0;
 
-		
+
 		for (AlertDCWire aw : wireList) {
 			wires[index] = aw.getLine();
 			index++;
 		}
-		
+
 		_wrect = new Rectangle2D.Double[numWires];
  		for (int wire = 0; wire < numWires; wire++) {
 			_wrect[wire] = new Rectangle2D.Double();
 		}
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Get the 3D coords of the wire used in 3D drawing
 	 * @param wire the 0-based wire id
 	 * @param coords the 3D coords
 	 */
 	public void getWireCoords(int wire, float coords[]) {
-		
+
 		Point3D p0 = wires[wire].origin();
 		Point3D p1 = wires[wire].end();
 		coords[0] = (float) p0.x();
@@ -129,10 +127,10 @@ public class DCLayer {
 		if ((numWires == 0)|| (_donut == null) || (_donut.area == null)) {
 			return false;
 		}
-		
+
 		return _donut.area.contains(pp);
 	}
-	
+
 	/**
 	 * Point contained by the wire oval?
 	 * @param wire the 0-based wire id
@@ -144,7 +142,7 @@ public class DCLayer {
 			System.err.println("Bad wire id: " + wire);
 			return false;
 		}
-		
+
 		return _wrect[wire].contains(wp);
 	}
 
@@ -153,9 +151,9 @@ public class DCLayer {
 	 * @param feedbackStrings list to add to
 	 */
 	public void feedbackXYString(Point pp, Point2D.Double wp, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("AlertDC GeoDB sector: %d", sector + 1));
-		feedbackStrings.add(String.format("AlertDC GeoDB superlayer: %d", superlayer + 1));
-		feedbackStrings.add(String.format("AlertDC GeoDB layer: %d", layer + 1));
+		feedbackStrings.add(String.format("DC sector: %d (1-based)", sector + 1));
+		feedbackStrings.add(String.format("DC superlayer: %d (1-based)", superlayer + 1));
+		feedbackStrings.add(String.format("DC layer: %d (1-based)", layer + 1));
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {
@@ -185,7 +183,7 @@ public class DCLayer {
 		g2d.setColor(Color.gray);
 		g2d.draw(_donut.area);
 	}
-	
+
 	public double getWireXYatZ(int wire, double z, Point2D.Double xy) {
 		Line3D line = wires[wire];
 		Point3D p0 = line.origin();
@@ -195,7 +193,7 @@ public class DCLayer {
 		xy.y = p0.y() + t * (p1.y() - p0.y());
 		return t;
 	}
-	
+
 
 	//get the shell poly
 	private void shellWorldPoly(IContainer container, double z) {
@@ -219,7 +217,7 @@ public class DCLayer {
 
 	/**
 	 * Draw a wire
-	 * 
+	 *
 	 * @param g         the graphics object
 	 * @param container the drawing container
 	 * @param wire      the 0-based wire id (data is 1-based!)
@@ -230,15 +228,16 @@ public class DCLayer {
 		if (numWires < 1) {
 			return;
 		}
-		
-		
+
+
 		Point2D.Double zp = new Point2D.Double();
 		double t = getWireXYatZ(wire, z, zp);
-		
+
+
 		if ((t < 0) || (t > 1)) {
 			return;
 		}
-		
+
 		if (wire == 0) {
 			lc = X11Colors.getX11Color("Coral");
 			fc = X11Colors.getX11Color("Alice Blue");
@@ -247,7 +246,7 @@ public class DCLayer {
 		WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
 
 	}
-	
+
 
 
 }

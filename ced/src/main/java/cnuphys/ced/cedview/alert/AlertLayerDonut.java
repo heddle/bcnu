@@ -11,19 +11,19 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.geometry.alert.DCLayer;
 
 public class AlertLayerDonut extends Area {
-	
+
 	/** assumed half radial width of gap */
 	public static final double LAYERDR = 1.6; // mm;
 
-	
+
 	public Area area;
-	
+
 	public AlertLayerDonut(IContainer container, DCLayer layer, double z) {
 		int numWires = layer.numWires;
-		
-		ArrayList<Point> innerShell = new ArrayList<Point>();
-		ArrayList<Point> outerShell = new ArrayList<Point>();
-		
+
+		ArrayList<Point> innerShell = new ArrayList<>();
+		ArrayList<Point> outerShell = new ArrayList<>();
+
 		Point2D.Double zp = new Point2D.Double();
 		Point2D.Double wp = new Point2D.Double();
 
@@ -34,17 +34,17 @@ public class AlertLayerDonut extends Area {
 				double thet = Math.atan2(zp.y, zp.x);
 				double cos = Math.cos(thet);
 				double sin = Math.sin(thet);
-				
+
 				double innerRadius = radius - LAYERDR;
 				double outerRadius = radius + LAYERDR;
-				
+
 				Point innerP = new Point();
 				Point outerP = new Point();
-				
+
 				wp.setLocation(innerRadius * cos, innerRadius * sin);
 				container.worldToLocal(innerP, wp);
 				innerShell.add(innerP);
-				
+
 				wp.setLocation(outerRadius * cos, outerRadius * sin);
 				container.worldToLocal(outerP, wp);
 				outerShell.add(outerP);
@@ -53,8 +53,8 @@ public class AlertLayerDonut extends Area {
 
 		area =  createDonutArea(innerShell, outerShell);
 	}
-	
-	
+
+
     private static Area createDonutArea(List<Point> innerShell, List<Point> outerShell) {
         // Convert shells into `Path2D`
         Path2D outerPath = createPathFromShell(outerShell);
@@ -69,7 +69,7 @@ public class AlertLayerDonut extends Area {
 
         return outerArea;
     }
-	
+
     private static Path2D createPathFromShell(List<Point> shell) {
         Path2D path = new Path2D.Double();
         if (!shell.isEmpty()) {

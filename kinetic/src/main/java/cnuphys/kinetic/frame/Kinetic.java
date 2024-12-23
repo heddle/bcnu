@@ -1,12 +1,5 @@
 package cnuphys.kinetic.frame;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
-import cnuphys.kinetic.box3D.Box3D;
-import cnuphys.splot.plot.GraphicsUtilities;
-
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -14,8 +7,16 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Random;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
+import cnuphys.kinetic.box3D.Box3D;
+import cnuphys.splot.plot.GraphicsUtilities;
+
 public class Kinetic extends JFrame {
-	
+
 	//a shared random number generator
 	public static Random random = new Random();
 
@@ -33,7 +34,7 @@ public class Kinetic extends JFrame {
 	private void initializeLayout() {
 		this.setSize(getScreenSize(0.8, 0.8)); // Set size to 80% of screen size
 		this.setLayout(new BorderLayout()); // Set the layout manager
-		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {

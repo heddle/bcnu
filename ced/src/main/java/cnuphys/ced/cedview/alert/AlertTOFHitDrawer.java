@@ -35,7 +35,7 @@ public class AlertTOFHitDrawer {
 
 	/**
 	 * Draw the hits
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 */
@@ -86,24 +86,24 @@ public class AlertTOFHitDrawer {
 		}
 
 	} // drawTOFHits
-	
+
 	public void drawAccumulatedHits(Graphics g, IContainer container) {
 		drawAccumulatedHitsSL(g, container, 0);
 		drawAccumulatedHitsSL(g, container, 1);
 
 	}
 
-	
+
 	/**
 	 * Draw the accumulated hits
 	 * @param g
 	 * @param container
 	 */
 	private void drawAccumulatedHitsSL(Graphics g, IContainer container, int superlayer) {
-		
+
 		int maxHit;
 		int counts[][][];
-		
+
 		if (superlayer == 0) {
 			maxHit = AccumulationManager.getInstance().getMaxAlertTOFSL0Count();
 			counts = AccumulationManager.getInstance().getAccumulatedAlertTOFSL0Data();
@@ -111,7 +111,7 @@ public class AlertTOFHitDrawer {
 			maxHit = AccumulationManager.getInstance().getMaxAlertTOFSL1Count();
 			counts = AccumulationManager.getInstance().getAccumulatedAlertTOFSL1Data();
 		}
-		
+
 
 		if (counts == null) {
 			return;
@@ -138,7 +138,7 @@ public class AlertTOFHitDrawer {
 
 	/**
 	 * Get feedback strings for a hit
-	 * 
+	 *
 	 * @param container       the container
 	 * @param pp              the pixel point
 	 * @param wp              the world point
@@ -153,11 +153,7 @@ public class AlertTOFHitDrawer {
 		}
 
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
-		if (dataEvent == null) {
-			return;
-		}
-
-		if (!dataEvent.hasBank("ATOF::adc")) {
+		if ((dataEvent == null) || !dataEvent.hasBank("ATOF::adc")) {
 			return;
 		}
 

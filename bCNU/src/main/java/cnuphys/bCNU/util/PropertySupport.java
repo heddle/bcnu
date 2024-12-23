@@ -373,7 +373,7 @@ public class PropertySupport {
 		}
 		return (IContainer) val;
 	}
-	
+
 	/**
 	 * Get a container type from the properties
 	 * @param props the properties

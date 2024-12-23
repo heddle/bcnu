@@ -4,7 +4,7 @@ public class TBTrkgSegmentData extends ATrkgSegmentData  {
 
 	// singleton
 	private static volatile TBTrkgSegmentData _instance;
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -20,7 +20,7 @@ public class TBTrkgSegmentData extends ATrkgSegmentData  {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public String bankName() {
 		return "TimeBasedTrkg::TBSegments";

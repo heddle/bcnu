@@ -85,14 +85,14 @@ public class ClasIoEventManager {
 	// flag that set set to <code>true</code> if we are quickly scanning events events
 	private boolean _scanning = false;
 
-	
-	
+
+
 
 	// list of event listeners. There are actually three lists. Those in index 0
 	// are notified first. Then those in index 1. Finally those in index 2. The
 	// Data containers should be in index 0. The trajectory and noise in index 1, and
 	// the regular views in index 2 (they are notified last)
-	
+
 	private EventNotifier<Object> eventNotifier[] = new EventNotifier[3];
 
 	// someone who can swim all MC particles
@@ -125,7 +125,7 @@ public class ClasIoEventManager {
 
 	// the current event
 	private DataEvent _currentEvent;
-	
+
 	// private constructor for singleton
 	private ClasIoEventManager() {
 		_dataSource = new HipoDataSource();
@@ -190,13 +190,13 @@ public class ClasIoEventManager {
 			String[] cbanks = _currentEvent.getBankList();
 			if (cbanks != null) {
 				for (String bankName : cbanks) {
-					
+
 					if (bankName.contains("::Particle") || bankName.contains("::Lund")) {
-						
-						if (DataWarehouse.getInstance().bankContainsColumn(bankName, "pid") == false) {
+
+						if (!DataWarehouse.getInstance().bankContainsColumn(bankName, "pid")) {
 							continue;
 						}
-						
+
 						//get the pid column
 						int pid[] = DataWarehouse.getInstance().getInt(bankName, "pid");
 						if ((pid != null) && (pid.length > 0)) {
@@ -928,7 +928,7 @@ public class ClasIoEventManager {
 
 	// new event file notification
 	private void notifyEventListeners(File file) {
-		
+
 		Swimming.setNotifyOn(false); // prevent refreshes
 		Swimming.clearAllTrajectories();
 		Swimming.setNotifyOn(true); // prevent refreshes
@@ -954,7 +954,7 @@ public class ClasIoEventManager {
 		if (_currentEvent == null) {
 			return;
 		}
-		
+
 		Swimming.setNotifyOn(false); // prevent refreshes
 		Swimming.clearAllTrajectories();
 		Swimming.setNotifyOn(true); // prevent refreshes
@@ -973,7 +973,7 @@ public class ClasIoEventManager {
 		finalSteps();
 
 	}
-	
+
 
 
 	// final steps

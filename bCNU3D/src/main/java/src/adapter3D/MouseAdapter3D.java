@@ -108,21 +108,21 @@ public class MouseAdapter3D implements MouseListener, MouseMotionListener, Mouse
 	public void mouseExited(MouseEvent e) {
 	}
 
-	
+
 	private long lastWheelEventTime = 0;
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e) {
-		
+
 		long now = System.currentTimeMillis();
 		long del = now - lastWheelEventTime;
-		
+
 		if (del < 100) {
 			return;
 		}
-		
+
 		lastWheelEventTime = now;
-		
-		
+
+
 	    int clicks = e.getWheelRotation();
 	    float maxZoomStep = _panel3D.getZStep() * 5; // Cap maximum zoom step
 	    float dz = _panel3D.getZStep() * clicks;

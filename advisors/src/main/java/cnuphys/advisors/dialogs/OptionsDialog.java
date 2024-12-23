@@ -32,10 +32,10 @@ public class OptionsDialog extends SimpleDialog {
 	private JCheckBox _engrFamilyCB;
 	private JCheckBox _csFamilyCB;
 
-		
+
 	//done button
 	private JButton _doneButton;
-	
+
 
 	public OptionsDialog() {
 		super("Algorithm Options", true, "Done");
@@ -61,7 +61,7 @@ public class OptionsDialog extends SimpleDialog {
 	protected Component createCenterComponent() {
 		return createAlgorithmPanel();
 	}
-	
+
 	/**
 	 * Override to create the component that goes in the south.
 	 *
@@ -72,7 +72,7 @@ public class OptionsDialog extends SimpleDialog {
 		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		_doneButton = new JButton("Done");
-		
+
 		_doneButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class OptionsDialog extends SimpleDialog {
 
 		return panel;
 	}
-	
+
 
 
 	/**
@@ -148,12 +148,12 @@ public class OptionsDialog extends SimpleDialog {
 		algPanel.setBorder(new CommonBorder("Select an optimization algorithm"));
 		return algPanel;
 	}
-	
 
-	
+
+
 	/**
 	 * Check if we group certain business majors together
-	 * 
+	 *
 	 * @return <code>true</code> if we group
 	 */
 	public boolean useBusinessFamily() {
@@ -162,7 +162,7 @@ public class OptionsDialog extends SimpleDialog {
 
 	/**
 	 * Check if we group certain biology majors together
-	 * 
+	 *
 	 * @return <code>true</code> if we group
 	 */
 	public boolean useBioFamily() {
@@ -171,25 +171,25 @@ public class OptionsDialog extends SimpleDialog {
 
 	/**
      * Check if we group certain chemistry related majors together
-     * 
+     *
      * @return <code>true</code> if we group
      */
 	public boolean useChemFamily() {
 		return _chemFamilyCB.isSelected();
 	}
-	
+
 	/**
 	 * Check if we group certain cs majors together
-	 * 
+	 *
 	 * @return <code>true</code> if we group
 	 */
 	public boolean useCSFamily() {
 		return _csFamilyCB.isSelected();
 	}
-	
+
 	/**
 	 * Check if we group certain engineering majors together
-	 * 
+	 *
 	 * @return <code>true</code> if we group
 	 */
 	public boolean useEngFamily() {

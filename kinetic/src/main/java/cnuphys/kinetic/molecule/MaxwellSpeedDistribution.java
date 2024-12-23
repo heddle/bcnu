@@ -23,7 +23,7 @@ public class MaxwellSpeedDistribution {
             }
         }
     }
-    
+
     public static double mostProbableNormalizedSpeed(double normalizedTemperature) {
         return Math.sqrt(2.0 / 3.0 * normalizedTemperature);
     }

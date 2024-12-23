@@ -154,7 +154,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 						+ ControlPanel.FIELDLEGEND +
 						ControlPanel.MATCHINGBANKSPANEL,
 				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH | DisplayBits.RECONHITS
-						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS | DisplayBits.CVTP1TRAJ | 
+						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS | DisplayBits.CVTP1TRAJ |
 						DisplayBits.CVTRECTRAJ | DisplayBits.CVTRECKFTRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
 				3, 5);
 
@@ -325,7 +325,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 	// draw cosmic ray tracks
 	private void drawCosmicTracks(Graphics g, IContainer container) {
-		
+
 		int count = _cosmicData.count();
 		if (count > 0) {
 			Shape oldClip = clipView(g);
@@ -352,9 +352,9 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 				labToLocalWithAlpha(x2, y2, z2, p2);
 
 				g.setColor(Color.red);
-				g.drawLine(p1.x, p1.y, p2.x, p2.y);				
+				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 			}
-			
+
 			g.setClip(oldClip);
 		}
 
@@ -748,7 +748,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		// hit feedback
 		_hitDrawer.feedback(container, screenPoint, worldPoint, feedbackStrings);
-		
+
 		if (showReconHits()) {
 			for (int i = 0; i < bstRecHitData.count(); i++) {
 				if (bstRecHitData.contains(i, screenPoint)) {
@@ -756,7 +756,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 					break;
 				}
 			}
-			
+
 		}
 
 

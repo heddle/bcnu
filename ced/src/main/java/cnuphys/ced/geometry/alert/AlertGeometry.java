@@ -3,19 +3,21 @@ package cnuphys.ced.geometry.alert;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.List;
 
 import org.jlab.detector.calib.utils.DatabaseConstantProvider;
+import org.jlab.geom.abs.AbstractComponent;
 import org.jlab.geom.component.ScintillatorPaddle;
 import org.jlab.geom.detector.alert.AHDC.AlertDCDetector;
 import org.jlab.geom.detector.alert.AHDC.AlertDCFactory;
 import org.jlab.geom.detector.alert.ATOF.AlertTOFDetector;
 import org.jlab.geom.detector.alert.ATOF.AlertTOFFactory;
 import org.jlab.geom.detector.alert.ATOF.AlertTOFLayer;
+import org.jlab.geom.prim.Line3D;
+import org.jlab.geom.prim.Plane3D;
 import org.jlab.geom.prim.Point3D;
 import org.jlab.logging.DefaultLogger;
 
@@ -23,9 +25,10 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.ced.frame.Ced;
+import cnuphys.ced.geometry.GeometryManager;
 
 public class AlertGeometry {
-	
+
 	//for debugging
 	private static boolean _debug = false;
 
@@ -41,10 +44,10 @@ public class AlertGeometry {
 	//sector boundaries for XY view
 	//there are 1 sectors
 	public static Point2D.Double tofSectorXY[][] = new Point2D.Double[15][16];
-	
+
 	//the dc factory
 	private static AlertDCFactory dcFactory = new AlertDCFactory();
-	
+
 	private static DatabaseConstantProvider constantProvider;
 
 	/**
@@ -62,7 +65,7 @@ public class AlertGeometry {
 		initializeTOF(constantProvider);
 
 	}
-	
+
 	private static void debugPrint(String s, int option) {
 		if (_debug) {
 			if (option == 0) {
@@ -82,15 +85,15 @@ public class AlertGeometry {
 		AlertDCDetector dcCLASDetector = dcFactory.createDetectorCLAS(cp);
 
 		int numsect = dcCLASDetector.getNumSectors();
-		
+
 		debugPrint(String.format("numsect: %d", numsect), 0);
-		
+
 		for (int sect = 0; sect < numsect; sect++) {
 			debugPrint("", 2);
 			debugPrint(String.format("  for sect: %d", sect), 0);
-			
+
 			int numsupl = dcFactory.createSector(cp, sect).getNumSuperlayers();
-			
+
 			debugPrint(String.format("  numsuperlayer: %d", numsupl), 0);
 			for (int superlayer = 0; superlayer < numsupl; superlayer++) {
 				debugPrint(String.format("    for superlayer: %d", superlayer), 0);
@@ -99,7 +102,7 @@ public class AlertGeometry {
 
 				for (int layer = 0; layer < numlay; layer++) {
 					DCLayer dcLayer = new DCLayer(dcFactory.createLayer(cp, sect, superlayer, layer));
-					
+
 					debugPrint(String.format("      for layer: %d  numwires: %d", layer, dcLayer.numWires), 0);
 					_dcLayers.put(hash(sect, superlayer, layer), dcLayer);
 				}
@@ -108,12 +111,12 @@ public class AlertGeometry {
 		debugPrint("", 2);
 
 	}
-	
+
 	public static int getDCNumLayers(int sector, int superlayer) {
 		int numlay = dcFactory.createSuperlayer(constantProvider, sector, superlayer).getNumLayers();
 		return numlay;
 	}
-	
+
 	public static int getDCNumWires(int sector, int superlayer, int layer) {
 		DCLayer dcLayer = _dcLayers.get(hash(sector, superlayer, layer));
 		if (dcLayer != null) {
@@ -129,9 +132,9 @@ public class AlertGeometry {
 		AlertTOFDetector tofCLASDetector = tofFactory.createDetectorCLAS(cp);
 
 		int numsect = tofCLASDetector.getNumSectors();
-		
+
 		debugPrint(String.format("numsect: %d", numsect), 1);
-		
+
 		for (int sect = 0; sect < numsect; sect++) {
 			debugPrint("", 2);
 			debugPrint(String.format("  for sect: %d", sect), 1);
@@ -146,13 +149,13 @@ public class AlertGeometry {
 
 				for (int layer = 0; layer < numlay; layer++) {
 					debugPrint(String.format("      for layer: %d", layer), 1);
-					
+
 					AlertTOFLayer alertTOFLayer = tofFactory.createLayer(cp, sect, superlayer, layer);
 					TOFLayer tofLayer = new TOFLayer(tofFactory.createLayer(cp, sect, superlayer, layer));
-					
+
 					int numpaddle = alertTOFLayer.getNumComponents();
 					debugPrint(String.format("      numpaddle: %d", numpaddle), 1);
-					
+
 					if (_debug) {
 					   List<ScintillatorPaddle> paddles = alertTOFLayer.getAllComponents();
 					   System.out.print("      numpaddle: " + numpaddle + " with ids: ");
@@ -202,21 +205,96 @@ public class AlertGeometry {
 	}
 
 	/**
-	 * Draw the TOF sector outlines
+	 * @param sector 0-based sector 0..14
+	 * @param superlayer      0, 1
+	 * @param layer           0, 0..9
+	 * @param paddleid        the 0-based paddle id 0..3
+	 * @param projectionPlane the projection plane
+	 * @return <code>true</code> if the projected polygon fully intersects the plane
+	 */
+	public static boolean doesProjectedPolyFullyIntersect(int sector, int superlayer, int layer, int paddleId,
+			Plane3D projectionPlane) {
+		ScintillatorPaddle paddle = getPaddle(sector, superlayer, layer, paddleId);
+		return doesProjectedPolyFullyIntersect(sector, superlayer, layer, paddle, projectionPlane);
+	}
+
+	/**
+	 * Get the intersections of a with a constant z plane. If the paddle does not
+	 * intersect return null;
+	 *
+	 * @param superlayer      0, 1
+	 * @param layer           0, 0..9
+	 * @param paddleId        the 0-based paddle id
+	 * @param projectionPlane the projection plane
+	 * @return the intersection points (z component will be 0).
+	 */
+	public static Point2D.Double[] getIntersections(int sector, int superlayer, int layer, int paddleId, Plane3D projectionPlane,
+			boolean offset) {
+
+		ScintillatorPaddle paddle = getPaddle(sector, superlayer, layer, paddleId);
+        return getIntersections(sector, superlayer, layer, paddle, projectionPlane, offset);	}
+
+	/**
+	 * Get the intersections of a with a constant z plane. If the paddle does not
+	 * intersect return null;
+	 *
+	 * @param superlayer      0, 1
+	 * @param layer           0, 0..9
+	 * @param paddle        the paddle object from the geometry service
+	 * @param projectionPlane the projection plane
+	 * @return the intersection points (z component will be 0).
+	 */
+	public static Point2D.Double[] getIntersections(int sector, int superlayer, int layer, ScintillatorPaddle paddle, Plane3D projectionPlane,
+			boolean offset) {
+		Point2D.Double wp[] = GeometryManager.allocate(4);
+		getProjectedPolygon(paddle, projectionPlane, wp);
+		return wp;
+	}
+
+
+	public static void getProjectedPolygon(AbstractComponent geoObj, Plane3D projectionPlane, Point2D.Double wp[]) {
+
+
+		Point3D p3d = new Point3D();
+		for (int i = 0; i < 4; i++) {
+			Line3D l3d = geoObj.getVolumeEdge(6+i);
+			projectionPlane.intersection(l3d, p3d);
+			wp[i].x = p3d.x();
+			wp[i].y = p3d.y();
+		}
+
+	}
+	/**
+	 * @param sector 0-based sector 0..14
+	 * @param superlayer      0, 1
+	 * @param layer           0, 0..9
+	 * @param paddle       the paddle object
+	 * @param projectionPlane the projection plane
+	 * @return <code>true</code> if the projected polygon fully intersects the plane
+	 */
+	public static boolean doesProjectedPolyFullyIntersect(int sector, int superlayer, int layer, ScintillatorPaddle paddle,
+			Plane3D projectionPlane) {
+		return GeometryManager.doesProjectedPolyIntersect(paddle, projectionPlane, 6, 4);
+	}
+
+
+
+	/**
+	 * Draw the TOF sector numbers
 	 * @param g the graphics context
 	 * @param container the container
 	 */
-	public static void drawAlertTOFSectorOutlines(Graphics g, IContainer container) {
+	public static void drawAlertTOFSectorNumbers(Graphics g, IContainer container) {
 
-		
+
 		Point[] anchorPP = new Point[15];
-		
+
 		for (int sect = 0; sect < 15; sect++) {
 			Point2D.Double anchor = tofSectorXY[sect][11];
-			anchorPP[sect] = new Point();		
+			anchorPP[sect] = new Point();
 			container.worldToLocal(anchorPP[sect], anchor);
 		}
-		
+
 		//draw the sector numbers
 		g.setColor(Color.red);
 		for (int sect = 0; sect < 15; sect++) {
@@ -227,8 +305,8 @@ public class AlertGeometry {
 		}
 
 	}
-	
-	
+
+
     /**
      * Get the corner of a paddle
      * @param paddle the paddle
@@ -275,7 +353,7 @@ public class AlertGeometry {
 		return tof.getPaddle(paddle);
 	}
 
-	
+
 	/**
 	 * Used by the 3D drawing
 	 * @param sector   the 0-based sector 0..14
@@ -299,13 +377,13 @@ public class AlertGeometry {
 			coords[j + 1] = (float) v[i].y();
 			coords[j + 2] = (float) v[i].z();
 		}
-	}	
-	
+	}
+
 	//all 0 based
 	private static String hash(int sector, int superlayer, int layer) {
 		return String.format("%d|%d|%d", sector, superlayer, layer);
 	}
-	
+
 	/**
      * Get the DC layer
      * @param sector 0 based
@@ -316,7 +394,7 @@ public class AlertGeometry {
 	public static DCLayer getDCLayer(int sector, int superlayer, int layer) {
 		return _dcLayers.get(hash(sector, superlayer, layer));
 	}
-	
+
 	/**
      * Get the TOF layer
      * @param sector 0 based

@@ -19,7 +19,7 @@ import cnuphys.swim.Swimming;
  *
  */
 public class SwimAllMC implements ISwimAll {
-	
+
 	// integration cutoff
 	private static final double PATHMAX = 900;
 
@@ -45,7 +45,7 @@ public class SwimAllMC implements ISwimAll {
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
-		
+
 
 		Swimming.clearMCTrajectories(); // clear all existing trajectories
 
@@ -76,14 +76,14 @@ public class SwimAllMC implements ISwimAll {
 					}
 
 					swam.add(summaryStr);
-					
+
 					SwimData swimData = new SwimData(trd, PATHMAX, stepSize, tolerance);
 					swimNotifier.addListener(new SwimListener(swimData));
-					
+
 			}
 
 		} //for trd
-		
+
 		try {
 			swimNotifier.triggerEvent(null);
 			swimNotifier.shutdown();

@@ -7,7 +7,6 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import cnuphys.bCNU.attributes.Attributes;
 import cnuphys.simanneal.Simulation;
 import cnuphys.simanneal.Solution;
 
@@ -27,7 +26,7 @@ public class Ising2DSimulation extends Simulation {
 
 	/**
 	 * Get the number of rows in the current simulation
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	public int getNumRows() {
@@ -36,7 +35,7 @@ public class Ising2DSimulation extends Simulation {
 
 	/**
 	 * Get the number of columns in the current simulation
-	 * 
+	 *
 	 * @return the number of columns
 	 */
 	public int getNumColumns() {

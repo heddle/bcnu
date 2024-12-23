@@ -23,7 +23,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 
 	// the vertices
 	private float[] coords = new float[18];
-	
+
 	//data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
@@ -58,7 +58,7 @@ public class DCSuperLayer3D extends DetectorItem3D {
 	public void drawData(GLAutoDrawable drawable) {
 
 		float coords[] = new float[6];
-		
+
 		for (int i = 0; i < _dcData.count(); i++) {
 			if ((_dcData.sector[i] == _sector) && (_dcData.superlayer[i] == _superLayer)) {
 				getWire(_dcData.layer6[i], _dcData.component[i], coords);

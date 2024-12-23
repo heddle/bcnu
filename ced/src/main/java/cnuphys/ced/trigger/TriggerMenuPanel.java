@@ -10,7 +10,7 @@ import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.IClasIoEventListener;
 
 public class TriggerMenuPanel extends TriggerPanel implements IClasIoEventListener {
-	
+
 	// the data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 

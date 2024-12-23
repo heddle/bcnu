@@ -9,10 +9,10 @@ import cnuphys.ced.alldata.datacontainer.ACommonCrossData;
 
 public abstract class ATrkgCrossData extends ACommonCrossData {
 
-	
+
 	/** ID */
 	public short id[];
-	
+
 	/** the cross x direction */
 	public float ux[];
 
@@ -21,13 +21,13 @@ public abstract class ATrkgCrossData extends ACommonCrossData {
 
 	/** the cross z direction*/
 	public float uz[];
-	
+
 	/** segment 1 id */
 	public short Segment1_ID[];
-	
+
 	/** segment 2 id */
 	public short Segment2_ID[];
-	
+
 	@Override
 	public void clear() {
 		super.clear();
@@ -62,7 +62,7 @@ public abstract class ATrkgCrossData extends ACommonCrossData {
 		uz = bank.getFloat("uz");
         Segment1_ID = bank.getShort("Segment1_ID");
         Segment2_ID = bank.getShort("Segment2_ID");
-        
+
 		int n = (x != null) ? x.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
@@ -70,21 +70,21 @@ public abstract class ATrkgCrossData extends ACommonCrossData {
 		}
 
 	}
-	
+
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
 	public void feedback(int index, List<String> feedbackStrings) {
-		
+
 		String name = feedbackName();
 		feedbackStrings.add(String.format("$Forest Green$%s cross ID %d", name, id[index]));
 		super.feedback(name, index, feedbackStrings);
 		feedbackStrings.add(String.format("$Forest Green$%s cross direction (%-6.3f, %-6.3f, %-6.3f)", name,
 				ux[index], uy[index], uz[index]));
-		feedbackStrings.add(String.format("$Forest Green$%s cross seg ids %d, %d", 
+		feedbackStrings.add(String.format("$Forest Green$%s cross seg ids %d, %d",
 				name, Segment1_ID[index], Segment2_ID[index]));
 	}
 

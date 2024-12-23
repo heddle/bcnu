@@ -89,12 +89,12 @@ public abstract class CedXYView extends CedView {
 
 		g.setColor(Color.black);
 		g.drawRect(sr.x, sr.y, sr.width, sr.height);
-		
+
 
 		// x values
 		double del = wr.width / 40.;
 		boolean xToLeft = (del < 0);
-		
+
 		wp.y = wr.y;
 		int bottom = sr.y + sr.height;
 		for (int i = 1; i <= 40; i++) {

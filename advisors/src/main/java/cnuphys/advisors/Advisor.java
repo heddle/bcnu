@@ -21,7 +21,7 @@ public class Advisor extends Person implements ITabled {
 
 	/** the department */
 	public Department department;
-	
+
 	/** the "special" column */
 	public String special;
 
@@ -34,7 +34,7 @@ public class Advisor extends Person implements ITabled {
 	 * e.g. Ryan Fisher and psych"
 	 */
 	public Major preferred2ndMajor;
-	
+
 	/** a specialty, e.g. premed scholars */
 	public Specialty specialty = Specialty.NONE;
 
@@ -70,7 +70,7 @@ public class Advisor extends Person implements ITabled {
 			System.err.println("\nCOULD not match department [" + deptstr + "]");
 			System.exit(1);
 		}
-		
+
 		//default the subject nased of department name
 		subject = Major.getValue(department.name());
 
@@ -126,7 +126,7 @@ public class Advisor extends Person implements ITabled {
 		advisees.remove(student);
 		advisees.add(student);
 		student.setLocked(lockStudentWhenDone);
-		
+
 		student.reason = reason;
 		student.advisor = this;
 
@@ -151,7 +151,7 @@ public class Advisor extends Person implements ITabled {
 	public String nameAndDepartment() {
 		return String.format("%s  [%s]", name, department);
 	}
-	
+
 	/**
 	 * full name (last, first) and department is a single string
 	 * @return full name (last, first) and department is a single string

@@ -3,13 +3,11 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
-import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.DataManager;
 
 public class StudentsMajorStep extends CheckListLaunchable {
@@ -21,7 +19,7 @@ public class StudentsMajorStep extends CheckListLaunchable {
 
 	@Override
 	public void launch() {
-		
+
 
 		// now for specialty
 		for (Specialty specialty : Specialty.values()) {

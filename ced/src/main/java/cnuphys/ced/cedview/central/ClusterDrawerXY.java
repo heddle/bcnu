@@ -21,7 +21,7 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.frame.Ced;
 
 public class ClusterDrawerXY extends CentralXYViewDrawer {
-	
+
 	//data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -97,7 +97,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 		}
 
 		byte sector[] = _dataWarehouse.getByte("BSTRec::Clusters", "sector");
-		
+
 		int count = (sector == null) ? 0 : sector.length;
 		if (count == 0) {
 			return;
@@ -115,7 +115,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 			for (int i = 0; i < count; i++) {
 				container.worldToLocal(p1, 10 * x1[i], 10 * y1[i]);
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
-				
+
 				if (Ced.getCed().isConnectCluster()) {
 					g.setColor(Color.black);
 					g.drawLine(p1.x, p1.y, p2.x, p2.y);
@@ -149,18 +149,18 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 		float x1[] = _dataWarehouse.getFloat("BMTRec::Clusters", "x1");
 
 		if (x1 != null) {
-			
+
             float y1[] = _dataWarehouse.getFloat("BMTRec::Clusters", "y1");
             float x2[] = _dataWarehouse.getFloat("BMTRec::Clusters", "x2");
             float y2[] = _dataWarehouse.getFloat("BMTRec::Clusters", "y2");
-                        
+
 			Point p1 = new Point();
 			Point p2 = new Point();
 
 			for (int i = 0; i < count; i++) {
 				container.worldToLocal(p1, 10 * x1[i], 10 * y1[i]);
 				container.worldToLocal(p2, 10 * x2[i], 10 * y2[i]);
-				
+
 				if (Ced.getCed().isConnectCluster()) {
 					g.setColor(Color.black);
 					g.drawLine(p1.x, p1.y, p2.x, p2.y);

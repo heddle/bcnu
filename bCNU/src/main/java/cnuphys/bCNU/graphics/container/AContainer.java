@@ -33,7 +33,7 @@ import cnuphys.bCNU.view.BaseView;
 public abstract class AContainer<T extends JComponent> implements IContainer, MouseListener, MouseMotionListener, MouseWheelListener {
 
 	protected T _component;
-	
+
 	/**
 	 * Keeps track of current mouse position
 	 */
@@ -71,7 +71,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 	 * Previous world system, for undoing the last zoom.
 	 */
 	protected Rectangle2D.Double _previousWorldSystem;
-	
+
 	// for world to local transformations (and vice versa)
 	protected int _lMargin = 0;
 	protected int _tMargin = 0;
@@ -79,19 +79,19 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 	protected int _bMargin = 0;
 	protected AffineTransform localToWorld;
 	protected AffineTransform worldToLocal;
-	
+
 	/**
 	 * Controls the feedback for the container. You can add and remove feedback
 	 * providers to this object.
 	 */
 	protected FeedbackControl _feedbackControl;
-	
+
 	/**
 	 * Optional anchor item.
 	 */
 	protected YouAreHereItem _youAreHereItem;
 
-	
+
 	public AContainer(T component, BaseView view, Rectangle2D.Double worldSystem) {
 		_component = component;
 		_view = view;
@@ -101,7 +101,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		_defaultWorldSystem = copy(worldSystem);
 		_previousWorldSystem = copy(worldSystem);
 
-		
+
 
 		ComponentAdapter componentAdapter = new ComponentAdapter() {
 			@Override
@@ -117,7 +117,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		_component.addMouseMotionListener(this);
 
 	}
-	
+
 	/**
 	 * This converts a screen or pixel point to a world point.
 	 *
@@ -208,7 +208,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 	public void worldToLocal(Point pp, double wx, double wy) {
 		worldToLocal(pp, new Point2D.Double(wx, wy));
 	}
-	
+
 
 	/**
 	 * Pan the container.
@@ -230,7 +230,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		recenter(p);
 	}
 
-	
+
 	/**
 	 * Recenter the container at the point of a click.
 	 *
@@ -244,7 +244,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		setDirty(true);
 		refresh();
 	}
-	
+
 	/**
 	 * Recenter the world rectangle.
 	 *
@@ -273,9 +273,9 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		setDirty(true);
 		refresh();
 	}
-	
+
 	/**
-	 * Refresh the container. 
+	 * Refresh the container.
 	 */
 	@Override
 	public void refresh() {
@@ -290,7 +290,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 			}
 		}
 	}
-	
+
 	/**
 	 * Convenience routine to scale the container.
 	 *
@@ -350,7 +350,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		refresh();
 	}
 
-	
+
 
 	/**
 	 * Zooms to the specified area.
@@ -623,7 +623,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 	public void setYouAreHereItem(YouAreHereItem youAreHereItem) {
 		_youAreHereItem = youAreHereItem;
 	}
-	
+
 	/**
 	 * Get the underlying component, which is me.
 	 *
@@ -678,7 +678,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		_worldSystem = new Rectangle2D.Double(wr.x, wr.y, wr.width, wr.height);
 	}
 
-	
+
 	// Get the transforms for world to local and vice versa
 	protected void setAffineTransforms() {
 		Rectangle bounds = getInsetRectangle();
@@ -829,7 +829,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 	@Override
 	public void activeToolBarButtonChanged(ToolBarToggleButton activeButton) {
 	}
-	
+
 	/**
 	 * Get the background image.
 	 *
@@ -840,7 +840,7 @@ public abstract class AContainer<T extends JComponent> implements IContainer, Mo
 		BufferedImage image = GraphicsUtilities.getComponentImageBuffer(_component);
 		GraphicsUtilities.paintComponentOnImage(_component, image);
 		return image;
-		
+
 	}
 
 	// copier

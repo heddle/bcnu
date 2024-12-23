@@ -24,7 +24,6 @@ import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -168,7 +167,7 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 				} else {
 					_container = new BaseContainer(this, worldSystem);
 				}
-				
+
 			} else {
 				_container.setView(this);
 			}
@@ -774,11 +773,11 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 	}
-	
-	
+
+
     /**
      * Checks if the given view is visible within the bounds of its parent container.
-     * 
+     *
      * @return true if the view is fully visible within its parent, false otherwise.
      */
     public boolean isViewVisible() {

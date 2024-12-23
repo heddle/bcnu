@@ -13,31 +13,31 @@ import java.util.List;
  * words. The other list is valid words not used as game words.
  */
 public class Data {
-	
+
 	//game words
 	private static final String LANAME = "data/wordle-La.txt";
 
 	//valid non-game words
 	private static final String TANAME = "data/wordle-Ta.txt";
-	
+
 	//list of game words
 	private List<String> _laList;
-	
+
 	//list of real words not used as game words
 	private List<String> _taList;
 
-	
+
 	//singleton instance
 	private static volatile Data _instance;
-	
+
 	private Data() {
-		_laList = readFileIntoList(LANAME);        
-		_taList = readFileIntoList(TANAME);			
+		_laList = readFileIntoList(LANAME);
+		_taList = readFileIntoList(TANAME);
 	}
-	
+
 	/**
 	 * Get the singleton instance
-	 * 
+	 *
 	 * @return the singleton instance
 	 */
 	public static Data getInstance() {
@@ -46,18 +46,18 @@ public class Data {
 		}
 		return _instance;
 	}
-	
-	
+
+
 	// try reading word lists from the jar
 	private BufferedReader bufferedReaderFromResource(String resourceName) {
 		InputStream inStream = getClass().getClassLoader().getResourceAsStream(resourceName);
 		return new BufferedReader(new InputStreamReader(inStream));
 	}
-	
-	
+
+
 	//read a list of words from a resource file in the bCNU jar
     private List<String> readFileIntoList(String fileName) {
-    	ArrayList<String> list = new ArrayList<String>();
+    	ArrayList<String> list = new ArrayList<>();
     	BufferedReader br = bufferedReaderFromResource(fileName);
 		if (br != null) {
 			try {
@@ -69,12 +69,12 @@ public class Data {
 				e.printStackTrace();
 			}
 		}
-		
+
 		//just to be sure
 		Collections.sort(list);
 		return list;
      }
-    
+
     /**
      * Get a random word from the game list
      * @return a word for playing the game
@@ -87,7 +87,7 @@ public class Data {
 		}
 		return word;
     }
-    
+
 	/**
 	 * Is the word a good word?
 	 * It is good if it is in either list
@@ -95,16 +95,12 @@ public class Data {
 	 * @return <code>true</code> if the word is good
 	 */
     public boolean goodWord(String word) {
-    	
+
     	word = word.toLowerCase();
-		if (word == null) {
+		if ((word == null) || (word.length() != 5)) {
 			return false;
 		}
-		
-		if (word.length() != 5) {
-			return false;
-		}
-		
+
 		return wordInList(word, _laList) || wordInList(word, _taList);
     }
 

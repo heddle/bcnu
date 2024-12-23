@@ -10,7 +10,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.List;
 
-import org.jlab.geom.prim.Point3D;
+import org.jlab.geom.prim.Plane3D;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
@@ -25,6 +25,7 @@ import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
+import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.ced.geometry.alert.TOFLayer;
@@ -57,7 +58,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	private AlertTOFHitDrawer _tofHitDrawer;
 
 	//wire projection
-	private AlertWireProjectionPanel _dcPanel;
+	private AlertProjectionPanel _dcPanel;
 
 	/**
 	 * Create a Alert detector XY View
@@ -87,23 +88,23 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		String title = _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")"));
 
 		final AlertXYView view = new AlertXYView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle,
-				PropertySupport.WIDTH, width, 
-				PropertySupport.HEIGHT, height, 
+				PropertySupport.WIDTH, width,
+				PropertySupport.HEIGHT, height,
 				PropertySupport.LEFTMARGIN, LMARGIN,
 				PropertySupport.TOPMARGIN, TMARGIN,
-				PropertySupport.RIGHTMARGIN, RMARGIN, 
-				PropertySupport.BOTTOMMARGIN, BMARGIN, 
-				PropertySupport.TOOLBAR, true, 
+				PropertySupport.RIGHTMARGIN, RMARGIN,
+				PropertySupport.BOTTOMMARGIN, BMARGIN,
+				PropertySupport.TOOLBAR, true,
 				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS,
-				PropertySupport.VISIBLE, true, 
-				PropertySupport.TITLE, title, 
+				PropertySupport.VISIBLE, true,
+				PropertySupport.TITLE, title,
 				PropertySupport.PROPNAME, "AlertXY",
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
 				ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC,
-				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.RECONHITS
+				DisplayBits.ACCUMULATION
 						+ DisplayBits.ADCDATA + DisplayBits.MCTRUTH,
 				3, 5);
 
@@ -116,7 +117,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		view._controlPanel.getMatchedBankPanel().update();
-		
+
 		//add dc projection panel
 		view._dcPanel = view._controlPanel.getAlertDCPanel();
 
@@ -134,7 +135,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 					drawWires(g, container);
 					drawPaddles(g, container);
 
-					AlertGeometry.drawAlertTOFSectorOutlines(g, container);
+					AlertGeometry.drawAlertTOFSectorNumbers(g, container);
 				}
 			}
 
@@ -173,6 +174,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		getContainer().setAfterDraw(afterDraw);
 	}
 
+	//draw the hits in single eventmode
 	private void drawSingleModeHits(Graphics g, IContainer container) {
 		_dcHitDrawer.drawHits(g, container);
 		_tofHitDrawer.drawHits(g, container);
@@ -182,10 +184,17 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 	}
 
+	//draw the accumulated hits
 	private void drawAccumulatedHits(Graphics g, IContainer container) {
 		_dcHitDrawer.drawAccumulatedHits(g, container);
 		_tofHitDrawer.drawAccumulatedHits(g, container);
 
+	}
+
+	//set the projection plane
+	public void setProjectionPlane(double z) {
+		Plane3D plane = GeometryManager.constantZPlane(z);
+		this.projectionPlane = plane;
 	}
 
 
@@ -238,6 +247,13 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		wp.y = y*scale;
 	}
 
+	/**
+     * Show all the TOF or just the intersecting TOF
+     * @return true if all TOF should be shown
+     */
+	public boolean showAllTOF() {
+		return _dcPanel.showAllTOF();
+	}
 
 
 	/**
@@ -264,16 +280,16 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		return view;
 
 	}
-	
+
 	/**
 	 * Get the fixed Z value if we are not using midpoints
-	 * 
+	 *
 	 * @return the fixed Z value.
 	 */
 	public double getFixedZ() {
 		return _dcPanel.getFixedZ();
 	}
-	
+
 
 	/**
 	 * Some view specific feedback. Should always call super.getFeedbackStrings
@@ -288,7 +304,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 			List<String> feedbackStrings) {
 
 		basicFeedback(container, pp, wp, "mm", feedbackStrings);
-		
+
 		double z = getFixedZ();
 		feedbackStrings.add("z: " + getFixedZ() + " mm");
 		double r = Math.sqrt(wp.x * wp.x + wp.y * wp.y + z * z);

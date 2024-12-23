@@ -96,9 +96,9 @@ public class Schedule extends DataModel {
 				//try to set instructor subject (major) bases on course taught
 
 				Major major = Major.getValue(subject);
-				
+
 				String trimSubj = subject.trim().toLowerCase();
-				
+
 				if (major == null) {
 					if (!(trimSubj.contains("honr") || trimSubj.contains("idst"))) {
 						System.out.println("Could not match major to course subject [" + subject + "]");
@@ -106,7 +106,7 @@ public class Schedule extends DataModel {
 				}
 				else {
 					advisor.subject = major;
-					
+
 					//recheck the major based on class taught
 					advisor.set(Person.PREBUS, major.isPreBusiness());
 			     	advisor.set(Person.ENGR, major.isEngineering());
@@ -117,14 +117,14 @@ public class Schedule extends DataModel {
 						new Course(crn, subject, course, section, title, instructor, id));
 			}
 		}
-		
+
 		//raw data not needed
 		deleteRawData();
 
 	}
-	
+
 	public Advisor getAdvisorFromCRN(String crn) {
-		
+
 		for (Advisor advisor : DataManager.getAdvisorData().getAdvisors()) {
 			if (advisor.hasCRN(crn)) {
 				return advisor;
@@ -206,7 +206,7 @@ public class Schedule extends DataModel {
 
     	return null;
     }
-    
+
     /**
      * Get a alc course from a crn
      * @param crn the crn

@@ -17,7 +17,7 @@ public abstract class ABlockingQueue<T> extends Vector<T>{
 			notify();
 		}
 	}
-	
+
 	/**
 	 * Put an object in the FIFO queue. Any thread can do this.
 	 * If the object is already in the queue, it is not added.
@@ -25,11 +25,11 @@ public abstract class ABlockingQueue<T> extends Vector<T>{
 	 */
 	public synchronized void queueUnique(T object) {
 		if (object != null) {
-			
+
 			if (contains(object)) {
 				return;
 			}
-			
+
 			add(object);
 
 			// notify a SINGLE thread among all threads

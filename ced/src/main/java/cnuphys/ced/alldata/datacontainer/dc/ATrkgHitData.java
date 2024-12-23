@@ -11,13 +11,13 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.IDataContainer;
 
 public abstract class ATrkgHitData implements IDataContainer {
-	
+
 	// the data warehouse
 	protected static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	/** 1-based sectors */
 	public byte sector[];
-	
+
 	/** 1-based superlayers */
 	public byte superlayer[];
 
@@ -26,25 +26,25 @@ public abstract class ATrkgHitData implements IDataContainer {
 
 	/** 1-based wire */
 	public short wire[];
-	
+
 	/** hit id */
 	public short id[];
-	
+
 	/** hit status */
 	public short status[];
-	
+
 	/** left or right */
-	public byte LR[]; 
-	
+	public byte LR[];
+
 	/** TDC */
 	public int TDC[];
-	
+
 	/** cluster id */
 	public short clusterID[];
 
 	/** track doca */
 	public float trkDoca[];
-	
+
 	/** track doca */
 	public float doca[];
 
@@ -53,7 +53,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
-	
+
 	public ATrkgHitData() {
 		_dataWarehouse.addDataContainerListener(this);
 	}
@@ -66,7 +66,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 		if (bank == null) {
 			return;
 		}
-		
+
 		sector = bank.getByte("sector");
 		superlayer = bank.getByte("superlayer");
 		layer = bank.getByte("layer");
@@ -78,10 +78,10 @@ public abstract class ATrkgHitData implements IDataContainer {
 		clusterID = bank.getShort("clusterID");
 		trkDoca = bank.getFloat("trkDoca");
 		doca = bank.getFloat("docaError");
-		
+
 		int length = (sector == null) ? 0 : sector.length;
-		
-		
+
+
 		//HB doesn't have doca column
 		if ((doca == null) && (length > 0)) {
 			doca = new float[length];
@@ -89,8 +89,8 @@ public abstract class ATrkgHitData implements IDataContainer {
 				doca[i] = -1f;
 			}
 		}
-		
-		
+
+
 		ppx = new int[length];
 		ppy = new int[length];
 		for (int i = 0; i < length; i++) {
@@ -98,7 +98,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 			ppy[i] = 0;
 		}
 	}
-	
+
 	@Override
 	public void clear() {
 		sector = null;
@@ -115,12 +115,12 @@ public abstract class ATrkgHitData implements IDataContainer {
 		ppx = null;
 		ppy = null;
 	}
-	
+
 	@Override
 	public int count() {
 		return (sector == null) ? 0 : sector.length;
 	}
-	
+
 	/**
 	 * Set the location where the cluster was last drawn
 	 * @param index the index of the cluster
@@ -144,7 +144,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
@@ -153,7 +153,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 		String color = "$red$";
 		String s1 = String.format("%s%s sect %d supl %d  layer %d  wire %d", color, name, sector[index], superlayer[index],
 				layer[index], wire[index]);
-		
+
 		feedbackStrings.add(s1);
 	}
 
@@ -167,7 +167,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 		return ((Math.abs(ppx[index] - pp.x) <= DataDrawSupport.HITHALF)
 				&& (Math.abs(ppy[index] - pp.y) <= DataDrawSupport.HITHALF));
 	}
-	
+
 	/**
 	 * Get the index from the id. Brute force, because
 	 * they are not sorted.
@@ -185,7 +185,7 @@ public abstract class ATrkgHitData implements IDataContainer {
 	}
 
 
-	
+
 	/**
 	 * Get the name of the trkg cross bank
 	 * @return the name of the bank

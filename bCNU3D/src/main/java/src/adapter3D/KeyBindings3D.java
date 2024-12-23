@@ -81,9 +81,9 @@ public class KeyBindings3D {
 				}
 
 			String command = e.getActionCommand();
-			
+
 			float step = _panel3D.getZStep();
-			
+
 			if ("u".equals(command)) {
 				_panel3D.deltaY(step);
 				_panel3D.refresh();
@@ -139,7 +139,7 @@ public class KeyBindings3D {
 				_panel3D.loadIdentityMatrix();
 				_panel3D.rotateY(180f);
 				_panel3D.refresh();
-			} 
+			}
 
 		}
 	}

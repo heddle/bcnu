@@ -12,7 +12,7 @@ import cnuphys.ced.item.HexSectorItem;
 
 public class DCHexSectorItem extends HexSectorItem {
 
-	
+
 	/**
 	 * Get a hex sector item
 	 *
@@ -22,7 +22,7 @@ public class DCHexSectorItem extends HexSectorItem {
 	public DCHexSectorItem(ItemList itemList, DCHexView view, int sector) {
 		super(itemList, view, sector);
 	}
-	
+
 	/**
 	 * Custom drawer for the item.
 	 *
@@ -37,7 +37,7 @@ public class DCHexSectorItem extends HexSectorItem {
 
 		super.drawItem(g, container);
 	}
-	
+
 	@Override
 	public void getFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 		super.getFeedbackStrings(container, pp, wp, feedbackStrings);

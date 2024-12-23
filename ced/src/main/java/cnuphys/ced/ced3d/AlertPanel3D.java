@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Font;
 
 import cnuphys.ced.ced3d.view.CedView3D;
-import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.lund.X11Colors;
@@ -14,20 +13,20 @@ import item3D.Axes3D;
 
 public class AlertPanel3D extends CedPanel3D {
 
-	
+
 	// dimension of this panel are in mm
 	private final float xymax = 150f;
 	private final float zmax = 200f;
 	private final float zmin = -20f;
-	
+
 	// labels for the check box
 	private static final String _cbaLabels[] = { SHOW_VOLUMES, SHOW_TRUTH, SHOW_RECON_CROSSES, SHOW_TB_TRACK,
 			SHOW_HB_TRACK, SHOW_COSMIC, SHOW_DC, SHOW_TOF,
 			DC_SUPLAY1_LAY1, DC_SUPLAY2_LAY1, DC_SUPLAY2_LAY2, DC_SUPLAY3_LAY1, DC_SUPLAY3_LAY2, DC_SUPLAY4_LAY1,
-			DC_SUPLAY4_LAY2, DC_SUPLAY5_LAY1, 
+			DC_SUPLAY4_LAY2, DC_SUPLAY5_LAY1,
 			TOF_SUPLAY1_LAY1, TOF_SUPLAY2_LAY1, TOF_SUPLAY2_LAY2, TOF_SUPLAY2_LAY3, TOF_SUPLAY2_LAY4, TOF_SUPLAY2_LAY5,
 			TOF_SUPLAY2_LAY6, TOF_SUPLAY2_LAY7, TOF_SUPLAY2_LAY8, TOF_SUPLAY2_LAY9, TOF_SUPLAY2_LAY10,};
-	
+
 
 	/**
 	 *
@@ -43,7 +42,7 @@ public class AlertPanel3D extends CedPanel3D {
 			float zDist) {
 		super(view, angleX, angleY, angleZ, xDist, yDist, zDist, _cbaLabels);
 	}
-	
+
 	@Override
 	public void createInitialItems() {
 		// coordinate axes
@@ -54,7 +53,7 @@ public class AlertPanel3D extends CedPanel3D {
 		// trajectory drawer
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
-		
+
 		for (int sectorId = 0; sectorId < 1; sectorId++) {
 			for (int superlayerId = 0; superlayerId < 5; superlayerId++) {
 				for (int layerId = 0; layerId < 2; layerId++) {
@@ -67,7 +66,7 @@ public class AlertPanel3D extends CedPanel3D {
 			}
 		}
 
-		
+
 		// tof paddles superlayer 0
 		for (int sectorId = 0; sectorId < 15; sectorId++) {
 			for (int superlayerId = 0; superlayerId < 1; superlayerId++) {
@@ -79,7 +78,7 @@ public class AlertPanel3D extends CedPanel3D {
 				}
 			}
 		}
-		
+
 		// tof paddles superlayer 1-10
 		for (int sectorId = 0; sectorId < 15; sectorId++) {
 			for (int superlayerId = 1; superlayerId < 2; superlayerId++) {
@@ -91,7 +90,7 @@ public class AlertPanel3D extends CedPanel3D {
 				}
 			}
 		}
-		
+
 
 	}
 

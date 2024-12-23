@@ -113,7 +113,7 @@ public enum Major {
 
 		departments.put(FRENCH, Department.MCLL);
 		departments.put(GCOMCUL, Department.INTERDIS);
-		
+
 		departments.put(GERMAN, Department.MCLL);
 		departments.put(HIST, Department.HIST);
 		departments.put(INFSCI, Department.PCSE);
@@ -138,19 +138,19 @@ public enum Major {
 		departments.put(UNDEC, Department.NONE);
 
 	}
-	
-	/** Is this major in the business family? 
-	 * 
+
+	/** Is this major in the business family?
+	 *
 	 * @return <code>true</code> if this major is in the business family
      */
 	public boolean isPreBusiness() {
 		return (this == ACCT) || (this == BUSN) || (this == FIN) || (this == MARKT) || (this == MGMT);
 	}
-	
+
 	public boolean isCS() {
 		return (this == COMSCI) || (this == CYBER) || (this == INFSCI);
 	}
-	
+
 	/**
 	 * Is this major in the engineering family
 	 * @return <code>true</code> if this major is in the engineering family
@@ -201,12 +201,12 @@ public enum Major {
 
 		case COMSCI:
 		case CYBER:
-		case INFSCI:	
+		case INFSCI:
 			if (AdvisorAssign.useCSFamily()) {
 				return ((major == COMSCI) || (major == CYBER) || (major == INFSCI));
 			}
 			break;
-			
+
 		default:
 			return false;
 		}

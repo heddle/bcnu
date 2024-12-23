@@ -29,8 +29,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _pspAdvisorsButton;
 	private JButton _alcAdvisorsButton;
 	private JButton _musTheaAdvisorsButton;
-	
-	
+
+
 	private JButton _preBusStudentButton;
 	private JButton _engrStudentButton;
 	private JButton _allStudentButton;
@@ -50,7 +50,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 	private JButton _ccptAdvisorsButton;
 
 	private JButton _departMajorButton;
-	
+
 
 	private String rowLabels[] = {" STUDENTS", " STUDENTS", " ADVISORS", " ADVISORS ", " "};
 	private JPanel _rows[] = new JPanel[rowLabels.length];
@@ -102,8 +102,8 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 
 
 	private JPanel createRowPanel(String text) {
-				
-		
+
+
 		final JPanel rp = new JPanel();
 		rp.setFont(_font);
 
@@ -144,7 +144,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.HONOR).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Active Honors Advisors");
 	}
-	
+
 	//handle click on psp advisors button
 	private void handlePSPAdvisors() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PREMEDSCHOLAR).getScrollPane());
@@ -181,7 +181,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.CCPT).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Community Captain Advisors");
 	}
-	
+
 	//handle click on pres scholar advisors button
 	private void handlePresScholarAdvisors() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredAdvisorData(Person.PRESSCHOLAR).getScrollPane());
@@ -219,7 +219,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.PREBUS).getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("Pre-Business Students");
 	}
-	
+
 	//handle click on engr button
 	private void handleEngr() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getFilteredStudentData(Person.ENGR).getScrollPane());
@@ -273,7 +273,7 @@ public class AdvisorButtonPanel extends JPanel implements ActionListener {
 		AdvisorDisplay.getInstance().setContent(new DepartmentMajorPane());
 		AdvisorInfoLabel.getInstance().setText("Departments and Majors");
 	}
-	
+
 	private void handleALCs() {
 		AdvisorDisplay.getInstance().setContent(DataManager.getALCData().getScrollPane());
 		AdvisorInfoLabel.getInstance().setText("All ALCs");

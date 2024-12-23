@@ -16,7 +16,7 @@ public class SwimmingTestView3D extends PlainView3D {
 	private static final float thetax = -90f;
 	private static final float thetay = 0f;
 	private static final float thetaz = -90f;
-	
+
 	public SwimmingTestView3D() {
 		super("Swimming Testing 3D View", thetax, thetay, thetaz, xdist, ydist, zdist);
 		Dimension d = GraphicsUtilities.getDisplaySize();

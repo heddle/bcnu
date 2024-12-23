@@ -8,7 +8,7 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public abstract class ACommonTrajData implements IDataContainer {
-	
+
 
 	// the data warehouse
 	protected static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
@@ -16,7 +16,7 @@ public abstract class ACommonTrajData implements IDataContainer {
 	// event manager
 	protected static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-	
+
 	public short id[];
 	public byte detector[];
 	public byte layer[];
@@ -24,7 +24,7 @@ public abstract class ACommonTrajData implements IDataContainer {
 	public float y[];
 	public float z[];
 
-	
+
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
 
@@ -35,7 +35,7 @@ public abstract class ACommonTrajData implements IDataContainer {
 	public ACommonTrajData() {
 		_dataWarehouse.addDataContainerListener(this);
 	}
-	
+
 	@Override
 	public void clear() {
 		id = null;
@@ -47,12 +47,12 @@ public abstract class ACommonTrajData implements IDataContainer {
 		ppx = null;
 		ppy = null;
 	}
-	
+
 	@Override
 	public int count() {
 		return (x == null) ? 0 : x.length;
 	}
-	
+
 	/**
 	 * Set the location where the cluster was last drawn
 	 * @param index the index of the cluster
@@ -97,7 +97,7 @@ public abstract class ACommonTrajData implements IDataContainer {
 		feedbackStrings.add(fb1);
 	}
 
-	
-	
+
+
 
 }

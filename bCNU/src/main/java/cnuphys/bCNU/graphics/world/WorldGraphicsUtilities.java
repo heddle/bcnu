@@ -224,7 +224,7 @@ public class WorldGraphicsUtilities {
 			Color lineColor) {
 		drawWorldLine(g, container, wp0.x, wp0.y, wp1.x, wp1.y, lineColor, 1, LineStyle.SOLID);
 	}
-	
+
 
 	/**
 	 * Draw a world line 1 pixel wide in solid style
@@ -1144,7 +1144,7 @@ public class WorldGraphicsUtilities {
 
 		return poly;
 	}
-	
+
 	public static Polygon pathToPolygon(IContainer container, Path2D.Double path) {
 	    if (path == null) {
 	        return null;

@@ -11,7 +11,7 @@ import cnuphys.simanneal.SimulationDisplay;
 
 /**
  * This is the map
- * 
+ *
  * @author heddle
  *
  */

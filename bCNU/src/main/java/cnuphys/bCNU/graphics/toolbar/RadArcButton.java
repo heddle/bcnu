@@ -93,7 +93,7 @@ public class RadArcButton extends ToolBarToggleButton implements IRubberbanded {
 		}
 
 		// create a rad arc item
-		
+
 		DrawingContainer dc	= (DrawingContainer) container;
 
 		AItem item = dc.createRadArcItem(container.getAnnotationList(), pp[0], pp[1], arcAngle);

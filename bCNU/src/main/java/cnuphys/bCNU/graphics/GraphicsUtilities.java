@@ -1169,7 +1169,7 @@ public class GraphicsUtilities {
 		// restore the stroke
 		g2.setStroke(oldStroke);
 	}
-	
+
 
 	/**
 	 * draw a number (int) at the end of a line
@@ -1183,11 +1183,11 @@ public class GraphicsUtilities {
 	 */
     public static void drawNumberAtEnd(Graphics g, int val, Point start, Point end, int gap, Font f, Color fc) {
         Graphics2D g2d = (Graphics2D) g;
-        
+
         // Set font and color
         g2d.setFont(f);
         g2d.setColor(fc);
-        
+
         // Convert the value to a string
         String text = String.valueOf(val);
 
@@ -1196,7 +1196,7 @@ public class GraphicsUtilities {
         int textWidth = metrics.stringWidth(text);
         int textHeight = metrics.getHeight();
 
- 
+
         // Calculate the angle of the line
         double angle = Math.atan2(end.y - start.y, end.x - start.x);
 

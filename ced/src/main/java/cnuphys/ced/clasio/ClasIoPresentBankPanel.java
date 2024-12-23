@@ -1,7 +1,6 @@
 package cnuphys.ced.clasio;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -43,7 +42,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 	// the event manager
 	private static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	//data warehouse
 	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -242,7 +241,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 						_nodeTable.makeNameVisible(label);
 
 					} else if (clickCount == 2) {
-						
+
 						if (Ced.getCed().isFloatingBankDisplay()) {
 							// open a new window
 							CedDataWindow dw = CedDataWindow.getBankWindow(label);
@@ -250,7 +249,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 							dw.setVisible(true);
 						return;
 						}
-						
+
 						//open a view
 						CedDataView cdv = CedDataView.getBankView(label);
 						cdv.update();

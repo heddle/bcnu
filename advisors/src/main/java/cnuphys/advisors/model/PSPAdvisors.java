@@ -12,7 +12,7 @@ import cnuphys.advisors.io.ITabled;
 public class PSPAdvisors extends DataModel {
 
 	private AdvisorDialog _dialog;
-	
+
 	//attributes for honors advisors data
 	private static final DataAttribute pspAdvAttributes[] = {DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
 			DataManager.firstNameAtt};
@@ -22,7 +22,7 @@ public class PSPAdvisors extends DataModel {
 		super(baseName, pspAdvAttributes);
 	}
 
-	
+
 	@Override
 	protected void processData() {
 
@@ -59,7 +59,7 @@ public class PSPAdvisors extends DataModel {
 		if (!e.getValueIsAdjusting()) {
 		}
 	}
-	
+
 
 	/**
 	 * Double clicked on a row

@@ -2,7 +2,7 @@ package cnuphys.advisors.enums;
 
 /**
  * The reasons for an assignment
- * 
+ *
  * @author heddle
  *
  */

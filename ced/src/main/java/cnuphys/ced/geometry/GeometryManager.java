@@ -36,7 +36,7 @@ public class GeometryManager {
 
 	// cal sector 0 in local coordinates
 	public static ECSector local_Cal_Sector0;
-	
+
 	//work points
 	private static Point3D[] _workPoints;
 	static {
@@ -504,7 +504,7 @@ public class GeometryManager {
                 _workPoints[i] = new Point3D();
             }
 		}
-		
+
 		for (int i = 0; i < count; i++) {
 			_workPoints[i] = new Point3D();
 		}
@@ -566,7 +566,7 @@ public class GeometryManager {
 	/**
 	 * Get a plane of constant phi
 	 *
-	 * @param phi the azimutha angle in degrees
+	 * @param phi the azimuthal angle in degrees
 	 * @return a plane of constant phi
 	 */
 	public static Plane3D constantPhiPlane(double phi) {
@@ -575,6 +575,18 @@ public class GeometryManager {
 		double cphi = Math.cos(phi);
 		double sphi = Math.sin(phi);
 		Vector3D norm = new Vector3D(sphi, -cphi, 0);
+		return new Plane3D(point, norm);
+	}
+
+	/**
+	 * Get a plane of constant z
+	 *
+	 * @param z the constant z coordinate
+	 * @return a plane of constant z
+	 */
+	public static Plane3D constantZPlane(double z) {
+		Point3D point = new Point3D(0, 0, z);
+		Vector3D norm = new Vector3D(0, 0, 1);
 		return new Plane3D(point, norm);
 	}
 

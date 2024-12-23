@@ -50,7 +50,7 @@ public class Ising2DDisplay extends SimulationDisplay {
 
 	/**
 	 * Get the underlying simulation as an Ising2DSimulation
-	 * 
+	 *
 	 * @return the underlying simulation as an Ising2DSimulation
 	 */
 	private Ising2DSimulation getSimulation() {

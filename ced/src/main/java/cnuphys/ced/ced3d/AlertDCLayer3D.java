@@ -8,13 +8,12 @@ import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
 import cnuphys.ced.cedview.alert.AlertDCGeometryNumbering;
-import cnuphys.ced.cedview.alert.AlertTOFGeometryNumbering;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 
 public class AlertDCLayer3D extends DetectorItem3D {
-	
+
 	private static final boolean frame = true;
 
 	// zero based sector (0)
@@ -22,15 +21,15 @@ public class AlertDCLayer3D extends DetectorItem3D {
 
 	// one based superlayer [0..4]
 	private final int _superlayer;
-	
+
 	// one based layer [0..1]
 	private final int _layer;
 
 	// the vertices
 	private float[] coords = new float[6];
-	
+
 	private DCLayer _dcLayer;
-	
+
 
 	/**
 	 * Create an Alert paddle
@@ -46,7 +45,7 @@ public class AlertDCLayer3D extends DetectorItem3D {
 		_sector = sector;
 		_superlayer = superlayer;
 		_layer = layer;
-		
+
 		_dcLayer = AlertGeometry.getDCLayer(sector, superlayer, layer);
 	}
 
@@ -70,7 +69,7 @@ public class AlertDCLayer3D extends DetectorItem3D {
 		}
 
 		if (dataEvent.hasBank("AHDC::adc")) {
-			
+
 			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
 			if (component != null) {
 				int count = component.length;

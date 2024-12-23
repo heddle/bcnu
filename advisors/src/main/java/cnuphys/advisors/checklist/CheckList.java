@@ -38,7 +38,7 @@ public class CheckList extends JPanel {
 
 	//assign community captains
 	private CheckListLaunchable ccptStep;
-	
+
 	//assign honors students in honors advisor's class
 	private CheckListLaunchable honorsStudentInALCStep;
 
@@ -54,7 +54,7 @@ public class CheckList extends JPanel {
 
 	//assign  students in FCA's class
 	private CheckListLaunchable studentInClassStep;
-	
+
 	//assign  PSP Students to PSP advisors
 	private CheckListLaunchable pspStep;
 
@@ -95,7 +95,7 @@ public class CheckList extends JPanel {
 		presScholarStep = new PresScholarStep("Presidential scholars", true);
 		ccptStep = new CommunityCaptainStep("Community Captains", false);
 		musTheaStep = new MusTheaStep("Music & Theater majors", false);
-		
+
 		honorsStudentInALCStep = new HonorsInALCStep("Honors in Honors ALC Class", false);
 		alcStep = new StudentsInALCStep("Students in ALC Class", false);
 
@@ -115,7 +115,7 @@ public class CheckList extends JPanel {
 		add(presScholarStep);
 		add(ccptStep);
 		add(musTheaStep);
-		
+
 		add(honorsStudentInALCStep);
 
 		if (inClass) {
@@ -125,7 +125,7 @@ public class CheckList extends JPanel {
 		add(honorsMajorStep);
 		add(honorsAlgorithmStep);
 		add(pspStep);
-		
+
 		add(alcStep);
 
 		if (inClass) {
@@ -162,10 +162,10 @@ public class CheckList extends JPanel {
 		boolean alcStepDone = alcStep.done;
 		boolean musTheaStepDone = musTheaStep.done;
 		boolean ccptStepDone = ccptStep.done;
-		
+
 		boolean honorsStudentInALCStepDone = honorsStudentInALCStep.done;
 		honorsStudentInALCStep.setEnabled(!honorsStudentInALCStepDone);
-		
+
 		boolean honorsMajorStepDone = honorsMajorStep.done;
 		boolean honorsAlgorithmStepDone = honorsAlgorithmStep.done;
 		boolean pspStepDone = pspStep.done;

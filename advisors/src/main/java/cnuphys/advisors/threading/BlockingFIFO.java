@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class BlockingFIFO<T> extends Vector<T> {
 
-	
+
 	/**
 	 * Queue an object. Notify threads that are waiting.
 	 * Any thread including the GUI thread can queue an object. It does not block.
@@ -14,7 +14,7 @@ public class BlockingFIFO<T> extends Vector<T> {
 	public synchronized void queue(T element) {
 		add(element);
 	}
-	
+
 	@Override
 	public synchronized boolean add(T element) {
 		if (element == null) {
@@ -30,7 +30,7 @@ public class BlockingFIFO<T> extends Vector<T> {
 
 	/**
 	 * Dequeue an object. If queue is empty, wait.
-	 * 
+	 *
 	 * @return a object for processing.
 	 */
 	public synchronized T dequeue() {
@@ -47,24 +47,24 @@ public class BlockingFIFO<T> extends Vector<T> {
 		// return first element
 		return remove(0);
 	}
-	
-	
+
+
 	//test the notify wait pattern
 	public static void main(String arg[]) {
 		final BlockingFIFO<Integer> fifo = new BlockingFIFO<>();
-		
-		Reader<Integer> reader = new Reader<Integer>(fifo) {
+
+		Reader<Integer> reader = new Reader<>(fifo) {
 
 			@Override
 			public void process(Integer element) {
 				System.out.println(element);
 			}
 		};
-		
 
-			
+
+
 		reader.start();
-		
+
 		for (int i = 1; i <= 100; i++) {
 			fifo.queue(i);
 			try {
@@ -74,7 +74,7 @@ public class BlockingFIFO<T> extends Vector<T> {
 			}
 		}
 
-				
+
 		reader.stopReader();
 		System.out.println("Main thread done");
 	}

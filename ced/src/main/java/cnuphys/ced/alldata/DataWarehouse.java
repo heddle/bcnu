@@ -77,10 +77,10 @@ public class DataWarehouse implements IClasIoEventListener {
 
 	/** the column data used by the node panel */
 	private ArrayList<ColumnData> _columnData = new ArrayList<>();
-	
+
 	//for notifying about new data
 	private EventNotifier<Object> eventNotifier = new EventNotifier<>();
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -107,7 +107,7 @@ public class DataWarehouse implements IClasIoEventListener {
 		_knownBanks.toArray(kbArray);
 		return kbArray;
 	}
-	
+
 	/**
 	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
 	 * current event.
@@ -124,16 +124,16 @@ public class DataWarehouse implements IClasIoEventListener {
 		return index >= 0;
 	}
 
-	
+
 	/**
 	 * Does the current event have a bank with the given name?
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return <code>true</code> if the current event has the bank
 	 */
 	public boolean hasBank(String bankName) {
 		DataEvent event = getCurrentEvent();
-		
+
 		return (event != null) ? event.hasBank(bankName) : false;
 	}
 
@@ -160,7 +160,7 @@ public class DataWarehouse implements IClasIoEventListener {
 
         // sort the banks
 		_knownBanks.sort(null);
-		
+
 	}
 
 
@@ -401,7 +401,7 @@ public class DataWarehouse implements IClasIoEventListener {
 		}
 		return 0;
 	}
-	
+
 
 	/**
 	 * Add an data container listener.
@@ -415,11 +415,11 @@ public class DataWarehouse implements IClasIoEventListener {
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		
-		
+
+
 		// create the column data
 		_columnData.clear();
-		
+
 		int bankIndex = 0;
 		for (String bankName : _knownBanks) {
 			DataBank bank = event.getBank(bankName);
@@ -432,7 +432,7 @@ public class DataWarehouse implements IClasIoEventListener {
 				bankIndex++;
 			}
 		}
-		
+
 		notifyListeners(); //clear previous data
 		notifyListeners(event);
 	}
@@ -446,10 +446,10 @@ public class DataWarehouse implements IClasIoEventListener {
 	public void changedEventSource(EventSourceType source) {
 		notifyListeners();
 	}
-	
+
 	/**
 	 * Get the column data
-	 * 
+	 *
 	 * @return the column data
 	 */
 	public ArrayList<ColumnData> getColumnData() {

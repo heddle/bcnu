@@ -68,9 +68,9 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 
 	// optional after drawer
 	private IDrawable _afterDraw;
-	
+
 	private boolean mouseReleased = false;
-	
+
 	//hack related to internal frame drag bug
 	private static Ping _ping;
 	private JInternalFrame _dragFrame;
@@ -123,7 +123,7 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 		_ping.addPingListener(pingListener);
 	}
 
-	
+
 	private void heartbeat() {
 		if (_dragFrame == null) {
 			return;
@@ -131,7 +131,7 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 		long del = System.currentTimeMillis() - _lastDragTime;
 		if ((del > 1000) && (_dragFrame != null)) {
 			System.err.println("mouse released missed!!!");
-			
+
 			MouseEvent mouseEvent = new MouseEvent(_dragFrame, // target component
 					MouseEvent.MOUSE_RELEASED, // event type
 					System.currentTimeMillis(), // current time
@@ -144,11 +144,11 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 			);
 
 			_dragFrame.dispatchEvent(mouseEvent);
-			
+
 		}
 	}
-	
-	
+
+
 	/**
 	 * Create a desktop pane.
 	 *
@@ -222,18 +222,18 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 		}
 
 	}
-	
+
 	@Override
 	public Component add(Component comp, int index) {
-        
+
 		if (comp instanceof JInternalFrame) {
 			JInternalFrame frame = (JInternalFrame) comp;
 			frame.setOpaque(false);
-			
+
 			frame.addMouseListener(this);
 			frame.addMouseMotionListener(this);
 		}
-		
+
 		return super.add(comp, index);
     }
 
@@ -389,7 +389,7 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		
+
 		Component component = e.getComponent();
 		if (component instanceof JInternalFrame) {
 			_dragFrame = (JInternalFrame) component;
@@ -397,7 +397,7 @@ public final class Desktop extends JDesktopPane implements MouseListener, MouseM
 			_lastX = e.getX();
 			_lastY = e.getY();
 		}
-		
+
 	}
 
 	@Override

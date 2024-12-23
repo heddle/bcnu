@@ -12,8 +12,8 @@ public class BMTADCData extends ACommonADCData {
 
 	// singleton
 	private static volatile BMTADCData _instance;
-	
-	
+
+
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
 
@@ -60,15 +60,15 @@ public class BMTADCData extends ACommonADCData {
         adc = bank.getInt("ADC");
         time = bank.getFloat("time");
         computeMaxADC();
-        
+
         int n = (sector != null) ? sector.length : 0;
  		if (n > 0) {
  			ppx = new int[n];
  			ppy = new int[n];
  		}
 	}
-	
-	
+
+
 	/**
 	 * Used for hit detection
 	 * @param index the cluster index
@@ -83,7 +83,7 @@ public class BMTADCData extends ACommonADCData {
 
 	/**
 	 * Set the location where the cluster was last drawn
-	 * 
+	 *
 	 * @param index the index of the cluster
 	 * @param pp    the location
 	 */

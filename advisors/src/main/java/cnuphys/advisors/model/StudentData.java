@@ -29,7 +29,7 @@ public class StudentData extends DataModel {
 
 	//attributes for student data
 	private static final DataAttribute studentAttributes[] = { DataManager.rowAtt, DataManager.idAtt, DataManager.lastNameAtt,
-			DataManager.firstNameAtt, 
+			DataManager.firstNameAtt,
 			DataManager.alcAtt, DataManager.plpAtt, DataManager.honrAtt, DataManager.prscAtt,
 			DataManager.pspAtt, DataManager.prelawAtt, DataManager.windAtt, DataManager.ccapAtt,
 			DataManager.majorAtt, DataManager.bannerBlockAtt,
@@ -102,7 +102,7 @@ public class StudentData extends DataModel {
 		int prelawIndex = getColumnIndex(DataManager.prelawAtt);
 		int majorIndex = getColumnIndex(DataManager.majorAtt);
 		int bannerBlockIndex = getColumnIndex(DataManager.bannerBlockAtt);
-		
+
 		int prefFirstIndex = getColumnIndex(DataManager.prefFirstAtt);
 		int emailIndex = getColumnIndex(DataManager.cnuEmailAtt);
 		int sportIndex = getColumnIndex(DataManager.bannerSportAtt);
@@ -127,7 +127,7 @@ public class StudentData extends DataModel {
 			String psp = s[pspIndex];
 			String major = s[majorIndex];
 			String bannerBlock = s[bannerBlockIndex];
-			
+
 			String prefFirst = s[prefFirstIndex];
 			String email = s[emailIndex];
 			String sport = s[sportIndex];
@@ -136,7 +136,7 @@ public class StudentData extends DataModel {
 			String prCity = s[prCityIndex];
 			String prState = s[prStateIndex];
 		    String prZip = s[prZipIndex];
-			
+
 
 			_tableData.add(new Student(id, lastName, firstName, alc, plp, honr, prsc, psp, wind, ccap, major, bannerBlock,
 					prefFirst, email, sport, prStr1, prStr2, prCity, prState, prZip));

@@ -1,11 +1,11 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class HBTrkgCrossData extends ATrkgCrossData {
-	
+
 	// singleton
 	private static volatile HBTrkgCrossData _instance;
 
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -21,7 +21,7 @@ public class HBTrkgCrossData extends ATrkgCrossData {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public String bankName() {
 		return "HitBasedTrkg::HBCrosses";

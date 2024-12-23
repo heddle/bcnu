@@ -20,7 +20,6 @@ import cnuphys.ced.alldata.datacontainer.dc.TBTrkgAIHitData;
 import cnuphys.ced.alldata.datacontainer.dc.TBTrkgClusterData;
 import cnuphys.ced.alldata.datacontainer.dc.TBTrkgHitData;
 import cnuphys.ced.frame.CedColors;
-import cnuphys.snr.WireList;
 
 public class ClusterDrawer {
 
@@ -38,8 +37,8 @@ public class ClusterDrawer {
 	private TBTrkgClusterData _tbClusterData = TBTrkgClusterData.getInstance();
 	private HBTrkgAIClusterData _hbAIClusterData = HBTrkgAIClusterData.getInstance();
 	private TBTrkgAIClusterData _tbAIClusterData = TBTrkgAIClusterData.getInstance();
-	
-	
+
+
 	/**
 	 * A cluster drawer for the all dc view
 	 * @param view the all dc parent view
@@ -84,7 +83,7 @@ public class ClusterDrawer {
 		if ((clusters == null) || (reconHits == null)) {
 			return;
 		}
-		
+
 		for (int i = 0; i < clusters.count(); i++) {
 			short hitIds[] = clusters.getHitIds(i);
 			if (hitIds != null) {
@@ -97,13 +96,13 @@ public class ClusterDrawer {
 						break;
 					}
 				}
-				
+
 				if (length > 0) {
 					int sector = clusters.sector[i]; // 1..6
 					int superlayer = clusters.superlayer[i]; // 1..6
 					int layer[] = new int[length]; // 1..6
 					int wire[] = new int[length]; // 1..112
-					
+
 					int j = 0;
 					for (short element : hitIds) {
 						if (element > 0) {
@@ -119,11 +118,11 @@ public class ClusterDrawer {
 
 					drawSingleClusterOfWires(g, container, sector, superlayer, layer, wire, color);
 				}
-				
+
 			}
 		}
-		
-	
+
+
 	}
 
 	/**

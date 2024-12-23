@@ -1,15 +1,12 @@
 package cnuphys.advisors.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
 import cnuphys.advisors.Student;
-import cnuphys.advisors.enums.Department;
 import cnuphys.advisors.model.DataManager;
 import cnuphys.advisors.table.InputOutput;
 import cnuphys.bCNU.util.CSVWriter;
@@ -30,21 +27,21 @@ public class OutputManager {
 		writeAssignmentsFile();
 		writeIndividualFiles();
 	}
-	
+
 	private static void writeIndividualFiles() {
 		List<Advisor> advisors = DataManager.getAdvisorData().getAdvisors();
 		for (Advisor advisor : advisors) {
 			writeAdvisorFile(advisor);
 		}
 	}
-	
+
 	private static void writeAdvisorFile(Advisor advisor) {
 		File af = new File(_outputDir, removeNonLetters(advisor.name) + ".csv");
 		af.delete();
 
 		CSVWriter csvw = new CSVWriter(af.getAbsolutePath());
 		writeHeader(csvw);
-		
+
 		Comparator<Student> scomp = new Comparator<>() {
 
 			@Override
@@ -57,7 +54,7 @@ public class OutputManager {
 
 
 		List<Student> students = advisor.advisees;
-		
+
 		Collections.sort(students, scomp);
 
 		String sArr[] = new String[23];
@@ -66,7 +63,7 @@ public class OutputManager {
 		}
 		csvw.close();
 	}
-	
+
 	   public static String removeNonLetters(String input) {
 	        // Use a regular expression to replace all non-letter characters and whitespace with an empty string
 	        String cleanedString = input.replaceAll("[^a-zA-Z]", "");
@@ -116,7 +113,7 @@ public class OutputManager {
 				writeAssignment(csvw, advisor, student, sArr);
 			}
 		}
-		
+
 		csvw.close();
 	}
 
@@ -159,7 +156,7 @@ public class OutputManager {
 				"SPORT", // 4
 				"ALC", // 5
 				"PLP", // 6
-				"HONR", // 
+				"HONR", //
 				"PRSC", // 8
 				"PSP", // 9
 				"WIND", // 10

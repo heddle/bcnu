@@ -29,7 +29,7 @@ public class MessageDialog extends SimpleDialog {
 
 		String message = (String)userObject1;
 		Font font = (Font)userObject2;
-		
+
 		JPanel panel = new JPanel() {
 			@Override
 			public Insets getInsets() {
@@ -38,7 +38,7 @@ public class MessageDialog extends SimpleDialog {
 			}
 
 		};
-		
+
 		panel.add(new SizedText(message, font, WIDTH));
 		return panel;
 	}

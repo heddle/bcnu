@@ -1,11 +1,11 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class TBTrkgHitData extends ATrkgHitData {
-	
+
 	// singleton
 	private static volatile TBTrkgHitData _instance;
-	
-	
+
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -29,7 +29,7 @@ public class TBTrkgHitData extends ATrkgHitData {
 
 	@Override
 	public String feedbackName() {
-        return "TBHit";	
+        return "TBHit";
 	}
 
 }

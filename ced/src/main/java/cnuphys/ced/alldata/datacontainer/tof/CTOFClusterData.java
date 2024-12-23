@@ -50,7 +50,7 @@ public class CTOFClusterData extends ACommonClusterData {
 			ppy = new int[n];
 		}
 	}
-	
+
 	@Override
 	public int count() {
         return (energy == null) ? 0 : energy.length;

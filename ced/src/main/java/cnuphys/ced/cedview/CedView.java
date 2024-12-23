@@ -63,10 +63,10 @@ import cnuphys.swim.Swimming;
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
 		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
 
-	//the data warehouse
+	// the data warehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
-	//for bank matching property
+	// for bank matching property
 	public static final String BANKMATCHPROP = "BANKMATCH";
 
 	// are we showing single events or are we showing accumulated data
@@ -114,9 +114,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	/**
 	 * A string that has xyz with small spaces
 	 */
-	public static final String xyz = "x" + UnicodeSupport.THINSPACE + "y"
-			+ UnicodeSupport.THINSPACE + "z";
-
+	public static final String xyz = "x" + UnicodeSupport.THINSPACE + "y" + UnicodeSupport.THINSPACE + "z";
 
 	/**
 	 * A string that has rho-phi using unicode greek characters for hex views
@@ -154,9 +152,9 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	// the clasIO event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-	//for no matches
+	// for no matches
 	public static final String NOMATCHES = "NOMATCHES";
-	protected static final String[] _noMatches = {NOMATCHES};
+	protected static final String[] _noMatches = { NOMATCHES };
 	protected String _matches[] = _noMatches;
 
 	/**
@@ -195,7 +193,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 		SelectedDataManager.addDataSelectedListener(this);
 
-
 		if (container != null) {
 			container.getFeedbackControl().addFeedbackProvider(this);
 
@@ -212,13 +209,11 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		MagneticFields.getInstance().addMagneticFieldChangeListener(this);
 
 		_userComponentDrawer = new UserComponentLundDrawer(this);
-		
-
 		if (getUserComponent() != null) {
 			getUserComponent().setUserDraw(_userComponentDrawer);
 		}
 
-		//use the ping to deal with hover
+		// use the ping to deal with hover
 		IPing pingListener = new IPing() {
 
 			@Override
@@ -262,6 +257,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	/**
 	 * Accessor for the control panel
+	 *
 	 * @return the control panel
 	 */
 	public ControlPanel getControlPanel() {
@@ -279,6 +275,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	/**
 	 * Append to the text area
+	 *
 	 * @param s the text to append
 	 */
 	public void appendToTextArea(String s) {
@@ -288,9 +285,9 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Get banks of interest for matching banks
-	 * panel on tabbed pane on control panel.
-	 * If null, all banks are of interest
+	 * Get banks of interest for matching banks panel on tabbed pane on control
+	 * panel. If null, all banks are of interest
+	 *
 	 * @return banks of interest for matching banks
 	 */
 	public String[] getBanksMatches() {
@@ -500,7 +497,8 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Convenience method to see it we show the AI dc hit-based reconstructed crosses.
+	 * Convenience method to see it we show the AI dc hit-based reconstructed
+	 * crosses.
 	 *
 	 * @return <code>true</code> if we are to show the AI dc hit-based reconstructed
 	 *         crosses.
@@ -513,10 +511,11 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Convenience method to see it we show the AI dc time-based reconstructed crosses.
+	 * Convenience method to see it we show the AI dc time-based reconstructed
+	 * crosses.
 	 *
-	 * @return <code>true</code> if we are to show the AI dc time-based reconstructed
-	 *         crosses.
+	 * @return <code>true</code> if we are to show the AI dc time-based
+	 *         reconstructed crosses.
 	 */
 	public boolean showAIDCTBCrosses() {
 		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
@@ -524,6 +523,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showAIDCTBCrosses();
 	}
+
 	/**
 	 * Get the color scale model if there is one.
 	 *
@@ -561,7 +561,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return _controlPanel.getDisplayArray().showTB();
 	}
 
-
 	/**
 	 * Convenience method global AI hit based display
 	 *
@@ -585,7 +584,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showAITB();
 	}
-
 
 	/**
 	 * Convenience method to see it we show the reconstructed clusters.
@@ -625,11 +623,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	}
 
-
 	/**
 	 * Convenience method to see if we show the sector change diamonds.
 	 *
-	 * @return <code>true</code> if we are to show  sector change diamonds
+	 * @return <code>true</code> if we are to show sector change diamonds
 	 */
 	public boolean showSectorChange() {
 		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
@@ -637,7 +634,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showSectorChange();
 	}
-
 
 	/**
 	 * Convenience method to see it we show the the reconstructed hits.
@@ -686,20 +682,22 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showRecKFTraj();
 	}
-	
+
+
 	/**
 	 * Convenience method to see if we show CVT pass 1 tracks.
-	 *
-	 * @return <code>true</code> if we are to show CVT pass 1 tracks.
+	 * 
+	 * @return<code>true</code>if we are to showCVT pass 1 tracks.
 	 */
+
 	public boolean showCVTP1Tracks() {
 		if ((_controlPanel == null) || (_controlPanel.getDisplayArray() == null)) {
 			return false;
 		}
 		return _controlPanel.getDisplayArray().showCVTP1Tracks();
 	}
-	
-	/**
+
+	/*
 	 * Convenience method to see if we show CVT pass 1 traj.
 	 *
 	 * @return <code>true</code> if we are to show CVT pass 1 traj.
@@ -722,7 +720,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showCVTRecTraj();
 	}
-
 
 	/**
 	 * Convenience method to see if we show the trkDoca column.
@@ -795,7 +792,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showTBDoca();
 	}
-
 
 	/**
 	 * Convenience method to see it we show the dc hit based reconstructed hits.
@@ -891,7 +887,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return _controlPanel.getDisplayArray().showDCTBClusters();
 	}
 
-
 	/**
 	 * Should we draw hit based segments
 	 *
@@ -915,7 +910,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		}
 		return _controlPanel.getDisplayArray().showDCTBSegments();
 	}
-
 
 	/**
 	 * Should we draw AI hit based segments
@@ -1043,7 +1037,6 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		refresh();
 	}
 
-
 	// we are hovering
 	protected void hovering(MouseEvent me) {
 
@@ -1141,8 +1134,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		// add some information about the current event
 		if (!haveEvent) {
 			feedbackStrings.add("$orange red$No event");
-		}
-		else {
+		} else {
 			int seqNum = ClasIoEventManager.getInstance().getSequentialEventNumber();
 			int trueNum = ClasIoEventManager.getInstance().getTrueEventNumber();
 			feedbackStrings.add(String.format("$orange red$Event Sequential %d  True %d", seqNum, trueNum));
@@ -1426,6 +1418,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	/**
 	 * Get the default value for the adc threshold
+	 *
 	 * @return the default value for the adc threshold
 	 */
 	public int getAdcThresholdDefault() {
@@ -1433,17 +1426,19 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * In the BankDataTable a row was selected. Notify listeners who may want to highlight
+	 * In the BankDataTable a row was selected. Notify listeners who may want to
+	 * highlight
+	 *
 	 * @param bankName the name of the bank
-	 * @param index the 1-based index into the bank
+	 * @param index    the 1-based index into the bank
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
 	}
 
-	//read properties common to all views
+	// read properties common to all views
 	private void readCommonProperties() {
-		//bank match
+		// bank match
 
 		String propName = getPropertyName() + "_" + BANKMATCHPROP;
 
@@ -1455,16 +1450,16 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	/**
 	 * Check if the bank matching arra is the no matchers array
+	 *
 	 * @return true if no matches
 	 */
 	public boolean hasNoBankMatches() {
-		return ((_matches != null) && (_matches.length == 1)
-				&& NOMATCHES.equals(_matches[0]));
+		return ((_matches != null) && (_matches.length == 1) && NOMATCHES.equals(_matches[0]));
 	}
 
-	//write properties common to all views
+	// write properties common to all views
 	public void writeCommonProperties() {
-		//bank match
+		// bank match
 		String propName = getPropertyName() + "_" + BANKMATCHPROP;
 		String cssStr = TextUtilities.stringArrayToString(_matches);
 
@@ -1478,13 +1473,14 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	}
 
 	/**
-	 * Specialty method that draws text at the end of a line from the origin. Good for
-	 * labeling sectors in XY views
-	 * @param g the context
+	 * Specialty method that draws text at the end of a line from the origin. Good
+	 * for labeling sectors in XY views
+	 *
+	 * @param g         the context
 	 * @param container the container
-	 * @param s the string
-	 * @param font the font
-	 * @param end the end point
+	 * @param s         the string
+	 * @param font      the font
+	 * @param end       the end point
 	 */
 	public static void drawTextAtLineEnd(Graphics g, IContainer container, String s, Font font, Point2D.Double end) {
 
@@ -1499,14 +1495,14 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		int fh = g.getFontMetrics().getHeight();
 		int sw = g.getFontMetrics().stringWidth(s);
 
-		int dx = (int)(fh*Math.cos(theta));
-		int dy = (int)(fh*Math.sin(theta));
+		int dx = (int) (fh * Math.cos(theta));
+		int dy = (int) (fh * Math.sin(theta));
 
-		pext.x = pend.x - dx - sw/2;
-		pext.y = pend.y - dy + fh/2;
+		pext.x = pend.x - dx - sw / 2;
+		pext.y = pend.y - dy + fh / 2;
 
 		g.setColor(Color.white);
-		g.drawString(s, pext.x-1, pext.y-1);
+		g.drawString(s, pext.x - 1, pext.y - 1);
 		g.setColor(Color.black);
 		g.drawString(s, pext.x, pext.y);
 

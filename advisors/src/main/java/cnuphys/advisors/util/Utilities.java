@@ -65,7 +65,7 @@ public class Utilities {
 
 		}
 
-		int expectedCount = (int)(n)/(max-min+1);
+		int expectedCount = (n)/(max-min+1);
 		System.out.println("num min = " + minCount + "   expected: " + expectedCount);
 		System.out.println("num max = " + maxCount + "   expected: " + expectedCount);
 	}

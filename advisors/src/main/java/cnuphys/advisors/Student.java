@@ -26,34 +26,34 @@ public class Student extends Person implements ITabled {
 
 	/** the assigned advisor */
 	public Advisor advisor;
-	
+
 	/** block from banner */
 	public String bannerBlock;
-	
+
 	/** the student's preferred first name */
 	public String prefFirst;
-	
+
 	/** the student's email */
 	public String email;
-	
+
 	/** the student's sport */
 	public String sport;
-	
+
 	/** part of student address */
 	public String prstr1;
-	
+
 	/** part of student address */
 	public String prstr2;
-	
+
 	/** part of student address */
 	public String prcity;
-	
+
 	/** part of student address */
 	public String prstate;
-	
+
 	/** part of student address */
 	public String przip;
-	
+
 	/** thereason for the assignment */
 	public EReason reason = EReason.NONE;
 
@@ -70,7 +70,7 @@ public class Student extends Person implements ITabled {
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
 		this.firstName = firstName.replace("\"", "").trim();
-		this.set(Person.ALC, checkString(alc, "ALC"));  
+		this.set(Person.ALC, checkString(alc, "ALC"));
 		this.set(Person.PLP, checkString(plp, "PLP"));
 		this.setHonors(checkString(honr, "HO"));
 		this.set(Person.PRESSCHOLAR, checkString(prsc, "PRS"));
@@ -78,7 +78,7 @@ public class Student extends Person implements ITabled {
 		this.set(Person.WIND, checkString(wind, "WIN"));
 		this.set(Person.CCPT, checkString(ccap, "CCAP"));
 		this.bannerBlock = bannerBlock;
-		
+
 		this.prefFirst = prefFirst;
 		this.email = email;
 		this.sport = sport;
@@ -87,7 +87,7 @@ public class Student extends Person implements ITabled {
 		this.prcity = prcity;
 		this.prstate = prstate;
 	    this.przip = przip;
-			
+
 
 
 		String majorstr = maj.replace("\"", "").trim();
@@ -278,27 +278,27 @@ public class Student extends Person implements ITabled {
 
 		return null;
 	}
-	
+
 	/**
 	 * Is the student in an ALC's learning community?
-	 * 
+	 *
 	 * @return true if the student is in an ALC
 	 */
 	public boolean inALC_LC(ALCCourse alc) {
-		
+
 		if (!alc()) {
 			return false;
 		}
-		
+
 		int alcNum = extractNumber(alc.lcNum);
 		if (alcNum <= 0) {
 			return false;
 		}
-		
+
 		int lcnum = extractNumber(bannerBlock);
 		return alcNum == lcnum;
 	}
-	
+
 	private int extractNumber(String input) {
 	        // Use a regular expression to replace all non-numeric characters with an empty string
 	        String numericString = input.replaceAll("[^0-9]", "");

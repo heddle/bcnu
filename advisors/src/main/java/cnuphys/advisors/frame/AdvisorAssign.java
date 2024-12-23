@@ -107,7 +107,7 @@ public class AdvisorAssign extends JFrame {
 
 		//add the check list
 		_checklist = CheckList.getInstance();
-		
+
 		JPanel panel = new JPanel() {
 			@Override
 			public Insets getInsets() {
@@ -117,11 +117,11 @@ public class AdvisorAssign extends JFrame {
 
 		};
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	
+
 		SizedText st = new SizedText(OptionsDialog.currentAlgorithm.description(), Fonts.defaultFont, _checklist.getPreferredSize().width);
 		panel.setBorder(new CommonBorder("Current Algorithm"));
 		panel.add(st);
-		
+
 
 		JPanel sp = new JPanel();
 		sp.setLayout(new BorderLayout(4, 4));
@@ -134,7 +134,7 @@ public class AdvisorAssign extends JFrame {
 
 
 		createInfoLabel();
-		
+
 		_bigText = new SizedText("Ready", Fonts.hugeFont, _checklist.getPreferredSize().width);
 		sp.add(_bigText, BorderLayout.SOUTH);
 
@@ -251,7 +251,7 @@ public class AdvisorAssign extends JFrame {
 	public static boolean useChemFamily() {
 		return _optionsDialog.useChemFamily();
 	}
-	
+
 	/**
 	 * Are we grouping engineering related majors?
 	 * @return true if we are grouping engineering related majors

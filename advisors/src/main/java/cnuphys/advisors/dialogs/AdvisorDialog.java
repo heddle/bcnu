@@ -16,7 +16,6 @@ import cnuphys.advisors.Student;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.Course;
-import cnuphys.advisors.model.DataManager;
 import cnuphys.bCNU.component.EnumComboBox;
 import cnuphys.bCNU.dialog.SimpleDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
@@ -47,7 +46,7 @@ public class AdvisorDialog extends SimpleDialog {
 
 	//choose preferred major (other than own)
 	private EnumComboBox _preferredMajorCombo;
-	
+
 	//choose specialty
 	private EnumComboBox _specialtyCombo;
 
@@ -181,7 +180,7 @@ public class AdvisorDialog extends SimpleDialog {
 		p.add(_preferredMajorCombo);
 		return p;
 	}
-	
+
 	//panel that holds the optional specialty
 	private JPanel specialty() {
 		JPanel p = new JPanel();

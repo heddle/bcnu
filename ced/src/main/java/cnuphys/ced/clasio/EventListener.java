@@ -5,10 +5,10 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.bCNU.threading.IEventListener;
 
 public class EventListener<Object> implements IEventListener<Object> {
-	
+
 	//the listener that gets called
 	private IClasIoEventListener listener;
-	
+
 	public EventListener(IClasIoEventListener listener) {
 		this.listener = listener;
 	}
@@ -25,7 +25,7 @@ public class EventListener<Object> implements IEventListener<Object> {
 			System.err.println("Unknown event type: " + data);
 		}
 	}
-	
+
 	public IClasIoEventListener getListener() {
 		return listener;
 	}

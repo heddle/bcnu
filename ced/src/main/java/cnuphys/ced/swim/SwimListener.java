@@ -11,7 +11,7 @@ import cnuphys.lund.TrajectoryRowData;
 import cnuphys.swim.Swimming;
 
 public class SwimListener implements IEventListener<Object> {
-	
+
 	private SwimData data;
 	public SwimListener(SwimData data) {
 		this.data = data;

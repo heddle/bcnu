@@ -41,7 +41,7 @@ public class SplashWindowCED extends JWindow {
 	private String _cedPics[] = { "images/cedSS1.png", "images/cedSS2.png", "images/cedSS3.png", "images/cedSS4.png",
 			"images/cedSS5.png", "images/cedSS6.png", "images/cedSS7.png", "images/cedSS8.png", "images/cedSS9.png",
 			"images/cedSS10.png", "images/cedSS11.png", "images/cedSS12.png", "images/cedSS13.png",
-			"images/cedSS14.png", "images/cedSS15.png", "images/cedSS16.png", "images/cedSS17.png", 
+			"images/cedSS14.png", "images/cedSS15.png", "images/cedSS16.png", "images/cedSS17.png",
 			"images/cedSS18.png"
 	};
 

@@ -36,10 +36,10 @@ public class DCGeometry {
 	 * the sense wire.
 	 */
 	private static DriftChamberWire wires[][][];
-	
+
 	//useful for projection onto sector 1 midplane
 	private static 	Plane3D	sector1Midplane = GeometryManager.constantPhiPlane(0);
-	
+
 
 	/**
 	 * Initialize the DC Geometry by loading all the wires
@@ -524,7 +524,7 @@ public class DCGeometry {
 		ext.x = p0.x + (p0.x - p1.x);
 		ext.y = p0.y + (p0.y - p1.y);
 	}
-	
+
 	/**
 	 * Get the position of the sense wire in sector 0
 	 *
@@ -537,18 +537,18 @@ public class DCGeometry {
 	 * @return the position of the sense wire
 	 */
 	public static Point2D.Double getCenter(int superlayer, int layer, int wire) {
-		
+
 		Line3D l3D = getWire(1, superlayer, layer, wire);
-		
+
 //get the intersection of the wire with the sector 1 midplane
 		Point3D p3 = l3D.midpoint();
 		sector1Midplane.intersection(l3D, p3);
-		
+
 		Point2D.Double centroid = new Point2D.Double(p3.x(), p3.z());
 		return centroid;
 
 	}
-	
+
 
 
 

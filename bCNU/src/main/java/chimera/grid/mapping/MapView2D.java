@@ -8,17 +8,17 @@ import chimera.grid.SphericalGrid;
 import cnuphys.bCNU.view.BaseView;
 
 public class MapView2D extends BaseView implements MouseMotionListener {
-	
+
 	//the map projection
 	protected IMapProjection _projection;
-	
+
 	public MapView2D(Object... properties) {
 		super(properties);
-		
+
 		getContainer().getComponent().addMouseMotionListener(this);
 
 	}
-	
+
 
 	/**
 	 * Get the map projection
@@ -36,7 +36,7 @@ public class MapView2D extends BaseView implements MouseMotionListener {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 	}
-	
+
 	/**
      * Get the default world system
      * @param eprojection the map projection

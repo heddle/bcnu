@@ -302,7 +302,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 			}
 		}
 		gl.glPopMatrix();
-		
+
 		gl.glDepthMask(true);
 		gl.glDisable(GL.GL_BLEND);
 		gl.glLoadIdentity();
@@ -675,7 +675,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	        0, 0, 0, 1
 	    };
 	}
-	
+
 	/**
 
 	 * Print the panel. No default implementation.

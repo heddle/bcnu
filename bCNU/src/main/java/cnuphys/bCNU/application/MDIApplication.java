@@ -1,15 +1,29 @@
 package cnuphys.bCNU.application;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import javax.swing.DefaultDesktopManager;
+import javax.swing.JComponent;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
 
 public class MDIApplication {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             JFrame mainFrame = new JFrame("MDI Application with Reliable Dragging");
-            mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
             mainFrame.setSize(800, 600);
 
             // Create a JDesktopPane with a custom DesktopManager
@@ -17,7 +31,7 @@ public class MDIApplication {
             desktopPane.setDragMode(JDesktopPane.OUTLINE_DRAG_MODE); // faster
             RobustDesktopManager manager = new RobustDesktopManager(desktopPane);
             desktopPane.setDesktopManager(manager);
-            
+
 
             // Add several JInternalFrames to the JDesktopPane
             for (int i = 1; i <= 3; i++) {

@@ -69,14 +69,14 @@ public class SuperLayerDrawing {
 	// dirction,
 	// as a unit vector, of any of the wires
 	private double[] _direction;
-	
+
 	// data containers
 	private DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 	private HBTrkgSegmentData _hbTrkgSegmentData = HBTrkgSegmentData.getInstance();
 	private TBTrkgSegmentData _tbTrkgSegmentData = TBTrkgSegmentData.getInstance();
 	private HBTrkgAISegmentData _hbTrkgAISegmentData = HBTrkgAISegmentData.getInstance();
 	private TBTrkgAISegmentData _tbTrkgAISegmentData = TBTrkgAISegmentData.getInstance();
-	
+
 
 
 	/**
@@ -322,9 +322,9 @@ public class SuperLayerDrawing {
 	private void drawSingleModeHits(Graphics g, IContainer container, boolean reallyClose, boolean segmentsOnly) {
 
 		if (!segmentsOnly) {
-			
+
 			Point pp = new Point();
-			
+
 			boolean useOrderColoring = Ced.useOrderColoring;
 
 			for (int i = 0; i < _dcData.count(); i++) {
@@ -335,8 +335,8 @@ public class SuperLayerDrawing {
 					drawOneWire(g, container, _dcData.layer6[i], _dcData.component[i], reallyClose, pp);
 				}
 			}
-			
-			
+
+
 		}
 
 		// draw track based hits (docas) and segments
@@ -478,11 +478,11 @@ public class SuperLayerDrawing {
 
 		int layer = hits.layer[index];
 		int wire = hits.wire[index];
-		
+
 		Point pp = new Point();
-		
+
 		drawSingleDCHit(g, container, fillColor, frameColor, layer, wire, pp);
-		
+
 		hits.setLocation(index, pp);
 
 		if (WorldGraphicsUtilities
@@ -784,7 +784,7 @@ public class SuperLayerDrawing {
 	public Point3D projectedPoint(double x, double y, double z, Point2D.Double wp) {
 		return _view.projectedPoint(x, y, z, _iSupl.projectionPlane(), wp);
 	}
-	
+
 	private void drawSegments(Graphics g, IContainer container, ATrkgSegmentData segments, Color lc, Color fc) {
 		int count = segments.count();
         if (count > 0) {
@@ -971,7 +971,7 @@ public class SuperLayerDrawing {
 			}
 
 			if ((layer > 0) && (wire > 0)) {
-				
+
 				boolean hit = false;
 				for (int i = 0; i < _dcData.count(); i++) {
 					if ((_dcData.sector[i] == _iSupl.sector()) && (_dcData.superlayer[i] == _iSupl.superlayer())
@@ -980,7 +980,7 @@ public class SuperLayerDrawing {
 						_dcData.tdcFeedback(i, _view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);						break;
 					}
 				}
-				
+
 				if (!hit) {
 					feedbackStrings.add("superlayer " + _iSupl.superlayer() + "  layer " + layer + "  wire " + wire);
 				}

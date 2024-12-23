@@ -240,14 +240,14 @@ public class MagFieldItem extends AItem implements MagneticFieldChangeListener {
 		} else if (hasSolenoid) {
 			rCoordinate = MagneticFields.getInstance().getSolenoid().getRCoordinate();
 		}
-		
+
 		if (rCoordinate == null) {
 			return new Rectangle();
 		}
 
 		fieldBoundary.x = zmin;
 		fieldBoundary.width = (zmax - zmin);
-		
+
 
 		fieldBoundary.y = -rCoordinate.getMax();
 		fieldBoundary.height = 2 * rCoordinate.getMax();

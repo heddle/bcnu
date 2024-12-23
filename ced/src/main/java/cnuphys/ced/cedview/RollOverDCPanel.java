@@ -1,22 +1,17 @@
 package cnuphys.ced.cedview;
 
 import java.awt.Color;
-import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D.Double;
 
 import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 
 import cnuphys.bCNU.component.IRollOverListener;
 import cnuphys.bCNU.component.RollOverPanel;
-import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.util.Fonts;
 
 public class RollOverDCPanel extends RollOverPanel implements IRollOverListener {
 
-	
+
 	//rollover colors
 	protected static final Color inactiveFG = Color.cyan;
 	protected static final Color inactiveBG = Color.black;
@@ -40,7 +35,7 @@ public class RollOverDCPanel extends RollOverPanel implements IRollOverListener 
 	public boolean roShowTBDCClusters;
 	public boolean roShowAIHBDCClusters;
 	public boolean roShowAITBDCClusters;
-	
+
 	//the parent view
 	protected CedView view;
 
@@ -56,10 +51,10 @@ public class RollOverDCPanel extends RollOverPanel implements IRollOverListener 
 		this.view = view;
 		addRollOverListener(this);
 	}
-	
-	
+
+
     //handle rollover events
-	
+
 
 	@Override
 	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
@@ -110,6 +105,6 @@ public class RollOverDCPanel extends RollOverPanel implements IRollOverListener 
 
 		view.refresh();
 	}
-	
+
 
 }

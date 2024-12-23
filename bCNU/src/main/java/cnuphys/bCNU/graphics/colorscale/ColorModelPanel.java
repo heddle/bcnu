@@ -60,7 +60,7 @@ public class ColorModelPanel extends JPanel implements ActionListener {
 		_view = view;
 		_model = model;
 
-		setLayout(new BorderLayout(4, 4));
+		setLayout(new BorderLayout(4, 2));
 
 		_legend = new ColorModelLegend(_model, desiredWidth, null, gap);
 		_legend.setBorder(null);

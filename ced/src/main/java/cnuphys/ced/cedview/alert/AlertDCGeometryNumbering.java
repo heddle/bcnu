@@ -3,7 +3,7 @@ package cnuphys.ced.cedview.alert;
 import cnuphys.ced.geometry.alert.DCLayer;
 
 public class AlertDCGeometryNumbering  {
-	
+
 	public int sector;  //0-based
 	public int superlayer; //0-based
 	public int layer; //0-based
@@ -25,7 +25,7 @@ public class AlertDCGeometryNumbering  {
 	 */
 	public void fromDataNumbering(int sect, int compLayer, int comp, int order) {
 
-		//convert to 0-based sector, superlayer, layer component for the 
+		//convert to 0-based sector, superlayer, layer component for the
 		// geometry database numbering
 		sector = sect-1;
 
@@ -36,7 +36,7 @@ public class AlertDCGeometryNumbering  {
 		layer = lay1 - 1;
 		component = comp - 1;
 	}
-	
+
 	/**
      * Match a DC layer
      * @param dcl the DC layer

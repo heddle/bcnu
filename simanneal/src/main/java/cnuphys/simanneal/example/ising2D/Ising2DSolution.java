@@ -28,7 +28,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Create a solution
-	 * 
+	 *
 	 * @param simulation the parent simulation
 	 */
 	public Ising2DSolution(Ising2DSimulation simulation) {
@@ -38,7 +38,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Copy constructor
-	 * 
+	 *
 	 * @param solution
 	 */
 	public Ising2DSolution(Ising2DSolution solution) {
@@ -57,7 +57,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Get the spin (-1 or +1) at the given row and column (0-based)
-	 * 
+	 *
 	 * @param row the row index
 	 * @param col the column index
 	 * @return the spin (-1 or +1).
@@ -157,7 +157,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Get the y value for the plot.
-	 * 
+	 *
 	 * @return the y value for the plot
 	 */
 	@Override
@@ -169,7 +169,7 @@ public class Ising2DSolution extends Solution {
 	@Override
 	public Solution getRearrangement() {
 		Ising2DSolution neighbor = (Ising2DSolution) copy();
-		
+
 		int ranRow = _rand.nextInt(_numRow);
 		int ranCol = _rand.nextInt(_numColumn);
 		neighbor.flipSpin(ranRow, ranCol);
@@ -193,7 +193,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Get the row count
-	 * 
+	 *
 	 * @return the number of rows
 	 */
 	public int getNumRows() {
@@ -202,7 +202,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Get the column count
-	 * 
+	 *
 	 * @return the number of column
 	 */
 	public int getNumColumns() {
@@ -211,7 +211,7 @@ public class Ising2DSolution extends Solution {
 
 	/**
 	 * Get the number of cities from the attributes
-	 * 
+	 *
 	 * @return the number of cities
 	 */
 	private int getDimFromAttributes(String attName) {

@@ -7,12 +7,12 @@ import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Specialty {
 	NONE, CCPT, PREMEDSCHOLAR, PLP;
-	
+
 	/**
 	 * A map for the nice names of the specialties
 	 */
 	public static EnumMap<Specialty, String> names = new EnumMap<>(Specialty.class);
-	
+
 	static {
 		names.put(PLP, "PLP (Pres. Leadership Program)");
 		names.put(CCPT, "CCPT (Commumity Captains)");
@@ -20,7 +20,7 @@ public enum Specialty {
 		names.put(NONE, "NONE");
 
 	}
-	
+
 	/**
 	 * A map for the bits for the specialties
 	 */
@@ -32,8 +32,8 @@ public enum Specialty {
 		bits.put(PREMEDSCHOLAR, Person.PREMEDSCHOLAR);
 		bits.put(NONE, 0);
 	}
-	
-	
+
+
 	/**
 	 * Obtain a combo box of choices.
 	 *
@@ -43,7 +43,7 @@ public enum Specialty {
 	public static EnumComboBox getComboBox(Specialty defaultChoice) {
 		return new EnumComboBox(names, defaultChoice);
 	}
-	
+
 	public int getBit() {
 		return bits.get(this);
 	}

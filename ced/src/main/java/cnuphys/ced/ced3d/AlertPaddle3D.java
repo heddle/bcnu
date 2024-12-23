@@ -98,7 +98,7 @@ public class AlertPaddle3D extends DetectorItem3D {
 
 						if ((adcGeom.sector == _sectorId) && (adcGeom.superlayer == _superlayerId)
 								&& (adcGeom.layer == _layerId) && ((adcGeom.component % 4) == _paddleId)) {
-							
+
 							Color color = Color.red;
 							Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
 							Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);

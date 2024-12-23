@@ -41,7 +41,7 @@ public class ColorModelLegend extends JComponent {
 		_gap = gap;
 
 		if (desiredWidth > 0) {
-			size = new Dimension(desiredWidth + 2 * gap, 50);
+			size = new Dimension(desiredWidth + 2 * gap, 40);
 		}
 		setLayout(new BorderLayout(2, 4));
 		_model = model;

@@ -64,7 +64,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	//data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
-	
+
 	// for naming clones
 	private static int CLONE_COUNT = 0;
 
@@ -298,18 +298,18 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			float y1 = _dataWarehouse.getFloat("BSTRec::Clusters", "y1")[idx];
 			float x2 = _dataWarehouse.getFloat("BSTRec::Clusters", "x2")[idx];
 			float y2 = _dataWarehouse.getFloat("BSTRec::Clusters", "y2")[idx];
-			
+
 			Point p1 = new Point();
 			Point p2 = new Point();
 
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
-			
+
 			if (Ced.getCed().isConnectCluster()) {
 				g.setColor(Color.black);
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 			}
-			
+
 			DataDrawSupport.drawClusterHighlight(g, p1);
 			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
@@ -326,12 +326,12 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 			container.worldToLocal(p1, 10 * x1, 10 * y1);
 			container.worldToLocal(p2, 10 * x2, 10 * y2);
-			
+
 			if (Ced.getCed().isConnectCluster()) {
 				g.setColor(Color.black);
 				g.drawLine(p1.x, p1.y, p2.x, p2.y);
 			}
-		
+
 			DataDrawSupport.drawClusterHighlight(g, p1);
 			DataDrawSupport.drawClusterHighlight(g, p2);
 		}
@@ -340,7 +340,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	// draw cosmic ray tracks
 	private void drawCosmicTracks(Graphics g, IContainer container) {
-		
+
 		int count = _cosmicData.count();
 		if (count > 0) {
 			Shape oldClip = clipView(g);
@@ -635,17 +635,17 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 				}
 
 			}
-			
-			
+
+
 			// BMT ADC?
 			for (int i = 0; i < _bmtADCData.count(); i++) {
 				if (_bmtADCData.contains(i, screenPoint)) {
 					_bmtADCData.adcFeedback("BMT", i, feedbackStrings);
 				}
 			}
-			
+
 		}
-		
+
 		if (showReconHits()) {
 			for (int i = 0; i < bstRecHitData.count(); i++) {
 				if (bstRecHitData.contains(i, screenPoint)) {
@@ -653,7 +653,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 					break;
 				}
 			}
-			
+
 			for (int i = 0; i < bmtRecHitData.count(); i++) {
 				if (bmtRecHitData.contains(i, screenPoint)) {
 					bmtRecHitData.hitFeedback(i, feedbackStrings);
@@ -662,7 +662,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			}
 		}
 
-		
+
 
 		// near a swum trajectory?
 		double mindist = _swimTrajectoryDrawer.closestApproach(worldPoint);
@@ -796,7 +796,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
 	 * the view)
-	 * 
+	 *
 	 * @param x  the CLAS12 x coordinate
 	 * @param y  the CLAS12 y coordinate
 	 * @param z  the CLAS12 z coordinate
@@ -810,7 +810,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	/**
 	 * In the BankDataTable a row was selected.
-	 * 
+	 *
 	 * @param bankName the name of the bank
 	 * @param index    the 0-based index into the bank
 	 */

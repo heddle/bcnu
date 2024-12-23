@@ -17,43 +17,43 @@ public abstract class ATrkgClusterData implements IDataContainer {
 
 	/** 1-based sectors */
 	public byte sector[];
-	
+
 	/** 1-based superlayers */
 	public byte superlayer[];
-	
+
 	/** 1-based id */
 	public short id[];
-	
+
 	/** cluster size */
 	public byte size[];
-	
+
 	/** cluster status */
 	public short status[];
-	
+
 	/** average wire */
 	public float avgWire[];
-	
+
 	/** fit chisq probability */
 	public float fitChisqProb[];
-	
+
 	/** fit intercept */
 	public float fitInterc[];
-	
+
 	/** fit intercept error */
 	public float fitIntercErr[];
-	
+
 	/** fit slope */
 	public float fitSlope[];
-	
+
 	/** fit slope error */
 	public float fitSlopeErr[];
-	
+
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
 
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
-	
+
 	private short Hit1_ID[];
 	private short Hit2_ID[];
 	private short Hit3_ID[];
@@ -66,7 +66,7 @@ public abstract class ATrkgClusterData implements IDataContainer {
 	private short Hit10_ID[];
 	private short Hit11_ID[];
 	private short Hit12_ID[];
-	
+
 	/**
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
@@ -83,7 +83,7 @@ public abstract class ATrkgClusterData implements IDataContainer {
 		if (bank == null) {
 			return;
 		}
-		
+
 		sector = bank.getByte("sector");
 		superlayer = bank.getByte("superlayer");
 		id = bank.getShort("id");
@@ -95,7 +95,7 @@ public abstract class ATrkgClusterData implements IDataContainer {
 		fitIntercErr = bank.getFloat("fitIntercErr");
 		fitSlope = bank.getFloat("fitSlope");
 		fitSlopeErr = bank.getFloat("fitSlopeErr");
-		
+
 		Hit1_ID = bank.getShort("Hit1_ID");
 		Hit2_ID = bank.getShort("Hit2_ID");
 		Hit3_ID = bank.getShort("Hit3_ID");
@@ -108,14 +108,14 @@ public abstract class ATrkgClusterData implements IDataContainer {
 		Hit10_ID = bank.getShort("Hit10_ID");
 		Hit11_ID = bank.getShort("Hit11_ID");
 		Hit12_ID = bank.getShort("Hit12_ID");
-		
+
 		int n = (sector != null) ? sector.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
  	}
-	
+
 	public short[] getHitIds(int index) {
 		short[] hitIds = new short[12];
 		hitIds[0] = (Hit1_ID != null) ? Hit1_ID[index] : -1;
@@ -132,7 +132,7 @@ public abstract class ATrkgClusterData implements IDataContainer {
 		hitIds[11] = (Hit12_ID != null) ? Hit12_ID[index] : -1;
 		return hitIds;
 	}
-	
+
 	@Override
 	public void clear() {
 		sector = null;
@@ -189,10 +189,10 @@ public abstract class ATrkgClusterData implements IDataContainer {
 	public int count() {
 		return (sector == null) ? 0 : sector.length;
 	}
-	
+
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
@@ -227,7 +227,7 @@ public abstract class ATrkgClusterData implements IDataContainer {
 	}
 
 
-	
+
 	/**
 	 * Get the name of the trkg cross bank
 	 * @return the name of the bank

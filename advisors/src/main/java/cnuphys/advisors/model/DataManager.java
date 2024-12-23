@@ -37,7 +37,7 @@ public class DataManager {
 
 	//Learning Communities
 //	private static LearningCommunityData _learningCommunityData;
-	
+
 	//ALCs
 	private static ALCData _alcData;
 
@@ -140,10 +140,10 @@ public class DataManager {
 
 		return fixedId;
 	}
-	
+
 	/**
 	 * Get the data for all ALCs
-	 * 
+	 *
 	 * @return the ALC data
 	 */
 	public static ALCData getALCData() {
@@ -184,7 +184,7 @@ public class DataManager {
 
 		return advisors;
 	}
-	
+
 	/**
 	 * Get a list of advisors whose subject matches a major and are not alc advisors
 	 * @param major the major to match
@@ -282,7 +282,7 @@ public class DataManager {
 
 		return advisors;
 	}
-	
+
 	/**
 	 * Get a list of honors advisors whose subject matches a specialty
 	 *
@@ -413,7 +413,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned honors students
 	 *
@@ -430,7 +430,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned psp students
 	 *
@@ -468,7 +468,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned honors students with a given specialty
 	 *
@@ -488,7 +488,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned students with a given specialty
 	 *

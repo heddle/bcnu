@@ -459,7 +459,7 @@ public class ColorScaleModel {
 		colors[(len - 1) * n] = new Color(r[len - 1], g[len - 1], b[len - 1]);
 		return colors;
 	}
-	
+
 	/**
 	 * Get a scale such as you might find on a weather map.
 	 *
@@ -467,7 +467,7 @@ public class ColorScaleModel {
 	 * @return a set of colors for a weather map
 	 */
 	public static Color[] xgetSimpleMapColors(int n) {
-		
+
 		int[] r = {0, 0, 0, 0, 0, 0, 0, 42, 85, 128, 170, 212, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255};
 		int[] g = {128, 170, 212, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 236, 218, 200, 176, 152, 128, 85, 42, 0};
 		int[] b = {255, 255, 255, 255, 170, 85, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -494,7 +494,7 @@ public class ColorScaleModel {
 		colors[(len - 1) * n] = new Color(r[len - 1], g[len - 1], b[len - 1]);
 		return colors;
 	}
-	
+
 	/**
 	 * Get a scale such as you might find on a weather map.
 	 *
@@ -502,7 +502,7 @@ public class ColorScaleModel {
 	 * @return a set of colors for a weather map
 	 */
 	public static Color[] getSimpleMapColors(int n) {
-		
+
 		int[] r = {0, 0, 0, 0, 0, 0, 0, 42, 85, 128, 170, 200, 225, 250, 255, 255, 255, 255, 255, 255, 255, 255};
 		int[] g = {96, 133, 160, 187, 214, 241, 255, 255, 255, 255, 255, 255, 255, 236, 218, 200, 176, 152, 128, 85, 42, 0};
 		int[] b = {255, 255, 255, 255, 210, 170, 130, 90, 50, 30, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};

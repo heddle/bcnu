@@ -4,7 +4,7 @@ import cnuphys.advisors.Advisor;
 import cnuphys.advisors.io.ITabled;
 
 public class ALCCourse implements ITabled {
-	
+
 	/** learning community number */
 	public String lcNum;
 
@@ -26,13 +26,13 @@ public class ALCCourse implements ITabled {
 
 	public ALCCourse(String lcNum, String learningCommunity, String crn, String subject, String course) {
 		super();
-		
+
 		this.lcNum = lcNum.replace("\"", "");
 		this.learningCommunity = learningCommunity.replace("\"", "").trim();
 		this.crn = crn.replace("\"", "").trim();
 		this.subject = subject.replace("\"", "").trim();
 		this.course = course.replace("\"", "").trim();
-		
+
 		instructor = DataManager.getSchedule().getAdvisorFromCRN(crn);
 	}
 
@@ -63,7 +63,7 @@ public class ALCCourse implements ITabled {
 
 		return null;
 	}
-	
+
 	/**
 	 * get an info string
 	 * @return full name (last, first) and department is a single string

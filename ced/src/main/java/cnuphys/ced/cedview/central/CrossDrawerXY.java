@@ -29,7 +29,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 	/**
 	 * Create a central cross drawer
-	 * 
+	 *
 	 * @param view the CedView
 	 */
 	public CrossDrawerXY(CentralXYView view) {
@@ -164,7 +164,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 		// bst crosses?
 		if (_view.showCrosses()) {
-			
+
 			for (int i = 0; i < bstCrossData.count(); i++) {
 				if (bstCrossData.contains(i, screenPoint)) {
 					bstCrossData.feedback("BSTCross", i, feedbackStrings);
@@ -176,7 +176,7 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 
 		// bmt crosses?
 		if (_view.showCrosses()) {
-			
+
 			for (int i = 0; i < bmtCrossData.count(); i++) {
 				if (bmtCrossData.contains(i, screenPoint)) {
 					bmtCrossData.feedback("BMTCross", i, feedbackStrings);

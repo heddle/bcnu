@@ -83,8 +83,8 @@ public class ColorMenu extends JMenu implements ActionListener {
 		else if (source == _orderColorsItem) {
 			handleOrderColors();
 		}
-		
-		
+
+
 
 	}
 

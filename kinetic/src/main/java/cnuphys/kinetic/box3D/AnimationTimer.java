@@ -1,9 +1,10 @@
 package cnuphys.kinetic.box3D;
 
-import javax.swing.Timer;
-import javax.swing.JComponent;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JComponent;
+import javax.swing.Timer;
 
 public class AnimationTimer extends Timer {
     private JComponent component;
@@ -56,7 +57,8 @@ public class AnimationTimer extends Timer {
      *
      * @return the initial delay in milliseconds.
      */
-    public int getInitialDelay() {
+    @Override
+	public int getInitialDelay() {
         return initialDelay;
     }
 }

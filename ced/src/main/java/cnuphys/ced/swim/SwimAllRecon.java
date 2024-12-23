@@ -1,6 +1,5 @@
 package cnuphys.ced.swim;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;

@@ -54,7 +54,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	// common colorscale
 	public static ColorScaleModel colorScaleModel = new ColorScaleModel(getAccumulationValues(),
 			ColorScaleModel.getSimpleMapColors(8));
-	
+
 	//data warehouse used for some accumulations
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -89,23 +89,23 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// CTOF accumulated data
 	private int _CTOFAccumulatedData[];
-	
+
 	//ALERT DC accumulated data (superlayer 0) sector[0..0] lay [0..1] wire [0..99]
 	private int _AlertDCSL0AccumulatedData[][][];
-	
+
 	//ALERT DC accumulated data (superlayer 1) sector[0..0] lay [0..1] wire [0..99]
 	private int _AlertDCSL1AccumulatedData[][][];
-	
+
 	//ALERT DC accumulated data (superlayer 2) sector[0..0] lay [0..1] wire [0..99]
 	private int _AlertDCSL2AccumulatedData[][][];
-	
+
 	//ALERT DC accumulated data (superlayer 3) sector[0..0] lay [0..1] wire [0..99]
 	private int _AlertDCSL3AccumulatedData[][][];
-	
+
 	//ALERT DC accumulated data (superlayer 4) sector[0..0] lay [0..1] wire [0..99]
 	private int _AlertDCSL4AccumulatedData[][][];
-	
-	
+
+
 	//ALERT TOF accumulated data (superlayer 0) sector [0..14] lay [0..0] paddle [0..4]
 	private int _AlertTOFSL0AccumulatedData[][][];
 
@@ -158,7 +158,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		addAccumulationListener(this);
 		_eventManager.addClasIoEventListener(this, 1);
 
-		
+
 		// FTCAL data
 		_FTCALAccumulatedData = new int[476];
 
@@ -218,18 +218,18 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	public void clear() {
 		_eventCount = 0;
 
-		// clear alert dc 
+		// clear alert dc
 		clear(_AlertDCSL0AccumulatedData);
 		clear(_AlertDCSL1AccumulatedData);
 		clear(_AlertDCSL2AccumulatedData);
 		clear(_AlertDCSL3AccumulatedData);
 		clear(_AlertDCSL4AccumulatedData);
-		
-		
+
+
 		// clear alert tof data
 		clear(_AlertTOFSL0AccumulatedData);
 		clear(_AlertTOFSL1AccumulatedData);
-		
+
 
 
 		// clear ftcal
@@ -334,7 +334,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 		notifyListeners(ACCUMULATION_CLEAR);
 	}
-	
+
 	//clar an array
 	private void clear(int[][][] data) {
 		if (data != null) {
@@ -361,8 +361,8 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	}
 
 	/**
-	 * Get the ALERT DC accumulated data 
-	 * 
+	 * Get the ALERT DC accumulated data
+	 *
 	 * @param superlayer the superlayer 0..4
 	 * @return the accumulated alert dc data for superlayer 0
 	 */
@@ -390,16 +390,16 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	public int[][][] getAccumulatedAlertTOFSL0Data() {
 		return _AlertTOFSL0AccumulatedData;
 	}
-	
+
 	/**
 	 * Get the ALERT TOF accumulated data for superlayer 1
-	 * 
+	 *
 	 * @return the accumulated alert dc data
 	 */
 	public int[][][] getAccumulatedAlertTOFSL1Data() {
 		return _AlertTOFSL1AccumulatedData;
 	}
-	
+
 	/**
 	 * Get the accumulated CTOF data
 	 *
@@ -483,7 +483,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	public int[][][][] getAccumulatedDCData() {
 		return _DCAccumulatedData;
 	}
-	
+
 	/**
 	 * Get the max counts in the Alert DC superlayer 0 data
 	 *
@@ -514,7 +514,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	public int getMaxAlertTOFSL0Count() {
 		return getMax(_AlertTOFSL0AccumulatedData);
 	}
-	
+
 	/**
 	 * Get the max counts in the Alert TOF superlayer 1 data
 	 *
@@ -763,10 +763,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 
 		_eventCount++;
-		
+
 		// Alert DC data
 		accumAlertDC();
-			
+
 		// Alert TOF data
 		accumAlertSL0TOF();
 		accumAlertSL1TOF();
@@ -862,7 +862,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 
 	}
-	
+
 	/**
 	 * Accumulate data for the Alert TOF superlayer 0. Note: this uses the new accumulation
 	 * strategy using the data warehouse.
@@ -898,7 +898,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			}
 		}
 	}
-	
+
 	/**
 	 * Accumulate data for the Alert TOF superlayer 1. Note: this uses the new
 	 * accumulation strategy using the data warehouse.
@@ -937,7 +937,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate bst
 	private void accumBST() {
-		
+
 		for (int i = 0; i < bstADCData.count(); i++) {
 			BSTxyPanel panel = CentralXYView.getPanel(bstADCData.layer[i], bstADCData.sector[i]);
 			if (panel != null) {
@@ -959,7 +959,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 			}
 		}
-		
+
 	}
 
 	// accumulate ftcal
@@ -1066,7 +1066,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 	// accumulate dc data
 	private void accumDC() {
-		
+
 		for (int i = 0; i < dcTDCData.count(); i++) {
              _DCAccumulatedData[dcTDCData.sector[i] - 1][dcTDCData.superlayer[i] - 1][dcTDCData.layer6[i] - 1][dcTDCData.component[i] - 1] += 1;
  		}

@@ -2,7 +2,7 @@ package cnuphys.ced.alldata.datacontainer.dc;
 
 public class TBTrkgAICrossData extends ATrkgCrossData {
 
-	
+
 	// singleton
 	private static volatile TBTrkgAICrossData _instance;
 
@@ -27,7 +27,7 @@ public class TBTrkgAICrossData extends ATrkgCrossData {
 	public String bankName() {
 		return "TimeBasedTrkg::AICrosses";
 	}
-	
+
 
 	@Override
 	public String feedbackName() {

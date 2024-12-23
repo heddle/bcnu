@@ -24,7 +24,7 @@ import cnuphys.ced.alldata.datacontainer.dc.TBTrkgHitData;
 import cnuphys.ced.frame.CedColors;
 
 public class DCHexClusterDrawer {
-	
+
 	//the parent view
 	private DCHexView _view;
 
@@ -39,8 +39,8 @@ public class DCHexClusterDrawer {
 	private TBTrkgClusterData _tbClusterData = TBTrkgClusterData.getInstance();
 	private HBTrkgAIClusterData _hbAIClusterData = HBTrkgAIClusterData.getInstance();
 	private TBTrkgAIClusterData _tbAIClusterData = TBTrkgAIClusterData.getInstance();
-	
-	
+
+
 
 	/**
 	 * A cluster drawer for the all dc view
@@ -87,7 +87,7 @@ public class DCHexClusterDrawer {
 		if ((clusters == null) || (reconHits == null)) {
 			return;
 		}
-		
+
 		for (int i = 0; i < clusters.count(); i++) {
 			short hitIds[] = clusters.getHitIds(i);
 			if (hitIds != null) {
@@ -100,13 +100,13 @@ public class DCHexClusterDrawer {
 						break;
 					}
 				}
-				
+
 				if (length > 0) {
 					int sector = clusters.sector[i]; // 1..6
 					int superlayer = clusters.superlayer[i]; // 1..6
 					int layer[] = new int[length]; // 1..6
 					int wire[] = new int[length]; // 1..112
-					
+
 					int j = 0;
 					for (short element : hitIds) {
 						if (element > 0) {
@@ -122,11 +122,11 @@ public class DCHexClusterDrawer {
 
 					drawSingleClusterOfWires(g, container, sector, superlayer, layer, wire, color);
 				}
-				
+
 			}
 		}
-		
-	
+
+
 	}
 
 	/**
@@ -149,7 +149,7 @@ public class DCHexClusterDrawer {
 
 
 		Area area = new Area();
-		
+
 		Point2D.Double[] wirePoly = new Point2D.Double[4];
 		for (int i = 0; i < 4; i++) {
 			wirePoly[i] = new Point2D.Double();
@@ -157,12 +157,12 @@ public class DCHexClusterDrawer {
 		Point pp = new Point();
 
 		for (int i = 0; i < wire.length; i++) {
-			
+
 			if ((wire[i] <= 0) || (layer[i] <= 0)) {
 				continue;
 			}
 			_view.getWirePolygon(sector, superlayer, layer[i], wire[i], wirePoly);
-			
+
 			Polygon poly = new Polygon();
 			for (int j = 0; j < 4; j++) {
 				container.worldToLocal(pp, wirePoly[j]);

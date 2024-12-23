@@ -109,7 +109,7 @@ public class AdvisorData extends DataModel {
 			String dept = s[deptIndex];
 			String email = s[emailIndex];
             String special = s[specialIndex];
-            
+
 			_tableData.add(new Advisor(name, id, dept, email, special));
 		}
 

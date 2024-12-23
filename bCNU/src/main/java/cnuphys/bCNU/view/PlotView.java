@@ -30,15 +30,15 @@ public class PlotView extends BaseView {
 	}
 
 	public PlotView(String title) {
-		super(PropertySupport.TITLE, title, 
-				PropertySupport.ICONIFIABLE, true, 
+		super(PropertySupport.TITLE, title,
+				PropertySupport.ICONIFIABLE, true,
 				PropertySupport.MAXIMIZABLE, true,
-				PropertySupport.CLOSABLE, true, 
-				PropertySupport.RESIZABLE, true, 
+				PropertySupport.CLOSABLE, true,
+				PropertySupport.RESIZABLE, true,
 				PropertySupport.WIDTH, 700,
-				PropertySupport.TOOLBAR, false, 
-				PropertySupport.PROPNAME, "PLOTVIEW", 
-				PropertySupport.HEIGHT, 700, 
+				PropertySupport.TOOLBAR, false,
+				PropertySupport.PROPNAME, "PLOTVIEW",
+				PropertySupport.HEIGHT, 700,
 				PropertySupport.VISIBLE, false);
 		add(createPlotPanel());
 		addMenus();

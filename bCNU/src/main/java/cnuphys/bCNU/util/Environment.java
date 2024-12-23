@@ -1,12 +1,10 @@
 package cnuphys.bCNU.util;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
 import java.io.File;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
@@ -18,13 +16,8 @@ import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
-import javax.swing.JComponent;
-import javax.swing.Painter;
-import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.plaf.metal.MetalIconFactory;
 
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
@@ -276,7 +269,7 @@ public final class Environment {
 		try {
             // Get the local host address
             InetAddress localhost = InetAddress.getLocalHost();
-            
+
             // Print the host address (IP address) and host name
             System.out.println("Local Host Address: " + localhost.getHostAddress());
             System.out.println("Local Host Name: " + localhost.getHostName());

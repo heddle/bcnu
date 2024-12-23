@@ -409,7 +409,7 @@ public class NodePanel extends JPanel
 		DataWarehouse dw = DataWarehouse.getInstance();
 		String bankName = cd.bankName;
         String columnName = cd.columnName;
-        
+
 		int lineCounter = 1;
 		int index = 0;
 
@@ -489,7 +489,7 @@ public class NodePanel extends JPanel
 				_dataTextArea.append("null data\n");
 			}
 			break;
-			
+
 		case DataWarehouse.INT64:
 			long longs[] = dw.getLong(bankName, columnName);
 			if (longs != null) {

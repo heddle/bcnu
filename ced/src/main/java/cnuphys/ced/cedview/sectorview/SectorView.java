@@ -4,17 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Shape;
-import java.awt.Stroke;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Collections;
 import java.util.List;
 
 import javax.swing.JMenuItem;
@@ -27,9 +23,7 @@ import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.graphics.world.WorldPolygon;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -41,7 +35,6 @@ import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.SliceView;
-import cnuphys.ced.cedview.central.CentralSupport;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.CrossDrawer;
 import cnuphys.ced.common.FMTCrossDrawer;
@@ -49,7 +42,6 @@ import cnuphys.ced.common.SuperLayerDrawing;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.frame.Ced;
-import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.ftof.FTOFPanel;
@@ -113,7 +105,7 @@ public class SectorView extends SliceView implements ChangeListener {
 
 	private static Color plotColors[] = { X11Colors.getX11Color("Dark Red"), X11Colors.getX11Color("Dark Blue"),
 			X11Colors.getX11Color("Dark Green"), Color.black, Color.gray, X11Colors.getX11Color("wheat") };
-	
+
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
@@ -201,7 +193,7 @@ public class SectorView extends SliceView implements ChangeListener {
 						+ ControlPanel.FEEDBACK + ControlPanel.FIELDLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ACCUMULATIONLEGEND,
 				DisplayBits.MAGFIELD + DisplayBits.CROSSES + DisplayBits.RECONHITS + DisplayBits.CLUSTERS
-						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB + 
+						+ DisplayBits.FMTCROSSES + DisplayBits.RECPART + DisplayBits.DC_HITS + DisplayBits.SEGMENTS + DisplayBits.GLOBAL_HB +
 						+ DisplayBits.GLOBAL_AIHB + DisplayBits.GLOBAL_AITB
 						+ DisplayBits.GLOBAL_TB + DisplayBits.ACCUMULATION + DisplayBits.DOCA + DisplayBits.MCTRUTH +
 						DisplayBits.SECTORCHANGE + DisplayBits.RECCAL,
@@ -757,7 +749,7 @@ public class SectorView extends SliceView implements ChangeListener {
 	 * @param fillColor the fill color
 	 * @param frameColor the border color
 	 */
-	public void drawDCReconHit(Graphics g, IContainer container, Color fillColor, Color frameColor, 
+	public void drawDCReconHit(Graphics g, IContainer container, Color fillColor, Color frameColor,
 			ATrkgHitData hits, int index, boolean isTimeBased) {
 
 		SectorSuperLayer sectSL = _superLayers[(hits.sector[index] < 4) ? 0 : 1][hits.superlayer[index] - 1];

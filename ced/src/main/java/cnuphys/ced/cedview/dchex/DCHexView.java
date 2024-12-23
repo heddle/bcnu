@@ -162,7 +162,7 @@ public class DCHexView extends HexView {
 	public boolean showMcTruth() {
 		return true;
 	}
-	
+
 
 
 	/**

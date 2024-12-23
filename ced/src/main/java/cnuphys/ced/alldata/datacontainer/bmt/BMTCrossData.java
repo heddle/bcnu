@@ -8,13 +8,13 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.ced.alldata.datacontainer.ACommonCrossData;
 
 public class BMTCrossData extends ACommonCrossData {
-	
+
 	// singleton
 	private static volatile BMTCrossData _instance;
-	
+
 	/** ID */
 	public short ID[];
-	
+
 	/** the cross x direction */
 	public float ux[];
 
@@ -25,10 +25,10 @@ public class BMTCrossData extends ACommonCrossData {
 	public float uz[];
 
 	public byte layer[];
-	
+
 	/** cluster 1 index */
 	public short Cluster1_ID[];
-	
+
 	/** cluster 2 index */
 	public short Cluster2_ID[];
 
@@ -67,7 +67,7 @@ public class BMTCrossData extends ACommonCrossData {
 		if (bank == null) {
 			return;
 		}
-		
+
 		ID = bank.getShort("ID");
 		sector = bank.getByte("sector");
 		layer = bank.getByte("layer");
@@ -84,17 +84,17 @@ public class BMTCrossData extends ACommonCrossData {
 
         Cluster1_ID = bank.getShort("Cluster1_ID");
         Cluster2_ID = bank.getShort("Cluster2_ID");
-        
+
 		int n = (x != null) ? x.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
 	}
-	
+
 	/**
 	 * Does the direction contain NaNs?
-	 * 
+	 *
 	 * @param index the index of the cross
 	 * @return true if the direction contains NaNs
 	 */
@@ -102,14 +102,15 @@ public class BMTCrossData extends ACommonCrossData {
 		return Float.isNaN(ux[index]) || Float.isNaN(uy[index]) || Float.isNaN(uz[index]);
 	}
 
-	
+
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param detectorName    the name of the detector
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
+	@Override
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
 		feedbackStrings.add(String.format("$Forest Green$%s cross layer %d ID %d", detectorName, layer[index], ID[index]));
 		super.feedback(detectorName, index, feedbackStrings);

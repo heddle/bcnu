@@ -27,9 +27,9 @@ public class Line {
 		_dp = new Vector(Point.difference(p1, po));
 		_dpLen = _dp.length();
 	}
-	
+
 	/**
-	 * Create a line from two points 
+	 * Create a line from two points
 	 * @param x1 x coordinate of one point
 	 * @param y1 y coordinate of one point
 	 * @param z1 z coordinate of one point
@@ -128,7 +128,7 @@ public class Line {
 		Vector c = Vector.cross(ap, _dp);
 		return c.length() / _dpLen;
 	}
-	
+
 	/**
 	 * Get the shortest distance from point to line
 	 * @param x x coordinate of the point

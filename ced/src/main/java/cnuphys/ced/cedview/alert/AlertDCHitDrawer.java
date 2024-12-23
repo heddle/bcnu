@@ -25,7 +25,7 @@ public class AlertDCHitDrawer {
 
 	/**
 	 * Create a DC hit drawer for the alert view.
-	 * 
+	 *
 	 * @param view
 	 */
 	public AlertDCHitDrawer(AlertXYView view) {
@@ -34,7 +34,7 @@ public class AlertDCHitDrawer {
 
 	/**
 	 * Draw the hits
-	 * 
+	 *
 	 * @param g
 	 * @param container
 	 */
@@ -50,7 +50,7 @@ public class AlertDCHitDrawer {
 
 	// draw the DC hits
 	private void drawDCHits(Graphics g, IContainer container, DataEvent dataEvent) {
-		
+
 		if (ClasIoEventManager.getInstance().isAccumulating()) {
 			return;
 		}
@@ -81,14 +81,14 @@ public class AlertDCHitDrawer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draw the accumulated hits
 	 * @param g
 	 * @param container
 	 */
 	public void drawAccumulatedHits(Graphics g, IContainer container) {
-		
+
 		for (int superlayer = 0; superlayer < 5; superlayer++) {
 			int maxHit = AccumulationManager.getInstance().getMaxAlertDCCount(superlayer);
 			int counts[][][] = AccumulationManager.getInstance().getAccumulatedAlertDCData(superlayer);
@@ -114,7 +114,7 @@ public class AlertDCHitDrawer {
 
 	/**
 	 * Get feedback strings for a hit
-	 * @param container the container 
+	 * @param container the container
 	 * @param pp the pixel point
 	 * @param wp the world point
 	 * @param dcl the DC layer
@@ -122,18 +122,14 @@ public class AlertDCHitDrawer {
 	 */
 	public void getHitFeedbackStrings(IContainer container, Point pp, Point2D.Double wp, DCLayer dcl,
 			List<String> feedbackStrings) {
-		
+
 		if (ClasIoEventManager.getInstance().isAccumulating() || _view.isAccumulatedMode()) {
 			return;
 		}
 
 
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
-		if (dataEvent == null) {
-			return;
-		}
-
-		if (!dataEvent.hasBank("AHDC::adc")) {
+		if ((dataEvent == null) || !dataEvent.hasBank("AHDC::adc")) {
 			return;
 		}
 
@@ -144,11 +140,11 @@ public class AlertDCHitDrawer {
 				byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 				byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
 				byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
-				
+
 				AlertDCGeometryNumbering adcGeom = new AlertDCGeometryNumbering();
 
 				for (int i = 0; i < count; i++) {
-					
+
 					adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
 
 					if (adcGeom.match(dcl)) {

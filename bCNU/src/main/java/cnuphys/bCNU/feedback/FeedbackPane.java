@@ -40,7 +40,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	 */
 	public static final SimpleAttributeSet _defaultStyle = createStyle(Color.cyan, _background, "SansSerif", _fontSize,
 			false, true);
-	
+
 	public static final SimpleAttributeSet _smallMono = createStyle(Color.cyan, _background, "Monospaced", 6, false, true);
 
 
@@ -91,12 +91,12 @@ public class FeedbackPane extends TextPaneScrollPane {
 	@Override
 	public void append(String message) {
 		SimpleAttributeSet style = null;
-		
+
 		if (message.startsWith("$mono$")) {
             appendSmallMono(message.substring(6));
             return;
         }
-			
+
 
 		if (message.startsWith("$")) {
 			int nextIndex = message.indexOf("$", 1);
@@ -116,7 +116,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 		}
 		append((style == null) ? _defaultStyle : style, message);
 	}
-	
+
 	private void appendSmallMono(String message) {
         append(_smallMono, message);
     }
@@ -146,9 +146,9 @@ public class FeedbackPane extends TextPaneScrollPane {
 
 		}
 	}
-	
-	
-	
-	
+
+
+
+
 
 }

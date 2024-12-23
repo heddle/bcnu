@@ -166,7 +166,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private ECView _ecView;
 	private PCALView _pcalView;
 	private ForwardView3D _forward3DView;
-	
+
 	private AlertView3D _alert3DView;
 
 	private SwimmingTestView3D _swimming3DView;
@@ -201,8 +201,8 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// set whether clusters are connected
 	private JCheckBoxMenuItem _connectClusterCB;
-	
-	
+
+
 	//got Gagik yo color DC hits based on order
 	public static boolean useOrderColoring = false;
 
@@ -400,7 +400,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a DC XY View
 		_dcXyView = DCXYView.createDCXYView();
-		
+
 		// add a DC Hex View
 		_dcHexView = DCHexView.createDCHexView();
 
@@ -836,7 +836,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	    if (ClasIoEventManager.getInstance().isAccumulating()) {
 	        return;
 	    }
-	    
+
 	    String newText;
 	    if (seqnum < 0) {
 	        newText = "  No Event           ";
@@ -1161,7 +1161,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
-		
+
 		Environment.setLookAndFeel();
 		System.setProperty("sun.java2d.opengl", "true");
 

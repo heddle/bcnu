@@ -32,7 +32,7 @@ public interface IDrawable {
 	 * Called when the drawable is about to be removed from a list.
 	 */
 	public void prepareForRemoval();
-	
+
 	/**
 	 * Get the visibility flag.
 	 *

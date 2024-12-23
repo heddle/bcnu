@@ -47,7 +47,7 @@ public class RectangleButton extends ToolBarToggleButton implements IRubberbande
 		if ((b.width < 3) || (b.height < 3)) {
 			return;
 		}
-		
+
 		DrawingContainer dc	= (DrawingContainer) container;
 
 		AItem item = dc.createRectangleItem(container.getAnnotationList(), b);

@@ -1,10 +1,10 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class HBTrkgSegmentData extends ATrkgSegmentData {
-	
+
 	// singleton
 	private static volatile HBTrkgSegmentData _instance;
-	
+
 	/**
 	 * Public access to the singleton
 	 *

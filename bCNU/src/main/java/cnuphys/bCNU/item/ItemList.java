@@ -27,7 +27,7 @@ public class ItemList extends DrawableList {
 
 	/**
 	 * Add all the items that enclose a given point to a collection of
-	 * items. 
+	 * items.
 	 *
 	 * @param items       the collection we are adding to.
 	 * @param container   the graphical container rendering the item.

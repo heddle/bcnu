@@ -42,9 +42,9 @@ public class EllipseButton extends ToolBarToggleButton implements IRubberbanded 
 		if ((b.width < 3) || (b.height < 3)) {
 			return;
 		}
-		
+
 		DrawingContainer dc	= (DrawingContainer) container;
-		
+
 		AItem item = dc.createEllipseItem(container.getAnnotationList(), b);
 		if (item != null) {
 			item.setDraggable(true);

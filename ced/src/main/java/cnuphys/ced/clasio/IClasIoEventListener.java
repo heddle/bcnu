@@ -27,8 +27,8 @@ public interface IClasIoEventListener extends EventListener, IEventListener<Obje
 	 * @param source
 	 */
 	public void changedEventSource(ClasIoEventManager.EventSourceType source);
-	
-	
+
+
 	@Override
 	default public void newEvent(Object data) {
 		if (data instanceof DataEvent) {

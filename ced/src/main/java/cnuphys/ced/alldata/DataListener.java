@@ -6,13 +6,13 @@ import cnuphys.bCNU.threading.IEventListener;
 import cnuphys.ced.alldata.datacontainer.IDataContainer;
 
 public class DataListener implements IEventListener<Object> {
-	
+
 	private IDataContainer container;
-	
+
 	public DataListener(IDataContainer container) {
 		this.container = container;
 	}
-	
+
 	@Override
 	public void newEvent(Object data) {
 		if (data == null) {

@@ -82,11 +82,11 @@ public class TextPaneScrollPane extends JScrollPane {
 	protected StyledDocument document;
 
 	protected SimpleAttributeSet defaultStyle = BLACK_SS_12_P;
-	
+
 	public TextPaneScrollPane() {
 		this(null, Color.white);
 	}
-	
+
 	public TextPaneScrollPane(String label) {
 		this(label, Color.white);
 	}
@@ -109,12 +109,12 @@ public class TextPaneScrollPane extends JScrollPane {
 		if (label != null) {
 			this.setBorder(new CommonBorder(label));
 		}
-		
-		
+
+
 		createTextPane();
 		textPane.setBackground(bgColor);
 		getViewport().add(textPane);
-		
+
 		getViewport().setBackground(bgColor);
 		setBackground(bgColor);
 	}

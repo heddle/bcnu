@@ -8,7 +8,6 @@ import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Vector;
 
@@ -21,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.MenuSelectionManager;
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 import javax.swing.filechooser.FileFilter;
 

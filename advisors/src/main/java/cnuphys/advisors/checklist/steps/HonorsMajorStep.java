@@ -69,7 +69,7 @@ public class HonorsMajorStep extends CheckListLaunchable {
 			DataManager.roundRobinAssign(advisors, students, true, "Honors by Secondary FCA Major", EReason.MAJ2ND);
 
 		}
-		
+
 		}
 	}
 

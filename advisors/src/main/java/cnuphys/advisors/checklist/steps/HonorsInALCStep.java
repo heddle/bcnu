@@ -3,16 +3,13 @@ package cnuphys.advisors.checklist.steps;
 import java.util.List;
 
 import cnuphys.advisors.Advisor;
-import cnuphys.advisors.Person;
 import cnuphys.advisors.Student;
 import cnuphys.advisors.checklist.CheckListLaunchable;
 import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.model.ALCCourse;
-import cnuphys.advisors.model.AdvisorData;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
-import cnuphys.advisors.model.Schedule;
 
 public class HonorsInALCStep extends CheckListLaunchable {
 
@@ -26,7 +23,7 @@ public class HonorsInALCStep extends CheckListLaunchable {
 		List<Student> students = DataManager.getUnassignedHonorsStudents();
 
 		int target = AdvisorAssign.targetAverage();
-		
+
 		for (Student student : students) {
 
 			// get the schedule
@@ -49,7 +46,7 @@ public class HonorsInALCStep extends CheckListLaunchable {
 			}
 		}
 
-		
+
 	}
 
 }

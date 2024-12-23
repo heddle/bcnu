@@ -97,15 +97,15 @@ public class VirtualWindowItem extends RectangleItem {
 	public void stopModification() {
 		switch (_modification.getType()) {
 		case DRAG:
-			
+
 			Point p = _modification.getCurrentMousePoint();
-			if (_vview.getContainer().getComponent().getBounds().contains(p) == false) {
+			if (!_vview.getContainer().getComponent().getBounds().contains(p)) {
 				System.err.println("Cant drag out of vv!");
 				_vview.getContainer().refresh();
 				break;
 			}
-			
-			
+
+
 			Point2D.Double wp0 = _modification.getStartWorldPoint();
 			Point2D.Double wp1 = _modification.getCurrentWorldPoint();
 			int dh = (int) (wp1.x - wp0.x);

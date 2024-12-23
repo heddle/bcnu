@@ -24,7 +24,7 @@ import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.cedview.CedView;
-import cnuphys.ced.cedview.alert.AlertWireProjectionPanel;
+import cnuphys.ced.cedview.alert.AlertProjectionPanel;
 import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCDisplayPanel;
 import cnuphys.ced.cedview.central.CentralZView;
@@ -52,10 +52,10 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** Bit used to create a torus legend */
 	public static final int FIELDLEGEND = 04;
-	
+
 	/** ALERT DC projections */
 	public static final int ALERTDC = 010;
-	
+
 	/** filtered banks */
 	public static final int MATCHINGBANKSPANEL = 020;
 
@@ -117,12 +117,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// the tabbed pane
 	private JTabbedPane _tabbedPane;
-	
+
 	//holds components above feedback
 	private Box _northBox;
-	
+
 	//just used on AlertXYView
-	private AlertWireProjectionPanel _alertDCPanel;
+	private AlertProjectionPanel _alertDCPanel;
 
 	/**
 	 * Create a view control panel
@@ -263,7 +263,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		// alert dc projections
 		if (Bits.checkBit(controlPanelBits, ALERTDC)) {
 			if (_view instanceof AlertXYView) {
-				_alertDCPanel = new AlertWireProjectionPanel((AlertXYView)view);
+				_alertDCPanel = new AlertProjectionPanel((AlertXYView)view);
 			}
 		}
 
@@ -285,7 +285,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 				daPanel.add(_alertDCPanel);
 			}
 		}
-		
+
 
 		if (_matchedBankPanel != null) {
 			tabbedPane.add(_matchedBankPanel, "Banks");
@@ -324,7 +324,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		//text area
 		_cpTextArea = new SimpleScrollableTextArea(10, 28);
-		
+
 		sp.add(_cpTextArea.getScrollPane());
 		_cpTextArea.setFont(Fonts.tweenFont);
 		clearTextArea();
@@ -462,9 +462,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	}
 
 	/**
-	 * Get the AlertDCPanel	
+	 * Get the AlertDCPanel
 	 */
-	public AlertWireProjectionPanel getAlertDCPanel() {
+	public AlertProjectionPanel getAlertDCPanel() {
 		return _alertDCPanel;
 	}
 	/**

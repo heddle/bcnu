@@ -21,7 +21,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/** 1-based region */
 	public byte[] region;
-	
+
 	/** the cross x */
 	public float x[];
 
@@ -30,7 +30,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/** the cross z */
 	public float z[];
-	
+
 	/** the cross x error */
 	public float err_x[];
 
@@ -39,13 +39,13 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/** the cross z error */
 	public float err_z[];
-		
+
 	/** cached x coordinate of drawing locations */
 	public int ppx[];
 
 	/** cached y coordinate of drawing locations */
 	public int ppy[];
-	
+
 	/**
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
@@ -93,7 +93,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 		ppx[index] = pp.x;
 		ppy[index] = pp.y;
 	}
-	
+
 	/**
 	 * Does the location contain NaNs?
 	 * @param index the index of the cross
@@ -105,7 +105,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/**
 	 * Does the xy ocation contain NaNs?
-	 * 
+	 *
 	 * @param index the index of the cross
 	 * @return true if the xy location contains NaNs
 	 */
@@ -115,7 +115,7 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/**
 	 * Does the error contain NaNs?
-	 * 
+	 *
 	 * @param index the index of the cross
 	 * @return true if the error contains NaNs
 	 */
@@ -137,13 +137,13 @@ public abstract class ACommonCrossData implements IDataContainer {
 
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param detectorName    the name of the detector
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
-		feedbackStrings.add(String.format("$Forest Green$%s sector %d region %d", 
+		feedbackStrings.add(String.format("$Forest Green$%s sector %d region %d",
 				detectorName, sector[index], region[index]));
 		feedbackStrings.add(String.format("$Forest Green$%s cross xyz (%-6.3f, %-6.3f, %-6.3f) cm", detectorName,
 				x[index], y[index], z[index]));

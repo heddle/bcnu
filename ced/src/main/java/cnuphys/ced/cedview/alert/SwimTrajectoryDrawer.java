@@ -26,6 +26,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 	 * @param g         the graphics context
 	 * @param container the base container
 	 */
+	@Override
 	public void draw(Graphics g, IContainer container) {
 
 		if (!ClasIoEventManager.getInstance().isAccumulating()) {
@@ -40,7 +41,7 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 			g2.setClip(oldClip);
 		}
 	}
-	
+
 	/**
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)

@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 import cnuphys.advisors.simulation.AdvisorSimulation;
-import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.simanneal.SimulationPanel;
 import cnuphys.simanneal.SimulationPlot;
 

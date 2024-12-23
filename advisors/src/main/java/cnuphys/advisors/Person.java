@@ -69,7 +69,7 @@ public abstract class Person implements ITabled {
 	public void setALC(boolean alc) {
 		set(ALC, alc);
 	}
-	
+
 	/**
 	 * Convenience method to set the PSP status
 	 */

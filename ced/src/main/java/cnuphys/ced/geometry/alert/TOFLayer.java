@@ -15,21 +15,20 @@ import org.jlab.geom.detector.alert.ATOF.AlertTOFLayer;
 import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.lund.X11Colors;
 
 public class TOFLayer {
 
 	private static Color layer0Color = X11Colors.getX11Color("Alice Blue");
 	private static Color[][] fillColors = {
-		{X11Colors.getX11Color("Antique White"), X11Colors.getX11Color("Burlywood")},
-		{X11Colors.getX11Color("Light Cyan"), X11Colors.getX11Color("Light Blue")},
-		{X11Colors.getX11Color("Aquamarine"), X11Colors.getX11Color("Light Green")}
-		};
+			{ X11Colors.getX11Color("Antique White"), X11Colors.getX11Color("Burlywood") },
+			{ X11Colors.getX11Color("Light Cyan"), X11Colors.getX11Color("Light Blue") },
+			{ X11Colors.getX11Color("Aquamarine"), X11Colors.getX11Color("Light Green") } };
 
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();
-
 
 	/** the 0-based sector of this layer */
 	public final int sector;
@@ -51,11 +50,18 @@ public class TOFLayer {
 	private static double _deltaR = Double.NaN;
 
 
+	//all the paddle objects
 	public List<ScintillatorPaddle> paddles;
 
+	//used by feedback
 	Hashtable<ScintillatorPaddle, Polygon> polyhash = new Hashtable<>();
 
 
+	/**
+	 * Create a TOF layer from an alert TOF layer
+	 *
+	 * @param geoAlertTOFLayer the alert TOF layer from the geometry service
+	 */
 	public TOFLayer(AlertTOFLayer geoAlertTOFLayer) {
 		sector = geoAlertTOFLayer.getSectorId();
 		superlayer = geoAlertTOFLayer.getSuperlayerId();
@@ -77,17 +83,41 @@ public class TOFLayer {
 	}
 
 
-	public void drawAllPaddles(Graphics g, IContainer container) {
-		polyhash.clear();
-		for (ScintillatorPaddle paddle : paddles) {
+	/**
+	 * Get a strip outline
+	 * @param view the view
+	 * @param paddle the paddle from the geometry service
+	 * @return the paddle outline in world coordinates
+	 */
+	private Point2D.Double[] getWorldPolygon(AlertXYView view, ScintillatorPaddle paddle) {
 
+		Point2D.Double wp[] = AlertGeometry.getIntersections(sector, superlayer, layer, paddle,
+				view.getProjectionPlane(), true);
+
+		return wp;
+	}
+
+
+	/**
+	 * Draw all the paddles in this layer
+	 *
+	 * @param g         the graphics context
+	 * @param container the container
+	 */
+	public void drawAllPaddles(Graphics g, IContainer container) {
+		//the hash is used for feedback
+		polyhash.clear();
+
+		for (int paddleId = 0; paddleId < numPaddles; paddleId++) {
+
+			ScintillatorPaddle paddle = paddles.get(paddleId);
 			Color fc;
 			if (superlayer == 0) {
 				fc = layer0Color;
+			} else {
+				fc = fillColors[sector % 3][layer % 2];
 			}
-			else {
-				fc = fillColors[sector%3][layer%2];
-			}
+
 			drawPaddle(g, container, paddle, fc, Color.black);
 		}
 	}
@@ -111,40 +141,77 @@ public class TOFLayer {
 
 	}
 
+	/**
+	 * Does the paddle contain the point? This uses the polyhash
+	 * @param paddle
+	 * @param pp
+	 * @return <code>true</code> if the paddle contains the point
+	 */
 	public boolean paddleContains(ScintillatorPaddle paddle, Point pp) {
 		Polygon poly = polyhash.get(paddle);
 		return (poly != null) && poly.contains(pp);
 	}
 
+	/**
+	 * Draw a paddle in the unrealistic mode
+	 * @param g
+	 * @param container
+	 * @param paddle
+	 * @param fillColor
+	 * @param lineColor
+	 */
 	public  void drawPaddle(Graphics g, IContainer container, ScintillatorPaddle paddle, Color fillColor, Color lineColor) {
 
+		AlertXYView view = (AlertXYView) container.getView();
 
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		Polygon poly = new Polygon();
 
-		for (int i = 0; i < 4; i++) {
+		if (view.showAllTOF()) { //unrealistic
 
-			double x = paddle.getVolumePoint(i).x();
-			double y = paddle.getVolumePoint(i).y();
-			wp[i] = new Point2D.Double(x, y);
+			for (int i = 0; i < 4; i++) {
 
-			//shift the point if not superlayer 0
+				double x = paddle.getVolumePoint(i).x();
+				double y = paddle.getVolumePoint(i).y();
+				wp[i] = new Point2D.Double(x, y);
 
-			if (superlayer  == 1) {
-				if ((i == 0) || (i == 3)) {
-					double dR = layer*_deltaR;
-				    shiftPoint(wp[i], dR);
+				// shift the point if not superlayer 0
+
+				if (superlayer == 1) {
+					if ((i == 0) || (i == 3)) {
+						double dR = layer * _deltaR;
+						shiftPoint(wp[i], dR);
+					} else { // outer
+						double dR = -(9 - layer) * _deltaR;
+						shiftPoint(wp[i], dR);
+					}
 				}
-				else { //outer
-					double dR = -(9 - layer)*_deltaR;
-				    shiftPoint(wp[i], dR);
+
+				container.worldToLocal(pp, wp[i]);
+				poly.addPoint(pp.x, pp.y);
+			}
+
+		}
+		else {
+			boolean intersects = AlertGeometry.doesProjectedPolyFullyIntersect(sector, superlayer, layer,
+					paddle, view.getProjectionPlane());
+
+			if (!intersects) {
+				return;
+			}
+
+
+			Point2D.Double wp[] = getWorldPolygon(view, paddle);
+			if (wp != null) {
+				Point pp = new Point();
+				for (java.awt.geom.Point2D.Double element : wp) {
+                    container.worldToLocal(pp, element);
+                    poly.addPoint(pp.x, pp.y);
 				}
 			}
 
-			container.worldToLocal(pp, wp[i]);
-			poly.addPoint(pp.x, pp.y);
 		}
 
 		if (fillColor != null) {
@@ -153,11 +220,11 @@ public class TOFLayer {
 		}
 		g.setColor(lineColor);
 		g.drawPolygon(poly);
-
 		polyhash.put(paddle, poly);
 	}
 
 
+	//used for unrealistic mode
 	private static void shiftPoint(Point2D.Double wp, double dR) {
 		double r = Math.hypot(wp.x, wp.y);
 		double theta = Math.atan2(wp.y, wp.x);
@@ -182,10 +249,10 @@ public class TOFLayer {
 			Polygon poly = polyhash.get(paddle);
 
 			if ((poly != null) && poly.contains(pp)) {
-				feedbackStrings.add(String.format("AlertTOF GeoDB sector: %d", sector + 1));
-				feedbackStrings.add(String.format("AlertTOF GeoDB superlayer: %d", superlayer + 1));
-				feedbackStrings.add(String.format("AlertTOF GeoDB layer: %d", layer + 1));
-				feedbackStrings.add(String.format("AlertTOF GeoDB paddle: %d", paddle.getComponentId()+1));
+				feedbackStrings.add(String.format("TOF sector: %d (1-based)", sector + 1));
+				feedbackStrings.add(String.format("TOF superlayer: %d (1-based)", superlayer + 1));
+				feedbackStrings.add(String.format("TOF layer: %d (1-based)", layer + 1));
+				feedbackStrings.add(String.format("TOF paddle: %d (1-based)", paddle.getComponentId()+1));
 				return true;
 			}
 		}

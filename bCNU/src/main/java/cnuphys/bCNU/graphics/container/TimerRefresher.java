@@ -9,10 +9,10 @@ import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 public class TimerRefresher {
-	
+
 	//
 	public static volatile TimerRefresher instance;
-	
+
 	    private final Set<Component> componentsToRefresh;
 	    private Timer refreshTimer;
 
@@ -24,7 +24,7 @@ public class TimerRefresher {
 	        refreshTimer = new Timer(1000 / 60, e -> refreshComponents());
 	        refreshTimer.start();
 	    }
-	    
+
 		public static TimerRefresher getInstance() {
 			if (instance == null) {
 				synchronized (TimerRefresher.class) {

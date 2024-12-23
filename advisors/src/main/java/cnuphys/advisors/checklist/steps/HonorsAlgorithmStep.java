@@ -19,7 +19,7 @@ public class HonorsAlgorithmStep extends CheckListLaunchable {
 
 	@Override
 	public void launch() {
-				
+
 		//now run the algorithm with unassigned honors students and unlocked
 		//honors advisors
 		AdvisorData advisorData = DataManager.getFilteredAdvisorData(Person.HONOR);

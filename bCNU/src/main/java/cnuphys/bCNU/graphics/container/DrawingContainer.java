@@ -21,7 +21,7 @@ public class DrawingContainer extends BaseContainer {
 	public DrawingContainer(BaseView view, Double worldSystem) {
 		super(view, worldSystem);
 	}
-	
+
 	/**
 	 * From a given screen rectangle, create an ellipse item.
 	 *

@@ -9,7 +9,6 @@ import java.util.List;
 
 import cnuphys.bCNU.feedback.IFeedbackProvider;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
-import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.util.PropertySupport;
@@ -53,7 +52,7 @@ public class DrawingView extends BaseView implements IFeedbackProvider {
 
 		int width = d.width;
 		int height = d.height;
-		
+
 		// create the view
 		view = new DrawingView(PropertySupport.WORLDSYSTEM, new Rectangle2D.Double(0.0, 0.0, width, height),
 				PropertySupport.WIDTH, width, // container width, not total view width

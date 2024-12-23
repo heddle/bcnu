@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.event.ListSelectionEvent;
 
-import cnuphys.advisors.Advisor;
 import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
@@ -13,9 +12,9 @@ import cnuphys.advisors.io.ITabled;
 public class ALCData extends DataModel {
 
 	// attributes for student data
-	private static final DataAttribute attributes[] = { DataManager.rowAtt, 
+	private static final DataAttribute attributes[] = { DataManager.rowAtt,
 			DataManager.lcNumAtt, DataManager.lcAtt, DataManager.crnAtt,
-			DataManager.subjectAtt, DataManager.courseAtt, 
+			DataManager.subjectAtt, DataManager.courseAtt,
 			DataManager.instructorAtt};
 
 	public ALCData(String baseName) {
@@ -41,19 +40,19 @@ public class ALCData extends DataModel {
 
 			_tableData.add(new ALCCourse(lcNum, lcTitle, crn, subject, course));
 		}
-		
+
 		for (ITabled itabled : _tableData) {
 			ALCCourse alc = (ALCCourse) itabled;
 			Course course = DataManager.getSchedule().getCourseFromCRN(alc.crn);
-			
+
 			// should not be null
 			if (course == null) {
 				System.err.println("ALCData: course is null for alc crn: " + alc.crn);
 			}
-			
+
 			course.isALC = true;
 		}
-		
+
 		//raw data not needed
 		deleteRawData();
 
@@ -65,8 +64,8 @@ public class ALCData extends DataModel {
 				System.out.println(s);
 			}
 		}
-		
-		
+
+
 
 	}
 

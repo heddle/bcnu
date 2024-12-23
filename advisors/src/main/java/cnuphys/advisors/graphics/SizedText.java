@@ -14,7 +14,7 @@ import javax.swing.JComponent;
 import cnuphys.bCNU.util.FileUtilities;
 
 public class SizedText extends JComponent {
-	
+
 	private static Color bg = new Color(248, 255, 248);
 
 	private Dimension size;
@@ -22,7 +22,7 @@ public class SizedText extends JComponent {
 	private static int margin = 6;
 
 	private Font _font;
-	
+
 	private int _width;
 
 	private ArrayList<String> lines = new ArrayList<>();
@@ -37,7 +37,7 @@ public class SizedText extends JComponent {
 		_font = font;
 		_width = width;
 		sizeText(text, font, width);
-		
+
 		setBorder(BorderFactory.createLoweredBevelBorder());
 	}
 
@@ -68,11 +68,11 @@ public class SizedText extends JComponent {
 
 	@Override
 	public void paintComponent(Graphics g) {
-		
+
 		Rectangle b = getBounds();
 		g.setColor(bg);
 		g.fillRect(0, 0, b.width, b.height);
-		
+
 		g.setFont(_font);
 		FontMetrics fm = this.getFontMetrics(_font);
 		g.setColor(Color.black);
@@ -89,7 +89,7 @@ public class SizedText extends JComponent {
 	public Dimension getPreferredSize() {
 		return size;
 	}
-	
+
 	public void setText(String text) {
 		sizeText(text, _font, _width);
 		repaint();

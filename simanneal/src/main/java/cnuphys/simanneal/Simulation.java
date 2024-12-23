@@ -58,7 +58,7 @@ public abstract class Simulation implements Runnable {
 	public SimulationState getSimulationState() {
 		return _simState;
 	}
-	
+
 	/**
 	 * Get the random number generator
 	 * @return the random number generator
@@ -182,7 +182,7 @@ public abstract class Simulation implements Runnable {
 		_simState = SimulationState.RUNNING;
 		_thread.start();
 	}
-	
+
 	public Thread getSimThread() {
 		return _thread;
 	}

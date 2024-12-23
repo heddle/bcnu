@@ -31,11 +31,11 @@ public class UrWELLChamberItem extends PolygonItem {
 
 	/**
 	 * Create a chamber outline
-	 * 
+	 *
 	 * @param itemList the item list
 	 * @param points   the points of the chamber
-	 * @param sector   the sector 
-	 * @param chamber  the chamber 
+	 * @param sector   the sector
+	 * @param chamber  the chamber
 	 */
 	public UrWELLChamberItem(ItemList itemList, Point2D.Double points[], int sector, int chamber) {
 		super(itemList, points);

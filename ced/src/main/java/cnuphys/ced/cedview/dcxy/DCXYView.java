@@ -65,7 +65,7 @@ public class DCXYView extends HexView {
 
 	//bank matches
 	private static String _defMatches[] = {"DC:"};
-	
+
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
@@ -273,7 +273,7 @@ public class DCXYView extends HexView {
 	private void drawHits(Graphics g, IContainer container) {
 
 		if (isSingleEventMode()) {
-			
+
 			int count = _dcData.count();
 			if (count > 0) {
 				Graphics2D g2 = (Graphics2D) g;
