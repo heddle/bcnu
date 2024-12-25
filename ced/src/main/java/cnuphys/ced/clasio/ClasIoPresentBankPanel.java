@@ -1,6 +1,7 @@
 package cnuphys.ced.clasio;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
@@ -37,8 +38,6 @@ import cnuphys.ced.frame.Ced;
 @SuppressWarnings("serial")
 public class ClasIoPresentBankPanel extends JPanel {
 
-	// try to set a reasonable height
-	private int preferredHeight;
 
 	// the event manager
 	private static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
@@ -81,8 +80,10 @@ public class ClasIoPresentBankPanel extends JPanel {
 		setLayout(new GridLayout(numRows, 0, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 
-		FontMetrics gm = getFontMetrics(ActionLabel.enabledFontLarge);
-		preferredHeight = numRows * (gm.getHeight() + 2);
+		
+        Dimension minSize = new Dimension(200, 100); 
+        setMinimumSize(minSize);
+
 
 	}
 
@@ -106,6 +107,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 		return pbPanel;
 
 	}
+	
+	
 
 	// create the event listener
 	private static void createEventListener() {
@@ -154,14 +157,6 @@ public class ClasIoPresentBankPanel extends JPanel {
 	}
 
 
-//	@Override
-//	public Dimension getPreferredSize() {
-//		Dimension d = super.getPreferredSize();
-//		d.width = 300;
-//		d.height = preferredHeight;
-//		return d;
-//
-//	}
 
 	// replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
@@ -173,9 +168,22 @@ public class ClasIoPresentBankPanel extends JPanel {
 			String[] allBanks = event.getBankList();
 			Arrays.sort(allBanks);
 			if (allBanks != null) {
+				
+				//count the number of banks that match
+				//to see if we should used larger font
+				
+				int count = 0;
 				for (String s : allBanks) {
 					if (match(s)) {
-						makeLabel(s);
+						count++;
+					}
+				}
+
+			    //now make the labels
+				boolean largerFont = (count < 17);
+				for (String s : allBanks) {
+					if (match(s)) {
+						makeLabel(s, largerFont);
 					}
 				}
 			}
@@ -226,8 +234,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 	}
 
 	// convenience method to make a button
-	private ActionLabel makeLabel(final String label) {
-		final ActionLabel alabel = new ActionLabel(label, false);
+	private ActionLabel makeLabel(final String label, boolean largerFont) {
+		final ActionLabel alabel = new ActionLabel(label, false, largerFont);
 		alabel.setOpaque(true);
 
 		MouseListener ml = new MouseListener() {

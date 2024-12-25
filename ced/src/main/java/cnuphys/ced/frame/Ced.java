@@ -36,6 +36,7 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Jar;
 import cnuphys.bCNU.util.PropertySupport;
+import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
@@ -99,7 +100,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.7.0";
+	private static final String _release = "1.7.0" + UnicodeSupport.SMALL_BETA;
 
 	// used for one time inits
 	private int _firstTime = 0;

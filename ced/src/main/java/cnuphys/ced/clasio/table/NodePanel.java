@@ -120,12 +120,8 @@ public class NodePanel extends JPanel
 	 */
 	private JScrollPane createDataTextArea() {
 
-		_dataTextArea = new JTextArea(3, 40) {
-			@Override
-			public Dimension getMinimumSize() {
-				return new Dimension(180, 200);
-			}
-		};
+		_dataTextArea = new JTextArea(3, 40);
+		_dataTextArea.setMinimumSize(new Dimension(180, 200));
 		_dataTextArea.setFont(Fonts.mediumFont);
 		// _dataTextArea.setBorder(BorderFactory.createTitledBorder(null,
 		// "Data",

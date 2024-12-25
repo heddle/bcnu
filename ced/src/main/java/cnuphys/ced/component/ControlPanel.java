@@ -288,7 +288,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 
 		if (_matchedBankPanel != null) {
-			tabbedPane.add(_matchedBankPanel, "Banks");
+			tabbedPane.add(_matchedBankPanel, "banks");
 		}
 
 		if (phiSlider != null) {

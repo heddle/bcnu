@@ -16,6 +16,7 @@ import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
@@ -29,6 +30,7 @@ import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.ced.geometry.alert.TOFLayer;
+import cnuphys.swim.SwimTrajectory2D;
 
 public class AlertXYView extends CedXYView implements ILabCoordinates {
 
@@ -344,6 +346,21 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 			}
 
 		}
+		
+		
+		// near a swum trajectory?
+		double mindist = _swimTrajectoryDrawer.closestApproach(wp);
+		double pixlen = WorldGraphicsUtilities.getMeanPixelDensity(container) * mindist;
+
+		_lastTrajStr = null; // for hovering response
+		if (pixlen < 25.0) {
+			SwimTrajectory2D traj2D = _swimTrajectoryDrawer.getClosestTrajectory();
+			if (traj2D != null) {
+				traj2D.addToFeedback(feedbackStrings);
+				_lastTrajStr = traj2D.summaryString();
+			}
+		}
+
 
 	}
 
