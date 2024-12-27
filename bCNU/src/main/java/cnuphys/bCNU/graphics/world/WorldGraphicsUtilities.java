@@ -1743,6 +1743,36 @@ public class WorldGraphicsUtilities {
 		return bp;
 
 	}
+	
+	/**
+	 * Obtain the point on a segment p1 to p2 that is closest to given point wp
+	 * @param p1 one end of the segment
+	 * @param p2 other end of the segment
+	 * @param wp the point in question
+	 * @return the closest point on the segment
+	 */
+	 public static Point2D.Double closestPointOnSegment(Point2D.Double p1, Point2D.Double p2, Point2D.Double wp) {
+	        // Vector from p1 to p2
+	        double dx = p2.x - p1.x;
+	        double dy = p2.y - p1.y;
+
+	        // Vector from p1 to wp
+	        double dxWp = wp.x - p1.x;
+	        double dyWp = wp.y - p1.y;
+
+	        // Calculate projection scalar (t)
+	        double segmentLengthSquared = dx * dx + dy * dy;
+	        double t = (dxWp * dx + dyWp * dy) / segmentLengthSquared;
+
+	        // Clamp t to [0, 1] to stay on the segment
+	        t = Math.max(0, Math.min(1, t));
+
+	        // Calculate the closest point on the segment
+	        double closestX = p1.x + t * dx;
+	        double closestY = p1.y + t * dy;
+
+	        return new Point2D.Double(closestX, closestY);
+	    }
 
 	/**
 	 * Obtain roughly the pixel/unit where unit is the length unit of our world
