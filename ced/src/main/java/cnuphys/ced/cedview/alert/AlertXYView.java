@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.jlab.geom.prim.Plane3D;
+import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
@@ -24,6 +25,8 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
+import cnuphys.ced.cedview.urwell.HighlightData;
+import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.GeometryManager;
@@ -47,6 +50,12 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	// units are mm
 	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-120, -120, 240, 240);
 
+
+	//for highlighting
+	private HighlightData _highlightDataAHDC = new HighlightData();
+	private HighlightData _highlightDataATOF = new HighlightData();
+
+	
 	// bank matches
 	private static String _defMatches[] = { "AHDC", "ATOF" };
 
@@ -164,6 +173,10 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 					else {
 						drawAccumulatedHits(g, container);
 					}
+					
+					//data selected highlight?
+					drawDataSelectedHighlight(g, container);
+
 				}
 
 				Rectangle screenRect = getActiveScreenRectangle(container);
@@ -175,6 +188,27 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		getContainer().setAfterDraw(afterDraw);
 	}
+	
+	//draw data selected highlighted data
+	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
+
+		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
+		if (dataEvent == null) {
+			return;
+		}
+		
+		//adc data
+		if (this.showADCHits()) {
+			if (dataEvent.hasBank("AHDC::adc") && (_highlightDataAHDC.hit >= 0)) {
+				_dcHitDrawer.drawHighlightHit(g, container, dataEvent, _highlightDataAHDC.hit);
+			}
+			
+			if (dataEvent.hasBank("ATOF::adc") && (_highlightDataATOF.hit >= 0)) {
+				_tofHitDrawer.drawHighlightHit(g, container, dataEvent, _highlightDataATOF.hit);
+			}
+		}
+	}	//indices are zero based
+
 
 	//draw the hits in single eventmode
 	private void drawSingleModeHits(Graphics g, IContainer container) {
@@ -363,5 +397,22 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 
 	}
+	
+	/**
+	 * In the BankDataTable a row was selected.
+	 * @param bankName the name of the bank
+	 * @param index the 0-based index into the bank
+	 */
+	@Override
+	public void dataSelected(String bankName, int index) {
+		if (bankName.equals("AHDC::adc")) {
+			_highlightDataAHDC.hit = index;
+		} else if (bankName.equals("ATOF::adc")) {
+			_highlightDataATOF.hit = index;
+		}
+
+		refresh();
+	}
+
 
 }

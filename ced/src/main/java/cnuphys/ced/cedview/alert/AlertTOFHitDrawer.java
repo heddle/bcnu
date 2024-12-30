@@ -14,6 +14,7 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
+import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.ced.geometry.alert.TOFLayer;
 
 public class AlertTOFHitDrawer {
@@ -86,6 +87,37 @@ public class AlertTOFHitDrawer {
 		}
 
 	} // drawTOFHits
+	
+	
+	/**
+	 * Draw the highlighted hit from the adc bank
+	 * 
+	 * @param g         the graphics context
+	 * @param container the container
+	 * @param index     the 0-based index of the hit
+	 */
+	public void drawHighlightHit(Graphics g, IContainer container, DataEvent dataEvent, int index) {
+		if (dataEvent.hasBank("ATOF::adc") && _view.showADCHits()) {
+			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			if (component != null) {
+				int count = component.length;
+				if (count > index) {
+					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
+					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
+					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
+
+					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+					adcGeom.fromDataNumbering(sector[index], compLayer[index], component[index], order[index]);
+					TOFLayer tofl = AlertGeometry.getTOFLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
+					if (tofl != null) {
+						ScintillatorPaddle paddle = tofl.getPaddle(adcGeom.component % 4);
+						tofl.drawPaddle(g, container, paddle, Color.black, Color.red);
+					}
+				}
+			}
+		}
+	}
+
 
 	public void drawAccumulatedHits(Graphics g, IContainer container) {
 		drawAccumulatedHitsSL(g, container, 0);

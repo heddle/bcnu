@@ -81,6 +81,35 @@ public class AlertDCHitDrawer {
 			}
 		}
 	}
+	
+	/**
+	 * Draw the highlighted hit from the adc bank
+	 * 
+	 * @param g         the graphics context
+	 * @param container the container
+	 * @param index     the 0-based index of the hit
+	 */
+	public void drawHighlightHit(Graphics g, IContainer container, DataEvent dataEvent, int index) {
+		if (dataEvent.hasBank("AHDC::adc") && _view.showADCHits()) {
+			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
+			if (component != null) {
+				int count = component.length;
+				if (count > index) {
+					byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
+					byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
+					byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
+
+					AlertDCGeometryNumbering adcGeom = new AlertDCGeometryNumbering();
+					adcGeom.fromDataNumbering(sector[index], compLayer[index], component[index], order[index]);
+					DCLayer dcl = AlertGeometry.getDCLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
+					if (dcl != null) {
+						dcl.drawXYWire(g, container, adcGeom.component, Color.yellow, Color.black, _view.getFixedZ());
+					}
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * Draw the accumulated hits

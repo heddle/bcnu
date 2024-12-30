@@ -284,7 +284,7 @@ public class UrWELLXYView extends HexView {
 	}
 
 
-	//draw data selected hightlight data
+	//draw data selected highlighted data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
 
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
