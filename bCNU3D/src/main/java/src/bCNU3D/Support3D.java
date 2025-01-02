@@ -146,19 +146,19 @@ public class Support3D {
 		gl.glEnd();
 	}
 
-	public static void prepareForTransparent(GLAutoDrawable drawable) {
-        GL2 gl = drawable.getGL().getGL2();
-        gl.glDepthMask(false); // Disable depth writes for transparent
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-    }
-
-
-	public static void prepareForOpaque(GLAutoDrawable drawable) {
-        GL2 gl = drawable.getGL().getGL2();
-        gl.glDepthMask(true); // Enable depth writes for solid objects
-        gl.glDisable(GL.GL_BLEND);
-    }
+//	public static void prepareForTransparent(GLAutoDrawable drawable) {
+//        GL2 gl = drawable.getGL().getGL2();
+//        gl.glDepthMask(false); // Disable depth writes for transparent
+//        gl.glEnable(GL.GL_BLEND);
+//        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+//    }
+//
+//
+//	public static void prepareForOpaque(GLAutoDrawable drawable) {
+//        GL2 gl = drawable.getGL().getGL2();
+//        gl.glDepthMask(true); // Enable depth writes for solid objects
+//        gl.glDisable(GL.GL_BLEND);
+//    }
 
 	public static final String vshader1 = "void main {\n" + "gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
 			+ "}";

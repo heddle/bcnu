@@ -34,6 +34,24 @@ public abstract class DetectorItem3D extends Item3D {
 		_cedPanel3D = panel3D;
 	}
 
+
+	public void EXPdraw(GLAutoDrawable drawable) {
+//
+//		if (!show()) {
+//			return;
+//		}
+//
+//		if (!_eventManager.isAccumulating()) {
+//			Support3D.prepareForOpaque(drawable);
+//			drawData(drawable);
+//		}
+//
+//		if (_cedPanel3D.showVolumes() && (getVolumeAlpha() > 2)) {
+//			Support3D.prepareForTransparent(drawable);
+//			drawShape(drawable);
+//		}
+	}
+	
 	@Override
 	public void draw(GLAutoDrawable drawable) {
 
@@ -41,18 +59,16 @@ public abstract class DetectorItem3D extends Item3D {
 			return;
 		}
 
-		if (!_eventManager.isAccumulating()) {
-			Support3D.prepareForOpaque(drawable);
-			drawData(drawable);
-		}
-
 		if (_cedPanel3D.showVolumes() && (getVolumeAlpha() > 2)) {
-			Support3D.prepareForTransparent(drawable);
 			drawShape(drawable);
 		}
 
+		if (!_eventManager.isAccumulating()) {
+			drawData(drawable);
+		}
 
 	}
+
 
 	/**
 	 * Draw the boundary

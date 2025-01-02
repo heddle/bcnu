@@ -103,7 +103,7 @@ public class AlertDCHitDrawer {
 					adcGeom.fromDataNumbering(sector[index], compLayer[index], component[index], order[index]);
 					DCLayer dcl = AlertGeometry.getDCLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
 					if (dcl != null) {
-						dcl.drawXYWire(g, container, adcGeom.component, Color.yellow, Color.black, _view.getFixedZ());
+						dcl.drawXYWire(g, container, adcGeom.component, Color.orange, Color.black, _view.getFixedZ());
 					}
 				}
 			}

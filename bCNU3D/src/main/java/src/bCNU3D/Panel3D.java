@@ -303,9 +303,9 @@ public class Panel3D extends JPanel implements GLEventListener {
 		}
 		gl.glPopMatrix();
 
-		gl.glDepthMask(true);
-		gl.glDisable(GL.GL_BLEND);
-		gl.glLoadIdentity();
+//		gl.glDepthMask(true);
+//		gl.glDisable(GL.GL_BLEND);
+//		gl.glLoadIdentity();
 	}
 
 	@Override
@@ -313,8 +313,8 @@ public class Panel3D extends JPanel implements GLEventListener {
 		System.err.println("called dispose");
 	}
 
-	@Override
-	public void init(GLAutoDrawable drawable) {
+
+	public void EXPinit(GLAutoDrawable drawable) {
 		glu = GLU.createGLU();
 		GL2 gl = drawable.getGL().getGL2();
 
@@ -351,6 +351,61 @@ public class Panel3D extends JPanel implements GLEventListener {
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_DONT_CARE);
 
 		gl.glEnable(GL3.GL_PROGRAM_POINT_SIZE);
+	}
+
+	@Override
+	public void init(GLAutoDrawable drawable) {
+		glu = GLU.createGLU();
+		GL2 gl = drawable.getGL().getGL2();
+
+		// version?
+		_versionStr = gl.glGetString(GL.GL_VERSION);
+		System.err.println("OpenGL version: " + _versionStr);
+
+		_rendererStr = gl.glGetString(GL.GL_RENDERER);
+		System.err.println("OpenGL renderer: " + _rendererStr);
+
+		float values[] = new float[2];
+		gl.glGetFloatv(GL2GL3.GL_LINE_WIDTH_GRANULARITY, values, 0);
+		System.err.println("GL.GL_LINE_WIDTH_GRANULARITY value is " + values[0]);
+
+		gl.glGetFloatv(GL2GL3.GL_LINE_WIDTH_RANGE, values, 0);
+		System.err.println("GL.GL_LINE_WIDTH_RANGE values are " + values[0] + ", " + values[1]);
+
+		// Global settings.
+		// gl.glClearColor(0f, 0f,0f, 1.0f); // set background (clear) color
+//		gl.glClearColor(1f, 1f, 1f, 1f); // set background (clear) color
+//		gl.glClearColor(.9804f, .9216f, .8431f, 1f); // set background (clear) color
+//		gl.glClearColor(0.9412f, 1f, 1f, 1f); // set background (clear) color
+		gl.glClearColor(_bgRed, _bgGreen, _bgBlue, 1f); // set background (clear) color
+		gl.glClearDepth(1.0f); // set clear depth value to farthest
+		gl.glEnable(GL.GL_DEPTH_TEST); // enables depth testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // the type of depth test to do
+		// gl.glDepthFunc(GL.GL_LESS); // the type of depth test to do
+
+		// best perspective correction
+		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
+		// blends colors, smoothes lighting
+		// gl.glShadeModel(GL2ES1.GL_SMOOTH);
+		gl.glShadeModel(GLLightingFunc.GL_FLAT);
+
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+		// gl.glDepthMask(false);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glEnable(GL2ES3.GL_COLOR);
+		gl.glHint(GL2ES1.GL_POINT_SMOOTH_HINT, GL.GL_DONT_CARE);
+		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_DONT_CARE);
+
+		gl.glEnable(GL3.GL_PROGRAM_POINT_SIZE);
+		// gl.glEnable(GL.GL_POINT_SIZE);
+
+		// float pos[] = { 0.0f, 0.0f, -1000.0f, 0.0f };
+
+		// gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, pos, 0);
+		// gl.glEnable(GL2.GL_CULL_FACE);
+		// gl.glEnable(GL2.GL_LIGHTING);
+		// gl.glEnable(GL2.GL_LIGHT0);
+		
 	}
 
 	@Override

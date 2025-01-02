@@ -111,7 +111,7 @@ public class AlertTOFHitDrawer {
 					TOFLayer tofl = AlertGeometry.getTOFLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
 					if (tofl != null) {
 						ScintillatorPaddle paddle = tofl.getPaddle(adcGeom.component % 4);
-						tofl.drawPaddle(g, container, paddle, Color.black, Color.red);
+						tofl.drawPaddle(g, container, paddle, Color.orange, Color.black);
 					}
 				}
 			}
