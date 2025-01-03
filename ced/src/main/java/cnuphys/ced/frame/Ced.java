@@ -44,6 +44,7 @@ import cnuphys.bCNU.wordle.Wordle;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.ced3d.view.AlertView3D;
 import cnuphys.ced.ced3d.view.CentralView3D;
+import cnuphys.ced.ced3d.view.FMTView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmingTestView3D;
@@ -100,7 +101,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.7.0" + UnicodeSupport.SMALL_BETA + "2";
+	private static final String _release = "1.7.1" + UnicodeSupport.SMALL_BETA;
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -108,8 +109,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	// for the event count
 	private JMenuItem _eventCountLabel;
 
-	// using 3D?
-	private static boolean _use3D = true;
 
 	// experimental version?
 	private static boolean _experimental;
@@ -169,6 +168,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private ForwardView3D _forward3DView;
 
 	private AlertView3D _alert3DView;
+	private FMTView3D _fmt3DView;
 
 	private SwimmingTestView3D _swimming3DView;
 	private CentralView3D _central3DView;
@@ -305,15 +305,14 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		_virtualView.moveTo(_alertXYView, 11, VirtualView.CENTER);
 
-		if (_use3D) {
-			_virtualView.moveTo(_alert3DView, 12, VirtualView.CENTER);
-			_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 15, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_alert3DView, 12, VirtualView.CENTER);
+		_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
+		_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_ftCal3DView, 16, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_fmt3DView, 15, VirtualView.CENTER);
 
-			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 15, VirtualView.CENTER);
-			}
+		if (isExperimental()) {
+			_virtualView.moveTo(_swimming3DView, 17, VirtualView.CENTER);
 		}
 	}
 
@@ -373,7 +372,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a virtual view. Count how many cells are needed
 
-		int numVVCell = 13 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 18;
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -441,18 +440,16 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
         //FTOF
 		_ftofView = FTOFView.createFTOFView();
 
-		// 3D view?
-		if (_use3D) {
-//			MainThread.getSingleton().useMainThread = true;
-			ViewManager.getInstance().getViewMenu().addSeparator();
-			_forward3DView = new ForwardView3D();
-			_central3DView = new CentralView3D();
-			_ftCal3DView = new FTCalView3D();
-			_alert3DView = new AlertView3D();
+		ViewManager.getInstance().getViewMenu().addSeparator();
+		_alert3DView = new AlertView3D();
+		_central3DView = new CentralView3D();
+		_fmt3DView = new FMTView3D();
+		_forward3DView = new ForwardView3D();
+		_ftCal3DView = new FTCalView3D();
 
-			if (isExperimental()) {
-				_swimming3DView = new SwimmingTestView3D();
-			}
+
+		if (isExperimental()) {
+			_swimming3DView = new SwimmingTestView3D();
 		}
 
 		// add logview
@@ -1031,25 +1028,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		fixTitle();
 		ClasIoEventManager.getInstance().reloadCurrentEvent();
 	}
-
-	/**
-	 * Get the shared busy panel
-	 *
-	 * @return the shared progress bar
-	 */
-//	public static BusyPanel getBusyPanel() {
-//		return _busyPanel;
-//	}
-
-	/**
-	 * Check whether we use 3D
-	 *
-	 * @return <code>true</code> if we use 3D
-	 */
-	public static boolean use3D() {
-		return _use3D;
-	}
-
 	/**
 	 * Is this an experimental version?
 	 * @return <code>true</code> if this version has experimental features
@@ -1228,10 +1206,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 						i++;
 						FileUtilities.setDefaultDir(arg[i]);
 					}
-				} else if (arg[i].contains("YES3D")) {
-					_use3D = true;
-				} else if (arg[i].contains("NO3D")) {
-					_use3D = false;
 				} else if (arg[i].contains("EXP")) {
 					_experimental = true;
 					System.out.println("Note: This is an experimental version");

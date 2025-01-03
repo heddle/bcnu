@@ -51,7 +51,7 @@ public abstract class DetectorItem3D extends Item3D {
 //			drawShape(drawable);
 //		}
 	}
-	
+
 	@Override
 	public void draw(GLAutoDrawable drawable) {
 

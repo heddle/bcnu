@@ -59,13 +59,14 @@ public class AlertGeometry {
 		System.out.println("=======================================");
 
 		String variationName = Ced.getGeometryVariation();
-		constantProvider = new DatabaseConstantProvider(11, variationName);
+        constantProvider = new DatabaseConstantProvider(11, variationName);
 
 		initializeDC(constantProvider);
 		initializeTOF(constantProvider);
 
 	}
 
+	// print a debug message
 	private static void debugPrint(String s, int option) {
 		if (_debug) {
 			if (option == 0) {

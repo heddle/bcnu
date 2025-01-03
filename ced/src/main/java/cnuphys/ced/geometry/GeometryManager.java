@@ -17,6 +17,7 @@ import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Vector3D;
 
 import cnuphys.ced.geometry.alert.AlertGeometry;
+import cnuphys.ced.geometry.fmt.FMTGeometry;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 import cnuphys.swim.SwimTrajectory;
@@ -27,6 +28,7 @@ public class GeometryManager {
 	 * Singleton
 	 */
 	private static volatile GeometryManager instance;
+
 
 	// BSTxy panels
 	private static ArrayList<BSTxyPanel> _bstXYpanelsLayers = new ArrayList<>(); // new
@@ -80,6 +82,8 @@ public class GeometryManager {
 		// get the alert geometry
 		AlertGeometry.initialize();
 
+		// get the FMT geometry
+		FMTGeometry.initialize();
 
 		// get BST data
 		BSTGeometry.initialize();

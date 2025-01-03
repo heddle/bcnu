@@ -55,7 +55,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	private HighlightData _highlightDataAHDC = new HighlightData();
 	private HighlightData _highlightDataATOF = new HighlightData();
 
-	
+
 	// bank matches
 	private static String _defMatches[] = { "AHDC", "ATOF" };
 
@@ -173,7 +173,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 					else {
 						drawAccumulatedHits(g, container);
 					}
-					
+
 					//data selected highlight?
 					drawDataSelectedHighlight(g, container);
 
@@ -188,7 +188,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		getContainer().setAfterDraw(afterDraw);
 	}
-	
+
 	//draw data selected highlighted data
 	private void drawDataSelectedHighlight(Graphics g, IContainer container) {
 
@@ -196,13 +196,13 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		if (dataEvent == null) {
 			return;
 		}
-		
+
 		//adc data
 		if (this.showADCHits()) {
 			if (dataEvent.hasBank("AHDC::adc") && (_highlightDataAHDC.hit >= 0)) {
 				_dcHitDrawer.drawHighlightHit(g, container, dataEvent, _highlightDataAHDC.hit);
 			}
-			
+
 			if (dataEvent.hasBank("ATOF::adc") && (_highlightDataATOF.hit >= 0)) {
 				_tofHitDrawer.drawHighlightHit(g, container, dataEvent, _highlightDataATOF.hit);
 			}
@@ -380,8 +380,8 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 			}
 
 		}
-		
-		
+
+
 		// near a swum trajectory?
 		double mindist = _swimTrajectoryDrawer.closestApproach(wp);
 		double pixlen = WorldGraphicsUtilities.getMeanPixelDensity(container) * mindist;
@@ -397,7 +397,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 
 	}
-	
+
 	/**
 	 * In the BankDataTable a row was selected.
 	 * @param bankName the name of the bank

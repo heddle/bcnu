@@ -11,8 +11,7 @@ public class ConstantsLoader {
 
 	// static FTOFGeant4Factory geometry ;
 
-	private static DatabaseConstantProvider DB;
-	static DatabaseConstantProvider dbprovider = new DatabaseConstantProvider(10, "default");
+	static DatabaseConstantProvider dbprovider;
 
 	public static final synchronized void Load(int runNb) {
 		// initialize the constants
@@ -155,14 +154,6 @@ public class ConstantsLoader {
 		Constants.setCRZWIDTH(CRZWIDTH);
 
 		CSTLOADED = true;
-		setDB(dbprovider);
 	}
 
-	public static final synchronized DatabaseConstantProvider getDB() {
-		return DB;
-	}
-
-	public static final synchronized void setDB(DatabaseConstantProvider dB) {
-		DB = dB;
-	}
 }

@@ -2,7 +2,6 @@ package cnuphys.ced.clasio;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -80,8 +79,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 		setLayout(new GridLayout(numRows, 0, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 
-		
-        Dimension minSize = new Dimension(200, 100); 
+
+        Dimension minSize = new Dimension(200, 100);
         setMinimumSize(minSize);
 
 
@@ -107,8 +106,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 		return pbPanel;
 
 	}
-	
-	
+
+
 
 	// create the event listener
 	private static void createEventListener() {
@@ -168,10 +167,10 @@ public class ClasIoPresentBankPanel extends JPanel {
 			String[] allBanks = event.getBankList();
 			Arrays.sort(allBanks);
 			if (allBanks != null) {
-				
+
 				//count the number of banks that match
 				//to see if we should used larger font
-				
+
 				int count = 0;
 				for (String s : allBanks) {
 					if (match(s)) {

@@ -81,10 +81,10 @@ public class AlertDCHitDrawer {
 			}
 		}
 	}
-	
+
 	/**
 	 * Draw the highlighted hit from the adc bank
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the container
 	 * @param index     the 0-based index of the hit

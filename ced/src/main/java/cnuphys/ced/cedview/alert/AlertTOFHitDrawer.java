@@ -14,7 +14,6 @@ import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
-import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.ced.geometry.alert.TOFLayer;
 
 public class AlertTOFHitDrawer {
@@ -87,11 +86,11 @@ public class AlertTOFHitDrawer {
 		}
 
 	} // drawTOFHits
-	
-	
+
+
 	/**
 	 * Draw the highlighted hit from the adc bank
-	 * 
+	 *
 	 * @param g         the graphics context
 	 * @param container the container
 	 * @param index     the 0-based index of the hit

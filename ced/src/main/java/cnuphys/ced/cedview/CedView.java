@@ -686,7 +686,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	/**
 	 * Convenience method to see if we show CVT pass 1 tracks.
-	 * 
+	 *
 	 * @return<code>true</code>if we are to showCVT pass 1 tracks.
 	 */
 

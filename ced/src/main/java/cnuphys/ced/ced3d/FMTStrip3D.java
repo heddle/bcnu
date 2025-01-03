@@ -9,22 +9,15 @@ import com.jogamp.opengl.GLAutoDrawable;
 import bCNU3D.Support3D;
 import cnuphys.ced.cedview.alert.AlertTOFGeometryNumbering;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.geometry.alert.AlertGeometry;
+import cnuphys.ced.geometry.fmt.FMTGeometry;
 import cnuphys.lund.X11Colors;
 
-public class AlertPaddle3D extends DetectorItem3D {
+public class FMTStrip3D extends DetectorItem3D {
 
-	//0-based sector [0..14]
-	private final int _sectorId;
-
-	//0-based superlayer [0..1]
-	private final int _superlayerId;
-
-	//0-based layer 0, 0--9
-	private final int _layerId;
-
-	//0-based paddle [0..59]
-	private final int _paddleId;
+	private final int _sector = 0;
+	private final int _superlayer = 0;
+	private int _layerId; // 0..5
+	private int _stripId; // 0..1023
 
 	// the cached vertices
 	private float[] _coords = new float[24];
@@ -32,37 +25,36 @@ public class AlertPaddle3D extends DetectorItem3D {
 	// frame the paddle?
 	private static boolean _frame = true;
 
-
 	/**
-	 * Create an Alert paddle
+	 * Create an FMT strip
+	 * 
 	 * @param panel3D the 3D panel this is associated with
-	 * @param sector 0-based sector [0..14]
-	 * @param superlayer 0-based superlayer [0..1]
-	 * @param layer 0-based layer [0..9]
-	 * @param paddle 0-based paddle Id [0..3]
+	 * @param layer   0-based layer [0..5]
+	 * @param strip   0-based strip Id [0..1023]
 	 */
-	public AlertPaddle3D(CedPanel3D panel3D, int sector, int superlayer, int layer, int paddle) {
-		//just to be confusing, these are 1-based
+	public FMTStrip3D(CedPanel3D panel3D, int sector, int superlayer, int layer, int strip) {
+		// just to be confusing, these are 1-based
 		super(panel3D);
 
-		_sectorId = sector;
-		_superlayerId = superlayer;
 		_layerId = layer;
-		_paddleId = paddle;
-		AlertGeometry.paddleVertices(_sectorId, _superlayerId, _layerId, _paddleId, _coords);
+		_stripId = strip;
+		try {
+			FMTGeometry.stripVertices(_sector, _superlayer, _layerId, _stripId, _coords);
+		} catch (Exception e) {
+			System.err.println(String.format("ERROR sector = %d  superlayer = %d  layer = %d   strip = %d", _sector, _superlayer, _layerId, _stripId));
+			e.printStackTrace();
+			System.exit(1);
+		}
+
 	}
 
 	@Override
 	public void drawShape(GLAutoDrawable drawable) {
 		Color color = Color.gray;
-		if (_superlayerId == 0) {
-			color = X11Colors.getX11Color("light cyan", getVolumeAlpha());
+		if ((_layerId % 2) == 0) {
+			color = X11Colors.getX11Color("light yellow", getVolumeAlpha());
 		} else {
-			if ((_layerId % 2) == 0) {
-				color = X11Colors.getX11Color("light yellow", getVolumeAlpha());
-			} else {
-				color = X11Colors.getX11Color("light green", getVolumeAlpha());
-			}
+			color = X11Colors.getX11Color("light green", getVolumeAlpha());
 		}
 
 		Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
@@ -81,25 +73,21 @@ public class AlertPaddle3D extends DetectorItem3D {
 			return;
 		}
 
-		if (dataEvent.hasBank("ATOF::adc")) {
+		if (dataEvent.hasBank("FMT::adc")) {
 
-			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			short component[] = _dataWarehouse.getShort("FMT::adc", "component");
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {
-					Color color = Color.red;
+					Color color = Color.orange;
 
-					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
-					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
-					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
-
-					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+					byte layer[] = _dataWarehouse.getByte("FMT::adc", "layer");
 
 					for (int i = 0; i < count; i++) {
-						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
-
-						if ((adcGeom.sector == _sectorId) && (adcGeom.superlayer == _superlayerId)
-								&& (adcGeom.layer == _layerId) && ((adcGeom.component % 4) == _paddleId)) {
+	
+						int lm1 = layer[i]-1;
+						int stripm1 = component[i]-1;
+						if ((lm1 == _layerId) && (stripm1 == _stripId)) {
 
 							Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
 							Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);
@@ -112,16 +100,14 @@ public class AlertPaddle3D extends DetectorItem3D {
 							return;
 						}
 					}
-				}
+				} //count > 0
 			}
-
-
 		}
 	}
 
 	@Override
 	protected boolean show() {
-		return _cedPanel3D.showTOF(_superlayerId+1, _layerId+1);
+		return _cedPanel3D.showFMTLayer(_layerId+1);
 	}
 
 }

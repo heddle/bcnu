@@ -128,6 +128,14 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String DC_SUPLAY4_LAY2 = "DC_Suplay4_Lay2";
 	public static final String DC_SUPLAY5_LAY1 = "DC_Suplay5_Lay1";
 //	public static final String DC_SUPLAY5_LAY2 = "DC_Suplay5_Lay2";
+	
+	public static final String SHOW_FMT_LAYER_1 = "FMT Layer 1";
+	public static final String SHOW_FMT_LAYER_2 = "FMT Layer 2";
+	public static final String SHOW_FMT_LAYER_3 = "FMT Layer 3";
+	public static final String SHOW_FMT_LAYER_4 = "FMT Layer 4";
+	public static final String SHOW_FMT_LAYER_5 = "FMT Layer 5";
+	public static final String SHOW_FMT_LAYER_6 = "FMT Layer 6";
+
 
 
 	// Check box array
@@ -799,6 +807,78 @@ public abstract class PlainPanel3D extends Panel3D {
 			return showSector5();
 		case 6:
 			return showSector6();
+		}
+		return false;
+	}
+
+	/**
+	 * Show FMT Layer 1?
+	 *
+	 * @return <code>true</code> if we are to show BMT Layer 1
+	 */
+	public boolean showFMTLayer1() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_1);
+	}
+
+	/**
+	 * Show FMT Layer 2?
+	 *
+	 * @return <code>true</code> if we are to show BMT Layer 2
+	 */
+	public boolean showFMTLayer2() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_2);
+	}
+
+	/**
+	 * Show FMT Layer 3?
+	 *
+	 * @return <code>true</code> if we are to show BMT Layer 3
+	 */
+	public boolean showFMTLayer3() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_3);
+	}
+
+	/**
+	 * Show FMT Layer 4?
+	 *
+	 * @return <code>true</code> if we are to show BMT Layer 4
+	 */
+	public boolean showFMTLayer4() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_4);
+	}
+
+	/**
+	 * Show FMT Layer 5?
+	 *
+	 * @return <code>true</code> if we are to show BMT Layer 5
+	 */
+	public boolean showFMTLayer5() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_5);
+	}
+
+	/**
+	 * Show FMT Layer 6?
+	 *
+	 * @return <code>true</code> if we are to show BMT Layer 6
+	 */
+	public boolean showFMTLayer6() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_6);
+	}
+	
+	public boolean showFMTLayer(int layer) {
+		switch (layer) {
+		case 1:
+			return showFMTLayer1();
+		case 2:
+			return showFMTLayer2();
+		case 3:
+			return showFMTLayer3();
+		case 4:
+			return showFMTLayer4();
+		case 5:
+			return showFMTLayer5();
+		case 6:
+			return showFMTLayer6();
 		}
 		return false;
 	}

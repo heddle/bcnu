@@ -314,7 +314,8 @@ public class Panel3D extends JPanel implements GLEventListener {
 	}
 
 
-	public void EXPinit(GLAutoDrawable drawable) {
+	@Override
+	public void init(GLAutoDrawable drawable) {
 		glu = GLU.createGLU();
 		GL2 gl = drawable.getGL().getGL2();
 
@@ -353,8 +354,8 @@ public class Panel3D extends JPanel implements GLEventListener {
 		gl.glEnable(GL3.GL_PROGRAM_POINT_SIZE);
 	}
 
-	@Override
-	public void init(GLAutoDrawable drawable) {
+	//@Override
+	public void OLDinit(GLAutoDrawable drawable) {
 		glu = GLU.createGLU();
 		GL2 gl = drawable.getGL().getGL2();
 
