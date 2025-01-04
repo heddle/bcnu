@@ -11,7 +11,9 @@ import org.jlab.geom.detector.fmt.FMTFactory;
 import org.jlab.geom.detector.fmt.FMTLayer;
 import org.jlab.geom.detector.fmt.FMTSector;
 import org.jlab.geom.detector.fmt.FMTSuperlayer;
+import org.jlab.geom.prim.Line3D;
 import org.jlab.geom.prim.Point3D;
+import org.jlab.geom.prim.Vector3D;
 import org.jlab.logging.DefaultLogger;
 
 import cnuphys.ced.frame.Ced;
@@ -180,6 +182,27 @@ public class FMTGeometry {
 		System.out.println("zmin: " + zmin);
 
 		System.out.println("zmax: " + zmax);
+
+		for (int layer = 0; layer < 6; layer++) {
+			for (int stripId = 0; stripId < 1024; stripId++) {
+				if ((stripId == 1023) || (stripId % 10) == 0) {
+				//	if ((stripId % 100) == 0) {
+					TrackerStrip strip = getStrip(0, 0, layer, stripId);
+					Line3D line = strip.getLine();
+					Vector3D v = line.toVector();
+					Point3D p = strip.getMidpoint();
+					double x = p.x();
+					double y = p.y();
+					double z = p.z();
+					double r = Math.sqrt(x * x + y * y + z * z);
+					double rho = Math.sqrt(x * x + y * y);
+					double theta = Math.toDegrees(Math.acos(z / r));
+					double phi = Math.toDegrees(Math.atan2(y, x));
+					System.out.println(String.format("layer: %d    strip: %d    theta: %-7.3f    phi: %-7.3f    rho: %-7.3f    z: %-7.3f",
+							layer + 1, stripId + 1, theta, phi, rho, z));
+				}
+			}
+		}
 
 		System.out.println("done");
 
