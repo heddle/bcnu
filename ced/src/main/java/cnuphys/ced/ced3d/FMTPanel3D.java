@@ -10,18 +10,24 @@ import item3D.Axes3D;
 public class FMTPanel3D extends CedPanel3D {
 	
 	// dimension of this panel are in mm
-	private final float xymax = 20f;
-	private final float zmax = 37f;
+	private final float xymax = 25f;
+	private final float zmax = 50f;
 	private final float zmin = 0;
+	
+	private FMTRangePanel _rangePanel;
 
 	// labels for the check box
 	private static final String _cbaLabels[] = { SHOW_VOLUMES, SHOW_TRUTH, SHOW_RECON_CROSSES, SHOW_TB_TRACK,
 			SHOW_HB_TRACK, SHOW_COSMIC, SHOW_FMT_LAYER_1, SHOW_FMT_LAYER_2, SHOW_FMT_LAYER_3, SHOW_FMT_LAYER_4,
-			SHOW_FMT_LAYER_5, SHOW_FMT_LAYER_6};
+			SHOW_FMT_LAYER_5, SHOW_FMT_LAYER_6, SHOW_FMT_REGION_1, SHOW_FMT_REGION_2, SHOW_FMT_REGION_3,
+			SHOW_FMT_REGION_4};
 
 	public FMTPanel3D(CedView3D view3D, float angleX, float angleY, float angleZ, float xDist, float yDist,
 			float zDist) {
 		super(view3D, angleX, angleY, angleZ, xDist, yDist, zDist, _cbaLabels);
+		
+		_rangePanel = new FMTRangePanel(view3D);
+		_eastPanel.add(_rangePanel);
 	}
 
 	@Override
@@ -54,6 +60,17 @@ public class FMTPanel3D extends CedPanel3D {
 	@Override
 	public float getZStep() {
 		return (zmax - zmin) / 25f;
+	}
+	
+
+	/**
+     * Show the strip
+     * 
+     * @param strip the 1-based strip to show
+     * @return <code>true</code> if the strip	
+     */
+	public boolean showStrip(int strip) {
+		return _rangePanel.showStrip(strip);
 	}
 
 

@@ -135,6 +135,11 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String SHOW_FMT_LAYER_4 = "FMT Layer 4";
 	public static final String SHOW_FMT_LAYER_5 = "FMT Layer 5";
 	public static final String SHOW_FMT_LAYER_6 = "FMT Layer 6";
+	
+	public static final String SHOW_FMT_REGION_1 = "FMT Region 1";
+	public static final String SHOW_FMT_REGION_2 = "FMT Region 2";
+	public static final String SHOW_FMT_REGION_3 = "FMT Region 3";
+	public static final String SHOW_FMT_REGION_4 = "FMT Region 4";
 
 
 
@@ -148,6 +153,8 @@ public abstract class PlainPanel3D extends Panel3D {
 	protected String _cbaLabels[];
 
 	protected PlainView3D _view;
+	
+	protected JPanel _eastPanel;
 
 	/*
 	 * The panel that holds the 3D objects
@@ -273,10 +280,10 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	// add eastern panel
 	private void addEast() {
-		JPanel ep = new JPanel();
-		ep.setLayout(new VerticalFlowLayout());
+		_eastPanel = new JPanel();
+		_eastPanel.setLayout(new VerticalFlowLayout());
 
-		ep.add(new KeyboardLegend(this));
+		_eastPanel.add(new KeyboardLegend(this));
 		_checkBoxArray = new CheckBoxArray(2, 4, 4, _cbaLabels);
 
 		AbstractButton ab = _checkBoxArray.getButton(SHOW_MAP_EXTENTS);
@@ -285,9 +292,9 @@ public abstract class PlainPanel3D extends Panel3D {
 		}
 
 		_checkBoxArray.setBorder(new CommonBorder());
-		ep.add(_checkBoxArray);
+		_eastPanel.add(_checkBoxArray);
 
-		add(ep, BorderLayout.EAST);
+		add(_eastPanel, BorderLayout.EAST);
 	}
 
 	/**
@@ -812,9 +819,45 @@ public abstract class PlainPanel3D extends Panel3D {
 	}
 
 	/**
+	 * Show FMT Region 1?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 1
+	 */
+	public boolean showFMTRegion1() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_1);
+	}
+	
+	/**
+	 * Show FMT Region 2?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 2
+	 */
+	public boolean showFMTRegion2() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_2);
+	}
+	
+	/**
+	 * Show FMT Region 3?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 3
+	 */
+	public boolean showFMTRegion3() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_3);
+	}
+	
+	/**
+	 * Show FMT Region 4?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 4
+	 */
+	public boolean showFMTRegion4() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_4);
+	}
+
+	/**
 	 * Show FMT Layer 1?
 	 *
-	 * @return <code>true</code> if we are to show BMT Layer 1
+	 * @return <code>true</code> if we are to show FMT Layer 1
 	 */
 	public boolean showFMTLayer1() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_1);
@@ -823,7 +866,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	/**
 	 * Show FMT Layer 2?
 	 *
-	 * @return <code>true</code> if we are to show BMT Layer 2
+	 * @return <code>true</code> if we are to show FMT Layer 2
 	 */
 	public boolean showFMTLayer2() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_2);
@@ -832,7 +875,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	/**
 	 * Show FMT Layer 3?
 	 *
-	 * @return <code>true</code> if we are to show BMT Layer 3
+	 * @return <code>true</code> if we are to show FMT Layer 3
 	 */
 	public boolean showFMTLayer3() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_3);
@@ -841,7 +884,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	/**
 	 * Show FMT Layer 4?
 	 *
-	 * @return <code>true</code> if we are to show BMT Layer 4
+	 * @return <code>true</code> if we are to show FMT Layer 4
 	 */
 	public boolean showFMTLayer4() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_4);
@@ -850,7 +893,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	/**
 	 * Show FMT Layer 5?
 	 *
-	 * @return <code>true</code> if we are to show BMT Layer 5
+	 * @return <code>true</code> if we are to show FMT Layer 5
 	 */
 	public boolean showFMTLayer5() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_5);
@@ -859,12 +902,18 @@ public abstract class PlainPanel3D extends Panel3D {
 	/**
 	 * Show FMT Layer 6?
 	 *
-	 * @return <code>true</code> if we are to show BMT Layer 6
+	 * @return <code>true</code> if we are to show FMT Layer 6
 	 */
 	public boolean showFMTLayer6() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_6);
 	}
 	
+	/**
+	 * Show FMT Layer?
+	 *
+	 * @param layer the 1-based layer to show
+	 * @return <code>true</code> if we are to show the layer
+	 */
 	public boolean showFMTLayer(int layer) {
 		switch (layer) {
 		case 1:
@@ -879,6 +928,26 @@ public abstract class PlainPanel3D extends Panel3D {
 			return showFMTLayer5();
 		case 6:
 			return showFMTLayer6();
+		}
+		return false;
+	}
+	
+	/**
+	 * Show FMT Region?
+	 *
+	 * @param region the 1-based region to show
+	 * @return <code>true</code> if we are to show the region
+	 */
+	public boolean showFMTRegion(int region) {
+		switch (region) {
+		case 1:
+			return showFMTRegion1();
+		case 2:
+			return showFMTRegion2();
+		case 3:
+			return showFMTRegion3();
+		case 4:
+			return showFMTRegion4();
 		}
 		return false;
 	}

@@ -207,5 +207,29 @@ public class FMTGeometry {
 		System.out.println("done");
 
 	}
+	
+	/**
+	 * Get the 1-based region 1..4
+	 * @param strip1 the 1-based strip 1..1024
+	 * @return the region 1..4
+	 */
+	public static int getRegion(int strip1) {
+		int i = strip1 - 1;
+        int region = 0;
+        if (i >= 0 && i < 320) {
+            region = 1;
+        }
+        if (i >= 320 && i < 512) {
+            region = 2;
+        }
+        if (i >= 512 && i < 832) {
+            region = 3;
+        }
+        if (i >= 832 && i < 1024) {
+            region = 4;
+        }
+
+        return region;
+	}
 
 }

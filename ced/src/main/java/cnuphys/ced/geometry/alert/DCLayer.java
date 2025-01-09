@@ -61,9 +61,12 @@ public class DCLayer {
  * @param geoAlertDCLayer the geoDatabase object
  */
 	public DCLayer(AlertDCLayer geoAlertDCLayer) {
-		sector = geoAlertDCLayer.getSectorId();
-		superlayer = geoAlertDCLayer.getSuperlayerId();
-		layer = geoAlertDCLayer.getLayerId();
+		sector = geoAlertDCLayer.getSectorId()-1;
+		superlayer = geoAlertDCLayer.getSuperlayerId()-1;
+		layer = geoAlertDCLayer.getLayerId()-1;
+		
+		System.err.println(String.format("CREATE DC LAYER  sect: %d    superlay %d    layer: %d", sector, superlayer, layer));
+		
 		numWires = geoAlertDCLayer.getNumComponents();
 
 

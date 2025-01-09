@@ -79,7 +79,7 @@ public class FMTStrip3D extends DetectorItem3D {
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {
-					Color color = Color.orange;
+					Color color = X11Colors.getX11Color("orange", getVolumeAlpha());
 
 					byte layer[] = _dataWarehouse.getByte("FMT::adc", "layer");
 
@@ -96,7 +96,6 @@ public class FMTStrip3D extends DetectorItem3D {
 							Support3D.drawQuad(drawable, _coords, 1, 5, 6, 2, color, 1f, _frame);
 							Support3D.drawQuad(drawable, _coords, 4, 5, 6, 7, color, 1f, _frame);
 
-
 							return;
 						}
 					}
@@ -107,7 +106,18 @@ public class FMTStrip3D extends DetectorItem3D {
 
 	@Override
 	protected boolean show() {
-		return _cedPanel3D.showFMTLayer(_layerId+1);
-	}
+		FMTPanel3D _fmtPanel3D = (FMTPanel3D) _panel3D;
+		boolean inRange = _fmtPanel3D.showStrip(_stripId+1);
+		if (!inRange) {
+			return false;
+		}
+		boolean showLayer = _fmtPanel3D.showFMTLayer(_layerId+1);
+		if (!showLayer) {
+			return false;
+		}
 
+		int region = FMTGeometry.getRegion(_stripId + 1);
+		boolean showRegion = _fmtPanel3D.showFMTRegion(region);
+		return showRegion;
+	}
 }

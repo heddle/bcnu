@@ -125,6 +125,7 @@ public class AlertGeometry {
 		}
 		return 0;
 	}
+	
 
 	// init the time of flight
 	private static void initializeTOF(DatabaseConstantProvider cp) {
@@ -138,18 +139,18 @@ public class AlertGeometry {
 
 		for (int sect = 0; sect < numsect; sect++) {
 			debugPrint("", 2);
-			debugPrint(String.format("  for sect: %d", sect), 1);
+			debugPrint(String.format("  for sect: %d", sect+1), 1);
 			int numsupl = tofFactory.createSector(cp, sect).getNumSuperlayers();
 			debugPrint(String.format("  numsuperlayer: %d", numsupl), 1);
 
 			for (int superlayer = 0; superlayer < numsupl; superlayer++) {
-				debugPrint(String.format("    for superlayer: %d", superlayer), 1);
+				debugPrint(String.format("    for superlayer: %d", superlayer+1), 1);
 
 				int numlay = tofFactory.createSuperlayer(cp, sect, superlayer).getNumLayers();
 				debugPrint(String.format("    numlayer: %d", numlay), 1);
 
 				for (int layer = 0; layer < numlay; layer++) {
-					debugPrint(String.format("      for layer: %d", layer), 1);
+					debugPrint(String.format("      for layer: %d", layer+1), 1);
 
 					AlertTOFLayer alertTOFLayer = tofFactory.createLayer(cp, sect, superlayer, layer);
 					TOFLayer tofLayer = new TOFLayer(tofFactory.createLayer(cp, sect, superlayer, layer));
@@ -158,31 +159,50 @@ public class AlertGeometry {
 					debugPrint(String.format("      numpaddle: %d", numpaddle), 1);
 
 					if (_debug) {
-					   List<ScintillatorPaddle> paddles = alertTOFLayer.getAllComponents();
-					   System.out.print("      numpaddle: " + numpaddle + " with ids: ");
-						for (int i = 0; i < numpaddle; i++) {
-							System.out.print(paddles.get(i).getComponentId() + " ");
-						}
-						System.out.println();
-					}
+						List<ScintillatorPaddle> paddles = alertTOFLayer.getAllComponents();
+						// System.out.print(" numpaddle: " + numpaddle + " with ids: ");
 
+						if ((sect == 0) || (sect == 14)) {
+							for (int i = 0; i < numpaddle; i++) {
+								ScintillatorPaddle paddle = paddles.get(i);
+								Point3D pmp = paddle.getMidpoint();
+								double x = pmp.x();
+								double y = pmp.y();
+								double z = pmp.z();
+								double r = Math.sqrt(x * x + y * y + z * z);
+								double rho = Math.sqrt(x * x + y * y);
+								double phi = Math.toDegrees(Math.atan2(y, x));
+								double theta = Math.toDegrees(Math.acos(z / r));
+								int id = paddle.getComponentId();
+
+								String sout = String.format(
+										"sect: %d supl: %d lay: %d index: %d comp: %d z: %6.3f rho: %6.2f phi: %6.2f theta: %6.2f",
+										sect + 1, superlayer + 1, layer + 1, i, id, z, rho, phi, theta);
+
+								System.out.println(sout);
+							}
+							System.out.println();
+						}
+					}
 
 					_tofLayers.put(hash(sect, superlayer, layer), tofLayer);
 				}
 			}
 		}
+		
+		
 
 		//get the sector boundries
 		// and tofSectorLabelPoint
 
 		for (int sect = 0; sect < 15; sect++) {
 			ScintillatorPaddle p0  = getPaddle(sect, 0, 0, 0);
-			ScintillatorPaddle p1  = getPaddle(sect, 0, 0, 1);
-			ScintillatorPaddle p2  = getPaddle(sect, 0, 0, 2);
-			ScintillatorPaddle p3  = getPaddle(sect, 0, 0, 3);
-			ScintillatorPaddle p4  = getPaddle(sect, 1, 0, 3);
-			ScintillatorPaddle p5  = getPaddle(sect, 1, 0, 2);
-			ScintillatorPaddle p6  = getPaddle(sect, 1, 0, 1);
+			ScintillatorPaddle p1  = getPaddle(sect, 0, 1, 0);
+			ScintillatorPaddle p2  = getPaddle(sect, 0, 2, 0);
+			ScintillatorPaddle p3  = getPaddle(sect, 0, 3, 0);
+			ScintillatorPaddle p4  = getPaddle(sect, 1, 3, 0);
+			ScintillatorPaddle p5  = getPaddle(sect, 1, 2, 0);
+			ScintillatorPaddle p6  = getPaddle(sect, 1, 3, 0);
 			ScintillatorPaddle p7  = getPaddle(sect, 1, 0, 0);
 
 			tofSectorXY[sect][0] = getCorner(p0, 0);
@@ -204,6 +224,28 @@ public class AlertGeometry {
 		}
 
 	}
+	
+
+	/**
+	 * Get the scintillator paddle
+	 * @param sector 0 based
+	 * @param superlayer 0 based
+	 * @param layer 0 based
+	 * @param paddle 0 based
+	 * @return the scintillator paddle
+	 */
+	public static ScintillatorPaddle getPaddle(int sector, int superlayer, int layer, int paddle) {
+		TOFLayer tof = _tofLayers.get(hash(sector, superlayer, layer));
+
+		if (tof == null) {
+			return null;
+		}
+
+		return tof.getPaddle(paddle);
+	}
+
+
+
 
 	/**
 	 * @param sector 0-based sector 0..14
@@ -335,25 +377,6 @@ public class AlertGeometry {
 	public static Collection<TOFLayer> getAllTOFLayers() {
 		return _tofLayers.values();
 	}
-
-	/**
-	 * Get the scintillator paddle
-	 * @param sector 0 based
-	 * @param superlayer 0 based
-	 * @param layer 0 based
-	 * @param paddle 0 based
-	 * @return the scintillator paddle
-	 */
-	public static ScintillatorPaddle getPaddle(int sector, int superlayer, int layer, int paddle) {
-		TOFLayer tof = _tofLayers.get(hash(sector, superlayer, layer));
-
-		if (tof == null) {
-			return null;
-		}
-
-		return tof.getPaddle(paddle);
-	}
-
 
 	/**
 	 * Used by the 3D drawing

@@ -79,6 +79,7 @@ public class TOFLayer {
 	 * @return the paddle
 	 */
 	public ScintillatorPaddle getPaddle(int paddleId) {
+//		System.err.println(String.format("req paddle index: %d  sect1: %d  supl1: %d  lay1: %d", paddleId, sector+1, superlayer+1, layer+1));
 		return paddles.get(paddleId);
 	}
 
