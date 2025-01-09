@@ -111,6 +111,22 @@ public abstract class PlainPanel3D extends Panel3D {
 	
 	public static final String TOF_SUPLAY1 = "TOF Superlayer 1";
 	public static final String TOF_SUPLAY2 = "TOF Superlayer2 ";
+	
+	public static final String SHOW_SECT1 = "TOF Sector 1";
+	public static final String SHOW_SECT2 = "TOF Sector 2";
+	public static final String SHOW_SECT3 = "TOF Sector 3";
+	public static final String SHOW_SECT4 = "TOF Sector 4";
+	public static final String SHOW_SECT5 = "TOF Sector 5";
+	public static final String SHOW_SECT6 = "TOF Sector 6";
+	public static final String SHOW_SECT7 = "TOF Sector 7";
+	public static final String SHOW_SECT8 = "TOF Sector 8";
+	public static final String SHOW_SECT9 = "TOF Sector 9";
+	public static final String SHOW_SECT10 = "TOF Sector 10";
+	public static final String SHOW_SECT11 = "TOF Sector 11";
+	public static final String SHOW_SECT12 = "TOF Sector 12";
+	public static final String SHOW_SECT13 = "TOF Sector 13";
+	public static final String SHOW_SECT14 = "TOF Sector 14";
+    public static final String SHOW_SECT15 = "TOF Sector 15";
 
 
 	public static final String SHOW_TOF = "TOF";
@@ -949,6 +965,68 @@ public abstract class PlainPanel3D extends Panel3D {
 		}
 		return false;
 	}
+	
+	public boolean showSector_1() {
+		return show(PlainPanel3D.SHOW_SECT1);
+	}
+	
+	public boolean showSector_2() {
+		return show(PlainPanel3D.SHOW_SECT2);
+	}
+	
+	public boolean showSector_3() {
+		return show(PlainPanel3D.SHOW_SECT3);
+	}
+	
+	
+	public boolean showSector_4() {
+		return show(PlainPanel3D.SHOW_SECT4);
+	}
+	
+	public boolean showSector_5() {
+		return show(PlainPanel3D.SHOW_SECT5);
+	}
+	
+	
+	public boolean showSector_6() {
+		return show(PlainPanel3D.SHOW_SECT6);
+	}
+	
+	public boolean showSector_7() {
+		return show(PlainPanel3D.SHOW_SECT7);
+	}
+	
+	public boolean showSector_8() {
+		return show(PlainPanel3D.SHOW_SECT8);
+	}
+	
+	public boolean showSector_9() {
+		return show(PlainPanel3D.SHOW_SECT9);
+	}
+	
+	public boolean showSector_10() {
+		return show(PlainPanel3D.SHOW_SECT10);
+	}
+	
+	public boolean showSector_11() {
+		return show(PlainPanel3D.SHOW_SECT11);
+	}
+	
+	public boolean showSector_12() {
+		return show(PlainPanel3D.SHOW_SECT12);
+	}
+	
+	public boolean showSector_13() {
+		return show(PlainPanel3D.SHOW_SECT13);
+	}
+	
+	public boolean showSector_14() {
+		return show(PlainPanel3D.SHOW_SECT14);
+	}
+	
+	public boolean showSector_15() {
+		return show(PlainPanel3D.SHOW_SECT15);
+	}
 
 	/**
 	 * Show ALERT TOF superlayer 1?
@@ -1026,14 +1104,66 @@ public abstract class PlainPanel3D extends Panel3D {
 	 * @param layer      1-based layer number
 	 * @return <code>true</code> if the appropriate layer is shown
 	 */
-	public boolean showTOF(int superlayer, int layer) {
+	public boolean showTOF(int sector, int superlayer, int layer) {
 
 		if (!showTOF()) {
 			return false;
 		}
 		
+		boolean showSector = false;
 		boolean showSuperLayer = false;
 		boolean showLayer = false;
+
+		switch (sector) {
+		case 1:
+			showSector = showSector_1();
+			break;
+		case 2:
+			showSector = showSector_2();
+			break;
+		case 3:
+			showSector = showSector_3();
+			break;
+		case 4:
+			showSector = showSector_4();
+			break;
+		case 5:
+			showSector = showSector_5();
+			break;
+		case 6:
+			showSector = showSector_6();
+			break;
+		case 7:
+			showSector = showSector_7();
+			break;
+		case 8:
+			showSector = showSector_8();
+			break;
+		case 9:
+			showSector = showSector_9();
+			break;
+		case 10:
+			showSector = showSector_10();
+			break;
+		case 11:
+			showSector = showSector_11();
+			break;
+		case 12:
+			showSector = showSector_12();
+			break;
+		case 13:
+			showSector = showSector_13();
+			break;
+		case 14:
+			showSector = showSector_14();
+			break;
+		case 15:
+			showSector = showSector_15();
+			break;
+		default:
+			throw new IllegalArgumentException("in ShowTOF Invalid  superlayer: " + superlayer);
+
+		}
 
 		switch (superlayer) {
 		case 1:
@@ -1064,7 +1194,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		}
 		
 		
-		return showSuperLayer && showLayer;
+		return showSector && showSuperLayer && showLayer;
 		
 	}
 

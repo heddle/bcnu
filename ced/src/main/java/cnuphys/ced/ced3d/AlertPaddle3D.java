@@ -123,7 +123,7 @@ public class AlertPaddle3D extends DetectorItem3D {
 
 	@Override
 	protected boolean show() {
-		return _cedPanel3D.showTOF(_superlayerId+1, _layerId+1);
+		return _cedPanel3D.showTOF(_sectorId +1, _superlayerId+1, _layerId+1);
 	}
 
 }
