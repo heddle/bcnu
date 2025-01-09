@@ -268,7 +268,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		}
 
 		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
-			_matchedBankPanel = new MatchedBankPanel(view);
+			_matchedBankPanel = new MatchedBankPanel(view, view);
 		}
 
 		JPanel daPanel = null;

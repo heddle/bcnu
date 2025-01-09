@@ -171,7 +171,7 @@ public class TOFLayer {
 
 		Polygon poly = new Polygon();
 		int paddleId = paddle.getComponentId();
-		
+
 	//	System.err.println("   DRAW PADDLE ID " + paddleId);
 
 		if (view.showAllTOF()) { //unrealistic

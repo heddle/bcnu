@@ -13,8 +13,20 @@ public class FMTView3D extends CedView3D {
 	private static final float thetay = 90f;
 	private static final float thetaz = 90f;
 
+	//bank matches
+	private static String _defMatches[] = {"FMT"};
+
+
 	public FMTView3D() {
 		super("FMT 3D View", thetax, thetay, thetaz, xdist, ydist, zdist);
+		//i.e. if none were in the properties
+		if (hasNoBankMatches()) {
+			setBankMatches(_defMatches);
+		}
+
+		FMTPanel3D panel = (FMTPanel3D) _panel3D;
+		panel.getMatchedBankPanel().update();
+
 	}
 
 	@Override

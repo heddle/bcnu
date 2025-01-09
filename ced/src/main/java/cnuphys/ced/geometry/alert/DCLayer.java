@@ -64,9 +64,9 @@ public class DCLayer {
 		sector = geoAlertDCLayer.getSectorId()-1;
 		superlayer = geoAlertDCLayer.getSuperlayerId()-1;
 		layer = geoAlertDCLayer.getLayerId()-1;
-		
+
 		System.err.println(String.format("CREATE DC LAYER  sect: %d    superlay %d    layer: %d", sector, superlayer, layer));
-		
+
 		numWires = geoAlertDCLayer.getNumComponents();
 
 

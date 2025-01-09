@@ -46,6 +46,7 @@ import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.datatable.IDataSelectedListener;
 import cnuphys.ced.clasio.datatable.SelectedDataManager;
 import cnuphys.ced.component.ControlPanel;
+import cnuphys.ced.component.IBankMatching;
 import cnuphys.ced.component.MagFieldDisplayArray;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.event.IAccumulationListener;
@@ -61,7 +62,7 @@ import cnuphys.swim.Swimming;
 
 @SuppressWarnings("serial")
 public abstract class CedView extends BaseView implements IFeedbackProvider, SwimTrajectoryListener,
-		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener {
+		MagneticFieldChangeListener, IAccumulationListener, IClasIoEventListener, IDataSelectedListener, IBankMatching {
 
 	// the data warehouse
 	protected DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
@@ -290,6 +291,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 *
 	 * @return banks of interest for matching banks
 	 */
+	@Override
 	public String[] getBanksMatches() {
 		return _matches;
 	}
@@ -299,6 +301,7 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	 * panel. If null, all banks are of interest (not advisable); Default does
 	 * nothing
 	 */
+	@Override
 	public void setBankMatches(String[] matches) {
 
 		if ((matches == null) || (matches.length == 0)) {
@@ -1457,7 +1460,10 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 		return ((_matches != null) && (_matches.length == 1) && NOMATCHES.equals(_matches[0]));
 	}
 
-	// write properties common to all views
+	/**
+	 * Write some properties for persitance
+	 */
+	@Override
 	public void writeCommonProperties() {
 		// bank match
 		String propName = getPropertyName() + "_" + BANKMATCHPROP;

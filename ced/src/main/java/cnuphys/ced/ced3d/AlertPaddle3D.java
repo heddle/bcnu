@@ -49,7 +49,7 @@ public class AlertPaddle3D extends DetectorItem3D {
 		_superlayerId = superlayer;
 		_layerId = layer;
 		_paddleId = paddle;
-		
+
 	//	System.err.println(String.format("CREATE ALERT PADDLE  sect: %d    superlay %d    layer: %d    paddle: %d", _sectorId, _superlayerId, _layerId, _paddleId));
 		AlertGeometry.paddleVertices(_sectorId, _superlayerId, _layerId, _paddleId, _coords);
 	}

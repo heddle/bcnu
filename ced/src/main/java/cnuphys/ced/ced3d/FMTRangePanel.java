@@ -1,15 +1,22 @@
 package cnuphys.ced.ced3d;
 
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.ced.ced3d.view.CedView3D;
-
-import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionListener;
 
 public class FMTRangePanel extends JPanel {
 
@@ -19,7 +26,7 @@ public class FMTRangePanel extends JPanel {
 	private int maxValue = 1024;
 
 	private CedView3D _view;
-	
+
 	private static Font font = Fonts.defaultFont;
 
 	public FMTRangePanel(CedView3D view) {

@@ -11,12 +11,17 @@ import javax.swing.JPanel;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.ced.ced3d.view.PlainView3D;
 import cnuphys.ced.clasio.ClasIoEventManager;
+import cnuphys.ced.component.MatchedBankPanel;
 
 public class CedPanel3D extends PlainPanel3D {
 
 
 	// show what particles are present
 	private PIDLegend _pidLegend;
+
+	//for matching banks
+	protected MatchedBankPanel _matchedBankPanel;
+
 
 	/*
 	 * The panel that holds the 3D objects

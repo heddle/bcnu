@@ -125,7 +125,7 @@ public class AlertGeometry {
 		}
 		return 0;
 	}
-	
+
 
 	// init the time of flight
 	private static void initializeTOF(DatabaseConstantProvider cp) {
@@ -189,8 +189,8 @@ public class AlertGeometry {
 				}
 			}
 		}
-		
-		
+
+
 
 		//get the sector boundries
 		// and tofSectorLabelPoint
@@ -224,7 +224,7 @@ public class AlertGeometry {
 		}
 
 	}
-	
+
 
 	/**
 	 * Get the scintillator paddle

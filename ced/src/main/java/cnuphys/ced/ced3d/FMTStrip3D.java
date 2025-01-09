@@ -7,7 +7,6 @@ import org.jlab.io.base.DataEvent;
 import com.jogamp.opengl.GLAutoDrawable;
 
 import bCNU3D.Support3D;
-import cnuphys.ced.cedview.alert.AlertTOFGeometryNumbering;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.fmt.FMTGeometry;
 import cnuphys.lund.X11Colors;
@@ -27,7 +26,7 @@ public class FMTStrip3D extends DetectorItem3D {
 
 	/**
 	 * Create an FMT strip
-	 * 
+	 *
 	 * @param panel3D the 3D panel this is associated with
 	 * @param layer   0-based layer [0..5]
 	 * @param strip   0-based strip Id [0..1023]
@@ -84,7 +83,7 @@ public class FMTStrip3D extends DetectorItem3D {
 					byte layer[] = _dataWarehouse.getByte("FMT::adc", "layer");
 
 					for (int i = 0; i < count; i++) {
-	
+
 						int lm1 = layer[i]-1;
 						int stripm1 = component[i]-1;
 						if ((lm1 == _layerId) && (stripm1 == _stripId)) {

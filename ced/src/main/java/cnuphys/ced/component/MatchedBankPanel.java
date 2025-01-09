@@ -13,13 +13,13 @@ import javax.swing.JTextArea;
 import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.TextUtilities;
-import cnuphys.ced.cedview.CedView;
+import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.clasio.ClasIoPresentBankPanel;
 
 public class MatchedBankPanel extends JPanel {
 
 	// the view owner
-	private CedView _view;
+	private IBankMatching _bankMatcher;
 
 	//the text area for matches
 	private JTextArea _matchTextArea;
@@ -27,9 +27,18 @@ public class MatchedBankPanel extends JPanel {
 	// relevant present banks
 	private ClasIoPresentBankPanel _presentBankPanel;
 
+	private BaseView _view;
 
-	public MatchedBankPanel(CedView view) {
+
+	/**
+	 * Create a panel for matching banks
+	 *
+	 * @param view        the view owner
+	 * @param bankMatcher the bank matcher (often the same object)
+	 */
+	public MatchedBankPanel(BaseView view, IBankMatching bankMatcher) {
 		_view = view;
+		_bankMatcher= bankMatcher;
 		setLayout(new BorderLayout(4, 4));
 
 		makeTextArea();
@@ -96,14 +105,14 @@ public class MatchedBankPanel extends JPanel {
 			return;
 		}
 
-		_view.setBankMatches(TextUtilities.tokens(s, ","));
+		_bankMatcher.setBankMatches(TextUtilities.tokens(s, ","));
 		_matchTextArea.setText(matchesToString());
-		_view.writeCommonProperties();
+		_bankMatcher.writeCommonProperties();
 	}
 
 	//convert the view matches to a comma separated string
 	public String matchesToString() {
-		return TextUtilities.stringArrayToString(_view.getBanksMatches());
+		return TextUtilities.stringArrayToString(_bankMatcher.getBanksMatches());
 	}
 
 

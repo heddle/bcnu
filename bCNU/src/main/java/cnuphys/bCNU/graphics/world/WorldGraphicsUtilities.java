@@ -1743,7 +1743,7 @@ public class WorldGraphicsUtilities {
 		return bp;
 
 	}
-	
+
 	/**
 	 * Obtain the point on a segment p1 to p2 that is closest to given point wp
 	 * @param p1 one end of the segment

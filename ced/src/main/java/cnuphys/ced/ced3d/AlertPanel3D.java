@@ -70,12 +70,12 @@ public class AlertPanel3D extends CedPanel3D {
 		}
 
 
-		// tof paddles 
+		// tof paddles
 		for (int sectorId = 0; sectorId < 15; sectorId++) {
 			for (int superlayerId = 0; superlayerId < 2; superlayerId++) {
 				int numPaddle = (superlayerId == 0) ? 1 : 10;
 				for (int layerId = 0; layerId < 4; layerId++) {
-					
+
 					for (int index = numPaddle - 1; index >= 0; index--) {
 						AlertPaddle3D tof = new AlertPaddle3D(this, sectorId, superlayerId, layerId, index);
 						addItem(tof);

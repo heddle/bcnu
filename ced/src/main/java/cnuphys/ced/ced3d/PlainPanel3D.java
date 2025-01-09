@@ -108,10 +108,10 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String TOF_LAY2 = "TOF Layer 2";
 	public static final String TOF_LAY3 = "TOF Layer 3";
 	public static final String TOF_LAY4 = "TOF Layer 4";
-	
+
 	public static final String TOF_SUPLAY1 = "TOF Superlayer 1";
 	public static final String TOF_SUPLAY2 = "TOF Superlayer2 ";
-	
+
 	public static final String SHOW_SECT1 = "TOF Sector 1";
 	public static final String SHOW_SECT2 = "TOF Sector 2";
 	public static final String SHOW_SECT3 = "TOF Sector 3";
@@ -142,14 +142,14 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String DC_SUPLAY4_LAY2 = "DC_Suplay4_Lay2";
 	public static final String DC_SUPLAY5_LAY1 = "DC_Suplay5_Lay1";
 //	public static final String DC_SUPLAY5_LAY2 = "DC_Suplay5_Lay2";
-	
+
 	public static final String SHOW_FMT_LAYER_1 = "FMT Layer 1";
 	public static final String SHOW_FMT_LAYER_2 = "FMT Layer 2";
 	public static final String SHOW_FMT_LAYER_3 = "FMT Layer 3";
 	public static final String SHOW_FMT_LAYER_4 = "FMT Layer 4";
 	public static final String SHOW_FMT_LAYER_5 = "FMT Layer 5";
 	public static final String SHOW_FMT_LAYER_6 = "FMT Layer 6";
-	
+
 	public static final String SHOW_FMT_REGION_1 = "FMT Region 1";
 	public static final String SHOW_FMT_REGION_2 = "FMT Region 2";
 	public static final String SHOW_FMT_REGION_3 = "FMT Region 3";
@@ -167,7 +167,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	protected String _cbaLabels[];
 
 	protected PlainView3D _view;
-	
+
 	protected JPanel _eastPanel;
 
 	/*
@@ -298,7 +298,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		_eastPanel.setLayout(new VerticalFlowLayout());
 
 		_eastPanel.add(new KeyboardLegend(this));
-		_checkBoxArray = new CheckBoxArray(2, 4, 4, _cbaLabels);
+		_checkBoxArray = new CheckBoxArray(3, 4, 4, _cbaLabels);
 
 		AbstractButton ab = _checkBoxArray.getButton(SHOW_MAP_EXTENTS);
 		if (ab != null) {
@@ -309,6 +309,15 @@ public abstract class PlainPanel3D extends Panel3D {
 		_eastPanel.add(_checkBoxArray);
 
 		add(_eastPanel, BorderLayout.EAST);
+	}
+
+	/**
+	 * Get the east panel for adding custom controls
+	 *
+	 * @return the east panel for adding custom controls
+	 */
+	public JPanel getEastPanel() {
+		return _eastPanel;
 	}
 
 	/**
@@ -840,7 +849,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	public boolean showFMTRegion1() {
 		return show(PlainPanel3D.SHOW_FMT_REGION_1);
 	}
-	
+
 	/**
 	 * Show FMT Region 2?
 	 *
@@ -849,7 +858,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	public boolean showFMTRegion2() {
 		return show(PlainPanel3D.SHOW_FMT_REGION_2);
 	}
-	
+
 	/**
 	 * Show FMT Region 3?
 	 *
@@ -858,7 +867,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	public boolean showFMTRegion3() {
 		return show(PlainPanel3D.SHOW_FMT_REGION_3);
 	}
-	
+
 	/**
 	 * Show FMT Region 4?
 	 *
@@ -921,7 +930,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	public boolean showFMTLayer6() {
 		return show(PlainPanel3D.SHOW_FMT_LAYER_6);
 	}
-	
+
 	/**
 	 * Show FMT Layer?
 	 *
@@ -945,7 +954,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Show FMT Region?
 	 *
@@ -965,65 +974,65 @@ public abstract class PlainPanel3D extends Panel3D {
 		}
 		return false;
 	}
-	
+
 	public boolean showSector_1() {
 		return show(PlainPanel3D.SHOW_SECT1);
 	}
-	
+
 	public boolean showSector_2() {
 		return show(PlainPanel3D.SHOW_SECT2);
 	}
-	
+
 	public boolean showSector_3() {
 		return show(PlainPanel3D.SHOW_SECT3);
 	}
-	
-	
+
+
 	public boolean showSector_4() {
 		return show(PlainPanel3D.SHOW_SECT4);
 	}
-	
+
 	public boolean showSector_5() {
 		return show(PlainPanel3D.SHOW_SECT5);
 	}
-	
-	
+
+
 	public boolean showSector_6() {
 		return show(PlainPanel3D.SHOW_SECT6);
 	}
-	
+
 	public boolean showSector_7() {
 		return show(PlainPanel3D.SHOW_SECT7);
 	}
-	
+
 	public boolean showSector_8() {
 		return show(PlainPanel3D.SHOW_SECT8);
 	}
-	
+
 	public boolean showSector_9() {
 		return show(PlainPanel3D.SHOW_SECT9);
 	}
-	
+
 	public boolean showSector_10() {
 		return show(PlainPanel3D.SHOW_SECT10);
 	}
-	
+
 	public boolean showSector_11() {
 		return show(PlainPanel3D.SHOW_SECT11);
 	}
-	
+
 	public boolean showSector_12() {
 		return show(PlainPanel3D.SHOW_SECT12);
 	}
-	
+
 	public boolean showSector_13() {
 		return show(PlainPanel3D.SHOW_SECT13);
 	}
-	
+
 	public boolean showSector_14() {
 		return show(PlainPanel3D.SHOW_SECT14);
 	}
-	
+
 	public boolean showSector_15() {
 		return show(PlainPanel3D.SHOW_SECT15);
 	}
@@ -1047,7 +1056,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		return show(PlainPanel3D.TOF_SUPLAY2);
 	}
 
-	
+
 	/**
 	 * Show ALERT TOF Layer 1?
 	 *
@@ -1109,7 +1118,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		if (!showTOF()) {
 			return false;
 		}
-		
+
 		boolean showSector = false;
 		boolean showSuperLayer = false;
 		boolean showLayer = false;
@@ -1175,7 +1184,7 @@ public abstract class PlainPanel3D extends Panel3D {
 		default:
 			throw new IllegalArgumentException("in ShowTOF Invalid  superlayer: " + superlayer);
 		}
-		
+
 		switch (layer) {
 		case 1:
 			showLayer = showTOF_LAY1();
@@ -1192,10 +1201,10 @@ public abstract class PlainPanel3D extends Panel3D {
 		default:
 			throw new IllegalArgumentException("in ShowTOF Invalid  layer: " + layer);
 		}
-		
-		
+
+
 		return showSector && showSuperLayer && showLayer;
-		
+
 	}
 
 	/**

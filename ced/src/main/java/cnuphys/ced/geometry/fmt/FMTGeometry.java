@@ -207,7 +207,7 @@ public class FMTGeometry {
 		System.out.println("done");
 
 	}
-	
+
 	/**
 	 * Get the 1-based region 1..4
 	 * @param strip1 the 1-based strip 1..1024

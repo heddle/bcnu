@@ -21,11 +21,11 @@ import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataWarehouse;
-import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedwindow.CedDataView;
 import cnuphys.ced.cedwindow.CedDataWindow;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.table.NodeTable;
+import cnuphys.ced.component.IBankMatching;
 import cnuphys.ced.frame.Ced;
 
 /**
@@ -56,8 +56,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 	// the single event listaner
 	private static IClasIoEventListener _eventListener;
 
-	// if a cedview owns this
-	private CedView _view;
+	// if a IBankMatching owns this
+	private IBankMatching _bankMatcher;
 
 	// scroll pane
 	private JScrollPane _scrollPane;
@@ -73,7 +73,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 	 */
 	private ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows) {
 
-		_view = (view instanceof CedView) ? (CedView) view : null;
+		_bankMatcher = (view instanceof IBankMatching) ? (IBankMatching) view : null;
 
 		_nodeTable = nodeTable;
 		setLayout(new GridLayout(numRows, 0, 2, 0));
@@ -193,11 +193,11 @@ public class ClasIoPresentBankPanel extends JPanel {
 	// must match
 	private boolean match(String s) {
 
-		if (_view == null) {
+		if (_bankMatcher == null) {
 			return true;
 		}
 
-		String[] matchList = _view.getBanksMatches();
+		String[] matchList = _bankMatcher.getBanksMatches();
 
 		if (matchList == null) { // accept all
 			return true;

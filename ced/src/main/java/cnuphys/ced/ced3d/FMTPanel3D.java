@@ -4,16 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 
 import cnuphys.ced.ced3d.view.CedView3D;
+import cnuphys.ced.component.MatchedBankPanel;
 import cnuphys.lund.X11Colors;
 import item3D.Axes3D;
 
 public class FMTPanel3D extends CedPanel3D {
-	
+
 	// dimension of this panel are in mm
 	private final float xymax = 25f;
 	private final float zmax = 50f;
 	private final float zmin = 0;
-	
+
 	private FMTRangePanel _rangePanel;
 
 	// labels for the check box
@@ -25,9 +26,15 @@ public class FMTPanel3D extends CedPanel3D {
 	public FMTPanel3D(CedView3D view3D, float angleX, float angleY, float angleZ, float xDist, float yDist,
 			float zDist) {
 		super(view3D, angleX, angleY, angleZ, xDist, yDist, zDist, _cbaLabels);
-		
+
 		_rangePanel = new FMTRangePanel(view3D);
-		_eastPanel.add(_rangePanel);
+		_matchedBankPanel = new MatchedBankPanel(view3D, view3D);
+		getEastPanel().add(_rangePanel);
+		getEastPanel().add(_matchedBankPanel);
+	}
+
+	public MatchedBankPanel getMatchedBankPanel() {
+		return _matchedBankPanel;
 	}
 
 	@Override
@@ -36,11 +43,11 @@ public class FMTPanel3D extends CedPanel3D {
 		Axes3D axes = new Axes3D(this, -xymax, xymax, -xymax, xymax, zmin, zmax, null, Color.darkGray, 1f, 6, 6, 6,
 				Color.black, X11Colors.getX11Color("Dark Green"), new Font("SansSerif", Font.PLAIN, 12), 0);
 		addItem(axes);
-		
+
 		// trajectory drawer
 		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
 		addItem(trajDrawer);
-		
+
 		//the layers
 		for (int layer = 0; layer < 6; layer++) {
 			for (int strip = 0; strip < 1024; strip++) {
@@ -49,7 +56,7 @@ public class FMTPanel3D extends CedPanel3D {
 			}
 		}
 	}
-	
+
 	/**
 	 * This gets the z step used by the mouse and key adapters, to see how fast we
 	 * move in or in in response to mouse wheel or up/down arrows. It should be
@@ -61,13 +68,13 @@ public class FMTPanel3D extends CedPanel3D {
 	public float getZStep() {
 		return (zmax - zmin) / 25f;
 	}
-	
+
 
 	/**
      * Show the strip
-     * 
+     *
      * @param strip the 1-based strip to show
-     * @return <code>true</code> if the strip	
+     * @return <code>true</code> if the strip
      */
 	public boolean showStrip(int strip) {
 		return _rangePanel.showStrip(strip);

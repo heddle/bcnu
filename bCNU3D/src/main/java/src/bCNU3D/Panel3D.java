@@ -406,7 +406,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 		// gl.glEnable(GL2.GL_CULL_FACE);
 		// gl.glEnable(GL2.GL_LIGHTING);
 		// gl.glEnable(GL2.GL_LIGHT0);
-		
+
 	}
 
 	@Override
