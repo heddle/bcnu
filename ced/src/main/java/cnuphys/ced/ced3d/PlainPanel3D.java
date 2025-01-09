@@ -104,17 +104,15 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String SHOW_REC_CAL = "REC Cal";
 
 	// for ALert TOF
-	public static final String TOF_SUPLAY1_LAY1 = "TOF_Suplay1_Lay1";
-	public static final String TOF_SUPLAY2_LAY1 = "TOF_Suplay2_Lay1";
-	public static final String TOF_SUPLAY2_LAY2 = "TOF_Suplay2_Lay2";
-	public static final String TOF_SUPLAY2_LAY3 = "TOF_Suplay2_Lay3";
-	public static final String TOF_SUPLAY2_LAY4 = "TOF_Suplay2_Lay4";
-	public static final String TOF_SUPLAY2_LAY5 = "TOF_Suplay2_Lay5";
-	public static final String TOF_SUPLAY2_LAY6 = "TOF_Suplay2_Lay6";
-	public static final String TOF_SUPLAY2_LAY7 = "TOF_Suplay2_Lay7";
-	public static final String TOF_SUPLAY2_LAY8 = "TOF_Suplay2_Lay8";
-	public static final String TOF_SUPLAY2_LAY9 = "TOF_Suplay2_Lay9";
-	public static final String TOF_SUPLAY2_LAY10 = "TOF_Suplay2_Lay10";
+	public static final String TOF_LAY1 = "TOF Lay 1";
+	public static final String TOF_LAY2 = "TOF Layer 2";
+	public static final String TOF_LAY3 = "TOF Layer 3";
+	public static final String TOF_LAY4 = "TOF Layer 4";
+	
+	public static final String TOF_SUPLAY1 = "TOF Superlayer 1";
+	public static final String TOF_SUPLAY2 = "TOF Superlayer2 ";
+
+
 	public static final String SHOW_TOF = "TOF";
 
 	// for Alert DC
@@ -952,105 +950,63 @@ public abstract class PlainPanel3D extends Panel3D {
 		return false;
 	}
 
-	// Show methods
 	/**
-	 * Show TOF_Suplay1_Lay1?
+	 * Show ALERT TOF superlayer 1?
 	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay1_Lay1
+	 * @return <code>true</code> if we are to show ALERT TOF superlayer 1
 	 */
-	public boolean showTOF_SUPLAY1_LAY1() {
-		return show(PlainPanel3D.TOF_SUPLAY1_LAY1);
+	public boolean showTOF_SUPLAY1() {
+		return show(PlainPanel3D.TOF_SUPLAY1);
+	}
+
+
+	/**
+	 * Show ALERT TOF superlayer 2?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF superlayer 2
+	 */
+	public boolean showTOF_SUPLLAY2() {
+		return show(PlainPanel3D.TOF_SUPLAY2);
+	}
+
+	
+	/**
+	 * Show ALERT TOF Layer 1?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 1
+	 */
+	public boolean showTOF_LAY1() {
+		return show(PlainPanel3D.TOF_LAY1);
+	}
+
+
+	/**
+	 * Show ALERT TOF Layer 2?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 2
+	 */
+	public boolean showTOF_LAY2() {
+		return show(PlainPanel3D.TOF_LAY2);
 	}
 
 	/**
-	 * Show TOF_Suplay2_Lay1?
+	 * Show ALERT TOF Layer 3?
 	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay1
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 3
 	 */
-	public boolean showTOF_SUPLAY2_LAY1() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY1);
+	public boolean showTOF_LAY3() {
+		return show(PlainPanel3D.TOF_LAY3);
 	}
 
 	/**
-	 * Show TOF_Suplay2_Lay2?
+	 * Show ALERT TOF Layer 4?
 	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay2
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 4
 	 */
-	public boolean showTOF_SUPLAY2_LAY2() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY2);
+	public boolean showTOF_LAY4() {
+		return show(PlainPanel3D.TOF_LAY4);
 	}
 
-	/**
-	 * Show TOF_Suplay2_Lay3?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay3
-	 */
-	public boolean showTOF_SUPLAY2_LAY3() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY3);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay4?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay4
-	 */
-	public boolean showTOF_SUPLAY2_LAY4() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY4);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay5?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay5
-	 */
-	public boolean showTOF_SUPLAY2_LAY5() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY5);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay6?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay6
-	 */
-	public boolean showTOF_SUPLAY2_LAY6() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY6);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay7?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay7
-	 */
-	public boolean showTOF_SUPLAY2_LAY7() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY7);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay8?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay8
-	 */
-	public boolean showTOF_SUPLAY2_LAY8() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY8);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay9?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay9
-	 */
-	public boolean showTOF_SUPLAY2_LAY9() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY9);
-	}
-
-	/**
-	 * Show TOF_Suplay2_Lay10?
-	 *
-	 * @return <code>true</code> if we are to show TOF_Suplay2_Lay10
-	 */
-	public boolean showTOF_SUPLAY2_LAY10() {
-		return show(PlainPanel3D.TOF_SUPLAY2_LAY10);
-	}
 
 	/**
 	 * Show TOF?
@@ -1075,41 +1031,41 @@ public abstract class PlainPanel3D extends Panel3D {
 		if (!showTOF()) {
 			return false;
 		}
+		
+		boolean showSuperLayer = false;
+		boolean showLayer = false;
 
 		switch (superlayer) {
 		case 1:
-			if (layer == 1) {
-				return showTOF_SUPLAY1_LAY1();
-			}
+			showSuperLayer = showTOF_SUPLAY1();
 			break;
 		case 2:
-			switch (layer) {
-			case 1:
-				return showTOF_SUPLAY2_LAY1();
-			case 2:
-				return showTOF_SUPLAY2_LAY2();
-			case 3:
-				return showTOF_SUPLAY2_LAY3();
-			case 4:
-				return showTOF_SUPLAY2_LAY4();
-			case 5:
-				return showTOF_SUPLAY2_LAY5();
-			case 6:
-				return showTOF_SUPLAY2_LAY6();
-			case 7:
-				return showTOF_SUPLAY2_LAY7();
-			case 8:
-				return showTOF_SUPLAY2_LAY8();
-			case 9:
-				return showTOF_SUPLAY2_LAY9();
-			case 10:
-				return showTOF_SUPLAY2_LAY10();
-			}
+			showSuperLayer = showTOF_SUPLLAY2();
 			break;
 		default:
-			throw new IllegalArgumentException("Invalid superlayer or layer.");
+			throw new IllegalArgumentException("in ShowTOF Invalid  superlayer: " + superlayer);
 		}
-		return false;
+		
+		switch (layer) {
+		case 1:
+			showLayer = showTOF_LAY1();
+			break;
+		case 2:
+			showLayer = showTOF_LAY2();
+			break;
+		case 3:
+			showLayer = showTOF_LAY3();
+			break;
+		case 4:
+			showLayer = showTOF_LAY4();
+			break;
+		default:
+			throw new IllegalArgumentException("in ShowTOF Invalid  layer: " + layer);
+		}
+		
+		
+		return showSuperLayer && showLayer;
+		
 	}
 
 	/**

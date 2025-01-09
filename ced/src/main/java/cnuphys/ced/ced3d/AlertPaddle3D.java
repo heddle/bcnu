@@ -50,7 +50,7 @@ public class AlertPaddle3D extends DetectorItem3D {
 		_layerId = layer;
 		_paddleId = paddle;
 		
-		System.err.println(String.format("CREATE ALERT PADDLE  sect: %d    superlay %d    layer: %d    paddle: %d", _sectorId, _superlayerId, _layerId, _paddleId));
+	//	System.err.println(String.format("CREATE ALERT PADDLE  sect: %d    superlay %d    layer: %d    paddle: %d", _sectorId, _superlayerId, _layerId, _paddleId));
 		AlertGeometry.paddleVertices(_sectorId, _superlayerId, _layerId, _paddleId, _coords);
 	}
 
@@ -123,8 +123,7 @@ public class AlertPaddle3D extends DetectorItem3D {
 
 	@Override
 	protected boolean show() {
-		return true;
-//		return _cedPanel3D.showTOF(_superlayerId+1, _layerId+1);
+		return _cedPanel3D.showTOF(_superlayerId+1, _layerId+1);
 	}
 
 }
