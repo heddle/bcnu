@@ -1,9 +1,7 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,19 +19,12 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.ced3d.view.PlainView3D;
-import cnuphys.lund.X11Colors;
-import cnuphys.magfield.MagneticFields;
-import item3D.Axes3D;
 
 public abstract class PlainPanel3D extends Panel3D {
 
 	// cm
-	private final float xymax = 600f;
 	private final float zmax = 600f;
 	private final float zmin = -100f;
-
-	private static final Color _torusColor = new Color(0, 255, 255, 255);
-	private static final Color _solenoidColor = new Color(255, 0, 255, 255);
 
 	// labels for the check box
 	public static final String SHOW_VOLUMES = "Volumes";
@@ -220,59 +211,6 @@ public abstract class PlainPanel3D extends Panel3D {
 		fixSize();
 	}
 
-	@Override
-	public void createInitialItems() {
-		// coordinate axes
-		Axes3D axes = new Axes3D(this, -xymax, xymax, -xymax, xymax, zmin, zmax, null, Color.darkGray, 1f, 7, 7, 8,
-				Color.black, X11Colors.getX11Color("Dark Green"), new Font("SansSerif", Font.PLAIN, 12), 0);
-		addItem(axes);
-
-		// trajectory drawer
-		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
-		addItem(trajDrawer);
-
-		// dc super layers
-		for (int sector = 1; sector <= 6; sector++) {
-			for (int superlayer = 1; superlayer <= 6; superlayer++) {
-				DCSuperLayer3D dcsl = new DCSuperLayer3D(this, sector, superlayer);
-				addItem(dcsl);
-			}
-		}
-
-		// tof paddles
-		for (int sector = 1; sector <= 6; sector++) {
-			addItem(new FTOF3D(this, sector));
-		}
-
-		// pcal
-		for (int sector = 1; sector <= 6; sector++) {
-			for (int view = 1; view <= 3; view++) {
-				PCALViewPlane3D pcalvp = new PCALViewPlane3D(this, sector, view);
-				addItem(pcalvp);
-			}
-		}
-
-		// EC planes
-		for (int sector = 1; sector <= 6; sector++) {
-			for (int stack = 1; stack <= 2; stack++) {
-				for (int view = 1; view <= 3; view++) {
-					ECViewPlane3D ecvp = new ECViewPlane3D(this, sector, stack, view);
-					addItem(ecvp);
-				}
-			}
-		}
-
-		// mag field boundaries
-		if (MagneticFields.getInstance().hasActiveSolenoid()) {
-			System.out.println("Adding 3D Solenoid Boundary");
-			addItem(new FieldBoundary(this, MagneticFields.getInstance().getSolenoid(), _solenoidColor));
-		}
-		if (MagneticFields.getInstance().hasActiveTorus()) {
-			System.out.println("Adding 3D Torus Boundary");
-			addItem(new FieldBoundary(this, MagneticFields.getInstance().getTorus(), _torusColor));
-		}
-
-	} // create initial items
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
@@ -330,7 +268,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	// a fixed fraction of the screen
 	private void fixSize() {
-		Dimension d = GraphicsUtilities.screenFraction(0.60);
+		Dimension d = GraphicsUtilities.screenFraction(0.70);
 		d.width = d.height;
 		gljpanel.setPreferredSize(d);
 	}
