@@ -3,6 +3,7 @@ package cnuphys.ced.ced3d;
 import javax.swing.*;
 
 import cnuphys.bCNU.graphics.component.CommonBorder;
+import cnuphys.bCNU.util.Fonts;
 import cnuphys.ced.ced3d.view.CedView3D;
 
 import java.awt.*;
@@ -18,6 +19,8 @@ public class FMTRangePanel extends JPanel {
 	private int maxValue = 1024;
 
 	private CedView3D _view;
+	
+	private static Font font = Fonts.defaultFont;
 
 	public FMTRangePanel(CedView3D view) {
 		_view = view;
@@ -26,6 +29,7 @@ public class FMTRangePanel extends JPanel {
 
 		// label: "Full Range: 1-1024"
 		JLabel fullRangeLabel = new JLabel("Full Range: 1-1024", SwingConstants.CENTER);
+		fullRangeLabel.setFont(font);
 		fullRangeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(fullRangeLabel);
 
@@ -37,6 +41,7 @@ public class FMTRangePanel extends JPanel {
 		maxField = new JTextField(String.valueOf(maxValue), 5);
 
 		JLabel toLabel = new JLabel("to");
+		toLabel.setFont(font);
 
 		rangePanel.add(minField);
 		rangePanel.add(toLabel);

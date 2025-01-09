@@ -20,7 +20,7 @@ import cnuphys.lund.X11Colors;
 
 public class TOFLayer {
 
-	private static Color layer0Color = X11Colors.getX11Color("Alice Blue");
+	private static Color superlayer0Color = X11Colors.getX11Color("Alice Blue");
 	private static Color[][] fillColors = {
 			{ X11Colors.getX11Color("Antique White"), X11Colors.getX11Color("Burlywood") },
 			{ X11Colors.getX11Color("Light Cyan"), X11Colors.getX11Color("Light Blue") },
@@ -75,7 +75,7 @@ public class TOFLayer {
 
 	/**
 	 * Get a paddle from this layer
-	 * @param paddleId 0-based id
+	 * @param paddleId 0-based INDEX (not the component ID)
 	 * @return the paddle
 	 */
 	public ScintillatorPaddle getPaddle(int paddleId) {
@@ -106,6 +106,7 @@ public class TOFLayer {
 	 * @param container the container
 	 */
 	public void drawAllPaddles(Graphics g, IContainer container) {
+	//	System.err.println(String.format("drawAllPaddles: sect1: %d  supl1: %d  lay1: %d   num: %d", sector+1, superlayer+1, layer+1, numPaddles));
 		//the hash is used for feedback
 		polyhash.clear();
 
@@ -114,9 +115,9 @@ public class TOFLayer {
 			ScintillatorPaddle paddle = paddles.get(paddleId);
 			Color fc;
 			if (superlayer == 0) {
-				fc = layer0Color;
+				fc = superlayer0Color;
 			} else {
-				fc = fillColors[sector % 3][layer % 2];
+				fc = fillColors[sector % 3][paddle.getComponentId() % 2];
 			}
 
 			drawPaddle(g, container, paddle, fc, Color.black);
@@ -169,10 +170,13 @@ public class TOFLayer {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		Polygon poly = new Polygon();
+		int paddleId = paddle.getComponentId();
+		
+	//	System.err.println("   DRAW PADDLE ID " + paddleId);
 
 		if (view.showAllTOF()) { //unrealistic
 
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 4; i++) { //for corners of paddle
 
 				double x = paddle.getVolumePoint(i).x();
 				double y = paddle.getVolumePoint(i).y();
@@ -182,10 +186,10 @@ public class TOFLayer {
 
 				if (superlayer == 1) {
 					if ((i == 0) || (i == 3)) {
-						double dR = layer * _deltaR;
+						double dR = paddleId * _deltaR;
 						shiftPoint(wp[i], dR);
 					} else { // outer
-						double dR = -(9 - layer) * _deltaR;
+						double dR = -(9 - paddleId) * _deltaR;
 						shiftPoint(wp[i], dR);
 					}
 				}

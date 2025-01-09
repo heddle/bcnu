@@ -38,8 +38,8 @@ public class AlertPaddle3D extends DetectorItem3D {
 	 * @param panel3D the 3D panel this is associated with
 	 * @param sector 0-based sector [0..14]
 	 * @param superlayer 0-based superlayer [0..1]
-	 * @param layer 0-based layer [0..9]
-	 * @param paddle 0-based paddle Id [0..3]
+	 * @param layer 0-based layer [0..3]
+	 * @param paddle 0-based paddle Id [0..9]
 	 */
 	public AlertPaddle3D(CedPanel3D panel3D, int sector, int superlayer, int layer, int paddle) {
 		//just to be confusing, these are 1-based
@@ -49,6 +49,8 @@ public class AlertPaddle3D extends DetectorItem3D {
 		_superlayerId = superlayer;
 		_layerId = layer;
 		_paddleId = paddle;
+		
+		System.err.println(String.format("CREATE ALERT PADDLE  sect: %d    superlay %d    layer: %d    paddle: %d", _sectorId, _superlayerId, _layerId, _paddleId));
 		AlertGeometry.paddleVertices(_sectorId, _superlayerId, _layerId, _paddleId, _coords);
 	}
 
@@ -121,7 +123,8 @@ public class AlertPaddle3D extends DetectorItem3D {
 
 	@Override
 	protected boolean show() {
-		return _cedPanel3D.showTOF(_superlayerId+1, _layerId+1);
+		return true;
+//		return _cedPanel3D.showTOF(_superlayerId+1, _layerId+1);
 	}
 
 }
