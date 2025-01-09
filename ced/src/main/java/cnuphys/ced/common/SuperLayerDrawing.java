@@ -114,14 +114,14 @@ public class SuperLayerDrawing {
 
 		// draw layer outlines to guide the eye
 
-		Shape clip = g2.getClip();
+//		Shape clip = g2.getClip();
 		// Stroke oldStroke = g2.getStroke();
 
-		if (lastDrawnPolygon != null) {
-			g2.setClip(lastDrawnPolygon);
-		} else {
-			System.err.println("NULL LAST POLY");
-		}
+//		if (lastDrawnPolygon != null) {
+//			g2.setClip(lastDrawnPolygon);
+//		} else {
+//			System.err.println("NULL LAST POLY");
+//		}
 
 		if (!segmentsOnly) {
 			// differentiate the layers
@@ -161,7 +161,7 @@ public class SuperLayerDrawing {
 			g.drawPolygon(lastDrawnPolygon);
 		}
 
-		g2.setClip(clip);
+	//	g2.setClip(clip);
 	}
 
 	/**

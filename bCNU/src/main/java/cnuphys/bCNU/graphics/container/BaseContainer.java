@@ -2,6 +2,7 @@ package cnuphys.bCNU.graphics.container;
 
 import java.awt.Component;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -200,6 +201,10 @@ public class BaseContainer extends JComponent
 		setForeground(sContainer.getForeground());
 	}
 
+	public void clipBounds(Graphics g) {
+		Rectangle b = getBounds();
+		g.setClip(0, 0, b.width, b.height);
+	}
 
 	/**
 	 * Override the paint command. Draw all the lists.
@@ -209,6 +214,8 @@ public class BaseContainer extends JComponent
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		
+		clipBounds(g);
 
 		Rectangle b = getBounds();
 
