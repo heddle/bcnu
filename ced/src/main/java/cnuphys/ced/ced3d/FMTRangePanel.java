@@ -39,6 +39,8 @@ public class FMTRangePanel extends JPanel {
 
 		minField = new JTextField(String.valueOf(minValue), 5);
 		maxField = new JTextField(String.valueOf(maxValue), 5);
+		minField.setFont(font);
+		maxField.setFont(font);
 
 		JLabel toLabel = new JLabel("to");
 		toLabel.setFont(font);
