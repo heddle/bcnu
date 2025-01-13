@@ -56,6 +56,7 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dchex.DCHexView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
+import cnuphys.ced.cedview.fmt.FMTXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.ftof.FTOFView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
@@ -156,6 +157,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private CentralZView _centralZView;
 
 	private AlertXYView _alertXYView;
+	private FMTXYView _fmtXYView;
 
 //	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
@@ -308,11 +310,12 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_alert3DView, 12, VirtualView.CENTER);
 		_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
 		_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_ftCal3DView, 16, VirtualView.BOTTOMRIGHT);
-		_virtualView.moveTo(_fmt3DView, 15, VirtualView.CENTER);
+		_virtualView.moveTo(_fmtXYView, 15, VirtualView.CENTER);
+		_virtualView.moveTo(_fmt3DView, 16, VirtualView.CENTER);
+		_virtualView.moveTo(_ftCal3DView, 17, VirtualView.BOTTOMRIGHT);
 
 		if (isExperimental()) {
-			_virtualView.moveTo(_swimming3DView, 17, VirtualView.CENTER);
+			_virtualView.moveTo(_swimming3DView, 18, VirtualView.CENTER);
 		}
 	}
 
@@ -372,7 +375,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a virtual view. Count how many cells are needed
 
-		int numVVCell = 18;
+		int numVVCell = 18 + (isExperimental() ? 1 : 0);
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -425,6 +428,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		//add and ALERT XY view
 		_alertXYView = AlertXYView.createAlertXYView();
+		
+		// add a fmt xy view
+		_fmtXYView = FMTXYView.createFMTXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
