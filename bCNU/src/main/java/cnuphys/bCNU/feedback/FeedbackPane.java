@@ -56,9 +56,6 @@ public class FeedbackPane extends TextPaneScrollPane {
 		Border etchedBorder = BorderFactory.createEtchedBorder();
 		Border lineBorder = BorderFactory.createLineBorder(Color.black, 2);
 		setBorder(BorderFactory.createCompoundBorder(etchedBorder, lineBorder));
-
-		getViewport().setBackground(_background);
-		setBackground(_background);
 	}
 
 	/**

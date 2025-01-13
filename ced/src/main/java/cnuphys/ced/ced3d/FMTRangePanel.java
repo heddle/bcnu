@@ -16,7 +16,7 @@ public class FMTRangePanel extends JPanel {
     private final JTextField rangeField;
     private String _rangeText = "1-1024";
     private BaseView _view;
-    Font font = Fonts.defaultFont;
+    Font font = Fonts.mediumFont;
 
     public FMTRangePanel(BaseView view) {
     	_view = view;
@@ -29,7 +29,8 @@ public class FMTRangePanel extends JPanel {
         add(fullRangeLabel);
 
         // Next Label: "Example: 1-10, 17, 230-244"
-        JLabel visibleStripsLabel = new JLabel("e.g. 1-10, 17, 230-244", SwingConstants.CENTER);
+        JLabel visibleStripsLabel = new JLabel("Disconnected ranges e.g. \"1-10, 17, 230-244\"", SwingConstants.CENTER);
+        visibleStripsLabel.setFont(font);
         visibleStripsLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(visibleStripsLabel);
 

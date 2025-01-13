@@ -101,7 +101,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.7.1" + UnicodeSupport.SMALL_BETA;
+	private static final String _release = "1.7.1" + UnicodeSupport.SMALL_BETA + "2";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -432,7 +432,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		//add a urwell xy view
 		_urwellXyView = UrWELLXYView.createUrWELLView();
 
-		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		// add an RTPC vie
 		//_rtpcView = RTPCView.createRTPCView();
