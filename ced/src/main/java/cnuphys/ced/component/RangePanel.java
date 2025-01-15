@@ -1,29 +1,48 @@
-package cnuphys.ced.ced3d;
-import javax.swing.*;
+package cnuphys.ced.component;
+
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.BaseView;
 
-import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
-import java.awt.event.ActionListener;
-import java.util.regex.Pattern;
-import java.util.regex.Matcher;
+/**
+ * A panel for selecting a range of components. The range is specified as a
+ * comma-separated list of ranges and/or individual components. For example:
+ * "1-10, 17, 230-244". Like a printer range.
+ */
+public class RangePanel extends JPanel {
 
-public class FMTRangePanel extends JPanel {
-
+	//the text field for the range
     private final JTextField rangeField;
-    private String _rangeText = "1-1024";
+    
+    //input text
+    private String _rangeText;
+
+    //the owner view
     private BaseView _view;
     Font font = Fonts.mediumFont;
 
-    public FMTRangePanel(BaseView view) {
+    public RangePanel(BaseView view, String fullRangeReminder, String defaultText) {
     	_view = view;
+    	_rangeText = new String(defaultText);
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         // Top label: "Full Range: 1-1024"
-        JLabel fullRangeLabel = new JLabel("Full Range: 1-1024", SwingConstants.CENTER);
+        JLabel fullRangeLabel = new JLabel(fullRangeReminder, SwingConstants.CENTER);
         fullRangeLabel.setFont(font);
         fullRangeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
         add(fullRangeLabel);
@@ -98,21 +117,5 @@ public class FMTRangePanel extends JPanel {
         return false;
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Range Selector Panel");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(400, 200);
 
-            FMTRangePanel panel = new FMTRangePanel(null);
-            frame.add(panel);
-
-            frame.setVisible(true);
-            
-            // Example usage
-            
-            boolean isVisible = panel.showStrip(5); // Change this to test different strips
-            
-        });
-    }
 }

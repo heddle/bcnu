@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import cnuphys.ced.ced3d.view.CedView3D;
 import cnuphys.ced.component.MatchedBankPanel;
+import cnuphys.ced.component.RangePanel;
 import cnuphys.lund.X11Colors;
 import item3D.Axes3D;
 
@@ -15,7 +16,7 @@ public class FMTPanel3D extends CedPanel3D {
 	private final float zmax = 50f;
 	private final float zmin = 0;
 
-	private FMTRangePanel _rangePanel;
+	private RangePanel _rangePanel;
 
 	// labels for the check box
 	private static final String _cbaLabels[] = { SHOW_VOLUMES, SHOW_TRUTH, SHOW_RECON_CROSSES, SHOW_TB_TRACK,
@@ -27,7 +28,8 @@ public class FMTPanel3D extends CedPanel3D {
 			float zDist) {
 		super(view3D, angleX, angleY, angleZ, xDist, yDist, zDist, _cbaLabels);
 
-		_rangePanel = new FMTRangePanel(view3D);
+		_rangePanel = new RangePanel(view3D, "Full Range: 1-1024", "1-1024");
+
 		_matchedBankPanel = new MatchedBankPanel(view3D, view3D);
 		getEastPanel().add(_rangePanel);
 		getEastPanel().add(_matchedBankPanel);

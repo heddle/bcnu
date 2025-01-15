@@ -162,7 +162,6 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	// controls whether any TB data displayed
 	private AbstractButton _showTBButton;
 
-
  // controls whether any AI HB data displayed
  	private AbstractButton _showAIHBButton;
 

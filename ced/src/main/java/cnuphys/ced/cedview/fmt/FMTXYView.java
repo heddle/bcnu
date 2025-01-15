@@ -23,6 +23,8 @@ import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
+import cnuphys.ced.component.GeoDisplayArray;
+import cnuphys.ced.component.GeoDisplayBits;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.fmt.FMTGeometry;
 
@@ -44,6 +46,9 @@ public class FMTXYView extends CedXYView  {
 	private static String _defMatches[] = { "FMT" };
 
 	private static final double _zmid = 32.8247;
+	
+	//check boxes for regions and layers
+	private GeoDisplayArray _geoDisplayArray;
 
 	private  FMTXYView(Object... keyVals) {
 		super(keyVals);
@@ -93,6 +98,10 @@ public class FMTXYView extends CedXYView  {
 		}
 
 		view._controlPanel.getMatchedBankPanel().update();
+		
+		//add check boxes for regions and layers
+		view._geoDisplayArray = new GeoDisplayArray(view, GeoDisplayBits.FMT_REGIONS + GeoDisplayBits.FMT_LAYERS, 2, 50);
+		view._controlPanel.addComponent(view._geoDisplayArray);
 		
 
 		//add dc projection panel
@@ -165,14 +174,28 @@ public class FMTXYView extends CedXYView  {
 		Point2D.Double wp1 = new Point2D.Double();
 		
 		for (int layer = 0; layer < 6; layer++) {
+			if (!showFMTLayer(layer + 1)) {
+				continue;
+			}
+			
 			g.setColor(_colors[layer]);
 			for (int stripId = 0; stripId < 1024; stripId++) {
+				
+				int region = FMTGeometry.getRegion(stripId + 1);
+				if (!showFMTRegion(region)) {
+					continue;
+				}
+				
 				TrackerStrip strip = FMTGeometry.getStrip(0, 0, layer, stripId);
 				Line3D line = strip.getLine();
-				
-				getXYatZ(line, wp0, _zmid);
+					labToWorld(layer, line.origin(), wp0);
 				container.worldToLocal(p0, wp0);
 				g.fillOval(p0.x - 2, p0.y - 2, 4, 4);
+				
+				
+//				getXYatZ(line, wp0, _zmid);
+//				container.worldToLocal(p0, wp0);
+//				g.fillOval(p0.x - 2, p0.y - 2, 4, 4);
 				
 //				Point3D origin = line.origin();
 //				Point3D end = line.end();
@@ -180,6 +203,8 @@ public class FMTXYView extends CedXYView  {
 //				wp0.y = _scales[5-layer]*origin.y();
 //				wp1.x = _scales[layer]*end.x();
 //				wp1.y = _scales[5-layer]*end.y();
+//				
+//				shrink(wp0, wp1, 0.01);
 //				container.worldToLocal(p0, wp0);
 //				container.worldToLocal(p1, wp1);
 //				g.drawLine(p0.x, p0.y, p1.x, p1.y);
@@ -187,6 +212,34 @@ public class FMTXYView extends CedXYView  {
 			}
 		}
 
+	}
+	
+	private static final double layerZ[] = {29.75, 30.94, 32.13, 33.52, 34.71, 35.90};
+	/**
+	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
+	 * the view). Used by the swim drawer.
+	 *
+	 * @param x  the CLAS12 x coordinate
+	 * @param y  the CLAS12 y coordinate
+	 * @param z  the CLAS12 z coordinate
+	 * @param wp holds the world point
+	 */
+	public void labToWorld(int layer, Point3D p3d, Point2D.Double wp) {
+		//do the projection
+		double zp = layerZ[layer];
+		double scale = (_zcamera - zp) / _zcamera;
+		wp.x = p3d.x()*scale;
+		wp.y = p3d.y()*scale;
+	}
+	
+	private void shrink(Point2D.Double wp0, Point2D.Double wp1, double scale) {
+		double dx = wp1.x - wp0.x;
+		double dy = wp1.y - wp0.y;
+		double len = Math.sqrt(dx * dx + dy * dy);
+		double newLen = len * scale;
+		double t = newLen / len;
+		wp1.x = wp0.x + t * dx;
+		wp1.y = wp0.y + t * dy;
 	}
 	
 	public double getXYatZ(Line3D line, Point2D.Double xy, double z) {
@@ -203,5 +256,48 @@ public class FMTXYView extends CedXYView  {
 	protected void addItems() {
 	}
 
+	/**
+	 * Show FMT Layer?
+	 *
+	 * @param layer the 1-based layer to show
+	 * @return <code>true</code> if we are to show the layer
+	 */
+	public boolean showFMTLayer(int layer) {
+		switch (layer) {
+		case 1:
+			return _geoDisplayArray.showLayer1();
+		case 2:
+			return _geoDisplayArray.showLayer2();
+		case 3:
+			return _geoDisplayArray.showLayer3();
+		case 4:
+			return _geoDisplayArray.showLayer4();
+		case 5:
+			return _geoDisplayArray.showLayer5();
+		case 6:
+			return _geoDisplayArray.showLayer6();
+		}
+		return false;
+	}
+	
+	/**
+	 * Show FMT Region?
+	 *
+	 * @param region the 1-based region to show
+	 * @return <code>true</code> if we are to show the region
+	 */
+	public boolean showFMTRegion(int region) {
+		switch (region) {
+		case 1:
+			return _geoDisplayArray.showRegion1();
+		case 2:
+			return _geoDisplayArray.showRegion2();
+		case 3:
+			return _geoDisplayArray.showRegion3();
+		case 4:
+			return _geoDisplayArray.showRegion4();
+		}
+		return false;
+	}
 
 }

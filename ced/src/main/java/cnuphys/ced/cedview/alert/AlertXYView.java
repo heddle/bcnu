@@ -276,11 +276,13 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	@Override
 	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
+		wp.setLocation(x, y);
 		//do the projection
-		double zp = getFixedZ();
-		double scale = (_zcamera - zp) / _zcamera;
-		wp.x = x*scale;
-		wp.y = y*scale;
+//		double zp = getFixedZ();
+//		double scale = (_zcamera - zp) / _zcamera;
+//		//double scale = (_zcamera - zp) /( _zcamera - z);
+//	    wp.x = x*scale;
+//		wp.y = y*scale;
 	}
 
 	/**
