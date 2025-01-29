@@ -181,15 +181,11 @@ public class AlertDCHitDrawer {
 							String bankName = "AHDC::adc";
 							AlertFeedbackSupport.handleInt(bankName, "ADC", i, "$orange$", feedbackStrings);
 							AlertFeedbackSupport.handleInt(bankName, "integral", i, "$orange$", feedbackStrings);
-							AlertFeedbackSupport.handleFloat(bankName, "mcEtot", i, "$orange$", feedbackStrings);
-							AlertFeedbackSupport.handleFloat(bankName, "mctime", i, "$orange$", feedbackStrings);
-							AlertFeedbackSupport.handleInt(bankName, "nsteps", i, "$orange$", feedbackStrings);
 							AlertFeedbackSupport.handleByte(bankName, "order", i, "$orange$", feedbackStrings);
 
 							AlertFeedbackSupport.handleShort(bankName, "ped", i, "$orange$", feedbackStrings);
-							AlertFeedbackSupport.handleFloat(bankName, "t_cfd", i, "$orange$", feedbackStrings);
 							AlertFeedbackSupport.handleFloat(bankName, "time", i, "$orange$", feedbackStrings);
-							AlertFeedbackSupport.handleFloat(bankName, "timestamp", i, "$orange$", feedbackStrings);
+							AlertFeedbackSupport.handleLong(bankName, "timestamp", i, "$orange$", feedbackStrings);
 
 							return;
 						}

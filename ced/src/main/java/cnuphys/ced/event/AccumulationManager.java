@@ -20,7 +20,6 @@ import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.cedview.alert.AlertDCGeometryNumbering;
-import cnuphys.ced.cedview.alert.AlertTOFGeometryNumbering;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.IAccumulator;
@@ -106,10 +105,10 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private int _AlertDCSL4AccumulatedData[][][];
 
 
-	//ALERT TOF accumulated data (superlayer 0) sector [0..14] lay [0..0] paddle [0..4]
+	//ALERT TOF accumulated data (superlayer 0) sector [0..14] lay [0..3] paddle [0..0]  (only 1, with component ID = 1
 	private int _AlertTOFSL0AccumulatedData[][][];
 
-	//ALERT TOF accumulated data (superlayer 1) sector [0..14] lay [0..10] paddle [0..4]
+	//ALERT TOF accumulated data (superlayer 1) sector [0..14] lay [0..3] paddle [0..9]
 	private int _AlertTOFSL1AccumulatedData[][][];
 
 	// FTOF accumulated Data
@@ -813,7 +812,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumAlertDC() {
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 
-		if (dataEvent.hasBank("ATOF::adc")) {
+		if (dataEvent.hasBank("AHDC::adc")) {
 
 			// Alert DC data
 			if (_AlertDCSL0AccumulatedData == null) {
@@ -836,7 +835,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 					for (int i = 0; i < count; i++) {
 						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
-
+												
 						switch (adcGeom.superlayer) {
 						case 0:
 							_AlertDCSL0AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
@@ -870,27 +869,24 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumAlertSL0TOF() {
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 
-		if (dataEvent.hasBank("ATOF::adc")) {
+		if (dataEvent.hasBank("ATOF::tdc")) {
 
 			// Alert TOF data
 			if (_AlertTOFSL0AccumulatedData == null) {
-				_AlertTOFSL0AccumulatedData = new int[15][1][4];
+				//in hipo data 15 sectors, 4 layers and 1 paddle with componentID = 10
+				_AlertTOFSL0AccumulatedData = new int[15][4][1];
 			}
 
-			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			short component[] = _dataWarehouse.getShort("ATOF::tdc", "component");
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {
-					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
-					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
-					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
-
-					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+					byte sector[] = _dataWarehouse.getByte("ATOF::tdc", "sector");
+					byte layer[] = _dataWarehouse.getByte("ATOF::tdc", "layer");
 
 					for (int i = 0; i < count; i++) {
-						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
-						if (adcGeom.superlayer == 0) {
-							_AlertTOFSL0AccumulatedData[adcGeom.sector][adcGeom.layer][adcGeom.component % 4] += 1;
+						if (component[i] == 10) {
+							_AlertTOFSL0AccumulatedData[sector[i]][layer[i]][0] += 1;
 						}
 					}
 				}
@@ -906,27 +902,25 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumAlertSL1TOF() {
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 
-		if (dataEvent.hasBank("ATOF::adc")) {
+		if (dataEvent.hasBank("ATOF::tdc")) {
 
 			// Alert TOF data
 			if (_AlertTOFSL1AccumulatedData == null) {
-				_AlertTOFSL1AccumulatedData = new int[15][11][4];
+				//in hipo data 15 sectors, 4 layers and 9 paddle with componentID = [0..9]
+				_AlertTOFSL1AccumulatedData = new int[15][4][10];
 			}
 
-			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			short component[] = _dataWarehouse.getShort("ATOF::tdc", "component");
+			
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {
-					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
-					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
-					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
-
-					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+					byte sector[] = _dataWarehouse.getByte("ATOF::tdc", "sector");
+					byte layer[] = _dataWarehouse.getByte("ATOF::tdc", "layer");
 
 					for (int i = 0; i < count; i++) {
-						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
-						if (adcGeom.superlayer == 1) {
-							_AlertTOFSL1AccumulatedData[adcGeom.sector][adcGeom.layer][adcGeom.component % 4] += 1;
+						if (component[i] != 10) {
+							_AlertTOFSL1AccumulatedData[sector[i]][layer[i]][component[i]] += 1;
 						}
 					}
 				}

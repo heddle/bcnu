@@ -7,7 +7,7 @@ public class AlertTOFGeometryNumbering {
 	public int sector;  //0-based
 	public int superlayer; //0-based
 	public int layer; //0-based
-	public int component; //0-based (wire)
+	public int paddleIndex; //0-based (paddle index)
 
 
 	/**
@@ -17,29 +17,35 @@ public class AlertTOFGeometryNumbering {
 	}
 
 	/**
-	 * Set the geometry numbering from a data numbering
-	 * @param sect the 1-based sector
-	 * @param compLayer the 1-based layer
-	 * @param comp the 1-based component (paddle)
+	 * Set the geometry numbering from a data (HIPO) numbering
+	 * @param sect the 0-based sector
+	 * @param layer the 0-based layer
+	 * @param comp the 10-based componentID (10, 0-9)
 	 * @param order
 	 */
-	public void fromDataNumbering(int sect, int compLayer, int comp, int order) {
-
-		sector = sect - 1;
-
-		//edge case, 30 maps to sl1 = 2, lay1 = 10
-
-		int sl1 = (compLayer-1) / 10;  // will be 1 or 2
-		int lay1 = compLayer % 10;
-
-		//edge case of 30
-		if (lay1 == 0) {
-			lay1 = 10;
+	public void fromHipoNumbering(int sect, int lay, int comp, int order) {
+		
+		//ALERT TOF hipo data is 0 -based
+		
+		if (sect < 0 || sect > 14) {
+			System.err.println("[AlertTOFGeometry] Bad sector number: " + sect);
+            return;
+        }
+		
+		if (layer < 0 || layer > 3) {
+			System.err.println("[AlertTOFGeometry] Bad layer number: " + layer);
+            return;
+		}
+		
+		if (comp < 0 || comp > 10) {
+            System.err.println("[AlertTOFGeometry] Bad component number: " + comp);
+            return;
 		}
 
-		superlayer = sl1 - 1;
-		layer = lay1 - 1;
-		component = comp - 1;
+		sector = sect;
+		layer = lay;
+		paddleIndex = comp % 10; //[0, 0-9]
+		superlayer = (comp == 10) ? 0 : 1;
 	}
 
 	/**

@@ -203,7 +203,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 				_dcHitDrawer.drawHighlightHit(g, container, dataEvent, _highlightDataAHDC.hit);
 			}
 
-			if (dataEvent.hasBank("ATOF::adc") && (_highlightDataATOF.hit >= 0)) {
+			if (dataEvent.hasBank("ATOF::tdc") && (_highlightDataATOF.hit >= 0)) {
 				_tofHitDrawer.drawHighlightHit(g, container, dataEvent, _highlightDataATOF.hit);
 			}
 		}
@@ -276,13 +276,11 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	@Override
 	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
-		wp.setLocation(x, y);
 		//do the projection
-//		double zp = getFixedZ();
-//		double scale = (_zcamera - zp) / _zcamera;
-//		//double scale = (_zcamera - zp) /( _zcamera - z);
-//	    wp.x = x*scale;
-//		wp.y = y*scale;
+		double zp = getFixedZ();
+		double scale = (_zcamera - zp) / _zcamera;
+		wp.x = x*scale;
+		wp.y = y*scale;
 	}
 
 	/**
@@ -409,7 +407,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	public void dataSelected(String bankName, int index) {
 		if (bankName.equals("AHDC::adc")) {
 			_highlightDataAHDC.hit = index;
-		} else if (bankName.equals("ATOF::adc")) {
+		} else if (bankName.equals("ATOF::tdc")) {
 			_highlightDataATOF.hit = index;
 		}
 

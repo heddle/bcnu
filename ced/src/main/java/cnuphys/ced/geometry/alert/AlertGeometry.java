@@ -344,7 +344,7 @@ public class AlertGeometry {
 			int oppSect = (sect + 7) % 15;
 			Point pp0 = anchorPP[sect];
 			Point pp1 = anchorPP[oppSect];
-			GraphicsUtilities.drawNumberAtEnd(g, (sect+1), pp1, pp0, 16, Fonts.hugeFont, Color.black);
+			GraphicsUtilities.drawNumberAtEnd(g, sect, pp1, pp0, 16, Fonts.hugeFont, Color.black);
 		}
 
 	}

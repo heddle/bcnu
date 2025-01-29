@@ -23,8 +23,9 @@ public class AlertPaddle3D extends DetectorItem3D {
 	//0-based layer 0, 0--9
 	private final int _layerId;
 
-	//0-based paddle [0..59]
-	private final int _paddleId;
+	//0-based paddle [ 0..9]
+	// this is the index not the componentID
+	private final int _paddleIndex;
 
 	// the cached vertices
 	private float[] _coords = new float[24];
@@ -48,10 +49,9 @@ public class AlertPaddle3D extends DetectorItem3D {
 		_sectorId = sector;
 		_superlayerId = superlayer;
 		_layerId = layer;
-		_paddleId = paddle;
+		_paddleIndex = paddle;
 
-	//	System.err.println(String.format("CREATE ALERT PADDLE  sect: %d    superlay %d    layer: %d    paddle: %d", _sectorId, _superlayerId, _layerId, _paddleId));
-		AlertGeometry.paddleVertices(_sectorId, _superlayerId, _layerId, _paddleId, _coords);
+		AlertGeometry.paddleVertices(_sectorId, _superlayerId, _layerId, _paddleIndex, _coords);
 	}
 
 	@Override
@@ -83,25 +83,25 @@ public class AlertPaddle3D extends DetectorItem3D {
 			return;
 		}
 
-		if (dataEvent.hasBank("ATOF::adc")) {
+		if (dataEvent.hasBank("ATOF::tdc")) {
 
-			short component[] = _dataWarehouse.getShort("ATOF::adc", "component");
+			short component[] = _dataWarehouse.getShort("ATOF::tdc", "component");
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {
 					Color color = Color.red;
 
-					byte sector[] = _dataWarehouse.getByte("ATOF::adc", "sector");
-					byte compLayer[] = _dataWarehouse.getByte("ATOF::adc", "layer");
-					byte order[] = _dataWarehouse.getByte("ATOF::adc", "order");
+					byte sector[] = _dataWarehouse.getByte("ATOF::tdc", "sector");
+					byte layer[] = _dataWarehouse.getByte("ATOF::tdc", "layer");
+					byte order[] = _dataWarehouse.getByte("ATOF::tdc", "order");
 
-					AlertTOFGeometryNumbering adcGeom = new AlertTOFGeometryNumbering();
+					AlertTOFGeometryNumbering tdcGeom = new AlertTOFGeometryNumbering();
 
 					for (int i = 0; i < count; i++) {
-						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
+						tdcGeom.fromHipoNumbering(sector[i], layer[i], component[i], order[i]);
 
-						if ((adcGeom.sector == _sectorId) && (adcGeom.superlayer == _superlayerId)
-								&& (adcGeom.layer == _layerId) && ((adcGeom.component % 4) == _paddleId)) {
+						if ((tdcGeom.sector == _sectorId) && (tdcGeom.superlayer == _superlayerId)
+								&& (tdcGeom.layer == _layerId) && ((tdcGeom.paddleIndex) == _paddleIndex)) {
 
 							Support3D.drawQuad(drawable, _coords, 0, 1, 2, 3, color, 1f, _frame);
 							Support3D.drawQuad(drawable, _coords, 3, 7, 6, 2, color, 1f, _frame);

@@ -2,7 +2,7 @@ package cnuphys.ced.component;
 
 public class DisplayBits {
 
-	/** GEMC Truths */
+	/** FTOF panels */
 	public static final int MCTRUTH = 01;
 
 	/** A flag for accumulation */
@@ -85,6 +85,7 @@ public class DisplayBits {
 
 	/** cvt pass 1 traj */
 	public static final int CVTP1TRAJ = 01000000000;
+
 
 
 	// max octal for ints 20000000000

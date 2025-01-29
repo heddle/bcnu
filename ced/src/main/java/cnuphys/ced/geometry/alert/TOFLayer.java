@@ -79,8 +79,16 @@ public class TOFLayer {
 	 * @return the paddle
 	 */
 	public ScintillatorPaddle getPaddle(int paddleId) {
-//		System.err.println(String.format("req paddle index: %d  sect1: %d  supl1: %d  lay1: %d", paddleId, sector+1, superlayer+1, layer+1));
-		return paddles.get(paddleId);
+//		System.err.println(String.format("req paddle index: %d  sect0: %d  supl0: %d  lay0: %d", paddleId, sector, superlayer, layer));
+		try {
+			ScintillatorPaddle paddle = paddles.get(paddleId);
+			return paddle;
+		}
+		catch (Exception e) {
+            System.err.println("Exception in TOFLayer.getPaddle: " + e);
+            e.printStackTrace();
+        }
+		return null;
 	}
 
 
@@ -254,10 +262,10 @@ public class TOFLayer {
 			Polygon poly = polyhash.get(paddle);
 
 			if ((poly != null) && poly.contains(pp)) {
-				feedbackStrings.add(String.format("TOF sector: %d (1-based)", sector + 1));
-				feedbackStrings.add(String.format("TOF superlayer: %d (1-based)", superlayer + 1));
-				feedbackStrings.add(String.format("TOF layer: %d (1-based)", layer + 1));
-				feedbackStrings.add(String.format("TOF paddle: %d (1-based)", paddle.getComponentId()+1));
+				feedbackStrings.add(String.format("TOF sector: %d (0-based)", sector));
+				feedbackStrings.add(String.format("TOF superlayer: %d (0-based)", superlayer));
+				feedbackStrings.add(String.format("TOF layer: %d (0-based)", layer ));
+				feedbackStrings.add(String.format("TOF paddle: %d (0-based)", paddle.getComponentId()));
 				return true;
 			}
 		}

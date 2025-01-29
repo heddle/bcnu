@@ -102,14 +102,13 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.7.1" + UnicodeSupport.SMALL_BETA + "2";
+	private static final String _release = "1.7.1";
 
 	// used for one time inits
 	private int _firstTime = 0;
 
 	// for the event count
 	private JMenuItem _eventCountLabel;
-
 
 	// experimental version?
 	private static boolean _experimental;
@@ -157,7 +156,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private CentralZView _centralZView;
 
 	private AlertXYView _alertXYView;
-	private FMTXYView _fmtXYView;
 
 //	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
@@ -310,12 +308,11 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_alert3DView, 12, VirtualView.CENTER);
 		_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
 		_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_fmtXYView, 15, VirtualView.CENTER);
-		_virtualView.moveTo(_fmt3DView, 16, VirtualView.CENTER);
-		_virtualView.moveTo(_ftCal3DView, 17, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_ftCal3DView, 16, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_fmt3DView, 15, VirtualView.CENTER);
 
 		if (isExperimental()) {
-			_virtualView.moveTo(_swimming3DView, 18, VirtualView.CENTER);
+			_virtualView.moveTo(_swimming3DView, 17, VirtualView.CENTER);
 		}
 	}
 
@@ -375,7 +372,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		// add a virtual view. Count how many cells are needed
 
-		int numVVCell = 18 + (isExperimental() ? 1 : 0);
+		int numVVCell = 18;
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -428,9 +425,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		//add and ALERT XY view
 		_alertXYView = AlertXYView.createAlertXYView();
-		
-		// add a fmt xy view
-		_fmtXYView = FMTXYView.createFMTXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();

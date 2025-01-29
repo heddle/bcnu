@@ -162,23 +162,15 @@ public class FMTGeometry {
 		for (int layer = 0; layer < 6; layer++) {
 			for (int stripId = 0; stripId < 1024; stripId++) {
 				TrackerStrip strip = getStrip(0, 0, layer, stripId);
-				Point3D p = strip.getMidpoint();
+				for (int i = 0; i < 8; i++) {
+					Point3D p = strip.getVolumePoint(i);
 				xmin = Math.min(xmin, p.x());
 				xmax = Math.max(xmax, p.x());
 				ymin = Math.min(ymin, p.y());
 				ymax = Math.max(ymax, p.y());
 				zmin = Math.min(zmin, p.z());
 				zmax = Math.max(zmax, p.z());
-
-//				for (int i = 0; i < 8; i++) {
-//					Point3D p = strip.getVolumePoint(i);
-//					xmin = Math.min(xmin, p.x());
-//					xmax = Math.max(xmax, p.x());
-//					ymin = Math.min(ymin, p.y());
-//					ymax = Math.max(ymax, p.y());
-//					zmin = Math.min(zmin, p.z());
-//					zmax = Math.max(zmax, p.z());
-//				}
+				}
 			}
 		}
 
@@ -190,29 +182,27 @@ public class FMTGeometry {
 		System.out.println("zmin: " + zmin);
 
 		System.out.println("zmax: " + zmax);
-		System.out.println("zmid: " + (zmin + zmax) / 2);
-		
-//		for (int layer = 0; layer < 6; layer++) {
-//			for (int stripId = 0; stripId < 1024; stripId++) {
-//				if ((stripId == 1023) || (stripId % 10) == 0) {
-//				//	if ((stripId % 100) == 0) {
-//					TrackerStrip strip = getStrip(0, 0, layer, stripId);
-//					Line3D line = strip.getLine();
-//					Vector3D v = line.toVector();
-//					Point3D p = strip.getMidpoint();
-//					double x = p.x();
-//					double y = p.y();
-//					double z = p.z();
-		            
-//					double r = Math.sqrt(x * x + y * y + z * z);
-//					double rho = Math.sqrt(x * x + y * y);
-//					double theta = Math.toDegrees(Math.acos(z / r));
-//					double phi = Math.toDegrees(Math.atan2(y, x));
-//					System.out.println(String.format("layer: %d    strip: %d    theta: %-7.3f    phi: %-7.3f    rho: %-7.3f    z: %-7.3f",
-//							layer + 1, stripId + 1, theta, phi, rho, z));
-//				}
-//			}
-//	    }
+
+		for (int layer = 0; layer < 6; layer++) {
+			for (int stripId = 0; stripId < 1024; stripId++) {
+				if ((stripId == 1023) || (stripId % 10) == 0) {
+				//	if ((stripId % 100) == 0) {
+					TrackerStrip strip = getStrip(0, 0, layer, stripId);
+					Line3D line = strip.getLine();
+					Vector3D v = line.toVector();
+					Point3D p = strip.getMidpoint();
+					double x = p.x();
+					double y = p.y();
+					double z = p.z();
+					double r = Math.sqrt(x * x + y * y + z * z);
+					double rho = Math.sqrt(x * x + y * y);
+					double theta = Math.toDegrees(Math.acos(z / r));
+					double phi = Math.toDegrees(Math.atan2(y, x));
+					System.out.println(String.format("layer: %d    strip: %d    theta: %-7.3f    phi: %-7.3f    rho: %-7.3f    z: %-7.3f",
+							layer + 1, stripId + 1, theta, phi, rho, z));
+				}
+			}
+		}
 
 		System.out.println("done");
 

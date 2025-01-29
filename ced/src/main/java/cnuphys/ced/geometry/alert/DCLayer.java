@@ -65,8 +65,6 @@ public class DCLayer {
 		superlayer = geoAlertDCLayer.getSuperlayerId()-1;
 		layer = geoAlertDCLayer.getLayerId()-1;
 
-		System.err.println(String.format("CREATE DC LAYER  sect: %d    superlay %d    layer: %d", sector, superlayer, layer));
-
 		numWires = geoAlertDCLayer.getNumComponents();
 
 
@@ -155,8 +153,14 @@ public class DCLayer {
 	 */
 	public void feedbackXYString(Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 		feedbackStrings.add(String.format("DC sector: %d (1-based)", sector + 1));
-		feedbackStrings.add(String.format("DC superlayer: %d (1-based)", superlayer + 1));
-		feedbackStrings.add(String.format("DC layer: %d (1-based)", layer + 1));
+		
+		int supl1 = superlayer + 1;
+		int lay1 = layer + 1;
+		int compLayer = supl1 * 10 + lay1;
+		
+		feedbackStrings.add(String.format("DC superlayer: %d (1-based)", supl1));
+		feedbackStrings.add(String.format("DC layer: %d (1-based)", lay1));
+		feedbackStrings.add(String.format("DC hipo layer: %d", compLayer));
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {
@@ -243,7 +247,7 @@ public class DCLayer {
 
 		if (wire == 0) {
 			lc = X11Colors.getX11Color("Coral");
-			fc = X11Colors.getX11Color("Alice Blue");
+//			fc = X11Colors.getX11Color("Alice Blue");
 		}
 		_wrect[wire].setFrame(zp.x-WIRERAD, zp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
 		WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
