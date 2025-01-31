@@ -28,7 +28,7 @@ public class RangePanel extends JPanel {
 
 	//the text field for the range
     private final JTextField rangeField;
-    
+
     //input text
     private String _rangeText;
 

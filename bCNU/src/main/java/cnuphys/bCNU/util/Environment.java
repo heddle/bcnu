@@ -1,15 +1,18 @@
 package cnuphys.bCNU.util;
 
 import java.awt.Color;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
@@ -620,6 +623,55 @@ public final class Environment {
 		sb.append("\n" + memoryReport(null));
 		return sb.toString();
 	}
+
+	/**
+	 * Get the major version of the Java runtime.
+	 *
+	 * @return the major version of the Java runtime
+	 */
+    public static int getJavaMajorVersion() {
+        String version = System.getProperty("java.version");
+
+        if (version.startsWith("1.")) {
+            // For older Java versions (e.g., 1.8 -> 8)
+            return Integer.parseInt(version.substring(2, 3));
+        } else {
+            // For Java 9 and newer (e.g., 17.0.1 -> 17)
+            int dotIndex = version.indexOf('.');
+            return dotIndex != -1 ? Integer.parseInt(version.substring(0, dotIndex)) : Integer.parseInt(version);
+        }
+    }
+    
+	/**
+	 * Get the display scale factor for the default screen device.
+	 *
+	 * @return the display scale factor
+	 */
+    public static double getDisplayScaleFactor() {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        GraphicsConfiguration gc = gd.getDefaultConfiguration();
+
+        // Get scale factor from the default transformation
+        AffineTransform transform = gc.getDefaultTransform();
+        return transform.getScaleX();  // Scale factor (X and Y are typically the same)
+    }
+
+    /**
+     * Print the stack trace for the calling class. Filter
+     * out the stack trace elements that don't starts with the given
+     * package name,like "cnuphys".     
+     * @param startsWith the package name to filter
+     */
+    public static void filteredTrace(String startsWith) {
+        Exception e = new Exception();
+        StackTraceElement[] stackTrace = e.getStackTrace();
+
+        System.err.println("\nStack trace filtered on \"" + startsWith + "\"");
+        Arrays.stream(stackTrace)
+              .filter(element -> element.getClassName().startsWith(startsWith))  // Adjust your package
+              .forEach(System.err::println);
+    }
 
 	/**
 	 * Initialize the look and feel.

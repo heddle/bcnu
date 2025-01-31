@@ -17,7 +17,7 @@ public class AlertFeedbackSupport {
 		String cs = (colorStr == null) ? "$cyan$" : colorStr;
 		feedbackStrings.add(String.format("%s%s: %d", cs, columnName, array[index]));
 	}
-	
+
 	public static void handleLong(String bankName, String columnName, int index, String colorStr,
 			List<String> feedbackStrings) {
 		long[] array = _dataWarehouse.getLong(bankName, columnName);
@@ -28,8 +28,8 @@ public class AlertFeedbackSupport {
 		String cs = (colorStr == null) ? "$cyan$" : colorStr;
 		feedbackStrings.add(String.format("%s%s: %d", cs, columnName, array[index]));
 	}
-	
-	
+
+
 	public static void handleByte(String bankName, String columnName, int index, String colorStr, List<String> feedbackStrings) {
 		byte[] array = _dataWarehouse.getByte(bankName, columnName);
 		if ((array == null) || (index < 0) || (index >= array.length)) {

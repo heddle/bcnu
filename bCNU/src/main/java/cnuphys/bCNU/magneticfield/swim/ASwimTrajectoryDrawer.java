@@ -26,12 +26,14 @@ import cnuphys.swim.SwimTrajectory2D;
 import cnuphys.swim.Swimming;
 
 /**
- * An abstract class for dwaing trajectories from thje swimmer
+ * An abstract class for drawing trajectories from the swimmer
  *
  * @author heddle
  *
  */
 public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements IProjector {
+	
+	private double _maxPathLength = 2000; //whatever are the units, might be cm or mm
 
 	// colors
 	protected static final Color sectChangeColor = X11Colors.getX11Color("purple", 128);
@@ -204,8 +206,21 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		}
 
 		Point pp = new Point();
+		Point2D.Double oldWP = null;
+		
+		//running pathlength in cm
+		double pathLength = 0;
 
 		for (Point2D.Double wp : path) {
+			if (oldWP != null) {
+				pathLength += wp.distance(oldWP);
+			} 
+			oldWP = wp;
+			if (pathLength > _maxPathLength) {
+				System.out.println("Drawn Path length (A): " + pathLength +  " painted: " + ++paintcount);
+				break;
+			}
+
 			container.worldToLocal(pp, wp);
 			poly.addPoint(pp.x, pp.y);
 		}
@@ -220,6 +235,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		g2.setStroke(oldStroke);
 	}
 
+	private int paintcount = 0;
 	public abstract boolean acceptSimpleTrack(SwimTrajectory2D trajectory);
 
 	/**
@@ -245,10 +261,23 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		}
 
 		Point pp = new Point();
+		Point2D.Double oldWP = null;
+		
+		//running pathlength in cm
+		double pathLength = 0;
 
 		for (Point2D.Double wp : path) {
+			if (oldWP != null) {
+				pathLength += wp.distance(oldWP);
+			} 
+			oldWP = wp;
+			if (pathLength > _maxPathLength) {
+				break;
+			}
+
 			container.worldToLocal(pp, wp);
 			poly.addPoint(pp.x, pp.y);
+			
 		}
 
 		if (poly.npoints > 1) {

@@ -46,7 +46,7 @@ public class FMTXYView extends CedXYView  {
 	private static String _defMatches[] = { "FMT" };
 
 	private static final double _zmid = 32.8247;
-	
+
 	//check boxes for regions and layers
 	private GeoDisplayArray _geoDisplayArray;
 
@@ -98,11 +98,11 @@ public class FMTXYView extends CedXYView  {
 		}
 
 		view._controlPanel.getMatchedBankPanel().update();
-		
+
 		//add check boxes for regions and layers
 		view._geoDisplayArray = new GeoDisplayArray(view, GeoDisplayBits.FMT_REGIONS + GeoDisplayBits.FMT_LAYERS, 2, 50);
 		view._controlPanel.addComponent(view._geoDisplayArray);
-		
+
 
 		//add dc projection panel
 //		view._dcPanel = view._controlPanel.getAlertDCPanel();
@@ -142,17 +142,17 @@ public class FMTXYView extends CedXYView  {
 
 		getContainer().setAfterDraw(afterDraw);
 	}
-	
+
 	//set the projection plane
 	public void setProjectionPlane(double z) {
 		Plane3D plane = GeometryManager.constantZPlane(z);
 		this.projectionPlane = plane;
 	}
 
-	
+
 	private static final Color[] _colors = { Color.red, Color.green, Color.blue, Color.orange, Color.cyan, Color.gray };
 	private static final double[] _scales = { 1.0, 1.01, 1.02, 1.03, 1.04, 1.05 };
-	
+
 	private void drawStrips(Graphics g, IContainer container) {
 //		Point pp = new Point();
 //		Point2D.Double wp = new Point2D.Double();
@@ -167,53 +167,53 @@ public class FMTXYView extends CedXYView  {
 //				g.fillOval(pp.x - 2, pp.y - 2, 4, 4);
 //			}
 //		}
-		
+
 		Point p0 = new Point();
 		Point p1 = new Point();
 		Point2D.Double wp0 = new Point2D.Double();
 		Point2D.Double wp1 = new Point2D.Double();
-		
+
 		for (int layer = 0; layer < 6; layer++) {
 			if (!showFMTLayer(layer + 1)) {
 				continue;
 			}
-			
+
 			g.setColor(_colors[layer]);
 			for (int stripId = 0; stripId < 1024; stripId++) {
-				
+
 				int region = FMTGeometry.getRegion(stripId + 1);
 				if (!showFMTRegion(region)) {
 					continue;
 				}
-				
+
 				TrackerStrip strip = FMTGeometry.getStrip(0, 0, layer, stripId);
 				Line3D line = strip.getLine();
 					labToWorld(layer, line.origin(), wp0);
 				container.worldToLocal(p0, wp0);
 				g.fillOval(p0.x - 2, p0.y - 2, 4, 4);
-				
-				
+
+
 //				getXYatZ(line, wp0, _zmid);
 //				container.worldToLocal(p0, wp0);
 //				g.fillOval(p0.x - 2, p0.y - 2, 4, 4);
-				
+
 //				Point3D origin = line.origin();
 //				Point3D end = line.end();
 //				wp0.x = _scales[layer]*origin.x();
 //				wp0.y = _scales[5-layer]*origin.y();
 //				wp1.x = _scales[layer]*end.x();
 //				wp1.y = _scales[5-layer]*end.y();
-//				
+//
 //				shrink(wp0, wp1, 0.01);
 //				container.worldToLocal(p0, wp0);
 //				container.worldToLocal(p1, wp1);
 //				g.drawLine(p0.x, p0.y, p1.x, p1.y);
-	
+
 			}
 		}
 
 	}
-	
+
 	private static final double layerZ[] = {29.75, 30.94, 32.13, 33.52, 34.71, 35.90};
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
@@ -231,7 +231,7 @@ public class FMTXYView extends CedXYView  {
 		wp.x = p3d.x()*scale;
 		wp.y = p3d.y()*scale;
 	}
-	
+
 	private void shrink(Point2D.Double wp0, Point2D.Double wp1, double scale) {
 		double dx = wp1.x - wp0.x;
 		double dy = wp1.y - wp0.y;
@@ -241,7 +241,7 @@ public class FMTXYView extends CedXYView  {
 		wp1.x = wp0.x + t * dx;
 		wp1.y = wp0.y + t * dy;
 	}
-	
+
 	public double getXYatZ(Line3D line, Point2D.Double xy, double z) {
 		Point3D p0 = line.origin();
 		Point3D p1 = line.end();
@@ -279,7 +279,7 @@ public class FMTXYView extends CedXYView  {
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Show FMT Region?
 	 *

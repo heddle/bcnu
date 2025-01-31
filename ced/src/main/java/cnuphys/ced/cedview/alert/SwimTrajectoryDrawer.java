@@ -79,13 +79,11 @@ public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public boolean isVisible() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 

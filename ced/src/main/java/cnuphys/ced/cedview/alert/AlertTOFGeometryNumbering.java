@@ -24,19 +24,19 @@ public class AlertTOFGeometryNumbering {
 	 * @param order
 	 */
 	public void fromHipoNumbering(int sect, int lay, int comp, int order) {
-		
+
 		//ALERT TOF hipo data is 0 -based
-		
+
 		if (sect < 0 || sect > 14) {
 			System.err.println("[AlertTOFGeometry] Bad sector number: " + sect);
             return;
         }
-		
+
 		if (layer < 0 || layer > 3) {
 			System.err.println("[AlertTOFGeometry] Bad layer number: " + layer);
             return;
 		}
-		
+
 		if (comp < 0 || comp > 10) {
             System.err.println("[AlertTOFGeometry] Bad component number: " + comp);
             return;

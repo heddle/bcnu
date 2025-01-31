@@ -150,7 +150,7 @@ public class SectorView extends SliceView implements ChangeListener {
 		double wheight = -2 * xo;
 		double wwidth = 840;
 
-		Dimension d = GraphicsUtilities.screenFraction(0.7);
+		Dimension d = GraphicsUtilities.screenFraction(0.65);
 
 		// give container same aspect ratio
 		int height = d.height;

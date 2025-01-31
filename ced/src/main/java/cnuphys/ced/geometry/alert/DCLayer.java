@@ -153,11 +153,11 @@ public class DCLayer {
 	 */
 	public void feedbackXYString(Point pp, Point2D.Double wp, List<String> feedbackStrings) {
 		feedbackStrings.add(String.format("DC sector: %d (1-based)", sector + 1));
-		
+
 		int supl1 = superlayer + 1;
 		int lay1 = layer + 1;
 		int compLayer = supl1 * 10 + lay1;
-		
+
 		feedbackStrings.add(String.format("DC superlayer: %d (1-based)", supl1));
 		feedbackStrings.add(String.format("DC layer: %d (1-based)", lay1));
 		feedbackStrings.add(String.format("DC hipo layer: %d", compLayer));

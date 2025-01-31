@@ -90,7 +90,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	public static AlertXYView createAlertXYView() {
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.4);
+		Dimension d = GraphicsUtilities.screenFraction(0.38);
 
 		// make it square
 		int width = d.width;

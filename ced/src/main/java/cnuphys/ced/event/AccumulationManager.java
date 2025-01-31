@@ -835,7 +835,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 
 					for (int i = 0; i < count; i++) {
 						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
-												
+
 						switch (adcGeom.superlayer) {
 						case 0:
 							_AlertDCSL0AccumulatedData[0][adcGeom.layer][adcGeom.component] += 1;
@@ -911,7 +911,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 			}
 
 			short component[] = _dataWarehouse.getShort("ATOF::tdc", "component");
-			
+
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {

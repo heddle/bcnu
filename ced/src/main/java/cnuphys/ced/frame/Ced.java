@@ -36,7 +36,6 @@ import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.FileUtilities;
 import cnuphys.bCNU.util.Jar;
 import cnuphys.bCNU.util.PropertySupport;
-import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
@@ -56,7 +55,6 @@ import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.dchex.DCHexView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
-import cnuphys.ced.cedview.fmt.FMTXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.ftof.FTOFView;
 import cnuphys.ced.cedview.sectorview.DisplaySectors;
@@ -102,7 +100,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.7.1";
+	private static final String _release = "1.7.2";
+
+	//minimum java major version
+	private static final int _minJavaVersion = 17;
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -1016,7 +1017,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 		title += "] [Swimmer " + Swimmer.getVersion() + "]";
 
-		title += " [Coatjava " + getCoatJavaVersion() + "]";
+		title += " [Coatjava " + getCoatJavaVersion() + "] [JAVA runtime " + Environment.getJavaMajorVersion() + "]";
 
 		setTitle(title);
 	}
@@ -1139,6 +1140,16 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
+
+		//get the java version
+		int javaVersion = Environment.getJavaMajorVersion();
+		if (javaVersion < _minJavaVersion) {
+			System.err.println("Java version must be at least " + _minJavaVersion + ". You have " + javaVersion);
+			System.exit(1);
+		}
+		System.out.println("Java version: " + javaVersion);
+		
+		System.out.println("Screen scale factor: " + Environment.getDisplayScaleFactor());
 
 		Environment.setLookAndFeel();
 		System.setProperty("sun.java2d.opengl", "true");

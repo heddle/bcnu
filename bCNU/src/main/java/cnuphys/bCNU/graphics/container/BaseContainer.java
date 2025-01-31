@@ -2,7 +2,6 @@ package cnuphys.bCNU.graphics.container;
 
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
@@ -38,6 +37,7 @@ import cnuphys.bCNU.item.AItem;
 import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.log.Log;
+import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.view.BaseView;
 
@@ -160,6 +160,7 @@ public class BaseContainer extends JComponent
 	 * @param worldSystem the default world system.
 	 */
 	public BaseContainer(BaseView view, Rectangle2D.Double worldSystem) {
+		setOpaque(isOpaque()); //helps to minimize redraws
 		_view = view;
 		_worldSystem = worldSystem;
 		_feedbackControl = new FeedbackControl(this);
@@ -213,8 +214,10 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+		Environment.filteredTrace("cnuphys.");
 		
+		super.paintComponent(g);
+
 		clipBounds(g);
 
 		Rectangle b = getBounds();
