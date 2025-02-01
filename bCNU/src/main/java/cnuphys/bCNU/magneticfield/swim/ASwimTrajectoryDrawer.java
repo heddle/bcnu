@@ -26,14 +26,14 @@ import cnuphys.swim.SwimTrajectory2D;
 import cnuphys.swim.Swimming;
 
 /**
- * An abstract class for drawing trajectories from the swimmer
+ * An abstract class for dwaing trajectories from thje swimmer
  *
  * @author heddle
  *
  */
 public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements IProjector {
 	
-	private double _maxPathLength = 2000; //whatever are the units, might be cm or mm
+	private double _maxPathLength = 2000; //whatever units the trajectory
 
 	// colors
 	protected static final Color sectChangeColor = X11Colors.getX11Color("purple", 128);
@@ -123,6 +123,16 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		}
 	}
 
+	/**
+	 * Set the maximum path length for a trajectory. If a trajectory is longer than
+	 * this, it will be truncated.
+	 * 
+	 * @param maxPathLength the maximum path length in whatever units the trajectory
+	 */
+	public void setMaxPathLength(double maxPathLength) {
+		_maxPathLength = maxPathLength;
+	}
+	
 	/**
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)
@@ -217,7 +227,6 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 			} 
 			oldWP = wp;
 			if (pathLength > _maxPathLength) {
-				System.out.println("Drawn Path length (A): " + pathLength +  " painted: " + ++paintcount);
 				break;
 			}
 

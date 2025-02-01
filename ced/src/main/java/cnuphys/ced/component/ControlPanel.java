@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import cnuphys.bCNU.component.rangeslider.RangeSlider;
 import cnuphys.bCNU.feedback.FeedbackPane;
 import cnuphys.bCNU.graphics.colorscale.ColorModelLegend;
 import cnuphys.bCNU.graphics.colorscale.ColorModelPanel;
@@ -76,6 +77,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** all dc display panel */
 	public static final int ALLDCDISPLAYPANEL = 02000;
+	
+	/** trajectory drawing cutoff at a max pathlength */
+	public static final int TRAJCUTOFF = 04000;
 
 	// the view parent
 	private CedView _view;
@@ -91,6 +95,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// control the value of phi
 	private JSlider _phiSlider;
+	
+	//traj pathlength cutoff
+	private RangeSlider _trajRangeSlider;
 
 	// control threshold value of adc to display
 	private JSlider _adcThresholdSlider;
@@ -260,6 +267,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			phiSlider = createPhiSlider(isBig);
 		}
 
+		if (Bits.checkBit(controlPanelBits, TRAJCUTOFF)) {
+			int maxPath = _view.getTrajMaxPathlength();
+			_trajRangeSlider = new RangeSlider(0, maxPath, maxPath, maxPath/5, maxPath/10, false);
+			_trajRangeSlider.setBorder(new CommonBorder("Trajectory Path Length Cutoff"));
+		}
+
 		// alert dc projections
 		if (Bits.checkBit(controlPanelBits, ALERTDC)) {
 			if (_view instanceof AlertXYView) {
@@ -281,6 +294,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (daPanel != null) {
 			tabbedPane.add(daPanel, "display");
+			if (_trajRangeSlider != null) {
+				daPanel.add(_trajRangeSlider);
+			}
 			if (_alertDCPanel != null) {
 				daPanel.add(_alertDCPanel);
 			}
@@ -576,6 +592,14 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	 */
 	public AllDCDisplayPanel getAllDCDisplayPanel() {
 		return _allDCDisplayPanel;
+	}
+	
+	/**
+     * Get the trajectory path length cutoff slider
+     * @return the trajectory path length cutoff slider
+     */
+	public RangeSlider getTrajRangeSlider() {
+		return _trajRangeSlider;
 	}
 
 	@Override

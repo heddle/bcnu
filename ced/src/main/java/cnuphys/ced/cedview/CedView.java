@@ -82,6 +82,9 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 
 	// used for computing world circles
 	private static final int NUMCIRCPNTS = 40;
+	
+	//maximum drawn path length
+	private int _maxPathLength = Integer.MAX_VALUE; //whatever units the trajectory
 
 	// next event button
 	protected JButton nextEvent;
@@ -1526,6 +1529,15 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 			_firstClone = false;
 		}
 		return null;
+	}
+	
+	/**
+	 * Get the maximum path length for drawn trajectories
+	 *
+	 * @return the maximum path length for trajectories
+	 */
+	public int getTrajMaxPathlength() {
+		return _maxPathLength;
 	}
 
 }

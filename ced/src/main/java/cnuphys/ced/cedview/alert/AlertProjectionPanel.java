@@ -53,7 +53,7 @@ public class AlertProjectionPanel extends JPanel {
         this.alertXYView.setProjectionPlane(DEFAULT_Z);
         add(zSlider);
 
-        setBorder(new CommonBorder("Alert Projection Plane"));
+        setBorder(new CommonBorder("Alert Z Projection Plane"));
         updateZLabel(null);
     }
 
@@ -64,17 +64,20 @@ public class AlertProjectionPanel extends JPanel {
         // Use a BoxLayout with vertical alignment
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        panel.add(createLabel("TOF Display"));
-
         ButtonGroup projectionGroup = new ButtonGroup();
-        showAllTOF = createRadioButton("Show all TOF (unrealistic)", projectionGroup, this::handleTOFViewChange);
-        showIntersectingTOF = createRadioButton("Show intersecting TOF (realistic)", projectionGroup, this::handleTOFViewChange);
+        
+        JPanel bPanel = new JPanel();
+        bPanel.setLayout(new BoxLayout(bPanel, BoxLayout.X_AXIS));
+        showAllTOF = createRadioButton("All TOF", projectionGroup, this::handleTOFViewChange);
+        showIntersectingTOF = createRadioButton("    Intersecting TOF", projectionGroup, this::handleTOFViewChange);
         showAllTOF.setSelected(true);
 
         // Add radio buttons to the panel
-        panel.add(showAllTOF);
-        panel.add(showIntersectingTOF);
-
+        bPanel.add(showAllTOF);
+        bPanel.add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
+        bPanel.add(showIntersectingTOF);
+        panel.add(bPanel);
+ 
         // Set default selection
         showAllTOF.setSelected(true);
 

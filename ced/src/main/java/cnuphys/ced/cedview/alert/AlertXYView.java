@@ -13,6 +13,7 @@ import java.util.List;
 import org.jlab.geom.prim.Plane3D;
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.bCNU.component.rangeslider.RangeSlider;
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -80,6 +81,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		super(keyVals);
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
+		_swimTrajectoryDrawer.setMaxPathLength(getTrajMaxPathlength());
 		_dcHitDrawer = new AlertDCHitDrawer(this);
 		_tofHitDrawer = new AlertTOFHitDrawer(this);
 	}
@@ -114,7 +116,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
-				ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC,
+				ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC + ControlPanel.TRAJCUTOFF,
 				DisplayBits.ACCUMULATION
 						+ DisplayBits.ADCDATA + DisplayBits.MCTRUTH,
 				3, 5);
@@ -128,11 +130,21 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		view._controlPanel.getMatchedBankPanel().update();
+		
+		RangeSlider trajRangeSlider = view._controlPanel.getTrajRangeSlider();
+		trajRangeSlider.setOnChange(value -> view.trajRangeChanging(value));
 
 		//add dc projection panel
 		view._dcPanel = view._controlPanel.getAlertDCPanel();
 
 		return view;
+	}
+	
+
+	//respond to the traj range change
+	private void trajRangeChanging(int currentVal) {
+		_swimTrajectoryDrawer.setMaxPathLength(currentVal);
+		refresh();
 	}
 
 	@Override
@@ -412,6 +424,16 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		refresh();
+	}
+
+	/**
+	 * Get the maximum path length for drawn trajectories
+	 *
+	 * @return the maximum path length for trajectories
+	 */
+	@Override
+	public int getTrajMaxPathlength() {
+		return 1000; // mm
 	}
 
 

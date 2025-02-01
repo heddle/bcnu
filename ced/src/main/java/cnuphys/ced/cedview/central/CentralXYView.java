@@ -24,6 +24,7 @@ import java.util.List;
 
 import org.jlab.io.base.DataEvent;
 
+import cnuphys.bCNU.component.rangeslider.RangeSlider;
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -136,6 +137,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
+		_swimTrajectoryDrawer.setMaxPathLength(getTrajMaxPathlength());
 
 		// add the CND polys
 		for (int layer = 1; layer <= 3; layer++) {
@@ -177,7 +179,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.MATCHINGBANKSPANEL,
+						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.TRAJCUTOFF,
 				DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
 						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
@@ -195,8 +197,19 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		}
 
 		view._controlPanel.getMatchedBankPanel().update();
+		
+		RangeSlider trajRangeSlider = view._controlPanel.getTrajRangeSlider();
+		trajRangeSlider.setOnChange(value -> view.trajRangeChanging(value));
+
 		return view;
 	}
+	
+	//respond to the traj range change
+	private void trajRangeChanging(int currentVal) {
+		_swimTrajectoryDrawer.setMaxPathLength(currentVal);
+		refresh();
+	}
+
 
 	/**
 	 * Create the view's before drawer.
@@ -839,4 +852,15 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 		refresh();
 
 	}
+	
+	/**
+	 * Get the maximum path length for drawn trajectories
+	 *
+	 * @return the maximum path length for trajectories
+	 */
+	@Override
+	public int getTrajMaxPathlength() {
+		return 4000; // mm
+	}
+
 }

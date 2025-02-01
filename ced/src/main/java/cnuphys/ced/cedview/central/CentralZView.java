@@ -20,6 +20,7 @@ import java.util.List;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import cnuphys.bCNU.component.rangeslider.RangeSlider;
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.format.DoubleFormat;
@@ -113,7 +114,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawerZ(this);
-
+		_swimTrajectoryDrawer.setMaxPathLength(getTrajMaxPathlength());
 	}
 
 	/**
@@ -122,7 +123,6 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	 * @return the new view
 	 */
 	public static CentralZView createCentralZView() {
-		CentralZView view = null;
 
 		// set to a fraction of screen
 		Dimension d = GraphicsUtilities.screenFraction(0.35);
@@ -134,28 +134,22 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 		String title = _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")"));
 
 		// create the view
-		view = new CentralZView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, width, // container
-																													// width,
-																													// not
-																													// total
-																													// view
-																													// width
+		final CentralZView view = new CentralZView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle,
+				PropertySupport.WIDTH, width, // container
 				PropertySupport.HEIGHT, height, // container height, not total
-												// view width
 				PropertySupport.LEFTMARGIN, LMARGIN, PropertySupport.TOPMARGIN, TMARGIN, PropertySupport.RIGHTMARGIN,
 				RMARGIN, PropertySupport.BOTTOMMARGIN, BMARGIN, PropertySupport.TOOLBAR, true,
-				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true,
-				PropertySupport.TITLE, title, PropertySupport.PROPNAME, "CentralZ",
-				PropertySupport.STANDARDVIEWDECORATIONS, true);
+				PropertySupport.TOOLBARBITS, CedView.TOOLBARBITS, PropertySupport.VISIBLE, true, PropertySupport.TITLE,
+				title, PropertySupport.PROPNAME, "CentralZ", PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.PHISLIDER + ControlPanel.PHI_SLIDER_BIG
-						+ ControlPanel.FIELDLEGEND +
-						ControlPanel.MATCHINGBANKSPANEL,
-				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH | DisplayBits.RECONHITS
-						| DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS | DisplayBits.CVTP1TRACKS | DisplayBits.CVTP1TRAJ |
-						DisplayBits.CVTRECTRAJ | DisplayBits.CVTRECKFTRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
+						+ ControlPanel.PHISLIDER + ControlPanel.PHI_SLIDER_BIG + ControlPanel.FIELDLEGEND
+						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.TRAJCUTOFF,
+				DisplayBits.MAGFIELD | DisplayBits.ACCUMULATION | DisplayBits.CROSSES | DisplayBits.MCTRUTH
+						| DisplayBits.RECONHITS | DisplayBits.COSMICS | DisplayBits.CVTRECTRACKS
+						| DisplayBits.CVTP1TRACKS | DisplayBits.CVTP1TRAJ | DisplayBits.CVTRECTRAJ
+						| DisplayBits.CVTRECKFTRAJ | DisplayBits.GLOBAL_HB | DisplayBits.GLOBAL_TB,
 				3, 5);
 
 		view.add(view._controlPanel, BorderLayout.EAST);
@@ -170,8 +164,19 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		view._controlPanel.getMatchedBankPanel().update();
 
+		RangeSlider trajRangeSlider = view._controlPanel.getTrajRangeSlider();
+		trajRangeSlider.setOnChange(value -> view.trajRangeChanging(value));
+
 		return view;
 	}
+	
+	
+	//respond to the traj range change
+	private void trajRangeChanging(int currentVal) {
+		_swimTrajectoryDrawer.setMaxPathLength(currentVal);
+		refresh();
+	}
+
 
 	/**
 	 * Create the view's before drawer.
@@ -272,51 +277,7 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 
 		} else {
 			if (isSingleEventMode()) {
-//
-//				int hitCount = BMT.hitCount();
-//				if (hitCount > 0) {
-//					int sect[] = BMT.sector();
-//					int layer[] = BMT.layer();
-//					int strip[] = BMT.strip();
-//
-//					Point2D.Double wp = new Point2D.Double();
-//					Point pp = new Point();
-//					for (int hit = 0; hit < hitCount; hit++) {
-//
-//						if ((layer[hit] == 5) || (layer[hit] == 6)) {
-//							if (strip[hit] > 0) {
-//								double z = geo.CRC_GetZStrip(sect[hit],
-//										layer[hit], strip[hit]);
-//								wp.x = z;
-//
-//								if (layer[hit] == 6) {
-//									wp.y = r6 + 2;
-//									container.worldToLocal(pp, wp);
-//									g.setColor(X11Colors
-//											.getX11Color("lawn green"));
-//									g.fillOval(pp.x - 3, pp.y - 3, 6, 6);
-//									g.setColor(Color.black);
-//									g.drawOval(pp.x - 3, pp.y - 3, 6, 6);
-//
-//									wp.y = -r6 - 2;
-//									container.worldToLocal(pp, wp);
-//									g.setColor(X11Colors
-//											.getX11Color("lawn green"));
-//									g.fillOval(pp.x - 3, pp.y - 3, 6, 6);
-//									g.setColor(Color.black);
-//									g.drawOval(pp.x - 3, pp.y - 3, 6, 6);
-//
-//								}
-//
-//							}
-//						} // layer == 5 or 6
-//					} // for
-//
-//					if (showMcTruth()) {
-//
-//					}
-//
-//				} // hit count > 0
+
 			} // single event mode
 		}
 
@@ -961,5 +922,15 @@ public class CentralZView extends CedView implements ChangeListener, ILabCoordin
 	 */
 	@Override
 	public void dataSelected(String bankName, int index) {
+	}
+	
+	/**
+	 * Get the maximum path length for drawn trajectories
+	 *
+	 * @return the maximum path length for trajectories
+	 */
+	@Override
+	public int getTrajMaxPathlength() {
+		return 4000; // mm
 	}
 }

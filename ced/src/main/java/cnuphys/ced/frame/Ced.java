@@ -1002,18 +1002,23 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 */
 	public void fixTitle() {
 		String title = getTitle();
-		int index = title.indexOf("   [Mag");
+		String prefix = "  [";
+		int index = title.indexOf(prefix);
 		if (index > 0) {
 			title = title.substring(0, index);
 		}
 
-		title += "   [Magnetic Field " + MagneticFields.getInstance().getVersion() + " "
-				+ MagneticFields.getInstance().getActiveFieldDescription();
+		title += prefix;
 
 		if (MagneticFields.getInstance().hasActiveTorus()) {
 			String path = MagneticFields.getInstance().getTorusBaseName();
 			title += " (" + path + ")";
 		}
+		if (MagneticFields.getInstance().hasActiveSolenoid()) {
+			String path = MagneticFields.getInstance().getSolenoidBaseName();
+			title += " (" + path + ")";
+		}
+		
 
 		title += "] [Swimmer " + Swimmer.getVersion() + "]";
 
