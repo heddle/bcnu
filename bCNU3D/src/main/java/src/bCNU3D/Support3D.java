@@ -17,40 +17,7 @@ public class Support3D {
 
 	public static GLUT glut = new GLUT();
 
-	private static final byte byteA = (byte) 170;
-	private static final byte byteB = (byte) 170;
-
 	private static GLUquadric _quad;
-
-	/* a stipple pattern */
-	public static byte sd[] = { byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA };
-
-	/** for half-tone stipples */
-	public static byte halftone[] = { (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55 };
 
 	/**
 	 * Draw a set of points
@@ -146,66 +113,29 @@ public class Support3D {
 		gl.glEnd();
 	}
 
-//	public static void prepareForTransparent(GLAutoDrawable drawable) {
-//        GL2 gl = drawable.getGL().getGL2();
-//        gl.glDepthMask(false); // Disable depth writes for transparent
-//        gl.glEnable(GL.GL_BLEND);
-//        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-//    }
-//
-//
-//	public static void prepareForOpaque(GLAutoDrawable drawable) {
-//        GL2 gl = drawable.getGL().getGL2();
-//        gl.glDepthMask(true); // Enable depth writes for solid objects
-//        gl.glDisable(GL.GL_BLEND);
-//    }
+	/**
+	 * Prepare for transparent drawing
+	 * @param drawable the OpenGL drawable
+	 */
+	public static void prepareForTransparent(GLAutoDrawable drawable) {
+        GL2 gl = drawable.getGL().getGL2();
+        gl.glDepthMask(false); // Disable depth writes for transparent
+        gl.glEnable(GL.GL_BLEND);
+        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+    }
 
-	public static final String vshader1 = "void main {\n" + "gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-			+ "}";
 
-	public static final String fshader1 = "void main {\n" + "}";
+	/**
+	 * Prepare for opaque drawing
+	 * 
+	 * @param drawable the OpenGL drawable
+	 */
+	public static void prepareForOpaque(GLAutoDrawable drawable) {
+        GL2 gl = drawable.getGL().getGL2();
+        gl.glDepthMask(true); // Enable depth writes for solid objects
+        gl.glDisable(GL.GL_BLEND);
+    }
 
-	public static void loadShader(GL2 gl, String vertexShaderString, String fragmentShaderString) {
-		int v = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-		int f = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
-
-		// Compile the vertexShader String into a program.
-		String[] vlines = new String[] { vertexShaderString };
-		int[] vlengths = new int[] { vlines[0].length() };
-		gl.glShaderSource(v, vlines.length, vlines, vlengths, 0);
-		gl.glCompileShader(v);
-
-		String[] flines = new String[] { fragmentShaderString };
-		int[] flengths = new int[] { flines[0].length() };
-		gl.glShaderSource(f, flines.length, flines, flengths, 0);
-		gl.glCompileShader(f);
-
-		int shaderprogram = gl.glCreateProgram();
-		gl.glAttachShader(shaderprogram, v);
-		gl.glAttachShader(shaderprogram, f);
-		gl.glLinkProgram(shaderprogram);
-		gl.glValidateProgram(shaderprogram);
-
-		// gl.glDeleteShader(v);
-		// gl.glDeleteShader(f);
-		gl.glUseProgram(shaderprogram);
-	}
-
-	public static void drawSprite(GLAutoDrawable drawable, Texture texture, float x, float y, float z, float size) {
-
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glPointSize(size);
-
-		// adjust(tendToColor);
-		texture.bind(gl);
-		// gl.glColor4f(rgba.r,rgba.g,rgba.b,rgba.a);
-		setColor(gl, Color.black);
-
-		gl.glBegin(GL.GL_POINTS);
-		texture.bind(gl);
-		gl.glVertex3f(x, y, z);
-		gl.glEnd();
-	}
 
 	/**
 	 * Draw a wire sphere
@@ -433,56 +363,6 @@ public class Support3D {
 				gl.glEnd();
 			}
 		}
-	}
-
-	/**
-	 * @param drawable  the openGL drawable
-	 * @param coords    the coordinate array
-	 * @param color     the color
-	 * @param lineWidth the line width
-	 * @param frame     if <code>true</code> frame in slightly darker color
-	 */
-	public static void drawQuadsHalfTone(GLAutoDrawable drawable, float coords[], Color color, float lineWidth,
-			boolean frame) {
-
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glLineWidth(lineWidth);
-		gl.glEnable(GL2.GL_POLYGON_STIPPLE);
-		gl.glPolygonStipple(halftone, 0);
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		setColor(gl, color);
-
-		int numPoints = coords.length / 3;
-
-		for (int i = 0; i < numPoints; i++) {
-			int j = 3 * i;
-			gl.glVertex3f(coords[j], coords[j + 1], coords[j + 2]);
-		}
-
-		gl.glEnd();
-		gl.glDisable(GL2.GL_POLYGON_STIPPLE);
-
-		if (frame) {
-			int numQuad = coords.length / 12;
-			for (int i = 0; i < numQuad; i++) {
-				gl.glBegin(GL.GL_LINE_STRIP);
-				setColor(gl, color.darker());
-
-				int j = i * 12;
-
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-
-				j = i * 12;
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-
-				gl.glEnd();
-			}
-		}
-
 	}
 
 	/**
@@ -817,6 +697,24 @@ public class Support3D {
 		gl.glVertex3f(x2, y2, z2);
 		gl.glEnd();
 	}
+	
+	/**
+	 * Draw a 3D line (convert double args to float)
+	 *
+	 * @param drawable  the OpenGL drawable
+	 * @param x1        x coordinate of one end
+	 * @param y1        y coordinate of one end
+	 * @param z1        z coordinate of one end
+	 * @param x2        x coordinate of other end
+	 * @param y2        y coordinate of other end
+	 * @param z2        z coordinate of other end
+	 * @param color     the color
+	 * @param lineWidth the line width in pixels
+	 */
+	public static void drawLine(GLAutoDrawable drawable, double x1, double y1, double z1, double x2, double y2, double z2,
+			Color color, float lineWidth) {
+		drawLine(drawable, (float)x1, (float)y1, (float)z1, (float)x2, (float)y2, (float)z2, color, lineWidth);
+	}	
 
 	/**
 	 * Draw a 3D line

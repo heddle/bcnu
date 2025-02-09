@@ -296,11 +296,15 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 		// Draw the 3D items
 		gl.glPushMatrix();
+		
+		beforeDraw(drawable);
 		for (Item3D item : _itemList) {
 			if (item.isVisible()) {
 				item.drawItem(drawable);
 			}
 		}
+		afterDraw(drawable);
+		
 		gl.glPopMatrix();
 
 //		gl.glDepthMask(true);
@@ -313,6 +317,17 @@ public class Panel3D extends JPanel implements GLEventListener {
 		System.err.println("called dispose");
 	}
 
+	/**
+	 * Called before drawing the itemss.
+	 */
+	public void beforeDraw(GLAutoDrawable drawable) {
+	}
+	
+	/**
+	 * Called after drawing the items.
+	 */
+	public void afterDraw(GLAutoDrawable drawable) {
+	}
 
 	@Override
 	public void init(GLAutoDrawable drawable) {
@@ -517,6 +532,14 @@ public class Panel3D extends JPanel implements GLEventListener {
 			refresh();
 		}
 	}
+	
+	/**
+	 * Clear all items from the list.
+	 */
+	public void clearItems() {
+		_itemList.clear();
+		refresh();
+	}
 
 	/**
 	 * Conver GL coordinates to screen coordinates
@@ -600,9 +623,9 @@ public class Panel3D extends JPanel implements GLEventListener {
 		final float xymax = 600f;
 		final float zmax = 600f;
 		final float zmin = -100f;
-		final float xdist = -100f;
+		final float xdist = 0f;
 		final float ydist = 0f;
-		final float zdist = -1600f;
+		final float zdist = -2.75f*xymax;
 
 		final float thetax = 45f;
 		final float thetay = 45f;
@@ -648,7 +671,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 				// point set test
 				int numPnt = 100;
-				Color color = Color.yellow;
+				Color color = Color.orange;
 				float pntSize = 10;
 				float coords[] = new float[3 * numPnt];
 				for (int i = 0; i < numPnt; i++) {
