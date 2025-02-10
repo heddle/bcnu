@@ -40,7 +40,6 @@ import item3D.Triangle3D;
 
 @SuppressWarnings("serial")
 public class Panel3D extends JPanel implements GLEventListener {
-
 	protected float[] rotationMatrix = new float[16];
 
 	//background default color used for r, g and b
@@ -79,6 +78,8 @@ public class Panel3D extends JPanel implements GLEventListener {
 	protected KeyAdapter3D _keyAdapter;
 
 	protected String _rendererStr;
+	
+	private boolean _skipLastStage = false;
 
 	/*
 	 * The panel that holds the 3D objects
@@ -96,7 +97,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public Panel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist) {
-		this(angleX, angleY, angleZ, xDist, yDist, zDist, BGFEFAULT, BGFEFAULT, BGFEFAULT);
+		this(angleX, angleY, angleZ, xDist, yDist, zDist, BGFEFAULT, BGFEFAULT, BGFEFAULT, false);
 	}
 
 	/*
@@ -115,8 +116,9 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public Panel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist, float bgRed,
-			float bgGreen, float bgBlue) {
+			float bgGreen, float bgBlue, boolean skipLastStage) {
 
+		_skipLastStage = skipLastStage;
 		loadIdentityMatrix();
 
 
@@ -308,6 +310,9 @@ public class Panel3D extends JPanel implements GLEventListener {
 		gl.glPopMatrix();
 
 		//ced might not like these lines
+		if (_skipLastStage) {
+			return;
+		}
 		gl.glDepthMask(true);
 		gl.glDisable(GL.GL_BLEND);
 		gl.glLoadIdentity();

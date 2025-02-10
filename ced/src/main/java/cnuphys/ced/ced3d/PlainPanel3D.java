@@ -179,7 +179,7 @@ public abstract class PlainPanel3D extends Panel3D {
 	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist,
 			float zDist, float bgRed, float bgGreen, float bgBlue, String... cbaLabels) {
 
-		super(angleX, angleY, angleZ, xDist, yDist, zDist, bgRed, bgGreen, bgBlue);
+		super(angleX, angleY, angleZ, xDist, yDist, zDist, bgRed, bgGreen, bgBlue, true);
 
 		_view = view;
 		_cbaLabels = cbaLabels;

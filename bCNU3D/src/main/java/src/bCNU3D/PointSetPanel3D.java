@@ -74,8 +74,6 @@ public class PointSetPanel3D extends Panel3D {
 		final JFrame testFrame = new JFrame("bCNU PointSetPanel3D Test");
 		testFrame.setLayout(new BorderLayout(4, 4));
 
-		Random rand = new Random();
-
 		final float xymax = 600f;
 		final float zmax = 600f;
 		final float zmin = -100f;
