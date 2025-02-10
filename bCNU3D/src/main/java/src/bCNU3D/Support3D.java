@@ -112,6 +112,29 @@ public class Support3D {
 		gl.glVertex3f(x, y, z);
 		gl.glEnd();
 	}
+	
+	/**
+	 * Draw a point using float coordinates and a point sprite
+	 *
+	 * @param drawable the OpenGL drawable
+	 * @param x        the x coordinate
+	 * @param y        the y coordinate
+	 * @param z        the z coordinate
+	 *
+	 * @param color    the color
+	 * @param size     the points size
+	 */
+	public static void drawPoint(GLAutoDrawable drawable, float x, float y, float z, Color color, float size) {
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glPointSize(size);
+
+		setColor(gl, color);
+		gl.glEnable(GL2.GL_POINT_SPRITE);
+		gl.glBegin(GL.GL_POINTS);
+		gl.glVertex3f(x, y, z);
+		gl.glEnd();
+	}
+
 
 	/**
 	 * Prepare for transparent drawing
@@ -182,7 +205,133 @@ public class Support3D {
 		gl.glPopMatrix();
 
 	}
+	
+	/**
+	 * Draws a spherical shell with a given inner and outer radius.
+	 *
+	 * @param drawable    the OpenGL drawable
+	 * @param cx          x center
+	 * @param cy          y center
+	 * @param cz          z center
+	 * @param innerRadius the inner radius of the shell
+	 * @param outerRadius the outer radius of the shell
+	 * @param slices      number of subdivisions around the Z axis (similar to longitude)
+	 * @param stacks      number of subdivisions along the Z axis (similar to latitude)
+	 * @param color       the color of the shell
+	 */
+	public static void solidSphereShell(GLAutoDrawable drawable,
+	                                    float cx, float cy, float cz,
+	                                    float innerRadius, float outerRadius,
+	                                    int slices, int stacks, Color color) {
+	    GL2 gl = drawable.getGL().getGL2();
+	    setColor(gl, color);
+	    gl.glPushMatrix();
+	    gl.glTranslatef(cx, cy, cz);
 
+	    // Draw outer surface (with outward facing normals)
+	    drawSphereSurface(gl, outerRadius, slices, stacks, false);
+	    
+	    // Draw inner surface (with inward facing normals)
+	    drawSphereSurface(gl, innerRadius, slices, stacks, true);
+	    
+	    // Connect the two surfaces by drawing side quads along each horizontal band.
+	    // This creates the "thickness" between the outer and inner spheres.
+	    for (int i = 0; i < stacks; i++) {
+	        float theta1 = (float) (i * Math.PI / stacks);
+	        float theta2 = (float) ((i + 1) * Math.PI / stacks);
+	        gl.glBegin(GL2.GL_QUAD_STRIP);
+	        for (int j = 0; j <= slices; j++) {
+	            float phi = (float) (j * 2 * Math.PI / slices);
+	            float sinTheta1 = (float) Math.sin(theta1);
+	            float cosTheta1 = (float) Math.cos(theta1);
+	            float sinTheta2 = (float) Math.sin(theta2);
+	            float cosTheta2 = (float) Math.cos(theta2);
+	            float sinPhi = (float) Math.sin(phi);
+	            float cosPhi = (float) Math.cos(phi);
+
+	            // Outer vertices
+	            float xOuter1 = outerRadius * sinTheta1 * cosPhi;
+	            float yOuter1 = outerRadius * cosTheta1;
+	            float zOuter1 = outerRadius * sinTheta1 * sinPhi;
+
+	            float xOuter2 = outerRadius * sinTheta2 * cosPhi;
+	            float yOuter2 = outerRadius * cosTheta2;
+	            float zOuter2 = outerRadius * sinTheta2 * sinPhi;
+
+	            // Inner vertices
+	            float xInner1 = innerRadius * sinTheta1 * cosPhi;
+	            float yInner1 = innerRadius * cosTheta1;
+	            float zInner1 = innerRadius * sinTheta1 * sinPhi;
+
+	            float xInner2 = innerRadius * sinTheta2 * cosPhi;
+	            float yInner2 = innerRadius * cosTheta2;
+	            float zInner2 = innerRadius * sinTheta2 * sinPhi;
+
+	            // Create a quad strip between outer and inner surfaces.
+	            // For each band, we connect the corresponding outer and inner vertices.
+	            gl.glVertex3f(xOuter1, yOuter1, zOuter1);
+	            gl.glVertex3f(xInner1, yInner1, zInner1);
+	            gl.glVertex3f(xOuter2, yOuter2, zOuter2);
+	            gl.glVertex3f(xInner2, yInner2, zInner2);
+	        }
+	        gl.glEnd();
+	    }
+	    
+	    gl.glPopMatrix();
+	}
+
+
+
+	/**
+	 * Draws the surface of a sphere.
+	 *
+	 * @param gl            the GL2 context
+	 * @param radius        the radius of the sphere
+	 * @param slices        number of subdivisions around the Z axis
+	 * @param stacks        number of subdivisions along the Z axis
+	 * @param invertNormals if true, normals are inverted (useful for inner surfaces)
+	 */
+	private static void drawSphereSurface(GL2 gl, float radius, int slices, int stacks, boolean invertNormals) {
+	    for (int i = 0; i < stacks; i++) {
+	        float theta1 = (float) (i * Math.PI / stacks);
+	        float theta2 = (float) ((i + 1) * Math.PI / stacks);
+	        gl.glBegin(GL2.GL_QUAD_STRIP);
+	        for (int j = 0; j <= slices; j++) {
+	            float phi = (float) (j * 2 * Math.PI / slices);
+	            float sinTheta1 = (float) Math.sin(theta1);
+	            float cosTheta1 = (float) Math.cos(theta1);
+	            float sinTheta2 = (float) Math.sin(theta2);
+	            float cosTheta2 = (float) Math.cos(theta2);
+	            float sinPhi = (float) Math.sin(phi);
+	            float cosPhi = (float) Math.cos(phi);
+
+	            // Compute positions
+	            float x1 = radius * sinTheta1 * cosPhi;
+	            float y1 = radius * cosTheta1;
+	            float z1 = radius * sinTheta1 * sinPhi;
+	            float x2 = radius * sinTheta2 * cosPhi;
+	            float y2 = radius * cosTheta2;
+	            float z2 = radius * sinTheta2 * sinPhi;
+
+	            // Compute normals (invert if necessary)
+	            if (invertNormals) {
+	                gl.glNormal3f(-x1 / radius, -y1 / radius, -z1 / radius);
+	                gl.glVertex3f(x1, y1, z1);
+	                gl.glNormal3f(-x2 / radius, -y2 / radius, -z2 / radius);
+	                gl.glVertex3f(x2, y2, z2);
+	            } else {
+	                gl.glNormal3f(x1 / radius, y1 / radius, z1 / radius);
+	                gl.glVertex3f(x1, y1, z1);
+	                gl.glNormal3f(x2 / radius, y2 / radius, z2 / radius);
+	                gl.glVertex3f(x2, y2, z2);
+	            }
+	        }
+	        gl.glEnd();
+	    }
+	}
+
+
+	
 	/**
 	 * Draw a rectangular solid
 	 * @param drawable
