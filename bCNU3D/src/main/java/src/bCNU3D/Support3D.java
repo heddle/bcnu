@@ -6,12 +6,10 @@ import com.jogamp.graph.geom.SVertex;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES1;
-import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL2ES3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.glu.GLUquadric;
 import com.jogamp.opengl.util.gl2.GLUT;
-import com.jogamp.opengl.util.texture.Texture;
 
 public class Support3D {
 
@@ -114,6 +112,105 @@ public class Support3D {
 	}
 	
 	/**
+	 * Draw a marker (a point) with an associated text label.
+	 * The marker is drawn as in drawPoint, and then a text label is rendered
+	 * centered below the marker with a 3 pixel gap.
+	 *
+	 * @param drawable   the OpenGL drawable
+	 * @param x          x coordinate of the marker
+	 * @param y          y coordinate of the marker
+	 * @param z          z coordinate of the marker
+	 * @param markerColor  color of the marker
+	 * @param markerSize   pixel size of the marker
+	 * @param circular     whether the marker should be drawn with smooth (circular) edges
+	 * @param label        the text to display below the marker
+	 * @param fontSize     scaling factor for the stroke font (in OpenGL units)
+	 * @param fontColor    color of the text label
+	 */
+	public static void drawMarker(GLAutoDrawable drawable, 
+	                              float x, float y, float z, 
+	                              Color markerColor, float markerSize, boolean circular,
+	                              String label, float fontSize, Color fontColor) {
+	    GL2 gl = drawable.getGL().getGL2();
+	    
+	    // Draw the marker (reuse your drawPoint method)
+	    drawPoint(drawable, x, y, z, markerColor, markerSize, circular);
+
+	    // Retrieve the current matrices and viewport to project the marker position.
+	    int[] viewport = new int[4];
+	    double[] modelview = new double[16];
+	    double[] projection = new double[16];
+	    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+	    gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelview, 0);
+	    gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection, 0);
+
+	    // Use gluProject to map the marker's 3D position to window (screen) coordinates.
+	    double[] winCoords = new double[3];
+	    // Note: We are using Panel3D.glu as in your drawTube method.
+	    Panel3D.glu.gluProject(x, y, z, modelview, 0, projection, 0, viewport, 0, winCoords, 0);
+
+	    // Compute the text width (in pixels) using GLUT stroke font widths.
+	    // The GLUT stroke font returns a width in its native coordinate system,
+	    // so we multiply by our chosen fontSize.
+	    float textWidth = 0;
+	    for (int i = 0; i < label.length(); i++) {
+	        textWidth += glut.glutStrokeWidth(GLUT.STROKE_ROMAN, label.charAt(i)) * fontSize;
+	    }
+	    
+	    // Determine the text position:
+	    // We want the text centered horizontally at the marker’s x coordinate
+	    // and placed just below the marker. Since the marker is drawn with a size in pixels,
+	    // we subtract half the marker size and then a further 3 pixels from the marker’s screen y.
+	    double textWinX = winCoords[0] - textWidth / 2.0;
+	    double textWinY = winCoords[1] - markerSize / 2.0 - 3.0;
+	    
+	    // --- Switch to 2D orthographic projection for drawing text ---
+	    // Save the current projection matrix.
+	    gl.glMatrixMode(GL2.GL_PROJECTION);
+	    gl.glPushMatrix();
+	    gl.glLoadIdentity();
+	    // Set up an orthographic projection covering the entire window.
+	    gl.glOrtho(0, viewport[2], 0, viewport[3], -1, 1);
+	    
+	    // Save the current modelview matrix.
+	    gl.glMatrixMode(GL2.GL_MODELVIEW);
+	    gl.glPushMatrix();
+	    gl.glLoadIdentity();
+	    
+	    // Disable depth testing so the text is not hidden by other geometry.
+	    gl.glDisable(GL.GL_DEPTH_TEST);
+	    
+	    // Set the font color.
+	    setColor(gl, fontColor);
+	    
+	    // Position the text.
+	    gl.glPushMatrix();
+	    // Translate to the computed window coordinates.
+	    // (Remember that in an orthographic projection as set above, (0,0) is at the bottom left.)
+	    gl.glTranslated(textWinX, textWinY, 0);
+	    // Scale the stroke font by fontSize.
+	    gl.glScalef(fontSize, fontSize, fontSize);
+	    
+	    // Draw each character of the label using the GLUT stroke font.
+	    for (int i = 0; i < label.length(); i++) {
+	        glut.glutStrokeCharacter(GLUT.STROKE_ROMAN, label.charAt(i));
+	    }
+	    gl.glPopMatrix();
+	    
+	    // Re-enable depth testing.
+	    gl.glEnable(GL.GL_DEPTH_TEST);
+	    
+	    // Restore the modelview matrix.
+	    gl.glPopMatrix();
+	    // Restore the projection matrix.
+	    gl.glMatrixMode(GL2.GL_PROJECTION);
+	    gl.glPopMatrix();
+	    // Return to modelview matrix mode.
+	    gl.glMatrixMode(GL2.GL_MODELVIEW);
+	}
+
+
+	/**
 	 * Draw a point using float coordinates and a point sprite
 	 *
 	 * @param drawable the OpenGL drawable
@@ -129,7 +226,7 @@ public class Support3D {
 		gl.glPointSize(size);
 
 		setColor(gl, color);
-		gl.glEnable(GL2.GL_POINT_SPRITE);
+		gl.glEnable(GL2ES1.GL_POINT_SPRITE);
 		gl.glBegin(GL.GL_POINTS);
 		gl.glVertex3f(x, y, z);
 		gl.glEnd();
@@ -150,7 +247,7 @@ public class Support3D {
 
 	/**
 	 * Prepare for opaque drawing
-	 * 
+	 *
 	 * @param drawable the OpenGL drawable
 	 */
 	public static void prepareForOpaque(GLAutoDrawable drawable) {
@@ -205,7 +302,7 @@ public class Support3D {
 		gl.glPopMatrix();
 
 	}
-	
+
 	/**
 	 * Draws a spherical shell with a given inner and outer radius.
 	 *
@@ -230,10 +327,10 @@ public class Support3D {
 
 	    // Draw outer surface (with outward facing normals)
 	    drawSphereSurface(gl, outerRadius, slices, stacks, false);
-	    
+
 	    // Draw inner surface (with inward facing normals)
 	    drawSphereSurface(gl, innerRadius, slices, stacks, true);
-	    
+
 	    // Connect the two surfaces by drawing side quads along each horizontal band.
 	    // This creates the "thickness" between the outer and inner spheres.
 	    for (int i = 0; i < stacks; i++) {
@@ -276,7 +373,7 @@ public class Support3D {
 	        }
 	        gl.glEnd();
 	    }
-	    
+
 	    gl.glPopMatrix();
 	}
 
@@ -330,8 +427,6 @@ public class Support3D {
 	    }
 	}
 
-
-	
 	/**
 	 * Draw a rectangular solid
 	 * @param drawable
@@ -341,11 +436,32 @@ public class Support3D {
 	 * @param xw
 	 * @param yw
 	 * @param zw
-	 * @param color
+	 * @param fc	 * @param lc
 	 * @param lineWidth
 	 * @param frame
 	 */
-	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw, float zw, Color color, float lineWidth, boolean frame) {
+	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw,
+			float zw, Color fc, float lineWidth, boolean frame) {
+		drawRectangularSolid(drawable, xc, yc, zc, xw, yw, zw, fc, null, lineWidth, frame);
+	}
+
+
+	/**
+	 * Draw a rectangular solid
+	 * @param drawable
+	 * @param xc
+	 * @param yc
+	 * @param zc
+	 * @param xw
+	 * @param yw
+	 * @param zw
+	 * @param fc
+	 * @param lc
+	 * @param lineWidth
+	 * @param frame
+	 */
+	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw,
+			float zw, Color fc, Color lc, float lineWidth, boolean frame) {
 		GL2 gl = drawable.getGL().getGL2();
 
 		float xm = xc - xw/2;
@@ -355,7 +471,7 @@ public class Support3D {
 		float zm = zc - zw/2;
 		float zp = zc + zw/2;
 
-		Support3D.setColor(gl, color);
+		Support3D.setColor(gl, fc);
 		gl.glBegin(GL2ES3.GL_QUADS);
 		gl.glVertex3f(xm, ym, zp);
 		gl.glVertex3f(xm, yp, zp);
@@ -399,7 +515,11 @@ public class Support3D {
 		gl.glEnd();
 
 		if (frame) {
-			Support3D.setColor(gl, color.darker());
+
+			if (lc == null) {
+				lc = fc.darker();
+			}
+			Support3D.setColor(gl, lc);
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, yp, zm);
@@ -846,7 +966,7 @@ public class Support3D {
 		gl.glVertex3f(x2, y2, z2);
 		gl.glEnd();
 	}
-	
+
 	/**
 	 * Draw a 3D line (convert double args to float)
 	 *
@@ -863,7 +983,7 @@ public class Support3D {
 	public static void drawLine(GLAutoDrawable drawable, double x1, double y1, double z1, double x2, double y2, double z2,
 			Color color, float lineWidth) {
 		drawLine(drawable, (float)x1, (float)y1, (float)z1, (float)x2, (float)y2, (float)z2, color, lineWidth);
-	}	
+	}
 
 	/**
 	 * Draw a 3D line

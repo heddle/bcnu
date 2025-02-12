@@ -51,9 +51,9 @@ public class Panel3D extends JPanel implements GLEventListener {
 	private float _bgBlue = BGFEFAULT;
 
 
-	protected float _xscale = 1.0f;
-	protected float _yscale = 1.0f;
-	protected float _zscale = 1.0f;
+	public float _xscale = 1.0f;
+	public float _yscale = 1.0f;
+	public float _zscale = 1.0f;
 
 	protected GLProfile glprofile;
 	protected GLCapabilities glcapabilities;
