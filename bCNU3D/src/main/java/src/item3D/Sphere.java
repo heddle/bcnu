@@ -16,8 +16,8 @@ public class Sphere extends Item3D {
     private float _y;
     private float _z;
     private Color _color;
-    private int _slices = 50; // Default resolution
-    private int _stacks = 50; // Default resolution
+    private int _slices = 100; // Default resolution
+    private int _stacks = 100; // Default resolution
     private float[] _theta; // Polar angles [0, π]
     private float[] _phi;   // Azimuthal angles [-π, π]
     private Color _gridColor = Color.BLACK; // Default gridline color

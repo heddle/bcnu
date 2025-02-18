@@ -110,105 +110,107 @@ public class Support3D {
 		gl.glVertex3f(x, y, z);
 		gl.glEnd();
 	}
-	
+
 	/**
-	 * Draw a marker (a point) with an associated text label.
-	 * The marker is drawn as in drawPoint, and then a text label is rendered
-	 * centered below the marker with a 3 pixel gap.
+	 * Draw a marker (a point) with an associated text label. The marker is drawn as
+	 * in drawPoint, and then a text label is rendered centered below the marker
+	 * with a 3 pixel gap.
 	 *
-	 * @param drawable   the OpenGL drawable
-	 * @param x          x coordinate of the marker
-	 * @param y          y coordinate of the marker
-	 * @param z          z coordinate of the marker
-	 * @param markerColor  color of the marker
-	 * @param markerSize   pixel size of the marker
-	 * @param circular     whether the marker should be drawn with smooth (circular) edges
-	 * @param label        the text to display below the marker
-	 * @param fontSize     scaling factor for the stroke font (in OpenGL units)
-	 * @param fontColor    color of the text label
+	 * @param drawable    the OpenGL drawable
+	 * @param x           x coordinate of the marker
+	 * @param y           y coordinate of the marker
+	 * @param z           z coordinate of the marker
+	 * @param markerColor color of the marker
+	 * @param markerSize  pixel size of the marker
+	 * @param circular    whether the marker should be drawn with smooth (circular)
+	 *                    edges
+	 * @param label       the text to display below the marker
+	 * @param fontSize    scaling factor for the stroke font (in OpenGL units)
+	 * @param fontColor   color of the text label
 	 */
-	public static void drawMarker(GLAutoDrawable drawable, 
-	                              float x, float y, float z, 
-	                              Color markerColor, float markerSize, boolean circular,
-	                              String label, float fontSize, Color fontColor) {
-	    GL2 gl = drawable.getGL().getGL2();
-	    
-	    // Draw the marker (reuse your drawPoint method)
-	    drawPoint(drawable, x, y, z, markerColor, markerSize, circular);
+	public static void drawMarker(GLAutoDrawable drawable, float x, float y, float z, Color markerColor,
+			float markerSize, boolean circular, String label, float fontSize, Color fontColor) {
+		GL2 gl = drawable.getGL().getGL2();
 
-	    // Retrieve the current matrices and viewport to project the marker position.
-	    int[] viewport = new int[4];
-	    double[] modelview = new double[16];
-	    double[] projection = new double[16];
-	    gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
-	    gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelview, 0);
-	    gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection, 0);
+		// Draw the marker (reuse your drawPoint method)
+		//drawPoint(drawable, x, y, z, markerColor, markerSize, circular);
 
-	    // Use gluProject to map the marker's 3D position to window (screen) coordinates.
-	    double[] winCoords = new double[3];
-	    // Note: We are using Panel3D.glu as in your drawTube method.
-	    Panel3D.glu.gluProject(x, y, z, modelview, 0, projection, 0, viewport, 0, winCoords, 0);
+		// Retrieve the current matrices and viewport to project the marker position.
+		int[] viewport = new int[4];
+		double[] modelview = new double[16];
+		double[] projection = new double[16];
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelview, 0);
+		gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection, 0);
 
-	    // Compute the text width (in pixels) using GLUT stroke font widths.
-	    // The GLUT stroke font returns a width in its native coordinate system,
-	    // so we multiply by our chosen fontSize.
-	    float textWidth = 0;
-	    for (int i = 0; i < label.length(); i++) {
-	        textWidth += glut.glutStrokeWidth(GLUT.STROKE_ROMAN, label.charAt(i)) * fontSize;
-	    }
-	    
-	    // Determine the text position:
-	    // We want the text centered horizontally at the marker’s x coordinate
-	    // and placed just below the marker. Since the marker is drawn with a size in pixels,
-	    // we subtract half the marker size and then a further 3 pixels from the marker’s screen y.
-	    double textWinX = winCoords[0] - textWidth / 2.0;
-	    double textWinY = winCoords[1] - markerSize / 2.0 - 3.0;
-	    
-	    // --- Switch to 2D orthographic projection for drawing text ---
-	    // Save the current projection matrix.
-	    gl.glMatrixMode(GL2.GL_PROJECTION);
-	    gl.glPushMatrix();
-	    gl.glLoadIdentity();
-	    // Set up an orthographic projection covering the entire window.
-	    gl.glOrtho(0, viewport[2], 0, viewport[3], -1, 1);
-	    
-	    // Save the current modelview matrix.
-	    gl.glMatrixMode(GL2.GL_MODELVIEW);
-	    gl.glPushMatrix();
-	    gl.glLoadIdentity();
-	    
-	    // Disable depth testing so the text is not hidden by other geometry.
-	    gl.glDisable(GL.GL_DEPTH_TEST);
-	    
-	    // Set the font color.
-	    setColor(gl, fontColor);
-	    
-	    // Position the text.
-	    gl.glPushMatrix();
-	    // Translate to the computed window coordinates.
-	    // (Remember that in an orthographic projection as set above, (0,0) is at the bottom left.)
-	    gl.glTranslated(textWinX, textWinY, 0);
-	    // Scale the stroke font by fontSize.
-	    gl.glScalef(fontSize, fontSize, fontSize);
-	    
-	    // Draw each character of the label using the GLUT stroke font.
-	    for (int i = 0; i < label.length(); i++) {
-	        glut.glutStrokeCharacter(GLUT.STROKE_ROMAN, label.charAt(i));
-	    }
-	    gl.glPopMatrix();
-	    
-	    // Re-enable depth testing.
-	    gl.glEnable(GL.GL_DEPTH_TEST);
-	    
-	    // Restore the modelview matrix.
-	    gl.glPopMatrix();
-	    // Restore the projection matrix.
-	    gl.glMatrixMode(GL2.GL_PROJECTION);
-	    gl.glPopMatrix();
-	    // Return to modelview matrix mode.
-	    gl.glMatrixMode(GL2.GL_MODELVIEW);
+		// Use gluProject to map the marker's 3D position to window (screen)
+		// coordinates.
+		double[] winCoords = new double[3];
+		// Note: We are using Panel3D.glu as in your drawTube method.
+		Panel3D.glu.gluProject(x, y, z, modelview, 0, projection, 0, viewport, 0, winCoords, 0);
+
+		// Compute the text width (in pixels) using GLUT stroke font widths.
+		// The GLUT stroke font returns a width in its native coordinate system,
+		// so we multiply by our chosen fontSize.
+		float textWidth = 0;
+		for (int i = 0; i < label.length(); i++) {
+			textWidth += glut.glutStrokeWidth(GLUT.STROKE_ROMAN, label.charAt(i)) * fontSize;
+		}
+
+		// Determine the text position:
+		// We want the text centered horizontally at the marker’s x coordinate
+		// and placed just below the marker. Since the marker is drawn with a size in
+		// pixels,
+		// we subtract half the marker size and then a further 3 pixels from the
+		// marker’s screen y.
+		double textWinX = winCoords[0] - textWidth / 2.0;
+		double textWinY = winCoords[1] - markerSize / 2.0 - 3.0;
+
+		// --- Switch to 2D orthographic projection for drawing text ---
+		// Save the current projection matrix.
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		// Set up an orthographic projection covering the entire window.
+		gl.glOrtho(0, viewport[2], 0, viewport[3], -1, 1);
+
+		// Save the current modelview matrix.
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+
+		// Disable depth testing so the text is not hidden by other geometry.
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Set the font color.
+		setColor(gl, fontColor);
+
+		// Position the text.
+		gl.glPushMatrix();
+		// Translate to the computed window coordinates.
+		// (Remember that in an orthographic projection as set above, (0,0) is at the
+		// bottom left.)
+		gl.glTranslated(textWinX, textWinY, 0);
+		// Scale the stroke font by fontSize.
+		gl.glScalef(fontSize, fontSize, fontSize);
+
+		// Draw each character of the label using the GLUT stroke font.
+		for (int i = 0; i < label.length(); i++) {
+			glut.glutStrokeCharacter(GLUT.STROKE_ROMAN, label.charAt(i));
+		}
+		gl.glPopMatrix();
+
+		// Re-enable depth testing.
+		gl.glEnable(GL.GL_DEPTH_TEST);
+
+		// Restore the modelview matrix.
+		gl.glPopMatrix();
+		// Restore the projection matrix.
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glPopMatrix();
+		// Return to modelview matrix mode.
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
-
 
 	/**
 	 * Draw a point using float coordinates and a point sprite
@@ -232,18 +234,17 @@ public class Support3D {
 		gl.glEnd();
 	}
 
-
 	/**
 	 * Prepare for transparent drawing
+	 * 
 	 * @param drawable the OpenGL drawable
 	 */
 	public static void prepareForTransparent(GLAutoDrawable drawable) {
-        GL2 gl = drawable.getGL().getGL2();
-        gl.glDepthMask(false); // Disable depth writes for transparent
-        gl.glEnable(GL.GL_BLEND);
-        gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-    }
-
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glDepthMask(false); // Disable depth writes for transparent
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+	}
 
 	/**
 	 * Prepare for opaque drawing
@@ -251,11 +252,10 @@ public class Support3D {
 	 * @param drawable the OpenGL drawable
 	 */
 	public static void prepareForOpaque(GLAutoDrawable drawable) {
-        GL2 gl = drawable.getGL().getGL2();
-        gl.glDepthMask(true); // Enable depth writes for solid objects
-        gl.glDisable(GL.GL_BLEND);
-    }
-
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glDepthMask(true); // Enable depth writes for solid objects
+		gl.glDisable(GL.GL_BLEND);
+	}
 
 	/**
 	 * Draw a wire sphere
@@ -303,6 +303,51 @@ public class Support3D {
 
 	}
 
+	public static void solidShadedSphere(GLAutoDrawable drawable, float x, float y, float z, float radius, int slices,
+			int stacks, Color color, boolean enableLighting) {
+		GL2 gl = drawable.getGL().getGL2();
+
+// Set color
+		setColor(gl, color);
+
+// Enable lighting if requested
+		if (enableLighting) {
+			gl.glEnable(GL2.GL_LIGHTING);
+			gl.glEnable(GL2.GL_LIGHT0);
+
+// Define light properties
+			float[] lightPosition = { 1.0f, 1.0f, 1.0f, 0.0f }; // Directional light
+			float[] lightDiffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float[] lightSpecular = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPosition, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, lightDiffuse, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, lightSpecular, 0);
+
+// Material properties
+			float[] matAmbient = { 0.2f, 0.2f, 0.2f, 1.0f };
+			float[] matDiffuse = { color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, 1.0f };
+			float[] matSpecular = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float[] matShininess = { 50.0f }; // Shininess factor
+
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, matAmbient, 0);
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE, matDiffuse, 0);
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, matSpecular, 0);
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SHININESS, matShininess, 0);
+		}
+
+// Draw sphere
+		gl.glPushMatrix();
+		gl.glTranslatef(x, y, z);
+		glut.glutSolidSphere(radius, slices, stacks);
+		gl.glPopMatrix();
+
+// Disable lighting after drawing
+		if (enableLighting) {
+			gl.glDisable(GL2.GL_LIGHTING);
+		}
+	}
+
 	/**
 	 * Draws a spherical shell with a given inner and outer radius.
 	 *
@@ -312,72 +357,70 @@ public class Support3D {
 	 * @param cz          z center
 	 * @param innerRadius the inner radius of the shell
 	 * @param outerRadius the outer radius of the shell
-	 * @param slices      number of subdivisions around the Z axis (similar to longitude)
-	 * @param stacks      number of subdivisions along the Z axis (similar to latitude)
+	 * @param slices      number of subdivisions around the Z axis (similar to
+	 *                    longitude)
+	 * @param stacks      number of subdivisions along the Z axis (similar to
+	 *                    latitude)
 	 * @param color       the color of the shell
 	 */
-	public static void solidSphereShell(GLAutoDrawable drawable,
-	                                    float cx, float cy, float cz,
-	                                    float innerRadius, float outerRadius,
-	                                    int slices, int stacks, Color color) {
-	    GL2 gl = drawable.getGL().getGL2();
-	    setColor(gl, color);
-	    gl.glPushMatrix();
-	    gl.glTranslatef(cx, cy, cz);
+	public static void solidSphereShell(GLAutoDrawable drawable, float cx, float cy, float cz, float innerRadius,
+			float outerRadius, int slices, int stacks, Color color) {
+		GL2 gl = drawable.getGL().getGL2();
+		setColor(gl, color);
+		gl.glPushMatrix();
+		gl.glTranslatef(cx, cy, cz);
 
-	    // Draw outer surface (with outward facing normals)
-	    drawSphereSurface(gl, outerRadius, slices, stacks, false);
+		// Draw outer surface (with outward facing normals)
+		drawSphereSurface(gl, outerRadius, slices, stacks, false);
 
-	    // Draw inner surface (with inward facing normals)
-	    drawSphereSurface(gl, innerRadius, slices, stacks, true);
+		// Draw inner surface (with inward facing normals)
+		drawSphereSurface(gl, innerRadius, slices, stacks, true);
 
-	    // Connect the two surfaces by drawing side quads along each horizontal band.
-	    // This creates the "thickness" between the outer and inner spheres.
-	    for (int i = 0; i < stacks; i++) {
-	        float theta1 = (float) (i * Math.PI / stacks);
-	        float theta2 = (float) ((i + 1) * Math.PI / stacks);
-	        gl.glBegin(GL2.GL_QUAD_STRIP);
-	        for (int j = 0; j <= slices; j++) {
-	            float phi = (float) (j * 2 * Math.PI / slices);
-	            float sinTheta1 = (float) Math.sin(theta1);
-	            float cosTheta1 = (float) Math.cos(theta1);
-	            float sinTheta2 = (float) Math.sin(theta2);
-	            float cosTheta2 = (float) Math.cos(theta2);
-	            float sinPhi = (float) Math.sin(phi);
-	            float cosPhi = (float) Math.cos(phi);
+		// Connect the two surfaces by drawing side quads along each horizontal band.
+		// This creates the "thickness" between the outer and inner spheres.
+		for (int i = 0; i < stacks; i++) {
+			float theta1 = (float) (i * Math.PI / stacks);
+			float theta2 = (float) ((i + 1) * Math.PI / stacks);
+			gl.glBegin(GL2.GL_QUAD_STRIP);
+			for (int j = 0; j <= slices; j++) {
+				float phi = (float) (j * 2 * Math.PI / slices);
+				float sinTheta1 = (float) Math.sin(theta1);
+				float cosTheta1 = (float) Math.cos(theta1);
+				float sinTheta2 = (float) Math.sin(theta2);
+				float cosTheta2 = (float) Math.cos(theta2);
+				float sinPhi = (float) Math.sin(phi);
+				float cosPhi = (float) Math.cos(phi);
 
-	            // Outer vertices
-	            float xOuter1 = outerRadius * sinTheta1 * cosPhi;
-	            float yOuter1 = outerRadius * cosTheta1;
-	            float zOuter1 = outerRadius * sinTheta1 * sinPhi;
+				// Outer vertices
+				float xOuter1 = outerRadius * sinTheta1 * cosPhi;
+				float yOuter1 = outerRadius * cosTheta1;
+				float zOuter1 = outerRadius * sinTheta1 * sinPhi;
 
-	            float xOuter2 = outerRadius * sinTheta2 * cosPhi;
-	            float yOuter2 = outerRadius * cosTheta2;
-	            float zOuter2 = outerRadius * sinTheta2 * sinPhi;
+				float xOuter2 = outerRadius * sinTheta2 * cosPhi;
+				float yOuter2 = outerRadius * cosTheta2;
+				float zOuter2 = outerRadius * sinTheta2 * sinPhi;
 
-	            // Inner vertices
-	            float xInner1 = innerRadius * sinTheta1 * cosPhi;
-	            float yInner1 = innerRadius * cosTheta1;
-	            float zInner1 = innerRadius * sinTheta1 * sinPhi;
+				// Inner vertices
+				float xInner1 = innerRadius * sinTheta1 * cosPhi;
+				float yInner1 = innerRadius * cosTheta1;
+				float zInner1 = innerRadius * sinTheta1 * sinPhi;
 
-	            float xInner2 = innerRadius * sinTheta2 * cosPhi;
-	            float yInner2 = innerRadius * cosTheta2;
-	            float zInner2 = innerRadius * sinTheta2 * sinPhi;
+				float xInner2 = innerRadius * sinTheta2 * cosPhi;
+				float yInner2 = innerRadius * cosTheta2;
+				float zInner2 = innerRadius * sinTheta2 * sinPhi;
 
-	            // Create a quad strip between outer and inner surfaces.
-	            // For each band, we connect the corresponding outer and inner vertices.
-	            gl.glVertex3f(xOuter1, yOuter1, zOuter1);
-	            gl.glVertex3f(xInner1, yInner1, zInner1);
-	            gl.glVertex3f(xOuter2, yOuter2, zOuter2);
-	            gl.glVertex3f(xInner2, yInner2, zInner2);
-	        }
-	        gl.glEnd();
-	    }
+				// Create a quad strip between outer and inner surfaces.
+				// For each band, we connect the corresponding outer and inner vertices.
+				gl.glVertex3f(xOuter1, yOuter1, zOuter1);
+				gl.glVertex3f(xInner1, yInner1, zInner1);
+				gl.glVertex3f(xOuter2, yOuter2, zOuter2);
+				gl.glVertex3f(xInner2, yInner2, zInner2);
+			}
+			gl.glEnd();
+		}
 
-	    gl.glPopMatrix();
+		gl.glPopMatrix();
 	}
-
-
 
 	/**
 	 * Draws the surface of a sphere.
@@ -386,49 +429,51 @@ public class Support3D {
 	 * @param radius        the radius of the sphere
 	 * @param slices        number of subdivisions around the Z axis
 	 * @param stacks        number of subdivisions along the Z axis
-	 * @param invertNormals if true, normals are inverted (useful for inner surfaces)
+	 * @param invertNormals if true, normals are inverted (useful for inner
+	 *                      surfaces)
 	 */
 	private static void drawSphereSurface(GL2 gl, float radius, int slices, int stacks, boolean invertNormals) {
-	    for (int i = 0; i < stacks; i++) {
-	        float theta1 = (float) (i * Math.PI / stacks);
-	        float theta2 = (float) ((i + 1) * Math.PI / stacks);
-	        gl.glBegin(GL2.GL_QUAD_STRIP);
-	        for (int j = 0; j <= slices; j++) {
-	            float phi = (float) (j * 2 * Math.PI / slices);
-	            float sinTheta1 = (float) Math.sin(theta1);
-	            float cosTheta1 = (float) Math.cos(theta1);
-	            float sinTheta2 = (float) Math.sin(theta2);
-	            float cosTheta2 = (float) Math.cos(theta2);
-	            float sinPhi = (float) Math.sin(phi);
-	            float cosPhi = (float) Math.cos(phi);
+		for (int i = 0; i < stacks; i++) {
+			float theta1 = (float) (i * Math.PI / stacks);
+			float theta2 = (float) ((i + 1) * Math.PI / stacks);
+			gl.glBegin(GL2.GL_QUAD_STRIP);
+			for (int j = 0; j <= slices; j++) {
+				float phi = (float) (j * 2 * Math.PI / slices);
+				float sinTheta1 = (float) Math.sin(theta1);
+				float cosTheta1 = (float) Math.cos(theta1);
+				float sinTheta2 = (float) Math.sin(theta2);
+				float cosTheta2 = (float) Math.cos(theta2);
+				float sinPhi = (float) Math.sin(phi);
+				float cosPhi = (float) Math.cos(phi);
 
-	            // Compute positions
-	            float x1 = radius * sinTheta1 * cosPhi;
-	            float y1 = radius * cosTheta1;
-	            float z1 = radius * sinTheta1 * sinPhi;
-	            float x2 = radius * sinTheta2 * cosPhi;
-	            float y2 = radius * cosTheta2;
-	            float z2 = radius * sinTheta2 * sinPhi;
+				// Compute positions
+				float x1 = radius * sinTheta1 * cosPhi;
+				float y1 = radius * cosTheta1;
+				float z1 = radius * sinTheta1 * sinPhi;
+				float x2 = radius * sinTheta2 * cosPhi;
+				float y2 = radius * cosTheta2;
+				float z2 = radius * sinTheta2 * sinPhi;
 
-	            // Compute normals (invert if necessary)
-	            if (invertNormals) {
-	                gl.glNormal3f(-x1 / radius, -y1 / radius, -z1 / radius);
-	                gl.glVertex3f(x1, y1, z1);
-	                gl.glNormal3f(-x2 / radius, -y2 / radius, -z2 / radius);
-	                gl.glVertex3f(x2, y2, z2);
-	            } else {
-	                gl.glNormal3f(x1 / radius, y1 / radius, z1 / radius);
-	                gl.glVertex3f(x1, y1, z1);
-	                gl.glNormal3f(x2 / radius, y2 / radius, z2 / radius);
-	                gl.glVertex3f(x2, y2, z2);
-	            }
-	        }
-	        gl.glEnd();
-	    }
+				// Compute normals (invert if necessary)
+				if (invertNormals) {
+					gl.glNormal3f(-x1 / radius, -y1 / radius, -z1 / radius);
+					gl.glVertex3f(x1, y1, z1);
+					gl.glNormal3f(-x2 / radius, -y2 / radius, -z2 / radius);
+					gl.glVertex3f(x2, y2, z2);
+				} else {
+					gl.glNormal3f(x1 / radius, y1 / radius, z1 / radius);
+					gl.glVertex3f(x1, y1, z1);
+					gl.glNormal3f(x2 / radius, y2 / radius, z2 / radius);
+					gl.glVertex3f(x2, y2, z2);
+				}
+			}
+			gl.glEnd();
+		}
 	}
 
 	/**
 	 * Draw a rectangular solid
+	 * 
 	 * @param drawable
 	 * @param xc
 	 * @param yc
@@ -436,7 +481,7 @@ public class Support3D {
 	 * @param xw
 	 * @param yw
 	 * @param zw
-	 * @param fc	 * @param lc
+	 * @param fc        * @param lc
 	 * @param lineWidth
 	 * @param frame
 	 */
@@ -445,9 +490,9 @@ public class Support3D {
 		drawRectangularSolid(drawable, xc, yc, zc, xw, yw, zw, fc, null, lineWidth, frame);
 	}
 
-
 	/**
 	 * Draw a rectangular solid
+	 * 
 	 * @param drawable
 	 * @param xc
 	 * @param yc
@@ -464,12 +509,12 @@ public class Support3D {
 			float zw, Color fc, Color lc, float lineWidth, boolean frame) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		float xm = xc - xw/2;
-		float xp = xc + xw/2;
-		float ym = yc - yw/2;
-		float yp = yc + yw/2;
-		float zm = zc - zw/2;
-		float zp = zc + zw/2;
+		float xm = xc - xw / 2;
+		float xp = xc + xw / 2;
+		float ym = yc - yw / 2;
+		float yp = yc + yw / 2;
+		float zm = zc - zw / 2;
+		float zp = zc + zw / 2;
 
 		Support3D.setColor(gl, fc);
 		gl.glBegin(GL2ES3.GL_QUADS);
@@ -529,7 +574,6 @@ public class Support3D {
 			gl.glVertex3f(xm, yp, zm);
 			gl.glEnd();
 
-
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glVertex3f(xm, yp, zm);
@@ -537,7 +581,6 @@ public class Support3D {
 			gl.glVertex3f(xp, ym, zm);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glEnd();
-
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, yp, zm);
@@ -574,7 +617,6 @@ public class Support3D {
 
 	}
 
-
 	/**
 	 * @param drawable  the openGL drawable
 	 * @param coords    the coordinate array
@@ -594,7 +636,8 @@ public class Support3D {
 	 * @param lineWidth the line width
 	 * @param frame     if <code>true</code> frame in slightly darker color
 	 */
-	public static void drawQuads(GLAutoDrawable drawable, float coords[], Color color, Color lineColor, float lineWidth) {
+	public static void drawQuads(GLAutoDrawable drawable, float coords[], Color color, Color lineColor,
+			float lineWidth) {
 
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glLineWidth(lineWidth);
@@ -980,9 +1023,9 @@ public class Support3D {
 	 * @param color     the color
 	 * @param lineWidth the line width in pixels
 	 */
-	public static void drawLine(GLAutoDrawable drawable, double x1, double y1, double z1, double x2, double y2, double z2,
-			Color color, float lineWidth) {
-		drawLine(drawable, (float)x1, (float)y1, (float)z1, (float)x2, (float)y2, (float)z2, color, lineWidth);
+	public static void drawLine(GLAutoDrawable drawable, double x1, double y1, double z1, double x2, double y2,
+			double z2, Color color, float lineWidth) {
+		drawLine(drawable, (float) x1, (float) y1, (float) z1, (float) x2, (float) y2, (float) z2, color, lineWidth);
 	}
 
 	/**
@@ -1159,6 +1202,5 @@ public class Support3D {
 	public static float[] toArray(float... v) {
 		return v;
 	}
-
 
 }
