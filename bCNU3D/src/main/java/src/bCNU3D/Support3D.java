@@ -44,6 +44,7 @@ public class Support3D {
 			int j = i * 3;
 			gl.glVertex3f(coords[j], coords[j + 1], coords[j + 2]);
 		}
+		
 		gl.glEnd();
 	}
 
@@ -614,6 +615,7 @@ public class Support3D {
 			gl.glVertex3f(xm, yp, zm);
 			gl.glEnd();
 		}
+		gl.glLineWidth(1f);
 
 	}
 
@@ -675,6 +677,9 @@ public class Support3D {
 				gl.glEnd();
 			}
 		}
+		
+		gl.glLineWidth(1f);
+
 	}
 
 	/**
@@ -719,6 +724,8 @@ public class Support3D {
 			gl.glVertex3f(coords[i1], coords[i1 + 1], coords[i1 + 2]);
 			gl.glEnd();
 		}
+
+		gl.glLineWidth(1f);
 
 	}
 
@@ -867,7 +874,7 @@ public class Support3D {
 			gl.glVertex3f(coords[i1], coords[i1 + 1], coords[i1 + 2]);
 			gl.glEnd();
 		}
-
+		gl.glLineWidth(1f);
 	}
 
 	/**
@@ -1008,6 +1015,7 @@ public class Support3D {
 		gl.glVertex3f(x1, y1, z1);
 		gl.glVertex3f(x2, y2, z2);
 		gl.glEnd();
+		gl.glLineWidth(1f);
 	}
 
 	/**
@@ -1077,7 +1085,7 @@ public class Support3D {
 			gl.glVertex3f(coords[j], coords[j + 1], coords[j + 2]);
 		}
 		gl.glEnd();
-
+		gl.glLineWidth(1f);
 	}
 
 	/**
@@ -1120,6 +1128,7 @@ public class Support3D {
 		}
 
 		gl.glDisable(GL2.GL_LINE_STIPPLE);
+		gl.glLineWidth(1f);
 
 	}
 
@@ -1164,7 +1173,58 @@ public class Support3D {
 		}
 
 		gl.glDisable(GL2.GL_LINE_STIPPLE);
+		gl.glLineWidth(1f);
 
+	}
+	
+	/**
+	 * Draw and fill a spherical polygon
+	 *
+	 * @param drawable  the OpenGL drawable
+      * @param radius the sphere radius
+	 * @param coords    the vertices as [theta phi, theta phi, …] in radians
+	 * @param lineColor    the line color
+	 * @param fillColor    the fill color
+	 * @param lineWidth the line width in pixels
+	 */
+	public static void drawSphericalPolygon(GLAutoDrawable drawable, float radius, float[] coords, Color lineColor, Color fillColor, float lineWidth) {
+	    GL2 gl = drawable.getGL().getGL2();
+	    
+	    int numPoints = coords.length / 2;
+	    float[] cartesianCoords = new float[numPoints * 3];
+	    
+	    // Convert spherical to Cartesian coordinates
+	    for (int i = 0; i < numPoints; i++) {
+	        float theta = coords[2 * i];
+	        float phi = coords[2 * i + 1];
+	        
+	        cartesianCoords[3 * i] = radius * (float) (Math.sin(theta) * Math.cos(phi));
+	        cartesianCoords[3 * i + 1] = radius * (float) (Math.sin(theta) * Math.sin(phi));
+	        cartesianCoords[3 * i + 2] = radius * (float) Math.cos(theta);
+	    }
+
+		// Fill the polygon
+		if (fillColor != null) {
+			gl.glBegin(GL2.GL_POLYGON);
+			Support3D.setColor(gl, fillColor);
+			for (int i = 0; i < numPoints; i++) {
+				gl.glVertex3f(cartesianCoords[3 * i], cartesianCoords[3 * i + 1], cartesianCoords[3 * i + 2]);
+			}
+			gl.glEnd();
+		}
+
+		// Draw the border
+		if (lineColor != null) {
+			gl.glLineWidth(lineWidth);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			Support3D.setColor(gl, lineColor);
+			for (int i = 0; i < numPoints; i++) {
+				gl.glVertex3f(cartesianCoords[3 * i], cartesianCoords[3 * i + 1], cartesianCoords[3 * i + 2]);
+			}
+			gl.glEnd();
+		}
+
+	    gl.glLineWidth(1.0f); // Reset line width to default
 	}
 
 	/**
