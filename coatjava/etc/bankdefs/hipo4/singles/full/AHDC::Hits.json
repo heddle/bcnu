@@ -1,0 +1,35 @@
+[
+    {
+        "entries": [
+            {
+                "info": "hit id",
+                "name": "ID",
+                "type": "S"
+            },
+            {
+                "info": "layer number",
+                "name": "layer",
+                "type": "B"
+            },
+            {
+                "info": "superlayer number",
+                "name": "superlayer",
+                "type": "B"
+            },
+            {
+                "info": "wire number",
+                "name": "wire",
+                "type": "I"
+            },
+            {
+                "info": "distance od closest approch (mm)",
+                "name": "Doca",
+                "type": "D"
+            }
+        ],
+        "group": 23000,
+        "info": "Raw Hits",
+        "item": 23,
+        "name": "AHDC::Hits"
+    }
+]

@@ -89,7 +89,7 @@ public class FTCALGeometry {
 
 		for (ScintillatorPaddle sp : padlist) {
 
-			// rotate do to match actualk geometry
+			// rotate do to match actual geometry
 			sp.rotateZ(Math.PI);
 
 			int id = sp.getComponentId();

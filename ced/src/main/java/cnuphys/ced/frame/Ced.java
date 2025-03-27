@@ -100,7 +100,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.7.2";
+	private static final String _release = "1.7.7";
 
 	//minimum java major version
 	private static final int _minJavaVersion = 17;

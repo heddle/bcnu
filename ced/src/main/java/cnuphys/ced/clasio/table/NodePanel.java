@@ -44,6 +44,8 @@ public class NodePanel extends JPanel
 
 	// Text area shows data values for selected nodes.
 	private JTextArea _dataTextArea;
+	
+	private SeenBankPanel _seenBankPanel;
 
 	// the event info panel
 	private EventInfoPanel _eventInfoPanel;
@@ -91,6 +93,7 @@ public class NodePanel extends JPanel
 		setLayout(new BorderLayout());
 		addCenter();
 		addEast();
+		addWest();
 
 		_isReady = true;
 		fixButtons();
@@ -167,6 +170,12 @@ public class NodePanel extends JPanel
 		centerPanel.add(splitPane, BorderLayout.CENTER);
 
 		add(centerPanel, BorderLayout.CENTER);
+	}
+	
+	//add the seen bank panel on the west
+	public void addWest() {
+		_seenBankPanel = new SeenBankPanel();
+		add(_seenBankPanel, BorderLayout.WEST);
 	}
 
 	/**
@@ -576,6 +585,7 @@ public class NodePanel extends JPanel
 			setTrueEventNumber(_eventManager.getTrueEventNumber());
 			setRunNumber(_eventManager.getRunData().run);
 			fixButtons();
+			_seenBankPanel.updateSeenBanks();
 		}
 	}
 
@@ -594,6 +604,7 @@ public class NodePanel extends JPanel
 		setSource(path);
 		setNumberOfEvents(_eventManager.getEventCount());
 		fixButtons();
+		_seenBankPanel.updateSeenBanks();
 	}
 
 	/**

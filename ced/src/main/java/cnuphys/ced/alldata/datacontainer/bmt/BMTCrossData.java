@@ -62,7 +62,7 @@ public class BMTCrossData extends ACommonCrossData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("BMT::Crosses");
+		DataBank bank = event.getBank("BMTRec::Crosses");
 
 		if (bank == null) {
 			return;

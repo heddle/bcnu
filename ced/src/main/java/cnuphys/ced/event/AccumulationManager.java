@@ -1,6 +1,7 @@
 package cnuphys.ced.event;
 
 import java.awt.Color;
+import java.util.List;
 
 import javax.swing.event.EventListenerList;
 
@@ -813,7 +814,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 
 		if (dataEvent.hasBank("AHDC::adc")) {
-
+			
 			// Alert DC data
 			if (_AlertDCSL0AccumulatedData == null) {
 				_AlertDCSL0AccumulatedData = new int[1][1][47];
@@ -960,7 +961,11 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private void accumFTCAL() {
         //use the adc arrays to accumulate
 		for (int i = 0; i < ftcalADCData.count(); i++) {
-			_FTCALAccumulatedData[ftcalADCData.component[i]] += 1;
+			int component = ftcalADCData.component[i];
+			if (component >= _FTCALAccumulatedData.length) {
+				continue;
+			}
+			_FTCALAccumulatedData[component] += 1;
 		}
 	}
 
@@ -1215,7 +1220,7 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 					} // supl0
 				} // sect0
 			} // _eventCount != 0
-
+			
 			break;
 		}
 	}

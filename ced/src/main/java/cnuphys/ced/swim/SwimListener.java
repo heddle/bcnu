@@ -13,41 +13,44 @@ import cnuphys.swim.Swimming;
 public class SwimListener implements IEventListener<Object> {
 
 	private SwimData data;
+
 	public SwimListener(SwimData data) {
 		this.data = data;
 	}
 
 	@Override
 	public void newEvent(Object o) {
-		LundId lid = LundSupport.getInstance().get(data.trd.getId());
+		try {
+			LundId lid = LundSupport.getInstance().get(data.trd.getId());
 
-		CLAS12SwimResult result = null;
-		TrajectoryRowData trd = data.trd;
+			CLAS12SwimResult result = null;
+			TrajectoryRowData trd = data.trd;
 
-		//have to convert trd momentum to GeV
-		double p = trd.getMomentum() / 1000;
+			// have to convert trd momentum to GeV
+			double p = trd.getMomentum() / 1000;
 
+			result = data.swimmer.swim(lid.getCharge(), trd.getXo(), trd.getYo(), trd.getZo(), p, trd.getTheta(),
+					trd.getPhi(), data.sMax, data.h, data.tolerance);
+			result.getTrajectory().setLundId(lid);
+			result.getTrajectory().setSource(trd.getSource());
 
-		result = data.swimmer.swim(lid.getCharge(), trd.getXo(), trd.getYo(), trd.getZo(),
-				p, trd.getTheta(), trd.getPhi(), data.sMax, data.h, data.tolerance);
-		result.getTrajectory().setLundId(lid);
-		result.getTrajectory().setSource(trd.getSource());
+			if (result.getTrajectory().getGeneratedParticleRecord() == null) {
+				CLAS12Values iv = result.getInitialValues();
+				GeneratedParticleRecord genPart = new GeneratedParticleRecord(iv.q, iv.x, iv.y, iv.z, iv.p, iv.theta,
+						iv.phi);
+				result.getTrajectory().setGeneratedParticleRecord(genPart);
+			}
 
-		if (result.getTrajectory().getGeneratedParticleRecord() == null) {
-			CLAS12Values iv = result.getInitialValues();
-			GeneratedParticleRecord genPart =  new GeneratedParticleRecord(iv.q,
-					iv.x, iv.y, iv.z, iv.p, iv.theta, iv.phi);
-			result.getTrajectory().setGeneratedParticleRecord(genPart);
-		}
-
-		if (trd.getSwimType() == SwimType.MCSWIM) {
-			Swimming.addMCTrajectory(result.getTrajectory());
-		}
-		else if (trd.getSwimType() == SwimType.RECONSWIM) {
-			Swimming.addReconTrajectory(result.getTrajectory());
-		}
-		else {
-			System.err.println("Unknown swim type in SwimThread: " + trd.getSwimType());
+			if (trd.getSwimType() == SwimType.MCSWIM) {
+				Swimming.addMCTrajectory(result.getTrajectory());
+			} else if (trd.getSwimType() == SwimType.RECONSWIM) {
+				Swimming.addReconTrajectory(result.getTrajectory());
+			} else {
+				System.err.println("Unknown swim type in SwimThread: " + trd.getSwimType());
+			}
+		} catch (Exception e) {
+			System.err.println("SwimListener.newEvent() exception: " + e.getMessage());
+			e.printStackTrace();
 		}
 	}
 

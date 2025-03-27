@@ -244,7 +244,6 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		g2.setStroke(oldStroke);
 	}
 
-	private int paintcount = 0;
 	public abstract boolean acceptSimpleTrack(SwimTrajectory2D trajectory);
 
 	/**
@@ -265,7 +264,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		Point2D.Double path[] = trajectory.getPath();
 
 		if (path == null) {
-			System.err.println("Null path");
+//			System.err.println("Null path");
 			return;
 		}
 

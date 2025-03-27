@@ -281,6 +281,18 @@ public class DCGeometry {
 	 * @return the untransformed wire in sector 0
 	 */
 	public static DriftChamberWire getWire(int superlayer, int layer, int wire) {
+		if ((superlayer < 1) || (superlayer > 6)) {
+			System.err.println("BAD HIPO DATA DCGeometry.getWire superlayer must be [1..6], was " + superlayer);
+			return null;
+		}
+		if ((layer < 1) || (layer > 6)) {
+			System.err.println("BAD HIPO DATA DCGeometry.getWire layer must be [1..6], was " + layer);
+			return null;
+		}
+		if ((wire < 1) || (wire > 112)) {
+			System.err.println("BAD HIPO DATA DCGeometry.getWire wire must be [1..112], was " + wire);
+			return null;
+		}
 		return wires[superlayer - 1][layer - 1][wire - 1];
 	}
 
@@ -323,6 +335,9 @@ public class DCGeometry {
 			Point2D.Double centroid) {
 
 		DriftChamberWire dcw = DCGeometry.getWire(superlayer, layer, wire);
+		if (dcw == null) {
+            return false;
+        }
 		return GeometryManager.getProjectedPolygon(dcw, projectionPlane, 10, 6, wp, centroid);
 	}
 

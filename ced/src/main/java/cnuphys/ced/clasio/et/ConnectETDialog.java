@@ -140,12 +140,12 @@ public class ConnectETDialog extends SimpleDialog {
 		npanel.add(new JLabel("CLON cpu: "));
 
 		String localHost = "local host: " + localHost();
-		String[] machineStrings = { "clondaq2", "clondaq3", "clondaq4", "clondaq5", "clondaq6", localHost };
+		String[] machineStrings = { "clondaq2", "clondaq3", "clondaq4", "clondaq5", "clondaq6", "clondaq7", localHost };
 
 		// Create the combo box, select item at index 4.
 		// Indices start at 0, so 4 specifies the pig.
 		_machineCombo = new JComboBox(machineStrings);
-		_machineCombo.setSelectedIndex(4);
+		_machineCombo.setSelectedIndex(5);
 		npanel.add(_machineCombo);
 
 		JPanel cpanel = new JPanel();

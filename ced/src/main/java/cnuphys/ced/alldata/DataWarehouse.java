@@ -3,6 +3,7 @@ package cnuphys.ced.alldata;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -24,6 +25,8 @@ public class DataWarehouse implements IClasIoEventListener {
 
 	// all the known banks in the current event
 	private ArrayList<String> _knownBanks = new ArrayList<>();
+	
+	private HashMap<String, Long> _seenBanks = new HashMap<>();
 
 	//the current schema factory (dictionary)
 	private SchemaFactory _schemaFactory;
@@ -103,7 +106,7 @@ public class DataWarehouse implements IClasIoEventListener {
 	 * @return the known banks in a String array
 	 */
 	public String[] getKnownBanks() {
-		String[] kbArray = new String[this._knownBanks.size()];
+		String[] kbArray = new String[_knownBanks.size()];
 		_knownBanks.toArray(kbArray);
 		return kbArray;
 	}
@@ -432,18 +435,50 @@ public class DataWarehouse implements IClasIoEventListener {
 				bankIndex++;
 			}
 		}
+		
+		//update seen banks
+		String[] banks = event.getBankList();
+		if (banks != null) {
+			for (String bank : banks) {
+				if (_seenBanks.get(bank) == null) {
+					_seenBanks.put(bank, 1L);
+				}
+				else {
+                    _seenBanks.put(bank, _seenBanks.get(bank) + 1L);
+				}
+			}
+		}
 
 		notifyListeners(); //clear previous data
 		notifyListeners(event);
 	}
+	
+	/**
+	 * Get the sorted list of seen banks and their counts.
+	 * IS reset if new file opened or event source changed
+	 * @return the list of seen banks and their counts
+	 */
+	public List<String> getSortedSeenBanks() {
+		ArrayList<String> bankCounts = new ArrayList<>();
+		List<String> keys = new ArrayList<>(_seenBanks.keySet());
+		Collections.sort(keys);		
+		for (String key : keys) {
+			String s = "[" + key + "]  (" + _seenBanks.get(key) + ")";
+			bankCounts.add(s);
+		}
+		return bankCounts;
+	}
+	
 
 	@Override
 	public void openedNewEventFile(String path) {
+		_seenBanks.clear();
 		notifyListeners();
 	}
 
 	@Override
 	public void changedEventSource(EventSourceType source) {
+		_seenBanks.clear();
 		notifyListeners();
 	}
 

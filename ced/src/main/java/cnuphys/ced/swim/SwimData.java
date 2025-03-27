@@ -30,5 +30,15 @@ public class SwimData {
 		this.h = h;
 		this.tolerance = tolerance;
 	}
+	
+	public boolean isValid() {
+		return (trd != null && swimmer != null && sMax > 0 && h > 0 && tolerance > 0
+				&& Math.abs(trd.getXo()) < 1.0e15 && Math.abs(trd.getYo()) < 1.0e15 
+				&& Math.abs(trd.getZo()) < 1.0e15 && Math.abs(trd.getTheta()) < 1.0e15
+				&& Math.abs(trd.getPhi()) < 1.0e15 && Math.abs(trd.getMomentum()) < 1.0e15
+				&& !Double.isNaN(trd.getXo()) && !Double.isNaN(trd.getYo())
+				&& !Double.isNaN(trd.getZo()) && !Double.isNaN(trd.getTheta())
+				&& !Double.isNaN(trd.getPhi()) && !Double.isNaN(trd.getMomentum()));
+	}
 
 }
