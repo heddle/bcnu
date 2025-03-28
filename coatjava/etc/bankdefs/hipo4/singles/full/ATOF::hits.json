@@ -49,7 +49,7 @@
             {
                 "info": "id of cluster to which the hit was associated",
                 "name": "clusterid",
-                "type": "I"
+                "type": "S"
             }
         ],
         "group": 22500,

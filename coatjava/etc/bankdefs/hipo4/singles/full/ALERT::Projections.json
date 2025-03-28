@@ -2,6 +2,16 @@
     {
         "entries": [
             {
+                "info": "projection id",
+                "name": "id",
+                "type": "S"
+            },
+            {
+                "info": "id of the track that was projected",
+                "name": "trackID",
+                "type": "S"
+            },
+            {
                 "info": "x position at atof bar (middle surface) in mm",
                 "name": "x_at_bar",
                 "type": "F"

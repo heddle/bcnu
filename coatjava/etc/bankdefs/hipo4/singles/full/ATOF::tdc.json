@@ -30,6 +30,16 @@
                 "info": "Time Over Threshold",
                 "name": "ToT",
                 "type": "I"
+            },
+            {
+                "info": "timestamp",
+                "name": "timestamp",
+                "type": "L"
+            },
+            {
+                "info": "trigger number",
+                "name": "trigger",
+                "type": "I"
             }
         ],
         "group": 22500,

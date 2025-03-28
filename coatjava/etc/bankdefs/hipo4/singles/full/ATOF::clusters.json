@@ -50,6 +50,11 @@
                 "info": "path length inside the detector in mm",
                 "name": "inpathlength",
                 "type": "F"
+            },
+            {
+                "info": "id of the projected track matched. it is -1 if a straight track was assigned.",
+                "name": "projID",
+                "type": "S"
             }
         ],
         "group": 22500,
