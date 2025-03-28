@@ -659,41 +659,50 @@ public class ClasIoEventManager {
 	// decode an evio event to hipo
 	private HipoDataEvent decodeEvioToHipo(EvioDataEvent event) {
 
-		if (_decoder == null) {
-	        _schemaFactory  =  new SchemaFactory();
+		try {
+			if (_decoder == null) {
+				_schemaFactory = new SchemaFactory();
 
-	        String dir = ClasUtilsFile.getResourceDir("CLAS12DIR", "etc/bankdefs/hipo4");
-	        _schemaFactory.initFromDirectory(dir);
+				String dir = ClasUtilsFile.getResourceDir("CLAS12DIR", "etc/bankdefs/hipo4");
+				_schemaFactory.initFromDirectory(dir);
 
-			_decoder = new CLASDecoder4();
+				_decoder = new CLASDecoder4();
 
-			DataWarehouse.getInstance().updateSchema(_schemaFactory);
+				DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
+			}
+
+			Event decodedEvent = _decoder.getDataEvent(event);
+
+			Bank trigger = _decoder.createTriggerBank();
+
+			if (trigger != null) {
+				decodedEvent.write(trigger);
+			}
+
+			// best I can do since I don't have the actual
+			// values from the file
+
+			Torus torus = MagneticFields.getInstance().getTorus();
+			Solenoid solenoid = MagneticFields.getInstance().getSolenoid();
+
+			double tScale = (torus == null) ? -1 : torus.getScaleFactor();
+			double sScale = (solenoid == null) ? 1 : solenoid.getScaleFactor();
+
+			Bank header = _decoder.createHeaderBank(-1, 0, (float) tScale, (float) sScale);
+			if (header != null) {
+				decodedEvent.write(header);
+			}
+			_decoder.extractPulses(decodedEvent);
+			return new HipoDataEvent(decodedEvent, _schemaFactory);
 		}
 
-		Event decodedEvent = _decoder.getDataEvent(event);
+		catch (Exception e) {
+			System.err.println("Error decoding evio to hipo: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 
-		Bank trigger = _decoder.createTriggerBank();
-
-        if(trigger != null) {
-        	decodedEvent.write(trigger);
-        }
-
-        //best I can do since I don't have the actual
-        //values from the file
-
-        Torus torus = MagneticFields.getInstance().getTorus();
-        Solenoid solenoid = MagneticFields.getInstance().getSolenoid();
-
-        double tScale = (torus == null) ? -1 : torus.getScaleFactor();
-        double sScale = (solenoid == null) ? 1 : solenoid.getScaleFactor();
-
-        Bank header= _decoder.createHeaderBank(-1, 0, (float)tScale, (float)sScale);
-        if(header != null) {
-        	decodedEvent.write(header);
-        }
-
-        return new HipoDataEvent(decodedEvent, _schemaFactory);
 	}
 
 	/**
