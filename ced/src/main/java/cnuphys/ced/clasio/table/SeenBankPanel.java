@@ -7,6 +7,7 @@ import cnuphys.ced.alldata.DataWarehouse;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.util.List;
 
 public class SeenBankPanel extends JPanel {
@@ -23,7 +24,7 @@ public class SeenBankPanel extends JPanel {
 
 		JLabel label = new JLabel("Seen Banks");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		label.setFont(Fonts.defaultFont);
+		label.setFont(Fonts.biggerFont);
 		label.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
 				BorderFactory.createEmptyBorder(5, 5, 5, 5) // top, left, bottom, right spacing
 		));
@@ -33,10 +34,26 @@ public class SeenBankPanel extends JPanel {
 		// Set preferred size: width WIDTH pixels; adjust height as required
         scrollPane.setPreferredSize(new Dimension(WIDTH, 300));
         
-        // Use a BorderLayout and add the scroll pane to the center
-		setLayout(new BorderLayout());
-		add(label, BorderLayout.NORTH);
-		add(scrollPane, BorderLayout.CENTER);
+     // Create the clear button
+    	JButton clearButton = new JButton("Clear");
+    	clearButton.setFont(Fonts.mediumFont); // Optional: use your desired font
+    	clearButton.setBorder(BorderFactory.createCompoundBorder(
+    			BorderFactory.createEtchedBorder(),
+    			BorderFactory.createEmptyBorder(5, 10, 5, 10)));
+
+    	clearButton.addActionListener(e -> clearSeenBanks());
+
+    	// Panel to center the button
+    	JPanel buttonPanel = new JPanel();
+
+    	buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+    	buttonPanel.add(clearButton);
+
+    	// Set layout and add components
+    	setLayout(new BorderLayout());
+    	add(label, BorderLayout.NORTH);
+    	add(scrollPane, BorderLayout.CENTER);
+    	add(buttonPanel, BorderLayout.SOUTH);
 	  }
     
     /**
@@ -54,6 +71,10 @@ public class SeenBankPanel extends JPanel {
         }
     }
     
-    // For demonstration, assume getSortedSeenBanks() is available from another class.
-    // You could call updateBanks(SomeClass.getSortedSeenBanks()) to refresh the display.
+    //clear the seen banks
+	private void clearSeenBanks() {
+		DataWarehouse.getInstance().clearSeenBanks();
+		updateSeenBanks();
+	}
+    
 }

@@ -32,6 +32,9 @@ public class Fonts {
 
 	// common medium font used for components
 	public static Font largeFont = commonFont(Font.PLAIN, 14);
+	
+	// slightly bigger font used for components
+	public static Font biggerFont = commonFont(Font.PLAIN, 13);
 
 	// common font used for components
 	public static Font defaultFont = commonFont(Font.PLAIN, 12);

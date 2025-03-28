@@ -469,6 +469,13 @@ public class DataWarehouse implements IClasIoEventListener {
 		return bankCounts;
 	}
 	
+	/**
+	 * Clear the seen banks
+	 */
+	public void clearSeenBanks() {
+		_seenBanks.clear();
+	}
+	
 
 	@Override
 	public void openedNewEventFile(String path) {
