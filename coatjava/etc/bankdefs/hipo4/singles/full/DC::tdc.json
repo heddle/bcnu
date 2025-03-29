@@ -25,6 +25,11 @@
                 "info": "TDC value",
                 "name": "TDC",
                 "type": "I"
+            },
+            {
+                "info": "Time Over Threshold",
+                "name": "ToT",
+                "type": "S"
             }
         ],
         "group": 20600,
