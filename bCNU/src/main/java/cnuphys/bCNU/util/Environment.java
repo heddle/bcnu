@@ -1,22 +1,26 @@
 package cnuphys.bCNU.util;
 
 import java.awt.Color;
+import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
 import java.awt.GraphicsEnvironment;
 import java.awt.Rectangle;
+import java.awt.geom.AffineTransform;
 import java.io.File;
-import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Properties;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.ImageWriter;
-import javax.swing.JComponent;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.log.Log;
@@ -265,6 +269,17 @@ public final class Environment {
 	 * @return the host name.
 	 */
 	public String getHostAddress() {
+		try {
+            // Get the local host address
+            InetAddress localhost = InetAddress.getLocalHost();
+
+            // Print the host address (IP address) and host name
+            System.out.println("Local Host Address: " + localhost.getHostAddress());
+            System.out.println("Local Host Name: " + localhost.getHostName());
+            return localhost.getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
 		return _hostAddress;
 	}
 
@@ -359,46 +374,12 @@ public final class Environment {
 	}
 
 	/**
-	 * On Mac, uses the say command to say something.
-	 *
-	 * @param sayThis the string to say
-	 */
-	public void say(String sayThis) {
-		if (sayThis == null) {
-			return;
-		}
-		if (isMac()) {
-			try {
-				Runtime.getRuntime().exec("say -v Karen " + sayThis);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
-	/**
 	 * Singleton objects cannot be cloned, so we override clone to throw a
 	 * CloneNotSupportedException.
 	 */
 	@Override
 	public Object clone() throws CloneNotSupportedException {
 		throw new CloneNotSupportedException();
-	}
-
-	/**
-	 * Get the UIManager's choice for panel background color
-	 *
-	 * @return the UIManager's choice for panel background color
-	 */
-	public Color getDefaultPanelBackgroundColor() {
-		if (_defaultPanelBackgroundColor == null) {
-			_defaultPanelBackgroundColor = UIManager.getColor("Panel.background");
-			if (_defaultPanelBackgroundColor == null) {
-				_defaultPanelBackgroundColor = new Color(238, 238, 238);
-			}
-		}
-
-		return _defaultPanelBackgroundColor;
 	}
 
 	/**
@@ -528,18 +509,6 @@ public final class Environment {
 	}
 
 	/**
-	 * Useful for making common look components
-	 *
-	 * @param component the component
-	 * @param color     the background color--if <code>null</code> use default.
-	 */
-	public void commonize(JComponent component, Color color) {
-		component.setOpaque(true);
-		color = (color == null) ? _defaultPanelBackgroundColor : color;
-		component.setBackground(color);
-	}
-
-	/**
 	 * Print a memory report
 	 *
 	 * @param message a message to add on
@@ -570,8 +539,7 @@ public final class Environment {
 	 * @return a short summary string
 	 */
 	public String summaryString() {
-		return " [" + _userName + "]" + " [" + _osName + "]" + " [" + _currentWorkingDirectory
-				+ "]";
+		return " [" + _userName + "]" + " [" + _osName + "]" + " [" + _currentWorkingDirectory + "]";
 	}
 
 	/**
@@ -657,14 +625,108 @@ public final class Environment {
 	}
 
 	/**
+	 * Get the major version of the Java runtime.
+	 *
+	 * @return the major version of the Java runtime
+	 */
+    public static int getJavaMajorVersion() {
+        String version = System.getProperty("java.version");
+
+        if (version.startsWith("1.")) {
+            // For older Java versions (e.g., 1.8 -> 8)
+            return Integer.parseInt(version.substring(2, 3));
+        } else {
+            // For Java 9 and newer (e.g., 17.0.1 -> 17)
+            int dotIndex = version.indexOf('.');
+            return dotIndex != -1 ? Integer.parseInt(version.substring(0, dotIndex)) : Integer.parseInt(version);
+        }
+    }
+    
+	/**
+	 * Get the display scale factor for the default screen device.
+	 *
+	 * @return the display scale factor
+	 */
+    public static double getDisplayScaleFactor() {
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        GraphicsConfiguration gc = gd.getDefaultConfiguration();
+
+        // Get scale factor from the default transformation
+        AffineTransform transform = gc.getDefaultTransform();
+        return transform.getScaleX();  // Scale factor (X and Y are typically the same)
+    }
+
+    /**
+     * Print the stack trace for the calling class. Filter
+     * out the stack trace elements that don't starts with the given
+     * package name,like "cnuphys".     
+     * @param startsWith the package name to filter
+     */
+    public static void filteredTrace(String startsWith) {
+        Exception e = new Exception();
+        StackTraceElement[] stackTrace = e.getStackTrace();
+
+        System.err.println("\nStack trace filtered on \"" + startsWith + "\"");
+        Arrays.stream(stackTrace)
+              .filter(element -> element.getClassName().startsWith(startsWith))  // Adjust your package
+              .forEach(System.err::println);
+    }
+
+	/**
+	 * Initialize the look and feel.
+	 */
+	public static void setLookAndFeel() {
+
+		LookAndFeelInfo[] lnfinfo = UIManager.getInstalledLookAndFeels();
+
+		String preferredLnF[] = {UIManager.getSystemLookAndFeelClassName(),  UIManager.getCrossPlatformLookAndFeelClassName(), "Mac OS X", "Metal", "CDE/Motif", "Windows", "Nimbus"};
+
+		if ((lnfinfo == null) || (lnfinfo.length < 1)) {
+			System.err.println("No installed look and feels");
+			return;
+		}
+
+		for (String targetLnF : preferredLnF) {
+			for (LookAndFeelInfo element : lnfinfo) {
+				String linfoName = element.getName();
+				if (linfoName.indexOf(targetLnF) >= 0) {
+					try {
+						UIManager.setLookAndFeel(element.getClassName());
+						System.out.println("Set Look and Feel: " + element.getName());
+						return;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} // end for
+	}
+
+	/**
+	 * list the look and feels
+     */
+	public static void listLookAndFeels() {
+		LookAndFeelInfo[] lookAndFeels = UIManager.getInstalledLookAndFeels();
+		for (LookAndFeelInfo lookAndFeelInfo : lookAndFeels) {
+			System.out.println(lookAndFeelInfo.getName());
+		}
+
+		String sysLNF = UIManager.getSystemLookAndFeelClassName();
+		System.out.println("System Look and Feel: " + sysLNF);
+		String cpLNF = UIManager.getCrossPlatformLookAndFeelClassName();
+		System.out.println("Cross Platform Look and Feel: " + cpLNF);
+	}
+
+	/**
 	 * Main program for testing.
 	 *
 	 * @param arg command line arguments (ignored).
 	 */
 	public static void main(String arg[]) {
 		Environment env = Environment.getInstance();
-		env.say("Hello " + env.getUserName() + ", this is the bCNU Environment test.");
 		System.out.println(env);
+		listLookAndFeels();
 		System.out.println("Done.");
 
 	}

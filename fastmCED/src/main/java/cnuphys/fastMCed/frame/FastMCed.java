@@ -16,12 +16,15 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.SwingUtilities;
 
 import org.jlab.clas.physics.PhysicsEvent;
 import org.jlab.geom.DetectorId;
+import org.jlab.logging.DefaultLogger;
 
 import cnuphys.bCNU.application.BaseMDIApplication;
 import cnuphys.bCNU.application.Desktop;
@@ -39,27 +42,27 @@ import cnuphys.bCNU.view.LogView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
-import cnuphys.fastMCed.eventio.PhysicsEventManager;
-import cnuphys.fastMCed.eventio.RandomNoiseGenerator;
 import cnuphys.fastMCed.consumers.ConsumerManager;
-import cnuphys.fastMCed.eventgen.AEventGenerator;
 import cnuphys.fastMCed.eventgen.GeneratorManager;
 import cnuphys.fastMCed.eventio.IPhysicsEventListener;
+import cnuphys.fastMCed.eventio.PhysicsEventManager;
+import cnuphys.fastMCed.eventio.RandomNoiseGenerator;
 import cnuphys.fastMCed.fastmc.FastMCMenuAddition;
 import cnuphys.fastMCed.fastmc.ParticleHits;
 import cnuphys.fastMCed.geometry.GeometryManager;
 import cnuphys.fastMCed.properties.PropertiesManager;
+import cnuphys.fastMCed.snr.NoiseParameterDialog;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.streaming.IStreamProcessor;
 import cnuphys.fastMCed.streaming.StreamManager;
 import cnuphys.fastMCed.streaming.StreamProcessStatus;
 import cnuphys.fastMCed.streaming.StreamReason;
 import cnuphys.fastMCed.view.alldc.AllDCView;
+import cnuphys.fastMCed.view.alldcsnr.AllDCSNRView;
 import cnuphys.fastMCed.view.data.DataView;
 import cnuphys.fastMCed.view.sector.DisplaySectors;
 import cnuphys.fastMCed.view.sector.SectorView;
 import cnuphys.fastMCed.view.trajinfo.TrajectoryInfoView;
-import cnuphys.magfield.FastMath;
 import cnuphys.magfield.MagneticFieldChangeListener;
 import cnuphys.magfield.MagneticFields;
 import cnuphys.splot.example.MemoryUsageDialog;
@@ -69,7 +72,7 @@ import cnuphys.swim.Swimming;
 /**
  * This is a brother to ced that works with the fastMC system rather than evio
  * or hipo
- * 
+ *
  * @author heddle
  *
  */
@@ -80,7 +83,7 @@ public class FastMCed extends BaseMDIApplication
 	private static FastMCed _instance;
 
 	// release (version) string
-	private static final String _release = "build 0.53";
+	private static final String _release = "build 0.60";
 
 	// used for one time inits
 	private int _firstTime = 0;
@@ -90,9 +93,6 @@ public class FastMCed extends BaseMDIApplication
 
 	// event number label on menu bar
 	private static JLabel _eventNumberLabel;
-
-	// generator
-	private static JLabel _generatorLabel;
 
 	// memory usage dialog
 	private MemoryUsageDialog _memoryUsage;
@@ -111,8 +111,8 @@ public class FastMCed extends BaseMDIApplication
 	private VirtualView _virtualView;
 	private TrajectoryInfoView _trajInfoView;
 	private AllDCView _allDCView;
+	private AllDCSNRView _allDCSNRView;
 	private DataView _dcDataView;
-	private DataView _ftofDataView;
 	private SectorView _sectorView14;
 	private SectorView _sectorView25;
 	private SectorView _sectorView36;
@@ -124,7 +124,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Constructor (private--used to create singleton)
-	 * 
+	 *
 	 * @param keyVals an optional variable length list of attributes in type-value
 	 *                pairs. For example, PropertySupport.NAME, "my application",
 	 *                PropertySupport.CENTER, true, etc.
@@ -222,10 +222,10 @@ public class FastMCed extends BaseMDIApplication
 
 		_virtualView.moveTo(_plotView, 0, VirtualView.CENTER);
 
-		_virtualView.moveTo(_allDCView, 1);
+		_virtualView.moveTo(_allDCSNRView, 1);
+		_virtualView.moveTo(_allDCView, 2);
 		_virtualView.moveTo(_trajInfoView, 0, VirtualView.UPPERRIGHT);
-		_virtualView.moveTo(_dcDataView, 2, VirtualView.BOTTOMLEFT);
-		_virtualView.moveTo(_ftofDataView, 2, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_dcDataView, 3);
 
 		_virtualView.moveTo(_logView, 5, VirtualView.UPPERRIGHT);
 
@@ -251,6 +251,10 @@ public class FastMCed extends BaseMDIApplication
 		_sectorView14 = SectorView.createSectorView(DisplaySectors.SECTORS14);
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
+
+		// add an alldc snr  view
+		_allDCSNRView = AllDCSNRView.createAllDCSNRView();
+
 		// add an alldc view
 		_allDCView = AllDCView.createAllDCView();
 
@@ -259,7 +263,6 @@ public class FastMCed extends BaseMDIApplication
 
 		// data views
 		_dcDataView = new DataView("Drift Chamber Hits", DetectorId.DC);
-		_ftofDataView = new DataView("FTOF Hits", DetectorId.FTOF);
 
 		ViewManager.getInstance().getViewMenu().addSeparator();
 		// plot view
@@ -277,20 +280,19 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * private access to the FastMCed singleton.
-	 * 
+	 *
 	 * @return the singleton FastMCed (the main application frame.)
 	 */
 	private static FastMCed getInstance() {
 		if (_instance == null) {
 			_instance = new FastMCed(PropertySupport.TITLE, "fastmCED " + versionString(),
-//					PropertySupport.BACKGROUNDIMAGE, "images/cnuinv.png", 
+//					PropertySupport.BACKGROUNDIMAGE, "images/cnuinv.png",
 					PropertySupport.BACKGROUND, new Color(48, 48, 48), PropertySupport.FRACTION, 0.9);
 
 			_instance.addInitialViews();
 			_instance.createMenus();
 			_instance.placeViewsOnVirtualDesktop();
 
-			FastMCed._generatorLabel = _instance.createLabel(" GENERATOR  none");
 			FastMCed._streamLabel = _instance.createLabel(" STREAM " + StreamReason.STOPPED);
 			FastMCed._eventNumberLabel = _instance.createLabel("  Event #                 ");
 			MagneticFields.getInstance().addMagneticFieldChangeListener(_instance);
@@ -307,7 +309,7 @@ public class FastMCed extends BaseMDIApplication
 		MenuManager mmgr = MenuManager.getInstance();
 
 		// create the mag field menu
-		MagneticFields.getInstance().setActiveField(MagneticFields.FieldType.TORUS);
+		MagneticFields.getInstance().setActiveField(MagneticFields.FieldType.COMPOSITE);
 		mmgr.addMenu(MagneticFields.getInstance().getMagneticFieldMenu());
 
 		// the swimmer menu
@@ -335,8 +337,6 @@ public class FastMCed extends BaseMDIApplication
 		MenuManager mmgr = MenuManager.getInstance();
 		JMenu fmenu = mmgr.getFileMenu();
 
-		fmenu.insertSeparator(0);
-
 		// restore default config
 		final JMenuItem defConItem = new JMenuItem("Restore Default Configuration");
 
@@ -361,7 +361,27 @@ public class FastMCed extends BaseMDIApplication
 	 * Refresh all views (with containers)
 	 */
 	public static void refresh() {
-		ViewManager.getInstance().refreshAllViews();
+
+		if (SwingUtilities.isEventDispatchThread()) {
+			refreshAllViews();
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						refreshAllViews();
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void refreshAllViews() {
+	    for (JInternalFrame frame : Desktop.getInstance().getAllFrames()) {
+	        frame.repaint();
+	    }
 	}
 
 	// fix the event number label
@@ -378,14 +398,10 @@ public class FastMCed extends BaseMDIApplication
 		_streamLabel.setText(" STREAM " + reason);
 	}
 
-	// fix the generator label
-	private void fixGeneratorLabel() {
-		_generatorLabel.setText(" GENERATOR " + PhysicsEventManager.getInstance().getGeneratorDescription());
-	}
 
 	/**
 	 * public access to the singleton
-	 * 
+	 *
 	 * @return the singleton FastMCed (the main application frame.)
 	 */
 	public static FastMCed getFastMCed() {
@@ -394,7 +410,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Generate the version string
-	 * 
+	 *
 	 * @return the version string
 	 */
 	public static String versionString() {
@@ -425,7 +441,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Get the plot view
-	 * 
+	 *
 	 * @return the plot voew;
 	 */
 	public PlotView getPlotView() {
@@ -452,7 +468,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Get the parent frame
-	 * 
+	 *
 	 * @return the parent frame
 	 */
 	public static JFrame getFrame() {
@@ -464,6 +480,20 @@ public class FastMCed extends BaseMDIApplication
 
 		RandomNoiseGenerator.getInstance().addToMenu(omenu);
 		omenu.addSeparator();
+		// add the noise parameter menu item
+		ActionListener al2 = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				NoiseParameterDialog dialog = new NoiseParameterDialog();
+				dialog.setVisible(true);
+			}
+		};
+
+		
+		MenuManager.addMenuItem("SNR Parameters...", omenu, al2);
+		omenu.addSeparator();
+
+
 
 		omenu.add(MagnifyWindow.magificationMenu());
 		omenu.addSeparator();
@@ -503,15 +533,6 @@ public class FastMCed extends BaseMDIApplication
 
 	}
 
-	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
-		fixGeneratorLabel();
-	}
 
 	@Override
 	public void newPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
@@ -536,7 +557,7 @@ public class FastMCed extends BaseMDIApplication
 	/**
 	 * Get the optional consumer classes directory provide by -p command line
 	 * argument
-	 * 
+	 *
 	 * @return the optional consumer classes directory path.
 	 */
 	public static String getUserConsumerDir() {
@@ -545,7 +566,7 @@ public class FastMCed extends BaseMDIApplication
 
 	/**
 	 * Launch the FastMCed GUI
-	 * 
+	 *
 	 * @param consumerPath an optional path to a folder that contains your consumer
 	 *                     classes. This allows you to load consumers at startup.
 	 */
@@ -563,15 +584,25 @@ public class FastMCed extends BaseMDIApplication
 	 * <p>
 	 * Command line arguments:</br>
 	 * -p [dir] dir is the default directory
-	 * 
+	 *
 	 * @param arg the command line arguments.
 	 */
 	public static void main(String[] arg) {
+
+		Environment.setLookAndFeel();
+
+		//this is supposed to create less pounding of ccdb
+		DefaultLogger.initialize();
+
 
 		// read in userprefs
 		PropertiesManager.getInstance();
 
 		FileUtilities.setDefaultDir("data");
+
+		// initialize magnetic fields
+		MagneticFields.getInstance().initializeMagneticFields();
+
 
 		// splash frame
 		final SplashWindowFastMCed splashWindow = new SplashWindowFastMCed("fastmCED", null, 920, _release);
@@ -612,8 +643,6 @@ public class FastMCed extends BaseMDIApplication
 			} // !done
 		} // end command arg processing
 
-		// initialize magnetic fields
-		MagneticFields.getInstance().initializeMagneticFields();
 
 		// initialize some managers
 		GeometryManager.getInstance();

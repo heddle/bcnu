@@ -16,6 +16,8 @@ import cnuphys.ced.alldata.datacontainer.bst.BSTRecHitData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
+import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.geometry.BMTGeometry;
 import cnuphys.ced.geometry.BSTGeometry;
@@ -28,7 +30,9 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	private static Color _baseColor = new Color(255, 0, 0, 60);
 
 	// owner view
-	private CentralXYView _view;
+	private ICentralXYView _iCentralView;
+	
+	private CedView _view;
 
 	// data containers
 	private CNDADCData adcCNDData = CNDADCData.getInstance();
@@ -42,8 +46,9 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// accumulation manager
 	private AccumulationManager _accumManager = AccumulationManager.getInstance();
 
-	public CentralXYHitDrawer(CentralXYView view) {
+	public CentralXYHitDrawer(ICentralXYView iCentralView, CedView view) {
 		super(view);
+		_iCentralView = iCentralView;
 		_view = view;
 	}
 
@@ -65,7 +70,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 					int hitCount = cndData[sect0][lay0][order];
 
-					CNDXYPolygon poly = _view.getCNDPolygon(sect0 + 1, lay0 + 1, order + 1);
+					CNDXYPolygon poly = _iCentralView.getCNDPolygon(sect0 + 1, lay0 + 1, order + 1);
 					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color color = _accumManager.getColor(_view.getColorScaleModel(), fract);
 
@@ -79,6 +84,11 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw accumulated BST hits (panels)
 	@Override
 	protected void drawBSTAccumulatedHits(Graphics g, IContainer container) {
+		
+		if (_view instanceof AlertXYView) {
+			return;
+		}
+
 		// panels
 
 		int maxHit = _accumManager.getMaxBSTCount();
@@ -95,7 +105,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 					double fract = (maxHit == 0) ? 0 : (((double) hitCount) / maxHit);
 					Color color = _accumManager.getColor(_view.getColorScaleModel(), fract);
-					_view.drawBSTPanel((Graphics2D) g, container, panel, color);
+					_iCentralView.drawBSTPanel((Graphics2D) g, container, panel, color);
 
 				}
 			}
@@ -112,7 +122,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		int ctofData[] = _accumManager.getAccumulatedCTOFData();
 
 		for (int index = 0; index < 48; index++) {
-			CTOFXYPolygon poly = _view.getCTOFPolygon(index + 1);
+			CTOFXYPolygon poly = _iCentralView.getCTOFPolygon(index + 1);
 			if (poly != null) {
 				int hitCount = ctofData[index];
 
@@ -147,7 +157,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 		// draw based on adc data
 
 		for (int i = 0; i < adcCNDData.count(); i++) {
-			CNDXYPolygon poly = _view.getCNDPolygon(adcCNDData.sector[i], adcCNDData.layer[i], adcCNDData.order[i] + 1);
+			CNDXYPolygon poly = _iCentralView.getCNDPolygon(adcCNDData.sector[i], adcCNDData.layer[i], adcCNDData.order[i] + 1);
 			if (poly != null) {
 				Color color = adcCNDData.getADCColor(adcCNDData.adc[i]);
 				poly.draw(g, container, color, Color.black);
@@ -165,7 +175,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 
 		// draw based on adc data
 		for (int i = 0; i < adcCTOFData.count(); i++) {
-			CTOFXYPolygon poly = _view.getCTOFPolygon(adcCTOFData.component[i]);
+			CTOFXYPolygon poly = _iCentralView.getCTOFPolygon(adcCTOFData.component[i]);
 			if (poly != null) {
 				Color color = adcCTOFData.getColor(adcCTOFData.sector[i], adcCTOFData.layer[i],
 						adcCTOFData.component[i], adcCTOFData.order[i]);
@@ -188,12 +198,17 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw BMT hits
 	@Override
 	protected void drawBMTHitsSingleMode(Graphics g, IContainer container) {
+		if (_view instanceof AlertXYView) {
+			return;
+		}
+
 		drawBMTADCData(g, container);
 		drawBMTReconHits(g, container);
 	}
 
 	// draw BMT adc data
 	private void drawBMTADCData(Graphics g, IContainer container) {
+		
 		if (_view.showADCHits()) {
 
 			int count = adcBMTData.count();
@@ -202,36 +217,38 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				Point2D.Double wp = new Point2D.Double();
 
 				for (int i = 0; i < count; i++) {
-					BMTSectorItem bmtItem = _view.getBMTSectorItem(adcBMTData.sector[i], adcBMTData.layer[i]);
-					if (bmtItem.getLastDrawnPolygon() != null) {
-						g.setColor(X11Colors.getX11Color("tan"));
-						g.fillPolygon(bmtItem.getLastDrawnPolygon());
-						g.setColor(Color.red);
-						g.drawPolygon(bmtItem.getLastDrawnPolygon());
-					}
-					Polygon poly = bmtItem.getStripPolygon(container, adcBMTData.component[i]);
-					if (poly != null) {
-						g.setColor(Color.black);
-						g.fillPolygon(poly);
-						g.setColor(adcBMTData.getADCColor(i));
-						g.drawPolygon(poly);
-					}
+					BMTSectorItem bmtItem = _iCentralView.getBMTSectorItem(adcBMTData.sector[i], adcBMTData.layer[i]);
+					if (bmtItem != null) {
+						if (bmtItem.getLastDrawnPolygon() != null) {
+							g.setColor(X11Colors.getX11Color("tan"));
+							g.fillPolygon(bmtItem.getLastDrawnPolygon());
+							g.setColor(Color.red);
+							g.drawPolygon(bmtItem.getLastDrawnPolygon());
+						}
+						Polygon poly = bmtItem.getStripPolygon(container, adcBMTData.component[i]);
+						if (poly != null) {
+							g.setColor(Color.black);
+							g.fillPolygon(poly);
+							g.setColor(adcBMTData.getADCColor(i));
+							g.drawPolygon(poly);
+						}
 
-					if (bmtItem.isZLayer()) {
+						if (bmtItem.isZLayer()) {
 
-						Color color = adcBMTData.getADCColor(adcBMTData.adc[i]);
+							Color color = adcBMTData.getADCColor(adcBMTData.adc[i]);
 
-						double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(adcBMTData.sector[i],
-								adcBMTData.layer[i], adcBMTData.component[i]);
+							double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(adcBMTData.sector[i],
+									adcBMTData.layer[i], adcBMTData.component[i]);
 
-						double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
-						wp.x = rad * Math.cos(phi);
-						wp.y = rad * Math.sin(phi);
+							double rad = bmtItem.getInnerRadius() + BMTSectorItem.FAKEWIDTH / 2.;
+							wp.x = rad * Math.cos(phi);
+							wp.y = rad * Math.sin(phi);
 
-						container.worldToLocal(pp, wp);
-						adcBMTData.setLocation(i, pp);
-						DataDrawSupport.drawAdcHit(g, pp, color);
+							container.worldToLocal(pp, wp);
+							adcBMTData.setLocation(i, pp);
+							DataDrawSupport.drawAdcHit(g, pp, color);
 
+						}
 					}
 				}
 
@@ -251,7 +268,7 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 				Point2D.Double wp = new Point2D.Double();
 
 				for (int i = 0; i < count; i++) {
-					BMTSectorItem bmtItem = _view.getBMTSectorItem(bmtRecHitData.sector[i], bmtRecHitData.layer[i]);
+					BMTSectorItem bmtItem = _iCentralView.getBMTSectorItem(bmtRecHitData.sector[i], bmtRecHitData.layer[i]);
 					if (bmtItem != null && bmtItem.isZLayer()) {
 
 						double phi = BMTGeometry.getGeometry().CRZStrip_GetPhi(bmtRecHitData.sector[i], bmtRecHitData.layer[i],
@@ -274,6 +291,10 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 	// draw BST hits single event mode
 	@Override
 	protected void drawBSTHitsSingleMode(Graphics g, IContainer container) {
+		if (_view instanceof AlertXYView) {
+			return;
+		}
+
 		drawBSTADCData(g, container);
 		drawBSTReconHits(g, container);
 	}
@@ -285,8 +306,8 @@ public class CentralXYHitDrawer extends CentralHitDrawer {
 			for (int i = 0; i < adcBSTData.count(); i++) {
 				BSTxyPanel panel = CentralXYView.getPanel(adcBSTData.layer[i], adcBSTData.sector[i]);
 				if (panel != null) {
-					_view.drawBSTPanel((Graphics2D) g, container, panel, _baseColor);
-					_view.drawBSTPanel((Graphics2D) g, container, panel, adcBSTData.getADCColor(i));
+					_iCentralView.drawBSTPanel((Graphics2D) g, container, panel, _baseColor);
+					_iCentralView.drawBSTPanel((Graphics2D) g, container, panel, adcBSTData.getADCColor(i));
 				}
 			}
 		}

@@ -8,7 +8,7 @@ import cnuphys.bCNU.util.SerialIO;
 
 /**
  * For dealing with persistent user preferences
- * 
+ *
  * @author heddle
  *
  */
@@ -27,7 +27,7 @@ public class PropertiesManager {
 
 	/**
 	 * Public access for the singleton
-	 * 
+	 *
 	 * @return the PropertiesManager singleton.
 	 */
 	public static PropertiesManager getInstance() {
@@ -45,7 +45,7 @@ public class PropertiesManager {
 
 	/**
 	 * Put in a property, then write the preferences
-	 * 
+	 *
 	 * @param key   the key
 	 * @param value the value
 	 */
@@ -59,7 +59,7 @@ public class PropertiesManager {
 
 	/**
 	 * Put in a property, don't write the preferences
-	 * 
+	 *
 	 * @param key   the key
 	 * @param value the value
 	 */
@@ -72,7 +72,7 @@ public class PropertiesManager {
 
 	/**
 	 * Get a property from the user preferences
-	 * 
+	 *
 	 * @param key the key
 	 * @return the property, or <code>null</code> if not found
 	 */

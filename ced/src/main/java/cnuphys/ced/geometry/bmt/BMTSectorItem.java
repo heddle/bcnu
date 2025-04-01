@@ -15,7 +15,7 @@ import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.IStyled;
 import cnuphys.bCNU.item.DonutItem;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.clasio.ClasIoEventManager;
@@ -82,10 +82,6 @@ public class BMTSectorItem extends DonutItem {
 			outerRadius[layer0] = innerRadius[layer0] + FAKEWIDTH; // mm
 		}
 
-////		innerRadius[4] = 205.8; // layer 5 mm
-//		outerRadius[4] = innerRadius[4] + 4; // layer 5 mm
-////		innerRadius[5] = 220.8; // layer 6 mm
-//		outerRadius[5] = innerRadius[5] + 4; // layer 6 mm
 	}
 
 	/**
@@ -128,12 +124,15 @@ public class BMTSectorItem extends DonutItem {
 	private int _sector;
 	private int _layer;
 
-	// public DonutItem(LogicalLayer layer, Point2D.Double wpc,
-	// double radiusInner, double radiusOuter, double startAngle,
-	// double arcAngle) {
 
-	public BMTSectorItem(LogicalLayer logLayer, int sector, int layer) {
-		super(logLayer, new Point2D.Double(0, 0), innerRadius[layer - 1], outerRadius[layer - 1],
+	/**
+	 * Create a BMT sector item
+	 * @param itemList
+	 * @param sector
+	 * @param layer
+	 */
+	public BMTSectorItem(ItemList itemList, int sector, int layer) {
+		super(itemList, new Point2D.Double(0, 0), innerRadius[layer - 1], outerRadius[layer - 1],
 				startAngle[sector - 1][layer - 1], delAngle[sector - 1][layer - 1]);
 
 		_sector = sector;

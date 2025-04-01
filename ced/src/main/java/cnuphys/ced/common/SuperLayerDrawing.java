@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
 import java.util.List;
@@ -69,14 +68,14 @@ public class SuperLayerDrawing {
 	// dirction,
 	// as a unit vector, of any of the wires
 	private double[] _direction;
-	
+
 	// data containers
 	private DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 	private HBTrkgSegmentData _hbTrkgSegmentData = HBTrkgSegmentData.getInstance();
 	private TBTrkgSegmentData _tbTrkgSegmentData = TBTrkgSegmentData.getInstance();
 	private HBTrkgAISegmentData _hbTrkgAISegmentData = HBTrkgAISegmentData.getInstance();
 	private TBTrkgAISegmentData _tbTrkgAISegmentData = TBTrkgAISegmentData.getInstance();
-	
+
 
 
 	/**
@@ -114,14 +113,14 @@ public class SuperLayerDrawing {
 
 		// draw layer outlines to guide the eye
 
-		Shape clip = g2.getClip();
+//		Shape clip = g2.getClip();
 		// Stroke oldStroke = g2.getStroke();
 
-		if (lastDrawnPolygon != null) {
-			g2.setClip(lastDrawnPolygon);
-		} else {
-			System.err.println("NULL LAST POLY");
-		}
+//		if (lastDrawnPolygon != null) {
+//			g2.setClip(lastDrawnPolygon);
+//		} else {
+//			System.err.println("NULL LAST POLY");
+//		}
 
 		if (!segmentsOnly) {
 			// differentiate the layers
@@ -161,7 +160,7 @@ public class SuperLayerDrawing {
 			g.drawPolygon(lastDrawnPolygon);
 		}
 
-		g2.setClip(clip);
+	//	g2.setClip(clip);
 	}
 
 	/**
@@ -322,18 +321,21 @@ public class SuperLayerDrawing {
 	private void drawSingleModeHits(Graphics g, IContainer container, boolean reallyClose, boolean segmentsOnly) {
 
 		if (!segmentsOnly) {
-			
+
 			Point pp = new Point();
+
+			boolean useOrderColoring = Ced.useOrderColoring;
 
 			for (int i = 0; i < _dcData.count(); i++) {
 				if ((_dcData.sector[i] == _iSupl.sector()) && (_dcData.superlayer[i] == _iSupl.superlayer())) {
-					drawBasicDCHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1, _dcData.order[i]);
+					drawBasicDCHit(g, container, _dcData.layer6[i], _dcData.component[i], _dcData.noise[i], -1,
+							_dcData.order[i], useOrderColoring);
 					// just draw the wire again
 					drawOneWire(g, container, _dcData.layer6[i], _dcData.component[i], reallyClose, pp);
 				}
 			}
-			
-			
+
+
 		}
 
 		// draw track based hits (docas) and segments
@@ -355,8 +357,10 @@ public class SuperLayerDrawing {
 	 * @param noise     is noise hit
 	 * @param pid       gemc particle id
 	 * @param order     tdc order
+	 * @param useOrderColoring use order coloring
 	 */
-	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order) {
+	private void drawDCHit(Graphics g, IContainer container, int layer, int wire, boolean noise, int pid, int order,
+			boolean useOrderColoring) {
 
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
@@ -391,7 +395,7 @@ public class SuperLayerDrawing {
 			highlightNoiseHit(g, container, !showTruth, hexagon);
 		} else {
 
-			if (Ced.useOrderColoring()) {
+			if (useOrderColoring) { //for Gagik debugging
 				hitFill = OrderColors.getOrderColor(order);
 				hitLine = CedColors.transLine;
 			}
@@ -445,16 +449,17 @@ public class SuperLayerDrawing {
 	 * @param noise     is noise hit
 	 * @param pid       gemc particle id
 	 * @oaram order     from order column in tdc bank
+	 * @param useOrderColoring use order coloring
 	 */
 	private void drawBasicDCHit(Graphics g, IContainer container, int layer,
-			int wire, boolean noise, int pid, int order) {
+			int wire, boolean noise, int pid, int order, boolean useOrderColoring) {
 
 		// abort if hiding noise and this is noise
 		if (_view.hideNoise() && noise) {
 			return;
 		}
 
-		drawDCHit(g, container, layer, wire, noise, pid, order);
+		drawDCHit(g, container, layer, wire, noise, pid, order, useOrderColoring);
 	}
 
 	/**
@@ -472,11 +477,11 @@ public class SuperLayerDrawing {
 
 		int layer = hits.layer[index];
 		int wire = hits.wire[index];
-		
+
 		Point pp = new Point();
-		
+
 		drawSingleDCHit(g, container, fillColor, frameColor, layer, wire, pp);
-		
+
 		hits.setLocation(index, pp);
 
 		if (WorldGraphicsUtilities
@@ -778,7 +783,7 @@ public class SuperLayerDrawing {
 	public Point3D projectedPoint(double x, double y, double z, Point2D.Double wp) {
 		return _view.projectedPoint(x, y, z, _iSupl.projectionPlane(), wp);
 	}
-	
+
 	private void drawSegments(Graphics g, IContainer container, ATrkgSegmentData segments, Color lc, Color fc) {
 		int count = segments.count();
         if (count > 0) {
@@ -965,7 +970,7 @@ public class SuperLayerDrawing {
 			}
 
 			if ((layer > 0) && (wire > 0)) {
-				
+
 				boolean hit = false;
 				for (int i = 0; i < _dcData.count(); i++) {
 					if ((_dcData.sector[i] == _iSupl.sector()) && (_dcData.superlayer[i] == _iSupl.superlayer())
@@ -974,7 +979,7 @@ public class SuperLayerDrawing {
 						_dcData.tdcFeedback(i, _view.showNoiseAnalysis(), _view.showMcTruth(), feedbackStrings);						break;
 					}
 				}
-				
+
 				if (!hit) {
 					feedbackStrings.add("superlayer " + _iSupl.superlayer() + "  layer " + layer + "  wire " + wire);
 				}

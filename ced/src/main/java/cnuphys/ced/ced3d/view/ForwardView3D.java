@@ -9,9 +9,9 @@ public class ForwardView3D extends CedView3D {
 	public static final float ydist = 0f;
 	public static final float zdist = -1600f;
 
-	private static final float thetax = 0f;
-	private static final float thetay = 90f;
-	private static final float thetaz = 90f;
+	private static final float thetax = -90f;
+	private static final float thetay = 0f;
+	private static final float thetaz = -90f;
 
 	public ForwardView3D() {
 		super("Forward Detectors 3D View", thetax, thetay, thetaz, xdist, ydist, zdist);

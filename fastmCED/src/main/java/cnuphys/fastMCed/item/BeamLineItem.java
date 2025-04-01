@@ -8,7 +8,7 @@ import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.BaseBeamLineItem;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.fastMCed.streaming.StreamManager;
 import cnuphys.fastMCed.view.sector.SectorView;
@@ -24,7 +24,7 @@ public class BeamLineItem extends BaseBeamLineItem {
 	 * 
 	 * @param layer the Layer this item is on.
 	 */
-	public BeamLineItem(LogicalLayer layer) {
+	public BeamLineItem(ItemList layer) {
 		super(layer);
 	}
 

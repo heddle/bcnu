@@ -37,8 +37,8 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.container.ScaleDrawer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.util.X11Colors;
@@ -46,13 +46,9 @@ import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.PlotView;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.fastMCed.frame.FastMCed;
-import cnuphys.fastMCed.geometry.FTOFGeometry;
-import cnuphys.fastMCed.geometry.FTOFPanel;
 import cnuphys.fastMCed.geometry.GeometryManager;
 import cnuphys.fastMCed.item.BeamLineItem;
-import cnuphys.fastMCed.item.FTOFPanelItem;
 import cnuphys.fastMCed.item.MagFieldItem;
-import cnuphys.fastMCed.item.SectorSuperLayer;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.ControlPanel;
@@ -145,10 +141,10 @@ public class SectorView extends AView implements ChangeListener {
 	public static SectorView createSectorView(DisplaySectors displaySectors) {
 		SectorView view = null;
 
-		double xo = -450.0; // cm. Think of sector 1. x is "vertical"
+		double xo = -410.0; // cm. Think of sector 1. x is "vertical"
 		double zo = -10.0; // cm. Think of sector 1. z is "horizontal"
 		double wheight = -2 * xo;
-		double wwidth = 840;
+		double wwidth = 600;
 
 		Dimension d = GraphicsUtilities.screenFraction(0.65);
 
@@ -209,11 +205,11 @@ public class SectorView extends AView implements ChangeListener {
 
 		// add a field object, which won't do anything unless we can read in the
 		// field.
-		LogicalLayer magneticFieldLayer = getContainer().getLogicalLayer(_magneticFieldLayerName);
+		ItemList magneticFieldLayer = getContainer().getItemList(_magneticFieldLayerName);
 		new MagFieldItem(magneticFieldLayer, this);
 		magneticFieldLayer.setVisible(false);
 
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 		new BeamLineItem(detectorLayer);
 
 		// add the superlayer items
@@ -241,26 +237,6 @@ public class SectorView extends AView implements ChangeListener {
 			_superLayers[LOWER_SECTOR][superLayer].getStyle().setFillColor(Color.gray);
 		}
 
-		// add forward time of flight items
-		FTOFPanel panels[] = FTOFGeometry.getFtofPanel();
-		for (FTOFPanel ftof : panels) {
-			switch (_displaySectors) {
-			case SECTORS14:
-				new FTOFPanelItem(detectorLayer, ftof, 1);
-				new FTOFPanelItem(detectorLayer, ftof, 4);
-				break;
-
-			case SECTORS25:
-				new FTOFPanelItem(detectorLayer, ftof, 2);
-				new FTOFPanelItem(detectorLayer, ftof, 5);
-				break;
-
-			case SECTORS36:
-				new FTOFPanelItem(detectorLayer, ftof, 3);
-				new FTOFPanelItem(detectorLayer, ftof, 6);
-				break;
-			}
-		}
 
 	}
 

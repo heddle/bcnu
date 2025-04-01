@@ -2,15 +2,17 @@ package cnuphys.ced.alldata;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.swing.event.EventListenerList;
+import java.util.concurrent.ExecutionException;
 
 import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 import org.jlab.jnp.hipo4.data.Schema;
 import org.jlab.jnp.hipo4.data.SchemaFactory;
 
+import cnuphys.bCNU.threading.EventNotifier;
 import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
@@ -21,8 +23,10 @@ public class DataWarehouse implements IClasIoEventListener {
 	//the singleton
 	private static volatile DataWarehouse _instance;
 
-	// all the known banks in the current evenr
+	// all the known banks in the current event
 	private ArrayList<String> _knownBanks = new ArrayList<>();
+	
+	private HashMap<String, Long> _seenBanks = new HashMap<>();
 
 	//the current schema factory (dictionary)
 	private SchemaFactory _schemaFactory;
@@ -31,9 +35,6 @@ public class DataWarehouse implements IClasIoEventListener {
 	private DataWarehouse() {
 		ClasIoEventManager.getInstance().addClasIoEventListener(this, 0);
 	}
-
-	// list of data container listeners
-	private static EventListenerList _listeners;
 
 	/** type is unknown */
 	public static final int UNKNOWN = 0;
@@ -79,7 +80,10 @@ public class DataWarehouse implements IClasIoEventListener {
 
 	/** the column data used by the node panel */
 	private ArrayList<ColumnData> _columnData = new ArrayList<>();
-	
+
+	//for notifying about new data
+	private EventNotifier<Object> eventNotifier = new EventNotifier<>();
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -102,20 +106,37 @@ public class DataWarehouse implements IClasIoEventListener {
 	 * @return the known banks in a String array
 	 */
 	public String[] getKnownBanks() {
-		String[] kbArray = new String[this._knownBanks.size()];
+		String[] kbArray = new String[_knownBanks.size()];
 		_knownBanks.toArray(kbArray);
 		return kbArray;
 	}
-	
+
+	/**
+	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
+	 * current event.
+	 *
+	 * @param bankName the bank name
+	 * @return <code>true</code> if the bank is in the curent event.
+	 */
+	public boolean isBankInCurrentEvent(String bankName) {
+		if ((bankName == null) || (_knownBanks == null)) {
+			return false;
+		}
+
+		int index = Collections.binarySearch(_knownBanks, bankName);
+		return index >= 0;
+	}
+
+
 	/**
 	 * Does the current event have a bank with the given name?
-	 * 
+	 *
 	 * @param bankName the bank name
 	 * @return <code>true</code> if the current event has the bank
 	 */
 	public boolean hasBank(String bankName) {
 		DataEvent event = getCurrentEvent();
-		
+
 		return (event != null) ? event.hasBank(bankName) : false;
 	}
 
@@ -142,7 +163,7 @@ public class DataWarehouse implements IClasIoEventListener {
 
         // sort the banks
 		_knownBanks.sort(null);
-		
+
 	}
 
 
@@ -325,18 +346,10 @@ public class DataWarehouse implements IClasIoEventListener {
 	 */
 	public void notifyListeners(DataEvent event) {
 
-		if (_listeners != null) {
-
-			// Guaranteed to return a non-null array
-			Object[] listeners = _listeners.getListenerList();
-
-			// This weird loop is the bullet proof way of notifying all
-			// listeners.
-			for (int i = listeners.length - 2; i >= 0; i -= 2) {
-				if (listeners[i] == IDataContainer.class) {
-					((IDataContainer) listeners[i + 1]).update(event);
-				}
-			}
+		try {
+			eventNotifier.triggerEvent(event);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -346,18 +359,10 @@ public class DataWarehouse implements IClasIoEventListener {
 	 */
 	public void notifyListeners() {
 
-		if (_listeners != null) {
-
-			// Guaranteed to return a non-null array
-			Object[] listeners = _listeners.getListenerList();
-
-			// This weird loop is the bullet proof way of notifying all
-			// listeners.
-			for (int i = listeners.length - 2; i >= 0; i -= 2) {
-				if (listeners[i] == IDataContainer.class) {
-					((IDataContainer) listeners[i + 1]).clear();
-				}
-			}
+		try {
+			eventNotifier.triggerEvent(null);
+		} catch (InterruptedException | ExecutionException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -399,7 +404,7 @@ public class DataWarehouse implements IClasIoEventListener {
 		}
 		return 0;
 	}
-	
+
 
 	/**
 	 * Add an data container listener.
@@ -407,26 +412,17 @@ public class DataWarehouse implements IClasIoEventListener {
 	 * @param listener the data container listener to add.
 	 */
 	public void addDataContainerListener(IDataContainer listener) {
-
-		if (listener == null) {
-			return;
-		}
-
-		if (_listeners == null) {
-			_listeners = new EventListenerList();
-		}
-
-		_listeners.add(IDataContainer.class, listener);
+		eventNotifier.addListener(new DataListener(listener));
 	}
 
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
-		
-		
+
+
 		// create the column data
 		_columnData.clear();
-		
+
 		int bankIndex = 0;
 		for (String bankName : _knownBanks) {
 			DataBank bank = event.getBank(bankName);
@@ -440,23 +436,62 @@ public class DataWarehouse implements IClasIoEventListener {
 			}
 		}
 		
+		//update seen banks
+		String[] banks = event.getBankList();
+		if (banks != null) {
+			for (String bank : banks) {
+				if (_seenBanks.get(bank) == null) {
+					_seenBanks.put(bank, 1L);
+				}
+				else {
+                    _seenBanks.put(bank, _seenBanks.get(bank) + 1L);
+				}
+			}
+		}
+
 		notifyListeners(); //clear previous data
 		notifyListeners(event);
 	}
+	
+	/**
+	 * Get the sorted list of seen banks and their counts.
+	 * IS reset if new file opened or event source changed
+	 * @return the list of seen banks and their counts
+	 */
+	public List<String> getSortedSeenBanks() {
+		ArrayList<String> bankCounts = new ArrayList<>();
+		List<String> keys = new ArrayList<>(_seenBanks.keySet());
+		Collections.sort(keys);		
+		for (String key : keys) {
+			String s = "[" + key + "]  (" + _seenBanks.get(key) + ")";
+			bankCounts.add(s);
+		}
+		return bankCounts;
+	}
+	
+	/**
+	 * Clear the seen banks
+	 */
+	public void clearSeenBanks() {
+		_seenBanks.clear();
+	}
+	
 
 	@Override
 	public void openedNewEventFile(String path) {
+		_seenBanks.clear();
 		notifyListeners();
 	}
 
 	@Override
 	public void changedEventSource(EventSourceType source) {
+		_seenBanks.clear();
 		notifyListeners();
 	}
-	
+
 	/**
 	 * Get the column data
-	 * 
+	 *
 	 * @return the column data
 	 */
 	public ArrayList<ColumnData> getColumnData() {

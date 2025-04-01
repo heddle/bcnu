@@ -3,7 +3,7 @@ package cnuphys.bCNU.graphics.toolbar;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
@@ -145,11 +145,11 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 	public void mouseDragged(MouseEvent mouseEvent) {
 
 		Environment.getInstance().setDragging(true);
-		
-		if (getView().getContainer().getComponent().getBounds().contains(mouseEvent.getPoint()) == false) {
+
+		if (!getView().getContainer().getComponent().getBounds().contains(mouseEvent.getPoint())) {
 			return;
 		}
-		
+
 
 		_currentPoint.setLocation(mouseEvent.getPoint());
 
@@ -164,7 +164,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 					// if this is a drag and I have children, then I have to
 					// trick them into dragging too.
 					if (itemModification.getType() == ItemModification.ModificationType.DRAG) {
-						Vector<AItem> descendants = _modifiedItem.getAllDescendants();
+						ArrayList<AItem> descendants = _modifiedItem.getAllDescendants();
 						if (descendants != null) {
 							for (AItem descendant : descendants) {
 								ItemModification dModification = descendant.getItemModification();
@@ -186,7 +186,7 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 						// trick them into dragging too.
 
 						if (itemModification.getType() == ItemModification.ModificationType.DRAG) {
-							Vector<AItem> descendants = _modifiedItem.getAllDescendants();
+							ArrayList<AItem> descendants = _modifiedItem.getAllDescendants();
 							if (descendants != null) {
 								for (AItem descendant : descendants) {
 									ItemModification dModification = new ItemModification(descendant, container,
@@ -273,10 +273,10 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 			container.selectAllItems(false);
 		}
 
-		// call the layer to set the select state because it calls the item
+		// call the list to set the select state because it calls the item
 		// listeners
 		if ((item != null) && (!item.isLocked())) {
-			item.getLayer().selectItem(item, true);
+			item.getItemList().selectItem(item, true);
 		}
 		container.getToolBar().checkButtonState();
 		container.setDirty(true);
@@ -292,13 +292,13 @@ public class PointerButton extends ToolBarToggleButton implements IRubberbanded 
 		rubberband = null;
 		container.selectAllItems(false);
 
-		Vector<AItem> enclosedItems = container.getEnclosedItems(b);
+		ArrayList<AItem> enclosedItems = container.getEnclosedItems(b);
 		if (enclosedItems != null) {
 			for (AItem item : enclosedItems) {
-				// call the layer to set the select state because it calls the
+				// call the list to set the select state because it calls the
 				// item listeners
 				if ((item != null) && (!item.isLocked())) {
-					item.getLayer().selectItem(item, true);
+					item.getItemList().selectItem(item, true);
 				}
 			}
 		}

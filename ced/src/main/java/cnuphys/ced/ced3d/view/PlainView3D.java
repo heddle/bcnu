@@ -6,11 +6,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 
 import javax.swing.Box;
-import javax.swing.JMenu;
 import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 
-import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.ced3d.PlainPanel3D;
@@ -23,11 +20,6 @@ public abstract class PlainView3D extends BaseView implements ActionListener {
 
 	// the 3D panel
 	protected final PlainPanel3D _panel3D;
-
-	// menu
-	private JMenuItem _printMenuItem;
-	private JMenuItem _pngMenuItem;
-	private JMenuItem _refreshItem;
 
 	/**
 	 * Create a 3D view
@@ -64,32 +56,11 @@ public abstract class PlainView3D extends BaseView implements ActionListener {
 
 	// add the menus
 	protected void addMenus() {
-		JMenu actionMenu = new JMenu("ced3D");
-		_printMenuItem = new JMenuItem("Print...");
-		_printMenuItem.addActionListener(this);
-		actionMenu.add(_printMenuItem);
-
-		_pngMenuItem = new JMenuItem("Save as PNG...");
-		_pngMenuItem.addActionListener(this);
-		actionMenu.add(_pngMenuItem);
-
-		_refreshItem = new JMenuItem("Refresh");
-		_refreshItem.addActionListener(this);
-		actionMenu.add(_refreshItem);
-
-		_menuBar.add(actionMenu);
 	}
 
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-
-		Object source = e.getSource();
-        if (source == _pngMenuItem) {
-			GraphicsUtilities.saveAsPng(_panel3D);
-		} else if (source == _refreshItem) {
-			_panel3D.refresh();
-		}
 	}
 
 	@Override

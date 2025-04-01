@@ -271,6 +271,38 @@ public class SNRManager {
 	public NoiseReductionParameters getParameters(int sect0, int supl0) {
 		return _noisePackage.getParameters(sect0, supl0);
 	}
+	
+	public String encodeSegments(int direction, int sect0, int supl0) {
+		byte bytes[] = encodeAsBytes(direction, sect0, supl0);
+		return new String(bytes);
+	}
+	
+	public byte[] encodeAsBytes(int direction, int sect0, int supl0) {
+		NoiseReductionParameters parameters = SNRManager.getInstance().getParameters(sect0, supl0);
+		
+		byte bytes[] = new byte[112];
+
+		for (int wire = 0; wire < 112; wire++) {
+			int index = 111 - wire;
+			if (direction == LEFT) {
+				if (parameters.getLeftSegments().checkBit(wire)) {
+					int numMiss = parameters.missingLayersUsed(NoiseReductionParameters.LEFT_LEAN, wire);
+					bytes[index] = (byte) ('a' + numMiss);
+				} else {
+					bytes[index] = '.';
+				}
+			} else {
+				if (parameters.getRightSegments().checkBit(wire)) {
+					int numMiss = parameters.missingLayersUsed(NoiseReductionParameters.RIGHT_LEAN, wire);
+					bytes[index] = (byte) ('a' + numMiss);
+				} else {
+					bytes[index] = '.';
+				}
+			}
+		}
+		
+		return bytes;
+	}
 
 	// add feedback string with common color
 	private void addFBStr(String s, List<String> feedbackStrings) {
@@ -286,15 +318,15 @@ public class SNRManager {
 	 */
 	public void addParametersToFeedback(int sector, int superlayer, List<String> feedbackStrings) {
 		NoiseReductionParameters params = getParameters(sector - 1, superlayer - 1);
-		addFBStr("SNR parameters: ", feedbackStrings);
-		addFBStr("  allowed missing layers " + params.getAllowedMissingLayers(), feedbackStrings);
+		addFBStr("snr parameters: ", feedbackStrings);
+		addFBStr("allowed missing layers " + params.getAllowedMissingLayers(), feedbackStrings);
 
 		int[] ls = params.getLeftLayerShifts();
 		int[] rs = params.getRightLayerShifts();
 
-		addFBStr(String.format("  left shifts  [%d, %d, %d, %d, %d, %d]", ls[0], ls[1], ls[2], ls[3], ls[4], ls[5]),
+		addFBStr(String.format("left shifts  [%d, %d, %d, %d, %d, %d]", ls[0], ls[1], ls[2], ls[3], ls[4], ls[5]),
 				feedbackStrings);
-		addFBStr(String.format("  right shifts [%d, %d, %d, %d, %d, %d]", rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]),
+		addFBStr(String.format("right shifts [%d, %d, %d, %d, %d, %d]", rs[0], rs[1], rs[2], rs[3], rs[4], rs[5]),
 				feedbackStrings);
 
 	}

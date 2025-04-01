@@ -18,9 +18,8 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.swing.JComponent;
 
@@ -35,22 +34,14 @@ import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
 import cnuphys.bCNU.graphics.world.WorldPolygon;
 import cnuphys.bCNU.item.AItem;
-import cnuphys.bCNU.item.EllipseItem;
-import cnuphys.bCNU.item.LineItem;
-import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.item.PolylineItem;
-import cnuphys.bCNU.item.RadArcItem;
-import cnuphys.bCNU.item.RectangleItem;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.layer.LayerControl;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.bCNU.visible.VisibilityTableScrollPane;
 
 /**
- * This the primary component. It contains a list of layers (each containing a
+ * This the primary basic container. It contains a list of ItemList objects
  * list of items.)
  *
  * @author heddle
@@ -62,9 +53,9 @@ public class BaseContainer extends JComponent
 		implements IContainer, MouseListener, MouseMotionListener, MouseWheelListener, IDrawableListener {
 
 	/**
-	 * A collection of layers. This is the container's model.
+	 * A collection of item list. This is the container's model.
 	 */
-	protected DrawableList _layers = new DrawableList("Layers");
+	protected DrawableList _itemLists = new DrawableList("ItemLists");
 
 	/**
 	 * Keeps track of current mouse position
@@ -77,11 +68,6 @@ public class BaseContainer extends JComponent
 	protected BaseToolBar _toolBar;
 
 	/**
-	 * The logical layer visibility control. It is created when requested.
-	 */
-	protected VisibilityTableScrollPane _visTable;
-
-	/**
 	 * The optional feedback pane.
 	 */
 	protected FeedbackPane _feedbackPane;
@@ -89,15 +75,13 @@ public class BaseContainer extends JComponent
 	// location of last mouse event
 	protected MouseEvent _lastLocationMouseEvent;
 
-
-
 	/**
-	 * This optional drawable is called after the layers are drawn.
+	 * This optional drawable is called after the lists are drawn.
 	 */
 	protected IDrawable _afterDraw;
 
 	/**
-	 * This optional drawable is called before the layers are drawn.
+	 * This optional drawable is called before the lists are drawn.
 	 */
 	protected IDrawable _beforeDraw;
 
@@ -107,17 +91,12 @@ public class BaseContainer extends JComponent
 	protected IDrawable _magDraw;
 
 	/**
-	 * Used to print one page
-	 */
-	public int m_maxNumPage = 1;
-
-	/**
 	 * The view that holds this container (might be null for viewless container).
 	 */
 	protected BaseView _view;
 
 	// used for things like a YouAreHereItem reference point
-	private LogicalLayer _glassLayer;
+	private ItemList _glassList;
 
 	/**
 	 * The world coordinate system,
@@ -135,12 +114,12 @@ public class BaseContainer extends JComponent
 	protected Rectangle2D.Double _previousWorldSystem;
 
 	/**
-	 * The annotation layer. Every container has one.
+	 * The annotation list. Every container has one.
 	 */
-	protected LogicalLayer _annotationLayer;
+	protected ItemList _annotationList;
 
-	// A map of layers added by users.
-	private Hashtable<String, LogicalLayer> _userLayers = new Hashtable<>(47);
+	// A map of lists added by users.
+	private Hashtable<String, ItemList> _userItemLists = new Hashtable<>(47);
 
 	/**
 	 * Controls the feedback for the container. You can add and remove feedback
@@ -187,9 +166,9 @@ public class BaseContainer extends JComponent
 		_defaultWorldSystem = copy(worldSystem);
 		_previousWorldSystem = copy(worldSystem);
 
-		// create the annotation layer. (not added to userlayer hash)
-		_annotationLayer = new LogicalLayer(this, "Annotations");
-		addLogicalLayer(_annotationLayer);
+		// create the annotation list. (not added to userlist hash)
+		_annotationList = new ItemList(this, "Annotations");
+		addItemList(_annotationList);
 
 		ComponentAdapter componentAdapter = new ComponentAdapter() {
 			@Override
@@ -204,34 +183,38 @@ public class BaseContainer extends JComponent
 		addMouseListener(this);
 		addMouseMotionListener(this);
 
-		// add a controller that listens for layer changes.
-		_layers.addDrawableListener(new LayerControl(this));
 	}
 
 	/**
 	 * Share the model of another view. Note, this is not a copy, either view can
-	 * modify the layers and items.
+	 * modify the items. This is primarily used for magnification windows.
 	 *
 	 * @param sContainer the source container
 	 */
 	public void shareModel(BaseContainer sContainer) {
-		_layers = sContainer._layers;
+		_itemLists = sContainer._itemLists;
 		_afterDraw = sContainer._afterDraw;
 		_beforeDraw = sContainer._beforeDraw;
-		_userLayers = sContainer._userLayers;
+		_userItemLists = sContainer._userItemLists;
 		setBackground(sContainer.getBackground());
 		setForeground(sContainer.getForeground());
 	}
 
+	public void clipBounds(Graphics g) {
+		Rectangle b = getBounds();
+		g.setClip(0, 0, b.width, b.height);
+	}
 
 	/**
-	 * Override the paint command. Draw all the layers.
+	 * Override the paint command. Draw all the lists.
 	 *
 	 * @param g the graphics context.
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+
+		clipBounds(g);
 
 		Rectangle b = getBounds();
 
@@ -244,110 +227,95 @@ public class BaseContainer extends JComponent
 		g.setColor(getBackground());
 		g.fillRect(0, 0, b.width, b.height);
 
-		// any before layer drawing?
+		// any before lists drawing?
 		if (_beforeDraw != null) {
 			_beforeDraw.draw(g, this);
 		}
 
-		// draw the layers
-		if (_layers != null) {
-			_layers.draw(g, this);
+		// draw the lists
+		if (_itemLists != null) {
+			_itemLists.draw(g, this);
 		}
 
-		// any post layer drawing?
+		// any post lists drawing?
 		if (_afterDraw != null) {
 			_afterDraw.draw(g, this);
 		}
 
+		setDirty(false);
+
 	}
 
 	/**
-	 * Add a layer for containing items rendered on this container..
-	 *
-	 * @param name the name of the layer. If one with that name already exists, it
-	 *             is returned.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
-	public LogicalLayer addLogicalLayer(String name) {
+	public ItemList addItemList(String name) {
 		if (name == null) {
 			return null;
 		}
-		LogicalLayer layer = _userLayers.get(name);
-		if (layer != null) {
-			Log.getInstance().warning("Asked to add layer: " + name + " which already exists.");
+		ItemList itemList = _userItemLists.get(name);
+		if (itemList != null) {
+			Log.getInstance().warning("Asked to add an ItemList: " + name + " which already exists.");
 		} else {
-			layer = new LogicalLayer(this, name);
-			_userLayers.put(name, layer);
-			addLogicalLayer(layer);
+			itemList = new ItemList(this, name);
+			_userItemLists.put(name, itemList);
+			addItemList(itemList);
 		}
-		return layer;
+		return itemList;
 	}
 
 	/**
-	 * Add a layer to this container.
-	 *
-	 * @param layer the layer to add.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
-	public void addLogicalLayer(LogicalLayer layer) {
+	public void addItemList(ItemList itemList) {
 
-		_layers.add(layer);
-		if (layer != _annotationLayer) {
-			_layers.sendToFront(_annotationLayer);
+		_itemLists.add(itemList);
+		if (itemList != _annotationList) {
+			_itemLists.sendToFront(_annotationList);
 		}
-		layer.addDrawableListener(this);
+		itemList.addDrawableListener(this);
 	}
 
 	/**
-	 * Get the annotation layer for this obtainer.
-	 *
-	 * @return the annotation layer for this obtainer. All drawing tools draw on the
-	 *         annotation layer, which is kept on top.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
-	public LogicalLayer getAnnotationLayer() {
-		return _annotationLayer;
+	public ItemList getAnnotationList() {
+		return _annotationList;
 	}
 
 	/**
-	 * Gets a user layer by name. Do not use for the annotation layer-- for that use
-	 * getAnnotationLayer().
-	 *
-	 * @param name the name of the user layer.
-	 * @return the layer, or <code>null</code>.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
-	public LogicalLayer getLogicalLayer(String name) {
-		LogicalLayer layer = _userLayers.get(name);
-		if (layer == null) {
-			Log.getInstance().warning("Requested nonexistant layer: " + name);
+	public ItemList getItemList(String name) {
+		ItemList itemList = _userItemLists.get(name);
+		if (itemList == null) {
+			Log.getInstance().warning("Requested nonexistent item list: " + name);
 		}
-		return layer;
+		return itemList;
 	}
 
 	/**
-	 * Add a layer for containing items rendered on this container..
-	 *
-	 * @param layer the layer to add.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
-	public void removeLogicalLayer(LogicalLayer layer) {
-		if (layer != null) {
-			_layers.remove(layer);
+	public void removeItemList(ItemList itemList) {
+		if (itemList != null) {
+			_itemLists.remove(itemList);
 			// also remove from hash
-			if (_userLayers.contains(layer)) {
-				_userLayers.remove(layer.getName());
+			if (_userItemLists.contains(itemList)) {
+				_userItemLists.remove(itemList.getName());
 			}
 		}
 	}
 
 
 	/**
-	 * This converts a screen or pixel point to a world point.
-	 *
-	 * @param pp contains the local (screen-pixel) point.
-	 * @param wp will hold the resultant world point.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void localToWorld(Point pp, Point2D.Double wp) {
 		if (localToWorld != null) {
@@ -356,11 +324,8 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * This converts a world point to a screen or pixel point.
-	 *
-	 * @param pp will hold the resultant local (screen-pixel) point.
-	 * @param wp contains world point.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void worldToLocal(Point pp, Point2D.Double wp) {
 		if (worldToLocal != null) {
@@ -375,11 +340,8 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * This converts a world rectangle to a screen or pixel rectangle.
-	 *
-	 * @param r  will hold the resultant local (screen-pixel) rectangle.
-	 * @param wr contains the world rectangle.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void worldToLocal(Rectangle r, Rectangle.Double wr) {
 		// New version to accommodate world with x decreasing right
@@ -398,11 +360,8 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * This converts a screen or local rectangle to a world rectangle.
-	 *
-	 * @param r  contains the local (screen-pixel) rectangle.
-	 * @param wr will hold the resultant world rectangle.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void localToWorld(Rectangle r, Rectangle.Double wr) {
 		Point p0 = new Point(r.x, r.y);
@@ -422,23 +381,16 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * This converts a world point to a screen or pixel point.
-	 *
-	 * @param pp will hold the resultant local (screen-pixel) point.
-	 * @param wx the world x coordinate.
-	 * @param wy the world y coordinate.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void worldToLocal(Point pp, double wx, double wy) {
 		worldToLocal(pp, new Point2D.Double(wx, wy));
 	}
 
 	/**
-	 * Pan the container.
-	 *
-	 * @param dh the horizontal step in pixels.
-	 * @param dv the vertical step in pixels.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void pan(int dh, int dv) {
 
@@ -454,10 +406,8 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Recenter the container at the point of a click.
-	 *
-	 * @param pp the point in question. It will be the new center.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void recenter(Point pp) {
 		Point2D.Double wp = new Point2D.Double();
@@ -468,16 +418,24 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Begin preparations for a zoom.
-	 */
+	 * {@inheritDoc}
+     */
+	private void recenter(Rectangle2D.Double wr, Point2D.Double newCenter) {
+		wr.x = newCenter.x - wr.width / 2.0;
+		wr.y = newCenter.y - wr.height / 2.0;
+	}
+
+	/**
+	 * {@inheritDoc}
+     */
 	@Override
 	public void prepareToZoom() {
 		_previousWorldSystem = copy(_worldSystem);
 	}
 
 	/**
-	 * Restore the default world. This gets us back to the original zoom level.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void restoreDefaultWorld() {
 		_worldSystem = copy(_defaultWorldSystem);
@@ -485,15 +443,11 @@ public class BaseContainer extends JComponent
 		refresh();
 	}
 
-
-	int refCount = 0;
 	/**
-	 * Refresh the container. Base implementation is the offscreen refresh. Sets the
-	 * offscreen buffer to dirty.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void refresh() {
-
 		repaint();
 
 		if (getToolBar() != null) {
@@ -504,10 +458,8 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Convenience routine to scale the container.
-	 *
-	 * @param scaleFactor the scale factor.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void scale(double scaleFactor) {
 		prepareToZoom();
@@ -517,8 +469,20 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Undo that last zoom.
-	 */
+	 * {@inheritDoc}
+     */
+	private void scale(Rectangle2D.Double wr, double scale) {
+		double xc = wr.getCenterX();
+		double yc = wr.getCenterY();
+		wr.width *= scale;
+		wr.height *= scale;
+		wr.x = xc - wr.width / 2.0;
+		wr.y = yc - wr.height / 2.0;
+	}
+
+	/**
+	 * {@inheritDoc}
+     */
 	@Override
 	public void undoLastZoom() {
 		Rectangle2D.Double temp = _worldSystem;
@@ -529,11 +493,8 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * This is called when we have completed a rubber banding. pane.
-	 *
-	 * @param b The rubber band bounds.
-	 */
-
+	 * {@inheritDoc}
+     */
 	@Override
 	public void rubberBanded(Rectangle b) {
 		// if too small, don't zoom
@@ -546,7 +507,7 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Convenience method for setting the dirty flag for all items on all layers.
+	 * Convenience method for setting the dirty flag for all items on all item lists.
 	 * Things that make a container dirty:
 	 * <ol>
 	 * <li>container was resized
@@ -565,9 +526,9 @@ public class BaseContainer extends JComponent
 
 		setAffineTransforms();
 
-		if (_layers != null) {
-			for (IDrawable layer : _layers) {
-				layer.setDirty(dirty);
+		if (_itemLists != null) {
+			for (IDrawable list : _itemLists) {
+				list.setDirty(dirty);
 			}
 		}
 	}
@@ -575,18 +536,18 @@ public class BaseContainer extends JComponent
 	/**
 	 * Find an item, if any, at the point.
 	 *
-	 * @param lp The pixel point in question.
+	 * @param pp The pixel point in question.
 	 * @return the topmost satisfying item, or null.
 	 */
 	@Override
-	public AItem getItemAtPoint(Point lp) {
-		if (_layers == null) {
+	public AItem getItemAtPoint(Point pp) {
+		if (_itemLists == null) {
 			return null;
 		}
 
-		for (int i = _layers.size() - 1; i >= 0; i--) {
-			LogicalLayer layer = ((LogicalLayer) _layers.get(i));
-			AItem item = layer.getItemAtPoint(this, lp);
+		for (int i = _itemLists.size() - 1; i >= 0; i--) {
+			ItemList itemList = ((ItemList) _itemLists.get(i));
+			AItem item = itemList.getItemAtPoint(this, pp);
 			if (item != null) {
 				return item;
 			}
@@ -595,41 +556,33 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Obtain a collection of all enclosed items across all layers.
-	 *
-	 * @param rect the rectangle in question.
-	 * @return all items on all layers enclosed by the rectangle.
-	 */
-
+	 * {@inheritDoc}
+     */
 	@Override
-	public Vector<AItem> getEnclosedItems(Rectangle rect) {
+	public ArrayList<AItem> getEnclosedItems(Rectangle rect) {
 
 		if (rect == null) {
 			return null;
 		}
 
-		Vector<AItem> items = new Vector<>(25);
-		for (IDrawable drawable : _layers) {
-			((LogicalLayer) drawable).addEnclosedItems(this, items, rect);
+		ArrayList<AItem> items = new ArrayList<>(25);
+		for (IDrawable drawable : _itemLists) {
+			((ItemList) drawable).addEnclosedItems(this, items, rect);
 		}
 		return items;
 	}
 
 	/**
-	 * Find all items, if any, at the point.
-	 *
-	 * @param lp the pixel point in question.
-	 * @return all items across all layers that contain the given point. It may be
-	 *         an empty vector, but it won't be <code>null</null>.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
-	public Vector<AItem> getItemsAtPoint(Point lp) {
-		Vector<AItem> items = new Vector<>(25, 10);
+	public ArrayList<AItem> getItemsAtPoint(Point lp) {
+		ArrayList<AItem> items = new ArrayList<>(25);
 
-		if (_layers != null) {
-			for (int i = _layers.size() - 1; i >= 0; i--) {
-				LogicalLayer layer = ((LogicalLayer) _layers.get(i));
-				layer.addItemsAtPoint(items, this, lp);
+		if (_itemLists != null) {
+			for (int i = _itemLists.size() - 1; i >= 0; i--) {
+				ItemList itemList = ((ItemList) _itemLists.get(i));
+				itemList.addItemsAtPoint(items, this, lp);
 			}
 		}
 
@@ -637,16 +590,14 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Check whether at least one item on any layer is selected.
-	 *
-	 * @return <code>true</code> if at least one item on any layer is selected.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public boolean anySelectedItems() {
-		if (_layers != null) {
-			for (IDrawable drawable : _layers) {
-				LogicalLayer layer = (LogicalLayer) drawable;
-				if (layer.anySelected()) {
+		if (_itemLists != null) {
+			for (IDrawable drawable : _itemLists) {
+				ItemList itemList = (ItemList) drawable;
+				if (itemList.anySelected()) {
 					return true;
 				}
 			}
@@ -655,44 +606,35 @@ public class BaseContainer extends JComponent
 	}
 
 	/**
-	 * Delete all selected items, across all layers.
-	 *
-	 * @param container the container they lived on.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void deleteSelectedItems(IContainer container) {
-		if (_layers != null) {
-			for (IDrawable drawable : _layers) {
-				LogicalLayer layer = (LogicalLayer) drawable;
-				layer.deleteSelectedItems(container);
+		if (_itemLists != null) {
+			for (IDrawable drawable : _itemLists) {
+				ItemList itemList = (ItemList) drawable;
+				itemList.deleteSelectedItems(container);
 			}
 		}
 	}
 
 	/**
-	 * Select or deselect all items, across all layers.
-	 *
-	 * @param select the selection flag.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void selectAllItems(boolean select) {
-		if (_layers != null) {
-			for (IDrawable drawable : _layers) {
-				LogicalLayer layer = (LogicalLayer) drawable;
-				layer.selectAllItems(select);
+		if (_itemLists != null) {
+			for (IDrawable drawable : _itemLists) {
+				ItemList itemList = (ItemList) drawable;
+				itemList.selectAllItems(select);
 			}
 		}
 	}
 
 
 	/**
-	 * Zooms to the specified area.
-	 *
-	 * @param xmin minimum x coordinate.
-	 * @param xmax maximum x coordinate.
-	 * @param ymin minimum y coordinate.
-	 * @param ymax maximum y coordinate.
-	 */
+	 * {@inheritDoc}
+     */
 	@Override
 	public void zoom(final double xmin, final double xmax, final double ymin, final double ymax) {
 		prepareToZoom();
@@ -701,20 +643,6 @@ public class BaseContainer extends JComponent
 		refresh();
 	}
 
-	/**
-	 * Reword the container. I.e., the new values will be the default world
-	 *
-	 * @param xmin minimum x coordinate.
-	 * @param xmax maximum x coordinate.
-	 * @param ymin minimum y coordinate.
-	 * @param ymax maximum y coordinate.
-	 */
-	@Override
-	public void reworld(final double xmin, final double xmax, final double ymin, final double ymax) {
-		_defaultWorldSystem.setFrame(xmin, ymin, xmax - xmin, ymax - ymin);
-		_previousWorldSystem.setFrame(_defaultWorldSystem);
-		zoom(xmin, xmax, ymin, ymax);
-	}
 
 	/**
 	 * Get this container's tool bar.
@@ -924,74 +852,59 @@ public class BaseContainer extends JComponent
 	/**
 	 * An item has changed.
 	 *
-	 * @param list     the list it was on, which will be a layer.
+	 * @param list     the ItemList it was on
 	 * @param drawable the drawable (item) that changed.
 	 * @param type     the type of the change.
 	 */
 	@Override
 	public void drawableChanged(DrawableList list, IDrawable drawable, DrawableChangeType type) {
 
-		LogicalLayer layer = (LogicalLayer) list;
 		AItem item = (drawable == null) ? null : (AItem) drawable;
 
 		switch (type) {
 		case ADDED:
-			// Log.getInstance().info("Item added: " + item);
 			break;
 
 		case DESELECTED:
-			// Log.getInstance().info("Item deselected: " + item);
 			break;
 
 		case DOUBLECLICKED:
-			// Log.getInstance().info("Item double clicked: " + item);
 			break;
 
 		case HIDDEN:
-			// Log.getInstance().info("Item hidden: " + item);
-			break;
+				break;
 
 		case MODIFIED:
-			// Log.getInstance().info("Item modified: " + item);
 			break;
 
 		case MOVED:
-			// Log.getInstance().info("Item moved: " + item);
 			break;
 
 		case REMOVED:
-			// Log.getInstance().info("Item removed: " + item);
 			if (item == _youAreHereItem) {
 				_youAreHereItem = null;
 			}
 			break;
 
 		case RESIZED:
-			// Log.getInstance().info("Item resized: " + item);
 			break;
 
 		case ROTATED:
-			// Log.getInstance().info("Item rotated: " + item);
 			break;
 
 		case SELECTED:
-			// Log.getInstance().info("Item selected: " + item);
 			break;
 
 		case SHOWN:
-			// Log.getInstance().info("Item shown: " + item);
 			break;
 
 		case LISTCLEARED:
-			// Log.getInstance().info("Layer cleared: " + layer.getName());
 			break;
 
 		case LISTHIDDEN:
-			// Log.getInstance().info("Layer hidden: " + layer.getName());
 			break;
 
 		case LISTSHOWN:
-			// Log.getInstance().info("Layer shown: " + layer.getName());
 			break;
 		}
 
@@ -1057,15 +970,15 @@ public class BaseContainer extends JComponent
 	 * will generally make it the topmost view--so it is good for things like a
 	 * reference point (YouAreHereItem).
 	 *
-	 * @return the glass layer.
+	 * @return the glass list.
 	 */
 	@Override
-	public LogicalLayer getGlassLayer() {
-		if (_glassLayer == null) {
-			_glassLayer = new LogicalLayer(this, "Glass Layer");
-			_layers.add(_glassLayer);
+	public ItemList getGlassList() {
+		if (_glassList == null) {
+			_glassList = new ItemList(this, "Glass List");
+			_itemLists.add(_glassList);
 		}
-		return _glassLayer;
+		return _glassList;
 	}
 
 	/**
@@ -1134,165 +1047,6 @@ public class BaseContainer extends JComponent
 		return _magDraw;
 	}
 
-	/**
-	 * From a given screen rectangle, create an ellipse item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param rect  the bounding screen rectangle, probably from rubber banding.
-	 * @return the new item
-	 */
-	@Override
-	public AItem createEllipseItem(LogicalLayer layer, Rectangle rect) {
-		int l = rect.x;
-		int t = rect.y;
-		int r = l + rect.width;
-		int b = t + rect.height;
-
-		int xc = (l + r) / 2;
-		int yc = (t + b) / 2;
-
-		Point p0 = new Point(l, yc);
-		Point p1 = new Point(r, yc);
-
-		Point2D.Double wp0 = new Point2D.Double();
-		Point2D.Double wp1 = new Point2D.Double();
-		localToWorld(p0, wp0);
-		localToWorld(p1, wp1);
-		double width = wp0.distance(wp1);
-
-		p0.setLocation(xc, t);
-		p1.setLocation(xc, b);
-		localToWorld(p0, wp0);
-		localToWorld(p1, wp1);
-		double height = wp0.distance(wp1);
-
-		Point pc = new Point(xc, yc);
-		Point2D.Double center = new Point2D.Double();
-		localToWorld(pc, center);
-
-		return new EllipseItem(layer, width, height, 0.0, center);
-	}
-
-	/**
-	 * From a given screen rectangle, create a rectangle item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param b     the screen rectangle, probably from rubber banding.
-	 * @return the new item
-	 */
-	@Override
-	public AItem createRectangleItem(LogicalLayer layer, Rectangle b) {
-		Rectangle2D.Double wr = new Rectangle2D.Double();
-		localToWorld(b, wr);
-		return new RectangleItem(layer, wr);
-	}
-
-	/**
-	 * From two given screen points, create a line item
-	 *
-	 * @param layer the layer to put the item on
-	 * @param p0    one screen point, probably from rubber banding.
-	 * @param p1    another screen point, probably from rubber banding.
-	 * @return the new item
-	 */
-	@Override
-	public AItem createLineItem(LogicalLayer layer, Point p0, Point p1) {
-		Point2D.Double wp0 = new Point2D.Double();
-		Point2D.Double wp1 = new Point2D.Double();
-		localToWorld(p0, wp0);
-		localToWorld(p1, wp1);
-		return new LineItem(layer, wp0, wp1);
-	}
-
-	/**
-	 * Create a radarc item from the given parameters, probably obtained by
-	 * rubberbanding.
-	 *
-	 * @param layer    the layer to put the item on
-	 * @param pc       the center of the arc
-	 * @param p1       the point at the end of the first leg. Thus pc->p1 determine
-	 *                 the radius.
-	 * @param arcAngle the opening angle COUNTERCLOCKWISE in degrees.
-	 * @return the new item
-	 */
-	@Override
-	public AItem createRadArcItem(LogicalLayer layer, Point pc, Point p1, double arcAngle) {
-		Point2D.Double wpc = new Point2D.Double();
-		Point2D.Double wp1 = new Point2D.Double();
-		localToWorld(pc, wpc);
-		localToWorld(p1, wp1);
-		return new RadArcItem(layer, wpc, wp1, arcAngle);
-		// return new ArcItem(layer, wpc, wp1, arcAngle);
-	}
-
-	/**
-	 * From a given screen polygon, create a polygon item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param pp    the screen polygon, probably from rubber banding.
-	 * @return the new item
-	 */
-	@Override
-	public AItem createPolygonItem(LogicalLayer layer, Point pp[]) {
-		if ((pp == null) || (pp.length < 3)) {
-			return null;
-		}
-		Point2D.Double wp[] = new Point2D.Double[pp.length];
-		for (int index = 0; index < pp.length; index++) {
-			wp[index] = new Point2D.Double();
-			localToWorld(pp[index], wp[index]);
-		}
-
-		return new PolygonItem(layer, wp);
-	}
-
-	/**
-	 * From a given screen polygon, create a polyline item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param pp    the screen polyline, probably from rubber banding.
-	 * @return the new item
-	 */
-	@Override
-	public AItem createPolylineItem(LogicalLayer layer, Point pp[]) {
-		if ((pp == null) || (pp.length < 3)) {
-			return null;
-		}
-
-		Point2D.Double wp[] = new Point2D.Double[pp.length];
-		for (int index = 0; index < pp.length; index++) {
-			wp[index] = new Point2D.Double();
-			localToWorld(pp[index], wp[index]);
-		}
-
-		AItem item = new PolylineItem(layer, wp);
-
-		return item;
-	}
-
-	/**
-	 * Get a scroll pane with a table for controlling logical layer visibility
-	 *
-	 * @return a scroll pane with a table for controlling logical layer visibility
-	 */
-	@Override
-	public VisibilityTableScrollPane getVisibilityTableScrollPane() {
-		if (_visTable == null) {
-			_visTable = new VisibilityTableScrollPane(this, _layers, "Layers (drag to reorder)");
-		}
-		return _visTable;
-	}
-
-	/**
-	 * Handle a file, one that probably result from a drag and drop or a double
-	 * click. Treat it like an "open".
-	 *
-	 * @param file the file to handle.
-	 */
-	@Override
-	public void handleFile(File file) {
-		// TODO implement
-	}
 
 	/**
 	 * Get a location string for a point
@@ -1305,15 +1059,6 @@ public class BaseContainer extends JComponent
 		return Point2DSupport.toString(wp);
 	}
 
-	/**
-	 * Get all the layers.
-	 *
-	 * @return all logical layers in the container.
-	 */
-	@Override
-	public DrawableList getLogicalLayers() {
-		return _layers;
-	}
 
 	/**
 	 * Create a Point2D.Double or subclass thereof that is appropriate for this
@@ -1489,32 +1234,6 @@ public class BaseContainer extends JComponent
 		_bMargin = bMargin;
 	}
 
-	/**
-	 * Recenter the world rectangle.
-	 *
-	 * @param wr        the affected rectangle
-	 * @param newCenter the new center.
-	 */
-	private void recenter(Rectangle2D.Double wr, Point2D.Double newCenter) {
-		wr.x = newCenter.x - wr.width / 2.0;
-		wr.y = newCenter.y - wr.height / 2.0;
-	}
-
-	/**
-	 * SCale the world rectangle, keeping the center fixed.
-	 *
-	 * @param wr    the affected rectangle
-	 * @param scale the factor to scale by.
-	 */
-	private void scale(Rectangle2D.Double wr, double scale) {
-		double xc = wr.getCenterX();
-		double yc = wr.getCenterY();
-		wr.width *= scale;
-		wr.height *= scale;
-		wr.x = xc - wr.width / 2.0;
-		wr.y = yc - wr.height / 2.0;
-	}
-
 	// copier
 	private Rectangle2D.Double copy(Rectangle2D.Double wr) {
 		return new Rectangle2D.Double(wr.x, wr.y, wr.width, wr.height);
@@ -1528,7 +1247,7 @@ public class BaseContainer extends JComponent
 	@Override
 	public void activeToolBarButtonChanged(ToolBarToggleButton activeButton) {
 	}
-	
+
 	/**
 	 * Get the background image.
 	 *
@@ -1539,7 +1258,7 @@ public class BaseContainer extends JComponent
 		BufferedImage image = GraphicsUtilities.getComponentImageBuffer(this);
 		GraphicsUtilities.paintComponentOnImage(this, image);
 		return image;
-		
+
 	}
 
 

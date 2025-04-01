@@ -17,8 +17,8 @@ public class ActionLabel extends JLabel {
 	private static Font enabledFontSmall = new Font("SansSerif", Font.ITALIC, 8);
 	private static Font disabledFontSmall = new Font("SansSerif", Font.BOLD, 8);
 
-	public static Font enabledFontLarge = new Font("SansSerif", Font.ITALIC, 11);
-	private static Font disabledFontLarge = new Font("SansSerif", Font.BOLD, 11);
+	public static Font enabledFontLarge = new Font("SansSerif", Font.ITALIC, 10);
+	private static Font disabledFontLarge = new Font("SansSerif", Font.BOLD, 10);
 
 	private Font _enabledFont;
 	private Font _disabledFont;
@@ -29,14 +29,6 @@ public class ActionLabel extends JLabel {
 	// list of listeners
 	private EventListenerList _actionListenerList;
 
-	/**
-	 * Create an action label with the default font size (8)
-	 * @param label the label
-	 * @param enabled is enabled or not
-	 */
-	public ActionLabel(String label, boolean enabled) {
-		this(label, enabled, false);
-	}
 
 	/**
 	 * Create an action label

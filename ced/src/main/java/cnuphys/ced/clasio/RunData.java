@@ -11,7 +11,7 @@ import cnuphys.magfield.MagneticFields;
  */
 
 public class RunData {
-	
+
 	//bank name
 	private static final String bankName = "RUN::config";
 	// data warehouse
@@ -86,7 +86,7 @@ public class RunData {
 	}
 
 	private long safeLong(String colName) {
-		
+
 		long[] data = _dw.getLong(bankName, colName);
 		if ((data == null) || (data.length < 1)) {
 			return -1;

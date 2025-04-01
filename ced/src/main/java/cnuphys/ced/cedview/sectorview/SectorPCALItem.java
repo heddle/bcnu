@@ -10,8 +10,8 @@ import java.util.List;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.alldata.datacontainer.cal.PCalADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -39,12 +39,12 @@ public class SectorPCALItem extends PolygonItem {
 	/**
 	 * Create a sector view pcal item
 	 *
-	 * @param layer      the Layer this item is on.
+	 * @param itemList   the list this item is on.
 	 * @param stripIndex should be PCAL_U, PCAL_V, or PCAL_W
 	 * @param sector     the 1-based sector
 	 */
-	public SectorPCALItem(LogicalLayer layer, int stripIndex, int sector) {
-		super(layer, getShell((SectorView) layer.getContainer().getView(), stripIndex, sector));
+	public SectorPCALItem(ItemList itemList, int stripIndex, int sector) {
+		super(itemList, getShell((SectorView) itemList.getContainer().getView(), stripIndex, sector));
 
 		setRightClickable(false);
 		_sector = sector;
@@ -55,7 +55,7 @@ public class SectorPCALItem extends PolygonItem {
 		_style.setFillColor(_pcalFill);
 		_style.setLineColor(_pcalLine);
 		_style.setLineWidth(0);
-		_view = (SectorView) getLayer().getContainer().getView();
+		_view = (SectorView) getItemList().getContainer().getView();
 
 	}
 
@@ -220,6 +220,9 @@ public class SectorPCALItem extends PolygonItem {
 
 		if (contains(container, screenPoint)) {
 			feedbackStrings.add(getName());
+		}
+		else {
+			return;
 		}
 
 		// which strip?

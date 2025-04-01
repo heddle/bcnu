@@ -90,7 +90,7 @@ public class CrossDrawer extends DCXYViewDrawer {
 
 		double result[] = new double[3];
 		Point pp = new Point();
-		
+
 		for (int i = 0; i < crossData.count(); i++) {
 			HexSectorItem hsItem = _view.getHexSectorItem(crossData.sector[i]);
 

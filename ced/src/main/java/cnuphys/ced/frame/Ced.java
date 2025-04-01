@@ -15,10 +15,12 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JFrame;
+import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import org.jlab.logging.DefaultLogger;
 
@@ -39,15 +41,19 @@ import cnuphys.bCNU.view.ViewManager;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.bCNU.wordle.Wordle;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.ced3d.view.AlertView3D;
 import cnuphys.ced.ced3d.view.CentralView3D;
+import cnuphys.ced.ced3d.view.FMTView3D;
 import cnuphys.ced.ced3d.view.FTCalView3D;
 import cnuphys.ced.ced3d.view.ForwardView3D;
 import cnuphys.ced.ced3d.view.SwimmingTestView3D;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCView;
 import cnuphys.ced.cedview.allec.ECView;
 import cnuphys.ced.cedview.allpcal.PCALView;
 import cnuphys.ced.cedview.central.CentralXYView;
 import cnuphys.ced.cedview.central.CentralZView;
+import cnuphys.ced.cedview.dchex.DCHexView;
 import cnuphys.ced.cedview.dcxy.DCXYView;
 import cnuphys.ced.cedview.ft.FTCalXYView;
 import cnuphys.ced.cedview.ftof.FTOFView;
@@ -94,16 +100,16 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.6.0";
+	private static final String _release = "1.8.0t";
+
+	//minimum java major version
+	private static final int _minJavaVersion = 17;
 
 	// used for one time inits
 	private int _firstTime = 0;
 
 	// for the event count
 	private JMenuItem _eventCountLabel;
-
-	// using 3D?
-	private static boolean _use3D = true;
 
 	// experimental version?
 	private static boolean _experimental;
@@ -150,16 +156,20 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private CentralXYView _centralXYView;
 	private CentralZView _centralZView;
 
-//	private AlertXYView _alertXYView;
+	private AlertXYView _alertXYView;
 
 //	private RTPCView _rtpcView;
 	private FTCalXYView _ftcalXyView;
 	private DCXYView _dcXyView;
+	private DCHexView _dcHexView;
 	private UrWELLXYView _urwellXyView;
 
 	private ECView _ecView;
 	private PCALView _pcalView;
 	private ForwardView3D _forward3DView;
+
+	private AlertView3D _alert3DView;
+	private FMTView3D _fmt3DView;
 
 	private SwimmingTestView3D _swimming3DView;
 	private CentralView3D _central3DView;
@@ -193,6 +203,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// set whether clusters are connected
 	private JCheckBoxMenuItem _connectClusterCB;
+
+
+	//got Gagik yo color DC hits based on order
+	public static boolean useOrderColoring = false;
 
 
 	/**
@@ -282,23 +296,24 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		_virtualView.moveTo(_eventView, 5, VirtualView.CENTER);
 
 		// note no constraint means "center"
-		_virtualView.moveTo(_dcXyView, 6);
+		_virtualView.moveTo(_dcHexView, 6);
 
 //		_virtualView.moveTo(_rtpcView, 7);
 		_virtualView.moveTo(_urwellXyView, 7, VirtualView.BOTTOMLEFT);
 		_virtualView.moveTo(_ftofView, 8, VirtualView.UPPERRIGHT);
 		_virtualView.moveTo(_ftcalXyView, 9, VirtualView.CENTER);
-//		_virtualView.moveTo(_alertXYView, 11, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_dcXyView, 10);
 
+		_virtualView.moveTo(_alertXYView, 11, VirtualView.CENTER);
 
-		if (_use3D) {
-			_virtualView.moveTo(_forward3DView, 11, VirtualView.CENTER);
-			_virtualView.moveTo(_central3DView, 12, VirtualView.BOTTOMLEFT);
-			_virtualView.moveTo(_ftCal3DView, 12, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_alert3DView, 12, VirtualView.CENTER);
+		_virtualView.moveTo(_forward3DView, 13, VirtualView.CENTER);
+		_virtualView.moveTo(_central3DView, 14, VirtualView.BOTTOMLEFT);
+		_virtualView.moveTo(_ftCal3DView, 16, VirtualView.BOTTOMRIGHT);
+		_virtualView.moveTo(_fmt3DView, 15, VirtualView.CENTER);
 
-			if (isExperimental()) {
-				_virtualView.moveTo(_swimming3DView, 13, VirtualView.CENTER);
-			}
+		if (isExperimental()) {
+			_virtualView.moveTo(_swimming3DView, 17, VirtualView.CENTER);
 		}
 	}
 
@@ -356,9 +371,9 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// make sure accumulation manager is instantiated
 		AccumulationManager.getInstance();
 
-		// add a virtual view
+		// add a virtual view. Count how many cells are needed
 
-		int numVVCell = 11 + (_use3D ? (isExperimental() ?  3 : 2) : 0);
+		int numVVCell = 18;
 
 		_virtualView = VirtualView.createVirtualView(numVVCell);
 		ViewManager.getInstance().getViewMenu().addSeparator();
@@ -387,6 +402,10 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// add a DC XY View
 		_dcXyView = DCXYView.createDCXYView();
 
+		// add a DC Hex View
+		_dcHexView = DCHexView.createDCHexView();
+
+
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		// add a bstXYView
@@ -406,7 +425,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		//add and ALERT XY view
-		//_alertXYView = AlertXYView.createAlertXYView();
+		_alertXYView = AlertXYView.createAlertXYView();
 
 		// add a ftcalxyYView
 		_ftcalXyView = FTCalXYView.createFTCalXYView();
@@ -414,7 +433,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		//add a urwell xy view
 		_urwellXyView = UrWELLXYView.createUrWELLView();
 
-		ViewManager.getInstance().getViewMenu().addSeparator();
 
 		// add an RTPC vie
 		//_rtpcView = RTPCView.createRTPCView();
@@ -422,17 +440,16 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
         //FTOF
 		_ftofView = FTOFView.createFTOFView();
 
-		// 3D view?
-		if (_use3D) {
-//			MainThread.getSingleton().useMainThread = true;
-			ViewManager.getInstance().getViewMenu().addSeparator();
-			_forward3DView = new ForwardView3D();
-			_central3DView = new CentralView3D();
-			_ftCal3DView = new FTCalView3D();
+		ViewManager.getInstance().getViewMenu().addSeparator();
+		_alert3DView = new AlertView3D();
+		_central3DView = new CentralView3D();
+		_fmt3DView = new FMTView3D();
+		_forward3DView = new ForwardView3D();
+		_ftCal3DView = new FTCalView3D();
 
-			if (isExperimental()) {
-				_swimming3DView = new SwimmingTestView3D();
-			}
+
+		if (isExperimental()) {
+			_swimming3DView = new SwimmingTestView3D();
 		}
 
 		// add logview
@@ -508,14 +525,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// add to the event menu
 		addToEventMenu();
 
-	}
-
-	/**
-	 * Check whether we should use the DC TDC coloring based or the order column
-	 * @return true if we should use the DC TDC coloring
-	 */
-	public static boolean useOrderColoring() {
-		return getInstance()._colorMenu.useOrderColoring();
 	}
 
 
@@ -775,7 +784,27 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * Refresh all views (with containers)
 	 */
 	public static void refresh() {
-		ViewManager.getInstance().refreshAllViews();
+
+		if (SwingUtilities.isEventDispatchThread()) {
+			refreshAllViews();
+		} else {
+			try {
+				SwingUtilities.invokeAndWait(new Runnable() {
+					@Override
+					public void run() {
+						refreshAllViews();
+					}
+				});
+			} catch (InvocationTargetException | InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	private static void refreshAllViews() {
+	    for (JInternalFrame frame : Desktop.getInstance().getAllFrames()) {
+	        frame.repaint();
+	    }
 	}
 
 	/**
@@ -802,15 +831,21 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @param num the event number
 	 */
 	public static void setEventNumberLabel(int seqnum, int truenum) {
+	    if (ClasIoEventManager.getInstance().isAccumulating()) {
+	        return;
+	    }
 
-		if (ClasIoEventManager.getInstance().isAccumulating()) {
-			return;
-		}
-		if (seqnum < 0) {
-			_eventNumberLabel.setText("  No Event           ");
-		} else {
-			_eventNumberLabel.setText("  Event Seq: " + seqnum + "  True: " + truenum);
-		}
+	    String newText;
+	    if (seqnum < 0) {
+	        newText = "  No Event           ";
+	    } else {
+	        newText = String.format("  Event Seq: %d  True: %d", seqnum, truenum);
+	    }
+
+	    // Update label only if the text has changed
+	    if (!_eventNumberLabel.getText().equals(newText)) {
+	        SwingUtilities.invokeLater(() -> _eventNumberLabel.setText(newText));
+	    }
 	}
 
 	/**
@@ -857,7 +892,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		};
 
 		_eventMenu.addSeparator();
-		MenuManager.addMenuItem("Noise Algorithm Parameters...", _eventMenu, al2);
+		MenuManager.addMenuItem("SNR Parameters...", _eventMenu, al2);
 
 	}
 
@@ -967,22 +1002,27 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 */
 	public void fixTitle() {
 		String title = getTitle();
-		int index = title.indexOf("   [Mag");
+		String prefix = "  [";
+		int index = title.indexOf(prefix);
 		if (index > 0) {
 			title = title.substring(0, index);
 		}
 
-		title += "   [Magnetic Field " + MagneticFields.getInstance().getVersion() + " "
-				+ MagneticFields.getInstance().getActiveFieldDescription();
+		title += prefix;
 
 		if (MagneticFields.getInstance().hasActiveTorus()) {
 			String path = MagneticFields.getInstance().getTorusBaseName();
 			title += " (" + path + ")";
 		}
+		if (MagneticFields.getInstance().hasActiveSolenoid()) {
+			String path = MagneticFields.getInstance().getSolenoidBaseName();
+			title += " (" + path + ")";
+		}
+		
 
 		title += "] [Swimmer " + Swimmer.getVersion() + "]";
 
-		title += " [Coatjava " + getCoatJavaVersion() + "]";
+		title += " [Coatjava " + getCoatJavaVersion() + "] [JAVA runtime " + Environment.getJavaMajorVersion() + "]";
 
 		setTitle(title);
 	}
@@ -993,25 +1033,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		fixTitle();
 		ClasIoEventManager.getInstance().reloadCurrentEvent();
 	}
-
-	/**
-	 * Get the shared busy panel
-	 *
-	 * @return the shared progress bar
-	 */
-//	public static BusyPanel getBusyPanel() {
-//		return _busyPanel;
-//	}
-
-	/**
-	 * Check whether we use 3D
-	 *
-	 * @return <code>true</code> if we use 3D
-	 */
-	public static boolean use3D() {
-		return _use3D;
-	}
-
 	/**
 	 * Is this an experimental version?
 	 * @return <code>true</code> if this version has experimental features
@@ -1125,6 +1146,20 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 */
 	public static void main(String[] arg) {
 
+		//get the java version
+		int javaVersion = Environment.getJavaMajorVersion();
+		if (javaVersion < _minJavaVersion) {
+			System.err.println("Java version must be at least " + _minJavaVersion + ". You have " + javaVersion);
+			System.exit(1);
+		}
+		System.out.println("Java version: " + javaVersion);
+		
+		System.out.println("Screen scale factor: " + Environment.getDisplayScaleFactor());
+
+		Environment.setLookAndFeel();
+		System.setProperty("sun.java2d.opengl", "true");
+
+
 		//this is supposed to create less pounding of ccdb
 		DefaultLogger.initialize();
 
@@ -1186,10 +1221,6 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 						i++;
 						FileUtilities.setDefaultDir(arg[i]);
 					}
-				} else if (arg[i].contains("YES3D")) {
-					_use3D = true;
-				} else if (arg[i].contains("NO3D")) {
-					_use3D = false;
 				} else if (arg[i].contains("EXP")) {
 					_experimental = true;
 					System.out.println("Note: This is an experimental version");

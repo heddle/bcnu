@@ -25,10 +25,10 @@ public class KeyboardLegend extends JPanel {
 	public KeyboardLegend(Panel3D panel) {
 		_panel3D = panel;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-		add("Rotate +/-" + " (original) x", kArray("x", "X"), vArray(KeyEvent.VK_X, KeyEvent.VK_X), shift);
+//		add("Rotate +/-" + " (original) x", kArray("x", "X"), vArray(KeyEvent.VK_X, KeyEvent.VK_X), shift);
 		add("Move left/right", kArray("L", "R"), vArray(KeyEvent.VK_L, KeyEvent.VK_R), noshift);
-		add("Rotate +/-" + " (original) y", kArray("y", "Y"), vArray(KeyEvent.VK_Y, KeyEvent.VK_Y), shift);
-		add("Rotate +/-" + " (original) z", kArray("z", "Z"), vArray(KeyEvent.VK_Z, KeyEvent.VK_Z), shift);
+//		add("Rotate +/-" + " (original) y", kArray("y", "Y"), vArray(KeyEvent.VK_Y, KeyEvent.VK_Y), shift);
+//		add("Rotate +/-" + " (original) z", kArray("z", "Z"), vArray(KeyEvent.VK_Z, KeyEvent.VK_Z), shift);
 
 		add("Move in/out", kArray("J", "K"), vArray(KeyEvent.VK_J, KeyEvent.VK_K), noshift);
 		add("Move up/down", kArray("U", "D"), vArray(KeyEvent.VK_U, KeyEvent.VK_D), noshift);

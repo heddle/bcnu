@@ -100,6 +100,7 @@ public class AdvisorData extends DataModel {
 		int idIndex = getColumnIndex(DataManager.idAtt);
 		int deptIndex = getColumnIndex(DataManager.departmentNameAtt);
 		int emailIndex = getColumnIndex(DataManager.emailAtt);
+		int specialIndex = getColumnIndex(DataManager.specialAtt);
 
 
 		for (String s[] : _data) {
@@ -107,8 +108,9 @@ public class AdvisorData extends DataModel {
 			String id = s[idIndex];
 			String dept = s[deptIndex];
 			String email = s[emailIndex];
+            String special = s[specialIndex];
 
-			_tableData.add(new Advisor(name, id, dept, email));
+			_tableData.add(new Advisor(name, id, dept, email, special));
 		}
 
 		//raw data not needed
@@ -118,7 +120,7 @@ public class AdvisorData extends DataModel {
 			int i = 0;
 			for (ITabled itabled : _tableData) {
 				Advisor advisor = (Advisor) itabled;
-				String s = String.format("%-4d %s", (++i), advisor.nameAndDepartment());
+				String s = String.format("%-4d %s", (++i), advisor.nameAndDepartmentAndSpecial());
 				System.out.println(s);
 			}
 		}
@@ -187,7 +189,7 @@ public class AdvisorData extends DataModel {
 		if ((column == 1) && advisor.locked()) {
 			return Color.gray;
 		} else {
-			return (advisor.ilc()) ? Color.red : Color.black;
+			return (advisor.alc()) ? Color.red : Color.black;
 		}
 	}
 

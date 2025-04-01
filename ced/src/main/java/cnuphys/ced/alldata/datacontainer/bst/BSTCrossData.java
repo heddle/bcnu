@@ -6,16 +6,15 @@ import org.jlab.io.base.DataBank;
 import org.jlab.io.base.DataEvent;
 
 import cnuphys.ced.alldata.datacontainer.ACommonCrossData;
-import cnuphys.ced.alldata.datacontainer.bmt.BMTCrossData;
 
 public class BSTCrossData extends ACommonCrossData {
-	
+
 	// singleton
 	private static volatile BSTCrossData _instance;
-	
+
 	/** ID */
 	public short ID[];
-	
+
 	/** the cross x direction */
 	public float ux[];
 
@@ -24,10 +23,10 @@ public class BSTCrossData extends ACommonCrossData {
 
 	/** the cross z direction*/
 	public float uz[];
-	
+
 	/** cluster 1 index */
 	public short Cluster1_ID[];
-	
+
 	/** cluster 2 index */
 	public short Cluster2_ID[];
 
@@ -61,12 +60,12 @@ public class BSTCrossData extends ACommonCrossData {
 
 	@Override
 	public void update(DataEvent event) {
-		DataBank bank = event.getBank("BST::Crosses");
+		DataBank bank = event.getBank("BSTRec::Crosses");
 
 		if (bank == null) {
 			return;
 		}
-		
+
 		ID = bank.getShort("ID");
 		sector = bank.getByte("sector");
 		region = bank.getByte("region");
@@ -88,10 +87,10 @@ public class BSTCrossData extends ACommonCrossData {
 			ppy = new int[n];
 		}
 	}
-	
+
 	/**
 	 * Does the direction contain NaNs?
-	 * 
+	 *
 	 * @param index the index of the cross
 	 * @return true if the direction contains NaNs
 	 */
@@ -99,14 +98,15 @@ public class BSTCrossData extends ACommonCrossData {
 		return Float.isNaN(ux[index]) || Float.isNaN(uy[index]) || Float.isNaN(uz[index]);
 	}
 
-	
+
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param detectorName    the name of the detector
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
+	@Override
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
 		feedbackStrings.add(String.format("$Forest Green$%s cross ID %d", detectorName, ID[index]));
 		super.feedback(detectorName, index, feedbackStrings);

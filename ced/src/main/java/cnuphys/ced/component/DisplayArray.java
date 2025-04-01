@@ -147,7 +147,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	/** Label for reconstructed CVT Rec KF Trajectory */
 	private static final String CVTRECKF_TRAJ_LABEL = "CVTRecKF Traj";
-	
+
 	/** Label for reconstructed CVT Pass 1Tracks */
 	private static final String CVTP1_TRACK_LABEL = "CVTP1 Tracks";
 
@@ -198,7 +198,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 
 	// controls display of cvt kf trajectory bank data
 	private AbstractButton _cvtRecKFTrajButton;
-	
+
 	// controls display of cvt pass 1 tracks
 	private AbstractButton _cvtP1TrackButton;
 
@@ -409,7 +409,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 		if (Bits.checkBit(bits, DisplayBits.CVTRECKFTRAJ)) {
 			_cvtRecKFTrajButton = add(CVTRECKF_TRAJ_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
-		
+
 		if (Bits.checkBit(bits, DisplayBits.CVTP1TRACKS)) {
 			_cvtP1TrackButton = add(CVTP1_TRACK_LABEL, true, true, this, _buttonColor).getCheckBox();
 		}
@@ -626,7 +626,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	public boolean showCVTP1Tracks() {
 		return (_cvtP1TrackButton != null) && _cvtP1TrackButton.isSelected();
 	}
-	
+
 	/**
 	 * Convenience method to see if we show CVT pass 1 trajectory data.
 	 * hits except
@@ -638,7 +638,7 @@ public class DisplayArray extends CheckBoxArray implements ItemListener {
 	}
 
 
-	
+
 	/**
 	 * Convenience method global hit based display
 	 *

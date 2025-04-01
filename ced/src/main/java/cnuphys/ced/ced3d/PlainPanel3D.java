@@ -1,9 +1,7 @@
 package cnuphys.ced.ced3d;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -21,21 +19,12 @@ import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.ced3d.view.PlainView3D;
-import cnuphys.lund.X11Colors;
-import cnuphys.magfield.MagneticFields;
-import item3D.Axes3D;
 
 public abstract class PlainPanel3D extends Panel3D {
 
 	// cm
-	private final float xymax = 600f;
 	private final float zmax = 600f;
 	private final float zmin = -100f;
-
-	private static final Color _torusColor = new Color(0, 255, 255, 255);
-	private static final Color _solenoidColor = new Color(255, 0, 255, 255);
-
-
 
 	// labels for the check box
 	public static final String SHOW_VOLUMES = "Volumes";
@@ -88,7 +77,6 @@ public abstract class PlainPanel3D extends Panel3D {
 	public static final String SHOW_AITB_CROSS = "AITB Cross";
 	public static final String SHOW_AIHB_CROSS = "AIHB Cross";
 
-
 	public static final String SHOW_TB_TRACK = "Reg TB Track";
 	public static final String SHOW_HB_TRACK = "Reg HB Track";
 
@@ -106,6 +94,60 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	public static final String SHOW_REC_CAL = "REC Cal";
 
+	// for ALert TOF
+	public static final String TOF_LAY1 = "TOF Lay 1";
+	public static final String TOF_LAY2 = "TOF Layer 2";
+	public static final String TOF_LAY3 = "TOF Layer 3";
+	public static final String TOF_LAY4 = "TOF Layer 4";
+
+	public static final String TOF_SUPLAY1 = "TOF Superlayer 1";
+	public static final String TOF_SUPLAY2 = "TOF Superlayer2 ";
+
+	public static final String SHOW_SECT1 = "TOF Sector 1";
+	public static final String SHOW_SECT2 = "TOF Sector 2";
+	public static final String SHOW_SECT3 = "TOF Sector 3";
+	public static final String SHOW_SECT4 = "TOF Sector 4";
+	public static final String SHOW_SECT5 = "TOF Sector 5";
+	public static final String SHOW_SECT6 = "TOF Sector 6";
+	public static final String SHOW_SECT7 = "TOF Sector 7";
+	public static final String SHOW_SECT8 = "TOF Sector 8";
+	public static final String SHOW_SECT9 = "TOF Sector 9";
+	public static final String SHOW_SECT10 = "TOF Sector 10";
+	public static final String SHOW_SECT11 = "TOF Sector 11";
+	public static final String SHOW_SECT12 = "TOF Sector 12";
+	public static final String SHOW_SECT13 = "TOF Sector 13";
+	public static final String SHOW_SECT14 = "TOF Sector 14";
+    public static final String SHOW_SECT15 = "TOF Sector 15";
+
+
+	public static final String SHOW_TOF = "TOF";
+
+	// for Alert DC
+	public static final String DC_SUPLAY1_LAY1 = "DC_Suplay1_Lay1";
+//	public static final String DC_SUPLAY1_LAY2 = "DC_Suplay1_Lay2";
+	public static final String DC_SUPLAY2_LAY1 = "DC_Suplay2_Lay1";
+	public static final String DC_SUPLAY2_LAY2 = "DC_Suplay2_Lay2";
+	public static final String DC_SUPLAY3_LAY1 = "DC_Suplay3_Lay1";
+	public static final String DC_SUPLAY3_LAY2 = "DC_Suplay3_Lay2";
+	public static final String DC_SUPLAY4_LAY1 = "DC_Suplay4_Lay1";
+	public static final String DC_SUPLAY4_LAY2 = "DC_Suplay4_Lay2";
+	public static final String DC_SUPLAY5_LAY1 = "DC_Suplay5_Lay1";
+//	public static final String DC_SUPLAY5_LAY2 = "DC_Suplay5_Lay2";
+
+	public static final String SHOW_FMT_LAYER_1 = "FMT Layer 1";
+	public static final String SHOW_FMT_LAYER_2 = "FMT Layer 2";
+	public static final String SHOW_FMT_LAYER_3 = "FMT Layer 3";
+	public static final String SHOW_FMT_LAYER_4 = "FMT Layer 4";
+	public static final String SHOW_FMT_LAYER_5 = "FMT Layer 5";
+	public static final String SHOW_FMT_LAYER_6 = "FMT Layer 6";
+
+	public static final String SHOW_FMT_REGION_1 = "FMT Region 1";
+	public static final String SHOW_FMT_REGION_2 = "FMT Region 2";
+	public static final String SHOW_FMT_REGION_3 = "FMT Region 3";
+	public static final String SHOW_FMT_REGION_4 = "FMT Region 4";
+
+
+
 	// Check box array
 	protected CheckBoxArray _checkBoxArray;
 
@@ -116,6 +158,8 @@ public abstract class PlainPanel3D extends Panel3D {
 	protected String _cbaLabels[];
 
 	protected PlainView3D _view;
+
+	protected JPanel _eastPanel;
 
 	/*
 	 * The panel that holds the 3D objects
@@ -132,16 +176,14 @@ public abstract class PlainPanel3D extends Panel3D {
 	 *
 	 * @param zdist the initial viewer z distance should be negative
 	 */
-	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist,
-			float bgRed, float bgGreen, float bgBlue,
-			String... cbaLabels) {
+	public PlainPanel3D(PlainView3D view, float angleX, float angleY, float angleZ, float xDist, float yDist,
+			float zDist, float bgRed, float bgGreen, float bgBlue, String... cbaLabels) {
 
-		super(angleX, angleY, angleZ, xDist, yDist, zDist, bgRed, bgGreen, bgBlue);
+		super(angleX, angleY, angleZ, xDist, yDist, zDist, bgRed, bgGreen, bgBlue, true);
 
 		_view = view;
 		_cbaLabels = cbaLabels;
 		_volumeAlphaSlider = new AlphaSlider(this, "Volume alpha");
-
 
 		gljpanel.setBorder(new CommonBorder());
 		final GLJPanel gljp = gljpanel;
@@ -150,7 +192,6 @@ public abstract class PlainPanel3D extends Panel3D {
 		addNorth();
 		addWest();
 		addSouth();
-
 
 		ActionListener al = new ActionListener() {
 
@@ -170,67 +211,13 @@ public abstract class PlainPanel3D extends Panel3D {
 		fixSize();
 	}
 
-	@Override
-	public void createInitialItems() {
-		// coordinate axes
-		Axes3D axes = new Axes3D(this, -xymax, xymax, -xymax, xymax, zmin, zmax, null, Color.darkGray, 1f, 7, 7, 8,
-				Color.black, X11Colors.getX11Color("Dark Green"), new Font("SansSerif", Font.PLAIN, 12), 0);
-		addItem(axes);
-
-		// trajectory drawer
-		TrajectoryDrawer3D trajDrawer = new TrajectoryDrawer3D(this);
-		addItem(trajDrawer);
-
-
-		// dc super layers
-		for (int sector = 1; sector <= 6; sector++) {
-			for (int superlayer = 1; superlayer <= 6; superlayer++) {
-				DCSuperLayer3D dcsl = new DCSuperLayer3D(this, sector, superlayer);
-				addItem(dcsl);
-			}
-		}
-
-		// tof paddles
-		for (int sector = 1; sector <= 6; sector++) {
-			addItem(new FTOF3D(this, sector));
-		}
-
-		// pcal
-		for (int sector = 1; sector <= 6; sector++) {
-			for (int view = 1; view <= 3; view++) {
-				PCALViewPlane3D pcalvp = new PCALViewPlane3D(this, sector, view);
-				addItem(pcalvp);
-			}
-		}
-
-		// EC planes
-		for (int sector = 1; sector <= 6; sector++) {
-			for (int stack = 1; stack <= 2; stack++) {
-				for (int view = 1; view <= 3; view++) {
-					ECViewPlane3D ecvp = new ECViewPlane3D(this, sector, stack, view);
-					addItem(ecvp);
-				}
-			}
-		}
-
-		// mag field boundaries
-		if (MagneticFields.getInstance().hasActiveSolenoid()) {
-			System.out.println("Adding 3D Solenoid Boundary");
-			addItem(new FieldBoundary(this, MagneticFields.getInstance().getSolenoid(), _solenoidColor));
-		}
-		if (MagneticFields.getInstance().hasActiveTorus()) {
-			System.out.println("Adding 3D Torus Boundary");
-			addItem(new FieldBoundary(this, MagneticFields.getInstance().getTorus(), _torusColor));
-		}
-
-	} // create initial items
 
 	@Override
 	public void display(GLAutoDrawable drawable) {
 		if (VirtualView.getInstance().isViewVisible(_view)) {
 			super.display(drawable);
 		} else {
-			System.err.println("SKIPPED");
+	 		System.err.println("SKIPPED");
 		}
 	}
 
@@ -243,26 +230,33 @@ public abstract class PlainPanel3D extends Panel3D {
 	// add south panel
 	protected abstract void addSouth();
 
-
 	// add eastern panel
 	private void addEast() {
-		JPanel ep = new JPanel();
-		ep.setLayout(new VerticalFlowLayout());
+		_eastPanel = new JPanel();
+		_eastPanel.setLayout(new VerticalFlowLayout());
 
-		ep.add(new KeyboardLegend(this));
-		_checkBoxArray = new CheckBoxArray(2, 4, 4, _cbaLabels);
+		_eastPanel.add(new KeyboardLegend(this));
+		_checkBoxArray = new CheckBoxArray(3, 4, 4, _cbaLabels);
 
-		AbstractButton ab =_checkBoxArray.getButton(SHOW_MAP_EXTENTS);
+		AbstractButton ab = _checkBoxArray.getButton(SHOW_MAP_EXTENTS);
 		if (ab != null) {
 			ab.setSelected(false);
 		}
 
 		_checkBoxArray.setBorder(new CommonBorder());
-		ep.add(_checkBoxArray);
+		_eastPanel.add(_checkBoxArray);
 
-		add(ep, BorderLayout.EAST);
+		add(_eastPanel, BorderLayout.EAST);
 	}
 
+	/**
+	 * Get the east panel for adding custom controls
+	 *
+	 * @return the east panel for adding custom controls
+	 */
+	public JPanel getEastPanel() {
+		return _eastPanel;
+	}
 
 	/**
 	 * Snapshot of the panel.
@@ -274,7 +268,7 @@ public abstract class PlainPanel3D extends Panel3D {
 
 	// a fixed fraction of the screen
 	private void fixSize() {
-		Dimension d = GraphicsUtilities.screenFraction(0.60);
+		Dimension d = GraphicsUtilities.screenFraction(0.70);
 		d.width = d.height;
 		gljpanel.setPreferredSize(d);
 	}
@@ -781,6 +775,501 @@ public abstract class PlainPanel3D extends Panel3D {
 			return showSector5();
 		case 6:
 			return showSector6();
+		}
+		return false;
+	}
+
+	/**
+	 * Show FMT Region 1?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 1
+	 */
+	public boolean showFMTRegion1() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_1);
+	}
+
+	/**
+	 * Show FMT Region 2?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 2
+	 */
+	public boolean showFMTRegion2() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_2);
+	}
+
+	/**
+	 * Show FMT Region 3?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 3
+	 */
+	public boolean showFMTRegion3() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_3);
+	}
+
+	/**
+	 * Show FMT Region 4?
+	 *
+	 * @return <code>true</code> if we are to show FMT Region 4
+	 */
+	public boolean showFMTRegion4() {
+		return show(PlainPanel3D.SHOW_FMT_REGION_4);
+	}
+
+	/**
+	 * Show FMT Layer 1?
+	 *
+	 * @return <code>true</code> if we are to show FMT Layer 1
+	 */
+	public boolean showFMTLayer1() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_1);
+	}
+
+	/**
+	 * Show FMT Layer 2?
+	 *
+	 * @return <code>true</code> if we are to show FMT Layer 2
+	 */
+	public boolean showFMTLayer2() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_2);
+	}
+
+	/**
+	 * Show FMT Layer 3?
+	 *
+	 * @return <code>true</code> if we are to show FMT Layer 3
+	 */
+	public boolean showFMTLayer3() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_3);
+	}
+
+	/**
+	 * Show FMT Layer 4?
+	 *
+	 * @return <code>true</code> if we are to show FMT Layer 4
+	 */
+	public boolean showFMTLayer4() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_4);
+	}
+
+	/**
+	 * Show FMT Layer 5?
+	 *
+	 * @return <code>true</code> if we are to show FMT Layer 5
+	 */
+	public boolean showFMTLayer5() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_5);
+	}
+
+	/**
+	 * Show FMT Layer 6?
+	 *
+	 * @return <code>true</code> if we are to show FMT Layer 6
+	 */
+	public boolean showFMTLayer6() {
+		return show(PlainPanel3D.SHOW_FMT_LAYER_6);
+	}
+
+	/**
+	 * Show FMT Layer?
+	 *
+	 * @param layer the 1-based layer to show
+	 * @return <code>true</code> if we are to show the layer
+	 */
+	public boolean showFMTLayer(int layer) {
+		switch (layer) {
+		case 1:
+			return showFMTLayer1();
+		case 2:
+			return showFMTLayer2();
+		case 3:
+			return showFMTLayer3();
+		case 4:
+			return showFMTLayer4();
+		case 5:
+			return showFMTLayer5();
+		case 6:
+			return showFMTLayer6();
+		}
+		return false;
+	}
+
+	/**
+	 * Show FMT Region?
+	 *
+	 * @param region the 1-based region to show
+	 * @return <code>true</code> if we are to show the region
+	 */
+	public boolean showFMTRegion(int region) {
+		switch (region) {
+		case 1:
+			return showFMTRegion1();
+		case 2:
+			return showFMTRegion2();
+		case 3:
+			return showFMTRegion3();
+		case 4:
+			return showFMTRegion4();
+		}
+		return false;
+	}
+
+	public boolean showSector_1() {
+		return show(PlainPanel3D.SHOW_SECT1);
+	}
+
+	public boolean showSector_2() {
+		return show(PlainPanel3D.SHOW_SECT2);
+	}
+
+	public boolean showSector_3() {
+		return show(PlainPanel3D.SHOW_SECT3);
+	}
+
+
+	public boolean showSector_4() {
+		return show(PlainPanel3D.SHOW_SECT4);
+	}
+
+	public boolean showSector_5() {
+		return show(PlainPanel3D.SHOW_SECT5);
+	}
+
+
+	public boolean showSector_6() {
+		return show(PlainPanel3D.SHOW_SECT6);
+	}
+
+	public boolean showSector_7() {
+		return show(PlainPanel3D.SHOW_SECT7);
+	}
+
+	public boolean showSector_8() {
+		return show(PlainPanel3D.SHOW_SECT8);
+	}
+
+	public boolean showSector_9() {
+		return show(PlainPanel3D.SHOW_SECT9);
+	}
+
+	public boolean showSector_10() {
+		return show(PlainPanel3D.SHOW_SECT10);
+	}
+
+	public boolean showSector_11() {
+		return show(PlainPanel3D.SHOW_SECT11);
+	}
+
+	public boolean showSector_12() {
+		return show(PlainPanel3D.SHOW_SECT12);
+	}
+
+	public boolean showSector_13() {
+		return show(PlainPanel3D.SHOW_SECT13);
+	}
+
+	public boolean showSector_14() {
+		return show(PlainPanel3D.SHOW_SECT14);
+	}
+
+	public boolean showSector_15() {
+		return show(PlainPanel3D.SHOW_SECT15);
+	}
+
+	/**
+	 * Show ALERT TOF superlayer 1?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF superlayer 1
+	 */
+	public boolean showTOF_SUPLAY1() {
+		return show(PlainPanel3D.TOF_SUPLAY1);
+	}
+
+
+	/**
+	 * Show ALERT TOF superlayer 2?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF superlayer 2
+	 */
+	public boolean showTOF_SUPLLAY2() {
+		return show(PlainPanel3D.TOF_SUPLAY2);
+	}
+
+
+	/**
+	 * Show ALERT TOF Layer 1?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 1
+	 */
+	public boolean showTOF_LAY1() {
+		return show(PlainPanel3D.TOF_LAY1);
+	}
+
+
+	/**
+	 * Show ALERT TOF Layer 2?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 2
+	 */
+	public boolean showTOF_LAY2() {
+		return show(PlainPanel3D.TOF_LAY2);
+	}
+
+	/**
+	 * Show ALERT TOF Layer 3?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 3
+	 */
+	public boolean showTOF_LAY3() {
+		return show(PlainPanel3D.TOF_LAY3);
+	}
+
+	/**
+	 * Show ALERT TOF Layer 4?
+	 *
+	 * @return <code>true</code> if we are to show ALERT TOF Layer 4
+	 */
+	public boolean showTOF_LAY4() {
+		return show(PlainPanel3D.TOF_LAY4);
+	}
+
+
+	/**
+	 * Show TOF?
+	 *
+	 * @return <code>true</code> if we are to show TOF
+	 */
+	public boolean showTOF() {
+		return show(PlainPanel3D.SHOW_TOF);
+	}
+
+
+	// Generalized method to call appropriate show methods
+	/**
+	 * Show TOF for the given superlayer and layer.
+	 *
+	 * @param superlayer 1-based superlayer number
+	 * @param layer      1-based layer number
+	 * @return <code>true</code> if the appropriate layer is shown
+	 */
+	public boolean showTOF(int sector, int superlayer, int layer) {
+
+		if (!showTOF()) {
+			return false;
+		}
+
+		boolean showSector = false;
+		boolean showSuperLayer = false;
+		boolean showLayer = false;
+
+		switch (sector) {
+		case 1:
+			showSector = showSector_1();
+			break;
+		case 2:
+			showSector = showSector_2();
+			break;
+		case 3:
+			showSector = showSector_3();
+			break;
+		case 4:
+			showSector = showSector_4();
+			break;
+		case 5:
+			showSector = showSector_5();
+			break;
+		case 6:
+			showSector = showSector_6();
+			break;
+		case 7:
+			showSector = showSector_7();
+			break;
+		case 8:
+			showSector = showSector_8();
+			break;
+		case 9:
+			showSector = showSector_9();
+			break;
+		case 10:
+			showSector = showSector_10();
+			break;
+		case 11:
+			showSector = showSector_11();
+			break;
+		case 12:
+			showSector = showSector_12();
+			break;
+		case 13:
+			showSector = showSector_13();
+			break;
+		case 14:
+			showSector = showSector_14();
+			break;
+		case 15:
+			showSector = showSector_15();
+			break;
+		default:
+			throw new IllegalArgumentException("in ShowTOF Invalid  superlayer: " + superlayer);
+
+		}
+
+		switch (superlayer) {
+		case 1:
+			showSuperLayer = showTOF_SUPLAY1();
+			break;
+		case 2:
+			showSuperLayer = showTOF_SUPLLAY2();
+			break;
+		default:
+			throw new IllegalArgumentException("in ShowTOF Invalid  superlayer: " + superlayer);
+		}
+
+		switch (layer) {
+		case 1:
+			showLayer = showTOF_LAY1();
+			break;
+		case 2:
+			showLayer = showTOF_LAY2();
+			break;
+		case 3:
+			showLayer = showTOF_LAY3();
+			break;
+		case 4:
+			showLayer = showTOF_LAY4();
+			break;
+		default:
+			throw new IllegalArgumentException("in ShowTOF Invalid  layer: " + layer);
+		}
+
+
+		return showSector && showSuperLayer && showLayer;
+
+	}
+
+	/**
+	 * Show DC_Suplay1_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay2_Lay1
+	 */
+	public boolean showDC_SUPLAY1_LAY11() {
+		return show(PlainPanel3D.DC_SUPLAY1_LAY1);
+	}
+
+	/**
+	 * Show DC_Suplay2_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay2_Lay1
+	 */
+	public boolean showDC_SUPLAY2_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY2_LAY1);
+	}
+
+	/**
+	 * Show DC_Suplay2_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay2_Lay2
+	 */
+	public boolean showDC_SUPLAY2_LAY2() {
+		return show(PlainPanel3D.DC_SUPLAY2_LAY2);
+	}
+
+	/**
+	 * Show DC_Suplay3_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay3_Lay1
+	 */
+	public boolean showDC_SUPLAY3_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY3_LAY1);
+	}
+
+	/**
+	 * Show DC_Suplay3_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay3_Lay2
+	 */
+	public boolean showDC_SUPLAY3_LAY2() {
+		return show(PlainPanel3D.DC_SUPLAY3_LAY2);
+	}
+
+	/**
+	 * Show DC_Suplay4_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay4_Lay1
+	 */
+	public boolean showDC_SUPLAY4_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY4_LAY1);
+	}
+
+	/**
+	 * Show DC_Suplay4_Lay2?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay4_Lay2
+	 */
+	public boolean showDC_SUPLAY4_LAY2() {
+		return show(PlainPanel3D.DC_SUPLAY4_LAY2);
+	}
+
+	/**
+	 * Show DC_Suplay5_Lay1?
+	 *
+	 * @return <code>true</code> if we are to show DC_Suplay5_Lay1
+	 */
+	public boolean showDC_SUPLAY5_LAY1() {
+		return show(PlainPanel3D.DC_SUPLAY5_LAY1);
+	}
+
+
+	// Generalized method to call appropriate show methods
+	/**
+	 * Show DC for the given superlayer and layer.
+	 *
+	 * @param superlayer Superlayer number
+	 * @param layer      Layer number
+	 * @return <code>true</code> if the appropriate layer is shown
+	 */
+	public boolean showDC(int superlayer, int layer) {
+
+		if (!showDC()) {
+			return false;
+		}
+
+		switch (superlayer) {
+		case 1:
+			if (layer == 1) {
+				return showDC_SUPLAY1_LAY11();
+			}
+			break;
+		case 2:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY2_LAY1();
+			case 2:
+				return showDC_SUPLAY2_LAY2();
+			}
+			break;
+		case 3:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY3_LAY1();
+			case 2:
+				return showDC_SUPLAY3_LAY2();
+			}
+			break;
+		case 4:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY4_LAY1();
+			case 2:
+				return showDC_SUPLAY4_LAY2();
+			}
+			break;
+		case 5:
+			switch (layer) {
+			case 1:
+				return showDC_SUPLAY5_LAY1();
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Invalid superlayer or layer.");
 		}
 		return false;
 	}

@@ -2,7 +2,6 @@ package cnuphys.bCNU.graphics.rubberband;
 
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Cursor;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -93,11 +92,6 @@ public final class Rubberband {
 	// the container being rendered
 	private IContainer _container;
 
-	// some rubberbanding is better in xor mode, such as on 3D containers
-	private boolean _xorMode;
-
-	// EXPERIMENTAL
-	private RubberBandClearWindow clearWindow;
 
 	/**
 	 * Create a Rubberband
@@ -107,22 +101,10 @@ public final class Rubberband {
 	 * @param policy       the stretching shape policy.
 	 */
 	public Rubberband(IContainer container, IRubberbanded rubberbanded, Policy policy) {
-		this(container, rubberbanded, policy, false);
-	}
-
-	/**
-	 * Create a Rubberband
-	 *
-	 * @param container    the parent component being rubberbanded
-	 * @param rubberbanded who gets notified when we are done.
-	 * @param policy       the stretching shape policy.
-	 */
-	public Rubberband(IContainer container, IRubberbanded rubberbanded, Policy policy, boolean xorMode) {
 		_container = container;
 		setComponent(container.getComponent());
 		_rubberbanded = rubberbanded;
 		_policy = policy;
-		_xorMode = xorMode;
 	}
 
 	/**
@@ -312,14 +294,8 @@ public final class Rubberband {
 		case RECTANGLE:
 		case XONLY:
 		case RECTANGLE_PRESERVE_ASPECT:
-			if (_xorMode) {
-				if (clearWindow != null) {
-					clearWindow.setRubberBandRectangle(_container.getComponent(), rect);
-				}
-			} else {
-				g.fillRect(rect.x, rect.y, rect.width, rect.height);
-				GraphicsUtilities.drawHighlightedRectangle(g, rect, _highlightColor1, _highlightColor2);
-			}
+			g.fillRect(rect.x, rect.y, rect.width, rect.height);
+			GraphicsUtilities.drawHighlightedRectangle(g, rect, _highlightColor1, _highlightColor2);
 			break;
 
 		case LINE:
@@ -466,15 +442,10 @@ public final class Rubberband {
 
 		// first image is simply big enough for component
 
-		if (!_xorMode) {
-			_image = GraphicsUtilities.getComponentImageBuffer(_component);
+		_image = GraphicsUtilities.getComponentImageBuffer(_component);
 
-			// this image holds background
-			_backgroundImage = _container.getImage();
-		} else {
-			clearWindow = new RubberBandClearWindow(_container.getComponent(), 0.5f);
-			clearWindow.setVisible(true);
-		}
+		// this image holds background
+		_backgroundImage = _container.getImage();
 
 		// XONLY? (like for a time chart)
 		if (_policy == Policy.XONLY) {
@@ -497,21 +468,6 @@ public final class Rubberband {
 	 */
 	private void setCurrent(Point newCurrentPoint) {
 
-		if (_xorMode) {
-			Graphics2D g2 = (Graphics2D) _component.getGraphics();
-			if (_firstXorDraw) {
-				_firstXorDraw = false;
-				_startPt.setLocation(newCurrentPoint);
-				_currentPt.setLocation(newCurrentPoint);
-				_component.setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
-			} else {
-				draw(g2);
-			}
-			_currentPt.setLocation(newCurrentPoint);
-			draw(g2);
-			g2.dispose();
-			return;
-		}
 
 		_currentPt.setLocation(newCurrentPoint);
 		if (_image == null) {
@@ -545,15 +501,6 @@ public final class Rubberband {
 	 * @param p the end point.
 	 */
 	public void endRubberbanding(Point p) {
-
-		if (_xorMode) {
-			if (clearWindow != null) {
-				clearWindow.setVisible(false);
-				clearWindow.dispose();
-				clearWindow = null;
-			}
-			_component.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
-		}
 
 		modifyCurrentPoint(p);
 		_currentPt.setLocation(p);

@@ -15,7 +15,6 @@ import cnuphys.bCNU.graphics.style.SymbolType;
 
 public class PropertySupport {
 
-	public static final String AZIMUTH = "AZIMUTH";
 	public static final String BACKGROUND = "BACKGROUND";
 	public static final String BACKGROUNDIMAGE = "BACKGROUNDIMAGE";
 	public static final String BOTTOMMARGIN = "BOTTOMMARGIN";
@@ -23,15 +22,14 @@ public class PropertySupport {
 	public static final String CLOSABLE = "CLOSABLE";
 	public static final String COMPONENT = "COMPONENT";
 	public static final String CONTAINER = "CONTAINER";
+	public static final String CONTAINERTYPE = "CONTAINERTYPE";
 	public static final String CRATE = "CRATE";
-	public static final String DATADIR = "DATADIR";
 	public static final String DRAGGABLE = "DRAGGABLE";
 	public static final String FILLCOLOR = "FILLCOLOR";
 	public static final String FONT = "FONT";
 	public static final String FRACTION = "FRACTION";
 	public static final String HEIGHT = "HEIGHT";
 	public static final String ICONIFIABLE = "ICONIFIABLE";
-	public static final String LAYER = "LAYER";
 	public static final String LEFT = "LEFT";
 	public static final String LEFTMARGIN = "LEFTMARGIN";
 	public static final String LINECOLOR = "LINECOLOR";
@@ -44,13 +42,10 @@ public class PropertySupport {
 	public static final String RESIZABLE = "RESIZABLE";
 	public static final String RIGHTMARGIN = "RIGHTMARGIN";
 	public static final String ROTATABLE = "ROTATABLE";
-	public static final String ROTATED = "ROTATED";
 	public static final String SCROLLABLE = "SCROLLABLE";
-	public static final String SECTOR = "SECTOR";
 	public static final String SLOT = "SLOT";
 	public static final String SPLITWESTCOMPONENT = "SPLITWESTCOMPONENT";
 	public static final String STANDARDVIEWDECORATIONS = "STANDARDVIEWDECORATIONS";
-	public static final String SUPERLAYER = "SUPERLAYER";
 	public static final String SYMBOL = "SYMBOL";
 	public static final String SYMBOLSIZE = "SYMBOLSIZE";
 	public static final String TEXTCOLOR = "TEXTCOLOR";
@@ -142,16 +137,6 @@ public class PropertySupport {
 			j += 2;
 		}
 		return o;
-	}
-
-	/**
-	 * Get an azimuth angle in degrees. Generally 0 is due north, 90 due east, etc.
-	 *
-	 * @param props the properties
-	 * @return the aximuth in degrees. On error, return 0.
-	 */
-	public static double getAzimuth(Properties props) {
-		return getDouble(props, AZIMUTH, 0);
 	}
 
 	/**
@@ -376,16 +361,6 @@ public class PropertySupport {
 	}
 
 	/**
-	 * Get the path of the data directory
-	 *
-	 * @param props the properties
-	 * @return the path of the data directory. On error return defaultDataDir.
-	 */
-	public static String getDataDir(Properties props) {
-		return getString(props, DATADIR, defaultDataDir);
-	}
-
-	/**
 	 * Get a container from the properties
 	 *
 	 * @param props the properties
@@ -397,6 +372,15 @@ public class PropertySupport {
 			return null;
 		}
 		return (IContainer) val;
+	}
+
+	/**
+	 * Get a container type from the properties
+	 * @param props the properties
+	 * @return a container type, on error return null
+	 */
+	public static String getContainerType(Properties props) {
+		return getString(props, CONTAINERTYPE, null);
 	}
 
 	/**
@@ -470,38 +454,6 @@ public class PropertySupport {
 	}
 
 	/**
-	 * Get the sector id.
-	 *
-	 * @param props the properties
-	 * @return the sector Id. On error return Integer.MIN_VALUE (-2^31 =
-	 *         -2147483648)
-	 */
-	public static int getSector(Properties props) {
-		return getInt(props, SECTOR, Integer.MIN_VALUE);
-	}
-
-	/**
-	 * Get the superlayer id.
-	 *
-	 * @param props the properties
-	 * @return the suplerlayer Id. On error return Integer.MIN_VALUE (-2^31 =
-	 *         -2147483648)
-	 */
-	public static int getSuperlayer(Properties props) {
-		return getInt(props, SUPERLAYER, Integer.MIN_VALUE);
-	}
-
-	/**
-	 * Get the layer id.
-	 *
-	 * @param props the properties
-	 * @return the layer Id. On error return Integer.MIN_VALUE (-2^31 = -2147483648)
-	 */
-	public static int getLayer(Properties props) {
-		return getInt(props, LAYER, Integer.MIN_VALUE);
-	}
-
-	/**
 	 * Get the component id.
 	 *
 	 * @param props the properties
@@ -561,16 +513,6 @@ public class PropertySupport {
 	 */
 	public static Color getTextColor(Properties props) {
 		return getColor(props, TEXTCOLOR, defaultTextColor);
-	}
-
-	/**
-	 * Get the rotation angle assumed to be in degrees.
-	 *
-	 * @param props the properties
-	 * @return the rotation angle assumed to be in degrees. On error return 0.
-	 */
-	public static double getRotationAngle(Properties props) {
-		return getDouble(props, ROTATED, 0);
 	}
 
 	/**

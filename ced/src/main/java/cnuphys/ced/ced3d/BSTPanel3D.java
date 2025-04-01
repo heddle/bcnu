@@ -17,7 +17,7 @@ public class BSTPanel3D extends DetectorItem3D {
 
 	protected static final float CROSS_LEN = 3f; // in cm
 	protected static final Color crossColor = X11Colors.getX11Color("dark green");
-	
+
 	//bst adc data
 	private BSTADCData _bstADCData = BSTADCData.getInstance();
 
@@ -76,7 +76,7 @@ public class BSTPanel3D extends DetectorItem3D {
 		// reconstructed crosses?
 		if (_cedPanel3D.showReconCrosses()) {
 			// BST
-			
+
 			for (int i = 0; i < _bstCrossData.count(); i++) {
                 float x1 = _bstCrossData.x[i];
                 float y1 = _bstCrossData.y[i];
@@ -94,7 +94,7 @@ public class BSTPanel3D extends DetectorItem3D {
 
 		// cosmics?
 		if (_cedPanel3D.showCosmics()) {
-			
+
 			for (int i = 0; i < _cosmicData.count(); i++) {
                     float y1 = 1000;
                     float y2 = -1000;
@@ -104,7 +104,7 @@ public class BSTPanel3D extends DetectorItem3D {
                     float z2 = _cosmicData.trkline_yz_slope[i] * y2 + _cosmicData.trkline_yz_interc[i];
 					Support3D.drawLine(drawable, x1, y1, z1, x2, y2, z2, Color.red, 1f);
 			}
-			
+
 		}
 	}
 

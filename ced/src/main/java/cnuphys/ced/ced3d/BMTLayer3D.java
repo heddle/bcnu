@@ -23,7 +23,7 @@ public class BMTLayer3D extends DetectorItem3D {
 
 	// the 1-based layer
 	private int _layer;
-	
+
 	//data containers
 	private BMTADCData _bmtADCData = BMTADCData.getInstance();
 	private BMTCrossData _bmtCrossData = BMTCrossData.getInstance();
@@ -74,7 +74,7 @@ public class BMTLayer3D extends DetectorItem3D {
 
 		// reconstructed crosses?
 		if (_cedPanel3D.showReconCrosses()) {
-			
+
 			for (int i = 0; i < _bmtCrossData.count(); i++) {
 				if (_bmtCrossData.sector[i] == _sector && _bmtCrossData.layer[i] == _layer) {
 					float x = _bmtCrossData.x[i];

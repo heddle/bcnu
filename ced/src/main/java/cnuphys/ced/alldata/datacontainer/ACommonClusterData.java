@@ -117,7 +117,7 @@ public abstract class ACommonClusterData implements IDataContainer {
 
 	/**
 	 * Provide feedback for a cluster
-	 * 
+	 *
 	 * @param detectorName    the name of the detector
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add feedback strings here

@@ -25,7 +25,7 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
 import cnuphys.bCNU.graphics.toolbar.UserToolBarComponent;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.ViewManager;
@@ -68,7 +68,7 @@ public abstract class AView extends BaseView
 	// basic toolbar bits
 	protected static final int TOOLBARBITS = BaseToolBar.NODRAWING & ~BaseToolBar.TEXTFIELD
 			& ~BaseToolBar.CONTROLPANELBUTTON & ~BaseToolBar.RECTGRIDBUTTON & ~BaseToolBar.TEXTBUTTON
-			& ~BaseToolBar.DELETEBUTTON;
+			& ~BaseToolBar.DELETEBUTTON & ~BaseToolBar.CLONEBUTTON;
 
 	protected static final int NORANGETOOLBARBITS = TOOLBARBITS & ~BaseToolBar.RANGEBUTTON;
 
@@ -134,10 +134,10 @@ public abstract class AView extends BaseView
 			container.getFeedbackControl().addFeedbackProvider(this);
 
 			// add the magnetic field layer--mostly unused.
-			container.addLogicalLayer(_magneticFieldLayerName);
+			container.addItemList(_magneticFieldLayerName);
 
 			// add the detector drawing layer
-			container.addLogicalLayer(_detectorLayerName);
+			container.addItemList(_detectorLayerName);
 		}
 
 		// listen for trajectory changes
@@ -282,16 +282,6 @@ public abstract class AView extends BaseView
 		closeHoverWindow();
 	}
 
-	/**
-	 * Show or hide the annotation layer.
-	 * 
-	 * @param show the value of the display flag.
-	 */
-	public void showAnnotations(boolean show) {
-		if (getContainer().getAnnotationLayer() != null) {
-			getContainer().getAnnotationLayer().setVisible(show);
-		}
-	}
 
 	/**
 	 * Sets whether or not we display the magnetic field layer.
@@ -395,9 +385,6 @@ public abstract class AView extends BaseView
 		if (sector > 0) {
 			feedbackStrings.add("Sector " + sector);
 		}
-
-//		String pixStr = "$Sky Blue$ScreenXY: [" + pp.x + ", " + pp.y + "]";
-//		feedbackStrings.add(pixStr);
 	}
 
 	/**
@@ -405,8 +392,8 @@ public abstract class AView extends BaseView
 	 * 
 	 * @return the detector layer.
 	 */
-	public LogicalLayer getDetectorLayer() {
-		return getContainer().getLogicalLayer(_detectorLayerName);
+	public ItemList getDetectorLayer() {
+		return getContainer().getItemList(_detectorLayerName);
 	}
 
 	/**
@@ -414,8 +401,8 @@ public abstract class AView extends BaseView
 	 * 
 	 * @return the magnetic field layer.
 	 */
-	public LogicalLayer getMagneticFieldLayer() {
-		return getContainer().getLogicalLayer(_magneticFieldLayerName);
+	public ItemList getMagneticFieldLayer() {
+		return getContainer().getItemList(_magneticFieldLayerName);
 	}
 
 	/**
@@ -497,15 +484,6 @@ public abstract class AView extends BaseView
 			title = title.substring(0, index);
 		}
 		return title;
-	}
-
-	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
 	}
 
 	public Shape clipView(Graphics g) {

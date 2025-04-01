@@ -15,7 +15,7 @@ public class Ising2DDialog extends SimpleDialog {
 	/**
 	 * Override to create the component that goes in the center. Usually this is the
 	 * "main" component.
-	 * 
+	 *
 	 * @return the component that is placed in the center
 	 */
 	@Override

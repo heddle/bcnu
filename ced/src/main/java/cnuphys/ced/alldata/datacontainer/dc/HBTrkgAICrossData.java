@@ -1,7 +1,7 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class HBTrkgAICrossData extends ATrkgCrossData {
-	
+
 	// singleton
 	private static volatile HBTrkgAICrossData _instance;
 

@@ -40,7 +40,10 @@ public class SplashWindow extends JWindow {
 			"images/escalator.gif", "images/eye.gif", "images/fidget.gif", "images/fire2.gif", "images/ghost.gif",
 			"images/girl1.gif", "images/girl2.gif", "images/heart.gif", "images/hearthand.gif", "images/laugh.gif",
 			"images/launch.gif", "images/phonemessage.gif", "images/pie.gif", "images/plant.gif", "images/rain.gif",
-			"images/settings.gif", "images/skateboard.gif", "images/truck.gif", "images/wink.gif" };
+			"images/settings.gif", "images/skateboard.gif", "images/truck.gif", "images/wink.gif",
+			"images/add-to-favorites.gif", "images/add-to-favorites2.gif", "images/angel.gif",
+			"images/good-quality.gif", "images/happy.gif", "images/heart-with-pulse.gif",
+			"images/process.gif", "images/shortcuts.gif", "images/spotify.gif"};
 
 
 

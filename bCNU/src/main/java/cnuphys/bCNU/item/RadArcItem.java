@@ -8,7 +8,6 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.Point2DSupport;
 
 public class RadArcItem extends PolygonItem {
@@ -20,14 +19,14 @@ public class RadArcItem extends PolygonItem {
 	/**
 	 * Create a radius-arc (pie shape) item.
 	 *
-	 * @param layer    the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 * @param wpc      the center of the arc
 	 * @param wp1      the point at the end of the first leg. Thus wpc->wp1
 	 *                 determine the radius.
 	 * @param arcAngle the opening angle COUNTERCLOCKWISE in degrees.
 	 */
-	public RadArcItem(LogicalLayer layer, Point2D.Double wpc, Point2D.Double wp1, double arcAngle) {
-		super(layer, WorldGraphicsUtilities.getRadArcPoints(wpc, wp1, arcAngle));
+	public RadArcItem(ItemList itemList, Point2D.Double wpc, Point2D.Double wp1, double arcAngle) {
+		super(itemList, WorldGraphicsUtilities.getRadArcPoints(wpc, wp1, arcAngle));
 		setAzimuth(Point2DSupport.azimuth(wpc, wp1) - arcAngle / 2);
 		_focus = wpc;
 	}

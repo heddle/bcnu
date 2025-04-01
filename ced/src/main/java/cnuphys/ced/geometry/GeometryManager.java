@@ -1,8 +1,8 @@
 package cnuphys.ced.geometry;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import org.jlab.detector.base.GeometryFactory;
 import org.jlab.geom.abs.AbstractComponent;
@@ -17,6 +17,7 @@ import org.jlab.geom.prim.Point3D;
 import org.jlab.geom.prim.Vector3D;
 
 import cnuphys.ced.geometry.alert.AlertGeometry;
+import cnuphys.ced.geometry.fmt.FMTGeometry;
 import cnuphys.ced.geometry.ftof.FTOFGeometry;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 import cnuphys.swim.SwimTrajectory;
@@ -28,14 +29,24 @@ public class GeometryManager {
 	 */
 	private static volatile GeometryManager instance;
 
+
 	// BSTxy panels
-	private static Vector<BSTxyPanel> _bstXYpanelsLayers = new Vector<>(); // new
+	private static ArrayList<BSTxyPanel> _bstXYpanelsLayers = new ArrayList<>(); // new
 
 	// cal sector 0 in clas coordinates
 	public static ECSector clas_Cal_Sector0;
 
 	// cal sector 0 in local coordinates
 	public static ECSector local_Cal_Sector0;
+
+	//work points
+	private static Point3D[] _workPoints;
+	static {
+		_workPoints = new Point3D[8];
+		for (int i = 0; i < 8; i++) {
+			_workPoints[i] = new Point3D();
+		}
+	}
 
 	// 0.866...
 	private static final double ROOT3OVER2 = Math.sqrt(3) / 2;
@@ -71,6 +82,8 @@ public class GeometryManager {
 		// get the alert geometry
 		AlertGeometry.initialize();
 
+		// get the FMT geometry
+		FMTGeometry.initialize();
 
 		// get BST data
 		BSTGeometry.initialize();
@@ -489,26 +502,32 @@ public class GeometryManager {
 	public static boolean getProjectedPolygon(AbstractComponent geoObj, Plane3D projectionPlane, int startIndex,
 			int count, Point2D.Double wp[], Point2D.Double centroid) {
 
-		Point3D pp[] = new Point3D[count];
+		if (count > _workPoints.length) {
+            _workPoints = new Point3D[count];
+            for (int i = 0; i < count; i++) {
+                _workPoints[i] = new Point3D();
+            }
+		}
+
 		for (int i = 0; i < count; i++) {
-			pp[i] = new Point3D();
+			_workPoints[i] = new Point3D();
 		}
 
 		for (int i = 0; i < count; i++) {
 			int index = startIndex + i;
 			Line3D l3d = geoObj.getVolumeEdge(index);
-			projectionPlane.intersection(l3d, pp[i]);
+			projectionPlane.intersection(l3d, _workPoints[i]);
 		}
 
-		Vector<Line3D> lines = new Vector<>();
+		ArrayList<Line3D> lines = new ArrayList<>();
 		for (int i = 0; i < count; i++) {
 			int j = (i + 1) % count;
-			lines.add(new Line3D(pp[i], pp[j]));
+			lines.add(new Line3D(_workPoints[i], _workPoints[j]));
 		}
 
 		for (int i = 0; i < count; i++) {
-			wp[i].x = pp[i].z();
-			wp[i].y = Math.hypot(pp[i].x(), pp[i].y());
+			wp[i].x = _workPoints[i].z();
+			wp[i].y = Math.hypot(_workPoints[i].x(), _workPoints[i].y());
 		}
 
 		if (centroid != null) {
@@ -551,7 +570,7 @@ public class GeometryManager {
 	/**
 	 * Get a plane of constant phi
 	 *
-	 * @param phi the azimutha angle in degrees
+	 * @param phi the azimuthal angle in degrees
 	 * @return a plane of constant phi
 	 */
 	public static Plane3D constantPhiPlane(double phi) {
@@ -560,6 +579,18 @@ public class GeometryManager {
 		double cphi = Math.cos(phi);
 		double sphi = Math.sin(phi);
 		Vector3D norm = new Vector3D(sphi, -cphi, 0);
+		return new Plane3D(point, norm);
+	}
+
+	/**
+	 * Get a plane of constant z
+	 *
+	 * @param z the constant z coordinate
+	 * @return a plane of constant z
+	 */
+	public static Plane3D constantZPlane(double z) {
+		Point3D point = new Point3D(0, 0, z);
+		Vector3D norm = new Vector3D(0, 0, 1);
 		return new Plane3D(point, norm);
 	}
 

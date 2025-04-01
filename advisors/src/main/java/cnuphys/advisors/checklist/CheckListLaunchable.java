@@ -37,13 +37,13 @@ public abstract class CheckListLaunchable extends JComponent implements ILauncha
 
 	/** the red/green light */
 	public JComponent _led;
-	
+
 	/** the name of the launchable */
 	public String name;
 
 	/**
 	 * Create a component backing a step of the algorithm
-	 * 
+	 *
 	 * @param info
 	 * @param enabled
 	 * @param done    already done?
@@ -76,7 +76,7 @@ public abstract class CheckListLaunchable extends JComponent implements ILauncha
 	private JButton makeDoItButton() {
 		_doitButton = new JButton("Run");
 		_doitButton.setFont(Fonts.tweenFont);
-		
+
 		final ILaunchable launchable = this;
 
 		ActionListener al = new ActionListener() {

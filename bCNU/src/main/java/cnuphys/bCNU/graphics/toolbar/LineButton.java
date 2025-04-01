@@ -6,6 +6,7 @@ package cnuphys.bCNU.graphics.toolbar;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.rubberband.IRubberbanded;
 import cnuphys.bCNU.graphics.rubberband.Rubberband;
@@ -49,7 +50,10 @@ public class LineButton extends ToolBarToggleButton implements IRubberbanded {
 		// create a line item
 
 		if ((Math.abs(p0.x - p1.x) > 2) || (Math.abs(p0.y - p1.y) > 2)) {
-			AItem item = container.createLineItem(container.getAnnotationLayer(), p0, p1);
+
+			DrawingContainer dc	= (DrawingContainer) container;
+
+			AItem item = dc.createLineItem(container.getAnnotationList(), p0, p1);
 			if (item != null) {
 				item.setRightClickable(true);
 				item.setDraggable(true);

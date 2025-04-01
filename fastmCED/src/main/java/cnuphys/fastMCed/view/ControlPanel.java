@@ -96,7 +96,7 @@ public class ControlPanel extends JPanel {
 	private int _nc;
 	private int _hgap;
 
-	private static int MIN_WIDTH = 250;
+	private int MIN_WIDTH = 250;
 
 	/**
 	 * Create a view control panel
@@ -130,6 +130,10 @@ public class ControlPanel extends JPanel {
 
 		add(_feedbackPane, BorderLayout.CENTER);
 
+	}
+	
+	public void setMinWidth(int width) {
+		MIN_WIDTH = width;
 	}
 
 	@Override

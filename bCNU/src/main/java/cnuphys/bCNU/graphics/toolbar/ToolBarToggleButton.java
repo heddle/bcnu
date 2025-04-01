@@ -103,17 +103,17 @@ public class ToolBarToggleButton extends CommonToolBarToggleButton {
 		setIcon(imageIcon);
 
 		// try to get an enabled icon
-		if (index > 0) {
-			String baseName = imageFileName.substring(0, index);
-			String ext = imageFileName.substring(index);
-			String enabledFileName = baseName + "enabled" + ext;
-			try {
-				ImageIcon enabledImageIcon = ImageManager.getInstance().loadImageIcon(enabledFileName);
-				setSelectedIcon(enabledImageIcon);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+//		if (index > 0) {
+//			String baseName = imageFileName.substring(0, index);
+//			String ext = imageFileName.substring(index);
+//			String enabledFileName = baseName + "enabled" + ext;
+//			try {
+//				ImageIcon enabledImageIcon = ImageManager.getInstance().loadImageIcon(enabledFileName);
+//				setSelectedIcon(enabledImageIcon);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		}
 	}
 
 	/**

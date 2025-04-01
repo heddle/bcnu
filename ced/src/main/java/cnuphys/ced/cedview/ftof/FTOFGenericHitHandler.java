@@ -56,7 +56,7 @@ public abstract class FTOFGenericHitHandler {
 			if (count == 0) {
 				return;
 			}
-			
+
 			byte layer[] = _dataWarehouse.getByte(_bankname, "layer");
 			float x[] = _dataWarehouse.getFloat(_bankname, "x");
 			float y[] = _dataWarehouse.getFloat(_bankname, "y");
@@ -90,7 +90,7 @@ public abstract class FTOFGenericHitHandler {
 			if (count == 0) {
 				return;
 			}
-			
+
 			byte layer[] = _dataWarehouse.getByte(_bankname, "layer");
 			float x[] = _dataWarehouse.getFloat(_bankname, "x");
 			float y[] = _dataWarehouse.getFloat(_bankname, "y");

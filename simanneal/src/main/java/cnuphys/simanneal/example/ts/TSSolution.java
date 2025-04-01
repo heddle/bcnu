@@ -28,7 +28,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * A Solution with randomly located cities
-	 * 
+	 *
 	 * @param numCity the number of cities
 	 */
 	public TSSolution(TSSimulation simulation) {
@@ -38,7 +38,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Copy constructor
-	 * 
+	 *
 	 * @param ts the solution to copy
 	 */
 	public TSSolution(TSSolution ts) {
@@ -73,7 +73,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Get the itinerary
-	 * 
+	 *
 	 * @return the itinerary
 	 */
 	public int[] getItinerary() {
@@ -82,7 +82,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Get the cities
-	 * 
+	 *
 	 * @return the cities
 	 */
 	public TSCity[] getCities() {
@@ -91,7 +91,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Get the number of cities
-	 * 
+	 *
 	 * @return the number of cities
 	 */
 	public int count() {
@@ -110,7 +110,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Get the y value for the plot.
-	 * 
+	 *
 	 * @return the y value for the plot
 	 */
 	@Override
@@ -285,7 +285,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Accessor for the simulation
-	 * 
+	 *
 	 * @return the simulation
 	 */
 	public TSSimulation getSimulation() {
@@ -294,7 +294,7 @@ public class TSSolution extends Solution {
 
 	/**
 	 * Get the number of cities from the attributes
-	 * 
+	 *
 	 * @return the number of cities
 	 */
 	private int getNumCityFromAttributes() {

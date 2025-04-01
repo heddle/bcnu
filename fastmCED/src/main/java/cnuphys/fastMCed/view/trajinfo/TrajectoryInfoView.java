@@ -16,7 +16,7 @@ import cnuphys.lund.TrajectoryTableModel;
 public class TrajectoryInfoView extends ATrajectoryInfoView {
 
 	public TrajectoryInfoView() {
-		super("Lund Tracks");
+		super("Generated Tracks");
 	}
 
 	@Override
@@ -39,15 +39,6 @@ public class TrajectoryInfoView extends ATrajectoryInfoView {
 			model.fireTableDataChanged();
 			_trajectoryTable.repaint();
 		}
-	}
-
-	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
 	}
 
 }

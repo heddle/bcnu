@@ -57,15 +57,6 @@ public abstract class PhysicsEventConsumer implements IPhysicsEventListener, ISt
 	public abstract StreamProcessStatus streamingPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits);
 
 	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
-	}
-
-	/**
 	 * New event has arrived from the FastMC engine via the "next event" mechanism.
 	 * Note that in streaming mode, do not get broadcast this way, they are
 	 * broadcasted via streamingPhysicsEvent

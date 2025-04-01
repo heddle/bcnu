@@ -15,16 +15,20 @@ import org.jlab.geom.detector.alert.ATOF.AlertTOFLayer;
 import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.lund.X11Colors;
 
 public class TOFLayer {
 
-	private static Color[] fillColors = {X11Colors.getX11Color("Cornsilk"), X11Colors.getX11Color("Blanched Almond")};
+	private static Color superlayer0Color = X11Colors.getX11Color("Alice Blue");
+	private static Color[][] fillColors = {
+			{ X11Colors.getX11Color("Antique White"), X11Colors.getX11Color("Burlywood", 128) },
+			{ X11Colors.getX11Color("Light Cyan"), X11Colors.getX11Color("Light Blue", 128) },
+			{ X11Colors.getX11Color("Aquamarine"), X11Colors.getX11Color("Light Green", 128) } };
 
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
 	private Point pp = new Point();
-
 
 	/** the 0-based sector of this layer */
 	public final int sector;
@@ -46,11 +50,18 @@ public class TOFLayer {
 	private static double _deltaR = Double.NaN;
 
 
+	//all the paddle objects
 	public List<ScintillatorPaddle> paddles;
 
+	//used by feedback
 	Hashtable<ScintillatorPaddle, Polygon> polyhash = new Hashtable<>();
 
 
+	/**
+	 * Create a TOF layer from an alert TOF layer
+	 *
+	 * @param geoAlertTOFLayer the alert TOF layer from the geometry service
+	 */
 	public TOFLayer(AlertTOFLayer geoAlertTOFLayer) {
 		sector = geoAlertTOFLayer.getSectorId();
 		superlayer = geoAlertTOFLayer.getSuperlayerId();
@@ -64,26 +75,59 @@ public class TOFLayer {
 
 	/**
 	 * Get a paddle from this layer
-	 * @param paddleId 0-based id
+	 * @param paddleId 0-based INDEX (not the component ID)
 	 * @return the paddle
 	 */
 	public ScintillatorPaddle getPaddle(int paddleId) {
-		return paddles.get(paddleId);
+//		System.err.println(String.format("req paddle index: %d  sect0: %d  supl0: %d  lay0: %d", paddleId, sector, superlayer, layer));
+		try {
+			ScintillatorPaddle paddle = paddles.get(paddleId);
+			return paddle;
+		}
+		catch (Exception e) {
+            System.err.println("Exception in TOFLayer.getPaddle: " + e);
+            e.printStackTrace();
+        }
+		return null;
 	}
 
 
-	public void drawAllPaddles(Graphics g, IContainer container) {
-		polyhash.clear();
-		for (ScintillatorPaddle paddle : paddles) {
+	/**
+	 * Get a strip outline
+	 * @param view the view
+	 * @param paddle the paddle from the geometry service
+	 * @return the paddle outline in world coordinates
+	 */
+	private Point2D.Double[] getWorldPolygon(AlertXYView view, ScintillatorPaddle paddle) {
 
+		Point2D.Double wp[] = AlertGeometry.getIntersections(sector, superlayer, layer, paddle,
+				view.getProjectionPlane(), true);
+
+		return wp;
+	}
+
+
+	/**
+	 * Draw all the paddles in this layer
+	 *
+	 * @param g         the graphics context
+	 * @param container the container
+	 */
+	public void drawAllATOFPaddles(Graphics g, IContainer container) {
+		//the hash is used for feedback
+		polyhash.clear();
+
+		for (int paddleId = 0; paddleId < numPaddles; paddleId++) {
+
+			ScintillatorPaddle paddle = paddles.get(paddleId);
 			Color fc;
 			if (superlayer == 0) {
-				fc = Color.white;
+				fc = superlayer0Color;
+			} else {
+				fc = fillColors[sector % 3][paddle.getComponentId() % 2];
 			}
-			else {
-				fc = fillColors[layer%2];
-			}
-			drawPaddle(g, container, paddle, fc, Color.black);
+
+			drawPaddle(g, container, paddle, fc, fc.darker());
 		}
 	}
 
@@ -106,36 +150,80 @@ public class TOFLayer {
 
 	}
 
+	/**
+	 * Does the paddle contain the point? This uses the polyhash
+	 * @param paddle
+	 * @param pp
+	 * @return <code>true</code> if the paddle contains the point
+	 */
+	public boolean paddleContains(ScintillatorPaddle paddle, Point pp) {
+		Polygon poly = polyhash.get(paddle);
+		return (poly != null) && poly.contains(pp);
+	}
 
+	/**
+	 * Draw a paddle in the unrealistic mode
+	 * @param g
+	 * @param container
+	 * @param paddle
+	 * @param fillColor
+	 * @param lineColor
+	 */
 	public  void drawPaddle(Graphics g, IContainer container, ScintillatorPaddle paddle, Color fillColor, Color lineColor) {
 
+		AlertXYView view = (AlertXYView) container.getView();
 
 		Graphics2D g2 = (Graphics2D)g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		Polygon poly = new Polygon();
+		int paddleId = paddle.getComponentId();
 
-		for (int i = 0; i < 4; i++) {
+	//	System.err.println("   DRAW PADDLE ID " + paddleId);
 
-			double x = paddle.getVolumePoint(i).x();
-			double y = paddle.getVolumePoint(i).y();
-			wp[i] = new Point2D.Double(x, y);
+		if (view.showAllTOF()) { //unrealistic
 
-			//shift the point if not superlayer 0
+			for (int i = 0; i < 4; i++) { //for corners of paddle
 
-			if (superlayer  == 1) {
-				if ((i == 0) || (i == 3)) {
-					double dR = layer*_deltaR;
-				    shiftPoint(wp[i], dR);
+				double x = paddle.getVolumePoint(i).x();
+				double y = paddle.getVolumePoint(i).y();
+				wp[i] = new Point2D.Double(x, y);
+
+				// shift the point if not superlayer 0
+
+				if (superlayer == 1) {
+					if ((i == 0) || (i == 3)) {
+						double dR = paddleId * _deltaR;
+						shiftPoint(wp[i], dR);
+					} else { // outer
+						double dR = -(9 - paddleId) * _deltaR;
+						shiftPoint(wp[i], dR);
+					}
 				}
-				else { //outer
-					double dR = -(9 - layer)*_deltaR;
-				    shiftPoint(wp[i], dR);
+
+				container.worldToLocal(pp, wp[i]);
+				poly.addPoint(pp.x, pp.y);
+			}
+
+		}
+		else {
+			boolean intersects = AlertGeometry.doesProjectedPolyFullyIntersect(sector, superlayer, layer,
+					paddle, view.getProjectionPlane());
+
+			if (!intersects) {
+				return;
+			}
+
+
+			Point2D.Double wp[] = getWorldPolygon(view, paddle);
+			if (wp != null) {
+				Point pp = new Point();
+				for (java.awt.geom.Point2D.Double element : wp) {
+                    container.worldToLocal(pp, element);
+                    poly.addPoint(pp.x, pp.y);
 				}
 			}
 
-			container.worldToLocal(pp, wp[i]);
-			poly.addPoint(pp.x, pp.y);
 		}
 
 		if (fillColor != null) {
@@ -144,11 +232,11 @@ public class TOFLayer {
 		}
 		g.setColor(lineColor);
 		g.drawPolygon(poly);
-
 		polyhash.put(paddle, poly);
 	}
 
 
+	//used for unrealistic mode
 	private static void shiftPoint(Point2D.Double wp, double dR) {
 		double r = Math.hypot(wp.x, wp.y);
 		double theta = Math.atan2(wp.y, wp.x);
@@ -173,8 +261,10 @@ public class TOFLayer {
 			Polygon poly = polyhash.get(paddle);
 
 			if ((poly != null) && poly.contains(pp)) {
-				feedbackStrings.add(String.format("AlertTOF sector: %d superlayer: %d layer: %d", sector + 1, superlayer + 1, layer + 1));
-				feedbackStrings.add(String.format("AlertTOF paddle: %d", paddle.getComponentId()+1));
+				feedbackStrings.add(String.format("TOF sector: %d (0-based)", sector));
+				feedbackStrings.add(String.format("TOF superlayer: %d (0-based)", superlayer));
+				feedbackStrings.add(String.format("TOF layer: %d (0-based)", layer ));
+				feedbackStrings.add(String.format("TOF paddle: %d (0-based)", paddle.getComponentId()));
 				return true;
 			}
 		}

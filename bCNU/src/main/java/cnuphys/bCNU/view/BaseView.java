@@ -24,7 +24,6 @@ import javax.swing.JComponent;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -34,6 +33,7 @@ import cnuphys.bCNU.application.Desktop;
 import cnuphys.bCNU.component.MagnifyWindow;
 import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.container.BaseContainer;
+import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.UserToolBarComponent;
@@ -70,9 +70,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	// This view's container, if there is one (some views, such as the log view,
 	// do not have a container)
 	private IContainer _container;
-
-	// an additional optional panel that can be added to the east
-	private JPanel _userPanel;
 
 	// view popup menu
 	private ViewPopupMenu _viewPopupMenu;
@@ -164,7 +161,13 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 			// container in attributes? if not, use a BaseContainer
 			_container = PropertySupport.getContainer(_properties);
 			if (_container == null) {
-				_container = new BaseContainer(this, worldSystem);
+				String contType = PropertySupport.getContainerType(_properties);
+				if ((contType != null) && contType.equalsIgnoreCase("drawing")) {
+                    _container = new DrawingContainer(this, worldSystem);
+				} else {
+					_container = new BaseContainer(this, worldSystem);
+				}
+
 			} else {
 				_container.setView(this);
 			}
@@ -345,15 +348,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 	}
 
 	/**
-	 * Get the user panel for adding more widgets
-	 *
-	 * @return the userPanel
-	 */
-	public JPanel getUserPanel() {
-		return _userPanel;
-	}
-
-	/**
 	 * Called by a container when a right click is not handled. The usual reason is
 	 * that the right click was on an inert spot.
 	 *
@@ -371,14 +365,6 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 		System.err.println("Control Panel Button Hit");
 	}
 
-	/**
-	 * Checks if the view is ready for display.
-	 *
-	 * @return <code>true</code> if the view is ready for display.
-	 */
-	public boolean isReady() {
-		return true;
-	}
 
 	/**
 	 * Set the view arrangement from the properties
@@ -770,17 +756,40 @@ public class BaseView extends JInternalFrame implements FocusListener, MouseList
 
 	@Override
 	public void componentMoved(ComponentEvent arg0) {
+		// hard to believe necessary but funny things happen without it
+		if (_desktop != null) {
+			_desktop.repaint();
+		}
 	}
 
 	@Override
 	public void componentResized(ComponentEvent arg0) {
-//		// hard to believe necessary but funny things happen without it
-//		if (_desktop != null) {
-//			_desktop.repaint();
-//		}
+		// hard to believe necessary but funny things happen without it
+		if (_desktop != null) {
+			_desktop.repaint();
+		}
 	}
 
 	@Override
 	public void componentShown(ComponentEvent arg0) {
 	}
+
+
+    /**
+     * Checks if the given view is visible within the bounds of its parent container.
+     *
+     * @return true if the view is fully visible within its parent, false otherwise.
+     */
+    public boolean isViewVisible() {
+        // Ensure the internal frame and its parent are not null
+        if (this.getParent() == null) {
+            return false;
+        }
+
+        Rectangle frameBounds = getBounds();
+        Rectangle parentBounds = getParent().getBounds();
+
+        // Check if the view bounds intersects the parent's bounds
+        return parentBounds.intersects(frameBounds);
+    }
 }

@@ -10,7 +10,7 @@ import cnuphys.advisors.io.DataModel;
 import cnuphys.advisors.io.ITabled;
 
 public class HonorsAdvisors extends DataModel {
-	
+
 	private AdvisorDialog _dialog;
 
 	//attributes for honors advisors data

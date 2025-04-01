@@ -56,7 +56,7 @@ public class AdvisorAssign extends JFrame {
 	private static AdvisorAssign _instance;
 
 	//what semester are we dealing with
-	private static Semester _semester = Semester.Fall2023;
+	private static Semester _semester = Semester.Fall2024;
 
 	//a label on the menu bar for the semester
 	private static JLabel _infoLabel;
@@ -76,7 +76,7 @@ public class AdvisorAssign extends JFrame {
 
 	//private constructor for singleton
 	private AdvisorAssign() {
-		super("CNU Core Advisor Assignments");
+		super("CNU Fall 2024 Core Advisor Assignments");
 		screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
 		// set up what to do if the window is closed
@@ -107,7 +107,7 @@ public class AdvisorAssign extends JFrame {
 
 		//add the check list
 		_checklist = CheckList.getInstance();
-		
+
 		JPanel panel = new JPanel() {
 			@Override
 			public Insets getInsets() {
@@ -117,11 +117,11 @@ public class AdvisorAssign extends JFrame {
 
 		};
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-	
+
 		SizedText st = new SizedText(OptionsDialog.currentAlgorithm.description(), Fonts.defaultFont, _checklist.getPreferredSize().width);
 		panel.setBorder(new CommonBorder("Current Algorithm"));
 		panel.add(st);
-		
+
 
 		JPanel sp = new JPanel();
 		sp.setLayout(new BorderLayout(4, 4));
@@ -134,7 +134,7 @@ public class AdvisorAssign extends JFrame {
 
 
 		createInfoLabel();
-		
+
 		_bigText = new SizedText("Ready", Fonts.hugeFont, _checklist.getPreferredSize().width);
 		sp.add(_bigText, BorderLayout.SOUTH);
 
@@ -222,7 +222,7 @@ public class AdvisorAssign extends JFrame {
 		int studentCount = DataManager.getStudentData().count();
 
 		double avgReq = ((double)studentCount)/advisorCount;
-		return (int)Math.ceil(avgReq);
+		return 1 + (int)Math.ceil(avgReq);
 	}
 
 	public static void showMessage(String text) {
@@ -230,6 +230,7 @@ public class AdvisorAssign extends JFrame {
 		MessageDialog messageDialog = new MessageDialog("Secondary Majors and Specialties", true, text, Fonts.defaultFont);
 		messageDialog.setVisible(true);
 	}
+
 
 	public static boolean useBusinessFamily() {
 		return _optionsDialog.useBusinessFamily();
@@ -249,6 +250,22 @@ public class AdvisorAssign extends JFrame {
 	 */
 	public static boolean useChemFamily() {
 		return _optionsDialog.useChemFamily();
+	}
+
+	/**
+	 * Are we grouping engineering related majors?
+	 * @return true if we are grouping engineering related majors
+	 */
+	public static boolean useEngFamily() {
+		return _optionsDialog.useEngFamily();
+	}
+
+	/**
+	 * Are we grouping cs related majors?
+	 * @return true if we are grouping cs related majors
+	 */
+	public static boolean useCSFamily() {
+		return _optionsDialog.useCSFamily();
 	}
 
 	/**

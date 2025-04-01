@@ -77,7 +77,10 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 		if (_inited) {
 			return;
 		}
+
+		//this will cause all data to be read in
 		DataManager.init();
+
 		InputOutput.init();
 		_inited = true;
 	}
@@ -163,6 +166,15 @@ public class AdvisorSimulation extends Simulation implements IUpdateListener {
 	public void exchangeStudents(Student studentA, Student studentB) {
 		Advisor advisorA = studentA.advisor;
 		Advisor advisorB = studentB.advisor;
+
+		if ((advisorA == null) || (advisorB == null)) {
+			System.err.println("Null advisor in exchangeStudents");
+			System.exit(0);
+		}
+
+		if (advisorA.locked() || advisorB.locked()) {
+			return;
+		}
 
 		advisorA.removeAdvisee(studentA);
 		advisorB.removeAdvisee(studentB);

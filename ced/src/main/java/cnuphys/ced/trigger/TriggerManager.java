@@ -9,7 +9,7 @@ import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.filter.FilterManager;
 
 public class TriggerManager implements IClasIoEventListener {
-	
+
 	//data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 

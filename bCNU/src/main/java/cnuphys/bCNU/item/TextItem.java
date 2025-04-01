@@ -12,12 +12,11 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.Snippet;
 import cnuphys.bCNU.util.TextUtilities;
@@ -45,7 +44,7 @@ public class TextItem extends RectangleItem {
 
 	/**
 	 *
-	 * @param layer     the layer which will hold the item.
+	 * @param itemList  the list which will hold the item.
 	 * @param location  the location of the lower left
 	 * @param font      the font to use.
 	 * @param text      the text to display.
@@ -53,9 +52,9 @@ public class TextItem extends RectangleItem {
 	 * @param fillColor the text background color.
 	 * @param lineColor the border color
 	 */
-	public TextItem(LogicalLayer layer, Point2D.Double location, Font font, String text, Color textColor,
+	public TextItem(ItemList itemList, Point2D.Double location, Font font, String text, Color textColor,
 			Color fillColor, Color lineColor) {
-		super(layer, new Rectangle2D.Double(location.x, location.y, 1, 1));
+		super(itemList, new Rectangle2D.Double(location.x, location.y, 1, 1));
 		setFont(font);
 		setText(text);
 		_textColor = textColor;
@@ -105,7 +104,7 @@ public class TextItem extends RectangleItem {
 
 		int width = 0;
 		int height = 0;
-		Vector<Snippet> snippets = Snippet.getSnippets(font, text, component);
+		ArrayList<Snippet> snippets = Snippet.getSnippets(font, text, component);
 		for (Snippet s : snippets) {
 			Dimension size = s.size(component);
 			width = Math.max(width, s.getDeltaX() + size.width);

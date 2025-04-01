@@ -9,8 +9,8 @@ import java.util.List;
 import org.jlab.geom.prim.Plane3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.alldata.datacontainer.dc.ATrkgHitData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.common.ISuperLayer;
@@ -48,13 +48,13 @@ public class SectorSuperLayer extends PolygonItem implements ISuperLayer {
 	 * the constructor. The points will always be supplied by the setPoints method,
 	 * which will send projected wire positions (with a border of guard wires)
 	 *
-	 * @param logLayer   the Layer this item is on.
+	 * @param itemList   the list this item is on.
 	 * @param view       the view this item lives on.
 	 * @param sector     the 1-based sector [1..6]
 	 * @param superLayer the 1-based superlayer [1..6]
 	 */
-	public SectorSuperLayer(LogicalLayer logLayer, SectorView view, int sector, int superLayer) {
-		super(logLayer);
+	public SectorSuperLayer(ItemList itemList, SectorView view, int sector, int superLayer) {
+		super(itemList);
 		_view = view;
 		_sector = sector;
 		_superlayer = superLayer;

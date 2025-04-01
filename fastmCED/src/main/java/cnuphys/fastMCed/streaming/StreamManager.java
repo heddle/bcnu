@@ -11,6 +11,7 @@ import org.jlab.clas.physics.PhysicsEvent;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.view.ViewManager;
 import cnuphys.fastMCed.fastmc.ParticleHits;
+import cnuphys.fastMCed.frame.FastMCed;
 
 public class StreamManager {
 
@@ -105,7 +106,7 @@ public class StreamManager {
 								"A consumer has flagged this event", JOptionPane.INFORMATION_MESSAGE,
 								ImageManager.cnuIcon);
 
-						ViewManager.getInstance().refreshAllViews();
+						FastMCed.refresh();
 					}
 				});
 
@@ -150,7 +151,6 @@ public class StreamManager {
 		}
 
 		_listeners.add(IStreamProcessor.class, listener);
-		System.err.println("num stream listeners " + _listeners.getListenerCount());
 	}
 
 	/**

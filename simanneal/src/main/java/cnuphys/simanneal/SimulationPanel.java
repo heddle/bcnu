@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import cnuphys.bCNU.attributes.AttributePanel;
-import cnuphys.bCNU.graphics.component.CommonBorder;
 import cnuphys.bCNU.util.Fonts;
 
 /**
@@ -31,7 +30,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 
 	// the content (display_ component
 	private JComponent _content;
-	
+
 	//some more (optional) content
 	private JComponent _content2;
 
@@ -48,11 +47,11 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	private JButton pauseButton;
 	private JButton resumeButton;
 	private JButton resetButton;
-	
+
 	//holds the buttons
 	private JPanel _buttonPanel;
-	
-	
+
+
 	/**
 	 * Create a panel to hold all the optics for the simulation
 	 *
@@ -77,10 +76,10 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		_simulation.addUpdateListener(this);
 		_content = content;
 		_content2 = content2;
-		
+
 		JPanel leftP = insetPanel();
 		leftP.add(_content, BorderLayout.CENTER);
-		
+
 		leftP.add(Box.createHorizontalStrut(80), BorderLayout.WEST);
 		add(leftP, BorderLayout.WEST);
 
@@ -110,7 +109,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		panel.setLayout(new BorderLayout(4, 4));
 		return panel;
 	}
-	
+
 	private JPanel insetVPanel() {
 		JPanel panel = new JPanel() {
 			@Override
@@ -137,7 +136,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		add(panel, BorderLayout.CENTER);
 	}
 
-	
+
 	private JPanel _eastPanel;
 	private JPanel _contentPanel;
 	// add the east panel
@@ -153,11 +152,11 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 
 		_contentPanel = insetVPanel();
 		_contentPanel.add(_attributePanel);
-		
+
 		if (_content2 != null) {
 			_contentPanel.add(_content2);
 		}
-		
+
 		_eastPanel.add(_contentPanel);
 
 		// buttons in south of east panel
@@ -179,7 +178,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		add(_eastPanel, BorderLayout.EAST);
 		fixPanelState();
 	}
-	
+
 	/**
 	 * Remove the button panel
 	 */
@@ -187,7 +186,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		_eastPanel.remove(_buttonPanel);
 		revalidate();
 	}
-	
+
 	/**
 	 * Remove the state label
 	 */
@@ -196,7 +195,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 		revalidate();
 	}
 
-	
+
 	/**
 	 * Remove the attribute table
 	 */
@@ -269,7 +268,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 			doStop();
 		}
 	}
-	
+
 	/**
 	 * Same as hitting the run button
 	 */
@@ -284,7 +283,7 @@ public class SimulationPanel extends JPanel implements ActionListener, IUpdateLi
 	public void doPause() {
 		_simulation.setSimulationState(SimulationState.PAUSED);
 	}
-	
+
 	/**
 	 * Same as hitting the resume button
 	 */

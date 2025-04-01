@@ -37,8 +37,10 @@ import item3D.PointSet3D;
 import item3D.Triangle3D;
 
 
+
 @SuppressWarnings("serial")
 public class Panel3D extends JPanel implements GLEventListener {
+	protected float[] rotationMatrix = new float[16];
 
 	//background default color used for r, g and b
 	public static final float BGFEFAULT = 0.9804f;
@@ -49,19 +51,15 @@ public class Panel3D extends JPanel implements GLEventListener {
 	private float _bgBlue = BGFEFAULT;
 
 
-	protected float _xscale = 1.0f;
-	protected float _yscale = 1.0f;
-	protected float _zscale = 1.0f;
+	public float _xscale = 1.0f;
+	public float _yscale = 1.0f;
+	public float _zscale = 1.0f;
 
 	protected GLProfile glprofile;
 	protected GLCapabilities glcapabilities;
 	protected final GLJPanel gljpanel;
 	public static GLU glu; // glu utilities
 
-	// view rotation angles (degrees)
-	private float _view_rotx;
-	private float _view_roty;
-	private float _view_rotz;
 
 	// distance in front of the screen
 	private float _zdist;
@@ -80,6 +78,8 @@ public class Panel3D extends JPanel implements GLEventListener {
 	protected KeyAdapter3D _keyAdapter;
 
 	protected String _rendererStr;
+	
+	private boolean _skipLastStage = false;
 
 	/*
 	 * The panel that holds the 3D objects
@@ -97,7 +97,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public Panel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist) {
-		this(angleX, angleY, angleZ, xDist, yDist, zDist, BGFEFAULT, BGFEFAULT, BGFEFAULT);
+		this(angleX, angleY, angleZ, xDist, yDist, zDist, BGFEFAULT, BGFEFAULT, BGFEFAULT, false);
 	}
 
 	/*
@@ -116,10 +116,16 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * @param zdist the initial viewer z distance should be negative
 	 */
 	public Panel3D(float angleX, float angleY, float angleZ, float xDist, float yDist, float zDist, float bgRed,
-			float bgGreen, float bgBlue) {
-		_view_rotx = angleX;
-		_view_roty = angleY;
-		_view_rotz = angleZ;
+			float bgGreen, float bgBlue, boolean skipLastStage) {
+
+		_skipLastStage = skipLastStage;
+		loadIdentityMatrix();
+
+
+		rotateX(angleX);
+		rotateY(angleY);
+		rotateZ(angleZ);
+
 		_xdist = xDist;
 		_ydist = yDist;
 		_zdist = zDist;
@@ -130,10 +136,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 		setLayout(new BorderLayout(0, 0));
 
-//		System.err.println(Thread.currentThread().getName());
 		glprofile = GLProfile.getDefault();
-
-		// glprofile = GLProfile.getMaxFixedFunc(true);
 
 		glcapabilities = new GLCapabilities(glprofile);
 		glcapabilities.setRedBits(8);
@@ -170,6 +173,13 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 * Create the initial items
 	 */
 	public void createInitialItems() {
+		//default empty implementation
+ }
+
+	public void loadIdentityMatrix() {
+	    for (int i = 0; i < 16; i++) {
+	        rotationMatrix[i] = (i % 5 == 0) ? 1.0f : 0.0f; // Set diagonal elements to 1
+	    }
 	}
 
 	// add a component in the specified place if not null
@@ -214,40 +224,115 @@ public class Panel3D extends JPanel implements GLEventListener {
 		_zscale = zscale;
 	}
 
-	@Override
-	public void display(GLAutoDrawable drawable) {
-
-
-		GL2 gl = drawable.getGL().getGL2();
-
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
-
-		gl.glLoadIdentity(); // reset the model-view matrix
-
-		gl.glTranslatef(_xdist, _ydist, _zdist); // translate into the screen
-
-		gl.glScalef(_xscale, _yscale, _zscale);
-
-		gl.glPushMatrix();
-		gl.glRotatef(_view_rotx, 1.0f, 0.0f, 0.0f);
-		gl.glRotatef(_view_roty, 0.0f, 1.0f, 0.0f);
-		gl.glRotatef(_view_rotz, 0.0f, 0.0f, 1.0f);
-
-		// draw the items
-		for (Item3D item3D : _itemList) {
-			// if item is not visible, neither it nor its children are drawn
-			if (item3D.isVisible()) {
-				item3D.drawItem(drawable);
-			}
+	public void rotate(Vector3f axis, float angle) {
+	    // Normalize the axis
+	    float length = (float) Math.sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
+	    if (length == 0.0f) {
+			return;
 		}
 
+	    float x = axis.x / length;
+	    float y = axis.y / length;
+	    float z = axis.z / length;
+
+	    // Compute rotation matrix components
+	    float c = (float) Math.cos(angle);
+	    float s = (float) Math.sin(angle);
+	    float t = 1.0f - c;
+
+	    float[] rotation = new float[16];
+	    rotation[0] = t * x * x + c;
+	    rotation[1] = t * x * y - s * z;
+	    rotation[2] = t * x * z + s * y;
+	    rotation[3] = 0;
+
+	    rotation[4] = t * x * y + s * z;
+	    rotation[5] = t * y * y + c;
+	    rotation[6] = t * y * z - s * x;
+	    rotation[7] = 0;
+
+	    rotation[8] = t * x * z - s * y;
+	    rotation[9] = t * y * z + s * x;
+	    rotation[10] = t * z * z + c;
+	    rotation[11] = 0;
+
+	    rotation[12] = 0;
+	    rotation[13] = 0;
+	    rotation[14] = 0;
+	    rotation[15] = 1;
+
+	    // Multiply the current matrix with the rotation matrix
+	    multiplyMatrix(rotation);
+	    refresh();
+	}
+
+	private void multiplyMatrix(float[] other) {
+	    float[] result = new float[16];
+
+	    for (int row = 0; row < 4; row++) {
+	        for (int col = 0; col < 4; col++) {
+	            result[row * 4 + col] = 0;
+	            for (int k = 0; k < 4; k++) {
+	                result[row * 4 + col] += rotationMatrix[row * 4 + k] * other[k * 4 + col];
+	            }
+	        }
+	    }
+
+	    System.arraycopy(result, 0, rotationMatrix, 0, 16);
+	}
+
+	@Override
+	public void display(GLAutoDrawable drawable) {
+		GL2 gl = drawable.getGL().getGL2();
+
+		// Clear the buffers
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
+		gl.glLoadIdentity();
+
+		// Translate and scale
+		gl.glTranslatef(_xdist, _ydist, _zdist);
+		gl.glScalef(_xscale, _yscale, _zscale);
+
+		// Apply the rotation matrix
+		gl.glMultMatrixf(rotationMatrix, 0);
+
+		// Draw the 3D items
+		gl.glPushMatrix();
+		
+		beforeDraw(drawable);
+		for (Item3D item : _itemList) {
+			if (item.isVisible()) {
+				item.drawItem(drawable);
+			}
+		}
+		afterDraw(drawable);
+		
 		gl.glPopMatrix();
 
+		//ced might not like these lines
+		if (_skipLastStage) {
+			return;
+		}
+		gl.glDepthMask(true);
+		gl.glDisable(GL.GL_BLEND);
+		gl.glLoadIdentity();
 	}
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
 		System.err.println("called dispose");
+	}
+
+	/**
+	 * Called before drawing the itemss.
+	 */
+	public void beforeDraw(GLAutoDrawable drawable) {
+	}
+	
+	/**
+	 * Called after drawing the items.
+	 */
+	public void afterDraw(GLAutoDrawable drawable) {
 	}
 
 	@Override
@@ -257,23 +342,14 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 		// version?
 		_versionStr = gl.glGetString(GL.GL_VERSION);
-		System.err.println("OpenGL version: " + _versionStr);
-
 		_rendererStr = gl.glGetString(GL.GL_RENDERER);
-		System.err.println("OpenGL renderer: " + _rendererStr);
 
 		float values[] = new float[2];
 		gl.glGetFloatv(GL2GL3.GL_LINE_WIDTH_GRANULARITY, values, 0);
-		System.err.println("GL.GL_LINE_WIDTH_GRANULARITY value is " + values[0]);
 
 		gl.glGetFloatv(GL2GL3.GL_LINE_WIDTH_RANGE, values, 0);
-		System.err.println("GL.GL_LINE_WIDTH_RANGE values are " + values[0] + ", " + values[1]);
 
 		// Global settings.
-		// gl.glClearColor(0f, 0f,0f, 1.0f); // set background (clear) color
-//		gl.glClearColor(1f, 1f, 1f, 1f); // set background (clear) color
-//		gl.glClearColor(.9804f, .9216f, .8431f, 1f); // set background (clear) color
-//		gl.glClearColor(0.9412f, 1f, 1f, 1f); // set background (clear) color
 		gl.glClearColor(_bgRed, _bgGreen, _bgBlue, 1f); // set background (clear) color
 		gl.glClearDepth(1.0f); // set clear depth value to farthest
 		gl.glEnable(GL.GL_DEPTH_TEST); // enables depth testing
@@ -283,27 +359,18 @@ public class Panel3D extends JPanel implements GLEventListener {
 		// best perspective correction
 		gl.glHint(GL2ES1.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 		// blends colors, smoothes lighting
-		// gl.glShadeModel(GL2ES1.GL_SMOOTH);
 		gl.glShadeModel(GLLightingFunc.GL_FLAT);
 
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-		// gl.glDepthMask(false);
 		gl.glEnable(GL.GL_BLEND);
 		gl.glEnable(GL2ES3.GL_COLOR);
 		gl.glHint(GL2ES1.GL_POINT_SMOOTH_HINT, GL.GL_DONT_CARE);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_DONT_CARE);
 
 		gl.glEnable(GL3.GL_PROGRAM_POINT_SIZE);
-		// gl.glEnable(GL.GL_POINT_SIZE);
-
-		// float pos[] = { 0.0f, 0.0f, -1000.0f, 0.0f };
-
-		// gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, pos, 0);
-		// gl.glEnable(GL2.GL_CULL_FACE);
-		// gl.glEnable(GL2.GL_LIGHTING);
-		// gl.glEnable(GL2.GL_LIGHT0);
-
 	}
+
+
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -330,61 +397,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 		gl.glLoadIdentity(); // reset
 	}
 
-	/**
-	 * Set rotation angle about x
-	 *
-	 * @param angle about x (degrees)
-	 */
-	public void setRotationX(float angle) {
-		_view_rotx = angle;
-	}
-
-	/**
-	 * Set rotation angle about y
-	 *
-	 * @param angle about y (degrees)
-	 */
-	public void setRotationY(float angle) {
-		_view_roty = angle;
-		// refresh();
-	}
-
-	/**
-	 * Set rotation angle about z
-	 *
-	 * @param angle about z (degrees)
-	 */
-	public void setRotationZ(float angle) {
-		_view_rotz = angle;
-		// refresh();
-	}
-
-	/**
-	 * Get the rotation about x
-	 *
-	 * @return the rotation about x (degrees)
-	 */
-	public float getRotationX() {
-		return _view_rotx;
-	}
-
-	/**
-	 * Get the rotation about y
-	 *
-	 * @return the rotation about y (degrees)
-	 */
-	public float getRotationY() {
-		return _view_roty;
-	}
-
-	/**
-	 * Get the rotation about z
-	 *
-	 * @return the rotation about z (degrees)
-	 */
-	public float getRotationZ() {
-		return _view_rotz;
-	}
 
 	/**
 	 * Change the x distance to move in or out
@@ -393,7 +405,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 */
 	public void deltaX(float dx) {
 		_xdist += dx;
-		// refresh();
 	}
 
 	/**
@@ -403,7 +414,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 */
 	public void deltaY(float dy) {
 		_ydist += dy;
-		// refresh();
 	}
 
 	/**
@@ -413,14 +423,12 @@ public class Panel3D extends JPanel implements GLEventListener {
 	 */
 	public void deltaZ(float dz) {
 		_zdist += dz;
-		// refresh();
 	}
 
 	/**
 	 * Refresh the drawing
 	 */
 	public void refreshQueued() {
-//		refreshPending = true;
 	}
 
 
@@ -472,6 +480,14 @@ public class Panel3D extends JPanel implements GLEventListener {
 			refresh();
 		}
 	}
+	
+	/**
+	 * Clear all items from the list.
+	 */
+	public void clearItems() {
+		_itemList.clear();
+		refresh();
+	}
 
 	/**
 	 * Conver GL coordinates to screen coordinates
@@ -522,8 +538,6 @@ public class Panel3D extends JPanel implements GLEventListener {
 			n = Integer.parseInt(arg[0]);
 		}
 
-		final int num = n;
-
 		testFrame.setLayout(new BorderLayout(4, 4));
 
 		final Panel3D p3d = createPanel3D();
@@ -551,20 +565,21 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 	}
 
+	//for main program test
 	private static Panel3D createPanel3D() {
 
 		final float xymax = 600f;
 		final float zmax = 600f;
 		final float zmin = -100f;
-		final float xdist = -100f;
+		final float xdist = 0f;
 		final float ydist = 0f;
-		final float zdist = -1600f;
+		final float zdist = -2.75f*xymax;
 
 		final float thetax = 45f;
 		final float thetay = 45f;
 		final float thetaz = 45f;
 
-		Panel3D p3d = new Panel3D(thetax, thetay, thetaz, xdist, ydist, zdist) {
+		return new Panel3D(thetax, thetay, thetaz, xdist, ydist, zdist) {
 			@Override
 			public void createInitialItems() {
 				// coordinate axes
@@ -604,7 +619,7 @@ public class Panel3D extends JPanel implements GLEventListener {
 
 				// point set test
 				int numPnt = 100;
-				Color color = Color.yellow;
+				Color color = Color.orange;
 				float pntSize = 10;
 				float coords[] = new float[3 * numPnt];
 				for (int i = 0; i < numPnt; i++) {
@@ -633,20 +648,81 @@ public class Panel3D extends JPanel implements GLEventListener {
 			}
 
 		};
+	}
+	public void rotateX(float angle) {
+		float[] rotation = createRotationX(angle);
+		multiplyMatrix(rotation);
+	}
 
-		return p3d;
+	public void rotateY(float angle) {
+		float[] rotation = createRotationY(angle);
+		multiplyMatrix(rotation);
+	}
+
+	public void rotateZ(float angle) {
+        float[] rotation = createRotationZ(angle);
+        multiplyMatrix(rotation);
+	}
+
+	private float[] createRotationX(float angle) {
+	    float radians = (float) Math.toRadians(angle);
+	    float c = (float) Math.cos(radians);
+	    float s = (float) Math.sin(radians);
+
+	    return new float[] {
+	        1, 0, 0, 0,
+	        0, c, -s, 0,
+	        0, s, c, 0,
+	        0, 0, 0, 1
+	    };
+	}
+
+	private float[] createRotationY(float angle) {
+	    float radians = (float) Math.toRadians(angle);
+	    float c = (float) Math.cos(radians);
+	    float s = (float) Math.sin(radians);
+
+	    return new float[] {
+	        c, 0, s, 0,
+	        0, 1, 0, 0,
+	        -s, 0, c, 0,
+	        0, 0, 0, 1
+	    };
+	}
+
+	private float[] createRotationZ(float angle) {
+	    float radians = (float) Math.toRadians(angle);
+	    float c = (float) Math.cos(radians);
+	    float s = (float) Math.sin(radians);
+
+	    return new float[] {
+	        c, -s, 0, 0,
+	        s, c, 0, 0,
+	        0, 0, 1, 0,
+	        0, 0, 0, 1
+	    };
 	}
 
 	/**
+
 	 * Print the panel. No default implementation.
+
 	 */
+
 	public void print() {
+
 	}
 
+
+
 	/**
+
 	 * Snapshot of the panel. No default implementation.
+
 	 */
+
 	public void snapshot() {
+
 	}
 
 }

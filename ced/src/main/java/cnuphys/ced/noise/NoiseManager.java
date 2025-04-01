@@ -31,7 +31,7 @@ public class NoiseManager implements IClasIoEventListener {
 
 	// event manager
 	private ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
-	
+
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
@@ -68,23 +68,23 @@ public class NoiseManager implements IClasIoEventListener {
 	public NoiseReductionParameters getParameters(int sect0, int supl0) {
 		return noisePackage.getParameters(sect0, supl0);
 	}
-	
+
 
 
 	@Override
 	public void newClasIoEvent(DataEvent event) {
 		noisePackage.clear();
 		_noiseResults.clear();
-		
+
 		int count = _dcData.count();
 		if (count > 0) {
 			int sector[] = toIntArray(_dcData.sector);
 			int superlayer[] = toIntArray(_dcData.superlayer);
 			int layer[] = toIntArray(_dcData.layer6);
 			int wire[] = toIntArray(_dcData.component);
-			
+
 			noisePackage.findNoise(sector, superlayer, layer, wire, _noiseResults);
-			
+
 			for (int i = 0; i < count; i++) {
 				_dcData.noise[i] = _noiseResults.noise[i];
 			}

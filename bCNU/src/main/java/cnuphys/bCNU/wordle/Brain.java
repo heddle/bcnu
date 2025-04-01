@@ -14,7 +14,7 @@ public class Brain {
 
 	//the database
 	private static Data _data = Data.getInstance();
-	
+
 	//used leters and their best score
 	private HashMap<Character, Integer> _usedLetters = new HashMap<>();
 
@@ -32,7 +32,7 @@ public class Brain {
 		}
 		return _instance;
 	}
-	
+
 	/**
 	 * Get the current word index.
 	 *
@@ -113,7 +113,7 @@ public class Brain {
 			LetterGrid.getInstance().badGuess(_currentWordIndex);
 			return;
 		}
-		
+
 		//handle not in dictionary
 		if (!_data.goodWord(guess)) {
 			Wordle.getInstance().setMessage("Not in the word list!");
@@ -126,7 +126,7 @@ public class Brain {
 		LetterGrid.getInstance().setCompleted(_currentWordIndex, true);
 
 		boolean result = submitGuess(guess);
-		
+
 		if (result) {
 			gameWon();
 		} else {
@@ -141,12 +141,12 @@ public class Brain {
 		}
 		refresh();
 	}
-	
+
 	private void updateUsedLetters(char word[]) {
-		
+
 		int values[] = new int[5];
 		Scorer.scoreGuess(_currentWord, new String(word), values);
-		
+
 		for (int i = 0; i < 5; i++) {
 			char c = word[i];
 			int val = values[i];
@@ -183,7 +183,7 @@ public class Brain {
 			Wordle.getInstance().setMessage("You won on the 6th try. \nColor me unimpressed.");
 
 		}
-		
+
 		Wordle.getInstance().enableNewGame(true);
 	}
 
@@ -219,7 +219,7 @@ public class Brain {
 
 	/**
 	 * Has a char been used in an attempted word?
-	 * 
+	 *
 	 * @param c the char
 	 * @return the value of the char in the attempted words. If
 	 *        the char has not been used, return -1.

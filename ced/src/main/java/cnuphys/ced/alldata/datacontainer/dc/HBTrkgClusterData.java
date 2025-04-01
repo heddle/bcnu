@@ -5,7 +5,7 @@ public class HBTrkgClusterData extends ATrkgClusterData {
 	// singleton
 	private static volatile HBTrkgClusterData _instance;
 
-	
+
 	/**
 	 * Public access to the singleton
 	 *

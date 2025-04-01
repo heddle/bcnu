@@ -8,10 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.Vector;
+import java.util.ArrayList;
 
-import cnuphys.bCNU.drawable.DrawableList;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.feedback.FeedbackControl;
 import cnuphys.bCNU.feedback.FeedbackPane;
@@ -19,10 +17,9 @@ import cnuphys.bCNU.graphics.toolbar.BaseToolBar;
 import cnuphys.bCNU.graphics.toolbar.ToolBarToggleButton;
 import cnuphys.bCNU.graphics.world.WorldPolygon;
 import cnuphys.bCNU.item.AItem;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.YouAreHereItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.bCNU.visible.VisibilityTableScrollPane;
 
 public interface IContainer {
 
@@ -32,43 +29,43 @@ public interface IContainer {
 	public static final double FIXED_ZOOM_FACTOR = 0.85;
 
 	/**
-	 * Add a layer for containing items rendered on this container..
+	 * Add an itemlist for containing items rendered on this container..
 	 *
-	 * @param name the name of the logical layer. If one with that name already
+	 * @param name the name of the list. If one with that name already
 	 *             exists, it is returned.
 	 */
-	public LogicalLayer addLogicalLayer(String name);
+	public ItemList addItemList(String name);
 
 	/**
-	 * Add a layer to this container.
+	 * Add an item list to this container.
 	 *
-	 * @param layer the logical layer to add.
+	 * @param list the list to add.
 	 */
-	public void addLogicalLayer(LogicalLayer layer);
+	public void addItemList(ItemList list);
 
 	/**
-	 * Get the annotation layer for this obtainer.
+	 * Get the annotation list for this obtainer.
 	 *
-	 * @return the annotation layer for this obtainer. All drawing tools draw on the
-	 *         annotation layer, which is kept on top.
+	 * @return the annotation list for this container. All drawing tools draw on the
+	 *         annotation list, which is kept on top.
 	 */
-	public LogicalLayer getAnnotationLayer();
+	public ItemList getAnnotationList();
 
 	/**
-	 * Gets a user layer by name. Do not use for the annotation layer-- for that use
-	 * getAnnotationLayer().
+	 * Gets an item list by name. Do not use for the annotation list-- for that use
+	 * getAnnotationList().
 	 *
-	 * @param name the name of the logical layer.
-	 * @return the layer, or <code>null</code>.
+	 * @param name the name of the item list.
+	 * @return the item list, or <code>null</code>.
 	 */
-	public LogicalLayer getLogicalLayer(String name);
+	public ItemList getItemList(String name);
 
 	/**
-	 * Remove a layer for containing items rendered on this container.
+	 * Remove an item list rendered on this container.
 	 *
-	 * @param layer the layer to remove
+	 * @param list the list to remove
 	 */
-	public void removeLogicalLayer(LogicalLayer layer);
+	public void removeItemList(ItemList list);
 
 	/**
 	 * This converts a screen or pixel point to a world point.
@@ -165,13 +162,6 @@ public interface IContainer {
 	public void undoLastZoom();
 
 	/**
-	 * Get a scroll pane with a table for controlling logical layer visibility
-	 *
-	 * @return a scroll pane with a table for controlling logical layer visibility
-	 */
-	public VisibilityTableScrollPane getVisibilityTableScrollPane();
-
-	/**
 	 * This is called when we have completed a rubber banding. pane.
 	 *
 	 * @param b The rubber band bounds.
@@ -188,39 +178,39 @@ public interface IContainer {
 	public AItem getItemAtPoint(Point lp);
 
 	/**
-	 * Obtain a collection of all enclosed items across all layers.
+	 * Obtain a collection of all enclosed items across all lists.
 	 *
 	 * @param rect the rectangle in question.
-	 * @return all items on all layers enclosed by the rectangle.
+	 * @return all items on all item lists enclosed by the rectangle.
 	 */
 
-	public Vector<AItem> getEnclosedItems(Rectangle rect);
+	public ArrayList<AItem> getEnclosedItems(Rectangle rect);
 
 	/**
 	 * Find all items, if any, at the point.
 	 *
 	 * @param lp the pixel point in question.
-	 * @return all items across all layers that contain the given point. It may be
+	 * @return all items across all item lists that contain the given point. It may be
 	 *         an empty vector, but it won't be <code>null</null>.
 	 */
-	public Vector<AItem> getItemsAtPoint(Point lp);
+	public ArrayList<AItem> getItemsAtPoint(Point lp);
 
 	/**
-	 * Check whether at least one item on any layer is selected.
+	 * Check whether at least one item on any item list is selected.
 	 *
-	 * @return <code>true</code> if at least one item on any layer is selected.
+	 * @return <code>true</code> if at least one item on any item list is selected.
 	 */
 	public boolean anySelectedItems();
 
 	/**
-	 * Delete all selected items, across all layers.
+	 * Delete all selected items, across all item lists.
 	 *
 	 * @param container the container they lived on.
 	 */
 	public void deleteSelectedItems(IContainer container);
 
 	/**
-	 * Select or deselect all items, across all layers.
+	 * Select or deselect all items, across all item lists.
 	 *
 	 * @param select the selection flag.
 	 */
@@ -236,15 +226,6 @@ public interface IContainer {
 	 */
 	public void zoom(final double xmin, final double xmax, final double ymin, final double ymax);
 
-	/**
-	 * Reworld to the specified area.
-	 *
-	 * @param xmin minimum x coordinate.
-	 * @param xmax maximum x coordinate.
-	 * @param ymin minimum y coordinate.
-	 * @param ymax maximum y coordinate.
-	 */
-	public void reworld(final double xmin, final double xmax, final double ymin, final double ymax);
 
 	/**
 	 * Get this container's tool bar.
@@ -343,20 +324,12 @@ public interface IContainer {
 	 * will generally make it the topmost view--so it is good for things like a
 	 * reference point (YouAreHereItem).
 	 *
-	 * @return the glass layer.
+	 * @return the glass list.
 	 */
-	public LogicalLayer getGlassLayer();
+	public ItemList getGlassList();
 
 	/**
-	 * Handle a file, one that probably result from a drag and drop or a double
-	 * click. Treat it like an "open".
-	 *
-	 * @param file the file to handle.
-	 */
-	public void handleFile(File file);
-
-	/**
-	 * Convenience method for setting the dirty flag for all items on all layers.
+	 * Convenience method for setting the dirty flag for all items on all item lists.
 	 *
 	 * @param dirty the new value of the dirty flag.
 	 */
@@ -395,64 +368,6 @@ public interface IContainer {
 	 */
 	public void setBeforeDraw(IDrawable beforeDraw);
 
-	/**
-	 * From a given screen rectangle, create an ellipse item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param b     the bounding screen rectangle, probably from rubber banding.
-	 * @return the new item
-	 */
-	public AItem createEllipseItem(LogicalLayer layer, Rectangle b);
-
-	/**
-	 * From a given screen rectangle, create a rectangle item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param b     the screen rectangle, probably from rubber banding.
-	 * @return the new item
-	 */
-	public AItem createRectangleItem(LogicalLayer layer, Rectangle b);
-
-	/**
-	 * From two given screen points, create a line item
-	 *
-	 * @param layer the layer to put the item on
-	 * @param p0    one screen point, probably from rubber banding.
-	 * @param p1    another screen point, probably from rubber banding.
-	 * @return the new item
-	 */
-	public AItem createLineItem(LogicalLayer layer, Point p0, Point p1);
-
-	/**
-	 * From a given screen polygon, create a polygon item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param pp    the screen polygon, probably from rubber banding.
-	 * @return the new item
-	 */
-	public AItem createPolygonItem(LogicalLayer layer, Point pp[]);
-
-	/**
-	 * From a given screen polyline, create a polyline item.
-	 *
-	 * @param layer the layer to put the item on
-	 * @param pp    the screen polyline, probably from rubber banding.
-	 * @return the new item
-	 */
-	public AItem createPolylineItem(LogicalLayer layer, Point pp[]);
-
-	/**
-	 * Create a radarc item from the given parameters, probably obtained by
-	 * rubberbanding.
-	 *
-	 * @param layer    the layer to put the item on
-	 * @param pc       the center of the arc
-	 * @param p1       the point at the end of the first leg. Thus pc->p1 determing
-	 *                 the radius.
-	 * @param arcAngle the angle COUNTERCLOCKWISE in degrees.
-	 * @return the new item
-	 */
-	public AItem createRadArcItem(LogicalLayer layer, Point pc, Point p1, double arcAngle);
 
 	/**
 	 * Get a location string for a point
@@ -462,12 +377,6 @@ public interface IContainer {
 	 */
 	public String getLocationString(Point2D.Double wp);
 
-	/**
-	 * Get all the logical layers.
-	 *
-	 * @return all logical layers in the container.
-	 */
-	public DrawableList getLogicalLayers();
 
 	/**
 	 * Create a Point2D.Double or subclass thereof that is appropriate for this

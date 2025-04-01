@@ -86,7 +86,7 @@ public class CSVTestDataConsumer extends ASNRConsumer {
 	@Override
 	public StreamProcessStatus streamingPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
 
-		// first test, right benders only, segments in all sectors
+		// first test, right benders only, segments in all superlayers
 
 		boolean haveRightSegsAllSectors = snr.segmentsInAllSuperlayers(0, SNRManager.RIGHT);
 		

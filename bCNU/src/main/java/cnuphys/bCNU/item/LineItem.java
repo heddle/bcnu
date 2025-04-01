@@ -9,7 +9,6 @@ import java.awt.geom.Rectangle2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.MathUtilities;
 
 public class LineItem extends AItem {
@@ -17,12 +16,12 @@ public class LineItem extends AItem {
 	/**
 	 * Create a world line object.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 * @param wp0   start of the line.
 	 * @param wp1   end of the line of the line.
 	 */
-	public LineItem(LogicalLayer layer, Point2D.Double wp0, Point2D.Double wp1) {
-		super(layer);
+	public LineItem(ItemList itemList, Point2D.Double wp0, Point2D.Double wp1) {
+		super(itemList);
 		_line = new Line2D.Double(wp0, wp1);
 		_focus = new Point2D.Double(0.5 * (wp0.x + wp1.x), 0.5 * (wp0.y + wp1.y));
 	}

@@ -22,6 +22,10 @@ public class Advisor extends Person implements ITabled {
 	/** the department */
 	public Department department;
 
+	/** the "special" column */
+	public String special;
+
+
 	/** the advisor's primary subject. might be same as depart. Or in come cases a major like music
 	 * ASSIGNED FROM SCHEDULE! */
 	public Major subject;
@@ -30,7 +34,7 @@ public class Advisor extends Person implements ITabled {
 	 * e.g. Ryan Fisher and psych"
 	 */
 	public Major preferred2ndMajor;
-	
+
 	/** a specialty, e.g. premed scholars */
 	public Specialty specialty = Specialty.NONE;
 
@@ -48,11 +52,14 @@ public class Advisor extends Person implements ITabled {
 	 * @param name full name: last, first
 	 * @param id faculty id
 	 * @param dept academic department
+	 * @param email email address
+	 * @param special the special column (e.g., ALC)
 	 */
-	public Advisor(String name, String id, String dept, String email) {
+	public Advisor(String name, String id, String dept, String email, String special) {
 		this.name = name.replace("\"", "");
 		this.id = DataManager.fixId(id);
 		this.email = email;
+		this.special = special;
 
 		String deptstr = dept.replace("\"", "");
 
@@ -68,11 +75,14 @@ public class Advisor extends Person implements ITabled {
 		subject = Major.getValue(department.name());
 
 		if (subject == null) {
-			System.err.println("\nCOULD not subject to department [" + department.name() + "]");
+			System.err.println("\nCOULD not match subject to department [" + department.name() + "]");
 			System.exit(1);
 		}
 
-		this.set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
+		set(Person.MUSICTHEATER, (subject == Major.MUSIC) || (subject == Major.THEA));
+		set(Person.PREBUS, subject.isPreBusiness());
+		set(Person.ENGR, subject.isEngineering());
+		set(Person.ALC, special.contains("ALC"));
 
 
 		advisees = new ArrayList<>();
@@ -116,7 +126,7 @@ public class Advisor extends Person implements ITabled {
 		advisees.remove(student);
 		advisees.add(student);
 		student.setLocked(lockStudentWhenDone);
-		
+
 		student.reason = reason;
 		student.advisor = this;
 
@@ -141,6 +151,15 @@ public class Advisor extends Person implements ITabled {
 	public String nameAndDepartment() {
 		return String.format("%s  [%s]", name, department);
 	}
+
+	/**
+	 * full name (last, first) and department is a single string
+	 * @return full name (last, first) and department is a single string
+	 */
+	public String nameAndDepartmentAndSpecial() {
+		return String.format("%s  [%s] [%s] [%s]", name, department, subject, special);
+	}
+
 
 	/**
 	 * The number of assigned advisees
@@ -213,5 +232,18 @@ public class Advisor extends Person implements ITabled {
 		return null;
 	}
 
+	/**
+	 * Does this advisor teach the given crn?
+	 * @param crn the course
+	 * @return <code>true</code> if the advisor teaches the course
+	 */
+	public boolean hasCRN(String crn) {
+		for (Course course : schedule) {
+			if (course.crn.equals(crn)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

@@ -12,10 +12,10 @@ import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public abstract class ATrkgSegmentData implements IDataContainer {
-	
+
 	//for feedback
 	private static final String color = "powder blue";
-	
+
 	// the data warehouse
 	protected static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
@@ -27,31 +27,31 @@ public abstract class ATrkgSegmentData implements IDataContainer {
 
     /** 1-based superlayers */
 	public byte[] superlayer;
-	
+
 	/** x coordinate of one endpoint */
 	public float x1[];
-	
+
     /** z coordinate of one endpoint */
     public float z1[];
-    
+
     /** x coordinate of the other endpoint */
     public float x2[];
-    
+
     /** z coordinate of the other endpoint */
     public float z2[];
-    
+
 	/** cached x coordinate of drawing locations */
 	public int ppx1[];
 
 	/** cached y coordinate of drawing locations */
 	public int ppy1[];
-	
+
 	/** cached x coordinate of drawing locations */
 	public int ppx2[];
-	
+
 	/** cached y coordinate of drawing locations */
 	public int ppy2[];
-	
+
 	/**
 	 * Create a data container and notify the data warehouse that it wants to be
 	 * notified of data events.
@@ -74,7 +74,7 @@ public abstract class ATrkgSegmentData implements IDataContainer {
 		ppx2 = null;
 		ppy2 = null;
 	}
-	
+
 	@Override
 	public void update(DataEvent event) {
 		String bankName = bankName();
@@ -83,15 +83,15 @@ public abstract class ATrkgSegmentData implements IDataContainer {
 		if (bank == null) {
 			return;
 		}
-		
+
 		sector = bank.getByte("sector");
 		superlayer = bank.getByte("superlayer");
 		x1 = bank.getFloat("SegEndPoint1X");
 		z1 = bank.getFloat("SegEndPoint1Z");
 		x2 = bank.getFloat("SegEndPoint2X");
 		z2 = bank.getFloat("SegEndPoint2Z");
-		
-		
+
+
 		int n = (sector == null) ? 0 : sector.length;
 		if (n > 0) {
 			ppx1 = new int[n];
@@ -100,7 +100,7 @@ public abstract class ATrkgSegmentData implements IDataContainer {
 			ppy2 = new int[n];
 		}
 	}
-	
+
 	/**
 	 * Set the location where the cross was last drawn
 	 * @param index the index of the cross
@@ -130,10 +130,10 @@ public abstract class ATrkgSegmentData implements IDataContainer {
 	public int count() {
         return (sector == null) ? 0 : sector.length;
     }
-	
+
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
@@ -145,7 +145,7 @@ public abstract class ATrkgSegmentData implements IDataContainer {
 
 	/**
 	 * Used for hit detection
-	 * 
+	 *
 	 * @param index the cluster index
 	 * @param pp    the screen point
 	 * @return true if the screen point is in the cluster

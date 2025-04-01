@@ -1,13 +1,16 @@
 package cnuphys.fastMCed.eventgen.random;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import org.jlab.clas.physics.Particle;
 
@@ -23,6 +26,10 @@ public class ParticlePanel extends JPanel implements ItemListener {
 
 	// chose a particle
 	private LundComboBox _lundComboBox;
+	
+	//Probability to use
+	private JTextField probabilityTextBox;
+	private double _defaultProbability;
 
 	// vertex
 	private VariablePanel _xoPanel;
@@ -33,12 +40,19 @@ public class ParticlePanel extends JPanel implements ItemListener {
 	private VariablePanel _pPanel;
 	private VariablePanel _thetaPanel;
 	private VariablePanel _phiPanel;
+	
+	//momentum range GeV/c
+	private double _pMin;
+	private double _pMax;
 
 	// random dialog
 	private RandomEvGenDialog _dialog;
 
-	public ParticlePanel(RandomEvGenDialog dialog, boolean use, int lundIntId) {
+	public ParticlePanel(RandomEvGenDialog dialog, boolean use, int lundIntId, double defaultProbability, double pMin, double pMax) {
 		_dialog = dialog;
+		_defaultProbability = defaultProbability;
+		_pMin = pMin;
+		_pMax = pMax;
 		setLayout(new BorderLayout(20, 4));
 
 		add(addWestPanel(use, lundIntId), BorderLayout.WEST);
@@ -58,6 +72,36 @@ public class ParticlePanel extends JPanel implements ItemListener {
 
 		panel.add(_active);
 		panel.add(_lundComboBox);
+		panel.add(probPanel());
+		
+		return panel;
+	}
+
+	public double getProbabilityPercent() {
+		
+		double prob;
+		try  {
+			prob = Double.parseDouble(probabilityTextBox.getText());
+		}
+		catch (Exception e) {
+			prob = _defaultProbability;
+		}
+		
+		if ((prob < 0) || (prob > 100)) {
+			prob = _defaultProbability;
+		}
+		return prob;
+	}
+	
+	private JPanel probPanel() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new FlowLayout());
+		
+		panel.add(new JLabel("Probability %  "));
+		probabilityTextBox = new JTextField(5);
+		probabilityTextBox.setText(Double.toString(_defaultProbability));
+		panel.add(probabilityTextBox);
+		panel.add(probabilityTextBox);
 		return panel;
 	}
 
@@ -88,7 +132,7 @@ public class ParticlePanel extends JPanel implements ItemListener {
 	public JPanel addEastPanel() {
 		JPanel panel = new JPanel();
 		panel.setLayout(new VerticalFlowLayout());
-		_pPanel = new VariablePanel("P", GeneratorManager.getPMin(), GeneratorManager.getPMax(), "GeV/c");
+		_pPanel = new VariablePanel("P", _pMin, _pMax, "GeV/c");
 		_thetaPanel = new VariablePanel(UnicodeSupport.SMALL_THETA, GeneratorManager.getThetaMin(),
 				GeneratorManager.getThetaMax(), "deg");
 		_phiPanel = new VariablePanel(UnicodeSupport.SMALL_PHI, GeneratorManager.getPhiMin(),

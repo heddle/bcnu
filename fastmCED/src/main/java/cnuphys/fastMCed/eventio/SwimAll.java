@@ -5,6 +5,9 @@ import java.util.Vector;
 import org.jlab.clas.physics.Particle;
 import org.jlab.clas.physics.PhysicsEvent;
 
+import cnuphys.CLAS12Swim.CLAS12SwimResult;
+import cnuphys.CLAS12Swim.CLAS12Swimmer;
+import cnuphys.adaptiveSwim.SwimType;
 import cnuphys.bCNU.log.Log;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
 import cnuphys.lund.LundId;
@@ -15,17 +18,17 @@ import cnuphys.magfield.MagneticFields;
 import cnuphys.rk4.RungeKuttaException;
 import cnuphys.swim.DefaultSwimStopper;
 import cnuphys.swim.SwimTrajectory;
-import cnuphys.swim.Swimmer;
 import cnuphys.swim.Swimming;
 
 public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 
 	// integration cutoff
-	private static final double RMAX = 8;
-	private static final double PATHMAX = 10.0;
+	private static final double RMAX = 800;
+	private static final double PATHMAX = 1000.0;
 
-	private static Swimmer _swimmer = null;
 	private DefaultSwimStopper _stopper;
+	
+	private CLAS12Swimmer _swimmer;
 
 	public SwimAll() {
 		MagneticFields.getInstance().addMagneticFieldChangeListener(this);
@@ -47,9 +50,9 @@ public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 			double pzo = particle.pz(); // leave in GeV
 
 			// note conversions from mm to cm
-			double x = particle.vertex().x() / 100.; // cm to meters
-			double y = particle.vertex().y() / 100.; // cm to meters
-			double z = particle.vertex().z() / 100.; // cm to meters
+			double x = particle.vertex().x();
+			double y = particle.vertex().y();
+			double z = particle.vertex().z();
 
 			swim(lid, pxo, pyo, pzo, x, y, z);
 		}
@@ -80,7 +83,7 @@ public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 			double theta = Math.toDegrees(Math.acos(pzo / p));
 			double phi = Math.toDegrees(Math.atan2(pyo, pxo));
 
-			v.add(new TrajectoryRowData(index, lid, x, y, z, p, theta, phi, 0, "FastMC"));
+			v.add(new TrajectoryRowData(index, lid, x, y, z, p, theta, phi, 0, "FastMC", SwimType.MCSWIM));
 		}
 
 		return v;
@@ -92,29 +95,21 @@ public class SwimAll implements ISwimAll, MagneticFieldChangeListener {
 		double p = Math.sqrt(px * px + py * py + pz * pz);
 		double theta = Math.toDegrees(Math.acos(pz / p));
 		double phi = Math.toDegrees(Math.atan2(py, px));
+		
+		CLAS12Swimmer swimmer = new CLAS12Swimmer();
+
 
 		if (_swimmer == null) {
-			_swimmer = new Swimmer(MagneticFields.getInstance().getActiveField());
+			_swimmer = new CLAS12Swimmer();
 			System.err.println("Created new swimmer");
 		}
 		double stepSize = 5e-4; // m
-		if (_stopper == null) {
-			_stopper = new DefaultSwimStopper(RMAX);
-		}
+		double tolerance = 1.0e-6;
 
-		// System.err.println("swim vertex: (" + x + ", " + y + ", "
-		// + z + ")");
-		SwimTrajectory traj;
-		try {
-			traj = _swimmer.swim(lid.getCharge(), x, y, z, p, theta, phi, _stopper, PATHMAX, stepSize,
-					Swimmer.CLAS_Tolerance, null);
-			traj.setLundId(lid);
-			Swimming.addMCTrajectory(traj);
-
-		} catch (RungeKuttaException e) {
-			Log.getInstance().error("Exception while swimming all MC particles");
-			Log.getInstance().exception(e);
-		}
+		CLAS12SwimResult result = swimmer.swim(lid.getCharge(), x, y, z, p, theta, phi, PATHMAX, stepSize, tolerance);
+		SwimTrajectory traj = result.getTrajectory();
+		traj.setLundId(lid);
+		Swimming.addMCTrajectory(traj);
 	}
 
 	@Override

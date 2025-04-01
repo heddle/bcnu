@@ -12,8 +12,8 @@ import cnuphys.bCNU.format.DoubleFormat;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.cedview.HexView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.GeometryManager;
@@ -39,11 +39,11 @@ public abstract class HexSectorItem extends PolygonItem {
 	/**
 	 * Get a hex sector item
 	 *
-	 * @param layer  the logical layer
+	 * @param itemList  the item list
 	 * @param sector the 1-based sector
 	 */
-	public HexSectorItem(LogicalLayer layer, HexView view, int sector) {
-		super(layer, getPoints(view.getContainer().getWorldSystem().getMinX(), sector));
+	public HexSectorItem(ItemList itemList, HexView view, int sector) {
+		super(itemList, getPoints(view.getContainer().getWorldSystem().getMinX(), sector));
 		_sector = sector;
 		// the view this item lives on.
 

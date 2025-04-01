@@ -8,13 +8,13 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.ced.alldata.datacontainer.ACommonCrossData;
 
 public class FMTRecCrossData extends ACommonCrossData {
-	
+
 	// singleton
 	private static volatile FMTRecCrossData _instance;
-	
+
 	/** ID */
 	public short ID[];
-	
+
 	/** the cross x direction */
 	public float ux[];
 
@@ -23,10 +23,10 @@ public class FMTRecCrossData extends ACommonCrossData {
 
 	/** the cross z direction*/
 	public float uz[];
-	
+
 	/** cluster 1 index */
 	public short cluster1ndex[];
-	
+
 	/** cluster 2 index */
 	public short cluster2ndex[];
 
@@ -47,7 +47,7 @@ public class FMTRecCrossData extends ACommonCrossData {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public void clear() {
 		super.clear();
@@ -90,14 +90,15 @@ public class FMTRecCrossData extends ACommonCrossData {
 		}
 
 	}
-	
+
 	/**
 	 * Provide feedback for a cross
-	 * 
+	 *
 	 * @param detectorName    the name of the detector
 	 * @param index           the index of the cluster
 	 * @param feedbackStrings add strings to this collection
 	 */
+	@Override
 	public void feedback(String detectorName, int index, List<String> feedbackStrings) {
 		feedbackStrings.add(String.format("$Forest Green$%s cross ID %d", detectorName, ID[index]));
 		super.feedback(detectorName, index, feedbackStrings);

@@ -9,17 +9,17 @@ import cnuphys.bCNU.util.Bits;
 public abstract class Person implements ITabled {
 
 	/** bitwise properties */
-	public static final int PRELAW         = 01;
+	public static final int PREBUS         = 01;
 	public static final int CCPT           = 02;
 	public static final int PREMEDSCHOLAR  = 04;
 	public static final int PRESSCHOLAR    = 010;
 	public static final int PLP            = 020;
 	public static final int MUSICTHEATER   = 0100;
-	public static final int BTMG           = 0200;
+	public static final int ENGR           = 0200;
 	public static final int HONOR          = 0400;
 	public static final int WIND           = 01000;
 	public static final int LOCKED         = 02000;
-	public static final int ILC            = 04000;
+	public static final int ALC            = 04000;
 
 	protected int bits;
 
@@ -49,27 +49,27 @@ public abstract class Person implements ITabled {
 	}
 
 	/**
-	 * Convenience method to check whether person has ilc status
-	 * @return true if person has ilc status
+	 * Convenience method to check whether person has alc status
+	 * @return true if person has alc status
 	 */
-	public boolean ilc() {
-		return check(ILC);
+	public boolean alc() {
+		return check(ALC);
 	}
 
 	/**
-	 * Convenience method to lset the ilc status
+	 * Convenience method to set the alc status
 	 */
-	public void setILC() {
-		set(ILC);
+	public void setALC() {
+		set(ALC);
 	}
 
 	/**
-	 * Convenience method to set or unset the ilc status
+	 * Convenience method to set or unset the alc status
 	 */
-	public void setILC(boolean ilc) {
-		set(ILC, ilc);
+	public void setALC(boolean alc) {
+		set(ALC, alc);
 	}
-	
+
 	/**
 	 * Convenience method to set the PSP status
 	 */

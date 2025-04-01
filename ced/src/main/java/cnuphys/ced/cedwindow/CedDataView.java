@@ -26,8 +26,8 @@ import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.clasio.ClasIoEventManager;
-import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
+import cnuphys.ced.clasio.IClasIoEventListener;
 import cnuphys.ced.clasio.datatable.BankDataTable;
 import cnuphys.ced.clasio.table.NamedLabel;
 import cnuphys.ced.properties.PropertiesManager;
@@ -76,7 +76,7 @@ public class CedDataView extends BaseView
 
 	/**
 	 * View that shows a bank and all its columns
-	 * 
+	 *
 	 * @param bankName the bank name
 	 */
 	private CedDataView(String bankName) {
@@ -372,7 +372,7 @@ public class CedDataView extends BaseView
 	/**
 	 * Set the displayed sequential event number value. The sequential event number
 	 * is just the number in the file.
-	 * 
+	 *
 	 * @param seqEventNum event number.
 	 */
 	public void setSeqEventNumber() {
@@ -385,7 +385,7 @@ public class CedDataView extends BaseView
 	/**
 	 * Set the displayed true event number value. The true event number comes from
 	 * the RUN::config bank.
-	 * 
+	 *
 	 * @param trueEventNum event number.
 	 */
 	public void setTrueEventNumber() {
@@ -412,7 +412,7 @@ public class CedDataView extends BaseView
 			update();
 		}
 	}
-	
-	
+
+
 
 }

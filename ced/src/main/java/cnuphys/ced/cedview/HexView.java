@@ -29,6 +29,7 @@ public abstract class HexView extends CedView {
 	protected static final Font _font = Fonts.commonFont(Font.BOLD, 48);
 	protected static final Color TRANSTEXT2 = new Color(0, 0, 0, 30);
 
+	protected static final Color _lineColor = X11Colors.getX11Color("dark red");
 
 
 	/**
@@ -138,7 +139,7 @@ public abstract class HexView extends CedView {
 	 * Draw an xy coordinate system  the graphics context
 	 * @param container the container
 	 */
-	protected void drawCoordinateSystem(Graphics g, IContainer container) {
+	protected void drawCoordinateSystem(Graphics g, IContainer container, Color lColor) {
 		// draw coordinate system
 		Component component = container.getComponent();
 		Rectangle sr = component.getBounds();
@@ -156,7 +157,7 @@ public abstract class HexView extends CedView {
 		g.setColor(TRANS);
 		g.fillRect(r.x, r.y, r.width, r.height);
 
-		g.setColor(X11Colors.getX11Color("dark red"));
+		g.setColor((lColor != null) ? lColor : _lineColor);
 		g.drawLine(left, bottom, right, bottom);
 		g.drawLine(right, bottom, right, top);
 
@@ -166,13 +167,13 @@ public abstract class HexView extends CedView {
 	}
 
 	// draw the sector numbers
-	protected void drawSectorNumbers(Graphics g, IContainer container, double x) {
+	protected void drawSectorNumbers(Graphics g, IContainer container, Color color, double x) {
 		double r3over2 = Math.sqrt(3) / 2;
 
 		double y = 0;
 		FontMetrics fm = getFontMetrics(_font);
 		g.setFont(_font);
-		g.setColor(TRANSTEXT);
+		g.setColor((color != null) ? color :  TRANSTEXT);
 		Point pp = new Point();
 
 		for (int sect = 1; sect <= 6; sect++) {

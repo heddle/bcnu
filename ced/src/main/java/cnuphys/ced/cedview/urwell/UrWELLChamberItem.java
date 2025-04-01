@@ -7,8 +7,8 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.geometry.urwell.UrWELLGeometry;
@@ -29,19 +29,28 @@ public class UrWELLChamberItem extends PolygonItem {
 
 	};
 
-	public UrWELLChamberItem(LogicalLayer layer, Point2D.Double points[], int sector, int chamber) {
-		super(layer, points);
+	/**
+	 * Create a chamber outline
+	 *
+	 * @param itemList the item list
+	 * @param points   the points of the chamber
+	 * @param sector   the sector
+	 * @param chamber  the chamber
+	 */
+	public UrWELLChamberItem(ItemList itemList, Point2D.Double points[], int sector, int chamber) {
+		super(itemList, points);
 		_sector = sector;
 		_chamber = chamber;
 	}
 
 	/**
 	 * Create a chamber outline
+	 * @param itemList the item list
 	 * @param sector the sector [1..6]
 	 * @param chamber the chamber [1..3]
 	 * @return the chamber outline item
 	 */
-	public static  UrWELLChamberItem createUrWELLChamberItem(LogicalLayer layer, int sector, int chamber) {
+	public static  UrWELLChamberItem createUrWELLChamberItem(ItemList itemList, int sector, int chamber) {
 		Point2D.Double points[] = new Point2D.Double[4];
 
 		int cm1 = chamber-1;
@@ -60,7 +69,7 @@ public class UrWELLChamberItem extends PolygonItem {
 		}
 
 
-		UrWELLChamberItem item = new UrWELLChamberItem(layer, points, sector, chamber);
+		UrWELLChamberItem item = new UrWELLChamberItem(itemList, points, sector, chamber);
 		item.getStyle().setFillColor(_fillColors[cm1]);
 		return item;
 	}

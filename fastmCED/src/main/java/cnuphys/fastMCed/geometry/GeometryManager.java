@@ -27,10 +27,6 @@ public class GeometryManager {
 
 		// DC Geometry
 		DCGeometry.initialize();
-
-		// get the FTOF geometry
-		FTOFGeometry.initialize();
-
 	}
 
 	/**
@@ -321,7 +317,7 @@ public class GeometryManager {
 	}
 
 	/**
-	 * Get a world 2D polygon from a clas geo object like a FTOF slab.
+	 * Get a world 2D polygon from a clas geo object.
 	 * 
 	 * @param geoObj          the geometric object
 	 * @param projectionPlane the projection plane
@@ -432,10 +428,9 @@ public class GeometryManager {
 		Path3D path = new Path3D();
 		if (traj != null) {
 			for (double[] tp : traj) {
-				// convert to cm
-				double x = 100. * tp[0];
-				double y = 100. * tp[1];
-				double z = 100. * tp[2];
+				double x = tp[0];
+				double y = tp[1];
+				double z = tp[2];
 				path.addPoint(x, y, z);
 			}
 		}

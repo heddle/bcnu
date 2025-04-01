@@ -48,23 +48,27 @@ public class CedColors {
 	public static final Color cvtTrackColor = X11Colors.getX11Color("Dark Green");
 
 	// hit based
+	public static final String HB_COLOR_STRING = "yellow";
 	public static final Color HB_COLOR = Color.yellow;
 	public static final Color HB_TRANS = new Color(255, 255, 0, 240);
 	public static final Color HB_DOCAFRAME = HB_COLOR.darker();
 
 	// time based
-	public static final Color TB_COLOR = X11Colors.getX11Color("dark orange");
-	public static final Color TB_TRANS = X11Colors.getX11Color("dark orange", 240);
+	public static final String TB_COLOR_STRING = "dark orange";
+	public static final Color TB_COLOR = X11Colors.getX11Color(TB_COLOR_STRING);
+	public static final Color TB_TRANS = X11Colors.getX11Color(TB_COLOR_STRING, 240);
 	public static final Color TB_DOCAFRAME = TB_COLOR.darker();
 
 	// AI hit based
-	public static final Color AIHB_COLOR = X11Colors.getX11Color("spring green");
-	public static final Color AIHB_TRANS = X11Colors.getX11Color("spring green", 240);
+	public static final String AIHB_COLOR_STRING = "spring green";
+	public static final Color AIHB_COLOR = X11Colors.getX11Color(AIHB_COLOR_STRING);
+	public static final Color AIHB_TRANS = X11Colors.getX11Color(AIHB_COLOR_STRING, 240);
 	public static final Color AIHB_DOCAFRAME = AIHB_COLOR.darker();
 
 	// AI time based
-	public static final Color AITB_COLOR = X11Colors.getX11Color("magenta");
-	public static final Color AITB_TRANS = X11Colors.getX11Color("magenta", 240);
+	public static final String AITB_COLOR_STRING = "magenta";
+	public static final Color AITB_COLOR = X11Colors.getX11Color(AITB_COLOR_STRING);
+	public static final Color AITB_TRANS = X11Colors.getX11Color(AITB_COLOR_STRING, 240);
 	public static final Color AITB_DOCAFRAME = AITB_COLOR.darker();
 
 	// doca fills

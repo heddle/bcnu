@@ -21,7 +21,7 @@ public class CrossDrawer3D extends Item3D {
 	protected static final double SIN_TILT = Math.sin(Math.toRadians(25.));
 
 	private CedPanel3D _cedPanel3D;
-	
+
 	//data containers
 	private HBTrkgCrossData _hbCrossData = HBTrkgCrossData.getInstance();
 	private TBTrkgCrossData _tbCrossData = TBTrkgCrossData.getInstance();
@@ -60,12 +60,12 @@ public class CrossDrawer3D extends Item3D {
  		}
 
 	}
-	
+
 	private void drawCrossData(GLAutoDrawable drawable, ATrkgCrossData crossData, Color color) {
 		if (crossData == null) {
 			return;
 		}
-		
+
 		for (int i = 0; i < crossData.count(); i++) {
 			float[] p3d0 = new float[3];
 			float[] p3d1 = new float[3];
@@ -86,7 +86,7 @@ public class CrossDrawer3D extends Item3D {
 			Support3D.drawPoint(drawable, x, y, z, Color.black, 13, true);
 			Support3D.drawPoint(drawable, x, y, z, color, 11, true);
 		}
-		
+
 	}
 
 	/**

@@ -6,51 +6,16 @@ import com.jogamp.graph.geom.SVertex;
 import com.jogamp.opengl.GL;
 import com.jogamp.opengl.GL2;
 import com.jogamp.opengl.GL2ES1;
-import com.jogamp.opengl.GL2ES2;
 import com.jogamp.opengl.GL2ES3;
 import com.jogamp.opengl.GLAutoDrawable;
 import com.jogamp.opengl.glu.GLUquadric;
 import com.jogamp.opengl.util.gl2.GLUT;
-import com.jogamp.opengl.util.texture.Texture;
 
 public class Support3D {
 
 	public static GLUT glut = new GLUT();
 
-	private static final byte byteA = (byte) 170;
-	private static final byte byteB = (byte) 170;
-
 	private static GLUquadric _quad;
-
-	/* a stipple pattern */
-	public static byte sd[] = { byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA,
-			byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB,
-			byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA, byteB, byteA };
-
-	/** for half-tone stipples */
-	public static byte halftone[] = { (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0xAA, (byte) 0x55, (byte) 0x55,
-			(byte) 0x55, (byte) 0x55 };
 
 	/**
 	 * Draw a set of points
@@ -79,6 +44,7 @@ public class Support3D {
 			int j = i * 3;
 			gl.glVertex3f(coords[j], coords[j + 1], coords[j + 2]);
 		}
+		
 		gl.glEnd();
 	}
 
@@ -146,51 +112,150 @@ public class Support3D {
 		gl.glEnd();
 	}
 
-	public static final String vshader1 = "void main {\n" + "gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;\n"
-			+ "}";
+	/**
+	 * Draw a marker (a point) with an associated text label. The marker is drawn as
+	 * in drawPoint, and then a text label is rendered centered below the marker
+	 * with a 3 pixel gap.
+	 *
+	 * @param drawable    the OpenGL drawable
+	 * @param x           x coordinate of the marker
+	 * @param y           y coordinate of the marker
+	 * @param z           z coordinate of the marker
+	 * @param markerColor color of the marker
+	 * @param markerSize  pixel size of the marker
+	 * @param circular    whether the marker should be drawn with smooth (circular)
+	 *                    edges
+	 * @param label       the text to display below the marker
+	 * @param fontSize    scaling factor for the stroke font (in OpenGL units)
+	 * @param fontColor   color of the text label
+	 */
+	public static void drawMarker(GLAutoDrawable drawable, float x, float y, float z, Color markerColor,
+			float markerSize, boolean circular, String label, float fontSize, Color fontColor) {
+		GL2 gl = drawable.getGL().getGL2();
 
-	public static final String fshader1 = "void main {\n" + "}";
+		// Draw the marker (reuse your drawPoint method)
+		//drawPoint(drawable, x, y, z, markerColor, markerSize, circular);
 
-	public static void loadShader(GL2 gl, String vertexShaderString, String fragmentShaderString) {
-		int v = gl.glCreateShader(GL2ES2.GL_VERTEX_SHADER);
-		int f = gl.glCreateShader(GL2ES2.GL_FRAGMENT_SHADER);
+		// Retrieve the current matrices and viewport to project the marker position.
+		int[] viewport = new int[4];
+		double[] modelview = new double[16];
+		double[] projection = new double[16];
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+		gl.glGetDoublev(GL2.GL_MODELVIEW_MATRIX, modelview, 0);
+		gl.glGetDoublev(GL2.GL_PROJECTION_MATRIX, projection, 0);
 
-		// Compile the vertexShader String into a program.
-		String[] vlines = new String[] { vertexShaderString };
-		int[] vlengths = new int[] { vlines[0].length() };
-		gl.glShaderSource(v, vlines.length, vlines, vlengths, 0);
-		gl.glCompileShader(v);
+		// Use gluProject to map the marker's 3D position to window (screen)
+		// coordinates.
+		double[] winCoords = new double[3];
+		// Note: We are using Panel3D.glu as in your drawTube method.
+		Panel3D.glu.gluProject(x, y, z, modelview, 0, projection, 0, viewport, 0, winCoords, 0);
 
-		String[] flines = new String[] { fragmentShaderString };
-		int[] flengths = new int[] { flines[0].length() };
-		gl.glShaderSource(f, flines.length, flines, flengths, 0);
-		gl.glCompileShader(f);
+		// Compute the text width (in pixels) using GLUT stroke font widths.
+		// The GLUT stroke font returns a width in its native coordinate system,
+		// so we multiply by our chosen fontSize.
+		float textWidth = 0;
+		for (int i = 0; i < label.length(); i++) {
+			textWidth += glut.glutStrokeWidth(GLUT.STROKE_ROMAN, label.charAt(i)) * fontSize;
+		}
 
-		int shaderprogram = gl.glCreateProgram();
-		gl.glAttachShader(shaderprogram, v);
-		gl.glAttachShader(shaderprogram, f);
-		gl.glLinkProgram(shaderprogram);
-		gl.glValidateProgram(shaderprogram);
+		// Determine the text position:
+		// We want the text centered horizontally at the marker’s x coordinate
+		// and placed just below the marker. Since the marker is drawn with a size in
+		// pixels,
+		// we subtract half the marker size and then a further 3 pixels from the
+		// marker’s screen y.
+		double textWinX = winCoords[0] - textWidth / 2.0;
+		double textWinY = winCoords[1] - markerSize / 2.0 - 3.0;
 
-		// gl.glDeleteShader(v);
-		// gl.glDeleteShader(f);
-		gl.glUseProgram(shaderprogram);
+		// --- Switch to 2D orthographic projection for drawing text ---
+		// Save the current projection matrix.
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+		// Set up an orthographic projection covering the entire window.
+		gl.glOrtho(0, viewport[2], 0, viewport[3], -1, 1);
+
+		// Save the current modelview matrix.
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
+		gl.glPushMatrix();
+		gl.glLoadIdentity();
+
+		// Disable depth testing so the text is not hidden by other geometry.
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Set the font color.
+		setColor(gl, fontColor);
+
+		// Position the text.
+		gl.glPushMatrix();
+		// Translate to the computed window coordinates.
+		// (Remember that in an orthographic projection as set above, (0,0) is at the
+		// bottom left.)
+		gl.glTranslated(textWinX, textWinY, 0);
+		// Scale the stroke font by fontSize.
+		gl.glScalef(fontSize, fontSize, fontSize);
+
+		// Draw each character of the label using the GLUT stroke font.
+		for (int i = 0; i < label.length(); i++) {
+			glut.glutStrokeCharacter(GLUT.STROKE_ROMAN, label.charAt(i));
+		}
+		gl.glPopMatrix();
+
+		// Re-enable depth testing.
+		gl.glEnable(GL.GL_DEPTH_TEST);
+
+		// Restore the modelview matrix.
+		gl.glPopMatrix();
+		// Restore the projection matrix.
+		gl.glMatrixMode(GL2.GL_PROJECTION);
+		gl.glPopMatrix();
+		// Return to modelview matrix mode.
+		gl.glMatrixMode(GL2.GL_MODELVIEW);
 	}
 
-	public static void drawSprite(GLAutoDrawable drawable, Texture texture, float x, float y, float z, float size) {
-
+	/**
+	 * Draw a point using float coordinates and a point sprite
+	 *
+	 * @param drawable the OpenGL drawable
+	 * @param x        the x coordinate
+	 * @param y        the y coordinate
+	 * @param z        the z coordinate
+	 *
+	 * @param color    the color
+	 * @param size     the points size
+	 */
+	public static void drawPoint(GLAutoDrawable drawable, float x, float y, float z, Color color, float size) {
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glPointSize(size);
 
-		// adjust(tendToColor);
-		texture.bind(gl);
-		// gl.glColor4f(rgba.r,rgba.g,rgba.b,rgba.a);
-		setColor(gl, Color.black);
-
+		setColor(gl, color);
+		gl.glEnable(GL2ES1.GL_POINT_SPRITE);
 		gl.glBegin(GL.GL_POINTS);
-		texture.bind(gl);
 		gl.glVertex3f(x, y, z);
 		gl.glEnd();
+	}
+
+	/**
+	 * Prepare for transparent drawing
+	 * 
+	 * @param drawable the OpenGL drawable
+	 */
+	public static void prepareForTransparent(GLAutoDrawable drawable) {
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glDepthMask(false); // Disable depth writes for transparent
+		gl.glEnable(GL.GL_BLEND);
+		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
+	}
+
+	/**
+	 * Prepare for opaque drawing
+	 *
+	 * @param drawable the OpenGL drawable
+	 */
+	public static void prepareForOpaque(GLAutoDrawable drawable) {
+		GL2 gl = drawable.getGL().getGL2();
+		gl.glDepthMask(true); // Enable depth writes for solid objects
+		gl.glDisable(GL.GL_BLEND);
 	}
 
 	/**
@@ -239,8 +304,177 @@ public class Support3D {
 
 	}
 
+	public static void solidShadedSphere(GLAutoDrawable drawable, float x, float y, float z, float radius, int slices,
+			int stacks, Color color, boolean enableLighting) {
+		GL2 gl = drawable.getGL().getGL2();
+
+// Set color
+		setColor(gl, color);
+
+// Enable lighting if requested
+		if (enableLighting) {
+			gl.glEnable(GL2.GL_LIGHTING);
+			gl.glEnable(GL2.GL_LIGHT0);
+
+// Define light properties
+			float[] lightPosition = { 1.0f, 1.0f, 1.0f, 0.0f }; // Directional light
+			float[] lightDiffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float[] lightSpecular = { 1.0f, 1.0f, 1.0f, 1.0f };
+
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_POSITION, lightPosition, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_DIFFUSE, lightDiffuse, 0);
+			gl.glLightfv(GL2.GL_LIGHT0, GL2.GL_SPECULAR, lightSpecular, 0);
+
+// Material properties
+			float[] matAmbient = { 0.2f, 0.2f, 0.2f, 1.0f };
+			float[] matDiffuse = { color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, 1.0f };
+			float[] matSpecular = { 1.0f, 1.0f, 1.0f, 1.0f };
+			float[] matShininess = { 50.0f }; // Shininess factor
+
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_AMBIENT, matAmbient, 0);
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_DIFFUSE, matDiffuse, 0);
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SPECULAR, matSpecular, 0);
+			gl.glMaterialfv(GL2.GL_FRONT, GL2.GL_SHININESS, matShininess, 0);
+		}
+
+// Draw sphere
+		gl.glPushMatrix();
+		gl.glTranslatef(x, y, z);
+		glut.glutSolidSphere(radius, slices, stacks);
+		gl.glPopMatrix();
+
+// Disable lighting after drawing
+		if (enableLighting) {
+			gl.glDisable(GL2.GL_LIGHTING);
+		}
+	}
+
+	/**
+	 * Draws a spherical shell with a given inner and outer radius.
+	 *
+	 * @param drawable    the OpenGL drawable
+	 * @param cx          x center
+	 * @param cy          y center
+	 * @param cz          z center
+	 * @param innerRadius the inner radius of the shell
+	 * @param outerRadius the outer radius of the shell
+	 * @param slices      number of subdivisions around the Z axis (similar to
+	 *                    longitude)
+	 * @param stacks      number of subdivisions along the Z axis (similar to
+	 *                    latitude)
+	 * @param color       the color of the shell
+	 */
+	public static void solidSphereShell(GLAutoDrawable drawable, float cx, float cy, float cz, float innerRadius,
+			float outerRadius, int slices, int stacks, Color color) {
+		GL2 gl = drawable.getGL().getGL2();
+		setColor(gl, color);
+		gl.glPushMatrix();
+		gl.glTranslatef(cx, cy, cz);
+
+		// Draw outer surface (with outward facing normals)
+		drawSphereSurface(gl, outerRadius, slices, stacks, false);
+
+		// Draw inner surface (with inward facing normals)
+		drawSphereSurface(gl, innerRadius, slices, stacks, true);
+
+		// Connect the two surfaces by drawing side quads along each horizontal band.
+		// This creates the "thickness" between the outer and inner spheres.
+		for (int i = 0; i < stacks; i++) {
+			float theta1 = (float) (i * Math.PI / stacks);
+			float theta2 = (float) ((i + 1) * Math.PI / stacks);
+			gl.glBegin(GL2.GL_QUAD_STRIP);
+			for (int j = 0; j <= slices; j++) {
+				float phi = (float) (j * 2 * Math.PI / slices);
+				float sinTheta1 = (float) Math.sin(theta1);
+				float cosTheta1 = (float) Math.cos(theta1);
+				float sinTheta2 = (float) Math.sin(theta2);
+				float cosTheta2 = (float) Math.cos(theta2);
+				float sinPhi = (float) Math.sin(phi);
+				float cosPhi = (float) Math.cos(phi);
+
+				// Outer vertices
+				float xOuter1 = outerRadius * sinTheta1 * cosPhi;
+				float yOuter1 = outerRadius * cosTheta1;
+				float zOuter1 = outerRadius * sinTheta1 * sinPhi;
+
+				float xOuter2 = outerRadius * sinTheta2 * cosPhi;
+				float yOuter2 = outerRadius * cosTheta2;
+				float zOuter2 = outerRadius * sinTheta2 * sinPhi;
+
+				// Inner vertices
+				float xInner1 = innerRadius * sinTheta1 * cosPhi;
+				float yInner1 = innerRadius * cosTheta1;
+				float zInner1 = innerRadius * sinTheta1 * sinPhi;
+
+				float xInner2 = innerRadius * sinTheta2 * cosPhi;
+				float yInner2 = innerRadius * cosTheta2;
+				float zInner2 = innerRadius * sinTheta2 * sinPhi;
+
+				// Create a quad strip between outer and inner surfaces.
+				// For each band, we connect the corresponding outer and inner vertices.
+				gl.glVertex3f(xOuter1, yOuter1, zOuter1);
+				gl.glVertex3f(xInner1, yInner1, zInner1);
+				gl.glVertex3f(xOuter2, yOuter2, zOuter2);
+				gl.glVertex3f(xInner2, yInner2, zInner2);
+			}
+			gl.glEnd();
+		}
+
+		gl.glPopMatrix();
+	}
+
+	/**
+	 * Draws the surface of a sphere.
+	 *
+	 * @param gl            the GL2 context
+	 * @param radius        the radius of the sphere
+	 * @param slices        number of subdivisions around the Z axis
+	 * @param stacks        number of subdivisions along the Z axis
+	 * @param invertNormals if true, normals are inverted (useful for inner
+	 *                      surfaces)
+	 */
+	private static void drawSphereSurface(GL2 gl, float radius, int slices, int stacks, boolean invertNormals) {
+		for (int i = 0; i < stacks; i++) {
+			float theta1 = (float) (i * Math.PI / stacks);
+			float theta2 = (float) ((i + 1) * Math.PI / stacks);
+			gl.glBegin(GL2.GL_QUAD_STRIP);
+			for (int j = 0; j <= slices; j++) {
+				float phi = (float) (j * 2 * Math.PI / slices);
+				float sinTheta1 = (float) Math.sin(theta1);
+				float cosTheta1 = (float) Math.cos(theta1);
+				float sinTheta2 = (float) Math.sin(theta2);
+				float cosTheta2 = (float) Math.cos(theta2);
+				float sinPhi = (float) Math.sin(phi);
+				float cosPhi = (float) Math.cos(phi);
+
+				// Compute positions
+				float x1 = radius * sinTheta1 * cosPhi;
+				float y1 = radius * cosTheta1;
+				float z1 = radius * sinTheta1 * sinPhi;
+				float x2 = radius * sinTheta2 * cosPhi;
+				float y2 = radius * cosTheta2;
+				float z2 = radius * sinTheta2 * sinPhi;
+
+				// Compute normals (invert if necessary)
+				if (invertNormals) {
+					gl.glNormal3f(-x1 / radius, -y1 / radius, -z1 / radius);
+					gl.glVertex3f(x1, y1, z1);
+					gl.glNormal3f(-x2 / radius, -y2 / radius, -z2 / radius);
+					gl.glVertex3f(x2, y2, z2);
+				} else {
+					gl.glNormal3f(x1 / radius, y1 / radius, z1 / radius);
+					gl.glVertex3f(x1, y1, z1);
+					gl.glNormal3f(x2 / radius, y2 / radius, z2 / radius);
+					gl.glVertex3f(x2, y2, z2);
+				}
+			}
+			gl.glEnd();
+		}
+	}
+
 	/**
 	 * Draw a rectangular solid
+	 * 
 	 * @param drawable
 	 * @param xc
 	 * @param yc
@@ -248,21 +482,42 @@ public class Support3D {
 	 * @param xw
 	 * @param yw
 	 * @param zw
-	 * @param color
+	 * @param fc        * @param lc
 	 * @param lineWidth
 	 * @param frame
 	 */
-	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw, float zw, Color color, float lineWidth, boolean frame) {
+	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw,
+			float zw, Color fc, float lineWidth, boolean frame) {
+		drawRectangularSolid(drawable, xc, yc, zc, xw, yw, zw, fc, null, lineWidth, frame);
+	}
+
+	/**
+	 * Draw a rectangular solid
+	 * 
+	 * @param drawable
+	 * @param xc
+	 * @param yc
+	 * @param zc
+	 * @param xw
+	 * @param yw
+	 * @param zw
+	 * @param fc
+	 * @param lc
+	 * @param lineWidth
+	 * @param frame
+	 */
+	public static void drawRectangularSolid(GLAutoDrawable drawable, float xc, float yc, float zc, float xw, float yw,
+			float zw, Color fc, Color lc, float lineWidth, boolean frame) {
 		GL2 gl = drawable.getGL().getGL2();
 
-		float xm = xc - xw/2;
-		float xp = xc + xw/2;
-		float ym = yc - yw/2;
-		float yp = yc + yw/2;
-		float zm = zc - zw/2;
-		float zp = zc + zw/2;
+		float xm = xc - xw / 2;
+		float xp = xc + xw / 2;
+		float ym = yc - yw / 2;
+		float yp = yc + yw / 2;
+		float zm = zc - zw / 2;
+		float zp = zc + zw / 2;
 
-		Support3D.setColor(gl, color);
+		Support3D.setColor(gl, fc);
 		gl.glBegin(GL2ES3.GL_QUADS);
 		gl.glVertex3f(xm, ym, zp);
 		gl.glVertex3f(xm, yp, zp);
@@ -306,7 +561,11 @@ public class Support3D {
 		gl.glEnd();
 
 		if (frame) {
-			Support3D.setColor(gl, color.darker());
+
+			if (lc == null) {
+				lc = fc.darker();
+			}
+			Support3D.setColor(gl, lc);
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, yp, zm);
@@ -316,7 +575,6 @@ public class Support3D {
 			gl.glVertex3f(xm, yp, zm);
 			gl.glEnd();
 
-
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glVertex3f(xm, yp, zm);
@@ -324,7 +582,6 @@ public class Support3D {
 			gl.glVertex3f(xp, ym, zm);
 			gl.glVertex3f(xm, ym, zm);
 			gl.glEnd();
-
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 			gl.glVertex3f(xm, yp, zm);
@@ -358,9 +615,9 @@ public class Support3D {
 			gl.glVertex3f(xm, yp, zm);
 			gl.glEnd();
 		}
+		gl.glLineWidth(1f);
 
 	}
-
 
 	/**
 	 * @param drawable  the openGL drawable
@@ -381,7 +638,8 @@ public class Support3D {
 	 * @param lineWidth the line width
 	 * @param frame     if <code>true</code> frame in slightly darker color
 	 */
-	public static void drawQuads(GLAutoDrawable drawable, float coords[], Color color, Color lineColor, float lineWidth) {
+	public static void drawQuads(GLAutoDrawable drawable, float coords[], Color color, Color lineColor,
+			float lineWidth) {
 
 		GL2 gl = drawable.getGL().getGL2();
 		gl.glLineWidth(lineWidth);
@@ -419,55 +677,8 @@ public class Support3D {
 				gl.glEnd();
 			}
 		}
-	}
-
-	/**
-	 * @param drawable  the openGL drawable
-	 * @param coords    the coordinate array
-	 * @param color     the color
-	 * @param lineWidth the line width
-	 * @param frame     if <code>true</code> frame in slightly darker color
-	 */
-	public static void drawQuadsHalfTone(GLAutoDrawable drawable, float coords[], Color color, float lineWidth,
-			boolean frame) {
-
-		GL2 gl = drawable.getGL().getGL2();
-		gl.glLineWidth(lineWidth);
-		gl.glEnable(GL2.GL_POLYGON_STIPPLE);
-		gl.glPolygonStipple(halftone, 0);
-
-		gl.glBegin(GL2ES3.GL_QUADS);
-		setColor(gl, color);
-
-		int numPoints = coords.length / 3;
-
-		for (int i = 0; i < numPoints; i++) {
-			int j = 3 * i;
-			gl.glVertex3f(coords[j], coords[j + 1], coords[j + 2]);
-		}
-
-		gl.glEnd();
-		gl.glDisable(GL2.GL_POLYGON_STIPPLE);
-
-		if (frame) {
-			int numQuad = coords.length / 12;
-			for (int i = 0; i < numQuad; i++) {
-				gl.glBegin(GL.GL_LINE_STRIP);
-				setColor(gl, color.darker());
-
-				int j = i * 12;
-
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-
-				j = i * 12;
-				gl.glVertex3f(coords[j++], coords[j++], coords[j++]);
-
-				gl.glEnd();
-			}
-		}
+		
+		gl.glLineWidth(1f);
 
 	}
 
@@ -513,6 +724,8 @@ public class Support3D {
 			gl.glVertex3f(coords[i1], coords[i1 + 1], coords[i1 + 2]);
 			gl.glEnd();
 		}
+
+		gl.glLineWidth(1f);
 
 	}
 
@@ -661,7 +874,7 @@ public class Support3D {
 			gl.glVertex3f(coords[i1], coords[i1 + 1], coords[i1 + 2]);
 			gl.glEnd();
 		}
-
+		gl.glLineWidth(1f);
 	}
 
 	/**
@@ -802,6 +1015,25 @@ public class Support3D {
 		gl.glVertex3f(x1, y1, z1);
 		gl.glVertex3f(x2, y2, z2);
 		gl.glEnd();
+		gl.glLineWidth(1f);
+	}
+
+	/**
+	 * Draw a 3D line (convert double args to float)
+	 *
+	 * @param drawable  the OpenGL drawable
+	 * @param x1        x coordinate of one end
+	 * @param y1        y coordinate of one end
+	 * @param z1        z coordinate of one end
+	 * @param x2        x coordinate of other end
+	 * @param y2        y coordinate of other end
+	 * @param z2        z coordinate of other end
+	 * @param color     the color
+	 * @param lineWidth the line width in pixels
+	 */
+	public static void drawLine(GLAutoDrawable drawable, double x1, double y1, double z1, double x2, double y2,
+			double z2, Color color, float lineWidth) {
+		drawLine(drawable, (float) x1, (float) y1, (float) z1, (float) x2, (float) y2, (float) z2, color, lineWidth);
 	}
 
 	/**
@@ -853,7 +1085,7 @@ public class Support3D {
 			gl.glVertex3f(coords[j], coords[j + 1], coords[j + 2]);
 		}
 		gl.glEnd();
-
+		gl.glLineWidth(1f);
 	}
 
 	/**
@@ -896,6 +1128,7 @@ public class Support3D {
 		}
 
 		gl.glDisable(GL2.GL_LINE_STIPPLE);
+		gl.glLineWidth(1f);
 
 	}
 
@@ -940,7 +1173,58 @@ public class Support3D {
 		}
 
 		gl.glDisable(GL2.GL_LINE_STIPPLE);
+		gl.glLineWidth(1f);
 
+	}
+	
+	/**
+	 * Draw and fill a spherical polygon
+	 *
+	 * @param drawable  the OpenGL drawable
+      * @param radius the sphere radius
+	 * @param coords    the vertices as [theta phi, theta phi, …] in radians
+	 * @param lineColor    the line color
+	 * @param fillColor    the fill color
+	 * @param lineWidth the line width in pixels
+	 */
+	public static void drawSphericalPolygon(GLAutoDrawable drawable, float radius, float[] coords, Color lineColor, Color fillColor, float lineWidth) {
+	    GL2 gl = drawable.getGL().getGL2();
+	    
+	    int numPoints = coords.length / 2;
+	    float[] cartesianCoords = new float[numPoints * 3];
+	    
+	    // Convert spherical to Cartesian coordinates
+	    for (int i = 0; i < numPoints; i++) {
+	        float theta = coords[2 * i];
+	        float phi = coords[2 * i + 1];
+	        
+	        cartesianCoords[3 * i] = radius * (float) (Math.sin(theta) * Math.cos(phi));
+	        cartesianCoords[3 * i + 1] = radius * (float) (Math.sin(theta) * Math.sin(phi));
+	        cartesianCoords[3 * i + 2] = radius * (float) Math.cos(theta);
+	    }
+
+		// Fill the polygon
+		if (fillColor != null) {
+			gl.glBegin(GL2.GL_POLYGON);
+			Support3D.setColor(gl, fillColor);
+			for (int i = 0; i < numPoints; i++) {
+				gl.glVertex3f(cartesianCoords[3 * i], cartesianCoords[3 * i + 1], cartesianCoords[3 * i + 2]);
+			}
+			gl.glEnd();
+		}
+
+		// Draw the border
+		if (lineColor != null) {
+			gl.glLineWidth(lineWidth);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			Support3D.setColor(gl, lineColor);
+			for (int i = 0; i < numPoints; i++) {
+				gl.glVertex3f(cartesianCoords[3 * i], cartesianCoords[3 * i + 1], cartesianCoords[3 * i + 2]);
+			}
+			gl.glEnd();
+		}
+
+	    gl.glLineWidth(1.0f); // Reset line width to default
 	}
 
 	/**
@@ -978,6 +1262,5 @@ public class Support3D {
 	public static float[] toArray(float... v) {
 		return v;
 	}
-
 
 }

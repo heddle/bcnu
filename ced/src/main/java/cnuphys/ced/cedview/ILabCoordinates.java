@@ -14,7 +14,10 @@ public interface ILabCoordinates {
 	 * @param z the CLAS12 z coordinate
 	 * @param wp holds the world point
 	 */
-	public void labToWorld(double x, double y, double z, Point2D.Double wp);
+	default void labToWorld(double x, double y, double z, Point2D.Double wp) {
+		wp.x = x;
+		wp.y = y;
+	}
 
 	/**
 	 * Convert lab coordinates (CLAS x,y,z) to local screen coordinates

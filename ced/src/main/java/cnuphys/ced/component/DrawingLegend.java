@@ -370,7 +370,7 @@ public class DrawingLegend extends JPanel {
 		};
 		return comp;
 	}
-	
+
 	//kf trajectory point
 	private LComp kfPointRec() {
 		LComp comp = new LComp() {

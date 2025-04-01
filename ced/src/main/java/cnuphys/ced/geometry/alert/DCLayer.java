@@ -2,8 +2,8 @@ package cnuphys.ced.geometry.alert;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.Polygon;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
@@ -15,6 +15,7 @@ import org.jlab.geom.prim.Point3D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.ced.cedview.alert.AlertLayerDonut;
 import cnuphys.lund.X11Colors;
 
 public class DCLayer {
@@ -30,12 +31,7 @@ public class DCLayer {
 	public static final double LAYERDR = 1.6; // mm;
 
 	/** assumed half radial width of gap */
-	public static final double WIRERAD = 0.85*LAYERDR; // mm;
-
-
-	// for approximating arcs
-	private static final int NUMCIRCSTEP = 200;
-
+	public static final double WIRERAD = 0.5*LAYERDR; // mm;
 
 	/** the 0-based sector of this layer */
 	public final int sector;
@@ -52,66 +48,61 @@ public class DCLayer {
 	/** the array of wires */
 	public final Line3D wires[];
 
-	/** the midpoints of the wires */
-	public final Point2D.Double midpoints[];
-
-	/** XY radius at midpoint in mm */
-	public final double midPointRadius;
-
-	/** XY radius at midpoint in mm */
-	public final double innerMidPointRadius;
-
-	/** XY radius at midpoint in mm */
-	public final double outerMidPointRadius;
-
-	//for world xy shell
-	private double _x[];
-	private double _y[];
+	//for shell outline
+	private AlertLayerDonut _donut;
 
 	//for wire outline
-	private Rectangle2D.Double _wr[];
+	private Rectangle2D.Double _wrect[];
 
 	//workspace
 
-
+/**
+ * Create a DC layer from an alert DC layer
+ * @param geoAlertDCLayer the geoDatabase object
+ */
 	public DCLayer(AlertDCLayer geoAlertDCLayer) {
-		sector = geoAlertDCLayer.getSectorId();
-		superlayer = geoAlertDCLayer.getSuperlayerId();
-		layer = geoAlertDCLayer.getLayerId();
+		sector = geoAlertDCLayer.getSectorId()-1;
+		superlayer = geoAlertDCLayer.getSuperlayerId()-1;
+		layer = geoAlertDCLayer.getLayerId()-1;
+
 		numWires = geoAlertDCLayer.getNumComponents();
 
 
 		List<AlertDCWire> wireList = geoAlertDCLayer.getAllComponents();
 
 		wires = new Line3D[numWires];
-		midpoints = new Point2D.Double[numWires];
 
 		int index = 0;
+
+
 		for (AlertDCWire aw : wireList) {
 			wires[index] = aw.getLine();
-
-			Point3D p3d = aw.getMidpoint();
-			midpoints[index] = new Point2D.Double(p3d.x(), p3d.y());
-
-//			double theta = Math.atan2(midpoints[index].y, midpoints[index].x);
-//			System.out.println("wire " + index + "   theta: " + Math.toDegrees(theta));
-
 			index++;
 		}
 
-		if (numWires == 0) {
-			midPointRadius = Double.NaN;
-			innerMidPointRadius = Double.NaN;
-			outerMidPointRadius = Double.NaN;
-
-		} else {
-			midPointRadius = Math.hypot(midpoints[0].x, midpoints[0].y);
-			innerMidPointRadius = midPointRadius - LAYERDR;
-			outerMidPointRadius = midPointRadius + LAYERDR;
-			shellWorldPoly();
+		_wrect = new Rectangle2D.Double[numWires];
+ 		for (int wire = 0; wire < numWires; wire++) {
+			_wrect[wire] = new Rectangle2D.Double();
 		}
+	}
 
-//		System.out.println(String.format("sect: %d    supl: %d    lay: %d   nw:  %d rad: %8.4f", sector, superlayer, layer, numWires, midPointRadius));
+
+
+	/**
+	 * Get the 3D coords of the wire used in 3D drawing
+	 * @param wire the 0-based wire id
+	 * @param coords the 3D coords
+	 */
+	public void getWireCoords(int wire, float coords[]) {
+
+		Point3D p0 = wires[wire].origin();
+		Point3D p1 = wires[wire].end();
+		coords[0] = (float) p0.x();
+		coords[1] = (float) p0.y();
+		coords[2] = (float) p0.z();
+		coords[3] = (float) p1.x();
+		coords[4] = (float) p1.y();
+		coords[5] = (float) p1.z();
 	}
 
 	/**
@@ -126,66 +117,34 @@ public class DCLayer {
 		return wires[wire];
 	}
 
-	private void shellWorldPoly() {
 
-		int N2 = 2 * NUMCIRCSTEP;
-		_x = new double[N2];
-		_y = new double[N2];
-
-		double delAng = (2 * Math.PI) / (NUMCIRCSTEP - 1);
-
-
-		for (int i = 0; i < NUMCIRCSTEP; i++) {
-			int j = i + NUMCIRCSTEP;
-			double theta = i * delAng;
-
-			double cos = Math.cos(theta);
-			double sin = Math.sin(theta);
-
-			_x[i] = innerMidPointRadius * cos;
-			_y[i] = innerMidPointRadius * sin;
-
-			_x[j] = outerMidPointRadius * cos;
-			_y[j] = outerMidPointRadius * sin;
-		}
-
-		_wr = new Rectangle2D.Double[numWires];
-
-		double r2 = 2*WIRERAD;
-		for (int wire = 0; wire < numWires; wire++) {
-			double xx = midpoints[wire].x;
-			double yy = midpoints[wire].y;
-			_wr[wire] = new Rectangle2D.Double(xx-WIRERAD, yy-WIRERAD, r2, r2);
-		}
-
-
-	}
-
-
-	/**
-	 * Get midpoint of wire as a 2D point
-	 * @param wire the 0-based wire id
-	 * @return midpoint of wire, or null
-	 */
-	public Point2D.Double getMidpoint(int wire) {
-		if ((wire < 0) || (wire >= numWires)) {
-			return null;
-		}
-		return midpoints[wire];
-	}
 
 	/**
 	 * Contained in the XY view?
 	 * @param wp the world point
 	 * @return true if contained in this layer
 	 */
-	public boolean containsXY(Point2D.Double wp) {
-		if (numWires == 0) {
+	public boolean containsXY(Point pp) {
+		if ((numWires == 0)|| (_donut == null) || (_donut.area == null)) {
 			return false;
 		}
 
-		double rad = Math.hypot(wp.x, wp.y);
-		return (rad > innerMidPointRadius) && (rad < outerMidPointRadius);
+		return _donut.area.contains(pp);
+	}
+
+	/**
+	 * Point contained by the wire oval?
+	 * @param wire the 0-based wire id
+	 * @param wp the world point
+	 * @return true if contained
+	 */
+	public boolean wireContainsXY(int wire, Point2D.Double wp) {
+		if ((wire < 0) || (wire >= numWires)) {
+			System.err.println("Bad wire id: " + wire);
+			return false;
+		}
+
+		return _wrect[wire].contains(wp);
 	}
 
 	/**
@@ -193,13 +152,21 @@ public class DCLayer {
 	 * @param feedbackStrings list to add to
 	 */
 	public void feedbackXYString(Point pp, Point2D.Double wp, List<String> feedbackStrings) {
-		feedbackStrings.add(
-				String.format("AlertDC sector: %d superlayer: %d layer: %d", sector + 1, superlayer + 1, layer + 1));
+		feedbackStrings.add(String.format("DC sector: %d (1-based)", sector + 1));
+
+		int supl1 = superlayer + 1;
+		int lay1 = layer + 1;
+		int compLayer = supl1 * 10 + lay1;
+
+		feedbackStrings.add(String.format("DC superlayer: %d (1-based)", supl1));
+		feedbackStrings.add(String.format("DC layer: %d (1-based)", lay1));
+		feedbackStrings.add(String.format("DC hipo layer: %d", compLayer));
 
 		if (numWires > 0) {
 			for (int wire = 0; wire < numWires; wire++) {
-				if (_wr[wire].contains(wp)) {
+				if (wireContainsXY(wire, wp)) {
 					feedbackStrings.add(String.format("AlertDC wire: %d", wire + 1));
+					return;
 				}
 			}
 		}
@@ -210,58 +177,101 @@ public class DCLayer {
 	 * @param g the graphics object
 	 * @param container the drawing container
 	 */
-	public void drawXYDonut(Graphics g, IContainer container) {
-
-		if (numWires < 1) {
+	private void drawShell(Graphics g, IContainer container) {
+		if ((numWires == 0)|| (_donut == null) || (_donut.area == null)) {
 			return;
 		}
 
-		Point pp = new Point();
-
-		//to erase connecting line
-		Point pp0 = new Point();
-		Point pp1 = new Point();
-
-		Polygon poly = new Polygon();
-
-		for (int i = 0; i < _x.length; i++) {
-			container.worldToLocal(pp, _x[i], _y[i]);
-			poly.addPoint(pp.x, pp.y);
-
-			if (i == 0) {
-				pp0.setLocation(pp);
-			}
-			else if (i == NUMCIRCSTEP) {
-				pp1.setLocation(pp);
-			}
-		}
-
+		Graphics2D g2d = (Graphics2D) g;
 
 		Color fc = shellColors[layer];
-		g.setColor(fc);
-		g.fillPolygon(poly);
-		g.setColor(Color.gray);
-		g.drawPolygon(poly);
-
-		g.setColor(fc);
-		g.drawLine(pp0.x-1, pp0.y, pp1.x+1, pp1.y);
-
-
+		g2d.setColor(fc);
+		g2d.fill(_donut.area);
+		g2d.setColor(Color.gray);
+		g2d.draw(_donut.area);
 	}
 
-	public void drawXYWires(Graphics g, IContainer container) {
+	public double getWireXYatZ(int wire, double z, Point2D.Double xy) {
+		Line3D line = wires[wire];
+		Point3D p0 = line.origin();
+		Point3D p1 = line.end();
+		double t = (z - p0.z()) / (p1.z() - p0.z());
+		xy.x = p0.x() + t * (p1.x() - p0.x());
+		xy.y = p0.y() + t * (p1.y() - p0.y());
+		return t;
+	}
 
+
+	//get the shell poly
+	private void shellWorldPoly(IContainer container, double z) {
+		_donut = new AlertLayerDonut(container, this, z);
+	}
+
+	/**
+	 * Draw the wires
+	 * @param g the graphics object
+	 * @param container the drawing container
+	 */
+	public void drawXYWires(Graphics g, IContainer container, double z) {
+
+		shellWorldPoly(container, z);
+		//draw the poly
+		drawShell(g, container);
 		for (int wire = 0; wire < numWires; wire++) {
-			drawXYWire(g, container, wire);
+			drawXYWire(g, container, wire, wireFill, null, z);
 		}
 	}
 
-	public void drawXYWire(Graphics g, IContainer container, int wire) {
+	/**
+	 * Draw a wire
+	 *
+	 * @param g         the graphics object
+	 * @param container the drawing container
+	 * @param wire      the 0-based wire id (data is 1-based!)
+	 * @param fc        the fill color
+	 * @param lc        the line color
+	 * @param z         the z value
+	 */
+	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc,   double z) {
+		drawXYWire(g, container, wire, fc, lc, z, false);
+	}
+	
+	/**
+	 * Draw a wire
+	 *
+	 * @param g         the graphics object
+	 * @param container the drawing container
+	 * @param wire      the 0-based wire id (data is 1-based!)
+	 * @param fc        the fill color
+	 * @param lc        the line color
+	 * @param z         the z value
+	 * @param isHit     true if this is a hit
+	 */
+	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc,   double z, boolean isHit) {
 		if (numWires < 1) {
 			return;
 		}
 
-		WorldGraphicsUtilities.drawWorldOval(g, container, _wr[wire], wireFill, Color.darkGray);
+		
+
+		Point2D.Double zp = new Point2D.Double();
+		double t = getWireXYatZ(wire, z, zp);
+
+
+		if ((t < 0) || (t > 1)) {
+			return;
+		}
+
+		if (wire == 0) {
+			lc = X11Colors.getX11Color("Coral");
+//			fc = X11Colors.getX11Color("Alice Blue");
+		}
+		
+		double rad = isHit ? WIRERAD : 1.2*WIRERAD;
+		
+		_wrect[wire].setFrame(zp.x-rad, zp.y-rad, 2*rad, 2*rad);
+		WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
+
 	}
 
 

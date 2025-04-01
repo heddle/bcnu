@@ -219,9 +219,12 @@ public class FTCalXYView extends CedXYView {
 
 		for (int i = 0; i < adcData.count(); i++) {
 			short component = adcData.component[i];
+			if (component < 0 || component >= componentToIndex.length) {
+				continue; // skip bad components
+			}
 			short index = componentToIndex[component];
 			int adc = adcData.adc[i];
-			if (index >= 0) {
+			if (index >= 0 && index < ftCalPoly.length && adc > 0) {
 				FTCalXYPolygon poly = ftCalPoly[index];
 				Color color = adcData.getADCColor(adc);
 				g.setColor(color);
@@ -317,6 +320,9 @@ public class FTCalXYView extends CedXYView {
 			FTCalADCData adcData = FTCalADCData.getInstance();
 			for (int i = 0; i < adcData.count(); i++) {
 				short component = adcData.component[i];
+				if (component < 0 || component >= componentToIndex.length) {
+					continue; // skip bad components
+				}
 				short index = componentToIndex[component];
 				if (index == inIndex) {
 					adcData.adcFeedback("FTCAL", i, feedbackStrings);

@@ -28,15 +28,6 @@ public class DataView extends BaseView implements IPhysicsEventListener {
 		PhysicsEventManager.getInstance().addPhysicsListener(this, 1);
 	}
 
-	/**
-	 * A new event generator is active
-	 * 
-	 * @param generator the now active generator
-	 */
-	@Override
-	public void newEventGenerator(final AEventGenerator generator) {
-	}
-
 	@Override
 	public void newPhysicsEvent(PhysicsEvent event, List<ParticleHits> particleHits) {
 		_dataTable.getDataModel().setData(particleHits);

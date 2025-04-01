@@ -39,7 +39,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 	CVTRecTrajData cvtRecTrajData = CVTRecTrajData.getInstance();
 	CVTRecKFTrajData cvtRecKFTrajData = CVTRecKFTrajData.getInstance();
 	CVTTrajData cvtP1TrajData = CVTTrajData.getInstance();
-	
+
 	/**
 	 * Create a central hit drawer
 	 * @param view the CedView
@@ -132,12 +132,12 @@ public abstract class CentralHitDrawer implements IDrawable {
 		if (!(_view.showCVTP1Traj())) {
 			return;
 		}
-		
+
 		int count = cvtP1TrajData.count();
 		if (count > 0) {
 			Point pp = new Point();
 			for (int i = 0; i < count; i++) {
-				
+
 				if (Double.isNaN(cvtP1TrajData.x[i]) || Double.isNaN(cvtP1TrajData.y[i])
 						|| Double.isNaN(cvtP1TrajData.z[i])) {
 					continue;
@@ -158,22 +158,22 @@ public abstract class CentralHitDrawer implements IDrawable {
 		if (!(_view.showRecKFTraj())) {
 			return;
 		}
-		
+
 		int count = cvtRecKFTrajData.count();
 		if (count > 0) {
 			Point pp = new Point();
 			for (int i = 0; i < count; i++) {
-				
+
 				if (Double.isNaN(cvtRecKFTrajData.x[i]) || Double.isNaN(cvtRecKFTrajData.y[i])
 						|| Double.isNaN(cvtRecKFTrajData.z[i])) {
 					continue;
 				}
-				
-				
+
+
 				// cm to mm
 				labCoord.labToLocal(container, 10 * cvtRecKFTrajData.x[i], 10 * cvtRecKFTrajData.y[i],
 						10 * cvtRecKFTrajData.z[i], pp);
-				
+
 				SymbolDraw.drawStar(g, pp.x, pp.y, 6, Color.green);
 				cvtRecKFTrajData.setLocation(i, pp);
 			}
@@ -183,7 +183,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 
 	//CVT Rec
 	protected void drawCVTRecTraj(Graphics g, IContainer container) {
-		
+
 		if (!(_view.showCVTRecTraj())) {
 			return;
 		}
@@ -192,7 +192,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 		if (count > 0) {
 			Point pp = new Point();
 			for (int i = 0; i < count; i++) {
-				
+
 				if (Double.isNaN(cvtRecTrajData.x[i]) || Double.isNaN(cvtRecTrajData.y[i])
 						|| Double.isNaN(cvtRecTrajData.z[i])) {
 					continue;
@@ -243,7 +243,7 @@ public abstract class CentralHitDrawer implements IDrawable {
 	 */
 	public void feedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
-		
+
 		if (_view.showCVTRecTraj()) {
 			for (int i = 0; i < cvtRecTrajData.count(); i++) {
 				if (cvtRecTrajData.contains(i, screenPoint)) {
@@ -251,9 +251,9 @@ public abstract class CentralHitDrawer implements IDrawable {
 					break;
 				}
 			}
-		
+
 		}
-		
+
 		if (_view.showRecKFTraj()) {
 			for (int i = 0; i < cvtRecKFTrajData.count(); i++) {
 				if (cvtRecKFTrajData.contains(i, screenPoint)) {
@@ -261,10 +261,10 @@ public abstract class CentralHitDrawer implements IDrawable {
 					break;
 				}
 			}
-		
+
 		}
 
-		
+
 
 
 	}

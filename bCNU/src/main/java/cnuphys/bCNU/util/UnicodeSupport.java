@@ -1,10 +1,10 @@
 package cnuphys.bCNU.util;
 
 public class UnicodeSupport {
-	
+
 	//erase left
 	public static final String BACKSPACE = "\u232B";
-	
+
 	//enter
 	public static final String ENTER = "\u21B5";
 

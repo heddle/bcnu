@@ -21,7 +21,7 @@ public class TSCity {
 
 	/**
 	 * Is the given city across the river?
-	 * 
+	 *
 	 * @param c the given city
 	 * @return <code>true</code> if it is across the river
 	 */

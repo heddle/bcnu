@@ -8,7 +8,7 @@ import java.util.List;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.item.BaseBeamLineItem;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.cedview.magfieldview.MagfieldView;
@@ -24,10 +24,10 @@ public class BeamLineItem extends BaseBeamLineItem {
 	/**
 	 * Create a beamline item which is a glorified line.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 */
-	public BeamLineItem(LogicalLayer layer) {
-		super(layer);
+	public BeamLineItem(ItemList itemList) {
+		super(itemList);
 	}
 
 	/**

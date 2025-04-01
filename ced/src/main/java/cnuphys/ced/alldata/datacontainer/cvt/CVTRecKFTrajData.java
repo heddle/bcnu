@@ -8,10 +8,10 @@ import org.jlab.io.base.DataEvent;
 import cnuphys.ced.alldata.datacontainer.ACommonTrajData;
 
 public class CVTRecKFTrajData extends ACommonTrajData {
-	
+
 	// singleton
 	private static volatile CVTRecKFTrajData _instance;
-	
+
 	public byte[] index;
 
 	/**
@@ -35,7 +35,7 @@ public class CVTRecKFTrajData extends ACommonTrajData {
 		super.clear();
 		index = null;
 	}
-	
+
 	@Override
 	public void update(DataEvent event) {
 		DataBank bank = event.getBank("CVTRec::KFTrajectory");
@@ -43,7 +43,7 @@ public class CVTRecKFTrajData extends ACommonTrajData {
 		if (bank == null) {
 			return;
 		}
-		
+
 		id = bank.getShort("id");
 		detector = bank.getByte("detector");
 		layer = bank.getByte("layer");
@@ -51,16 +51,16 @@ public class CVTRecKFTrajData extends ACommonTrajData {
 		y = bank.getFloat("y");
 		z = bank.getFloat("z");
 		index = bank.getByte("index");
-		
-		
+
+
 		int n = (x != null) ? x.length : 0;
 		if (n > 0) {
 			ppx = new int[n];
 			ppy = new int[n];
 		}
-		
+
 	}
-	
+
 	/**
 	 * Common feedback format for Rec hits
 	 * @param name the name

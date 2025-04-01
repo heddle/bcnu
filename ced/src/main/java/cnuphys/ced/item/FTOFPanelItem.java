@@ -10,8 +10,8 @@ import java.util.List;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFClusterData;
@@ -44,10 +44,10 @@ public class FTOFPanelItem extends PolygonItem {
 	/**
 	 * Create a FTOFPanelItem
 	 *
-	 * @param logLayer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 */
-	public FTOFPanelItem(LogicalLayer logLayer, FTOFPanel panel, int sector) {
-		super(logLayer, getShell((SectorView) logLayer.getContainer().getView(), panel, sector));
+	public FTOFPanelItem(ItemList itemList, FTOFPanel panel, int sector) {
+		super(itemList, getShell((SectorView) itemList.getContainer().getView(), panel, sector));
 
 		_ftofPanel = panel;
 		_sector = sector;
@@ -57,7 +57,7 @@ public class FTOFPanelItem extends PolygonItem {
 		// _style.setFillColor(X11Colors.getX11Color("Wheat", 128));
 		_style.setFillColor(Color.white);
 		_style.setLineWidth(0);
-		_view = (SectorView) getLayer().getContainer().getView();
+		_view = (SectorView) getItemList().getContainer().getView();
 	}
 
 	/**

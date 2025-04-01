@@ -6,9 +6,9 @@ import java.util.List;
 import cnuphys.advisors.enums.EReason;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.io.ITabled;
+import cnuphys.advisors.model.ALCCourse;
 import cnuphys.advisors.model.Course;
 import cnuphys.advisors.model.DataManager;
-import cnuphys.advisors.model.LearningCommunityCourse;
 
 public class Student extends Person implements ITabled {
 
@@ -26,7 +26,34 @@ public class Student extends Person implements ITabled {
 
 	/** the assigned advisor */
 	public Advisor advisor;
-	
+
+	/** block from banner */
+	public String bannerBlock;
+
+	/** the student's preferred first name */
+	public String prefFirst;
+
+	/** the student's email */
+	public String email;
+
+	/** the student's sport */
+	public String sport;
+
+	/** part of student address */
+	public String prstr1;
+
+	/** part of student address */
+	public String prstr2;
+
+	/** part of student address */
+	public String prcity;
+
+	/** part of student address */
+	public String prstate;
+
+	/** part of student address */
+	public String przip;
+
 	/** thereason for the assignment */
 	public EReason reason = EReason.NONE;
 
@@ -34,22 +61,33 @@ public class Student extends Person implements ITabled {
 	public List<Course> schedule = new ArrayList<>();
 
 
-	public Student(String id, String lastName, String firstName, String plp, String honr, String prsc,
-			String psp, String prelaw, String wind, String ccap, String btmg, String maj) {
+	public Student(String id, String lastName, String firstName, String alc, String plp, String honr, String prsc,
+			String psp, String wind, String ccap, String maj, String bannerBlock,
+			String prefFirst, String email, String sport, String prstr1, String prstr2, String prcity, String prstate,
+			String przip) {
 		super();
 
 		this.id = DataManager.fixId(id);
 		this.lastName = lastName.replace("\"", "").trim();
 		this.firstName = firstName.replace("\"", "").trim();
-		this.setILC(false);   //will be assigned in ILC step
+		this.set(Person.ALC, checkString(alc, "ALC"));
 		this.set(Person.PLP, checkString(plp, "PLP"));
 		this.setHonors(checkString(honr, "HO"));
 		this.set(Person.PRESSCHOLAR, checkString(prsc, "PRS"));
 		this.set(Person.PREMEDSCHOLAR, checkString(psp, "PSP"));
-		this.set(Person.PRELAW, checkString(prelaw, "LW"));
 		this.set(Person.WIND, checkString(wind, "WIN"));
 		this.set(Person.CCPT, checkString(ccap, "CCAP"));
-		this.set(Person.BTMG, checkString(btmg, "BTM"));
+		this.bannerBlock = bannerBlock;
+
+		this.prefFirst = prefFirst;
+		this.email = email;
+		this.sport = sport;
+		this.prstr1 = prstr1;
+		this.prstr2 = prstr2;
+		this.prcity = prcity;
+		this.prstate = prstate;
+	    this.przip = przip;
+
 
 
 		String majorstr = maj.replace("\"", "").trim();
@@ -61,6 +99,9 @@ public class Student extends Person implements ITabled {
 		}
 
 		this.set(Person.MUSICTHEATER, (major == Major.MUSIC) || (major == Major.THEA));
+		this.set(Person.PREBUS, major.isPreBusiness());
+		set(Person.ENGR, major.isEngineering());
+
 	}
 
 	//check a string for a pattern
@@ -131,22 +172,6 @@ public class Student extends Person implements ITabled {
 	}
 
 	/**
-	 * Is a course in the student's Learning community?
-	 * @param crn the crn
-	 * @return true if the course is in the students LC
-	 */
-	public boolean courseInLC(String crn) {
-
-		for (LearningCommunityCourse lc : DataManager.getLearningCommunityData().getLearningCommunityCourses()) {
-			if (crn.equals(lc.crn)) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Is the student a presidential scholar?
 	 * @return true if the student a presidential scholar
 	 */
@@ -171,11 +196,11 @@ public class Student extends Person implements ITabled {
 	}
 
 	/**
-	 * Is the student prelaw?
+	 * Is the student prebus?
 	 * @return true if the student is prelaw
 	 */
-	public boolean prelaw() {
-		return check(Person.PRELAW);
+	public boolean prebus() {
+		return check(Person.PREBUS);
 	}
 
 	/**
@@ -194,14 +219,6 @@ public class Student extends Person implements ITabled {
 		return check(Person.CCPT);
 	}
 
-	/**
-	 * Is the student in biotech management?
-	 * @return true if the student is in biotech management
-	 */
-	public boolean btmg() {
-		return check(Person.BTMG);
-	}
-
 
 	@Override
 	public String getValueAt(int col) {
@@ -215,7 +232,7 @@ public class Student extends Person implements ITabled {
 			return firstName;
 		}
 		else if (col == 4) {
-			return ilc() ? "ILC" : "";
+			return alc() ? "ALC" : "";
 		}
 		else if (col == 5) {
 			return plp() ? "PLP" : "";
@@ -230,7 +247,7 @@ public class Student extends Person implements ITabled {
 			return psp() ? "PSP" : "";
 		}
 		else if (col == 9) {
-			return prelaw() ? "PLW" : "";
+			return prebus() ? "PREBUS" : "";
 		}
 		else if (col == 10) {
 			return wind() ? "WIND" : "";
@@ -239,10 +256,10 @@ public class Student extends Person implements ITabled {
 			return ccpt() ? "CCAP" : "";
 		}
 		else if (col == 12) {
-			return btmg() ? "BTMG" : "";
+			return major.name();
 		}
 		else if (col == 13) {
-			return major.name();
+			return bannerBlock;
 		}
 		else if (col == 14) {
 			return advisor == null ? "---" : advisor.name;
@@ -261,5 +278,39 @@ public class Student extends Person implements ITabled {
 
 		return null;
 	}
+
+	/**
+	 * Is the student in an ALC's learning community?
+	 *
+	 * @return true if the student is in an ALC
+	 */
+	public boolean inALC_LC(ALCCourse alc) {
+
+		if (!alc()) {
+			return false;
+		}
+
+		int alcNum = extractNumber(alc.lcNum);
+		if (alcNum <= 0) {
+			return false;
+		}
+
+		int lcnum = extractNumber(bannerBlock);
+		return alcNum == lcnum;
+	}
+
+	private int extractNumber(String input) {
+	        // Use a regular expression to replace all non-numeric characters with an empty string
+	        String numericString = input.replaceAll("[^0-9]", "");
+
+	        // If the numericString is empty, return 0
+	        if (numericString.isEmpty()) {
+	            return 0;
+	        }
+
+	        // Convert the numeric string to an integer
+	        return Integer.parseInt(numericString);
+	    }
+
 
 }

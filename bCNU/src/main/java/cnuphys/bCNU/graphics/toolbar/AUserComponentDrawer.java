@@ -7,8 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Stroke;
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.graphics.container.IContainer;
@@ -69,7 +69,7 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 		g.fillRect(0, 0, b.width - 1, b.height - 1);
 
 		// get the unique lundids found in this event
-		Vector<LundId> lids = getUniqueLundIds();
+		ArrayList<LundId> lids = getUniqueLundIds();
 
 		int numMC = (lids == null) ? 0 : lids.size();
 
@@ -167,6 +167,6 @@ public abstract class AUserComponentDrawer extends DrawableAdapter {
 	 *
 	 * @return all the unique LundIds associated with this event.
 	 */
-	protected abstract Vector<LundId> getUniqueLundIds();
+	protected abstract ArrayList<LundId> getUniqueLundIds();
 
 }

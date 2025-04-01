@@ -319,7 +319,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	/**
 	 * Set the displayed sequential event number value. The sequential event number
 	 * is just the number in the file.
-	 * 
+	 *
 	 * @param seqEventNum event number.
 	 */
 	public void setSeqEventNumber() {
@@ -332,7 +332,7 @@ public class CedDataWindow extends CedWindow implements ActionListener, ItemList
 	/**
 	 * Set the displayed true event number value. The true event number comes from
 	 * the RUN::config bank.
-	 * 
+	 *
 	 * @param trueEventNum event number.
 	 */
 	public void setTrueEventNumber() {

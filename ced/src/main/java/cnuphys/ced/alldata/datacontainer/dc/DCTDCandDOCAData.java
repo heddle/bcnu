@@ -9,14 +9,14 @@ import cnuphys.ced.alldata.datacontainer.ACommonTDCData;
 import cnuphys.lund.DoubleFormat;
 
 public class DCTDCandDOCAData extends ACommonTDCData {
-	
+
 	private static final int TOTALNUMWIRE = 24192;
 	private static final int TOTALNUMWIRESECTOR = 4032;
 
-	
+
 	// for feedback strings
 	private static final String _fbColor = "$Orange$";
-	
+
 	// singleton
 	private static volatile DCTDCandDOCAData _instance;
 
@@ -38,31 +38,35 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 
 	/** raw data has layer 1..36. Convert to 1..6 */
 	public byte layer6[];
-	
+
 	/** superlayer 1..6 */
 	public byte superlayer[];
-	
+
 	/** does snr think this is noise? */
 	public boolean noise[];
-	
+
 	/**left right value */
 	public byte LR[];
-	
+
 	/** doca value */
 	public float doca[];
-	
+
 	/** sdoca value */
 	public float sdoca[];
-	
+
 	/** time value */
 	public float time[];
 
 	/** stime value */
 	public float stime[];
-	
+
 	//counts hits in each sector
 	private int _sectorCounts[] = new int[6];
-	
+
+	//counts hits in each superlayer
+	private int _superlayerCounts[][] = new int[6][6];
+
+
 	@Override
 	public void clear() {
 		super.clear();
@@ -74,11 +78,14 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 		sdoca = null;
 		time = null;
 		stime = null;
-		
+
 		for (int i = 0; i < 6; i++) {
 			_sectorCounts[i] = 0;
+			for (int j = 0; j < 6; j++) {
+                _superlayerCounts[i][j] = 0;
+            }
 		}
-		
+
 	}
 
 	@Override
@@ -93,27 +100,28 @@ public class DCTDCandDOCAData extends ACommonTDCData {
         layer = bank.getByte("layer");
         component = bank.getShort("component");
         order = bank.getByte("order");
-        tdc = bank.getInt("TDC");	
-        
-        //get the layer6 and superlayer from the layer	
+        tdc = bank.getInt("TDC");
+
+        //get the layer6 and superlayer from the layer
         if (layer != null) {
 			int len = layer.length;
 			layer6 = new byte[len];
 			superlayer = new byte[len];
-			
+
 			noise = new boolean[len];
-			
+
 			for (int i = 0; i < len; i++) {
 				byte layer36 = layer[i];
 				superlayer[i] = (byte) (((layer36 - 1) / 6) + 1);
 				layer6[i] = (byte) (((layer36 - 1) % 6) + 1);
-				
+
 				noise[i] = false;
-				
+
 				_sectorCounts[sector[i] - 1]++;
+				_superlayerCounts[sector[i] - 1][superlayer[i] - 1]++;
 			}
         }
-        
+
         //and from doca bank
         DataBank docaBank = event.getBank("DC::doca");
 		if (docaBank == null) {
@@ -124,10 +132,10 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 		sdoca = docaBank.getFloat("sdoca");
 		time = docaBank.getFloat("time");
 		stime = docaBank.getFloat("stime");
-		
-		
+
+
 	}
-	
+
 	/**
 	 * Get a string for just the tdc data
 	 *
@@ -140,7 +148,7 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 			return "tdc: " + tdc[index] + "  order: " + order[index];
 		}
 	}
-	
+
 	// make a sensible doca string
 	private String docaString(float d, float t) {
 		if (Float.isNaN(d) || Float.isNaN(t)) {
@@ -153,14 +161,14 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 
 
 	/**
-	 * Common feedback 
+	 * Common feedback
 	 * @param index the index of the data
 	 * @param feedbackStrings the list of feedback strings
 	 */
 	public void tdcFeedback(int index, List<String> feedbackStrings) {
 		feedbackStrings.add(_fbColor + "sect " + sector[index] +
 				" suplay " + superlayer[index] + " layer " + layer6[index] + " wire " + component[index]);
-		
+
 		feedbackStrings.add(_fbColor + "DC tdc " + tdc[index] + "  order " + order[index]);
 	}
 
@@ -200,7 +208,7 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 		}
 
 	}
-	
+
 	/**
 	 * total DC occupancy all sectors all layers
 	 *
@@ -212,7 +220,7 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 
 	/**
 	 * total DC occupancy for a sector
-	 *
+	 * @param sector the 1-based sector
 	 * @return total DC occupancy for a sector
 	 */
 	public double totalSectorOccupancy(int sector) {
@@ -222,5 +230,19 @@ public class DCTDCandDOCAData extends ACommonTDCData {
 			return 0.;
 		}
 	}
+
+	/**
+	 * total DC occupancy for a sector
+	 *
+	 * @return total DC occupancy for a sector
+	 */
+	public double totalSuperlayerOccupancy(int sector, int superlayer) {
+		if ((sector > 0) && (sector < 7)) {
+			return (_superlayerCounts[sector-1][superlayer-1]) / 672.;
+		} else {
+			return 0.;
+		}
+	}
+
 
 }

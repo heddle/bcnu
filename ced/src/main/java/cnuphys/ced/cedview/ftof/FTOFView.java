@@ -19,7 +19,7 @@ import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
@@ -118,7 +118,7 @@ public class FTOFView extends HexView {
 	// add items to the view
 	@Override
 	protected void addItems() {
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 
 		_hexItems = new FTOFHexSectorItem[6];
 
@@ -166,10 +166,10 @@ public class FTOFView extends HexView {
 					//highlight?
 					_highlightHandler.draw(g, container);
 
-					drawCoordinateSystem(g, container);
+					drawCoordinateSystem(g, container, null);
 
 					double xx = (displayPanel() != 2) ? 420 : 340;
-					drawSectorNumbers(g, container, xx);
+					drawSectorNumbers(g, container, null, xx);
 				} // not acumulating
 
 				g.setColor(TRANSTEXT2);

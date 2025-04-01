@@ -19,28 +19,28 @@ public class StudentsMajorStep extends CheckListLaunchable {
 
 	@Override
 	public void launch() {
-		
-		//first for specialty
+
+
+		// now for specialty
 		for (Specialty specialty : Specialty.values()) {
 			if (specialty != Specialty.NONE) {
-				//get unassigned honors students and honors advisor
+				// get unassigned honors students and honors advisor
 				List<Student> students = DataManager.getUnassignedStudentsForSpecialty(specialty);
 				List<Advisor> advisors = DataManager.getAdvisorsForSpecialty(specialty);
 
-				//remove locked students and advisors
+				// remove locked students and advisors
 				students.removeIf(x -> x.locked());
 				advisors.removeIf(x -> x.locked());
 
 				DataManager.roundRobinAssign(advisors, students, true, "Students by Specialty", EReason.SPEC);
-				
+
 			}
 		}
 
 		// then by major
 		// this does not reassign students so only used unassigned
 
-
-		//first for the advisors "subject")
+		// first for the advisors "subject")
 		for (Major major : Major.values()) {
 
 			//get unassigned honors students and honors advisor

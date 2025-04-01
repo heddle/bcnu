@@ -29,11 +29,7 @@ public class TriggerFilter extends AEventFilter {
 	public boolean pass() {
 
 		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
-		if (event == null) {
-			return false;
-		}
-		
-		if (!event.hasBank("RUN::trigger")) {
+		if ((event == null) || !event.hasBank("RUN::trigger")) {
 			return false;
 		}
 

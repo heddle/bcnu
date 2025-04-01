@@ -1,8 +1,6 @@
 package adapter3D;
 
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.FontMetrics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -37,19 +35,7 @@ public class KeyboardLabel extends JPanel {
 		_panel3D = panel;
 
 		for (int i = 0; i < keys.length; i++) {
-			KLButton button = new KLButton(keys[i], vkeys[i], shifted[i]) {
-
-				@Override
-				public Dimension getPreferredSize() {
-					Dimension d = super.getPreferredSize();
-					FontMetrics fm = getFontMetrics(_bfont);
-					d.width = fm.stringWidth(" X ");
-					d.height = fm.getHeight() + 4;
-					return d;
-				}
-
-			};
-
+			KLButton button = new KLButton(keys[i], vkeys[i], shifted[i]);
 			button.setFont(_bfont);
 
 			add(button);

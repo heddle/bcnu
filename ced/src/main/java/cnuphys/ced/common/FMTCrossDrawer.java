@@ -29,7 +29,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 	public FMTCrossDrawer(CedView view) {
 		super(view);
 	}
-	
+
 	// data container
 	private FMTRecCrossData _fmtRecCrossData = FMTRecCrossData.getInstance();
 
@@ -68,7 +68,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 			drawFMTCrossesXY(g, container);
 			return;
 		}
-		
+
 		int count = _fmtRecCrossData.count();
 		if (count > 0) {
 			Point2D.Double wp = new Point2D.Double();
@@ -167,7 +167,7 @@ public class FMTCrossDrawer extends CedViewDrawer {
 			List<String> feedbackStrings) {
 
 		// fmt crosses?
-		
+
 		int count = _fmtRecCrossData.count();
 		if (count > 0) {
 			for (int i = 0; i < count; i++) {

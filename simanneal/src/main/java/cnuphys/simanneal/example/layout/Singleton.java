@@ -13,7 +13,7 @@ public class Singleton extends PositionedRectangle {
 		width  = _size;
 		height = _size;
 	}
-	
+
 	/**
 	 * copy constructor
 	 * @param srcSing the source
@@ -25,7 +25,7 @@ public class Singleton extends PositionedRectangle {
 		height = srcSing.height;
 		id = srcSing.id;
 	}
-	
+
 	@Override
 	public PositionedRectangle copy() {
 		return new Singleton(this);
@@ -41,11 +41,11 @@ public class Singleton extends PositionedRectangle {
 		g.fillOval(_bounds.x + x, _bounds.y + y, width, height);
 		g.setColor(Color.blue);
 		g.drawOval(_bounds.x + x, _bounds.y + y, width, height);
-		
+
 		g.setColor(Color.black);
 		g.drawString("" + id, (int)getCenterX(), (int)getCenterY());
 
 	}
-	
+
 
 }

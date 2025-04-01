@@ -9,16 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.event.MouseEvent;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
 
-import javax.swing.JLabel;
 import javax.swing.JTabbedPane;
 
-import cnuphys.bCNU.component.IRollOverListener;
-import cnuphys.bCNU.component.RollOverPanel;
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.format.DoubleFormat;
@@ -26,13 +22,14 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.Styled;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.cedview.RollOverDCPanel;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.geometry.GeoConstants;
@@ -45,34 +42,7 @@ import cnuphys.ced.geometry.GeoConstants;
  *
  */
 @SuppressWarnings("serial")
-public class AllDCView extends CedView implements IRollOverListener {
-
-	//rollover colors
-	private static final Color inactiveFG = Color.cyan;
-	private static final Color inactiveBG = Color.black;
-	private static final Color activeFG = Color.yellow;
-	private static final Color activeBG = Color.darkGray;
-
-	//roll over labels
-	private static final String HB_ROLLOVER = "Reg Hit Based DC Clusters";
-	private static final String TB_ROLLOVER = "Reg Time Based DC Clusters";
-	private static final String AIHB_ROLLOVER = "AI Hit Based DC Clusters";
-	private static final String AITB_ROLLOVER = "AI Time Based DC Clusters";
-	private static final String SNR_ROLLOVER = "SNR DC Clusters";
-
-	//rollover labels
-	private static String roLabels[] = {HB_ROLLOVER,
-			TB_ROLLOVER,
-			AIHB_ROLLOVER,
-			AITB_ROLLOVER,
-			SNR_ROLLOVER};
-
-	//rollover boolean flags
-	private boolean _roShowHBDCClusters;
-	private boolean _roShowTBDCClusters;
-	private boolean _roShowAIHBDCClusters;
-	private boolean _roShowAITBDCClusters;
-	private boolean _roShowSNRDCClusters;
+public class AllDCView extends CedView  {
 
 
 	//cluster drawer
@@ -101,7 +71,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 	protected IDrawable _beforeDraw;
 
 	//rollover panel for drawing clusters
-	private RollOverPanel _rollOverPanel;
+	private RollOverDCPanel _rollOverPanel;
 
 	/**
 	 * The all dc view is rendered on 2x3 grid. Each grid is 1x1 in world
@@ -189,13 +159,23 @@ public class AllDCView extends CedView implements IRollOverListener {
 	//add the rollover panel
 	private static void customize(AllDCView view) {
 		JTabbedPane tabbedPane =  view._controlPanel.getTabbedPane();
-		view._rollOverPanel = new RollOverPanel("DC Clusters", 1, Fonts.mediumFont, inactiveFG, inactiveBG,
-				roLabels);
+		view._rollOverPanel = new RollOverDCPanel(view,
+				"DC Clusters", 1);
 
-		view._rollOverPanel.addRollOverListener(view);
 		tabbedPane.add(view._rollOverPanel, "DC Clusters");
 
 		view._clusterDrawer = new ClusterDrawer(view);
+	}
+
+	/**
+	 * Convenience method to see it we show the montecarlo truth.
+	 *
+	 * @return <code>true</code> if we are to show the montecarlo truth, if it is
+	 *         available.
+	 */
+	@Override
+	public boolean showMcTruth() {
+		return true;
 	}
 
 	/**
@@ -240,29 +220,28 @@ public class AllDCView extends CedView implements IRollOverListener {
 			@Override
 			public void draw(Graphics g, IContainer container) {
 
-				if (_roShowSNRDCClusters) {
-					_clusterDrawer.drawSNRDCClusters(g, container);
+				if (!_eventManager.isAccumulating()) {
+
+					if (_rollOverPanel.roShowHBDCClusters) {
+						_clusterDrawer.drawHBDCClusters(g, container);
+					}
+
+					if (_rollOverPanel.roShowTBDCClusters) {
+						_clusterDrawer.drawTBDCClusters(g, container);
+					}
+
+					if (_rollOverPanel.roShowAIHBDCClusters) {
+						_clusterDrawer.drawAIHBDCClusters(g, container);
+					}
+
+					if (_rollOverPanel.roShowAITBDCClusters) {
+						_clusterDrawer.drawAITBDCClusters(g, container);
+					}
+
+					// row selected on bank dialog
+					drawDataSelectedHighlight(g, container);
+
 				}
-
-				if (_roShowHBDCClusters) {
-					_clusterDrawer.drawHBDCClusters(g, container);
-				}
-
-				if (_roShowTBDCClusters) {
-					_clusterDrawer.drawTBDCClusters(g, container);
-				}
-
-				if (_roShowAIHBDCClusters) {
-					_clusterDrawer.drawAIHBDCClusters(g, container);
-				}
-
-				if (_roShowAITBDCClusters) {
-					_clusterDrawer.drawAITBDCClusters(g, container);
-				}
-
-				//row selected on bank dialog
-				drawDataSelectedHighlight(g, container);
-
 			}
 
 		};
@@ -305,7 +284,7 @@ public class AllDCView extends CedView implements IRollOverListener {
 	 */
 	private void addItems() {
 		// use sector 0 all the same
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 
 		double width = 0.92; // full width of each sector is 1.0;
 		double xo = (1.0 - width) / 2.0;
@@ -492,64 +471,6 @@ public class AllDCView extends CedView implements IRollOverListener {
 	 */
 	public boolean showAITBHits() {
 		return _controlPanel.getAllDCDisplayPanel().showAITBHits();
-	}
-
-
-	@Override
-	public void RollOverMouseEnter(JLabel label, MouseEvent e) {
-
-		String text = label.getText();
-		if (text.contains(HB_ROLLOVER)) {
-			_roShowHBDCClusters = true;
-		}
-		else if (text.contains(TB_ROLLOVER)) {
-			_roShowTBDCClusters = true;
-		}
-		else if (text.contains(AIHB_ROLLOVER)) {
-			_roShowAIHBDCClusters = true;
-		}
-		else if (text.contains(AITB_ROLLOVER)) {
-			_roShowAITBDCClusters = true;
-		}
-
-		else if (text.contains(SNR_ROLLOVER)) {
-			_roShowSNRDCClusters = true;
-		}
-
-		label.setForeground(activeFG);
-		label.setBackground(activeBG);
-
-		refresh();
-	}
-
-	@Override
-	public void RollOverMouseExit(JLabel label, MouseEvent e) {
-
-		if (e.isAltDown() || e.isControlDown() || e.isMetaDown()) {
-			return;
-		}
-
-		String text = label.getText();
-		if (text.contains(HB_ROLLOVER)) {
-			_roShowHBDCClusters = false;
-		}
-		else if (text.contains(TB_ROLLOVER)) {
-			_roShowTBDCClusters = false;
-		}
-		else if (text.contains(AIHB_ROLLOVER)) {
-			_roShowAIHBDCClusters = false;
-		}
-		else if (text.contains(AITB_ROLLOVER)) {
-			_roShowAITBDCClusters = false;
-		}
-		else if (text.contains(SNR_ROLLOVER)) {
-			_roShowSNRDCClusters = false;
-		}
-
-		label.setForeground(inactiveFG);
-		label.setBackground(inactiveBG);
-
-		refresh();
 	}
 
 

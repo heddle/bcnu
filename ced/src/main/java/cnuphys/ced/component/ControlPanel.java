@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import cnuphys.bCNU.component.rangeslider.RangeSlider;
 import cnuphys.bCNU.feedback.FeedbackPane;
 import cnuphys.bCNU.graphics.colorscale.ColorModelLegend;
 import cnuphys.bCNU.graphics.colorscale.ColorModelPanel;
@@ -24,6 +25,8 @@ import cnuphys.bCNU.util.Bits;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.cedview.CedView;
+import cnuphys.ced.cedview.alert.AlertProjectionPanel;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.cedview.alldc.AllDCDisplayPanel;
 import cnuphys.ced.cedview.central.CentralZView;
 import cnuphys.ced.event.AccumulationManager;
@@ -38,7 +41,6 @@ import cnuphys.ced.item.MagFieldItem;
  */
 public class ControlPanel extends JPanel implements ChangeListener {
 	private static final int SLIDERWIDTH = 210;
-	private static final int FEEDBACKWIDTH = 220;
 
 	// widths of some optional widgets
 	private static final int FULLWIDTH = 220;
@@ -51,6 +53,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** Bit used to create a torus legend */
 	public static final int FIELDLEGEND = 04;
+
+	/** ALERT DC projections */
+	public static final int ALERTDC = 010;
+
+	/** filtered banks */
+	public static final int MATCHINGBANKSPANEL = 020;
 
 	/** Bit used to create a feedback pane */
 	public static final int FEEDBACK = 040;
@@ -69,9 +77,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	/** all dc display panel */
 	public static final int ALLDCDISPLAYPANEL = 02000;
-
-	/** filtered banks */
-	public static final int MATCHINGBANKSPANEL = 04000;
+	
+	/** trajectory drawing cutoff at a max pathlength */
+	public static final int TRAJCUTOFF = 04000;
 
 	// the view parent
 	private CedView _view;
@@ -87,6 +95,9 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 	// control the value of phi
 	private JSlider _phiSlider;
+	
+	//traj pathlength cutoff
+	private RangeSlider _trajRangeSlider;
 
 	// control threshold value of adc to display
 	private JSlider _adcThresholdSlider;
@@ -114,6 +125,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	// the tabbed pane
 	private JTabbedPane _tabbedPane;
 
+	//holds components above feedback
+	private Box _northBox;
+
+	//just used on AlertXYView
+	private AlertProjectionPanel _alertDCPanel;
+
 	/**
 	 * Create a view control panel
 	 *
@@ -130,22 +147,38 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		setLayout(new BorderLayout(0, 2));
 
-		Box box = Box.createVerticalBox();
+		// Create a vertical box for components above the feedback
+		_northBox = Box.createVerticalBox();
 
-		// add the tabbed pane
+		// Add the tabbed pane at the top
 		_tabbedPane = addTabbedPane(view, controlPanelBits, displayArrayBits);
-		box.add(_tabbedPane);
+		_northBox.add(_tabbedPane);
 
-		// feedback
+		// Feedback Pane initialization
 		if (Bits.checkBit(controlPanelBits, FEEDBACK)) {
-			_feedbackPane = new FeedbackPane(FEEDBACKWIDTH);
+			_feedbackPane = new FeedbackPane();
 			view.getContainer().setFeedbackPane(_feedbackPane);
 		}
 
-		add(box, BorderLayout.NORTH);
+		// Add _northBox to the NORTH region
+		add(_northBox, BorderLayout.NORTH);
 
-		add(_feedbackPane, BorderLayout.CENTER);
+		// Add the FeedbackPane to the CENTER region to take remaining space
+		if (_feedbackPane != null) {
+			add(_feedbackPane, BorderLayout.CENTER);
+		}
+
 		validate();
+	}
+
+	public void addComponent(JComponent component) {
+		System.out.println("Adding northbox component");
+		_northBox.add(component);
+
+		// Adjust the preferred size to maintain the desired layout
+		Dimension d = component.getPreferredSize();
+		d.width = FULLWIDTH;
+		component.setPreferredSize(d);
 	}
 
 	/**
@@ -234,9 +267,21 @@ public class ControlPanel extends JPanel implements ChangeListener {
 			phiSlider = createPhiSlider(isBig);
 		}
 
+		if (Bits.checkBit(controlPanelBits, TRAJCUTOFF)) {
+			int maxPath = _view.getTrajMaxPathlength();
+			_trajRangeSlider = new RangeSlider(0, maxPath, maxPath, maxPath/5, maxPath/10, false);
+			_trajRangeSlider.setBorder(new CommonBorder("Trajectory Path Length Cutoff"));
+		}
+
+		// alert dc projections
+		if (Bits.checkBit(controlPanelBits, ALERTDC)) {
+			if (_view instanceof AlertXYView) {
+				_alertDCPanel = new AlertProjectionPanel((AlertXYView)view);
+			}
+		}
 
 		if (Bits.checkBit(controlPanelBits, MATCHINGBANKSPANEL)) {
-			_matchedBankPanel = new MatchedBankPanel(view);
+			_matchedBankPanel = new MatchedBankPanel(view, view);
 		}
 
 		JPanel daPanel = null;
@@ -249,10 +294,17 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		if (daPanel != null) {
 			tabbedPane.add(daPanel, "display");
+			if (_trajRangeSlider != null) {
+				daPanel.add(_trajRangeSlider);
+			}
+			if (_alertDCPanel != null) {
+				daPanel.add(_alertDCPanel);
+			}
 		}
 
+
 		if (_matchedBankPanel != null) {
-			tabbedPane.add(_matchedBankPanel, "Banks");
+			tabbedPane.add(_matchedBankPanel, "banks");
 		}
 
 		if (phiSlider != null) {
@@ -288,6 +340,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 
 		//text area
 		_cpTextArea = new SimpleScrollableTextArea(10, 28);
+
 		sp.add(_cpTextArea.getScrollPane());
 		_cpTextArea.setFont(Fonts.tweenFont);
 		clearTextArea();
@@ -298,9 +351,7 @@ public class ControlPanel extends JPanel implements ChangeListener {
 		if (Bits.checkBit(controlPanelBits, ACCUMULATIONLEGEND)) {
 			_colorPanel = new ColorModelPanel(_view, AccumulationManager.colorScaleModel, 160,
 					"Relative Accumulation or ADC Value", 10, false, true);
-
 			sp.add(_colorPanel);
-
 		}
 
 		// adc threshold
@@ -427,6 +478,12 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	}
 
 	/**
+	 * Get the AlertDCPanel
+	 */
+	public AlertProjectionPanel getAlertDCPanel() {
+		return _alertDCPanel;
+	}
+	/**
 	 * Get the slider for adc threshold.
 	 *
 	 * @return the slider for adc threshold.
@@ -535,6 +592,14 @@ public class ControlPanel extends JPanel implements ChangeListener {
 	 */
 	public AllDCDisplayPanel getAllDCDisplayPanel() {
 		return _allDCDisplayPanel;
+	}
+	
+	/**
+     * Get the trajectory path length cutoff slider
+     * @return the trajectory path length cutoff slider
+     */
+	public RangeSlider getTrajRangeSlider() {
+		return _trajRangeSlider;
 	}
 
 	@Override

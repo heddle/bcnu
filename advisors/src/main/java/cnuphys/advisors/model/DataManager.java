@@ -19,15 +19,12 @@ public class DataManager {
     private static final String _advisorBaseName = "advisors.csv";
     private static final String _scheduleBaseName = "scheduleofclasses.csv";
     private static final String _studentsBaseName = "students.csv";
-    private static final String _ilcsBaseName = "ilcs.csv";
+    private static final String _alcsBaseName = "alcs.csv";
     private static final String _honAdvBaseName = "honorsadvisors.csv";
     private static final String _pspAdvBaseName = "pspadvisors.csv";  //pre health scholars
     private static final String _presScholarAdvBaseName = "presscholaradvisors.csv";
     private static final String _studentSchedulesBaseName = "studentschedules.csv";
     private static final String _ccptAdvBaseName = "ccptadvisors.csv";
-    private static final String _btmgAdvBaseName = "btmgadvisors.csv";
-    private static final String _lcBaseName = "learningcommunities.csv";
-    private static final String _prelawAdvBaseName = "prelawadvisors.csv";
 
     //the advisor data
 	private static AdvisorData _advisorData;
@@ -38,16 +35,15 @@ public class DataManager {
 	//the student data
 	private static StudentData _studentData;
 
-	//ILCs
-	private static ILCData _ilcData;
-
 	//Learning Communities
-	private static LearningCommunityData _learningCommunityData;
+//	private static LearningCommunityData _learningCommunityData;
+
+	//ALCs
+	private static ALCData _alcData;
 
 	//synonym lists
 
 	public static final DataAttribute rowAtt = new DataAttribute(" ", 40);
-
 
 	public static final DataAttribute inClassAtt = new DataAttribute(UnicodeSupport.SMILEYFACE, 18);
 	public static final DataAttribute idAtt = new DataAttribute("ID NUMBER", 72, "id", "cnuid");
@@ -62,7 +58,7 @@ public class DataManager {
 	public static final DataAttribute reasonAtt = new DataAttribute("Reason", 44);
 
 	public static final DataAttribute lcAtt= new DataAttribute("Learning Community", 240, "Learning Community Title");
-//	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
+	public static final DataAttribute lcNumAtt = new DataAttribute("LC#", 35, "lc");
 
 
 	public static final DataAttribute crnAtt = new DataAttribute("CRN", 40);
@@ -79,11 +75,10 @@ public class DataManager {
 	public static final DataAttribute locationAtt = new DataAttribute("LOC", 70, "location");
 	public static final DataAttribute instructorAtt = new DataAttribute("INSTRUCTOR", 150);
 
-	public static final DataAttribute ilcAtt = new DataAttribute("ILC", 35);
+	public static final DataAttribute alcAtt = new DataAttribute("ALC", 35);
 	public static final DataAttribute prscAtt = new DataAttribute("PRSC", 38);
 	public static final DataAttribute windAtt = new DataAttribute("WIND", 38);
 	public static final DataAttribute ccapAtt = new DataAttribute("CCAP", 38);
-	public static final DataAttribute btmgAtt = new DataAttribute("BTMG", 38);
 	public static final DataAttribute plpAtt = new DataAttribute("PLP", 35);
 	public static final DataAttribute honrAtt = new DataAttribute("HONR", 38);
 	public static final DataAttribute pspAtt = new DataAttribute("PSP", 40);
@@ -91,6 +86,18 @@ public class DataManager {
 	public static final DataAttribute majorAtt = new DataAttribute("MAJOR", 60, "Major_1st");
 	public static final DataAttribute emailAtt = new DataAttribute("ADVISOR_EMAIL", 170, "email", "student_email");
 	public static final DataAttribute directorAtt = new DataAttribute("DIRECTOR", 50);
+
+	public static final DataAttribute specialAtt = new DataAttribute("SPECIAL", 50);
+	public static final DataAttribute bannerBlockAtt = new DataAttribute("BANNER_BLOCK_CODE", 40);
+
+	public static final DataAttribute prefFirstAtt = new DataAttribute("PREFIRST", 72);
+	public static final DataAttribute cnuEmailAtt = new DataAttribute("CNU_EMAIL", 170);
+	public static final DataAttribute bannerSportAtt = new DataAttribute("BANNER_SPRT", 70);
+	public static final DataAttribute prStr1Att = new DataAttribute("PRSTR1", 70);
+	public static final DataAttribute prStr2Att = new DataAttribute("PRSTR2", 70);
+	public static final DataAttribute prCityAtt = new DataAttribute("PRCITY", 70);
+	public static final DataAttribute prStAtt = new DataAttribute("PRST", 70);
+	public static final DataAttribute prZipAtt = new DataAttribute("PRZIP", 70);
 
 
 	/* the director of the honors program, if also a core advisor */
@@ -102,11 +109,10 @@ public class DataManager {
 	 */
 	public static void init() {
 		_advisorData = new AdvisorData(_advisorBaseName);
-		_ilcData = new ILCData(_ilcsBaseName);
 
 		_schedule = new Schedule(_scheduleBaseName);
 		_studentData = new StudentData(_studentsBaseName);
-		_learningCommunityData = new LearningCommunityData(_lcBaseName);
+		_alcData = new ALCData(_alcsBaseName);
 
 		new HonorsAdvisors(_honAdvBaseName);
 		new PSPAdvisors(_pspAdvBaseName);
@@ -114,8 +120,6 @@ public class DataManager {
 		new StudentSchedules(_studentSchedulesBaseName);
 		new PresScholarAdvisors(_presScholarAdvBaseName);
 		new CCPTAdvisors(_ccptAdvBaseName);
-		new BTMGAdvisors(_btmgAdvBaseName);
-		new PrelawAdvisors(_prelawAdvBaseName);
 
 		//run the initial steps
 		CheckList.getInstance().initRun();
@@ -138,19 +142,12 @@ public class DataManager {
 	}
 
 	/**
-	 * Get the data for all core advisors
-	 * @return the advisor data
+	 * Get the data for all ALCs
+	 *
+	 * @return the ALC data
 	 */
-	public static ILCData getILCData() {
-		return _ilcData;
-	}
-
-	/**
-	 * Get the data for learning communities
-	 * @return the advisor data
-	 */
-	public static LearningCommunityData getLearningCommunityData() {
-		return _learningCommunityData;
+	public static ALCData getALCData() {
+		return _alcData;
 	}
 
 	/**
@@ -187,6 +184,41 @@ public class DataManager {
 
 		return advisors;
 	}
+
+	/**
+	 * Get a list of advisors whose subject matches a major and are not alc advisors
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForMajorNotALC(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (major.isInMajorFamily(advisor.subject) && !advisor.alc()) {
+				advisors.add(advisor);
+			}
+		}
+
+		return advisors;
+	}
+
+	/**
+	 * Get a list of advisors whose subject matches a major and are  alc advisors
+	 * @param major the major to match
+	 * @return the list
+	 */
+	public static List<Advisor> getAdvisorsForMajorALC(Major major) {
+		ArrayList<Advisor> advisors = new ArrayList<>();
+
+		for (Advisor advisor : _advisorData.getAdvisors()) {
+			if (major.isInMajorFamily(advisor.subject) && advisor.alc()) {
+				advisors.add(advisor);
+			}
+		}
+
+		return advisors;
+	}
+
 
 	/**
 	 * Get a list of honors advisors whose subject matches a major
@@ -250,7 +282,7 @@ public class DataManager {
 
 		return advisors;
 	}
-	
+
 	/**
 	 * Get a list of honors advisors whose subject matches a specialty
 	 *
@@ -398,7 +430,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned psp students
 	 *
@@ -436,7 +468,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned honors students with a given specialty
 	 *
@@ -456,7 +488,7 @@ public class DataManager {
 
 		return students;
 	}
-	
+
 	/**
 	 * Get a list of unassigned students with a given specialty
 	 *
@@ -477,6 +509,23 @@ public class DataManager {
 		return students;
 	}
 
+	/**
+	 * Get a list of unassigned students with a given bit set
+	 *
+	 * @param specialty the bit to check
+	 * @return the list
+	 */
+	public static List<Student> getUnassignedStudentsWithBit(int bit) {
+		ArrayList<Student> students = new ArrayList<>();
+
+			for (Student student : _studentData.getStudents()) {
+				if (!student.assigned() && student.check(bit)) {
+					students.add(student);
+				}
+		}
+
+		return students;
+	}
 
 	/**
 	 * Get the schedule of classes data

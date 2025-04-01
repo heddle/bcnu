@@ -44,6 +44,8 @@ public class NodePanel extends JPanel
 
 	// Text area shows data values for selected nodes.
 	private JTextArea _dataTextArea;
+	
+	private SeenBankPanel _seenBankPanel;
 
 	// the event info panel
 	private EventInfoPanel _eventInfoPanel;
@@ -91,6 +93,7 @@ public class NodePanel extends JPanel
 		setLayout(new BorderLayout());
 		addCenter();
 		addEast();
+		addWest();
 
 		_isReady = true;
 		fixButtons();
@@ -120,12 +123,8 @@ public class NodePanel extends JPanel
 	 */
 	private JScrollPane createDataTextArea() {
 
-		_dataTextArea = new JTextArea(3, 40) {
-			@Override
-			public Dimension getMinimumSize() {
-				return new Dimension(180, 200);
-			}
-		};
+		_dataTextArea = new JTextArea(3, 40);
+		_dataTextArea.setMinimumSize(new Dimension(180, 200));
 		_dataTextArea.setFont(Fonts.mediumFont);
 		// _dataTextArea.setBorder(BorderFactory.createTitledBorder(null,
 		// "Data",
@@ -171,6 +170,12 @@ public class NodePanel extends JPanel
 		centerPanel.add(splitPane, BorderLayout.CENTER);
 
 		add(centerPanel, BorderLayout.CENTER);
+	}
+	
+	//add the seen bank panel on the west
+	public void addWest() {
+		_seenBankPanel = new SeenBankPanel();
+		add(_seenBankPanel, BorderLayout.WEST);
 	}
 
 	/**
@@ -409,7 +414,7 @@ public class NodePanel extends JPanel
 		DataWarehouse dw = DataWarehouse.getInstance();
 		String bankName = cd.bankName;
         String columnName = cd.columnName;
-        
+
 		int lineCounter = 1;
 		int index = 0;
 
@@ -489,7 +494,7 @@ public class NodePanel extends JPanel
 				_dataTextArea.append("null data\n");
 			}
 			break;
-			
+
 		case DataWarehouse.INT64:
 			long longs[] = dw.getLong(bankName, columnName);
 			if (longs != null) {
@@ -580,6 +585,7 @@ public class NodePanel extends JPanel
 			setTrueEventNumber(_eventManager.getTrueEventNumber());
 			setRunNumber(_eventManager.getRunData().run);
 			fixButtons();
+			_seenBankPanel.updateSeenBanks();
 		}
 	}
 
@@ -598,6 +604,7 @@ public class NodePanel extends JPanel
 		setSource(path);
 		setNumberOfEvents(_eventManager.getEventCount());
 		fixButtons();
+		_seenBankPanel.updateSeenBanks();
 	}
 
 	/**

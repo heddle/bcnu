@@ -17,12 +17,11 @@ import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.Styled;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
-import cnuphys.fastMCed.item.AllDCSuperLayer;
 import cnuphys.fastMCed.snr.SNRManager;
 import cnuphys.fastMCed.view.AView;
 import cnuphys.fastMCed.view.ControlPanel;
@@ -111,12 +110,7 @@ public class AllDCView extends AView {
 		Dimension d = GraphicsUtilities.screenFraction(0.65);
 
 		// create the view
-		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, // container
-																													// width,
-																													// not
-																													// total
-																													// view
-																													// width
+		view = new AllDCView(PropertySupport.WORLDSYSTEM, _defaultWorldRectangle, PropertySupport.WIDTH, d.width, 
 				PropertySupport.HEIGHT, d.height, // container height, not total view width
 				PropertySupport.TOOLBAR, true, PropertySupport.TOOLBARBITS, AView.TOOLBARBITS, PropertySupport.VISIBLE,
 				true, PropertySupport.TITLE, _baseTitle + ((CLONE_COUNT == 0) ? "" : ("_(" + CLONE_COUNT + ")")),
@@ -203,7 +197,7 @@ public class AllDCView extends AView {
 	 */
 	private void addItems() {
 		// use sector 0 all the same
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 
 		double width = 0.92; // full width of each sector is 1.0;
 		double xo = (1.0 - width) / 2.0;

@@ -33,7 +33,7 @@ public class FeedbackPane extends TextPaneScrollPane {
 	/**
 	 * Background for feedback panel
 	 */
-	private static Color _background = X11Colors.getX11Color("Black");
+	private static Color _background = Color.black;
 
 	/**
 	 * Cyan style. The last two booleans represent italics and bold.
@@ -41,15 +41,8 @@ public class FeedbackPane extends TextPaneScrollPane {
 	public static final SimpleAttributeSet _defaultStyle = createStyle(Color.cyan, _background, "SansSerif", _fontSize,
 			false, true);
 
-	/**
-	 * Constructor Create a feedback pane to display mouse-over feedback. This is a
-	 * "low tech" alternative to using the HUD.
-	 *
-	 * @param width the preferred width.
-	 */
-	public FeedbackPane(int width) {
-		this(width, 500);
-	}
+	public static final SimpleAttributeSet _smallMono = createStyle(Color.cyan, _background, "Monospaced", 6, false, true);
+
 
 	/**
 	 * Constructor Create a feedback pane to display mouse-over feedback. This is a
@@ -57,14 +50,12 @@ public class FeedbackPane extends TextPaneScrollPane {
 	 *
 	 * @param width the preferred width.
 	 */
-	public FeedbackPane(int width, int height) {
-//		setPreferredSize(new Dimension(width, height));
+	public FeedbackPane() {
+		super(_background);
 
 		Border etchedBorder = BorderFactory.createEtchedBorder();
 		Border lineBorder = BorderFactory.createLineBorder(Color.black, 2);
 		setBorder(BorderFactory.createCompoundBorder(etchedBorder, lineBorder));
-
-		setBackground(_background);
 	}
 
 	/**
@@ -98,6 +89,12 @@ public class FeedbackPane extends TextPaneScrollPane {
 	public void append(String message) {
 		SimpleAttributeSet style = null;
 
+		if (message.startsWith("$mono$")) {
+            appendSmallMono(message.substring(6));
+            return;
+        }
+
+
 		if (message.startsWith("$")) {
 			int nextIndex = message.indexOf("$", 1);
 			if ((nextIndex > 3) && (nextIndex < 30)) {
@@ -116,6 +113,10 @@ public class FeedbackPane extends TextPaneScrollPane {
 		}
 		append((style == null) ? _defaultStyle : style, message);
 	}
+
+	private void appendSmallMono(String message) {
+        append(_smallMono, message);
+    }
 
 	/**
 	 * Append the message with the provided style.
@@ -142,5 +143,9 @@ public class FeedbackPane extends TextPaneScrollPane {
 
 		}
 	}
+
+
+
+
 
 }

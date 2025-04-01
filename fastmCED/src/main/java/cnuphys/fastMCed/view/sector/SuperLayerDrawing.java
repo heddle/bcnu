@@ -559,18 +559,19 @@ public class SuperLayerDrawing {
 //			System.err.println("Approx theta = " + SNRManager.getInstance().approximateTheta(_iSupl.superlayer()-1, wire-1));
 
 			int wire0 = wire - 1; // convert to 0 based
+			int layer0 = layer - 1; // convert to 0 based
 			List<ParticleHits> hits = _eventManager.getParticleHits();
 
 			if (hits != null) {
 				for (ParticleHits particleHits : hits) {
-					LundId lid = particleHits.getLundId();
 
+					LundId lid = particleHits.getLundId();
 					List<AugmentedDetectorHit> augHits = particleHits.getHits(DetectorId.DC, _iSupl.sector() - 1,
 							_iSupl.superlayer() - 1);
 
 					if (augHits != null) {
 						for (AugmentedDetectorHit hit : augHits) {
-							if (hit.getComponentId() == wire0) {
+							if ((hit.getLayerId() == layer0) && (hit.getComponentId() == wire0)) {
 
 								// might not even care if it is noise
 								if (hit.isNoise() && _view.hideNoise()) {

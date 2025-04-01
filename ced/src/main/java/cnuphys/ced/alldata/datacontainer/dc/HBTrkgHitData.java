@@ -1,11 +1,11 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class HBTrkgHitData extends ATrkgHitData {
-	
+
 	// singleton
 	private static volatile HBTrkgHitData _instance;
 
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -21,10 +21,10 @@ public class HBTrkgHitData extends ATrkgHitData {
 		}
 		return _instance;
 	}
-	
+
 	@Override
 	public String bankName() {
-		return "HitBasedTrkg::HBHits";
+		return "HitBasedTrkg::Hits";
 	}
 
 

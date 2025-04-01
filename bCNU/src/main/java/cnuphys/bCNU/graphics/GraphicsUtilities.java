@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
@@ -27,8 +28,8 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Hashtable;
-import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
@@ -1169,6 +1170,48 @@ public class GraphicsUtilities {
 		g2.setStroke(oldStroke);
 	}
 
+
+	/**
+	 * draw a number (int) at the end of a line
+	 * @param g
+	 * @param val
+	 * @param start
+	 * @param end
+	 * @param gap
+	 * @param f
+	 * @param fc
+	 */
+    public static void drawNumberAtEnd(Graphics g, int val, Point start, Point end, int gap, Font f, Color fc) {
+        Graphics2D g2d = (Graphics2D) g;
+
+        // Set font and color
+        g2d.setFont(f);
+        g2d.setColor(fc);
+
+        // Convert the value to a string
+        String text = String.valueOf(val);
+
+        // Get font metrics to measure text dimensions
+        FontMetrics metrics = g2d.getFontMetrics(f);
+        int textWidth = metrics.stringWidth(text);
+        int textHeight = metrics.getHeight();
+
+
+        // Calculate the angle of the line
+        double angle = Math.atan2(end.y - start.y, end.x - start.x);
+
+        // Calculate the position for the text to ensure alignment and gap
+        int xOffset = (int) (Math.cos(angle) * gap);
+        int yOffset = (int) (Math.sin(angle) * gap);
+
+        // Align text so its center is aligned with the line
+        int x = end.x + xOffset - textWidth / 2;
+        int y = end.y + yOffset + textHeight / 2 - metrics.getDescent();
+
+        // Draw the text
+        g2d.drawString(text, x, y);
+    }
+
 	/**
 	 * Returns <code>true</code> if the point is on the line, with an amount of slop
 	 * controlled by the class constant <code>SELECTRES</code>.
@@ -1265,7 +1308,7 @@ public class GraphicsUtilities {
 		// get the snippets in case some used latex encoding
 
 		g.setFont(font);
-		Vector<Snippet> snippets = Snippet.getSnippets(font, text, component);
+		ArrayList<Snippet> snippets = Snippet.getSnippets(font, text, component);
 		for (Snippet s : snippets) {
 			s.drawSnippet(g, x, y, azimuth);
 		}

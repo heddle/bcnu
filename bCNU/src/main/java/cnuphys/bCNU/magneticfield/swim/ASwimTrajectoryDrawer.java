@@ -8,8 +8,8 @@ import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import cnuphys.bCNU.drawable.DrawableAdapter;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
@@ -32,6 +32,8 @@ import cnuphys.swim.Swimming;
  *
  */
 public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements IProjector {
+	
+	private double _maxPathLength = 2000; //whatever units the trajectory
 
 	// colors
 	protected static final Color sectChangeColor = X11Colors.getX11Color("purple", 128);
@@ -44,7 +46,7 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 	}
 
 	// these are the 2D trajectories
-	protected Vector<SwimTrajectory2D> _trajectories2D = new Vector<>(20);
+	protected ArrayList<SwimTrajectory2D> _trajectories2D = new ArrayList<>(20);
 
 	protected SwimTrajectory2D _closestTrajectory;
 
@@ -121,6 +123,16 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		}
 	}
 
+	/**
+	 * Set the maximum path length for a trajectory. If a trajectory is longer than
+	 * this, it will be truncated.
+	 * 
+	 * @param maxPathLength the maximum path length in whatever units the trajectory
+	 */
+	public void setMaxPathLength(double maxPathLength) {
+		_maxPathLength = maxPathLength;
+	}
+	
 	/**
 	 * Here we have a chance to veto a trajectory. For example, we may decide that
 	 * the trajectory won't appear on this view (assuming a view owns this drawer)
@@ -204,8 +216,20 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		}
 
 		Point pp = new Point();
+		Point2D.Double oldWP = null;
+		
+		//running pathlength in cm
+		double pathLength = 0;
 
 		for (Point2D.Double wp : path) {
+			if (oldWP != null) {
+				pathLength += wp.distance(oldWP);
+			} 
+			oldWP = wp;
+			if (pathLength > _maxPathLength) {
+				break;
+			}
+
 			container.worldToLocal(pp, wp);
 			poly.addPoint(pp.x, pp.y);
 		}
@@ -240,15 +264,28 @@ public abstract class ASwimTrajectoryDrawer extends DrawableAdapter implements I
 		Point2D.Double path[] = trajectory.getPath();
 
 		if (path == null) {
-			System.err.println("Null path");
+//			System.err.println("Null path");
 			return;
 		}
 
 		Point pp = new Point();
+		Point2D.Double oldWP = null;
+		
+		//running pathlength in cm
+		double pathLength = 0;
 
 		for (Point2D.Double wp : path) {
+			if (oldWP != null) {
+				pathLength += wp.distance(oldWP);
+			} 
+			oldWP = wp;
+			if (pathLength > _maxPathLength) {
+				break;
+			}
+
 			container.worldToLocal(pp, wp);
 			poly.addPoint(pp.x, pp.y);
+			
 		}
 
 		if (poly.npoints > 1) {

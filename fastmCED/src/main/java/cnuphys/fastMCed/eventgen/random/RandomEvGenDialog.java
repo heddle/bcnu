@@ -26,7 +26,6 @@ import org.jlab.clas.physics.PhysicsEvent;
 import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
 import cnuphys.bCNU.graphics.ImageManager;
-import cnuphys.fastMCed.eventgen.GeneratorManager;
 import cnuphys.fastMCed.eventgen.IEventSource;
 
 /**
@@ -42,13 +41,16 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 	private static String CANCELSTR = "Cancel";
 
 	// electron, proton, gamma
-	private static int lundIds[] = { 11, 2212, 22, -11 };
+	private static int lundIds[] = { 11, 2212, 211, -211, -11 };
+	private static double probs[] = {100, 20, 5, 5, 1 };
+	private static double pmin[] = {1, 1, .4, .4, 1 };
+	private static double pmax[] = {8, 6, 1, 1, 3 };
 
 	// the reason the dialog closed.
 	private int reason;
 
 	// random number generator
-	private Random _rand;
+	private Random _rand = new Random();
 
 	// convenient access to south button panel
 	private JPanel buttonPanel;
@@ -150,7 +152,7 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 		panel.setLayout(new VerticalFlowLayout());
 
 		for (int i = 0; i < maxNum; i++) {
-			ppanels[i] = new ParticlePanel(this, i == 0, lundIds[i % lundIds.length]);
+			ppanels[i] = new ParticlePanel(this, i == 0, lundIds[i % lundIds.length], probs[i % probs.length], pmin[i % pmin.length], pmax[i % pmax.length]);
 			panel.add(ppanels[i]);
 		}
 		add(panel, BorderLayout.CENTER);
@@ -221,8 +223,13 @@ public class RandomEvGenDialog extends JDialog implements ActionListener, IEvent
 		PhysicsEvent event = new PhysicsEvent();
 		for (ParticlePanel panel : ppanels) {
 			if (panel.isActive()) {
-				Particle p = panel.createParticle();
-				event.addParticle(p);
+				
+				double prob = panel.getProbabilityPercent()/100;
+				if (_rand.nextDouble() < prob) {
+					Particle p = panel.createParticle();
+					event.addParticle(p);
+				}
+				
 			}
 		}
 

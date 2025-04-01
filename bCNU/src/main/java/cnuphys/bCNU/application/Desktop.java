@@ -1,9 +1,13 @@
 package cnuphys.bCNU.application;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -17,14 +21,12 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.UIDefaults;
-import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.plaf.metal.MetalIconFactory;
 
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.log.Log;
+import cnuphys.bCNU.ping.IPing;
+import cnuphys.bCNU.ping.Ping;
 import cnuphys.bCNU.util.Environment;
 import cnuphys.bCNU.util.X11Colors;
 import cnuphys.bCNU.view.BaseView;
@@ -35,7 +37,7 @@ import cnuphys.bCNU.view.BaseView;
  * @author heddle
  */
 @SuppressWarnings("serial")
-public final class Desktop extends JDesktopPane {
+public final class Desktop extends JDesktopPane implements MouseListener, MouseMotionListener {
 
 	/**
 	 * Used to operate (e.g., refresh) all views
@@ -67,6 +69,15 @@ public final class Desktop extends JDesktopPane {
 	// optional after drawer
 	private IDrawable _afterDraw;
 
+	private boolean mouseReleased = false;
+
+	//hack related to internal frame drag bug
+	private static Ping _ping;
+	private JInternalFrame _dragFrame;
+	private long _lastDragTime = Long.MAX_VALUE;
+	private int _lastX;
+	private int _lastY;
+
 	/**
 	 * Create a desktop pane.
 	 *
@@ -76,7 +87,6 @@ public final class Desktop extends JDesktopPane {
 	 *                        "images/background.png".
 	 */
 	private Desktop(Color background, String backgroundImage) {
-		initializeLookAndFeel();
 
 		setDragMode(JDesktopPane.OUTLINE_DRAG_MODE); // faster
 		setDoubleBuffered(true);
@@ -100,7 +110,44 @@ public final class Desktop extends JDesktopPane {
 			}
 		}
 
+		_ping = new Ping(1000);
+		//use the ping to deal with hover
+		IPing pingListener = new IPing() {
+
+			@Override
+			public void ping() {
+				heartbeat();
+			}
+
+		};
+		_ping.addPingListener(pingListener);
 	}
+
+
+	private void heartbeat() {
+		if (_dragFrame == null) {
+			return;
+		}
+		long del = System.currentTimeMillis() - _lastDragTime;
+		if ((del > 1000) && (_dragFrame != null)) {
+			System.err.println("mouse released missed!!!");
+
+			MouseEvent mouseEvent = new MouseEvent(_dragFrame, // target component
+					MouseEvent.MOUSE_RELEASED, // event type
+					System.currentTimeMillis(), // current time
+					0, // no modifiers
+					_lastX, // x-coordinate
+					_lastY, // y-coordinate
+					1, // click count
+					false, // not a popup trigger
+					MouseEvent.BUTTON1 // left button
+			);
+
+			_dragFrame.dispatchEvent(mouseEvent);
+
+		}
+	}
+
 
 	/**
 	 * Create a desktop pane.
@@ -175,6 +222,20 @@ public final class Desktop extends JDesktopPane {
 		}
 
 	}
+
+	@Override
+	public Component add(Component comp, int index) {
+
+		if (comp instanceof JInternalFrame) {
+			JInternalFrame frame = (JInternalFrame) comp;
+			frame.setOpaque(false);
+
+			frame.addMouseListener(this);
+			frame.addMouseMotionListener(this);
+		}
+
+		return super.add(comp, index);
+    }
 
 	/**
 	 * Gets the top internal frame. Surprising that we had to write this.
@@ -325,69 +386,47 @@ public final class Desktop extends JDesktopPane {
 		}
 	}
 
-	/**
-	 * Initialize the look and feel.
-	 */
 
-	public void initializeLookAndFeel() {
+	@Override
+	public void mouseDragged(MouseEvent e) {
 
-		LookAndFeelInfo[] lnfinfo = UIManager.getInstalledLookAndFeels();
-
-		String preferredLnF[];
-
-		if (Environment.getInstance().isWindows()) {
-			String arry[] = { UIManager.getSystemLookAndFeelClassName(), "Metal", "CDE/Motif", "Nimbus",
-					UIManager.getCrossPlatformLookAndFeelClassName() };
-			preferredLnF = arry;
-		} else {
-			String arry[] = { UIManager.getSystemLookAndFeelClassName(), "Windows",
-					UIManager.getCrossPlatformLookAndFeelClassName() };
-			preferredLnF = arry;
+		Component component = e.getComponent();
+		if (component instanceof JInternalFrame) {
+			_dragFrame = (JInternalFrame) component;
+			_lastDragTime = System.currentTimeMillis();
+			_lastX = e.getX();
+			_lastY = e.getY();
 		}
 
-		if ((lnfinfo == null) || (lnfinfo.length < 1)) {
-			System.err.println("No installed look and feels");
-			return;
-		}
-
-		for (String targetLnF : preferredLnF) {
-			for (LookAndFeelInfo element : lnfinfo) {
-				String linfoName = element.getClassName();
-				if (linfoName.indexOf(targetLnF) >= 0) {
-					try {
-						UIManager.setLookAndFeel(element.getClassName());
-						UIDefaults defaults = UIManager.getDefaults();
-
-						defaults.put("RadioButtonMenuItem.checkIcon", MetalIconFactory.getRadioButtonMenuItemIcon());
-						return;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		} // end for
 	}
 
-	/**
-	 * Checks whether all views are ready for display.
-	 *
-	 * @return <code>true</code> if all views are ready for display.
-	 */
-	public boolean isReady() {
-		JInternalFrame[] frames = getAllFrames();
-
-		if (frames != null) {
-			for (JInternalFrame frame : frames) {
-				if (frame instanceof BaseView) {
-					BaseView view = (BaseView) frame;
-					if (!view.isReady()) {
-						return false;
-					}
-				}
-			}
-		}
-
-		return true;
+	@Override
+	public void mouseMoved(MouseEvent e) {
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		mouseReleased = false;
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		mouseReleased = true;
+        _dragFrame = null;
+        _lastDragTime = Long.MAX_VALUE;
+     }
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+	}
+
 
 }

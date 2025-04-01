@@ -3,6 +3,7 @@ package cnuphys.bCNU.graphics.toolbar;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import cnuphys.bCNU.graphics.container.DrawingContainer;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.rubberband.IRubberbanded;
 import cnuphys.bCNU.graphics.rubberband.Rubberband;
@@ -48,7 +49,10 @@ public class PolygonButton extends ToolBarToggleButton implements IRubberbanded 
 		if ((pp == null) || (pp.length < 2)) {
 			return;
 		}
-		AItem item = container.createPolygonItem(container.getAnnotationLayer(), pp);
+
+		DrawingContainer dc	= (DrawingContainer) container;
+
+		AItem item = dc.createPolygonItem(container.getAnnotationList(), pp);
 		if (item != null) {
 			item.setRightClickable(true);
 			item.setDraggable(true);

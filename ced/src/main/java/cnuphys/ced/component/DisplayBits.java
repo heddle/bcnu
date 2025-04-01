@@ -79,7 +79,7 @@ public class DisplayBits {
 
 	/** cvt rec KF traj */
 	public static final int CVTRECKFTRAJ = 0200000000;
-	
+
 	/** cvt pass 1 tracks */
 	public static final int CVTP1TRACKS = 0400000000;
 

@@ -19,7 +19,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 
 	// owner view
 	private CentralZView _view;
-	
+
 	//data containers
 	private BSTADCData adcBSTData = BSTADCData.getInstance();
 	private BSTRecHitData bstRecHitData = BSTRecHitData.getInstance();
@@ -88,11 +88,11 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 	// draw bst reconstructed hits
 	private void drawBSTReconHits(Graphics g, IContainer container) {
 		if (_view.showReconHits()) {
-			
+
 			int count = bstRecHitData.count();
 			if (count > 0) {
 				Point pp = new Point();
-				
+
 				for (int i = 0; i < count; i++) {
 					int sector = bstRecHitData.sector[i];
 					int layer = bstRecHitData.layer[i];
@@ -109,7 +109,7 @@ public class CentralZHitDrawer extends CentralHitDrawer {
 					}
 				}
 			}
-			
+
 		}
 	}
 

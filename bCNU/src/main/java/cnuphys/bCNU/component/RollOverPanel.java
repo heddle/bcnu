@@ -24,13 +24,13 @@ public class RollOverPanel extends JPanel {
 
 
 	/**
-	 *
-	 * @param title
-	 * @param numCols
-	 * @param font
-	 * @param fg
-	 * @param bg
-	 * @param labels
+	 * Create a roll over panel
+	 * @param title the title of the panel
+	 * @param numCols the number of columns
+	 * @param font the font
+	 * @param fg the foreground color
+	 * @param bg the background color
+	 * @param labels the labels
 	 */
 	public RollOverPanel(String title, int numCols,
 			Font font, Color fg, Color bg, String... labels) {

@@ -17,7 +17,7 @@ public class PSPStep extends CheckListLaunchable {
 
 	@Override
 	public void launch() {
-		
+
 		List<Advisor> advisors = DataManager.getFilteredAdvisorData(Person.PREMEDSCHOLAR).getAdvisors();
 		advisors.removeIf(x -> x.locked());
 
@@ -25,5 +25,5 @@ public class PSPStep extends CheckListLaunchable {
 
 		DataManager.roundRobinAssign(advisors, students, true, "PSP students", EReason.PSP);
 	}
-	
+
 }

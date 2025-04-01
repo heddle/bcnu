@@ -21,8 +21,6 @@ public class BoxZoomButton extends ToolBarToggleButton implements IRubberbanded 
 	// rubberbanding policy
 	private Rubberband.Policy _policy = Rubberband.Policy.RECTANGLE_PRESERVE_ASPECT;
 
-	private boolean _xorMode = false;
-
 	/**
 	 * Create the button for a rubber-band zoom.
 	 *
@@ -42,23 +40,13 @@ public class BoxZoomButton extends ToolBarToggleButton implements IRubberbanded 
 	public void mousePressed(MouseEvent mouseEvent) {
 		if (rubberband == null) {
 			Environment.getInstance().setDragging(true);
-			rubberband = new Rubberband(container, this, _policy, _xorMode);
+			rubberband = new Rubberband(container, this, _policy);
 			// make it look different from the pointer rubberband
 			rubberband.setHighlightColor1(Color.gray);
 			rubberband.setHighlightColor2(Color.green);
 			rubberband.setActive(true);
 			rubberband.startRubberbanding(mouseEvent.getPoint());
 		}
-	}
-
-	/**
-	 * Set the xor mode
-	 *
-	 * @param mode the xor mode
-	 */
-	public void setXorMode(boolean mode) {
-		_xorMode = mode;
-		rubberband = null;
 	}
 
 	/**

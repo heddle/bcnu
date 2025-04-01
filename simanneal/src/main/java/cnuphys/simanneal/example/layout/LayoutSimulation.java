@@ -9,7 +9,6 @@ import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import cnuphys.bCNU.attributes.Attributes;
 import cnuphys.simanneal.Simulation;
 import cnuphys.simanneal.Solution;
 
@@ -17,10 +16,10 @@ public class LayoutSimulation extends Simulation {
 
 	/** width of the active layout bounds */
 	public static final int width = 1000;
-	
+
 	/** height of the active layout bounds */
 	public static final int height = 800;
-	
+
 	/** the size of the layout bounds */
 	public static final Rectangle bounds = new Rectangle(width, height);
 
@@ -29,7 +28,7 @@ public class LayoutSimulation extends Simulation {
 
 	/** a pixel gap */
 	public static final int gap = 48;
-	
+
 	/** random number generator */
 	public static Random random = new Random(53197711);
 
@@ -50,7 +49,7 @@ public class LayoutSimulation extends Simulation {
 		PositionedRectangle._nextId = 0;
 		super.reset();
 	}
-	
+
 	// main program for testing
 	public static void main(String arg[]) {
 

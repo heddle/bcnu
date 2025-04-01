@@ -5,7 +5,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.bCNU.util.Point2DSupport;
 
 public class RectangleItem extends PolygonItem {
@@ -13,11 +12,11 @@ public class RectangleItem extends PolygonItem {
 	/**
 	 * Create a world rectangle object.
 	 *
-	 * @param layer the Layer this item is on.
+	 * @param itemList the list this item is on.
 	 * @param wr    the initial bounds of the item.
 	 */
-	public RectangleItem(LogicalLayer layer, Rectangle2D.Double wr) {
-		super(layer, WorldGraphicsUtilities.getPoints(wr));
+	public RectangleItem(ItemList itemList, Rectangle2D.Double wr) {
+		super(itemList, WorldGraphicsUtilities.getPoints(wr));
 	}
 
 	/**

@@ -10,28 +10,28 @@ import java.awt.Rectangle;
  *
  */
 public class Under {
-	
+
 	//layout bounds
 	protected static Rectangle _bounds = LayoutSimulation.bounds;
 
 	//segment endpoint
 	public PositionedRectangle p1;
-	
+
 	//other segment endpoint
 	public PositionedRectangle p2;
-	
+
 	//the "covering" rect
-	public PositionedRectangle cover; 
-	
+	public PositionedRectangle cover;
+
 	/** intersection point 1 x coord */
 	public double x1;
-	
+
 	/** intersection point 1 y coord */
 	public double y1;
-	
+
 	/** intersection point 2 x coord */
 	public double x2;
-	
+
 	/** intersection point 3 y coord */
 	public double y2;
 
@@ -43,7 +43,7 @@ public class Under {
 	 * @param cover pr that is covering
 	 * @param u  the intersection point
 	 */
-	public Under(PositionedRectangle p1, PositionedRectangle p2, 
+	public Under(PositionedRectangle p1, PositionedRectangle p2,
 			PositionedRectangle cover, double x1, double y1, double x2, double y2) {
 		super();
 		this.p1 = p1;
@@ -55,7 +55,7 @@ public class Under {
 		this.y2 = y2;
 
 	}
-	
+
 	/**
 	 * Draw the two intersection points
 	 * @param g the graphics context

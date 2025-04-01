@@ -10,9 +10,9 @@ import javax.swing.JSlider;
 import javax.swing.SwingUtilities;
 
 import cnuphys.bCNU.attributes.Attribute;
+import cnuphys.bCNU.util.Fonts;
 import cnuphys.simanneal.Simulation;
 import cnuphys.simanneal.Solution;
-import cnuphys.bCNU.util.Fonts;
 
 public class TSSimulation extends Simulation {
 
@@ -60,7 +60,7 @@ public class TSSimulation extends Simulation {
 
 	/**
 	 * Get the penalty (or bonus) for crossing the river
-	 * 
+	 *
 	 * @return the penalty for crossing the river
 	 */
 	public double getRiverPenalty() {

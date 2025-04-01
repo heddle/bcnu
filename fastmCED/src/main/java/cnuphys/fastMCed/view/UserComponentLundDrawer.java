@@ -1,7 +1,7 @@
 package cnuphys.fastMCed.view;
 
 import java.awt.Graphics;
-import java.util.Vector;
+import java.util.ArrayList;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.toolbar.AUserComponentDrawer;
@@ -46,7 +46,7 @@ public class UserComponentLundDrawer extends AUserComponentDrawer {
 	 * @return all the unique LundIds associated with this event.
 	 */
 	@Override
-	protected Vector<LundId> getUniqueLundIds() {
+	protected ArrayList<LundId> getUniqueLundIds() {
 		return _eventManager.uniqueLundIds();
 	}
 

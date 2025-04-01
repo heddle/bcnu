@@ -25,7 +25,7 @@ import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
-import cnuphys.bCNU.layer.LogicalLayer;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.util.Fonts;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.X11Colors;
@@ -52,7 +52,7 @@ public class DCXYView extends HexView {
 	private static final String _baseTitle = "DC XY";
 
 	// sector items
-	private DCHexSectorItem _hexItems[];
+	private DCXYSectorItem _hexItems[];
 
 	// used to draw swum trajectories (if any) in the after drawer
 	private SwimTrajectoryDrawerXY _swimTrajectoryDrawer;
@@ -65,7 +65,7 @@ public class DCXYView extends HexView {
 
 	//bank matches
 	private static String _defMatches[] = {"DC:"};
-	
+
 	// data containers
 	private static DCTDCandDOCAData _dcData = DCTDCandDOCAData.getInstance();
 
@@ -196,12 +196,12 @@ public class DCXYView extends HexView {
 	// add items to the view
 	@Override
 	protected void addItems() {
-		LogicalLayer detectorLayer = getContainer().getLogicalLayer(_detectorLayerName);
+		ItemList detectorLayer = getContainer().getItemList(_detectorLayerName);
 
-		_hexItems = new DCHexSectorItem[6];
+		_hexItems = new DCXYSectorItem[6];
 
 		for (int sector = 0; sector < 6; sector++) {
-			_hexItems[sector] = new DCHexSectorItem(detectorLayer, this, sector + 1);
+			_hexItems[sector] = new DCXYSectorItem(detectorLayer, this, sector + 1);
 			_hexItems[sector].getStyle().setFillColor(Color.lightGray);
 		}
 	}
@@ -260,8 +260,8 @@ public class DCXYView extends HexView {
 						_fmtCrossDrawer.draw(g, container);
 					}
 
-					drawCoordinateSystem(g, container);
-					drawSectorNumbers(g, container, 400);
+					drawCoordinateSystem(g, container, null);
+					drawSectorNumbers(g, container, null, 400);
 				} // not acumulating
 			}
 
@@ -273,7 +273,7 @@ public class DCXYView extends HexView {
 	private void drawHits(Graphics g, IContainer container) {
 
 		if (isSingleEventMode()) {
-			
+
 			int count = _dcData.count();
 			if (count > 0) {
 				Graphics2D g2 = (Graphics2D) g;

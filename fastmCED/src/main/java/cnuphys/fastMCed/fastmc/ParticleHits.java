@@ -8,7 +8,6 @@ import org.jlab.geom.DetectorId;
 import org.jlab.geom.prim.Path3D;
 
 import cnuphys.fastMCed.geometry.DCGeometry;
-import cnuphys.fastMCed.geometry.FTOFGeometry;
 import cnuphys.lund.GeneratedParticleRecord;
 import cnuphys.lund.LundId;
 import cnuphys.lund.LundSupport;
@@ -46,10 +45,8 @@ public class ParticleHits {
 
 		hits = new EnumMap<>(DetectorId.class);
 		HitHolder dcHH = new HitHolder(6, 6);
-		HitHolder ftofHH = new HitHolder(6, 0);
 
 		hits.put(DetectorId.DC, dcHH);
-		hits.put(DetectorId.FTOF, ftofHH);
 	}
 
 	/**
@@ -68,12 +65,9 @@ public class ParticleHits {
 		hits = new EnumMap<>(DetectorId.class);
 		if (charge != 0) {
 			HitHolder dcHH = new HitHolder(6, 6);
-			HitHolder ftofHH = new HitHolder(6, 0);
 
 			dcHH.fill(DCGeometry.getHits(path));
-			ftofHH.fill(FTOFGeometry.getHits(path));
 			hits.put(DetectorId.DC, dcHH);
-			hits.put(DetectorId.FTOF, ftofHH);
 		}
 	}
 
@@ -255,11 +249,9 @@ public class ParticleHits {
 			String lidName = (lid != null) ? lid.getName() : "???";
 			int lidId = (lid != null) ? lid.getId() : -99999;
 			feedbackStrings.add("$yellow$pid " + lidName + " (" + lidId + ")");
-			feedbackStrings.add("$yellow$energy dep " + DoubleFormat.doubleFormat(hit.getEnergy(), 4));
-			feedbackStrings.add("$yellow$time " + DoubleFormat.doubleFormat(hit.getTime(), 4));
 
 			if (hit.isDetectorHit(DetectorId.DC)) {
-				feedbackStrings.add("$white$called noise by SNR: " + (hit.isNoise() ? "yes" : "no"));
+				feedbackStrings.add("$white$called noise by snr: " + (hit.isNoise() ? "yes" : "no"));
 			}
 		}
 	}

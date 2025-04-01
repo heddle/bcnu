@@ -3,13 +3,12 @@ package cnuphys.ced.clasio;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JOptionPane;
-import javax.swing.event.EventListenerList;
 
 import org.jlab.detector.decode.CLASDecoder4;
 import org.jlab.io.base.DataBank;
@@ -30,6 +29,7 @@ import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.IpField;
 import cnuphys.bCNU.magneticfield.swim.ISwimAll;
+import cnuphys.bCNU.threading.EventNotifier;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.clasio.et.ConnectETDialog;
@@ -47,10 +47,7 @@ import cnuphys.swim.Swimming;
 public class ClasIoEventManager {
 
 	// Unique lund ids in the event (if any)
-	private Vector<LundId> _uniqueLundIds = new Vector<>();
-
-	// A sorted list of banks present in the current event
-	private String _currentBanks[];
+	private ArrayList<LundId> _uniqueLundIds = new ArrayList<>();
 
 	// used in pcal and ec hex gradient displays
 	private double maxEDepCal[] = { Double.NaN, Double.NaN, Double.NaN };
@@ -89,13 +86,14 @@ public class ClasIoEventManager {
 	private boolean _scanning = false;
 
 
-	// list of view listeners. There are actually three lists. Those in index 0
+
+
+	// list of event listeners. There are actually three lists. Those in index 0
 	// are notified first. Then those in index 1. Finally those in index 2. The
-	// Data
-	// containers should be in index 0. The trajectory and noise in index 1, and
-	// the
-	// regular views in index 2 (they are notified last)
-	private EventListenerList _viewListenerList[] = new EventListenerList[3];
+	// Data containers should be in index 0. The trajectory and noise in index 1, and
+	// the regular views in index 2 (they are notified last)
+
+	private EventNotifier<Object> eventNotifier[] = new EventNotifier[3];
 
 	// someone who can swim all MC particles
 	private ISwimAll _allMCSwimmer;
@@ -131,6 +129,9 @@ public class ClasIoEventManager {
 	// private constructor for singleton
 	private ClasIoEventManager() {
 		_dataSource = new HipoDataSource();
+		for (int index = 0; index < 3; index++) {
+			eventNotifier[index] = new EventNotifier<>();
+		}
 	}
 
 	/**
@@ -175,13 +176,13 @@ public class ClasIoEventManager {
 	 *
 	 * @return a collection of unique LundIds
 	 */
-	public Vector<LundId> uniqueLundIds() {
+	public ArrayList<LundId> uniqueLundIds() {
 
 		if (_uniqueLundIds != null) {
 			return _uniqueLundIds;
 		}
 
-		_uniqueLundIds = new Vector<>();
+		_uniqueLundIds = new ArrayList<>();
 
 		if (_currentEvent != null) {
 			// use any bank with a true pid column
@@ -189,13 +190,13 @@ public class ClasIoEventManager {
 			String[] cbanks = _currentEvent.getBankList();
 			if (cbanks != null) {
 				for (String bankName : cbanks) {
-					
+
 					if (bankName.contains("::Particle") || bankName.contains("::Lund")) {
-						
-						if (DataWarehouse.getInstance().bankContainsColumn(bankName, "pid") == false) {
+
+						if (!DataWarehouse.getInstance().bankContainsColumn(bankName, "pid")) {
 							continue;
 						}
-						
+
 						//get the pid column
 						int pid[] = DataWarehouse.getInstance().getInt(bankName, "pid");
 						if ((pid != null) && (pid.length > 0)) {
@@ -654,45 +655,74 @@ public class ClasIoEventManager {
 	public void setAllReconSwimmer(ISwimAll allSwimmer) {
 		_allReconSwimmer = allSwimmer;
 	}
-
+	
 	// decode an evio event to hipo
-	private HipoDataEvent decodeEvioToHipo(EvioDataEvent event) {
-
+	private HipoDataEvent YdecodeEvioToHipo(EvioDataEvent event) {
 		if (_decoder == null) {
-	        _schemaFactory  =  new SchemaFactory();
+			_schemaFactory = new SchemaFactory();
 
-	        String dir = ClasUtilsFile.getResourceDir("CLAS12DIR", "etc/bankdefs/hipo4");
-	        _schemaFactory.initFromDirectory(dir);
+			String dir = ClasUtilsFile.getResourceDir("CLAS12DIR", "etc/bankdefs/hipo4");
+			_schemaFactory.initFromDirectory(dir);
 
 			_decoder = new CLASDecoder4();
 
 			DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
 		}
-
+		
 		Event decodedEvent = _decoder.getDataEvent(event);
+		return new HipoDataEvent(decodedEvent, _schemaFactory);
+        // Note: The above method will decode the event and return a HipoDataEvent.
+	}
+	
 
-		Bank trigger = _decoder.createTriggerBank();
+	// decode an evio event to hipo
+	private HipoDataEvent decodeEvioToHipo(EvioDataEvent event) {
 
-        if(trigger != null) {
-        	decodedEvent.write(trigger);
-        }
+		try {
+			if (_decoder == null) {
+				_schemaFactory = new SchemaFactory();
 
-        //best I can do since I don't have the actual
-        //values from the file
+				String dir = ClasUtilsFile.getResourceDir("CLAS12DIR", "etc/bankdefs/hipo4");
+				_schemaFactory.initFromDirectory(dir);
 
-        Torus torus = MagneticFields.getInstance().getTorus();
-        Solenoid solenoid = MagneticFields.getInstance().getSolenoid();
+				_decoder = new CLASDecoder4();
 
-        double tScale = (torus == null) ? -1 : torus.getScaleFactor();
-        double sScale = (solenoid == null) ? 1 : solenoid.getScaleFactor();
+				DataWarehouse.getInstance().updateSchema(_schemaFactory);
 
-        Bank header= _decoder.createHeaderBank(-1, 0, (float)tScale, (float)sScale);
-        if(header != null) {
-        	decodedEvent.write(header);
-        }
+			}
 
-        return new HipoDataEvent(decodedEvent, _schemaFactory);
+			Event decodedEvent = _decoder.getDataEvent(event);
+
+			Bank trigger = _decoder.createTriggerBank();
+
+			if (trigger != null) {
+				decodedEvent.write(trigger);
+			}
+
+			// best I can do since I don't have the actual
+			// values from the file
+
+			Torus torus = MagneticFields.getInstance().getTorus();
+			Solenoid solenoid = MagneticFields.getInstance().getSolenoid();
+
+			double tScale = (torus == null) ? -1 : torus.getScaleFactor();
+			double sScale = (solenoid == null) ? 1 : solenoid.getScaleFactor();
+
+			Bank header = _decoder.createHeaderBank(-1, 0, (float) tScale, (float) sScale);
+			if (header != null) {
+				decodedEvent.write(header);
+			}
+			_decoder.extractPulses(decodedEvent);
+			return new HipoDataEvent(decodedEvent, _schemaFactory);
+		}
+
+		catch (Exception e) {
+			System.err.println("Error decoding evio to hipo: " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 	/**
@@ -903,7 +933,7 @@ public class ClasIoEventManager {
 	 */
 	private void notifyEventListeners(EventSourceType source) {
 
-		Swimming.clearAllTrajectories();
+	//	Swimming.clearAllTrajectories();
 
 		if (_dataSource != null) {
 			_dataSource.close();
@@ -911,18 +941,14 @@ public class ClasIoEventManager {
 			_currentEventIndex = 0;
 		}
 
+		Swimming.setNotifyOn(false); // prevent refreshes
+		Swimming.clearAllTrajectories();
+		Swimming.setNotifyOn(true); // prevent refreshes
 		for (int index = 0; index < 3; index++) {
-			if (_viewListenerList[index] != null) {
-				// Guaranteed to return a non-null array
-				Object[] listeners = _viewListenerList[index].getListenerList();
-
-				// This weird loop is the bullet proof way of notifying all
-				// listeners.
-				for (int i = listeners.length - 2; i >= 0; i -= 2) {
-					if (listeners[i] == IClasIoEventListener.class) {
-						((IClasIoEventListener) listeners[i + 1]).changedEventSource(source);
-					}
-				}
+			try {
+				eventNotifier[index].triggerEvent(source);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
 		}
 
@@ -931,41 +957,19 @@ public class ClasIoEventManager {
 
 	// new event file notification
 	private void notifyEventListeners(File file) {
-		
-		Runnable runner = new Runnable() {
 
-			@Override
-			public void run() {
-				Swimming.clearAllTrajectories();
-				for (int index = 0; index < 3; index++) {
-					if (_viewListenerList[index] != null) {
-						// Guaranteed to return a non-null array
-						Object[] listeners = _viewListenerList[index].getListenerList();
-
-						// This weird loop is the bullet proof way of notifying all
-						// listeners.
-						for (int i = listeners.length - 2; i >= 0; i -= 2) {
-							if (listeners[i] == IClasIoEventListener.class) {
-								((IClasIoEventListener) listeners[i + 1]).openedNewEventFile(file.getAbsolutePath());
-							}
-						}
-					}
-				}
-
+		Swimming.setNotifyOn(false); // prevent refreshes
+		Swimming.clearAllTrajectories();
+		Swimming.setNotifyOn(true); // prevent refreshes
+		for (int index = 0; index < 3; index++) {
+			try {
+				eventNotifier[index].triggerEvent(file.getAbsolutePath());
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
-		};
-
-		Thread t = new Thread(runner);
-		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 
-
 		Ced.getCed().fixTitle();
-
 	}
 
 
@@ -980,49 +984,26 @@ public class ClasIoEventManager {
 			return;
 		}
 
-		Runnable runner = new Runnable() {
+		Swimming.setNotifyOn(false); // prevent refreshes
+		Swimming.clearAllTrajectories();
+		Swimming.setNotifyOn(true); // prevent refreshes
 
-			@Override
-			public void run() {
-				Swimming.setNotifyOn(false); // prevent refreshes
-				Swimming.clearAllTrajectories();
-				Swimming.setNotifyOn(true); // prevent refreshes
+		_uniqueLundIds = null;
+		Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
 
-				_uniqueLundIds = null;
-				Ced.getCed().setEventFilteringLabel(FilterManager.getInstance().isFilteringOn());
-				_currentBanks = (_currentEvent == null) ? null : _currentEvent.getBankList();
-
-				if (_currentBanks != null) {
-					Arrays.sort(_currentBanks);
-				}
-
-				for (int index = 0; index < 3; index++) {
-					if (_viewListenerList[index] != null) {
-						// Guaranteed to return a non-null array
-						Object[] listeners = _viewListenerList[index].getListenerList();
-
-						// This weird loop is the bullet proof way of notifying all
-						// listeners.
-						for (int i = listeners.length - 2; i >= 0; i -= 2) {
-							IClasIoEventListener listener = (IClasIoEventListener) listeners[i + 1];
-							if (listeners[i] == IClasIoEventListener.class) {
-								listener.newClasIoEvent(_currentEvent);
-							}
-						}
-					}
-				} // index loop
-				finalSteps();
+		Swimming.clearAllTrajectories();
+		for (int index = 0; index < 3; index++) {
+			try {
+				eventNotifier[index].triggerEvent(_currentEvent);
+			} catch (InterruptedException | ExecutionException e) {
+				e.printStackTrace();
 			}
-		};
-
-		Thread t = new Thread(runner);
-		t.start();
-		try {
-			t.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
+		finalSteps();
+
 	}
+
+
 
 	// final steps
 	private void finalSteps() {
@@ -1054,8 +1035,6 @@ public class ClasIoEventManager {
 		}
 	}
 
-
-
 	/**
 	 * Get the maximum energy deposited in the cal for the current event. Might be
 	 * NaN if there are no "true" (gemc) banks
@@ -1074,15 +1053,8 @@ public class ClasIoEventManager {
 	 * @param listener the IClasIoEventListener listener to remove.
 	 */
 	public void removeClasIoEventListener(IClasIoEventListener listener) {
-
-		if (listener == null) {
-			return;
-		}
-
 		for (int i = 0; i < 3; i++) {
-			if (_viewListenerList[i] != null) {
-				_viewListenerList[i].remove(IClasIoEventListener.class, listener);
-			}
+			eventNotifier[i].removeListener(listener);
 		}
 	}
 
@@ -1098,33 +1070,9 @@ public class ClasIoEventManager {
 	 *                 are notified last)
 	 */
 	public void addClasIoEventListener(IClasIoEventListener listener, int index) {
-
-		if (listener == null) {
-			return;
-		}
-
-		if (_viewListenerList[index] == null) {
-			_viewListenerList[index] = new EventListenerList();
-		}
-
-		_viewListenerList[index].add(IClasIoEventListener.class, listener);
+		eventNotifier[index].addListener(listener);
 	}
 
-	/**
-	 * Checks if a bank, identified by a string such as "XXXX::hits", is in the
-	 * current event.
-	 *
-	 * @param bankName the bank name
-	 * @return <code>true</code> if the bank is in the curent event.
-	 */
-	public boolean isBankInCurrentEvent(String bankName) {
-		if ((bankName == null) || (_currentBanks == null)) {
-			return false;
-		}
-
-		int index = Arrays.binarySearch(_currentBanks, bankName);
-		return index >= 0;
-	}
 
 
 }

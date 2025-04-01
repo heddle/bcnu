@@ -59,7 +59,7 @@ public class FTOFAdcHandler {
 							poly.ypoints[2], colorR);
 
 					((Graphics2D) g).setPaint(gpaint);
-					((Graphics2D) g).fillPolygon(poly);
+					g.fillPolygon(poly);
 
 					g.fillPolygon(poly);
 				}

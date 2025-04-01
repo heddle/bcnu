@@ -12,51 +12,51 @@ import javax.swing.JComponent;
 import cnuphys.bCNU.util.Fonts;
 
 public class Word extends JComponent {
-	
+
 	private static int _dh = 5;
-	
+
 	private Font _font = Fonts.commonFont(Font.BOLD, 36);
-	
+
 	private Dimension _size;
-	
+
 	private  int _rectHeight;
-	
+
 	private int _index;
-	
+
 	/** the null char */
 	public static final char nullChar = '\0';
-	
+
 	//chars for each block
 	private char _letters[] = {nullChar, nullChar, nullChar, nullChar, nullChar};
-	
+
 	//values for each block
 	private int _values[] = {0, 0, 0, 0, 0};
-	
+
 	// The letter rectangles
 	private Rectangle _rect[] = new Rectangle[5];
-	
+
 	private boolean _completed = false;
 
 	public Word(int index, int w, int rectH) {
 		setLayout(new GridLayout(1, 5, LetterGrid._dh, LetterGrid._dv));
 		_index = index;
 		_rectHeight = rectH;
-		
+
 		_size = new Dimension(w, rectH + LetterGrid._dh);
-		
+
 		for (int i = 0; i < 5; i++) {
 			_rect[i] = new Rectangle();
 		}
 	}
-	
+
 	/**
 	 * Get the current char array
-	 * @return 
+	 * @return
 	 */
 	public char[] getWord() {
 		return _letters;
 	}
-	
+
 	/**
 	 * Insert a char into the first null space. Do nothing if no null space
 	 * @param c the char to insert
@@ -69,7 +69,7 @@ public class Word extends JComponent {
 			}
 		}
 	}
-	
+
 	/**
 	 * Delete the last non-null char
 	 */
@@ -82,7 +82,7 @@ public class Word extends JComponent {
 		}
 	}
 
-	
+
 	//reset the word as in start of a new game
 	public void reset() {
 		_completed = false;
@@ -91,7 +91,7 @@ public class Word extends JComponent {
 			_values[i] = 0;
 		}
 	}
-	
+
 	/**
 	 * Is the word completed?
 	 * @return
@@ -99,10 +99,10 @@ public class Word extends JComponent {
 	public boolean isCompleted() {
 		return _completed;
 	}
-	
+
 	/**
 	 * Set the completed flag
-	 * 
+	 *
 	 * @param completed
 	 */
 	public void setCompleted(boolean completed) {
@@ -112,7 +112,7 @@ public class Word extends JComponent {
 	@Override
 	public void paintComponent(java.awt.Graphics g) {
 		super.paintComponent(g);
-		
+
 		String s = new String(_letters);
 		String answer = Brain.getInstance().getCurrentWord();
 
@@ -128,25 +128,25 @@ public class Word extends JComponent {
 			int x = _dh + i * (w + _dh);
 			_rect[i].setBounds(x, _dh/2, w, _rectHeight - _dh/2);
 		}
-		
+
 		int _currentWordIndex = Brain.getInstance().getCurrentWordIndex();
 		int firstNull = firstNull();
-		
+
 		for (int i = 0; i < 5; i++) {
-			
+
 			boolean hot = ((_index == _currentWordIndex) && (i == firstNull));
-			
-			
+
+
 			g.setColor(Colors.colors[_values[i]]);
 			g.fillRect(_rect[i].x, _rect[i].y, _rect[i].width, _rect[i].height);
 			g.setColor(hot ? Color.red : Color.lightGray);
 			g.drawRect(_rect[i].x, _rect[i].y, _rect[i].width, _rect[i].height);
 		}
-		
+
 		g.setFont(_font);
 		g.setColor(Color.white);
 		FontMetrics fm = g.getFontMetrics();
-		
+
 		for (int i = 0; i < 5; i++) {
 			if (_letters[i] != nullChar) {
 				int fh = fm.getAscent();
@@ -156,9 +156,9 @@ public class Word extends JComponent {
 				g.drawString(""+_letters[i], x, y);
 			}
 		}
-		
+
 	}
-	
+
 	//get index of first null character
 	private int firstNull() {
 		for (int i = 0; i < 5; i++) {
@@ -168,7 +168,7 @@ public class Word extends JComponent {
 		}
 		return -1;
 	}
-	
+
 	@Override
 	public Dimension getPreferredSize() {
 		return _size;

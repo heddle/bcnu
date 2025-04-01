@@ -24,9 +24,9 @@ import cnuphys.bCNU.dialog.DialogUtilities;
 import cnuphys.bCNU.graphics.GraphicsUtilities;
 import cnuphys.bCNU.graphics.ImageManager;
 import cnuphys.bCNU.graphics.component.CommonBorder;
-import cnuphys.bCNU.view.ViewManager;
 import cnuphys.fastMCed.eventio.PhysicsEventManager;
 import cnuphys.fastMCed.fastmc.ParticleHits;
+import cnuphys.fastMCed.frame.FastMCed;
 
 public class StreamDialog extends JDialog implements IStreamProcessor {
 
@@ -313,7 +313,7 @@ public class StreamDialog extends JDialog implements IStreamProcessor {
 							// reload last event
 							_eventManager.reloadCurrentEvent();
 
-							ViewManager.getInstance().refreshAllViews();
+							FastMCed.refresh();
 
 						}
 					});

@@ -114,14 +114,6 @@ public class ViewManager extends Vector<BaseView> {
 		return false;
 	}
 
-	/**
-	 * Refresh all the views
-	 */
-	public void refreshAllViews() {
-		for (BaseView view : this) {
-			view.refresh();
-		}
-	}
 
 	public void makeViewVisibleInVirtualWorld(BaseView view) {
 		if ((_virtualView != null) && (_virtualView != view)) {

@@ -6,8 +6,8 @@ import cnuphys.advisors.frame.AdvisorAssign;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Major {
-	NONE, ACCT, AMSTD, ANTH, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
-	ENGL, ENVSTD, FIN, FINART, FRENCH, GERMAN, HIST, INFSCI, KINES, MARKT, MATH, MGMT, MUSIC, NEURO,
+	NONE, ACCT, AMSTD, ANTH, ARTHIST, BIOCHM, BIOL, BUSN, CAM, CELLMB, CHEM, CLST, COMM, COMENG, COMSCI, CRIM, CYBER, ECON, EE,
+	ENGL, ENVSTD, FIN, FINART, FRENCH, GCOMCUL, GERMAN, HIST, INFSCI, INTAFF, KINES, LDSP, MARKT, MATH, MGMT, MUSIC, NEURO,
 	OEBIO, PHILO, PHYS, POLSCI, PSYCH, SOCIOL, SOWK, SPAN, STDART, THEA, UNDEC;
 
 	/**
@@ -42,9 +42,10 @@ public enum Major {
 		names.put(ACCT, new String[] {"accounting"});
 		names.put(AMSTD, new String[] {"american studies", "amst", "ldsp"});
 		names.put(ANTH, new String[] {"anthropology"});
+		names.put(ARTHIST, new String[] {"art history", "arth"});
 		names.put(BIOCHM, new String[] {"biochemistry", "mbch", "bchm"});
 		names.put(BIOL, new String[] {"biology", "phys biology", "integrative biology", "biol", "pmed"});
-		names.put(BUSN, new String[] {"business-undeclared", "business administration", "lutr", "btmg"});
+		names.put(BUSN, new String[] {"business-undeclared", "business administration", "lutr"});
 		names.put(CAM, new String[] {"computational & applied math"});
 		names.put(CELLMB, new String[] {"cell, molecular & phys biology", "biol"});
 		names.put(CHEM, new String[] {"chemistry"});
@@ -62,10 +63,13 @@ public enum Major {
 		names.put(FINART, new String[] {"fine arts", "fnar", "dance", "danc", "faah"});
 
 		names.put(FRENCH, new String[] {"french", "fren"});
+		names.put(GCOMCUL, new String[] {"global commerce and culture", "gcomc"});
 		names.put(GERMAN, new String[] {"german", "germ"});
 		names.put(HIST, new String[] {"history"});
 		names.put(INFSCI, new String[] {"information science"});
+		names.put(INTAFF, new String[] {"international affairs", "intaf"});
 		names.put(KINES, new String[] {"kinesiology"});
+		names.put(LDSP, new String[] {"leadership studies", "ldsp"});
 		names.put(MARKT, new String[] {"marketing", "mktg"});
 		names.put(MATH, new String[] {"mathematics"});
 		names.put(MGMT, new String[] {"management"});
@@ -87,6 +91,7 @@ public enum Major {
 		departments.put(ACCT, Department.LUTR);
 		departments.put(ANTH, Department.SOCL);
 		departments.put(AMSTD, Department.LDSP);
+		departments.put(ARTHIST, Department.FAAH);
 		departments.put(BIOCHM, Department.MBCH);
 		departments.put(BIOL, Department.OENB);
 		departments.put(BUSN, Department.LUTR);
@@ -107,10 +112,14 @@ public enum Major {
 		departments.put(FINART, Department.FAAH);
 
 		departments.put(FRENCH, Department.MCLL);
+		departments.put(GCOMCUL, Department.INTERDIS);
+
 		departments.put(GERMAN, Department.MCLL);
 		departments.put(HIST, Department.HIST);
 		departments.put(INFSCI, Department.PCSE);
+		departments.put(INTAFF, Department.POLS);
 		departments.put(KINES, Department.MBCH);
+		departments.put(LDSP, Department.LDSP);
 		departments.put(MARKT, Department.LUTR);
 		departments.put(MATH, Department.MATH);
 		departments.put(MGMT, Department.LUTR);
@@ -128,6 +137,26 @@ public enum Major {
 		departments.put(THEA, Department.PFAR);
 		departments.put(UNDEC, Department.NONE);
 
+	}
+
+	/** Is this major in the business family?
+	 *
+	 * @return <code>true</code> if this major is in the business family
+     */
+	public boolean isPreBusiness() {
+		return (this == ACCT) || (this == BUSN) || (this == FIN) || (this == MARKT) || (this == MGMT);
+	}
+
+	public boolean isCS() {
+		return (this == COMSCI) || (this == CYBER) || (this == INFSCI);
+	}
+
+	/**
+	 * Is this major in the engineering family
+	 * @return <code>true</code> if this major is in the engineering family
+	 */
+	public boolean isEngineering() {
+		return (this == COMENG) || (this == EE);
 	}
 
 	public boolean isInMajorFamily(Major major) {
@@ -163,6 +192,20 @@ public enum Major {
 			}
 			break;
 
+		case COMENG:
+		case EE:
+			if (AdvisorAssign.useEngFamily()) {
+				return ((major == COMENG) || (major == EE));
+			}
+			break;
+
+		case COMSCI:
+		case CYBER:
+		case INFSCI:
+			if (AdvisorAssign.useCSFamily()) {
+				return ((major == COMSCI) || (major == CYBER) || (major == INFSCI));
+			}
+			break;
 
 		default:
 			return false;

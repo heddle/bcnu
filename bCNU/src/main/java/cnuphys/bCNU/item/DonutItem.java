@@ -5,14 +5,13 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
-import cnuphys.bCNU.layer.LogicalLayer;
 
 public class DonutItem extends PolygonItem {
 
 	/**
 	 * Create a donut item.
 	 *
-	 * @param layer       the Layer this item is on.
+	 * @param itemList       the item list
 	 * @param wpc         the center of the arc
 	 * @param radiusInner the inner radius
 	 * @param radiusOuter the outer radius
@@ -20,9 +19,9 @@ public class DonutItem extends PolygonItem {
 	 *                    angle theta
 	 * @param arcAngle    the opening angle COUNTERCLOCKWISE in degrees.
 	 */
-	public DonutItem(LogicalLayer layer, Point2D.Double wpc, double radiusInner, double radiusOuter, double startAngle,
+	public DonutItem(ItemList itemList, Point2D.Double wpc, double radiusInner, double radiusOuter, double startAngle,
 			double arcAngle) {
-		super(layer, WorldGraphicsUtilities.getDonutPoints(wpc, radiusInner, radiusOuter, startAngle, arcAngle));
+		super(itemList, WorldGraphicsUtilities.getDonutPoints(wpc, radiusInner, radiusOuter, startAngle, arcAngle));
 		setAzimuth(90 - startAngle - arcAngle / 2);
 		// System.err.println("AZIMUTH: " + (90 - startAngle - arcAngle/2));
 		_focus = wpc;

@@ -1,10 +1,10 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class TBTrkgCrossData extends ATrkgCrossData {
-	
+
 	// singleton
 	private static volatile TBTrkgCrossData _instance;
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -25,7 +25,7 @@ public class TBTrkgCrossData extends ATrkgCrossData {
 	public String bankName() {
 		return "TimeBasedTrkg::TBCrosses";
 	}
-	
+
 	@Override
 	public String feedbackName() {
 		return "TBCross";

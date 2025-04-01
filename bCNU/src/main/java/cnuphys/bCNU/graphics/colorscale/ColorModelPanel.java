@@ -16,139 +16,85 @@ import cnuphys.bCNU.view.BaseView;
 
 public class ColorModelPanel extends JPanel implements ActionListener {
 
-	// the legend
-	private ColorModelLegend _legend;
+    private ColorModelLegend _legend;
+    private ColorScaleModel _model;
+    private ColorScaleModel _monoModel;
+    private JRadioButton _colorRB;
+    private JRadioButton _monoRB;
+    private BaseView _view;
 
-	// a slider
-	// private JSlider _slider;
+    public ColorModelPanel(ColorScaleModel model, int desiredWidth, String name, int gap, double initRelVal) {
+        this(null, model, desiredWidth, name, gap, false, false);
+    }
 
-	// the model
-	private ColorScaleModel _model;
-	private ColorScaleModel _monoModel;
+    public ColorModelPanel(BaseView view, ColorScaleModel model, int desiredWidth, String name, int gap,
+                           boolean includeRadioButtons, boolean colorDefault) {
 
-	// radio buttons
-	private JRadioButton _colorRB;
-	private JRadioButton _monoRB;
-	private BaseView _view;
+        _view = view;
+        _model = model;
 
-	/**
-	 * Create a panel with a slider and a color legend
-	 *
-	 * @param model        the color model
-	 * @param desiredWidth pixel width
-	 * @param name         a name
-	 * @param gap          a spacing
-	 */
-	public ColorModelPanel(ColorScaleModel model, int desiredWidth, String name, int gap, double initRelVal) {
-		this(null, model, desiredWidth, name, gap, false, false);
-	}
+        setLayout(new BorderLayout(2, 1)); // Reduced vertical gap
+        _legend = new ColorModelLegend(_model, desiredWidth, null, gap);
+        _legend.setBorder(null);
 
-	/**
-	 * Create a panel with a slider and a color legend
-	 *
-	 * @param model        the color model
-	 * @param desiredWidth pixel width
-	 * @param name         a name
-	 * @param gap          a spacing
-	 * @param incRB        if <code>true</code> include the color monochrome radio
-	 *                     buttons
-	 * @param colorDefault if <code>true</code> default to color
-	 */
-	public ColorModelPanel(BaseView view, ColorScaleModel model, int desiredWidth, String name, int gap,
-			boolean includeRadioButtons, boolean colorDefault) {
+        if (includeRadioButtons) {
+            addNorth(colorDefault);
+        }
 
-		_view = view;
-		_model = model;
+        add(_legend, BorderLayout.CENTER); // Center instead of SOUTH to reduce extra space
+        setBorder(new CommonBorder(name));
+    }
 
-		setLayout(new BorderLayout(4, 4));
+    private void addNorth(boolean colorDefault) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0)); // Smaller gaps
 
-		_legend = new ColorModelLegend(_model, desiredWidth, null, gap);
-		_legend.setBorder(null);
+        ButtonGroup bg = new ButtonGroup();
 
+        _colorRB = new JRadioButton("Color", colorDefault);
+        _monoRB = new JRadioButton("Monochrome", !colorDefault);
 
-		if (includeRadioButtons) {
-			addNorth(colorDefault);
-		}
+        _colorRB.addActionListener(this);
+        _monoRB.addActionListener(this);
 
-		add(_legend, BorderLayout.CENTER);
-//		add(_slider, BorderLayout.SOUTH);
-		setBorder(new CommonBorder(name));
-	}
+        bg.add(_colorRB);
+        bg.add(_monoRB);
 
-	private void addNorth(boolean colorDefault) {
-		JPanel panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 2));
+        GraphicsUtilities.setSizeSmall(_colorRB);
+        GraphicsUtilities.setSizeSmall(_monoRB);
 
-		ButtonGroup bg = new ButtonGroup();
+        panel.add(_colorRB);
+        panel.add(_monoRB);
 
-		_colorRB = new JRadioButton("Color", colorDefault);
-		_monoRB = new JRadioButton("Monochrome", !colorDefault);
+        add(panel, BorderLayout.NORTH);
+    }
 
-		_colorRB.addActionListener(this);
-		_monoRB.addActionListener(this);
+    @Override
+    public Insets getInsets() {
+        Insets def = super.getInsets();
+        return new Insets(def.top + 1, def.left + 1, def.bottom + 1, def.right + 1); // Smaller insets
+    }
 
-		bg.add(_colorRB);
-		bg.add(_monoRB);
+    public boolean isMonochrome() {
+        return (_monoRB != null) && _monoRB.isSelected();
+    }
 
-		GraphicsUtilities.setSizeSmall(_colorRB);
-		GraphicsUtilities.setSizeSmall(_monoRB);
+    public ColorScaleModel getColorScaleModel() {
+        return (_legend != null) ? _legend.getColorScaleModel() : null;
+    }
 
-		panel.add(_colorRB);
-		panel.add(_monoRB);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == _colorRB) {
+            _legend.setColorScaleModel(_model);
+        } else if (e.getSource() == _monoRB) {
+            if (_monoModel == null) {
+                _monoModel = ColorScaleModel.getMonochromeModel(_model);
+            }
+            _legend.setColorScaleModel(_monoModel);
+        }
 
-		add(panel, BorderLayout.NORTH);
-	}
-
-
-
-	@Override
-	public Insets getInsets() {
-		Insets def = super.getInsets();
-		return new Insets(def.top + 2, def.left + 2, def.bottom + 2, def.right + 2);
-	}
-
-	/**
-	 * Is monochrome selected
-	 * @return true of monochrome is selected
-	 */
-	public boolean isMonochrome() {
-		return (_monoRB != null) && _monoRB.isSelected() ;
-	}
-
-
-	/**
-	 * Get the color scale model if there is one.
-	 *
-	 * @return the color scale model for accumulation, etc.
-	 */
-	public ColorScaleModel getColorScaleModel() {
-		if (_legend != null) {
-			return _legend.getColorScaleModel();
-		}
-
-		return null;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		if (e.getSource() == _colorRB) {
-			System.out.println("dude");
-			_legend.setColorScaleModel(_model);
-			if (_view != null) {
-				_view.refresh();
-			}
-
-		} else if (e.getSource() == _monoRB) {
-			if (_monoModel == null) {
-				_monoModel = ColorScaleModel.getMonochromeModel(_model);
-			}
-			_legend.setColorScaleModel(_monoModel);
-
-			if (_view != null) {
-				_view.refresh();
-			}
-		}
-
-	}
-
+        if (_view != null) {
+            _view.refresh();
+        }
+    }
 }

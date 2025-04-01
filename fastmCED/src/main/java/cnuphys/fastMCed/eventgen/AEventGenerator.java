@@ -1,6 +1,6 @@
 package cnuphys.fastMCed.eventgen;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 import org.jlab.clas.physics.Particle;
 import org.jlab.clas.physics.PhysicsEvent;
@@ -75,7 +75,7 @@ public abstract class AEventGenerator {
 	 * 
 	 * @return a collection of unique LundIds
 	 */
-	public void uniqueLundIds(Vector<LundId> uniqueIds) {
+	public void uniqueLundIds(ArrayList<LundId> uniqueIds) {
 
 		PhysicsEvent event = getCurrentEvent();
 

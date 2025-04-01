@@ -1,11 +1,11 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class HBTrkgAIHitData extends ATrkgHitData {
-	
+
 	// singleton
 	private static volatile HBTrkgAIHitData _instance;
-	
-	
+
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -29,7 +29,7 @@ public class HBTrkgAIHitData extends ATrkgHitData {
 
 	@Override
 	public String feedbackName() {
-        return "HBAIHit";	
+        return "HBAIHit";
     }
 
 }

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
-import cnuphys.advisors.Advisor;
-import cnuphys.advisors.model.DataManager;
 import cnuphys.bCNU.component.EnumComboBox;
 
 public enum Department {

@@ -21,7 +21,7 @@ public class BMTGeometry {
 		System.out.println("===  BMT Geometry Initialization  ===");
 		System.out.println("=====================================");
 
-		ConstantsLoader.Load(10);
+		ConstantsLoader.Load(11);
 		Constants.Load();
 		_geometry = new Geometry();
 

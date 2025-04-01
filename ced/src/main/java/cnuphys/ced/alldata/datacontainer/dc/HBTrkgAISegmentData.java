@@ -1,10 +1,10 @@
 package cnuphys.ced.alldata.datacontainer.dc;
 
 public class HBTrkgAISegmentData extends ATrkgSegmentData {
-	
+
 	// singleton
 	private static volatile HBTrkgAISegmentData _instance;
-	
+
 	/**
 	 * Public access to the singleton
 	 *
@@ -21,7 +21,7 @@ public class HBTrkgAISegmentData extends ATrkgSegmentData {
 		return _instance;
 	}
 
-	
+
 	@Override
 	public String bankName() {
 		return "HitBasedTrkg::AISegments";

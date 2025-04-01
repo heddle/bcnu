@@ -10,8 +10,8 @@ import java.util.List;
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.graphics.style.LineStyle;
 import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
+import cnuphys.bCNU.item.ItemList;
 import cnuphys.bCNU.item.PolygonItem;
-import cnuphys.bCNU.layer.LogicalLayer;
 import cnuphys.ced.alldata.datacontainer.cal.ECalADCData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
@@ -43,13 +43,13 @@ public class SectorECALItem extends PolygonItem {
 	/**
 	 * Create a world polygon item
 	 *
-	 * @param layer      the Layer this item is on.
+	 * @param itemList   the item list this item is on.
 	 * @param planeIndex should be EC_INNER or EC_OUTER
 	 * @param stripIndex should be EC_U, EC_V, or EC_W
 	 * @param sector the 1-based sector
 	 */
-	public SectorECALItem(LogicalLayer layer, int planeIndex, int stripIndex, int sector) {
-		super(layer, getShell((SectorView) layer.getContainer().getView(), planeIndex, stripIndex, sector));
+	public SectorECALItem(ItemList itemList, int planeIndex, int stripIndex, int sector) {
+		super(itemList, getShell((SectorView) itemList.getContainer().getView(), planeIndex, stripIndex, sector));
 
 		setRightClickable(false);
 		_sector = sector;
@@ -61,7 +61,7 @@ public class SectorECALItem extends PolygonItem {
 		_style.setFillColor(_ecFill[planeIndex]);
 		_style.setLineColor(_ecLine[planeIndex]);
 		_style.setLineWidth(0);
-		_view = (SectorView) getLayer().getContainer().getView();
+		_view = (SectorView) getItemList().getContainer().getView();
 
 	}
 
@@ -234,6 +234,9 @@ public class SectorECALItem extends PolygonItem {
 
 		if (contains(container, screenPoint)) {
 			feedbackStrings.add(getName());
+		}
+		else {
+			return;
 		}
 
 		// which strip?

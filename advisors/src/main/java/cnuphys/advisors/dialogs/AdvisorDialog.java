@@ -16,8 +16,6 @@ import cnuphys.advisors.Student;
 import cnuphys.advisors.enums.Major;
 import cnuphys.advisors.enums.Specialty;
 import cnuphys.advisors.model.Course;
-import cnuphys.advisors.model.DataManager;
-import cnuphys.advisors.model.ILCCourse;
 import cnuphys.bCNU.component.EnumComboBox;
 import cnuphys.bCNU.dialog.SimpleDialog;
 import cnuphys.bCNU.dialog.VerticalFlowLayout;
@@ -48,7 +46,7 @@ public class AdvisorDialog extends SimpleDialog {
 
 	//choose preferred major (other than own)
 	private EnumComboBox _preferredMajorCombo;
-	
+
 	//choose specialty
 	private EnumComboBox _specialtyCombo;
 
@@ -58,7 +56,7 @@ public class AdvisorDialog extends SimpleDialog {
 
 		addInfoPanel();
 		addListPanels();
-		setSize(600, 600);
+		setSize(800, 600);
 	}
 
 	private void addInfoPanel() {
@@ -72,15 +70,12 @@ public class AdvisorDialog extends SimpleDialog {
 		np.add(makeLabel(ds + ss));
 
 		String ccs = ynString("CCPT", _advisor.check(Person.CCPT));
-		String pls = ynString("PRELAW", _advisor.check(Person.CCPT));
 		String pss = ynString("PRESSCH", _advisor.check(Person.PRESSCHOLAR));
-		String bts = ynString("BTMG", _advisor.check(Person.BTMG));
 		String wds = ynString("WIND", _advisor.check(Person.WIND));
 		String mts = ynString("MUSCTHEA", _advisor.check(Person.MUSICTHEATER));
-		np.add(makeLabel(ccs + pls + pss + bts + wds + mts));
+		np.add(makeLabel(ccs + pss + wds + mts));
 
 		np.add(makeLabel(ynString("HONORS", _advisor.honors())));
-		np.add(makeLabel(ilcString() ));
 
 		np.add(preferred2ndMajor());
 		np.add(specialty());
@@ -109,7 +104,7 @@ public class AdvisorDialog extends SimpleDialog {
 		for (Course course : _advisor.schedule) {
 
 			String info = course.infoString() + "    \n";
-			if (course.isILC) {
+			if (course.isALC) {
 				sp.append(info, RED_PLAIN);
 			}
 			else {
@@ -129,7 +124,7 @@ public class AdvisorDialog extends SimpleDialog {
 			boolean locked = student.locked();
 			boolean plp = student.check(Person.PLP);
 
-			String info = String.format("%s (%s)   \n", student.fullNameAndID(), student.major.name());
+			String info = String.format("%s (%s) [%s] {%s} \n", student.fullNameAndID(), student.major.name(), student.bannerBlock, student.reason.name());
 
 			if (student.honors()) {
 				if (locked && plp) {
@@ -185,7 +180,7 @@ public class AdvisorDialog extends SimpleDialog {
 		p.add(_preferredMajorCombo);
 		return p;
 	}
-	
+
 	//panel that holds the optional specialty
 	private JPanel specialty() {
 		JPanel p = new JPanel();
@@ -217,19 +212,6 @@ public class AdvisorDialog extends SimpleDialog {
 		return label;
 	}
 
-	private String ilcString() {
-		if (_advisor.ilc()) {
-			ILCCourse course = DataManager.getILCData().getILCCourse(_advisor);
-			if (course == null) {
-				System.err.println("\nERROR: Unexpected null ILC course in AdvisorDialog");
-				System.exit(1);
-			}
-			return String.format("ILC: %s %s%s LC: %s", course.crn, course.subject, course.course, course.learningCommunity);
-		}
-		else {
-			return ynString("ILC", false);
-		}
-	}
 
 	private String valString(String prompt, String value) {
 		return prompt + ": " + value + "    ";

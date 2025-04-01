@@ -44,7 +44,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Create a random number generator based on the seed in the RANDSEED attribute
-	 * 
+	 *
 	 * @return a random number generator
 	 */
 	public Random createRandomGenerator() {
@@ -65,7 +65,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the main plot title from the PLOTTITLE attribute
-	 * 
+	 *
 	 * @param title the new main plot title
 	 */
 	public void setPlotTitle(String title) {
@@ -74,7 +74,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the main plot title from the PLOTTITLE attribute
-	 * 
+	 *
 	 * @return the cool rate
 	 */
 	public String getPlotTitle() {
@@ -88,7 +88,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the x axis from the XAXISLABEL attribute
-	 * 
+	 *
 	 * @param label the new x axis label
 	 */
 	public void setXAxisLabel(String label) {
@@ -97,7 +97,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the axis from the XAXISLABEL attribute
-	 * 
+	 *
 	 * @return the x axis label
 	 */
 	public String getXAxisLabel() {
@@ -111,7 +111,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the y axis from the YAXISLABEL attribute
-	 * 
+	 *
 	 * @param label the new y axis label
 	 */
 	public void setYAxisLabel(String label) {
@@ -120,7 +120,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the y axis from the YAXISLABEL attribute
-	 * 
+	 *
 	 * @return the y axis label
 	 */
 	public String getYAxisLabel() {
@@ -134,7 +134,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the useLogTemp flag from the USELOGTEMP attribute
-	 * 
+	 *
 	 * @param useLog he value of the useLogTemp flag
 	 */
 	public void setUseLogTemp(boolean useLog) {
@@ -143,16 +143,16 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the useLogTemp flag from the USELOGTEMP attribute
-	 * 
+	 *
 	 * @return the value of the useLogTemp flag
 	 */
 	public boolean useLogTemp() {
-		
+
 		Attribute useLogAtt = getAttribute(USELOGTEMP);
 		if (useLogAtt == null) {
 			return false;
 		}
-		
+
 		try {
 			return useLogAtt.getBoolean();
 		} catch (InvalidTargetObjectTypeException e) {
@@ -163,7 +163,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the cool rate
-	 * 
+	 *
 	 * @param coolRate the new cool rate
 	 */
 	public void setCoolRate(double coolRate) {
@@ -172,7 +172,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the coolrate from the COOLRATE attribute
-	 * 
+	 *
 	 * @return the cool rate
 	 */
 	public double getCoolRate() {
@@ -186,7 +186,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the min temperature
-	 * 
+	 *
 	 * @param coolRate the new cool rate
 	 */
 	public void setMinTemp(double minTemp) {
@@ -195,7 +195,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the min temp from the MINTEMP attribute
-	 * 
+	 *
 	 * @return the min temp
 	 */
 	public double getMinTemp() {
@@ -209,7 +209,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the thermalization count
-	 * 
+	 *
 	 * @param thermalizationCount the new thermalization count
 	 */
 	public void setThermalizationCount(int thermalizationCount) {
@@ -218,7 +218,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the thermalization count from the THERMALCOUNT attribute
-	 * 
+	 *
 	 * @return the thermalization count
 	 */
 	public int getThermalizationCount() {
@@ -232,7 +232,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the success count
-	 * 
+	 *
 	 * @param successCount the new success count
 	 */
 	public void setSuccessCount(int successCount) {
@@ -241,7 +241,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the success count from the SUCCESSCOUNT attribute
-	 * 
+	 *
 	 * @return the success count
 	 */
 	public int getSuccessCount() {
@@ -255,7 +255,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Set the max number of temp reductions using the MAXSTEPS attribute
-	 * 
+	 *
 	 * @param maxSteps the number of max steps (temp reductions)
 	 */
 	public void setMaxSteps(int maxSteps) {
@@ -264,7 +264,7 @@ public class SimulationAttributes extends Attributes {
 
 	/**
 	 * Get the max number of temp reductions MAXSTEPS attribute
-	 * 
+	 *
 	 * @return max number of temp reductions
 	 */
 	public int getMaxSteps() {

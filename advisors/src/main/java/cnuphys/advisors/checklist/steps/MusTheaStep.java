@@ -23,8 +23,15 @@ public class MusTheaStep extends CheckListLaunchable  {
 		List<Student> musicStudents = DataManager.getStudentsForMajor(Major.MUSIC);
 		List<Student> theaterStudents = DataManager.getStudentsForMajor(Major.THEA);
 
-		List<Advisor> musicAdvisors = DataManager.getAdvisorsForMajor(Major.MUSIC);
-		List<Advisor> theaterAdvisors = DataManager.getAdvisorsForMajor(Major.THEA);
+		List<Advisor> musicAdvisors = DataManager.getAdvisorsForMajorALC(Major.MUSIC);
+		List<Advisor> theaterAdvisors = DataManager.getAdvisorsForMajorALC(Major.THEA);
+
+		DataManager.roundRobinAssign(musicAdvisors, musicStudents, true, "In Music assign", EReason.ALC);
+		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, true, "In Theater assign", EReason.ALC);
+
+
+		musicAdvisors = DataManager.getAdvisorsForMajorNotALC(Major.MUSIC);
+		theaterAdvisors = DataManager.getAdvisorsForMajorNotALC(Major.THEA);
 
 		DataManager.roundRobinAssign(musicAdvisors, musicStudents, true, "In Music assign", EReason.MUSC);
 		DataManager.roundRobinAssign(theaterAdvisors, theaterStudents, true, "In Theater assign", EReason.THEA);

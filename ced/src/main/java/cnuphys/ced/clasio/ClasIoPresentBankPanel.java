@@ -2,7 +2,6 @@ package cnuphys.ced.clasio;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FontMetrics;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,11 +21,11 @@ import cnuphys.bCNU.component.ActionLabel;
 import cnuphys.bCNU.view.BaseView;
 import cnuphys.bCNU.view.VirtualView;
 import cnuphys.ced.alldata.DataWarehouse;
-import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedwindow.CedDataView;
 import cnuphys.ced.cedwindow.CedDataWindow;
 import cnuphys.ced.clasio.ClasIoEventManager.EventSourceType;
 import cnuphys.ced.clasio.table.NodeTable;
+import cnuphys.ced.component.IBankMatching;
 import cnuphys.ced.frame.Ced;
 
 /**
@@ -38,11 +37,12 @@ import cnuphys.ced.frame.Ced;
 @SuppressWarnings("serial")
 public class ClasIoPresentBankPanel extends JPanel {
 
-	// try to set a reasonable height
-	private int preferredHeight;
 
 	// the event manager
 	private static ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
+
+	//data warehouse
+	private static DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
 
 	// hash table
 	private Hashtable<String, ActionLabel> _alabels = new Hashtable<>(193);
@@ -56,8 +56,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 	// the single event listaner
 	private static IClasIoEventListener _eventListener;
 
-	// if a cedview owns this
-	private CedView _view;
+	// if a IBankMatching owns this
+	private IBankMatching _bankMatcher;
 
 	// scroll pane
 	private JScrollPane _scrollPane;
@@ -73,14 +73,16 @@ public class ClasIoPresentBankPanel extends JPanel {
 	 */
 	private ClasIoPresentBankPanel(BaseView view, NodeTable nodeTable, int numRows) {
 
-		_view = (view instanceof CedView) ? (CedView) view : null;
+		_bankMatcher = (view instanceof IBankMatching) ? (IBankMatching) view : null;
 
 		_nodeTable = nodeTable;
 		setLayout(new GridLayout(numRows, 0, 2, 0));
 		setBorder(BorderFactory.createEmptyBorder(2, 8, 2, 2));
 
-		FontMetrics gm = getFontMetrics(ActionLabel.enabledFontLarge);
-		preferredHeight = numRows * (gm.getHeight() + 2);
+
+        Dimension minSize = new Dimension(200, 100);
+        setMinimumSize(minSize);
+
 
 	}
 
@@ -104,6 +106,8 @@ public class ClasIoPresentBankPanel extends JPanel {
 		return pbPanel;
 
 	}
+
+
 
 	// create the event listener
 	private static void createEventListener() {
@@ -152,13 +156,6 @@ public class ClasIoPresentBankPanel extends JPanel {
 	}
 
 
-	@Override
-	public Dimension getPreferredSize() {
-		Dimension d = super.getPreferredSize();
-		d.height = preferredHeight;
-		return d;
-
-	}
 
 	// replace all the bank action labels as result of new event
 	private void replaceBankLabels(DataEvent event) {
@@ -170,9 +167,22 @@ public class ClasIoPresentBankPanel extends JPanel {
 			String[] allBanks = event.getBankList();
 			Arrays.sort(allBanks);
 			if (allBanks != null) {
+
+				//count the number of banks that match
+				//to see if we should used larger font
+
+				int count = 0;
 				for (String s : allBanks) {
 					if (match(s)) {
-						makeLabel(s);
+						count++;
+					}
+				}
+
+			    //now make the labels
+				boolean largerFont = (count < 17);
+				for (String s : allBanks) {
+					if (match(s)) {
+						makeLabel(s, largerFont);
 					}
 				}
 			}
@@ -183,11 +193,11 @@ public class ClasIoPresentBankPanel extends JPanel {
 	// must match
 	private boolean match(String s) {
 
-		if (_view == null) {
+		if (_bankMatcher == null) {
 			return true;
 		}
 
-		String[] matchList = _view.getBanksMatches();
+		String[] matchList = _bankMatcher.getBanksMatches();
 
 		if (matchList == null) { // accept all
 			return true;
@@ -216,29 +226,29 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 			if (alabel != null) {
 
-				boolean inCurrent = _eventManager.isBankInCurrentEvent(s);
+				boolean inCurrent = _dataWarehouse.isBankInCurrentEvent(s);
 				alabel.setEnabled(inCurrent);
 			}
 		}
 	}
 
 	// convenience method to make a button
-	private ActionLabel makeLabel(final String label) {
-		final ActionLabel alabel = new ActionLabel(label, false);
+	private ActionLabel makeLabel(final String label, boolean largerFont) {
+		final ActionLabel alabel = new ActionLabel(label, false, largerFont);
 		alabel.setOpaque(true);
 
 		MouseListener ml = new MouseListener() {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (_eventManager.isBankInCurrentEvent(label)) {
+				if (_dataWarehouse.isBankInCurrentEvent(label)) {
 					int clickCount = e.getClickCount();
 
 					if ((_nodeTable != null) && (clickCount == 1)) {
 						_nodeTable.makeNameVisible(label);
 
 					} else if (clickCount == 2) {
-						
+
 						if (Ced.getCed().isFloatingBankDisplay()) {
 							// open a new window
 							CedDataWindow dw = CedDataWindow.getBankWindow(label);
@@ -246,7 +256,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 							dw.setVisible(true);
 						return;
 						}
-						
+
 						//open a view
 						CedDataView cdv = CedDataView.getBankView(label);
 						cdv.update();
@@ -267,7 +277,7 @@ public class ClasIoPresentBankPanel extends JPanel {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				if (_eventManager.isBankInCurrentEvent(label)) {
+				if (_dataWarehouse.isBankInCurrentEvent(label)) {
 					alabel.setBackground(Color.yellow);
 				}
 

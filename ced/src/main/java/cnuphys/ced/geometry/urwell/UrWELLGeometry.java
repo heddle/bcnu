@@ -46,9 +46,9 @@ public class UrWELLGeometry {
 		System.out.println("===  " + NAME + " Geometry Initialization ===");
 		System.out.println("=======================================");
 
+		String variationName = Ced.getGeometryVariation();
+		DatabaseConstantProvider cp = new DatabaseConstantProvider(11, variationName);
 
-        String variationName = Ced.getGeometryVariation();
-        DatabaseConstantProvider cp = new DatabaseConstantProvider(11, variationName);
         factory.init(cp);
 
         getChamberData();
