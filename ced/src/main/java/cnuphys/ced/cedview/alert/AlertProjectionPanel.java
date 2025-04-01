@@ -68,8 +68,8 @@ public class AlertProjectionPanel extends JPanel {
         
         JPanel bPanel = new JPanel();
         bPanel.setLayout(new BoxLayout(bPanel, BoxLayout.X_AXIS));
-        showAllTOF = createRadioButton("All TOF", projectionGroup, this::handleTOFViewChange);
-        showIntersectingTOF = createRadioButton("    Intersecting TOF", projectionGroup, this::handleTOFViewChange);
+        showAllTOF = createRadioButton("All ATOF", projectionGroup, this::handleTOFViewChange);
+        showIntersectingTOF = createRadioButton("    Intersecting ATOF", projectionGroup, this::handleTOFViewChange);
         showAllTOF.setSelected(true);
 
         // Add radio buttons to the panel

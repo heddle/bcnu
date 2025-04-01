@@ -144,7 +144,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 	 */
 	public static AlertXYView createAlertXYView() {
 		// set to a fraction of screen
-		Dimension d = GraphicsUtilities.screenFraction(0.38);
+		Dimension d = GraphicsUtilities.screenFraction(0.48);
 
 		// make it square
 		int width = d.width;
@@ -170,9 +170,9 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
 						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC + ControlPanel.TRAJCUTOFF,
 						DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
-						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
-						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
-						+ DisplayBits.GLOBAL_TB + DisplayBits.CVTP1TRACKS + DisplayBits.CVTP1TRAJ, 3, 5);
+						+ DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
+						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.ADCDATA +
+						+ DisplayBits.CVTP1TRACKS + DisplayBits.CVTP1TRAJ, 3, 5);
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
 
