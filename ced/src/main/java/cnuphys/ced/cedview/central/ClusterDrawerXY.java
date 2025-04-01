@@ -17,6 +17,8 @@ import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDClusterData;
+import cnuphys.ced.cedview.CedXYView;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.frame.Ced;
 
@@ -28,7 +30,7 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 
 	private static final Stroke THICKLINE = new BasicStroke(1.5f);
 
-	public ClusterDrawerXY(CentralXYView view) {
+	public ClusterDrawerXY(CedXYView view) {
 		super(view);
 	}
 
@@ -90,6 +92,11 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 	 * @param container the drawing container
 	 */
 	public void drawBSTClusters(Graphics g, IContainer container) {
+		
+		if (_view instanceof AlertXYView) {
+			return;
+		}
+
 
 		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
 		if (event == null) {
@@ -134,6 +141,12 @@ public class ClusterDrawerXY extends CentralXYViewDrawer {
 	 * @param container the drawing container
 	 */
 	public void drawBMTClusters(Graphics g, IContainer container) {
+		
+		if (_view instanceof AlertXYView) {
+			return;
+		}
+
+		
 		DataEvent event = ClasIoEventManager.getInstance().getCurrentEvent();
 		if (event == null) {
 			return;

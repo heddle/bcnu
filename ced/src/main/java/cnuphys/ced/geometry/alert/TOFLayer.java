@@ -22,9 +22,9 @@ public class TOFLayer {
 
 	private static Color superlayer0Color = X11Colors.getX11Color("Alice Blue");
 	private static Color[][] fillColors = {
-			{ X11Colors.getX11Color("Antique White"), X11Colors.getX11Color("Burlywood") },
-			{ X11Colors.getX11Color("Light Cyan"), X11Colors.getX11Color("Light Blue") },
-			{ X11Colors.getX11Color("Aquamarine"), X11Colors.getX11Color("Light Green") } };
+			{ X11Colors.getX11Color("Antique White"), X11Colors.getX11Color("Burlywood", 128) },
+			{ X11Colors.getX11Color("Light Cyan"), X11Colors.getX11Color("Light Blue", 128) },
+			{ X11Colors.getX11Color("Aquamarine"), X11Colors.getX11Color("Light Green", 128) } };
 
 	//work points
 	private Point2D.Double wp[] = new Point2D.Double[4];
@@ -113,8 +113,7 @@ public class TOFLayer {
 	 * @param g         the graphics context
 	 * @param container the container
 	 */
-	public void drawAllPaddles(Graphics g, IContainer container) {
-	//	System.err.println(String.format("drawAllPaddles: sect1: %d  supl1: %d  lay1: %d   num: %d", sector+1, superlayer+1, layer+1, numPaddles));
+	public void drawAllATOFPaddles(Graphics g, IContainer container) {
 		//the hash is used for feedback
 		polyhash.clear();
 
@@ -128,7 +127,7 @@ public class TOFLayer {
 				fc = fillColors[sector % 3][paddle.getComponentId() % 2];
 			}
 
-			drawPaddle(g, container, paddle, fc, Color.black);
+			drawPaddle(g, container, paddle, fc, fc.darker());
 		}
 	}
 

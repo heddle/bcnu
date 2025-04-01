@@ -867,11 +867,12 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	 * Accumulate data for the Alert TOF superlayer 0. Note: this uses the new accumulation
 	 * strategy using the data warehouse.
 	 */
+	
 	private void accumAlertSL0TOF() {
 		DataEvent dataEvent = ClasIoEventManager.getInstance().getCurrentEvent();
 
 		if (dataEvent.hasBank("ATOF::tdc")) {
-
+			
 			// Alert TOF data
 			if (_AlertTOFSL0AccumulatedData == null) {
 				//in hipo data 15 sectors, 4 layers and 1 paddle with componentID = 10

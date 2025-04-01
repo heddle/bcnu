@@ -8,15 +8,16 @@ import java.awt.geom.Point2D;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.bCNU.magneticfield.swim.ASwimTrajectoryDrawer;
+import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.swim.SwimTrajectory;
 import cnuphys.swim.SwimTrajectory2D;
 
 public class SwimTrajectoryDrawer extends ASwimTrajectoryDrawer {
 
-	private CentralXYView _view;
+	private CedXYView _view;
 
-	public SwimTrajectoryDrawer(CentralXYView view) {
+	public SwimTrajectoryDrawer(CedXYView view) {
 		_view = view;
 	}
 

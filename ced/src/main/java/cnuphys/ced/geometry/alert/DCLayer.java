@@ -31,7 +31,7 @@ public class DCLayer {
 	public static final double LAYERDR = 1.6; // mm;
 
 	/** assumed half radial width of gap */
-	public static final double WIRERAD = 0.85*LAYERDR; // mm;
+	public static final double WIRERAD = 0.5*LAYERDR; // mm;
 
 	/** the 0-based sector of this layer */
 	public final int sector;
@@ -218,7 +218,7 @@ public class DCLayer {
 		//draw the poly
 		drawShell(g, container);
 		for (int wire = 0; wire < numWires; wire++) {
-			drawXYWire(g, container, wire, wireFill, Color.darkGray, z);
+			drawXYWire(g, container, wire, wireFill, null, z);
 		}
 	}
 
@@ -230,12 +230,29 @@ public class DCLayer {
 	 * @param wire      the 0-based wire id (data is 1-based!)
 	 * @param fc        the fill color
 	 * @param lc        the line color
+	 * @param z         the z value
 	 */
 	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc,   double z) {
+		drawXYWire(g, container, wire, fc, lc, z, false);
+	}
+	
+	/**
+	 * Draw a wire
+	 *
+	 * @param g         the graphics object
+	 * @param container the drawing container
+	 * @param wire      the 0-based wire id (data is 1-based!)
+	 * @param fc        the fill color
+	 * @param lc        the line color
+	 * @param z         the z value
+	 * @param isHit     true if this is a hit
+	 */
+	public void drawXYWire(Graphics g, IContainer container, int wire, Color fc, Color lc,   double z, boolean isHit) {
 		if (numWires < 1) {
 			return;
 		}
 
+		
 
 		Point2D.Double zp = new Point2D.Double();
 		double t = getWireXYatZ(wire, z, zp);
@@ -249,7 +266,10 @@ public class DCLayer {
 			lc = X11Colors.getX11Color("Coral");
 //			fc = X11Colors.getX11Color("Alice Blue");
 		}
-		_wrect[wire].setFrame(zp.x-WIRERAD, zp.y-WIRERAD, 2*WIRERAD, 2*WIRERAD);
+		
+		double rad = isHit ? WIRERAD : 1.2*WIRERAD;
+		
+		_wrect[wire].setFrame(zp.x-rad, zp.y-rad, 2*rad, 2*rad);
 		WorldGraphicsUtilities.drawWorldOval(g, container, _wrect[wire], fc, lc);
 
 	}

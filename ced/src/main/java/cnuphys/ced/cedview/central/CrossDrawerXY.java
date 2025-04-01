@@ -16,6 +16,7 @@ import cnuphys.bCNU.graphics.world.WorldGraphicsUtilities;
 import cnuphys.ced.alldata.DataDrawSupport;
 import cnuphys.ced.alldata.datacontainer.bmt.BMTCrossData;
 import cnuphys.ced.alldata.datacontainer.bst.BSTCrossData;
+import cnuphys.ced.cedview.alert.AlertXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public class CrossDrawerXY extends CentralXYViewDrawer {
@@ -67,6 +68,10 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	 * @param container the drawing container
 	 */
 	public void drawBSTCrosses(Graphics g, IContainer container) {
+		
+		if (_view instanceof AlertXYView) {
+			return;
+		}
 
 		int count = bstCrossData.count();
 		if (count > 0) {
@@ -112,6 +117,9 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	 * @param container
 	 */
 	public void drawBMTCrosses(Graphics g, IContainer container) {
+		if (_view instanceof AlertXYView) {
+			return;
+		}
 
 		int count = bmtCrossData.count();
 		if (count > 0) {
@@ -161,6 +169,11 @@ public class CrossDrawerXY extends CentralXYViewDrawer {
 	@Override
 	public void feedback(IContainer container, Point screenPoint, Point2D.Double worldPoint,
 			List<String> feedbackStrings) {
+		
+		if (_view instanceof AlertXYView) {
+			return;
+		}
+
 
 		// bst crosses?
 		if (_view.showCrosses()) {

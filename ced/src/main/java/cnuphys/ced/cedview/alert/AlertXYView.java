@@ -1,8 +1,10 @@
 package cnuphys.ced.cedview.alert;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
@@ -23,24 +25,36 @@ import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
+import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.cedview.ILabCoordinates;
+import cnuphys.ced.cedview.central.CNDXYPolygon;
+import cnuphys.ced.cedview.central.CTOFXYPolygon;
+import cnuphys.ced.cedview.central.CentralXYHitDrawer;
+import cnuphys.ced.cedview.central.ClusterDrawerXY;
+import cnuphys.ced.cedview.central.ICentralXYView;
+import cnuphys.ced.cedview.central.SwimTrajectoryDrawer;
 import cnuphys.ced.cedview.urwell.HighlightData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
+import cnuphys.ced.geometry.BSTxyPanel;
+import cnuphys.ced.geometry.CNDGeometry;
+import cnuphys.ced.geometry.CTOFGeometry;
 import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
 import cnuphys.ced.geometry.alert.DCLayer;
 import cnuphys.ced.geometry.alert.TOFLayer;
+import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.swim.SwimTrajectory2D;
 
-public class AlertXYView extends CedXYView implements ILabCoordinates {
+public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralXYView {
 
 
 	// camera Z for projection
-	private double _zcamera = 450;
+//	private double _zcamera = 450;
 
 	// for naming clones
 	private static int CLONE_COUNT = 0;
@@ -49,16 +63,25 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	private static final String _baseTitle = "ALERT XY";
 
 	// units are mm
-	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-120, -120, 240, 240);
+//	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-120, -120, 240, 240);
+	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-400, -400, 800, 800);
 
 
 	//for highlighting
 	private HighlightData _highlightDataAHDC = new HighlightData();
 	private HighlightData _highlightDataATOF = new HighlightData();
+	
+	//for coloring central tof
+	private static Color _ctofColors[] = { new Color(240, 240, 240), new Color(224, 224, 224) };
 
+	// the CTOF polygons
+	private CTOFXYPolygon _ctofPoly[] = new CTOFXYPolygon[48];
+
+	// the CND xy polygons
+	private CNDXYPolygon _cndPoly[][] = new CNDXYPolygon[3][48];
 
 	// bank matches
-	private static String _defMatches[] = { "AHDC", "ATOF" };
+	private static String _defMatches[] = { "AHDC", "ATOF", "CND", "CTOF" };
 
 	// used to draw swum trajectories (if any) in the after drawer
 	private SwimTrajectoryDrawer _swimTrajectoryDrawer;
@@ -71,6 +94,17 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 	//wire projection
 	private AlertProjectionPanel _dcPanel;
+	
+	// data containers
+	private CTOFADCData _ctofADCData = CTOFADCData.getInstance();
+	private CTOFClusterData _clusterCTOFData = CTOFClusterData.getInstance();
+	
+	// draws hits
+	private CentralXYHitDrawer _hitDrawer;
+
+	// draws reconstructed clusters
+	private ClusterDrawerXY _clusterDrawer;
+
 
 	/**
 	 * Create a Alert detector XY View
@@ -84,6 +118,24 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 		_swimTrajectoryDrawer.setMaxPathLength(getTrajMaxPathlength());
 		_dcHitDrawer = new AlertDCHitDrawer(this);
 		_tofHitDrawer = new AlertTOFHitDrawer(this);
+		
+		// add the CND polys
+		for (int layer = 1; layer <= 3; layer++) {
+			for (int paddleId = 1; paddleId <= 48; paddleId++) {
+				_cndPoly[layer - 1][paddleId - 1] = new CNDXYPolygon(layer, paddleId);
+			}
+		}
+
+		
+		// add the ctof polygons
+		for (int paddleId = 1; paddleId <= 48; paddleId++) {
+			_ctofPoly[paddleId - 1] = new CTOFXYPolygon(paddleId);
+		}
+
+		_clusterDrawer = new ClusterDrawerXY(this);
+		_hitDrawer = new CentralXYHitDrawer(this, this);
+
+		
 	}
 
 	/**
@@ -115,12 +167,12 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND +
-				ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC + ControlPanel.TRAJCUTOFF,
-				DisplayBits.ACCUMULATION
-						+ DisplayBits.ADCDATA + DisplayBits.MCTRUTH,
-				3, 5);
-
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
+						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC + ControlPanel.TRAJCUTOFF,
+						DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
+						+ DisplayBits.ADCDATA + DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
+						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.COSMICS + DisplayBits.GLOBAL_HB
+						+ DisplayBits.GLOBAL_TB + DisplayBits.CVTP1TRACKS + DisplayBits.CVTP1TRAJ, 3, 5);
 		view.add(view._controlPanel, BorderLayout.EAST);
 		view.pack();
 
@@ -136,6 +188,10 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 		//add dc projection panel
 		view._dcPanel = view._controlPanel.getAlertDCPanel();
+		
+		// add quick zooms
+		view.addQuickZoom("ALERT", -120, -120, 120, 120);
+
 
 		return view;
 	}
@@ -153,10 +209,30 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
+				
+				Graphics2D g2 = (Graphics2D)g;
+				
+				// CND Polys
+				for (int layer = 1; layer <= 3; layer++) {
+					for (int paddleId = 1; paddleId <= 48; paddleId++) {
+						if (_cndPoly[layer - 1][paddleId - 1] != null) {
+							_cndPoly[layer - 1][paddleId - 1].draw(g2, container);
+						}
+					}
+
+				}
+
+				// CTOF Polys
+				for (int paddleId = 1; paddleId <= 48; paddleId++) {
+					if (_ctofPoly[paddleId - 1] != null) {
+						_ctofPoly[paddleId - 1].draw(g2, container, paddleId, _ctofColors[paddleId % 2]);
+					}
+				}
+
 
 				if (!_eventManager.isAccumulating()) {
 					drawWires(g, container);
-					drawPaddles(g, container);
+					drawATOFPaddles(g, container);
 
 					AlertGeometry.drawAlertTOFSectorNumbers(g, container);
 				}
@@ -178,15 +254,20 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 
 				if (!_eventManager.isAccumulating()) {
 
+					_hitDrawer.draw(g, container);
+
 					if (view.isSingleEventMode()) {
 						drawSingleModeHits(g, container);
+						if (showClusters()) {
+							_clusterDrawer.draw(g, container);
+						}
 					}
 
 					else {
 						drawAccumulatedHits(g, container);
 					}
 
-					//data selected highlight?
+					// data selected highlight?
 					drawDataSelectedHighlight(g, container);
 
 				}
@@ -264,12 +345,13 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	}
 
 
-	private void drawPaddles(Graphics g, IContainer container) {
+	//draw atof
+	private void drawATOFPaddles(Graphics g, IContainer container) {
 		Collection<TOFLayer> tofLayers = AlertGeometry.getAllTOFLayers();
 
 		for (TOFLayer tof : tofLayers) {
 			if (tof.numPaddles >  0) {
-				tof.drawAllPaddles(g, container);
+				tof.drawAllATOFPaddles(g, container);
 			}
 
 		}
@@ -288,11 +370,14 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	@Override
 	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
+		wp.x = x;
+		wp.y = y;
+
 		//do the projection
-		double zp = getFixedZ();
-		double scale = (_zcamera - zp) / _zcamera;
-		wp.x = x*scale;
-		wp.y = y*scale;
+//		double zp = getFixedZ();
+//		double scale = (_zcamera - zp) / _zcamera;
+//		wp.x = x*scale;
+//		wp.y = y*scale;
 	}
 
 	/**
@@ -392,7 +477,58 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 			}
 
 		}
+		
+		double rad = Math.hypot(wp.x, wp.y);
+		boolean found = false;
 
+		// cnd ?
+		if ((rad > 288) && (rad < 382)) {
+
+			for (int layer = 1; layer <= 3; layer++) {
+				for (int paddleId = 1; paddleId <= 48; paddleId++) {
+
+					found = _cndPoly[layer - 1][paddleId - 1].getFeedbackStrings(container, pp, wp,
+							feedbackStrings);
+
+					if (found) {
+						break;
+					}
+				}
+
+				if (found) {
+					break;
+				}
+
+			}
+		}
+
+		//ctof?
+		else if ((rad > CTOFGeometry.RINNER) && (rad < CTOFGeometry.ROUTER)) {
+
+			for (short index = 0; index < 48; index++) {
+				if (_ctofPoly[index].contains(pp)) {
+					short paddle = (short) (index + 1); // now 1-based
+					feedbackStrings.add("$cyan$CTOF paddle: " + paddle);
+
+					for (int i = 0; i < _ctofADCData.count(); i++) {
+						if (_ctofADCData.component[i] == paddle) {
+							_ctofADCData.adcFeedback("CTOF", i, feedbackStrings);
+						}
+					}
+
+					break;
+				}
+			}
+
+			if (showClusters()) {
+				for (int i = 0; i < _clusterCTOFData.count(); i++) {
+					if (_clusterCTOFData.contains(i, pp)) {
+						_clusterCTOFData.feedback("CTOF", i, feedbackStrings);
+						break;
+					}
+				}
+			}
+		}
 
 		// near a swum trajectory?
 		double mindist = _swimTrajectoryDrawer.closestApproach(wp);
@@ -406,6 +542,14 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 				_lastTrajStr = traj2D.summaryString();
 			}
 		}
+
+		// cluster feedback
+		if (showClusters()) {
+			_clusterDrawer.feedback(container, pp, wp, feedbackStrings);
+		}
+
+		// hit feedback
+		_hitDrawer.feedback(container, pp, wp, feedbackStrings);
 
 
 	}
@@ -433,7 +577,71 @@ public class AlertXYView extends CedXYView implements ILabCoordinates {
 	 */
 	@Override
 	public int getTrajMaxPathlength() {
-		return 1000; // mm
+		return 4000; // mm
+	}
+
+	/**
+	 * Get a CTOF scintillator polygon
+	 *
+	 * @param index1 the 1=based index [1..48]
+	 * @return the most recently drawn polygon
+	 */
+	@Override
+	public CTOFXYPolygon getCTOFPolygon(int index1) {
+		int index0 = index1 - 1;
+		if ((index0 < 0) || (index0 > 47)) {
+			return null;
+		}
+		return _ctofPoly[index0];
+	}
+
+	/**
+	 * Get the CND polygon from Gagik's geometry layer and paddle
+	 *
+	 * @param layer    1..3
+	 * @param paddleId 1..48
+	 * @return the CND polygon
+	 */
+	@Override
+	public CNDXYPolygon getCNDPolygon(int layer, int paddleId) {
+		if ((layer < 1) || (layer > 3) || (paddleId < 1) || (paddleId > 48)) {
+			return null;
+		}
+
+		return _cndPoly[layer - 1][paddleId - 1];
+	}
+
+	/**
+	 * Get the CND polygon from "real" numbering
+	 *
+	 * @param sector    1..24
+	 * @param layer     1..3
+	 * @param component 1..2
+	 * @return the CND polygon
+	 */
+	@Override
+	public CNDXYPolygon getCNDPolygon(int sector, int layer, int component) {
+		if ((sector < 1) || (sector > 24) || (layer < 1) || (layer > 3)) {
+			return null;
+		}
+		if ((component < 1) || (component > 2)) {
+			return null;
+		}
+
+		int real[] = { sector, layer, component };
+		int geo[] = new int[3];
+
+		CNDGeometry.realTripletToGeoTriplet(geo, real);
+
+		return getCNDPolygon(geo[1], geo[2]);
+	}
+	@Override
+	public void drawBSTPanel(Graphics2D g2, IContainer container, BSTxyPanel panel, Color color) {
+	}
+
+	@Override
+	public BMTSectorItem getBMTSectorItem(int sector, int layer) {
+		return null;
 	}
 
 

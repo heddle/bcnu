@@ -23,7 +23,7 @@ import cnuphys.bCNU.util.Point2DSupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.util.X11Colors;
 
-public abstract class CedXYView extends CedView {
+public abstract class CedXYView extends CedView implements ILabCoordinates{
 
 	// margins around active area
 	protected static int LMARGIN = 50;

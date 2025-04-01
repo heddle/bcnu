@@ -75,7 +75,7 @@ public class AlertDCHitDrawer {
 									+ adcGeom.superlayer + ", layer " + adcGeom.layer);
 							continue;
 						}
-						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.black,  _view.getFixedZ());
+						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.red,  _view.getFixedZ(), true);
 					}
 				}
 			}
@@ -185,7 +185,7 @@ public class AlertDCHitDrawer {
 
 							AlertFeedbackSupport.handleShort(bankName, "ped", i, "$orange$", feedbackStrings);
 							AlertFeedbackSupport.handleFloat(bankName, "time", i, "$orange$", feedbackStrings);
-							AlertFeedbackSupport.handleLong(bankName, "timestamp", i, "$orange$", feedbackStrings);
+							AlertFeedbackSupport.handleFloat(bankName, "timeOverThreshold", i, "$orange$", feedbackStrings);
 
 							return;
 						}

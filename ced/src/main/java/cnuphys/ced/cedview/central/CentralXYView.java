@@ -46,7 +46,6 @@ import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.cedview.CedView;
 import cnuphys.ced.cedview.CedXYView;
-import cnuphys.ced.cedview.ILabCoordinates;
 import cnuphys.ced.cedview.urwell.HighlightData;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
@@ -61,7 +60,7 @@ import cnuphys.lund.X11Colors;
 import cnuphys.swim.SwimTrajectory2D;
 
 @SuppressWarnings("serial")
-public class CentralXYView extends CedXYView implements ILabCoordinates {
+public class CentralXYView extends CedXYView implements ICentralXYView {
 
 	//data warehouse
 	private DataWarehouse _dataWarehouse = DataWarehouse.getInstance();
@@ -133,7 +132,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 		_crossDrawer = new CrossDrawerXY(this);
 		_clusterDrawer = new ClusterDrawerXY(this);
-		_hitDrawer = new CentralXYHitDrawer(this);
+		_hitDrawer = new CentralXYHitDrawer(this, this);
 
 		// draws any swum trajectories (in the after draw)
 		_swimTrajectoryDrawer = new SwimTrajectoryDrawer(this);
@@ -146,7 +145,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 			}
 		}
 
-		// ad the ctof polygons
+		// add the ctof polygons
 		for (int paddleId = 1; paddleId <= 48; paddleId++) {
 			_ctofPoly[paddleId - 1] = new CTOFXYPolygon(paddleId);
 		}
@@ -448,6 +447,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	}
 
 	// draw one BST panel
+	@Override
 	public void drawBSTPanel(Graphics2D g2, IContainer container, BSTxyPanel panel, Color color) {
 
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -734,6 +734,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	 * @param index1 the 1=based index [1..48]
 	 * @return the most recently drawn polygon
 	 */
+	@Override
 	public CTOFXYPolygon getCTOFPolygon(int index1) {
 		int index0 = index1 - 1;
 		if ((index0 < 0) || (index0 > 47)) {
@@ -749,6 +750,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	 * @param paddleId 1..48
 	 * @return the CND polygon
 	 */
+	@Override
 	public CNDXYPolygon getCNDPolygon(int layer, int paddleId) {
 		if ((layer < 1) || (layer > 3) || (paddleId < 1) || (paddleId > 48)) {
 			return null;
@@ -765,6 +767,7 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 	 * @param component 1..2
 	 * @return the CND polygon
 	 */
+	@Override
 	public CNDXYPolygon getCNDPolygon(int sector, int layer, int component) {
 		if ((sector < 1) || (sector > 24) || (layer < 1) || (layer > 3)) {
 			return null;
@@ -806,20 +809,6 @@ public class CentralXYView extends CedXYView implements ILabCoordinates {
 
 	}
 
-	/**
-	 * Convert lab coordinates (CLAS x,y,z) to world coordinates (2D world system of
-	 * the view)
-	 *
-	 * @param x  the CLAS12 x coordinate
-	 * @param y  the CLAS12 y coordinate
-	 * @param z  the CLAS12 z coordinate
-	 * @param wp holds the world point
-	 */
-	@Override
-	public void labToWorld(double x, double y, double z, Point2D.Double wp) {
-		wp.x = x;
-		wp.y = y;
-	}
 
 	/**
 	 * In the BankDataTable a row was selected.

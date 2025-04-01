@@ -7,6 +7,7 @@ import java.util.List;
 
 import cnuphys.bCNU.drawable.IDrawable;
 import cnuphys.bCNU.graphics.container.IContainer;
+import cnuphys.ced.cedview.CedXYView;
 import cnuphys.ced.clasio.ClasIoEventManager;
 
 public abstract class CentralXYViewDrawer implements IDrawable {
@@ -14,10 +15,10 @@ public abstract class CentralXYViewDrawer implements IDrawable {
 	// convenient access to the event manager
 	protected ClasIoEventManager _eventManager = ClasIoEventManager.getInstance();
 
-	// the CentralXYView being rendered.
-	protected CentralXYView _view;
+	// the CedXYView being rendered.
+	protected CedXYView _view;
 
-	public CentralXYViewDrawer(CentralXYView view) {
+	public CentralXYViewDrawer(CedXYView view) {
 		_view = view;
 	}
 
