@@ -1,5 +1,6 @@
 package cnuphys.ced.geometry.urwell;
 
+import org.jlab.detector.geant4.v2.URWELL.URWellStripFactory;
 import org.jlab.geom.prim.Line3D;
 
 public class ChamberData {
@@ -26,7 +27,7 @@ public class ChamberData {
 	 * @param chamber [1..3]
 	 * @param layer   [1..2]
 	 */
-	public ChamberData(int sector, int chamber, int layer) {
+	public ChamberData(URWellStripFactory factory, int sector, int chamber, int layer) {
 
 		if ((sector < 1) || (sector > 6)) {
 			System.err.println("Bad sector in UrWELL ChamberData: " + sector);
@@ -54,12 +55,12 @@ public class ChamberData {
 			// global strip
 			int strip = UrWELLGeometry.stripNumber(chamber, chamberStrip); // 1..MAXSTRIP
 
-			if ((strip < 1) || (strip > UrWELLGeometry.MAXSTRIP)) {
+			if ((strip < 1) || (strip > UrWELLGeometry.maxStrip)) {
 				System.err.println("global strip ID out of bounds in ChamberData (urWELL): " + strip);
 				System.exit(1);
 			}
 
-			strips[chamberStrip - 1] = UrWELLGeometry.factory.getStrip(sector, layer, strip);
+			strips[chamberStrip - 1] = factory.getStrip(sector, layer, strip);
 
 			if (strips[chamberStrip - 1] == null) {
 				System.err.println(

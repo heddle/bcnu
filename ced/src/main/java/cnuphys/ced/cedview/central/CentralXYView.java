@@ -51,10 +51,10 @@ import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.component.ControlPanel;
 import cnuphys.ced.component.DisplayBits;
 import cnuphys.ced.frame.Ced;
+import cnuphys.ced.geometry.BSTGeometry;
 import cnuphys.ced.geometry.BSTxyPanel;
 import cnuphys.ced.geometry.CNDGeometry;
 import cnuphys.ced.geometry.CTOFGeometry;
-import cnuphys.ced.geometry.GeometryManager;
 import cnuphys.ced.geometry.bmt.BMTSectorItem;
 import cnuphys.lund.X11Colors;
 import cnuphys.swim.SwimTrajectory2D;
@@ -388,7 +388,7 @@ public class CentralXYView extends CedXYView implements ICentralXYView {
 	 * @return the panel
 	 */
 	public static BSTxyPanel getPanel(int layer, int sector) {
-		List<BSTxyPanel> panels = GeometryManager.getBSTxyPanels();
+		List<BSTxyPanel> panels = BSTGeometry.getBSTxyPanels();
 		if (panels == null) {
 			return null;
 		}
@@ -411,7 +411,7 @@ public class CentralXYView extends CedXYView implements ICentralXYView {
 
 		Shape oldClip = g.getClip();
 
-		List<BSTxyPanel> panels = GeometryManager.getBSTxyPanels();
+		List<BSTxyPanel> panels = BSTGeometry.getBSTxyPanels();
 		if (panels == null) {
 			return;
 		}
@@ -705,7 +705,7 @@ public class CentralXYView extends CedXYView implements ICentralXYView {
 
 	// get the panel closest to a given point
 	private BSTxyPanel getClosest(Point2D.Double wp) {
-		List<BSTxyPanel> panels = GeometryManager.getBSTxyPanels();
+		List<BSTxyPanel> panels = BSTGeometry.getBSTxyPanels();
 		if (panels == null) {
 			return null;
 		}

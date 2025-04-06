@@ -4,84 +4,94 @@ import org.jlab.detector.calib.utils.DatabaseConstantProvider;
 import org.jlab.detector.geant4.v2.URWELL.URWellConstants;
 import org.jlab.detector.geant4.v2.URWELL.URWellStripFactory;
 import org.jlab.geom.prim.Line3D;
-import org.jlab.logging.DefaultLogger;
+
+import com.esotericsoftware.kryo.Kryo;
+import com.esotericsoftware.kryo.io.Input;
+import com.esotericsoftware.kryo.io.Output;
 
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.ced.frame.Ced;
+import cnuphys.ced.geometry.cache.ACachedGeometry;
 
 /**
  * Geometric data for the uRwell detector
+ * 
  * @author heddle
  *
  */
-public class UrWELLGeometry {
+public class UrWELLGeometry extends ACachedGeometry {
 
-	//the name of the detector
+	// the name of the detector
 	public static String NAME = UnicodeSupport.SMALL_MU + "Rwell";
 
-	//the urwell geometry factory
-	public static URWellStripFactory factory = new URWellStripFactory();
-
-	//chamber data indices are sector [0..5] chamber [0..2] layer [0..1]
+	// chamber data indices are sector [0..5] chamber [0..2] layer [0..1]
 	private static ChamberData[][][] _chamberData;
 
-	//number of strips by chamber [0..2]
+	// number of strips by chamber [0..2]
 	public static int numStripsByChamber[] = new int[3];
 
-	//the maximun global strip ID (num strips per sector and layer)
-	public static int MAXSTRIP;
+	// the maximun global strip ID (num strips per sector and layer)
+	public static int maxStrip;
 
-	//used to make outline polygons (taken from sector 1 and rotated as needed)
-	//the index corresponds to chamber
-	public static double minX[] = {Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
-	public static double maxX[] = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
-	public static double minY[] = {Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY};
-	public static double maxY[] = {Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY};
+	// indices to story chamber and chamber strip
+	private static int[][] _inidices = new int[1884][2];
+
+	// used to make outline polygons (taken from sector 1 and rotated as needed)
+	// the index corresponds to chamber
+	public static double minX[] = { Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY };
+	public static double maxX[] = { Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY };
+	public static double minY[] = { Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY };
+	public static double maxY[] = { Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY, Double.NEGATIVE_INFINITY };
+
+	public UrWELLGeometry() {
+		super(NAME);
+	}
 
 	/**
 	 * Init the uRwell geometry
 	 */
-	public static void initialize() {
+	@Override
+	public void initializeUsingCCDB() {
 		System.out.println("\n=======================================");
 		System.out.println("===  " + NAME + " Geometry Initialization ===");
 		System.out.println("=======================================");
 
 		String variationName = Ced.getGeometryVariation();
 		DatabaseConstantProvider cp = new DatabaseConstantProvider(11, variationName);
+		URWellStripFactory factory = new URWellStripFactory();
+		factory.init(cp);
 
-        factory.init(cp);
-
-        getChamberData();
+		getChamberData(factory);
+		getIndices(factory);
 	}
 
-	//load and cache some useful chamber data
-	private static void getChamberData() {
+	// load and cache some useful chamber data
+	private static void getChamberData(URWellStripFactory factory) {
 
-		MAXSTRIP = 0;
+		maxStrip = 0;
 		for (int chamber = 0; chamber < URWellConstants.NCHAMBERS; chamber++) {
 			numStripsByChamber[chamber] = factory.getNStripChamber(chamber);
-			MAXSTRIP += numStripsByChamber[chamber];
+			maxStrip += numStripsByChamber[chamber];
 		}
 
 		_chamberData = new ChamberData[6][URWellConstants.NCHAMBERS][URWellConstants.NLAYERS];
 		for (int sector = 0; sector < 6; sector++) {
 			for (int chamber = 0; chamber < URWellConstants.NCHAMBERS; chamber++) {
 				for (int layer = 0; layer < URWellConstants.NLAYERS; layer++) {
-					//passed as 1-based
-					_chamberData[sector][chamber][layer] = new ChamberData(sector+1, chamber+1, layer+1);
+					// passed as 1-based
+					_chamberData[sector][chamber][layer] = new ChamberData(factory, sector + 1, chamber + 1, layer + 1);
 				}
 			}
 		}
 
-		//get some limits to make outlines
+		// get some limits to make outlines
 
 		double maxTheta = Double.NEGATIVE_INFINITY;
 		double theta;
 
-
 		int sector = 1;
 		for (int chamber = 1; chamber <= URWellConstants.NCHAMBERS; chamber++) {
-			int cm1 = chamber-1;
+			int cm1 = chamber - 1;
 			for (int layer = 1; layer <= URWellConstants.NLAYERS; layer++) {
 
 				for (int chamberStrip = 1; chamberStrip <= numStripsByChamber[chamber - 1]; chamberStrip++) {
@@ -98,47 +108,52 @@ public class UrWELLGeometry {
 					theta = Math.atan2(line3D.end().y(), line3D.end().x());
 					maxTheta = Math.abs(Math.max(theta, maxTheta));
 
-
-
-//					minY[cm1] = Math.min(minY[cm1], Math.abs(line3D.origin().y()));
-//					minY[cm1] = Math.min(minY[cm1], Math.abs(line3D.end().y()));
 					maxY[cm1] = Math.max(maxY[cm1], Math.abs(line3D.origin().y()));
 					maxY[cm1] = Math.max(maxY[cm1], Math.abs(line3D.end().y()));
 				}
 
 			}
 
-			minY[cm1] = Math.abs(minX[cm1]*Math.tan(maxTheta));
+			minY[cm1] = Math.abs(minX[cm1] * Math.tan(maxTheta));
 
+		} // end chamber loop
+	}
 
-		} //end chamber loop
+	private static void getIndices(URWellStripFactory factory) {
+
+		_inidices = new int[1884][2];
+		for (int strip = 1; strip <= 1884; strip++) {
+			// data[0] is the 1-based chamber, data[1] is the 1-based chamber strip.
+			int data[] = _inidices[strip - 1];
+			data[0] = factory.getChamberIndex(strip) + 1;
+
+			if (data[0] == 1) {
+				data[1] = strip;
+			} else if (data[0] == 2) {
+				data[1] = strip - numStripsByChamber[0];
+			}
+
+			else {
+				data[1] = strip - numStripsByChamber[0] - numStripsByChamber[1];
+			}
+		}
 	}
 
 	/**
 	 * Convert global strip to chamber and chamber strip
+	 * 
 	 * @param strip global strip 1..1884
-	 * @param data on return data[0] is the 1-based chamber, data[1] is the 1-based chamber strip.
+	 * @param data  on return data[0] is the 1-based chamber, data[1] is the 1-based
+	 *              chamber strip.
 	 */
-	public static void chamberStrip(int strip, int data[]) {
-		data[0] = factory.getChamberIndex(strip) + 1;
-
-		if (data[0] == 1) {
-			data[1] = strip;
-		}
-		else if (data[0] == 2) {
-			data[1] = strip  - numStripsByChamber[0];
-		}
-
-		else {
-			data[1] = strip - numStripsByChamber[0] - numStripsByChamber[1];
-		}
+	public static int[] chamberStrip(int strip) {
+		return _inidices[strip];
 	}
-
-
 
 	/**
 	 * Convert a chamber and chamber strip to a "global" strip.
-	 * @param chamber [1..3]
+	 * 
+	 * @param chamber      [1..3]
 	 * @param chamberStrip [1.. num strips in chamber]
 	 * @return global strip 1..1884
 	 */
@@ -148,15 +163,15 @@ public class UrWELLGeometry {
 			return -1;
 		}
 
-		if ((chamberStrip < 1) || (chamber > numStripsByChamber[chamber-1])) {
-			System.err.println("bad (chamber, chamberStrip) in UrWELL.stripNumber: (" + chamber + ", " + chamberStrip + ")");
+		if ((chamberStrip < 1) || (chamber > numStripsByChamber[chamber - 1])) {
+			System.err.println(
+					"bad (chamber, chamberStrip) in UrWELL.stripNumber: (" + chamber + ", " + chamberStrip + ")");
 			return -1;
 		}
 
 		if (chamber == 1) {
 			return chamberStrip;
-		}
-		else if (chamber == 2) {
+		} else if (chamber == 2) {
 			return numStripsByChamber[0] + chamberStrip;
 		}
 
@@ -165,142 +180,234 @@ public class UrWELLGeometry {
 		}
 	}
 
-
 	/**
 	 * Get a strip
-	 * @param sector the 1-based sector [1..6]
-	 * @param chamber the 1-based chamber [1..3]
-	 * @param layer the 1-based layer [1..2]
+	 * 
+	 * @param sector       the 1-based sector [1..6]
+	 * @param chamber      the 1-based chamber [1..3]
+	 * @param layer        the 1-based layer [1..2]
 	 * @param chamberStrip the 1-based strip
 	 * @return the strip
 	 */
 	public static Line3D getStrip(int sector, int chamber, int layer, int chamberStrip) {
-		return _chamberData[sector-1][chamber-1][layer-1].strips[chamberStrip-1];
+		return _chamberData[sector - 1][chamber - 1][layer - 1].strips[chamberStrip - 1];
 	}
 
-
-
-	//test the chamber to global numbering
-	private static void stripNumberTest() {
-
-		int data[] = new int[2];
-
-		int strip = 1;
-		for (int chamber = 1; chamber < URWellConstants.NCHAMBERS; chamber++) {
-			for (int chamberStrip = 1; chamberStrip <= numStripsByChamber[chamber-1]; chamberStrip++) {
-				int testStrip = stripNumber(chamber, chamberStrip);
-				if (testStrip != strip) {
-					System.err.println("FAILED stripNumberTest (A)");
-					System.err.println(String.format("chamber: %d   chamberStrip: %d  strip: %d   testStrip: %d", chamber, chamberStrip, strip, testStrip));
-					System.exit(0);
-				}
-
-				chamberStrip(strip, data);
-				if (data[0] != chamber) {
-					System.err.println("FAILED stripNumberTest (B)");
-					System.err.println(String.format("inverse chamber doesn't match chamber: %d  data[0]:  %d ", chamber, data[0]));
-					System.exit(0);
-				}
-				if (data[1] != chamberStrip) {
-					System.err.println("FAILED stripNumberTest (C)");
-					System.err.println(String.format("inverse chamber strip doesn't match chamberStrip: %d  data[1]:  %d ", chamberStrip, data[1]));
-					System.exit(0);
-				}
-
-
-				strip++;
-			}
-		}
-		System.err.println("PASSED stripNumberTest.");
-	}
-
-
-	//main program for testing
-	public static void main(String[] arg) {
-
-		// this is supposed to create less pounding of ccdb
-		DefaultLogger.initialize();
-
-		initialize();
-		System.err.println("uRwell num layers: " + URWellConstants.NLAYERS);
-		System.err.println("uRwell num sectors: " + URWellConstants.NSECTORS);
-		System.err.println("uRwell num chambers: " + URWellConstants.NCHAMBERS);
-
-
-
-		//tests
-		stripNumberTest();
-
-
-		//strips are 3D lines
-		Line3D line3D;
-
-
-		double minLen = Double.POSITIVE_INFINITY;
-		double maxLen = Double.NEGATIVE_INFINITY;
-
-		double minX = Double.POSITIVE_INFINITY;
-		double maxX = Double.NEGATIVE_INFINITY;
-
-		double minY = Double.POSITIVE_INFINITY;
-		double maxY = Double.NEGATIVE_INFINITY;
-
-
-
-		for (int sector = 1; sector <= 1; sector++) {
-			for (int layer = 1; layer <= 2; layer++) {
-				//global strip id that crosses chamber boundaries
-				for (int strip = 1; strip <= MAXSTRIP; strip++) {
-					line3D = factory.getStrip(sector, layer, strip);
-
-
-					if (line3D == null) {
-						System.err.println(String.format("null strip for [sector, layer, strip] = [%d, %d, %d]", sector,
-								layer, strip));
-						System.exit(1);
+	@Override
+	public boolean readGeometry(Kryo kryo, Input input) {
+		try {
+			// Read _chamberData (3D array)
+			int outer = input.readInt();
+			if (outer == 0) {
+				_chamberData = null;
+			} else {
+				_chamberData = new ChamberData[outer][][];
+				for (int i = 0; i < outer; i++) {
+					int inner = input.readInt();
+					if (inner == 0) {
+						_chamberData[i] = null;
+					} else {
+						_chamberData[i] = new ChamberData[inner][];
+						for (int j = 0; j < inner; j++) {
+							int third = input.readInt();
+							if (third == 0) {
+								_chamberData[i][j] = null;
+							} else {
+								_chamberData[i][j] = new ChamberData[third];
+								for (int k = 0; k < third; k++) {
+									_chamberData[i][j][k] = kryo.readObjectOrNull(input, ChamberData.class);
+								}
+							}
+						}
 					}
-
-					minX = Math.min(minX, line3D.origin().x());
-					minX = Math.min(minX, line3D.end().x());
-					maxX = Math.max(maxX, line3D.origin().x());
-					maxX = Math.max(maxX, line3D.end().x());
-
-					minY = Math.min(minY, line3D.origin().y());
-					minY = Math.min(minY, line3D.end().y());
-					maxY = Math.max(maxY, line3D.origin().y());
-					maxY = Math.max(maxY, line3D.end().y());
-
-
-
-					double len = line3D.length();
-					minLen = Math.min(minLen, len);
-					maxLen = Math.max(maxLen, len);
-
 				}
 			}
+
+			// Read numStripsByChamber (int[])
+			int lenNum = input.readInt();
+			if (lenNum == 0) {
+				numStripsByChamber = null;
+			} else {
+				numStripsByChamber = new int[lenNum];
+				for (int i = 0; i < lenNum; i++) {
+					numStripsByChamber[i] = input.readInt();
+				}
+			}
+
+			// Read _inidices (int[][])
+			int outer2 = input.readInt();
+			if (outer2 == 0) {
+				_inidices = null;
+			} else {
+				_inidices = new int[outer2][];
+				for (int i = 0; i < outer2; i++) {
+					int inner2 = input.readInt();
+					if (inner2 == 0) {
+						_inidices[i] = null;
+					} else {
+						_inidices[i] = new int[inner2];
+						for (int j = 0; j < inner2; j++) {
+							_inidices[i][j] = input.readInt();
+						}
+					}
+				}
+			}
+
+			// Read maxStrip (int)
+			maxStrip = input.readInt();
+
+			// Read maxX (double[])
+			int lenMaxX = input.readInt();
+			if (lenMaxX == 0) {
+				maxX = null;
+			} else {
+				maxX = new double[lenMaxX];
+				for (int i = 0; i < lenMaxX; i++) {
+					maxX[i] = input.readDouble();
+				}
+			}
+
+			// Read minX (double[])
+			int lenMinX = input.readInt();
+			if (lenMinX == 0) {
+				minX = null;
+			} else {
+				minX = new double[lenMinX];
+				for (int i = 0; i < lenMinX; i++) {
+					minX[i] = input.readDouble();
+				}
+			}
+
+			// Read maxY (double[])
+			int lenMaxY = input.readInt();
+			if (lenMaxY == 0) {
+				maxY = null;
+			} else {
+				maxY = new double[lenMaxY];
+				for (int i = 0; i < lenMaxY; i++) {
+					maxY[i] = input.readDouble();
+				}
+			}
+
+			// Read minY (double[])
+			int lenMinY = input.readInt();
+			if (lenMinY == 0) {
+				minY = null;
+			} else {
+				minY = new double[lenMinY];
+				for (int i = 0; i < lenMinY; i++) {
+					minY[i] = input.readDouble();
+				}
+			}
+
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
+	}
 
-		System.err.println("Min X = " + minX);
-		System.err.println("Max X = " + maxX);
+	@Override
+	public boolean writeGeometry(Kryo kryo, Output output) {
+		try {
+			// Write _chamberData (3D array:
+			// [6][URWellConstants.NCHAMBERS][URWellConstants.NLAYERS])
+			if (_chamberData == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(_chamberData.length); // expected 6 sectors
+				for (int i = 0; i < _chamberData.length; i++) {
+					if (_chamberData[i] == null) {
+						output.writeInt(0);
+					} else {
+						output.writeInt(_chamberData[i].length); // number of chambers
+						for (int j = 0; j < _chamberData[i].length; j++) {
+							if (_chamberData[i][j] == null) {
+								output.writeInt(0);
+							} else {
+								output.writeInt(_chamberData[i][j].length); // number of layers
+								for (int k = 0; k < _chamberData[i][j].length; k++) {
+									kryo.writeObjectOrNull(output, _chamberData[i][j][k], ChamberData.class);
+								}
+							}
+						}
+					}
+				}
+			}
 
-		System.err.println("Min Y = " + minY);
-		System.err.println("Max Y = " + maxY);
+			// Write numStripsByChamber (int[])
+			if (numStripsByChamber == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(numStripsByChamber.length);
+				for (int i = 0; i < numStripsByChamber.length; i++) {
+					output.writeInt(numStripsByChamber[i]);
+				}
+			}
 
-		System.err.println("Min strip length = " + minLen);
-		System.err.println("Max strip length = " + maxLen);
+			// Write _inidices (int[][])
+			if (_inidices == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(_inidices.length);
+				for (int i = 0; i < _inidices.length; i++) {
+					if (_inidices[i] == null) {
+						output.writeInt(0);
+					} else {
+						output.writeInt(_inidices[i].length); // should be 2
+						for (int j = 0; j < _inidices[i].length; j++) {
+							output.writeInt(_inidices[i][j]);
+						}
+					}
+				}
+			}
 
-		System.err.println("Done");
+			// Write maxStrip (int)
+			output.writeInt(maxStrip);
 
-		//get total strip count per sector:
-		int layer1Count = _chamberData[0][0][0].count + _chamberData[0][1][0].count + _chamberData[0][2][0].count;
-		int layer2Count = _chamberData[0][0][1].count + _chamberData[0][1][1].count + _chamberData[0][2][1].count;
+			// Write maxX (double[])
+			if (maxX == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(maxX.length);
+				for (int i = 0; i < maxX.length; i++) {
+					output.writeDouble(maxX[i]);
+				}
+			}
 
-		System.err.println("Number of strips each sector layer 1: " + layer1Count);
-		System.err.println("Number of strips each sector layer 2: " + layer2Count);
-		System.err.println("Total number of strips all sectors all layers: " + 6*(layer1Count+layer2Count));
+			// Write minX (double[])
+			if (minX == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(minX.length);
+				for (int i = 0; i < minX.length; i++) {
+					output.writeDouble(minX[i]);
+				}
+			}
 
+			// Write maxY (double[])
+			if (maxY == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(maxY.length);
+				for (int i = 0; i < maxY.length; i++) {
+					output.writeDouble(maxY[i]);
+				}
+			}
 
+			// Write minY (double[])
+			if (minY == null) {
+				output.writeInt(0);
+			} else {
+				output.writeInt(minY.length);
+				for (int i = 0; i < minY.length; i++) {
+					output.writeDouble(minY[i]);
+				}
+			}
 
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }

@@ -327,9 +327,9 @@ public class UrWELLXYView extends HexView {
 			byte layer = _dataWarehouse.getByte("URWELL::hits", "layer")[idx];
 			short strip = _dataWarehouse.getShort("URWELL::hits", "strip")[idx];
 
-			int data[] = new int[2];
+			int data[];
 
-			UrWELLGeometry.chamberStrip(strip, data);
+			data = UrWELLGeometry.chamberStrip(strip);
 			projectStrip(container, sector, data[0], layer, data[1]);
 
 			GraphicsUtilities.drawOval(g, _pp1.x, _pp1.y, 6, 6, Color.black, Color.cyan);
@@ -362,11 +362,11 @@ public class UrWELLXYView extends HexView {
 			byte layer[] = _dataWarehouse.getByte("URWELL::hits", "layer");
 			short strip[] = _dataWarehouse.getShort("URWELL::hits","strip");
 
-			int data[] = new int[2];
+			int data[];
 
 			for (int i = 0; i < count; i++) {
 				g.setColor(_layerColors[layer[i]-1]);
-				UrWELLGeometry.chamberStrip(strip[i], data);
+				data = UrWELLGeometry.chamberStrip(strip[i]);
 				projectStrip(container, sector[i], data[0], layer[i], data[1]);
 				g.drawLine(_pp1.x, _pp1.y, _pp2.x, _pp2.y);
 			}

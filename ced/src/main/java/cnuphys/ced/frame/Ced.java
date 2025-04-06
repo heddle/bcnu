@@ -100,7 +100,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	private static String _geoVariation = "default";
 
 	// ced release
-	private static final String _release = "1.8.0t";
+	public static final String release = "1.9.0t";
 
 	//minimum java major version
 	private static final int _minJavaVersion = 17;
@@ -188,7 +188,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 
 	// the about string
 	private static String _aboutString = "<html><span style=\"font-size:12px\">ced: the cLAS eVENT dISPLAY&nbsp;&nbsp;&nbsp;&nbsp;"
-			+ _release + "<br><br>Developed by Christopher Newport University"
+			+ release + "<br><br>Developed by Christopher Newport University"
 			+ "<br><br>Download the latest version at <a href=\"https://userweb.jlab.org/~heddle/ced/builds/\">https://userweb.jlab.org/~heddle/ced/builds/</a>"
 			+ "<br><br>Email bug reports to david.heddle@cnu.edu";
 
@@ -946,7 +946,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 	 * @return the version string
 	 */
 	public static String versionString() {
-		return _release + (_experimental ? " (Experimental)" : "");
+		return release + (_experimental ? " (Experimental)" : "");
 	}
 
 
@@ -1191,7 +1191,7 @@ public class Ced extends BaseMDIApplication implements MagneticFieldChangeListen
 		// Log.getInstance().addLogListener(new ConsoleLogListener());
 
 		// splash frame
-		final SplashWindowCED splashWindow = new SplashWindowCED("ced", null, 920, _release);
+		final SplashWindowCED splashWindow = new SplashWindowCED("ced", null, 920, release);
 
 		// now make the frame visible, in the AWT thread
 		try {
