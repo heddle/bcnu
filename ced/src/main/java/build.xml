@@ -16,6 +16,9 @@
 		<property name="f2j" value="numRec/lib/f2jutil.jar"/>
 		<property name="nr" value="numRec/lib/numRec.jar"/>
 		
+		<property name="kyro" value="lib/kyro-5.6.2.jar"/>
+		
+		
 		<!-- deleted existing dir -->
 		<delete dir="${destdir}"/>
 		
@@ -60,6 +63,14 @@
 			<fileset includes="apache/**" excludes="**/*src.zip"
 							dir="${cnuphysdir}" />
 		</copy>
+		
+		<!-- copy kryo related from home dir-->
+		<echo message="kyro related"/>
+		<copy todir="${destdir}">
+			<fileset includes="lib/**" excludes="**/*src.zip"
+							dir="${cnuphysdir}" />
+		</copy>
+
 
 		<echo message="numrec"/>
 		<!-- copy numrec -->
