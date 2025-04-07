@@ -133,7 +133,7 @@
 			<!-- make it executable -->
 		    <manifest>
 		        <attribute name="Main-Class" value="cnuphys.ced.frame.Ced"/>
-		    	<attribute name="Class-Path" value="${coat} ${apache} ${glue} ${jogl} ${f2j} ${nr} ${reflectasm} ${minlog} ${objenesis} ${reflectasm}"/>
+		    	<attribute name="Class-Path" value="${coat} ${apache} ${glue} ${jogl} ${f2j} ${nr} ${kryo} ${minlog} ${objenesis} ${reflectasm}"/>
 		    </manifest>
 		</jar>
 		
