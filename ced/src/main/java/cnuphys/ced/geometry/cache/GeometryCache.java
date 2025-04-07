@@ -30,22 +30,36 @@ import cnuphys.ced.geometry.urwell.UrWELLGeometry;
 
 public class GeometryCache {
 
-    // the cache file name
-    private static String _cacheFileName = "cache/geometry.cache";
+	// the cache file name
+	private static String _cacheFileName = "cache/geometry.cache";
 
-    private static ArrayList<IGeometryCache> _geometries = new ArrayList<>();
+	private static ArrayList<IGeometryCache> _geometries = new ArrayList<>();
 
-    /**
-     * Add a geometry to the cache
-     * 
-     * @param geometry the geometry to add
-     */
-    public static void addGeometry(IGeometryCache geometry) {
-        _geometries.remove(geometry);
-        _geometries.add(geometry);
+	/**
+	 * Add a geometry to the the list of objects to cache
+	 * 
+	 * @param geometry the geometry object to add
+	 */
+	public static void addGeometry(IGeometryCache geometry) {
+		_geometries.remove(geometry);
+		_geometries.add(geometry);
 	}
 
-	// register complex classes
+	/**
+	 * Registers all complex classes and custom types used by the geometry cache
+	 * with the provided Kryo instance.
+	 * 
+	 * <p>
+	 * This method ensures that all the classes required for serializing and
+	 * deserializing geometry-related objects (including detector components,
+	 * geometry primitives, transformation objects, and common collections) are
+	 * registered. It also registers a custom serializer for the unmodifiable list
+	 * type returned by {@code Collections.unmodifiableRandomAccessList} (accessed
+	 * via reflection) so that these special collection types can be correctly
+	 * handled during serialization.
+	 * 
+	 * @param kryo the Kryo instance to be configured for caching geometry objects.
+	 */
 	private static void registerClasses(Kryo kryo) {
 		kryo.register(cnuphys.ced.geometry.urwell.ChamberData.class);
 		kryo.register(org.jlab.geom.component.ScintillatorPaddle.class);
@@ -104,58 +118,75 @@ public class GeometryCache {
 	}
 
 	/**
-	 * Read the geometry from the cache
+	 * Read all the geometry from the cache
 	 * 
 	 * @return true if the geometry was read successfully
 	 */
-    public static boolean readAllGeometries() {
-        File file = getCacheFile();
-        if (!file.exists()) {
-            System.err.println("Cache file does not exist: " + file.getAbsolutePath());
-            return false;
-        }
+	public static boolean readAllGeometries() {
+		File file = getCacheFile();
+		if (!file.exists()) {
+			System.err.println("Cache file does not exist: " + file.getAbsolutePath());
+			return false;
+		}
 
-        Kryo kryo = getKryo();
-        FileInputStream fis = null;
-        Input input = null;
-        try {
-            fis = new FileInputStream(file);
-            input = new Input(fis);
+		Kryo kryo = getKryo();
+		FileInputStream fis = null;
+		Input input = null;
+		try {
+			fis = new FileInputStream(file);
+			input = new Input(fis);
 
-            // loop through the geometries and read them
-            for (IGeometryCache geometry : _geometries) {
-                boolean success = geometry.readGeometry(kryo, input);
-                if (!success) {
-                    System.err.println("Failed to read geometry from cache for " + geometry.getName());
-                    return false;
-                }
-            }
-            return true;
-        } catch (Exception e) {
-            System.err.println("Error reading cache: " + e.getMessage());
-            return false;
-        } finally {
-            if (input != null) {
-                input.close();
-            }
-            if (fis != null) {
-                try {
-                    fis.close();
-                } catch (IOException e) {
-                    System.err.println("Error closing FileInputStream: " + e.getMessage());
-                }
-            }
-        }
-    }
+			// loop through the geometries and read them
+			for (IGeometryCache geometry : _geometries) {
+				boolean success = geometry.readGeometry(kryo, input);
+				if (!success) {
+					System.err.println("Failed to read geometry from cache for " + geometry.getName());
+					return false;
+				}
+			}
+			return true;
+		} catch (Exception e) {
+			System.err.println("Error reading cache: " + e.getMessage());
+			return false;
+		} finally {
+			if (input != null) {
+				input.close();
+			}
+			if (fis != null) {
+				try {
+					fis.close();
+				} catch (IOException e) {
+					System.err.println("Error closing FileInputStream: " + e.getMessage());
+				}
+			}
+		}
+	}
 
-    // create and register
-    private static Kryo getKryo() {
-        Kryo kryo = new Kryo();
-        kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
-        registerClasses(kryo);
-        return kryo;
-    }
+	/**
+	 * 
+	 * Creates and configures a new Kryo instance for caching geometry objects.
+	 * 
+	 * <p>
+	 * This method instantiates a new Kryo serializer and sets an instantiation
+	 * strategy (using StdInstantiatorStrategy) to allow object creation without a
+	 * no-argument constructor.
+	 * 
+	 * It then registers all complex geometry classes and any custom serializers
+	 * needed by calling
+	 * 
+	 * {@code registerClasses(kryo)}.
+	 * 
+	 * @return a fully configured Kryo instance ready for serialization and
+	 *         deserialization of geometry data.
+	 */
+	private static Kryo getKryo() {
+		Kryo kryo = new Kryo();
+		kryo.setInstantiatorStrategy(new DefaultInstantiatorStrategy(new StdInstantiatorStrategy()));
+		registerClasses(kryo);
+		return kryo;
+	}
 
+	// delete the cache file if it exists. This is done if there is an error.
 	private static void deleteCacheFile() {
 		File file = getCacheFile();
 		if (file.exists()) {
@@ -164,119 +195,121 @@ public class GeometryCache {
 			}
 		}
 	}
-    /**
-     * Write the geometry to the cache
-     * 
-     * @return true if the geometry was written successfully
-     */
-    public static boolean writeAllGeometries() {
-        File file = getCacheFile();
 
-        // delete the file if it exists
-        if (file.exists()) {
-            if (!file.delete()) {
-                System.err.println("Unable to delete cache file: " + file.getAbsolutePath());
-                return false;
-            }
-        } else {
-            // create the parent directory if it doesn't exist
-            File parentDir = file.getParentFile();
-            if (!parentDir.exists() && !parentDir.mkdirs()) {
-                System.err.println("Unable to create cache directory: " + parentDir.getAbsolutePath());
-                return false;
-            }
-        }
+	/**
+	 * Write the geometry to the cache
+	 * 
+	 * @return true if the geometry was written successfully
+	 */
+	public static boolean writeAllGeometries() {
+		File file = getCacheFile();
 
-        Kryo kryo = getKryo();
-        FileOutputStream fos = null;
-        Output output = null;
-        try {
-            fos = new FileOutputStream(file);
-            output = new Output(fos);
-            // loop through the geometries and write them
-            for (IGeometryCache geometry : _geometries) {
-                boolean success = geometry.writeGeometry(kryo, output);
-                if (!success) {
-                    System.err.println("Failed to write geometry to cache for " + geometry.getName());
-                    deleteCacheFile();
-                    return false;
-                }
-            }
-            output.flush();
-            return true;
-        } catch (IOException e) {
-            System.err.println("Failed to write cache: " + e.getMessage());
-            
+		// delete the file if it exists
+		if (file.exists()) {
+			if (!file.delete()) {
+				System.err.println("Unable to delete cache file: " + file.getAbsolutePath());
+				return false;
+			}
+		} else {
+			// create the parent directory if it doesn't exist
+			File parentDir = file.getParentFile();
+			if (!parentDir.exists() && !parentDir.mkdirs()) {
+				System.err.println("Unable to create cache directory: " + parentDir.getAbsolutePath());
+				return false;
+			}
+		}
+
+		Kryo kryo = getKryo();
+		FileOutputStream fos = null;
+		Output output = null;
+		try {
+			fos = new FileOutputStream(file);
+			output = new Output(fos);
+			// loop through the geometries and write them
+			for (IGeometryCache geometry : _geometries) {
+				boolean success = geometry.writeGeometry(kryo, output);
+				if (!success) {
+					System.err.println("Failed to write geometry to cache for " + geometry.getName());
+					deleteCacheFile();
+					return false;
+				}
+			}
+			output.flush();
+			return true;
+		} catch (IOException e) {
+			System.err.println("Failed to write cache: " + e.getMessage());
+
 			if (file.exists()) {
 				if (!file.delete()) {
 					System.err.println("Unable to delete cache file: " + file.getAbsolutePath());
 				}
 			}
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (output != null) {
-                output.close();
-            }
-            if (fos != null) {
-                try {
-                    fos.close();
-                } catch (IOException e) {
-                    System.err.println("Error closing FileOutputStream: " + e.getMessage());
-                }
-            }
-        }
-    }
+			e.printStackTrace();
+			return false;
+		} finally {
+			if (output != null) {
+				output.close();
+			}
+			if (fos != null) {
+				try {
+					fos.close();
+				} catch (IOException e) {
+					System.err.println("Error closing FileOutputStream: " + e.getMessage());
+				}
+			}
+		}
+	}
 
-    // get the cache file
-    private static File getCacheFile() {
-        return new File(System.getProperty("user.dir"), _cacheFileName);
-    }
+	// get the cache file assumed in the current working directory
+	private static File getCacheFile() {
+		return new File(System.getProperty("user.dir"), _cacheFileName);
+	}
 
-    /**
-     * Initialize all geometries. This will first try to read from the cache. If
-     * that fails, it will initialize using CCDB and then write to the cache.
-     */
-    public static void initializeAllGeometry() {
-        // first create all the geometries
-        new AlertGeometry();
-        new GeometryVersion();
-        new DCGeometry();
-        new UrWELLGeometry();
-        new CTOFGeometry();
-        new FTCALGeometry();
-        new CNDGeometry();
-        new HTCCGeometry();
-        new LTCCGeometry();
-        new FTOFGeometry();
-        new PCALGeometry();
-        new ECGeometry();
-        new BSTGeometry();
-        new BMTGeometry();
-        new FMTGeometry();
+	/**
+	 * Initialize all geometries. This will first try to read from the cache. If
+	 * that fails, it will initialize using CCDB and then write to the cache.
+	 */
+	public static void initializeAllGeometry() {
+		// first create all the geometries
+		new AlertGeometry();
+		new GeometryVersion();
+		new DCGeometry();
+		new UrWELLGeometry();
+		new CTOFGeometry();
+		new FTCALGeometry();
+		new CNDGeometry();
+		new HTCCGeometry();
+		new LTCCGeometry();
+		new FTOFGeometry();
+		new PCALGeometry();
+		new ECGeometry();
+		new BSTGeometry();
+		new BMTGeometry();
+		new FMTGeometry();
 
-        // now try to read from the cache
-        boolean readSuccess = readAllGeometries();
-        if (readSuccess) {
-            System.err.println("Successfully read geometry from cache.");
-            return;
-        }
+		// now try to read from the cache
+		boolean readSuccess = readAllGeometries();
+		if (readSuccess) {
+			System.err.println("Successfully read geometry from cache.");
+			return;
+		}
 
-        // failed so initialize using CCDB
-        for (IGeometryCache geometry : _geometries) {
-            geometry.initializeUsingCCDB();
-        }
+		// failed so initialize using CCDB
+		for (IGeometryCache geometry : _geometries) {
+			geometry.initializeUsingCCDB();
+		}
 
-        // write to the cache
-        boolean writeSuccess = writeAllGeometries();
-        if (writeSuccess) {
-            System.err.println("Successfully wrote geometry to cache.");
-        } else {
-            System.err.println("Failed to write geometry to cache.");
-        }
-    }
+		// write to the cache
+		boolean writeSuccess = writeAllGeometries();
+		if (writeSuccess) {
+			System.err.println("Successfully wrote geometry to cache.");
+		} else {
+			System.err.println("Failed to write geometry to cache.");
+		}
+	}
 
-    public static void main(String arg[]) {
-        initializeAllGeometry();
-    }
+	//main program for testing
+	public static void main(String arg[]) {
+		initializeAllGeometry();
+	}
 }
