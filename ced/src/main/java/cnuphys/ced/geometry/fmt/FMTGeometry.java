@@ -1,7 +1,7 @@
 package cnuphys.ced.geometry.fmt;
 
 import java.util.Collection;
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import org.jlab.detector.base.GeometryFactory;
 import org.jlab.geom.base.ConstantProvider;
@@ -11,10 +11,7 @@ import org.jlab.geom.detector.fmt.FMTFactory;
 import org.jlab.geom.detector.fmt.FMTLayer;
 import org.jlab.geom.detector.fmt.FMTSector;
 import org.jlab.geom.detector.fmt.FMTSuperlayer;
-import org.jlab.geom.prim.Line3D;
 import org.jlab.geom.prim.Point3D;
-import org.jlab.geom.prim.Vector3D;
-import org.jlab.logging.DefaultLogger;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -29,7 +26,7 @@ public class FMTGeometry extends ACachedGeometry {
 	public static String NAME = "FMT";
 
 	// the layer objects used for FMT geometry and drawing
-	private static Hashtable<String, FMTLayer> _fmtLayers = new Hashtable<>();
+	private static HashMap<String, FMTLayer> _fmtLayers = new HashMap<>();
 
 	public FMTGeometry() {
 		super("FMT");
@@ -94,7 +91,7 @@ public class FMTGeometry extends ACachedGeometry {
 
 	/**
 	 * Get all the fmt layers
-	 * 
+	 *
 	 * @return the collection of FMT layers
 	 */
 	public static Collection<FMTLayer> getAllFMTLayers() {
@@ -103,7 +100,7 @@ public class FMTGeometry extends ACachedGeometry {
 
 	/**
 	 * Used by the 3D drawing
-	 * 
+	 *
 	 * @param sector     the 0-based sector 0..0
 	 * @param superlayer the 0-based layer 0..0
 	 * @param layer      the 0-based layer 0..5
@@ -129,7 +126,7 @@ public class FMTGeometry extends ACachedGeometry {
 
 	/**
 	 * Get the 1-based region 1..4
-	 * 
+	 *
 	 * @param strip1 the 1-based strip 1..1024
 	 * @return the region 1..4
 	 */
@@ -155,7 +152,7 @@ public class FMTGeometry extends ACachedGeometry {
 	@Override
 	public boolean readGeometry(Kryo kryo, Input input) {
 		try {
-			_fmtLayers = kryo.readObjectOrNull(input, Hashtable.class);
+			_fmtLayers = kryo.readObjectOrNull(input, HashMap.class);
 			return true;
 		} catch (Exception e) {
 			System.err.println("FMTGeometry: Error reading geometry cache: " + e.getMessage());
@@ -167,7 +164,7 @@ public class FMTGeometry extends ACachedGeometry {
 	@Override
 	public boolean writeGeometry(Kryo kryo, Output output) {
 		try {
-			kryo.writeObjectOrNull(output, _fmtLayers, Hashtable.class);
+			kryo.writeObjectOrNull(output, _fmtLayers, HashMap.class);
 			return true;
 		} catch (Exception e) {
 			System.err.println("FMTGeometry: Error writing geometry cache: " + e.getMessage());

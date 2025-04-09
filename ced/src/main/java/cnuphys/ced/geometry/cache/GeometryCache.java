@@ -102,8 +102,7 @@ public class GeometryCache {
 		kryo.register(double[][].class);
 		kryo.register(int[][].class);
 		kryo.register(org.jlab.geom.component.DriftChamberWire.class);
-		kryo.register(java.util.Hashtable.class);
-		kryo.register(org.jlab.geom.detector.fmt.FMTLayer.class);
+			kryo.register(org.jlab.geom.detector.fmt.FMTLayer.class);
 		kryo.register(org.jlab.geom.prim.Sector3D.class);
 		kryo.register(org.jlab.geom.prim.Arc3D.class);
 		kryo.register(org.jlab.geom.component.TrackerStrip.class);

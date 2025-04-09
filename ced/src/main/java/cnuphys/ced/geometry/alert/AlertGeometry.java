@@ -5,7 +5,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.Collection;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jlab.detector.calib.utils.DatabaseConstantProvider;
@@ -19,7 +19,6 @@ import org.jlab.geom.detector.alert.ATOF.AlertTOFLayer;
 import org.jlab.geom.prim.Line3D;
 import org.jlab.geom.prim.Plane3D;
 import org.jlab.geom.prim.Point3D;
-import org.jlab.logging.DefaultLogger;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryo.io.Input;
@@ -41,10 +40,10 @@ public class AlertGeometry extends ACachedGeometry {
 	public static String NAME = "ALERT";
 
 	// the layer objects used for DC drawing
-	private static Hashtable<String, DCLayer> _dcLayers = new Hashtable<>();
+	private static HashMap<String, DCLayer> _dcLayers = new HashMap<>();
 
 	// the layer objects used for TOF drawing
-	private static Hashtable<String, TOFLayer> _tofLayers = new Hashtable<>();
+	private static HashMap<String, TOFLayer> _tofLayers = new HashMap<>();
 
 	// sector boundaries for XY view
 	// there are 1 sectors
@@ -423,34 +422,36 @@ public class AlertGeometry extends ACachedGeometry {
 	public boolean readGeometry(Kryo kryo, Input input) {
 		try {
 			// Read the DC layers Hashtable.
-			_dcLayers = kryo.readObjectOrNull(input, Hashtable.class);
+			_dcLayers = kryo.readObjectOrNull(input, HashMap.class);
 
 			// Read the TOF layers Hashtable.
-			_tofLayers = kryo.readObjectOrNull(input, Hashtable.class);
+			_tofLayers = kryo.readObjectOrNull(input, HashMap.class);
 
 			// Read the tofSectorXY 2D array.
 			tofSectorXY = kryo.readObjectOrNull(input, Point2D.Double[][].class);
 
 			return true;
 		} catch (Exception e) {
-				return false;
+			e.printStackTrace();
+			return false;
 		}
 	}
 
 	@Override
 	public boolean writeGeometry(Kryo kryo, Output output) {
 		try {
-			// Write the DC layers Hashtable.
-			kryo.writeObjectOrNull(output, _dcLayers, Hashtable.class);
+			// Write the DC layers HashMap.
+			kryo.writeObjectOrNull(output, _dcLayers, HashMap.class);
 
-			// Write the TOF layers Hashtable.
-			kryo.writeObjectOrNull(output, _tofLayers, Hashtable.class);
+			// Write the TOF layers HashMap.
+			kryo.writeObjectOrNull(output, _tofLayers, HashMap.class);
 
 			// Write the tofSectorXY 2D array.
 			kryo.writeObjectOrNull(output, tofSectorXY, Point2D.Double[][].class);
 
 			return true;
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}

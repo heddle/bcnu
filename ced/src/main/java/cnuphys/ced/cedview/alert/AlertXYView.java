@@ -64,7 +64,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 
 	// units are mm
 //	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-120, -120, 240, 240);
-	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(-400, -400, 800, 800);
+	private static Rectangle2D.Double _defaultWorldRectangle = new Rectangle2D.Double(400, -400, -800, 800);
 
 
 	//for highlighting
