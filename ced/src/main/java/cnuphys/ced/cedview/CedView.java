@@ -1539,5 +1539,16 @@ public abstract class CedView extends BaseView implements IFeedbackProvider, Swi
 	public int getTrajMaxPathlength() {
 		return _maxPathLength;
 	}
+	
+	/**
+	 * Get the min adc to display. Override
+	 * if default value is not acceptable.
+	 *
+	 * @return the min adc to display
+	 */
+	public int getMinADC() {
+		return 0;
+	}
+
 
 }

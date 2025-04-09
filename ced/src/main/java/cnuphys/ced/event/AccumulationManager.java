@@ -17,7 +17,6 @@ import cnuphys.ced.alldata.datacontainer.cc.LTCCADCData;
 import cnuphys.ced.alldata.datacontainer.cnd.CNDADCData;
 import cnuphys.ced.alldata.datacontainer.dc.DCTDCandDOCAData;
 import cnuphys.ced.alldata.datacontainer.ftcal.FTCalADCData;
-import cnuphys.ced.alldata.datacontainer.rtpc.RTPCADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.FTOFADCData;
 import cnuphys.ced.cedview.alert.AlertDCGeometryNumbering;
@@ -147,7 +146,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 	private FTOFADCData ftofADCData = FTOFADCData.getInstance();
 	private CTOFADCData ctofADCData = CTOFADCData.getInstance();
 	private FTCalADCData ftcalADCData = FTCalADCData.getInstance();
-	private RTPCADCData rtpcADCData = RTPCADCData.getInstance();
 	private BSTADCData bstADCData = BSTADCData.getInstance();
 	private DCTDCandDOCAData dcTDCData = DCTDCandDOCAData.getInstance();
 
@@ -774,9 +772,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		// FTCal Data
 		accumFTCAL();
 
-		//RTPCData
-		accumRTPC();
-
 		// CND a special case
 		accumCND();
 
@@ -970,16 +965,6 @@ public class AccumulationManager implements IAccumulator, IClasIoEventListener, 
 		}
 	}
 
-	// accumulate rtpc
-		private void accumRTPC() {
-
-			for (int i = 0; i < rtpcADCData.count(); i++) {
-				int cm1 = rtpcADCData.component[i] - 1;
-				int lm1 = rtpcADCData.layer[i] - 1;
-				_RTPCAccumulatedData[cm1][lm1] += 1;
-			}
-
-		}
 
 	// accumulate CND which is a special case
 	private void accumCND() {

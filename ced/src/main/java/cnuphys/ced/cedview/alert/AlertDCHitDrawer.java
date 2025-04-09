@@ -10,6 +10,8 @@ import org.jlab.io.base.DataEvent;
 
 import cnuphys.bCNU.graphics.container.IContainer;
 import cnuphys.ced.alldata.DataWarehouse;
+import cnuphys.ced.alldata.datacontainer.AdcColorScale;
+import cnuphys.ced.alldata.datacontainer.IDataContainer;
 import cnuphys.ced.clasio.ClasIoEventManager;
 import cnuphys.ced.event.AccumulationManager;
 import cnuphys.ced.geometry.alert.AlertGeometry;
@@ -55,12 +57,16 @@ public class AlertDCHitDrawer {
 			return;
 		}
 
+		int minADC = _view.getADCThreshold();
+			
 		if (dataEvent.hasBank("AHDC::adc") && _view.showADCHits()) {
 
 			short component[] = _dataWarehouse.getShort("AHDC::adc", "component");
 			if (component != null) {
 				int count = component.length;
 				if (count > 0) {
+					int maxADC = _view.getMaxADCThisEvent();
+					int adc[] = _dataWarehouse.getInt("AHDC::adc", "ADC");
 					byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 					byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
 					byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
@@ -68,6 +74,9 @@ public class AlertDCHitDrawer {
 					AlertDCGeometryNumbering adcGeom = new AlertDCGeometryNumbering();
 
 					for (int i = 0; i < count; i++) {
+						if (adc[i] < minADC) {
+							continue;
+						}
 						adcGeom.fromDataNumbering(sector[i], compLayer[i], component[i], order[i]);
 						DCLayer dcl = AlertGeometry.getDCLayer(adcGeom.sector, adcGeom.superlayer, adcGeom.layer);
 						if (dcl == null) {
@@ -75,7 +84,10 @@ public class AlertDCHitDrawer {
 									+ adcGeom.superlayer + ", layer " + adcGeom.layer);
 							continue;
 						}
-						dcl.drawXYWire(g, container, adcGeom.component, Color.red, Color.red,  _view.getFixedZ(), true);
+						
+						double fract = ((double) adc[i]) / maxADC;
+						Color color = _view.getColorScaleModel().getColor(fract);
+						dcl.drawXYWire(g, container, adcGeom.component, color, color.darker(),  _view.getFixedZ(), true);
 					}
 				}
 			}
@@ -166,6 +178,9 @@ public class AlertDCHitDrawer {
 		if (component != null) {
 			int count = component.length;
 			if (count > 0) {
+				
+				int maxADC = _view.getMaxADCThisEvent();
+				feedbackStrings.add(String.format("max AHDC ADC in this event %d", maxADC));
 				byte sector[] = _dataWarehouse.getByte("AHDC::adc", "sector");
 				byte compLayer[] = _dataWarehouse.getByte("AHDC::adc", "layer");
 				byte order[] = _dataWarehouse.getByte("AHDC::adc", "order");
@@ -196,5 +211,7 @@ public class AlertDCHitDrawer {
 		} // component != null
 
 	}
+	
+
 
 }

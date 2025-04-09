@@ -497,5 +497,23 @@ public class DataWarehouse implements IClasIoEventListener {
 	public ArrayList<ColumnData> getColumnData() {
 		return _columnData;
 	}
+	
+	/**
+	 * Get the maximum int value for the given column in the given bank
+	 * 
+	 * @param bankName the bank name
+	 * @param column   the column name
+	 * @return the maximum int value (-1 on failure)
+	 */
+	public static int getMaxIntValue(String bankName, String column) {
+		int max = -1;
+		int[] values = DataWarehouse.getInstance().getInt(bankName, column);
+		if (values != null) {
+			for (int i = 0; i < values.length; i++) {
+				max = Math.max(max, values[i]);
+			}
+		}
+		return max;
+	}
 
 }

@@ -40,10 +40,10 @@ public class AlertProjectionPanel extends JPanel {
     public AlertProjectionPanel(AlertXYView alertXYView) {
         this.alertXYView = alertXYView;
         setLayout(new VerticalFlowLayout());
-        add(Box.createRigidArea(new Dimension(0, 4))); // Spacer
+        add(Box.createRigidArea(new Dimension(0, 2))); // Spacer
        add(createTOFPanel());
 
-        add(Box.createRigidArea(new Dimension(0, 10))); // Spacer
+        add(Box.createRigidArea(new Dimension(0, 5))); // Spacer
 
         // Z Slider
         zSliderLabel = createLabel("  ");
@@ -53,7 +53,7 @@ public class AlertProjectionPanel extends JPanel {
         this.alertXYView.setProjectionPlane(DEFAULT_Z);
         add(zSlider);
 
-        setBorder(new CommonBorder("Alert Z Projection Plane"));
+        setBorder(new CommonBorder("ALERT Z Projection Plane"));
         updateZLabel(null);
     }
 
