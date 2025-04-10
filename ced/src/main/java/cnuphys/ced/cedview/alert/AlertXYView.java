@@ -25,6 +25,7 @@ import cnuphys.bCNU.item.YouAreHereItem;
 import cnuphys.bCNU.util.PropertySupport;
 import cnuphys.bCNU.util.UnicodeSupport;
 import cnuphys.bCNU.view.BaseView;
+import cnuphys.ced.alldata.DataWarehouse;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFADCData;
 import cnuphys.ced.alldata.datacontainer.tof.CTOFClusterData;
 import cnuphys.ced.cedview.CedView;
@@ -94,6 +95,9 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 
 	//wire projection
 	private AlertProjectionPanel _dcPanel;
+	
+	//max  adc in this event
+	private int _maxADCThisEvent = -1;
 	
 	// data containers
 	private CTOFADCData _ctofADCData = CTOFADCData.getInstance();
@@ -167,8 +171,8 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 				PropertySupport.STANDARDVIEWDECORATIONS, true);
 
 		view._controlPanel = new ControlPanel(view,
-				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK + ControlPanel.ACCUMULATIONLEGEND
-						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC + ControlPanel.TRAJCUTOFF,
+				ControlPanel.DISPLAYARRAY + ControlPanel.FEEDBACK+ ControlPanel.ACCUMULATIONLEGEND
+						+ ControlPanel.MATCHINGBANKSPANEL + ControlPanel.ALERTDC + ControlPanel.MINADCCUTOFF,
 						DisplayBits.ACCUMULATION + DisplayBits.CROSSES + DisplayBits.CLUSTERS + DisplayBits.RECONHITS
 						+ DisplayBits.CVTRECTRACKS +  DisplayBits.MCTRUTH
 						+ DisplayBits.CVTRECTRAJ + DisplayBits.CVTRECKFTRAJ + DisplayBits.ADCDATA +
@@ -183,8 +187,11 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 
 		view._controlPanel.getMatchedBankPanel().update();
 		
-		RangeSlider trajRangeSlider = view._controlPanel.getTrajRangeSlider();
-		trajRangeSlider.setOnChange(value -> view.trajRangeChanging(value));
+//		RangeSlider trajRangeSlider = view._controlPanel.getTrajRangeSlider();
+//		trajRangeSlider.setOnChange(value -> view.trajRangeChanging(value));
+		
+		RangeSlider minADCSlider = view._controlPanel.getMinADCRangeSlider();
+		minADCSlider.setOnChange(value -> view.minADCChanging(value));
 
 		//add dc projection panel
 		view._dcPanel = view._controlPanel.getAlertDCPanel();
@@ -196,10 +203,23 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 		return view;
 	}
 	
+	/**
+	 * Get the minimum ADC cutoff
+	 * @return the minimum ADC cutoff
+	 */
+	public int getADCThreshold() {
+		return _controlPanel.getMinADCRangeSlider().getValue();
+	}
+	
 
 	//respond to the traj range change
 	private void trajRangeChanging(int currentVal) {
 		_swimTrajectoryDrawer.setMaxPathLength(currentVal);
+		refresh();
+	}
+	
+	//respond to the min adc cutoffs
+	private void minADCChanging(int currentVal) {
 		refresh();
 	}
 
@@ -209,28 +229,28 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 
 			@Override
 			public void draw(Graphics g, IContainer container) {
-				
-				Graphics2D g2 = (Graphics2D)g;
-				
-				// CND Polys
-				for (int layer = 1; layer <= 3; layer++) {
+
+				if (!_eventManager.isAccumulating()) {
+
+					Graphics2D g2 = (Graphics2D) g;
+
+					// CND Polys
+					for (int layer = 1; layer <= 3; layer++) {
+						for (int paddleId = 1; paddleId <= 48; paddleId++) {
+							if (_cndPoly[layer - 1][paddleId - 1] != null) {
+								_cndPoly[layer - 1][paddleId - 1].draw(g2, container);
+							}
+						}
+
+					}
+
+					// CTOF Polys
 					for (int paddleId = 1; paddleId <= 48; paddleId++) {
-						if (_cndPoly[layer - 1][paddleId - 1] != null) {
-							_cndPoly[layer - 1][paddleId - 1].draw(g2, container);
+						if (_ctofPoly[paddleId - 1] != null) {
+							_ctofPoly[paddleId - 1].draw(g2, container, paddleId, _ctofColors[paddleId % 2]);
 						}
 					}
 
-				}
-
-				// CTOF Polys
-				for (int paddleId = 1; paddleId <= 48; paddleId++) {
-					if (_ctofPoly[paddleId - 1] != null) {
-						_ctofPoly[paddleId - 1].draw(g2, container, paddleId, _ctofColors[paddleId % 2]);
-					}
-				}
-
-
-				if (!_eventManager.isAccumulating()) {
 					drawWires(g, container);
 					drawATOFPaddles(g, container);
 
@@ -254,9 +274,11 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 
 				if (!_eventManager.isAccumulating()) {
 
+
 					_hitDrawer.draw(g, container);
 
 					if (view.isSingleEventMode()) {
+						_maxADCThisEvent =DataWarehouse.getMaxIntValue("AHDC::adc", "ADC");
 						drawSingleModeHits(g, container);
 						if (showClusters()) {
 							_clusterDrawer.draw(g, container);
@@ -264,6 +286,7 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 					}
 
 					else {
+						_maxADCThisEvent = -1;
 						drawAccumulatedHits(g, container);
 					}
 
@@ -280,6 +303,14 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 		};
 
 		getContainer().setAfterDraw(afterDraw);
+	}
+	
+	/**
+	 * Get the maximum AHDC ADC value for this event
+	 * @return the maximum AHDC ADC value for this event
+	 */
+	public int getMaxADCThisEvent() {
+		return _maxADCThisEvent;
 	}
 
 	//draw data selected highlighted data
@@ -439,15 +470,16 @@ public class AlertXYView extends CedXYView implements ILabCoordinates, ICentralX
 		basicFeedback(container, pp, wp, "mm", feedbackStrings);
 
 		double z = getFixedZ();
-		feedbackStrings.add("z: " + getFixedZ() + " mm");
 		double r = Math.sqrt(wp.x * wp.x + wp.y * wp.y + z * z);
 		if (r > 0) {
 			double theta = Math.toDegrees(Math.acos(z / r));
 			double phi = Math.toDegrees(Math.atan2(wp.y, wp.x));
-			String ts = String.format("%s: %-6.2f", UnicodeSupport.SMALL_THETA, theta);
-			String ps = String.format("%s: %-6.2f", UnicodeSupport.SMALL_PHI, phi);
-			feedbackStrings.add(ts);
-			feedbackStrings.add(ps);
+
+			String fbs = String.format("(z, %s, %s ) = (%-6.2f mm, %-6.2f, %-6.2f)", UnicodeSupport.SMALL_THETA,
+					UnicodeSupport.SMALL_PHI, z, theta, phi);
+			feedbackStrings.add(fbs);
+		} else {
+			feedbackStrings.add("z: " + getFixedZ() + " mm");
 		}
 
 		Collection<DCLayer> dcLayers = AlertGeometry.getAllDCLayers();

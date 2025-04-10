@@ -212,6 +212,11 @@ public class BaseContainer extends JComponent
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
+		
+		if ((_view != null) && !_view.isViewVisible()) {
+			return;
+		}
+		
 		super.paintComponent(g);
 
 		clipBounds(g);
@@ -332,8 +337,6 @@ public class BaseContainer extends JComponent
 			try {
 				worldToLocal.transform(wp, pp);
 			} catch (NullPointerException npe) {
-
-				System.err.println("Null pointer exception in BaseContainer worldToLocal pp = " + pp + "  wp = " + wp);
 				npe.printStackTrace();
 			}
 		}
@@ -448,6 +451,10 @@ public class BaseContainer extends JComponent
      */
 	@Override
 	public void refresh() {
+		if ((_view != null) && !_view.isViewVisible()) {
+			return;
+		}
+
 		repaint();
 
 		if (getToolBar() != null) {
